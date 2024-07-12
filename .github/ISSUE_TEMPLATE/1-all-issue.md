@@ -2,7 +2,7 @@
 name: "[All] 전체 이슈"
 about: 전체 이슈
 title: "[All]"
-labels: BE, FE
+labels: '✨ BE, 🍀 FE'
 assignees: ''
 ---
 

@@ -2,7 +2,7 @@
 name: "[BE] 백엔드 이슈"
 about: 백엔드 이슈
 title: "[BE]"
-labels: BE
+labels: '✨ BE'
 assignees: ''
 ---
 

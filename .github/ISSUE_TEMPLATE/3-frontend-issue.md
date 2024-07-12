@@ -2,7 +2,7 @@
 name: "[FE] 프론트엔드 이슈"
 about: 프론트엔드 이슈
 title: "[FE]"
-labels: BE
+labels: '🍀 FE'
 assignees: ''
 ---
 
