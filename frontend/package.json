@@ -8,7 +8,6 @@
     "start": "webpack serve --open --config webpack.config.js",
     "build": "webpack --config webpack.config.js"
   },
-  "type": "module",
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
