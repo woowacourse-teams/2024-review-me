@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "review_group")
+@Table(name = "reviewer_group")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class ReviewerGroup {

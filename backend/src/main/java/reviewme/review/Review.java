@@ -29,7 +29,7 @@ public class Review {
     private Member reviewer;
 
     @ManyToOne
-    @JoinColumn(name = "review_group_id", nullable = false)
+    @JoinColumn(name = "reviewer_group_id", nullable = false)
     private ReviewerGroup reviewerGroup;
 
     public Review(Member reviewer, ReviewerGroup reviewerGroup) {
