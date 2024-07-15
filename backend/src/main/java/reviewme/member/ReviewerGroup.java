@@ -14,10 +14,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "project_group")
+@Table(name = "review_group")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ProjectGroup {
+public class ReviewerGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +27,13 @@ public class ProjectGroup {
     @JoinColumn(name = "reviewee_id", nullable = false)
     private Member reviewee;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "group_name", nullable = false)
     private String groupName;
 
     @Column(name = "deadline", nullable = false)
     private LocalDateTime deadline;
 
-    public ProjectGroup(Member reviewee, String groupName, LocalDateTime deadline) {
+    public ReviewerGroup(Member reviewee, String groupName, LocalDateTime deadline) {
         this.reviewee = reviewee;
         this.groupName = groupName;
         this.deadline = deadline;

@@ -12,7 +12,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import reviewme.member.Member;
-import reviewme.member.ProjectGroup;
+import reviewme.member.ReviewerGroup;
 
 @Entity
 @Table(name = "review")
@@ -30,10 +30,10 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "review_group_id", nullable = false)
-    private ProjectGroup projectGroup;
+    private ReviewerGroup reviewerGroup;
 
-    public Review(Member reviewer, ProjectGroup projectGroup) {
+    public Review(Member reviewer, ReviewerGroup reviewerGroup) {
         this.reviewer = reviewer;
-        this.projectGroup = projectGroup;
+        this.reviewerGroup = reviewerGroup;
     }
 }
