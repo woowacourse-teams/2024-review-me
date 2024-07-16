@@ -62,4 +62,25 @@ class ReviewServiceTest {
         List<Review> actual = reviewRepository.findAll();
         assertThat(actual).hasSize(1);
     }
+
+    @Test
+    void 리뷰를_조회한다() {
+        // given
+        Member reviewer = memberRepository.save(new Member("테드"));
+        Member reviewee = memberRepository.save(new Member("아루"));
+        memberRepository.save(new Member("산초"));
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(new ReviewerGroup(
+                reviewee,
+                "그룹A",
+                LocalDateTime.of(2024, 1, 1, 1, 1))
+        );
+        Review review = reviewRepository.save(new Review(reviewer, reviewerGroup));
+
+        // when
+        ReviewResponse response = reviewService.getReview(review.getId());
+
+        // then
+        Long id = response.id();
+        assertThat(id).isEqualTo(review.getId());
+    }
 }
