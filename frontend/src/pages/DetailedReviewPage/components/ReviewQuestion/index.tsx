@@ -1,11 +1,11 @@
-import { Question } from './styles';
+import * as S from './styles';
 
 interface ReviewQuestionProps {
   question: string;
 }
 
 const ReviewQuestion = ({ question }: ReviewQuestionProps) => {
-  return <Question>{question}</Question>;
+  return <S.Question>{question}</S.Question>;
 };
 
 export default ReviewQuestion;

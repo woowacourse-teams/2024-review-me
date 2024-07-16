@@ -1,5 +1,5 @@
 import React from 'react';
-import { Answer } from './styles';
+import * as S from './styles';
 
 interface ReviewAnswerProps {
   answer: string;
@@ -16,7 +16,7 @@ const applyNewLine = (text: string): React.ReactNode => {
 };
 
 const ReviewAnswer = ({ answer }: ReviewAnswerProps) => {
-  return <Answer>{applyNewLine(answer)}</Answer>;
+  return <S.Answer>{applyNewLine(answer)}</S.Answer>;
 };
 
 export default ReviewAnswer;

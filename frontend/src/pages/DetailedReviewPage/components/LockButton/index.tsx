@@ -1,5 +1,5 @@
-import Lock from '../../../../assets/Lock.svg';
-import Unlock from '../../../../assets/Unlock.svg';
+import LockIcon from '../../../../assets/Lock.svg';
+import UnlockIcon from '../../../../assets/Unlock.svg';
 
 interface LockButtonProps {
   isLock: boolean;
@@ -8,11 +8,11 @@ interface LockButtonProps {
 
 const IMAGE = {
   lock: {
-    src: Lock,
+    src: LockIcon,
     alt: 'lock icon',
   },
   unlock: {
-    src: Unlock,
+    src: UnlockIcon,
     alt: 'unlock icon',
   },
 };

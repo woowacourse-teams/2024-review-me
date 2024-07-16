@@ -1,6 +1,6 @@
 import ReviewQuestion from '../ReviewQuestion';
 import ReviewAnswer from '../ReviewAnswer';
-
+import * as S from './styles';
 interface ReviewSectionProps {
   question: string;
   answer: string;
@@ -8,10 +8,10 @@ interface ReviewSectionProps {
 
 const ReviewViewSection = ({ question, answer }: ReviewSectionProps) => {
   return (
-    <section>
+    <S.ReviewSectionContainer>
       <ReviewQuestion question={question}></ReviewQuestion>
       <ReviewAnswer answer={answer}></ReviewAnswer>
-    </section>
+    </S.ReviewSectionContainer>
   );
 };
 

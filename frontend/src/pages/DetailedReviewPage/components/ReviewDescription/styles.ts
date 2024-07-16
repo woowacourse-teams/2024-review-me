@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 export const Description = styled.ul`
   margin: 0;
   padding-left: 0;
+  width: 100%;
 `;
 
 export const ProjectAndLockButtonContainer = styled.div`
