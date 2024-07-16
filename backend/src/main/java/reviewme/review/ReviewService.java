@@ -51,16 +51,19 @@ public class ReviewService {
         Member member = memberRepository.getMemberById(review.getReviewer().getId());
         MemberResponse memberResponse = new MemberResponse(member.getId(), member.getName());
 
-        ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(
-                review.getReviewerGroup().getId());
-        ReviewerGroupResponse reviewerGroupResponse = new ReviewerGroupResponse(reviewerGroup.getId(),
-                reviewerGroup.getGroupName());
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(review.getReviewerGroup().getId());
+        ReviewerGroupResponse reviewerGroupResponse = new ReviewerGroupResponse(
+                reviewerGroup.getId(),
+                reviewerGroup.getGroupName()
+        );
 
         List<ReviewContent> reviewContents = reviewContentRepository.findByReview(review);
         List<ContentResponse> contentResponses = reviewContents.stream()
-                .map(reviewContent -> new ContentResponse(reviewContent.getId(),
-                        reviewContent.getQuestion(),
-                        reviewContent.getAnswer())
+                .map(reviewContent -> new ContentResponse(
+                                reviewContent.getId(),
+                                reviewContent.getQuestion(),
+                                reviewContent.getAnswer()
+                        )
                 )
                 .toList();
 
@@ -72,7 +75,12 @@ public class ReviewService {
                 .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getDetail()))
                 .toList();
 
-        return new ReviewResponse(review.getId(), memberResponse, reviewerGroupResponse,
-                contentResponses, keywordResponses);
+        return new ReviewResponse(
+                review.getId(),
+                memberResponse,
+                reviewerGroupResponse,
+                contentResponses,
+                keywordResponses
+        );
     }
 }
