@@ -45,7 +45,7 @@ public class ReviewService {
         return review.getId();
     }
 
-    public ReviewResponse getReview(Long id) {
+    public ReviewResponse findReview(Long id) {
         Review review = reviewRepository.getReviewById(id);
 
         Member member = memberRepository.getMemberById(review.getReviewer().getId());

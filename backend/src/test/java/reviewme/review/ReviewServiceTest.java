@@ -77,7 +77,7 @@ class ReviewServiceTest {
         Review review = reviewRepository.save(new Review(reviewer, reviewerGroup));
 
         // when
-        ReviewResponse response = reviewService.getReview(review.getId());
+        ReviewResponse response = reviewService.findReview(review.getId());
 
         // then
         Long id = response.id();
