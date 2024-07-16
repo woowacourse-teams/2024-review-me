@@ -3,6 +3,7 @@ package reviewme.review;
 import java.util.List;
 import reviewme.keyword.KeywordResponse;
 import reviewme.member.MemberResponse;
+import reviewme.member.ReviewerGroupResponse;
 
 public record ReviewResponse(
         long id,

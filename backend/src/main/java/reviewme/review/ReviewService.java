@@ -12,6 +12,7 @@ import reviewme.member.MemberRepository;
 import reviewme.member.MemberResponse;
 import reviewme.member.ReviewerGroup;
 import reviewme.member.ReviewerGroupRepository;
+import reviewme.member.ReviewerGroupResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -53,9 +54,12 @@ public class ReviewService {
         MemberResponse memberResponse = new MemberResponse(member.getId(), member.getName());
 
         ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(review.getReviewerGroup().getId());
+        Member reviewee = reviewerGroup.getReviewee();
         ReviewerGroupResponse reviewerGroupResponse = new ReviewerGroupResponse(
                 reviewerGroup.getId(),
-                reviewerGroup.getGroupName()
+                reviewerGroup.getGroupName(),
+                reviewerGroup.getDeadline(),
+                new MemberResponse(reviewee.getId(), reviewee.getName())
         );
 
         List<ReviewContent> reviewContents = reviewContentRepository.findByReview(review);
