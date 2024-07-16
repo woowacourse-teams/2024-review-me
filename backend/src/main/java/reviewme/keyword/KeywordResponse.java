@@ -1,4 +1,4 @@
-package reviewme.review;
+package reviewme.keyword;
 
 public record KeywordResponse(
         long id,
