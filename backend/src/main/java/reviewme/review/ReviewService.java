@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.keyword.Keyword;
 import reviewme.keyword.KeywordRepository;
+import reviewme.keyword.KeywordResponse;
 import reviewme.member.Member;
 import reviewme.member.MemberRepository;
 import reviewme.member.MemberResponse;
