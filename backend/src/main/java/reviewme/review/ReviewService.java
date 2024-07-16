@@ -1,15 +1,16 @@
 package reviewme.review;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reviewme.keyword.Keyword;
 import reviewme.keyword.KeywordRepository;
 import reviewme.member.Member;
 import reviewme.member.MemberRepository;
+import reviewme.member.MemberResponse;
 import reviewme.member.ReviewerGroup;
 import reviewme.member.ReviewerGroupRepository;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,5 +43,44 @@ public class ReviewService {
         reviewKeywordRepository.saveAll(reviewKeywords);
 
         return review.getId();
+    }
+
+    public ReviewResponse findReview(long id) {
+        Review review = reviewRepository.getReviewById(id);
+
+        Member member = memberRepository.getMemberById(review.getReviewer().getId());
+        MemberResponse memberResponse = new MemberResponse(member.getId(), member.getName());
+
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(review.getReviewerGroup().getId());
+        ReviewerGroupResponse reviewerGroupResponse = new ReviewerGroupResponse(
+                reviewerGroup.getId(),
+                reviewerGroup.getGroupName()
+        );
+
+        List<ReviewContent> reviewContents = reviewContentRepository.findByReview(review);
+        List<ContentResponse> contentResponses = reviewContents.stream()
+                .map(reviewContent -> new ContentResponse(
+                                reviewContent.getId(),
+                                reviewContent.getQuestion(),
+                                reviewContent.getAnswer()
+                        )
+                )
+                .toList();
+
+        List<ReviewKeyword> reviewKeywords = reviewKeywordRepository.findByReview(review);
+        List<Keyword> keywords = reviewKeywords.stream()
+                .map(ReviewKeyword::getKeyword)
+                .toList();
+        List<KeywordResponse> keywordResponses = keywords.stream()
+                .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getDetail()))
+                .toList();
+
+        return new ReviewResponse(
+                review.getId(),
+                memberResponse,
+                reviewerGroupResponse,
+                contentResponses,
+                keywordResponses
+        );
     }
 }
