@@ -5,7 +5,7 @@ import java.util.List;
 import reviewme.member.MemberResponse;
 
 public record ReviewResponse(
-        Long id,
+        long id,
 //        LocalDateTime createdAt,
         MemberResponse reviewer,
         ReviewerGroupResponse reviewerGroup,

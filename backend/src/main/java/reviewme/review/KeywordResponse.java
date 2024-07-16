@@ -1,7 +1,7 @@
 package reviewme.review;
 
 public record KeywordResponse(
-        Long id,
+        long id,
         String detail
 ) {
 }

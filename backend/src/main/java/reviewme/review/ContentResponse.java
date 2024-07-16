@@ -1,7 +1,7 @@
 package reviewme.review;
 
 public record ContentResponse(
-        Long id,
+        long id,
         String question,
         String answer
 ) {

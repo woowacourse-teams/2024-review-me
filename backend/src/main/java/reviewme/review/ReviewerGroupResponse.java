@@ -1,7 +1,7 @@
 package reviewme.review;
 
 public record ReviewerGroupResponse(
-        Long id,
+        long id,
         String name
 ) {
 }

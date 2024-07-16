@@ -1,7 +1,7 @@
 package reviewme.member;
 
 public record MemberResponse(
-        Long id,
+        long id,
         String name
 ) {
 }
