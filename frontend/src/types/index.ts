@@ -1,1 +1,1 @@
-export * from './detailReviewData';
+export * from './review';
