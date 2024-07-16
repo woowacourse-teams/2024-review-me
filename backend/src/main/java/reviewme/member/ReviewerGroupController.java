@@ -12,9 +12,9 @@ public class ReviewerGroupController {
 
     private final ReviewerGroupService reviewerGroupService;
 
-    @GetMapping("/reviewer-groups/{reviewerGroupId}")
-    public ResponseEntity<ReviewerGroupResponse> findReviewerGroup(@PathVariable long reviewerGroupId) {
-        ReviewerGroupResponse response = reviewerGroupService.findReviewerGroup(reviewerGroupId);
+    @GetMapping("/reviewer-groups/{id}")
+    public ResponseEntity<ReviewerGroupResponse> findReviewerGroup(@PathVariable long id) {
+        ReviewerGroupResponse response = reviewerGroupService.findReviewerGroup(id);
         return ResponseEntity.ok(response);
     }
 }
