@@ -6,16 +6,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import reviewme.keyword.Keyword;
 import reviewme.keyword.KeywordRepository;
 import reviewme.member.Member;
 import reviewme.member.MemberRepository;
 import reviewme.member.ReviewerGroup;
 import reviewme.member.ReviewerGroupRepository;
+import reviewme.support.ServiceTest;
 
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+@ServiceTest
 class ReviewServiceTest {
 
     @Autowired
