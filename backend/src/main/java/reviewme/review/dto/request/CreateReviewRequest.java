@@ -1,4 +1,4 @@
-package reviewme.review;
+package reviewme.review.dto.request;
 
 import java.util.List;
 

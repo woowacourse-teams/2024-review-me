@@ -1,4 +1,4 @@
-package reviewme.member;
+package reviewme.member.dto.response;
 
 public record MemberResponse(
         long id,

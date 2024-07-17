@@ -1,4 +1,4 @@
-package reviewme.review;
+package reviewme.review.dto.request;
 
 public record CreateReviewContentRequest(
         Long order,

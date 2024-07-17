@@ -3,6 +3,8 @@ package reviewme.keyword;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reviewme.keyword.dto.response.KeywordResponse;
+import reviewme.keyword.dto.response.KeywordsResponse;
 
 @Service
 @RequiredArgsConstructor

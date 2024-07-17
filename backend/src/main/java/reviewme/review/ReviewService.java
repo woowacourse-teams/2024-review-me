@@ -6,13 +6,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.keyword.Keyword;
 import reviewme.keyword.KeywordRepository;
-import reviewme.keyword.KeywordResponse;
+import reviewme.keyword.dto.response.KeywordResponse;
 import reviewme.member.Member;
 import reviewme.member.MemberRepository;
-import reviewme.member.MemberResponse;
 import reviewme.member.ReviewerGroup;
 import reviewme.member.ReviewerGroupRepository;
-import reviewme.member.ReviewerGroupResponse;
+import reviewme.member.dto.response.MemberResponse;
+import reviewme.member.dto.response.ReviewerGroupResponse;
+import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.response.ReviewContentResponse;
+import reviewme.review.dto.response.ReviewResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -63,8 +66,8 @@ public class ReviewService {
         );
 
         List<ReviewContent> reviewContents = reviewContentRepository.findByReview(review);
-        List<ContentResponse> contentResponses = reviewContents.stream()
-                .map(reviewContent -> new ContentResponse(
+        List<ReviewContentResponse> reviewContentRespons = reviewContents.stream()
+                .map(reviewContent -> new ReviewContentResponse(
                                 reviewContent.getId(),
                                 reviewContent.getQuestion(),
                                 reviewContent.getAnswer()
@@ -84,7 +87,7 @@ public class ReviewService {
                 review.getId(),
                 memberResponse,
                 reviewerGroupResponse,
-                contentResponses,
+                reviewContentRespons,
                 keywordResponses
         );
     }

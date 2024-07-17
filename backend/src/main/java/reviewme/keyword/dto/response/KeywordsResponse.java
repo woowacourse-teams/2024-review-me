@@ -1,4 +1,4 @@
-package reviewme.keyword;
+package reviewme.keyword.dto.response;
 
 import java.util.List;
 
