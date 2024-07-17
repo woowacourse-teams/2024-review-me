@@ -43,7 +43,9 @@ class ReviewServiceTest {
         // given
         memberRepository.save(new Member("산초"));
         Member reviewee = memberRepository.save(new Member("아루"));
-        reviewerGroupRepository.save(new ReviewerGroup(reviewee, "그룹A", LocalDateTime.of(2024, 1, 1, 1, 1)));
+        reviewerGroupRepository.save(
+                new ReviewerGroup(reviewee, "그룹A", "그룹 설명", LocalDateTime.of(2024, 1, 1, 1, 1))
+        );
         Keyword keyword1 = keywordRepository.save(new Keyword("꼼꼼해요"));
         Keyword keyword2 = keywordRepository.save(new Keyword("친절해요"));
 
@@ -77,6 +79,7 @@ class ReviewServiceTest {
         ReviewerGroup reviewerGroup = reviewerGroupRepository.save(new ReviewerGroup(
                 reviewee,
                 "그룹A",
+                "그룹 설명",
                 LocalDateTime.of(2024, 1, 1, 1, 1))
         );
         Review review = reviewRepository.save(new Review(reviewer, reviewerGroup));
