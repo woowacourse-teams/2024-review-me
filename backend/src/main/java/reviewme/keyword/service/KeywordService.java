@@ -1,10 +1,11 @@
-package reviewme.keyword;
+package reviewme.keyword.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reviewme.keyword.dto.response.KeywordResponse;
 import reviewme.keyword.dto.response.KeywordsResponse;
+import reviewme.keyword.repository.KeywordRepository;
 
 @Service
 @RequiredArgsConstructor

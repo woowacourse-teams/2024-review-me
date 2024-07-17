@@ -1,4 +1,4 @@
-package reviewme.review;
+package reviewme.review.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

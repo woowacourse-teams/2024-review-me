@@ -1,4 +1,4 @@
-package reviewme.review;
+package reviewme.review.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,8 +11,8 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import reviewme.member.Member;
-import reviewme.member.ReviewerGroup;
+import reviewme.member.domain.Member;
+import reviewme.member.domain.ReviewerGroup;
 
 @Entity
 @Table(name = "review")

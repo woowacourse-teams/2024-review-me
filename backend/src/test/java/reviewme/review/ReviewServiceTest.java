@@ -6,15 +6,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.keyword.Keyword;
-import reviewme.keyword.KeywordRepository;
-import reviewme.member.Member;
-import reviewme.member.MemberRepository;
-import reviewme.member.ReviewerGroup;
-import reviewme.member.ReviewerGroupRepository;
+import reviewme.keyword.domain.Keyword;
+import reviewme.keyword.repository.KeywordRepository;
+import reviewme.member.domain.Member;
+import reviewme.member.domain.ReviewerGroup;
+import reviewme.member.repository.MemberRepository;
+import reviewme.member.repository.ReviewerGroupRepository;
+import reviewme.review.domain.Review;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewResponse;
+import reviewme.review.repository.ReviewRepository;
+import reviewme.review.service.ReviewService;
 import reviewme.support.ServiceTest;
 
 @ServiceTest

@@ -1,21 +1,27 @@
-package reviewme.review;
+package reviewme.review.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.keyword.Keyword;
-import reviewme.keyword.KeywordRepository;
+import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.dto.response.KeywordResponse;
-import reviewme.member.Member;
-import reviewme.member.MemberRepository;
-import reviewme.member.ReviewerGroup;
-import reviewme.member.ReviewerGroupRepository;
+import reviewme.keyword.repository.KeywordRepository;
+import reviewme.member.domain.Member;
+import reviewme.member.domain.ReviewerGroup;
 import reviewme.member.dto.response.MemberResponse;
 import reviewme.member.dto.response.ReviewerGroupResponse;
+import reviewme.member.repository.MemberRepository;
+import reviewme.member.repository.ReviewerGroupRepository;
+import reviewme.review.domain.Review;
+import reviewme.review.domain.ReviewContent;
+import reviewme.review.domain.ReviewKeyword;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewContentResponse;
 import reviewme.review.dto.response.ReviewResponse;
+import reviewme.review.repository.ReviewContentRepository;
+import reviewme.review.repository.ReviewKeywordRepository;
+import reviewme.review.repository.ReviewRepository;
 
 @Service
 @RequiredArgsConstructor

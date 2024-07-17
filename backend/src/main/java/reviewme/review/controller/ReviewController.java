@@ -1,4 +1,4 @@
-package reviewme.review;
+package reviewme.review.controller;
 
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewResponse;
+import reviewme.review.service.ReviewService;
 
 @RestController
 @RequiredArgsConstructor

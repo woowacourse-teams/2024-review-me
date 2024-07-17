@@ -1,10 +1,11 @@
-package reviewme.keyword;
+package reviewme.keyword.contoller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.keyword.dto.response.KeywordsResponse;
+import reviewme.keyword.service.KeywordService;
 
 @RestController
 @RequiredArgsConstructor

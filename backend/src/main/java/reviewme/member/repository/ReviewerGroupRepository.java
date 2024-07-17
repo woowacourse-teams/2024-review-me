@@ -1,7 +1,8 @@
-package reviewme.member;
+package reviewme.member.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import reviewme.member.domain.ReviewerGroup;
 import reviewme.member.exception.ReviewerGroupNotFoundException;
 
 @Repository

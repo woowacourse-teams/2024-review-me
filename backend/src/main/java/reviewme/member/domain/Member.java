@@ -1,4 +1,4 @@
-package reviewme.keyword;
+package reviewme.member.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,19 +11,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "keyword")
+@Table(name = "member")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Keyword {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "detail", nullable = false)
-    private String detail;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    public Keyword(String detail) {
-        this.detail = detail;
+    public Member(String name) {
+        this.name = name;
     }
 }

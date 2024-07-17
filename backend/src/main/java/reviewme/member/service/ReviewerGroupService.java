@@ -1,9 +1,12 @@
-package reviewme.member;
+package reviewme.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reviewme.member.domain.Member;
+import reviewme.member.domain.ReviewerGroup;
 import reviewme.member.dto.response.MemberResponse;
 import reviewme.member.dto.response.ReviewerGroupResponse;
+import reviewme.member.repository.ReviewerGroupRepository;
 
 @Service
 @RequiredArgsConstructor
