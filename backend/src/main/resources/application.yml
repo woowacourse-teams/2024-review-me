@@ -11,3 +11,9 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
+    operations-sorter: alpha
+    tags-sorter: alpha
