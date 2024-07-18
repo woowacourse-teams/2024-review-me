@@ -1,4 +1,4 @@
-api:
+docs:
   info:
     title: "리뷰미 API"
     description: "이 문서는 리뷰미 API 구현 방법을 소개합니다."
