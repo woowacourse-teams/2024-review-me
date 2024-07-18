@@ -20,6 +20,8 @@ import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewResponse;
 import reviewme.review.exception.GitHubReviewGroupNotFoundException;
+import reviewme.review.exception.ReviewContentExistException;
+import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.ReviewService;
 import reviewme.support.ServiceTest;
@@ -44,6 +46,9 @@ class ReviewServiceTest {
 
     @Autowired
     KeywordRepository keywordRepository;
+
+    @Autowired
+    ReviewContentRepository reviewContentRepository;
 
     @Test
     void 리뷰를_작성한다() {
@@ -131,5 +136,41 @@ class ReviewServiceTest {
         // when, then
         assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
                 .isInstanceOf(GitHubReviewGroupNotFoundException.class);
+    }
+
+    @Test
+    void 이미_작성한_리뷰가_있는데_리뷰를_작성할_경우_예외를_발생한다() {
+        // given
+        Member reviewee = memberRepository.save(new Member("아루", "aru"));
+        Member reviewer = memberRepository.save(new Member("테드", "ted"));
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(new ReviewerGroup(
+                reviewee,
+                "그룹A",
+                "그룹 설명",
+                LocalDateTime.of(2024, 1, 1, 1, 1))
+        );
+        gitHubReviewGroupRepository.save(new GitHubReviewGroup("ted", reviewerGroup));
+
+        Keyword keyword1 = keywordRepository.save(new Keyword("꼼꼼해요"));
+        Keyword keyword2 = keywordRepository.save(new Keyword("친절해요"));
+
+        CreateReviewContentRequest contentRequest1 = new CreateReviewContentRequest(
+                1L, "소프트스킬이 어떤가요?", "소통을 잘해요"
+        );
+        CreateReviewContentRequest contentRequest2 = new CreateReviewContentRequest(
+                2L, "기술역량이 어떤가요?", "스트림을 잘다뤄요"
+        );
+        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+                reviewer.getId(),
+                reviewerGroup.getId(),
+                List.of(contentRequest1, contentRequest2),
+                List.of(keyword1.getId(), keyword2.getId())
+        );
+
+        reviewService.createReview(createReviewRequest);
+
+        // when, then
+        assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
+                .isInstanceOf(ReviewContentExistException.class);
     }
 }

@@ -52,6 +52,10 @@ public class ReviewService {
             throw new GitHubReviewGroupNotFoundException();
         }
 
+        if (reviewContentRepository.existsById(review.getId())) {
+            throw new ReviewContentExistException();
+        }
+
         List<ReviewContent> contents = request.contents()
                 .stream()
                 .map(content -> new ReviewContent(review, content.question(), content.answer()))
