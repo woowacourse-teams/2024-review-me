@@ -11,5 +11,5 @@ public interface ReviewKeywordRepository extends JpaRepository<ReviewKeyword, Lo
 
     List<ReviewKeyword> findByReview(Review review);
 
-    void removeAllByReview(Review review);
+    void deleteAllByReview(Review review);
 }

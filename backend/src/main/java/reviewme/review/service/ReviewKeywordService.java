@@ -18,7 +18,7 @@ public class ReviewKeywordService {
 
     @Transactional
     public List<ReviewKeyword> attachSelectedKeywordsOnReview(Review review, List<Keyword> selectedKeywords) {
-        reviewKeywordRepository.removeAllByReview(review);
+        reviewKeywordRepository.deleteAllByReview(review);
         SelectedKeywords keywords = new SelectedKeywords(selectedKeywords);
         List<ReviewKeyword> reviewKeywords = keywords.getKeywords()
                 .stream()

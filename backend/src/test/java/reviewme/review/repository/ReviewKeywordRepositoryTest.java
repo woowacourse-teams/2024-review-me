@@ -58,7 +58,7 @@ class ReviewKeywordRepositoryTest {
         reviewKeywordRepository.saveAll(reviewKeywords);
 
         // when
-        reviewKeywordRepository.removeAllByReview(review);
+        reviewKeywordRepository.deleteAllByReview(review);
 
         // then
         List<ReviewKeyword> actual = reviewKeywordRepository.findByReview(review);
