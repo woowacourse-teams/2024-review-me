@@ -12,7 +12,7 @@ spring:
     hibernate:
       ddl-auto: update
   profiles:
-    include: API-DOCS
+    include: api-docs
 
 springdoc:
   swagger-ui:
