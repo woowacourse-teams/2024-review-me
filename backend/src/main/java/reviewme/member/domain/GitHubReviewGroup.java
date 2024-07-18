@@ -24,7 +24,7 @@ public class GitHubReviewGroup {
     private String gitHubId;
 
     @ManyToOne
-    @JoinColumn(name = "reviewer_group")
+    @JoinColumn(name = "reviewer_group_id")
     private ReviewerGroup reviewerGroup;
 
     public GitHubReviewGroup(String gitHubId, ReviewerGroup reviewerGroup) {
