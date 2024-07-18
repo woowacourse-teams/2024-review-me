@@ -11,6 +11,7 @@ import reviewme.member.domain.Member;
 import reviewme.member.domain.ReviewerGroup;
 import reviewme.member.dto.response.MemberResponse;
 import reviewme.member.dto.response.ReviewerGroupResponse;
+import reviewme.member.repository.GitHubReviewGroupRepository;
 import reviewme.member.repository.MemberRepository;
 import reviewme.member.repository.ReviewerGroupRepository;
 import reviewme.review.domain.Review;
@@ -19,6 +20,8 @@ import reviewme.review.domain.ReviewKeyword;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewContentResponse;
 import reviewme.review.dto.response.ReviewResponse;
+import reviewme.review.exception.GitHubReviewGroupNotFoundException;
+import reviewme.review.exception.ReviewContentExistException;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
@@ -30,6 +33,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final ReviewerGroupRepository reviewerGroupRepository;
+    private final GitHubReviewGroupRepository gitHubReviewGroupRepository;
     private final ReviewContentRepository reviewContentRepository;
     private final KeywordRepository keywordRepository;
     private final ReviewKeywordRepository reviewKeywordRepository;
@@ -39,6 +43,14 @@ public class ReviewService {
         Member reviewer = memberRepository.getMemberById(request.reviewerId());
         ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(request.reviewerGroupId());
         Review review = reviewRepository.save(new Review(reviewer, reviewerGroup));
+
+        boolean isValidReviewer = gitHubReviewGroupRepository.existsByGitHubIdAndReviewerGroup(
+                reviewer.getGitHubId(),
+                reviewerGroup
+        );
+        if (!isValidReviewer) {
+            throw new GitHubReviewGroupNotFoundException();
+        }
 
         List<ReviewContent> contents = request.contents()
                 .stream()
