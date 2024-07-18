@@ -1,7 +1,9 @@
+import { css } from '@emotion/react';
+import React from 'react';
 import { Outlet } from 'react-router';
+
 import { Header } from './components';
 import Main from './components/Main';
-import { css } from '@emotion/react';
 import Sidebar from './components/Sidebar';
 
 const App = () => {

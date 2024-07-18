@@ -1,6 +1,7 @@
-import * as S from './styles';
-import MenuIcon from '../../assets/menu.svg';
 import LogoIcon from '../../assets/logo.svg';
+import MenuIcon from '../../assets/menu.svg';
+
+import * as S from './styles';
 
 const Header = () => {
   return (
