@@ -1,6 +1,7 @@
 package reviewme.review.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @Operation(summary = "리뷰 등록", description = "리뷰 작성 정보를 받아 리뷰를 등록한다.")
+    @ApiResponse(responseCode = "201")
     @PostMapping("/reviews")
     public ResponseEntity<Void> createReview(@RequestBody CreateReviewRequest request) {
         long id = reviewService.createReview(request);
