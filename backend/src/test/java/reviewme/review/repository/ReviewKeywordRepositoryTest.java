@@ -6,8 +6,6 @@ import static reviewme.fixture.KeywordFixture.의견을_잘_조율해요;
 import static reviewme.fixture.KeywordFixture.회의를_이끌어요;
 import static reviewme.fixture.ReviewerGroupFixture.리뷰_그룹;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -24,9 +22,6 @@ import reviewme.review.domain.ReviewKeyword;
 
 @DataJpaTest
 class ReviewKeywordRepositoryTest {
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Autowired
     private ReviewKeywordRepository reviewKeywordRepository;
