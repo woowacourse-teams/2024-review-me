@@ -1,29 +1,22 @@
 package reviewme.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reviewme.config.properties.SwaggerProperties;
 
 @Configuration
+@EnableConfigurationProperties(SwaggerProperties.class)
+@RequiredArgsConstructor
 public class SwaggerConfig {
 
-    @Value("${api.info.title}")
-    private String title;
-
-    @Value("${api.info.description}")
-    private String description;
-
-    @Value("${api.info.version}")
-    private String version;
+    private final SwaggerProperties swaggerProperties;
 
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-                .info(new Info()
-                        .title(title)
-                        .description(description)
-                        .version(version));
+                .info(swaggerProperties.swaggerInfo());
     }
 }
