@@ -41,8 +41,8 @@ class ReviewServiceTest {
     @Test
     void 리뷰를_작성한다() {
         // given
-        memberRepository.save(new Member("산초"));
-        Member reviewee = memberRepository.save(new Member("아루"));
+        memberRepository.save(new Member("산초", "sancho"));
+        Member reviewee = memberRepository.save(new Member("아루", "aru"));
         reviewerGroupRepository.save(
                 new ReviewerGroup(reviewee, "그룹A", "그룹 설명", LocalDateTime.of(2024, 1, 1, 1, 1))
         );
@@ -73,9 +73,9 @@ class ReviewServiceTest {
     @Test
     void 리뷰를_조회한다() {
         // given
-        Member reviewer = memberRepository.save(new Member("테드"));
-        Member reviewee = memberRepository.save(new Member("아루"));
-        memberRepository.save(new Member("산초"));
+        Member reviewer = memberRepository.save(new Member("테드", "ted"));
+        Member reviewee = memberRepository.save(new Member("아루", "aru"));
+        memberRepository.save(new Member("산초", "sancho"));
         ReviewerGroup reviewerGroup = reviewerGroupRepository.save(new ReviewerGroup(
                 reviewee,
                 "그룹A",

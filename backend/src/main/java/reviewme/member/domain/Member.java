@@ -23,7 +23,11 @@ public class Member {
     @Column(name = "name", nullable = false)
     private String name;
 
-    public Member(String name) {
+    @Column(name = "git_hub_id", nullable = false)
+    private String gitHubId;
+
+    public Member(String name, String gitHubId) {
         this.name = name;
+        this.gitHubId = gitHubId;
     }
 }
