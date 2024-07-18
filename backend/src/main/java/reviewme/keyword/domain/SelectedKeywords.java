@@ -7,7 +7,7 @@ import reviewme.keyword.domain.exception.KeywordLimitExceedException;
 
 public class SelectedKeywords {
 
-    private static final int MAX_KEYWORD_COUNT = 3;
+    private static final int MAX_KEYWORD_COUNT = 5;
 
     private final List<Keyword> keywords;
 
