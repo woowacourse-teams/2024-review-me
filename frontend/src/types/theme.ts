@@ -1,3 +1,6 @@
-export type CustomTheme<T> = {
+import '@emotion/react';
+import { fontSize } from '@/styles/theme';
+
+export type ThemeProperty<T> = {
   [key: string]: T;
 };
