@@ -3,6 +3,7 @@ package reviewme.review.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 
 @Schema(description = "리뷰 등록 요청")
@@ -22,5 +23,6 @@ public record CreateReviewRequest(
 
         @NotNull(message = "키워드를 입력해주세요.")
         @Schema(description = "선택된 키워드 ID 목록")
-        List<Long> selectedKeywordIds) {
+        List<Long> selectedKeywordIds
+) {
 }
