@@ -1,5 +1,6 @@
 package reviewme.review.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import reviewme.member.repository.ReviewerGroupRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
+import reviewme.review.domain.exception.DeadlineExceedException;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewContentResponse;
 import reviewme.review.dto.response.ReviewResponse;
@@ -38,6 +40,7 @@ public class ReviewService {
     public Long createReview(CreateReviewRequest request) {
         Member reviewer = memberRepository.getMemberById(request.reviewerId());
         ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(request.reviewerGroupId());
+        validateIsDeadlinePassed(reviewerGroup);
         Review review = reviewRepository.save(new Review(reviewer, reviewerGroup));
 
         List<ReviewContent> contents = request.contents()
@@ -54,6 +57,12 @@ public class ReviewService {
         reviewKeywordRepository.saveAll(reviewKeywords);
 
         return review.getId();
+    }
+
+    private void validateIsDeadlinePassed(ReviewerGroup reviewerGroup) {
+        if (reviewerGroup.isDeadlineExceeded(LocalDateTime.now())) {
+            throw new DeadlineExceedException();
+        }
     }
 
     public ReviewResponse findReview(long id) {
