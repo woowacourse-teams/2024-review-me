@@ -65,4 +65,27 @@ class ReviewKeywordServiceTest {
         List<ReviewKeyword> actual = reviewKeywordRepository.findByReview(review);
         assertThat(actual).hasSize(2);
     }
+
+    @Test
+    void 키워드가_이미_존재하는_경우_키워드_등록_시_모두_대체된다() {
+        // given
+        Member sancho = memberRepository.save(new Member("산초"));
+        Member kirby = memberRepository.save(new Member("커비"));
+        ReviewerGroup group = reviewerGroupRepository.save(리뷰_그룹.create(sancho));
+        Review review = reviewRepository.save(new Review(kirby, group));
+
+        List<Keyword> keywords = Stream.of(꼼꼼하게_기록해요, 회의를_이끌어요, 의견을_잘_조율해요)
+                .map(KeywordFixture::create)
+                .map(keywordRepository::save)
+                .toList();
+        reviewKeywordRepository.save(new ReviewKeyword(review, keywords.get(0)));
+        List<Keyword> selectedKeywords = List.of(keywords.get(1), keywords.get(2));
+        // when
+        reviewKeywordService.attachSelectedKeywordsOnReview(review, selectedKeywords);
+
+        // then
+        List<ReviewKeyword> actual = reviewKeywordRepository.findByReview(review);
+        assertThat(actual).extracting(ReviewKeyword::getKeyword)
+                .containsExactlyInAnyOrderElementsOf(selectedKeywords);
+    }
 }
