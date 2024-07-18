@@ -2,7 +2,7 @@ package reviewme.keyword.domain;
 
 import java.util.Collections;
 import java.util.List;
-import reviewme.keyword.domain.exception.DuplicatedKeywordException;
+import reviewme.keyword.domain.exception.DuplicateKeywordException;
 import reviewme.keyword.domain.exception.KeywordLimitExceedException;
 
 public class SelectedKeywords {
@@ -15,13 +15,13 @@ public class SelectedKeywords {
         if (selectedKeywords.size() > MAX_KEYWORD_COUNT) {
             throw new KeywordLimitExceedException(MAX_KEYWORD_COUNT);
         }
-        if (hasDuplicatedKeywords(selectedKeywords)) {
-            throw new DuplicatedKeywordException();
+        if (hasDuplicateKeywords(selectedKeywords)) {
+            throw new DuplicateKeywordException();
         }
         this.keywords = selectedKeywords;
     }
 
-    private boolean hasDuplicatedKeywords(List<Keyword> selectedKeywords) {
+    private boolean hasDuplicateKeywords(List<Keyword> selectedKeywords) {
         long distinctKeywordCount = selectedKeywords.stream()
                 .map(Keyword::getDetail)
                 .distinct()

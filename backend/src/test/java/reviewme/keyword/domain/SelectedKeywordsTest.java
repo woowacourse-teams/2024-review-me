@@ -7,7 +7,7 @@ import static reviewme.fixture.KeywordFixture.꼼꼼하게_기록해요;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
-import reviewme.keyword.domain.exception.DuplicatedKeywordException;
+import reviewme.keyword.domain.exception.DuplicateKeywordException;
 import reviewme.keyword.domain.exception.KeywordLimitExceedException;
 
 class SelectedKeywordsTest {
@@ -45,6 +45,6 @@ class SelectedKeywordsTest {
 
         // when, then
         assertThatThrownBy(() -> new SelectedKeywords(keywords))
-                .isInstanceOf(DuplicatedKeywordException.class);
+                .isInstanceOf(DuplicateKeywordException.class);
     }
 }
