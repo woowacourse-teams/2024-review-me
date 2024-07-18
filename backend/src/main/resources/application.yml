@@ -11,6 +11,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  profiles:
+    include: API-DOCS
 
 springdoc:
   swagger-ui:
