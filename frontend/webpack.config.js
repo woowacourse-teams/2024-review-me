@@ -1,6 +1,6 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -53,7 +53,7 @@ module.exports = (env, argv) => {
     devtool: isProduction ? 'hidden-source-map' : 'eval',
     devServer: {
       historyApiFallback: true,
-      port: 3001,
+      port: 3000,
       hot: true,
     },
   };
