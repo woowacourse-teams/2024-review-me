@@ -9,17 +9,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.repository.KeywordRepository;
-import reviewme.member.domain.GithubReviewGroup;
+import reviewme.member.domain.GithubReviewerGroup;
 import reviewme.member.domain.Member;
 import reviewme.member.domain.ReviewerGroup;
-import reviewme.member.repository.GithubReviewGroupRepository;
+import reviewme.member.repository.GithubReviewerGroupRepository;
 import reviewme.member.repository.MemberRepository;
 import reviewme.member.repository.ReviewerGroupRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewResponse;
-import reviewme.review.exception.GithubReviewGroupNotFoundException;
+import reviewme.review.exception.GithubReviewerGroupNotFoundException;
 import reviewme.review.exception.ReviewContentExistException;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewRepository;
@@ -42,7 +42,7 @@ class ReviewServiceTest {
     ReviewerGroupRepository reviewerGroupRepository;
 
     @Autowired
-    GithubReviewGroupRepository githubReviewGroupRepository;
+    GithubReviewerGroupRepository githubReviewerGroupRepository;
 
     @Autowired
     KeywordRepository keywordRepository;
@@ -115,7 +115,7 @@ class ReviewServiceTest {
                 "그룹 설명",
                 LocalDateTime.of(2024, 1, 1, 1, 1))
         );
-        githubReviewGroupRepository.save(new GithubReviewGroup("kirby", reviewerGroup));
+        githubReviewerGroupRepository.save(new GithubReviewerGroup("kirby", reviewerGroup));
 
         Keyword keyword1 = keywordRepository.save(new Keyword("꼼꼼해요"));
         Keyword keyword2 = keywordRepository.save(new Keyword("친절해요"));
@@ -135,7 +135,7 @@ class ReviewServiceTest {
 
         // when, then
         assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
-                .isInstanceOf(GithubReviewGroupNotFoundException.class);
+                .isInstanceOf(GithubReviewerGroupNotFoundException.class);
     }
 
     @Test
@@ -149,7 +149,7 @@ class ReviewServiceTest {
                 "그룹 설명",
                 LocalDateTime.of(2024, 1, 1, 1, 1))
         );
-        githubReviewGroupRepository.save(new GithubReviewGroup("ted", reviewerGroup));
+        githubReviewerGroupRepository.save(new GithubReviewerGroup("ted", reviewerGroup));
 
         Keyword keyword1 = keywordRepository.save(new Keyword("꼼꼼해요"));
         Keyword keyword2 = keywordRepository.save(new Keyword("친절해요"));

@@ -12,10 +12,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "github_review_group")
+@Table(name = "github_reviewer_group")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class GithubReviewGroup {
+public class GithubReviewerGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class GithubReviewGroup {
     @JoinColumn(name = "reviewer_group_id")
     private ReviewerGroup reviewerGroup;
 
-    public GithubReviewGroup(String githubId, ReviewerGroup reviewerGroup) {
+    public GithubReviewerGroup(String githubId, ReviewerGroup reviewerGroup) {
         this.githubId = githubId;
         this.reviewerGroup = reviewerGroup;
     }
