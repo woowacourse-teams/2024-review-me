@@ -57,7 +57,7 @@ class ReviewServiceTest {
         memberRepository.save(new Member("산초", "sancho"));
         Member reviewee = memberRepository.save(new Member("아루", "aru"));
         ReviewerGroup reviewerGroup = reviewerGroupRepository.save(
-                new ReviewerGroup(reviewee, "그룹A", "그룹 설명", LocalDateTime.of(2024, 1, 1, 1, 1))
+                new ReviewerGroup(reviewee, "그룹A", "그룹 설명", LocalDateTime.now().minusDays(1))
         );
         githubReviewerGroupRepository.save(new GithubReviewerGroup("sancho", reviewerGroup));
         Keyword keyword1 = keywordRepository.save(new Keyword("꼼꼼해요"));
@@ -160,8 +160,8 @@ class ReviewServiceTest {
           
     void 데드라인이_지난_리뷰그룹에_대해_리뷰를_작성하려하면_예외가_발생한다() {
         // given
-        memberRepository.save(new Member("산초"));
-        Member reviewee = memberRepository.save(new Member("아루"));
+        memberRepository.save(new Member("산초", "sancho"));
+        Member reviewee = memberRepository.save(new Member("아루", "aru"));
         LocalDateTime createdAt = LocalDateTime.now().minusDays(7).minusMinutes(1);
         reviewerGroupRepository.save(
                 new ReviewerGroup(reviewee, "그룹A", "그룹 설명", createdAt)

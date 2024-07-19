@@ -47,8 +47,8 @@ class ReviewKeywordServiceTest {
     @Test
     void 리뷰에_키워드를_추가한다() {
         // given
-        Member sancho = memberRepository.save(new Member("산초"));
-        Member kirby = memberRepository.save(new Member("커비"));
+        Member sancho = memberRepository.save(new Member("산초", "sancho"));
+        Member kirby = memberRepository.save(new Member("커비", "kirby"));
         ReviewerGroup group = reviewerGroupRepository.save(리뷰_그룹.create(sancho));
         Review review = reviewRepository.save(new Review(kirby, group));
 
@@ -69,8 +69,8 @@ class ReviewKeywordServiceTest {
     @Test
     void 키워드가_이미_존재하는_경우_키워드_등록_시_모두_대체된다() {
         // given
-        Member sancho = memberRepository.save(new Member("산초"));
-        Member kirby = memberRepository.save(new Member("커비"));
+        Member sancho = memberRepository.save(new Member("산초", "sancho"));
+        Member kirby = memberRepository.save(new Member("커비", "kirby"));
         ReviewerGroup group = reviewerGroupRepository.save(리뷰_그룹.create(sancho));
         Review review = reviewRepository.save(new Review(kirby, group));
 
