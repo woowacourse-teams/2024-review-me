@@ -157,15 +157,17 @@ class ReviewServiceTest {
         assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
                 .isInstanceOf(ReviewAlreadySubmittedException.class);
     }
-          
+
+    @Test
     void 데드라인이_지난_리뷰그룹에_대해_리뷰를_작성하려하면_예외가_발생한다() {
         // given
         memberRepository.save(new Member("산초", "sancho"));
         Member reviewee = memberRepository.save(new Member("아루", "aru"));
         LocalDateTime createdAt = LocalDateTime.now().minusDays(7).minusMinutes(1);
-        reviewerGroupRepository.save(
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(
                 new ReviewerGroup(reviewee, "그룹A", "그룹 설명", createdAt)
         );
+        githubReviewerGroupRepository.save(new GithubReviewerGroup("sancho", reviewerGroup));
         Keyword keyword = keywordRepository.save(new Keyword("꼼꼼해요"));
 
         CreateReviewContentRequest contentRequest = new CreateReviewContentRequest(
