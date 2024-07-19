@@ -82,7 +82,7 @@ public class ReviewService {
         );
 
         List<ReviewContent> reviewContents = reviewContentRepository.findByReview(review);
-        List<ReviewContentResponse> reviewContentRespons = reviewContents.stream()
+        List<ReviewContentResponse> reviewContentResponse = reviewContents.stream()
                 .map(reviewContent -> new ReviewContentResponse(
                                 reviewContent.getId(),
                                 reviewContent.getQuestion(),
@@ -103,7 +103,7 @@ public class ReviewService {
                 review.getId(),
                 memberResponse,
                 reviewerGroupResponse,
-                reviewContentRespons,
+                reviewContentResponse,
                 keywordResponses
         );
     }
