@@ -10,4 +10,6 @@ import reviewme.review.domain.ReviewKeyword;
 public interface ReviewKeywordRepository extends JpaRepository<ReviewKeyword, Long> {
 
     List<ReviewKeyword> findByReview(Review review);
+
+    void deleteAllByReview(Review review);
 }
