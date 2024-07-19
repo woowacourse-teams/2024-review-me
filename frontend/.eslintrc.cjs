@@ -50,6 +50,10 @@ module.exports = {
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        paths: ['src'],
+        alias: {
+          '@': path.resolve(__dirname, 'src/'),
+        },
       },
     },
   },
