@@ -10,9 +10,9 @@ import reviewme.review.domain.Review;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
+    boolean existsByReviewerAndReviewerGroup(Member reviewer, ReviewerGroup reviewerGroup);
+
     default Review getReviewById(Long id) {
         return findById(id).orElseThrow(EntityNotFoundException::new);
     }
-
-    boolean existsByReviewerAndReviewerGroup(Member reviewer, ReviewerGroup reviewerGroup);
 }
