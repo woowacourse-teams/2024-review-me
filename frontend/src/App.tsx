@@ -1,26 +1,32 @@
-import { css } from '@emotion/react';
-import React from 'react';
+import { useState } from 'react';
 import { Outlet } from 'react-router';
 
-import { Header } from './components';
-import Main from './components/Main';
-import Sidebar from './components/Sidebar';
+import { Main, PageLayout, Sidebar, Topbar } from './components';
 
 const App = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarHidden, setIsSidebarHidden] = useState(true);
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+    setTimeout(() => {
+      setIsSidebarHidden(true);
+    }, 1000);
+  };
+
+  const openSidebar = () => {
+    setIsSidebarHidden(false);
+    setIsSidebarOpen(true);
+  };
+
   return (
-    <div
-      css={css`
-        display: flex;
-      `}
-    >
-      <Sidebar />
-      <div>
-        <Header />
-        <Main>
-          <Outlet />
-        </Main>
-      </div>
-    </div>
+    <PageLayout>
+      {!isSidebarHidden && <Sidebar closeSidebar={closeSidebar} isSidebarOpen={isSidebarOpen} />}
+      <Topbar openSidebar={openSidebar} />
+      <Main>
+        <Outlet />
+      </Main>
+    </PageLayout>
   );
 };
 
