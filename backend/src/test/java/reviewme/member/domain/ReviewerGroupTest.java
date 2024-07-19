@@ -15,7 +15,7 @@ class ReviewerGroupTest {
     @Test
     void 리뷰_그룹이_올바르게_생성된다() {
         // given
-        Member sancho = new Member("산초");
+        Member sancho = new Member("산초", "sancho");
         String groupName = "a".repeat(100);
         String description = "a".repeat(50);
         LocalDateTime createdAt = LocalDateTime.of(2024, 7, 17, 12, 0);
@@ -29,7 +29,7 @@ class ReviewerGroupTest {
     void 리뷰_그룹_이름_길이_제한을_벗어나는_경우_예외를_발생한다(int length) {
         // given
         String groupName = "a".repeat(length);
-        Member sancho = new Member("산초");
+        Member sancho = new Member("산초", "sancho");
         LocalDateTime createdAt = LocalDateTime.of(2024, 7, 17, 12, 0);
         // when, then
         assertThatThrownBy(() -> new ReviewerGroup(sancho, groupName, "설명", createdAt))
@@ -40,7 +40,7 @@ class ReviewerGroupTest {
     void 리뷰_그룹_설명_길이_제한을_벗어나는_경우_예외를_발생한다() {
         // given
         String description = "a".repeat(51);
-        Member sancho = new Member("산초");
+        Member sancho = new Member("산초", "sancho");
         LocalDateTime createdAt = LocalDateTime.of(2024, 7, 17, 12, 0);
         // when, then
         assertThatThrownBy(() -> new ReviewerGroup(sancho, "그룹 이름", description, createdAt))

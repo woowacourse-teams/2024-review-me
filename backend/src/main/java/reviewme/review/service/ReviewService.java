@@ -12,6 +12,7 @@ import reviewme.member.domain.Member;
 import reviewme.member.domain.ReviewerGroup;
 import reviewme.member.dto.response.MemberResponse;
 import reviewme.member.dto.response.ReviewerGroupResponse;
+import reviewme.member.repository.GithubReviewerGroupRepository;
 import reviewme.member.repository.MemberRepository;
 import reviewme.member.repository.ReviewerGroupRepository;
 import reviewme.review.domain.Review;
@@ -21,6 +22,8 @@ import reviewme.review.domain.exception.DeadlineExpiredException;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewContentResponse;
 import reviewme.review.dto.response.ReviewResponse;
+import reviewme.review.exception.GithubReviewerGroupUnAuthorizedException;
+import reviewme.review.exception.ReviewAlreadySubmittedException;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
@@ -32,6 +35,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final ReviewerGroupRepository reviewerGroupRepository;
+    private final GithubReviewerGroupRepository githubReviewerGroupRepository;
     private final ReviewContentRepository reviewContentRepository;
     private final KeywordRepository keywordRepository;
     private final ReviewKeywordRepository reviewKeywordRepository;
@@ -40,7 +44,19 @@ public class ReviewService {
     public Long createReview(CreateReviewRequest request) {
         Member reviewer = memberRepository.getMemberById(request.reviewerId());
         ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(request.reviewerGroupId());
+
+        boolean isValidReviewer = githubReviewerGroupRepository.existsByGithubIdAndReviewerGroup(
+                reviewer.getGithubId(),
+                reviewerGroup
+        );
+        if (!isValidReviewer) {
+            throw new GithubReviewerGroupUnAuthorizedException();
+        }
+        if (reviewRepository.existsByReviewerAndReviewerGroup(reviewer, reviewerGroup)) {
+            throw new ReviewAlreadySubmittedException();
+        }
         validateIsDeadlinePassed(reviewerGroup);
+      
         Review review = reviewRepository.save(new Review(reviewer, reviewerGroup));
 
         List<ReviewContent> contents = request.contents()

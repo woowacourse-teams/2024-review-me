@@ -9,8 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.repository.KeywordRepository;
+import reviewme.member.domain.GithubReviewerGroup;
 import reviewme.member.domain.Member;
 import reviewme.member.domain.ReviewerGroup;
+import reviewme.member.repository.GithubReviewerGroupRepository;
 import reviewme.member.repository.MemberRepository;
 import reviewme.member.repository.ReviewerGroupRepository;
 import reviewme.review.domain.Review;
@@ -18,6 +20,9 @@ import reviewme.review.domain.exception.DeadlineExpiredException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewResponse;
+import reviewme.review.exception.GithubReviewerGroupUnAuthorizedException;
+import reviewme.review.exception.ReviewAlreadySubmittedException;
+import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.ReviewService;
 import reviewme.support.ServiceTest;
@@ -38,16 +43,23 @@ class ReviewServiceTest {
     ReviewerGroupRepository reviewerGroupRepository;
 
     @Autowired
+    GithubReviewerGroupRepository githubReviewerGroupRepository;
+
+    @Autowired
     KeywordRepository keywordRepository;
+
+    @Autowired
+    ReviewContentRepository reviewContentRepository;
 
     @Test
     void 리뷰를_작성한다() {
         // given
-        memberRepository.save(new Member("산초"));
-        Member reviewee = memberRepository.save(new Member("아루"));
-        reviewerGroupRepository.save(
-                new ReviewerGroup(reviewee, "그룹A", "그룹 설명", LocalDateTime.of(2099, 1, 1, 1, 1))
+        memberRepository.save(new Member("산초", "sancho"));
+        Member reviewee = memberRepository.save(new Member("아루", "aru"));
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(
+                new ReviewerGroup(reviewee, "그룹A", "그룹 설명", LocalDateTime.of(2024, 1, 1, 1, 1))
         );
+        githubReviewerGroupRepository.save(new GithubReviewerGroup("sancho", reviewerGroup));
         Keyword keyword1 = keywordRepository.save(new Keyword("꼼꼼해요"));
         Keyword keyword2 = keywordRepository.save(new Keyword("친절해요"));
 
@@ -75,9 +87,9 @@ class ReviewServiceTest {
     @Test
     void 리뷰를_조회한다() {
         // given
-        Member reviewer = memberRepository.save(new Member("테드"));
-        Member reviewee = memberRepository.save(new Member("아루"));
-        memberRepository.save(new Member("산초"));
+        Member reviewer = memberRepository.save(new Member("테드", "ted"));
+        Member reviewee = memberRepository.save(new Member("아루", "aru"));
+        memberRepository.save(new Member("산초", "sancho"));
         ReviewerGroup reviewerGroup = reviewerGroupRepository.save(new ReviewerGroup(
                 reviewee,
                 "그룹A",
@@ -95,6 +107,57 @@ class ReviewServiceTest {
     }
 
     @Test
+    void 리뷰어_그룹에_속하지_않는_리뷰어가_리뷰를_작성할_경우_예외를_발생한다() {
+        // given
+        Member reviewee = memberRepository.save(new Member("아루", "aru"));
+        Member reviewer = memberRepository.save(new Member("테드", "ted"));
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(new ReviewerGroup(
+                reviewee,
+                "그룹A",
+                "그룹 설명",
+                LocalDateTime.of(2024, 1, 1, 1, 1))
+        );
+        githubReviewerGroupRepository.save(new GithubReviewerGroup("kirby", reviewerGroup));
+
+        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+                reviewer.getId(),
+                reviewerGroup.getId(),
+                List.of(),
+                List.of()
+        );
+
+        // when, then
+        assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
+                .isInstanceOf(GithubReviewerGroupUnAuthorizedException.class);
+    }
+
+    @Test
+    void 이미_작성한_리뷰가_있는데_리뷰를_작성할_경우_예외를_발생한다() {
+        // given
+        Member reviewee = memberRepository.save(new Member("아루", "aru"));
+        Member reviewer = memberRepository.save(new Member("테드", "ted"));
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(new ReviewerGroup(
+                reviewee,
+                "그룹A",
+                "그룹 설명",
+                LocalDateTime.of(2024, 1, 1, 1, 1))
+        );
+        githubReviewerGroupRepository.save(new GithubReviewerGroup("ted", reviewerGroup));
+
+        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+                reviewer.getId(),
+                reviewerGroup.getId(),
+                List.of(),
+                List.of()
+        );
+
+        reviewRepository.save(new Review(reviewer, reviewerGroup));
+
+        // when, then
+        assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
+                .isInstanceOf(ReviewAlreadySubmittedException.class);
+    }
+          
     void 데드라인이_지난_리뷰그룹에_대해_리뷰를_작성하려하면_예외가_발생한다() {
         // given
         memberRepository.save(new Member("산초"));
