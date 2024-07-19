@@ -20,9 +20,8 @@ import reviewme.review.domain.ReviewKeyword;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewContentResponse;
 import reviewme.review.dto.response.ReviewResponse;
-import reviewme.review.exception.GithubReviewerGroupNotFoundException;
-import reviewme.review.exception.ReviewContentExistException;
 import reviewme.review.exception.GithubReviewerGroupUnAuthorizedException;
+import reviewme.review.exception.ReviewAlreadySubmittedException;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
@@ -53,7 +52,7 @@ public class ReviewService {
         }
 
         if (reviewRepository.existsByReviewerAndReviewerGroup(reviewer, reviewerGroup)) {
-            throw new ReviewContentExistException();
+            throw new ReviewAlreadySubmittedException();
         }
 
         Review review = reviewRepository.save(new Review(reviewer, reviewerGroup));
