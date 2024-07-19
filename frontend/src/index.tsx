@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reset from './styles/reset';
 import globalStyles from './styles/globalStyles';
-import ReviewWriting from './pages/ReviewWriting';
+import ReviewWritingPage from './pages/ReviewWriting';
 import DetailedReviewPage from './pages/DetailedReviewPage';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import theme from './styles/theme';
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
 
       {
         path: 'user/review-writing',
-        element: <ReviewWriting />,
+        element: <ReviewWritingPage />,
       },
       {
         path: 'user/detailed-review',
