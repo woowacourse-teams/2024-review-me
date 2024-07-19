@@ -6,7 +6,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Table;
 import jakarta.persistence.metamodel.EntityType;
 import jakarta.transaction.Transactional;
-
 import java.util.List;
 import java.util.Set;
 

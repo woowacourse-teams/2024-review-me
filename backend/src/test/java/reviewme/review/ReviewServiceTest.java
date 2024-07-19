@@ -1,6 +1,7 @@
 package reviewme.review;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +14,7 @@ import reviewme.member.domain.ReviewerGroup;
 import reviewme.member.repository.MemberRepository;
 import reviewme.member.repository.ReviewerGroupRepository;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.exception.DeadlineExpiredException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewResponse;
@@ -44,7 +46,7 @@ class ReviewServiceTest {
         memberRepository.save(new Member("산초"));
         Member reviewee = memberRepository.save(new Member("아루"));
         reviewerGroupRepository.save(
-                new ReviewerGroup(reviewee, "그룹A", "그룹 설명", LocalDateTime.of(2024, 1, 1, 1, 1))
+                new ReviewerGroup(reviewee, "그룹A", "그룹 설명", LocalDateTime.of(2099, 1, 1, 1, 1))
         );
         Keyword keyword1 = keywordRepository.save(new Keyword("꼼꼼해요"));
         Keyword keyword2 = keywordRepository.save(new Keyword("친절해요"));
@@ -90,5 +92,28 @@ class ReviewServiceTest {
         // then
         Long id = response.id();
         assertThat(id).isEqualTo(review.getId());
+    }
+
+    @Test
+    void 데드라인이_지난_리뷰그룹에_대해_리뷰를_작성하려하면_예외가_발생한다() {
+        // given
+        memberRepository.save(new Member("산초"));
+        Member reviewee = memberRepository.save(new Member("아루"));
+        LocalDateTime createdAt = LocalDateTime.now().minusDays(7).minusMinutes(1);
+        reviewerGroupRepository.save(
+                new ReviewerGroup(reviewee, "그룹A", "그룹 설명", createdAt)
+        );
+        Keyword keyword = keywordRepository.save(new Keyword("꼼꼼해요"));
+
+        CreateReviewContentRequest contentRequest = new CreateReviewContentRequest(
+                1L, "소프트스킬이 어떤가요?", "소통을 잘해요"
+        );
+        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+                1L, 1L, List.of(contentRequest), List.of(keyword.getId())
+        );
+
+        // when, then
+        assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
+                .isInstanceOf(DeadlineExpiredException.class);
     }
 }
