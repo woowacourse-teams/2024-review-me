@@ -42,7 +42,6 @@ public class ReviewService {
     public Long createReview(CreateReviewRequest request) {
         Member reviewer = memberRepository.getMemberById(request.reviewerId());
         ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(request.reviewerGroupId());
-        Review review = reviewRepository.save(new Review(reviewer, reviewerGroup));
 
         boolean isValidReviewer = githubReviewerGroupRepository.existsByGithubIdAndReviewerGroup(
                 reviewer.getGithubId(),
@@ -52,9 +51,11 @@ public class ReviewService {
             throw new GithubReviewerGroupNotFoundException();
         }
 
-        if (reviewContentRepository.existsById(review.getId())) {
+        if (reviewRepository.existsByReviewerAndReviewerGroup(reviewer, reviewerGroup)) {
             throw new ReviewContentExistException();
         }
+
+        Review review = reviewRepository.save(new Review(reviewer, reviewerGroup));
 
         List<ReviewContent> contents = request.contents()
                 .stream()
