@@ -55,9 +55,10 @@ class ReviewServiceTest {
         // given
         memberRepository.save(new Member("산초", "sancho"));
         Member reviewee = memberRepository.save(new Member("아루", "aru"));
-        reviewerGroupRepository.save(
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(
                 new ReviewerGroup(reviewee, "그룹A", "그룹 설명", LocalDateTime.of(2024, 1, 1, 1, 1))
         );
+        githubReviewerGroupRepository.save(new GithubReviewerGroup("sancho", reviewerGroup));
         Keyword keyword1 = keywordRepository.save(new Keyword("꼼꼼해요"));
         Keyword keyword2 = keywordRepository.save(new Keyword("친절해요"));
 
