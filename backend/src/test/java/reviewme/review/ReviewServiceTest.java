@@ -16,6 +16,7 @@ import reviewme.member.repository.GithubReviewerGroupRepository;
 import reviewme.member.repository.MemberRepository;
 import reviewme.member.repository.ReviewerGroupRepository;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.exception.DeadlineExpiredException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewResponse;
@@ -155,5 +156,27 @@ class ReviewServiceTest {
         // when, then
         assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
                 .isInstanceOf(ReviewAlreadySubmittedException.class);
+    }
+          
+    void 데드라인이_지난_리뷰그룹에_대해_리뷰를_작성하려하면_예외가_발생한다() {
+        // given
+        memberRepository.save(new Member("산초"));
+        Member reviewee = memberRepository.save(new Member("아루"));
+        LocalDateTime createdAt = LocalDateTime.now().minusDays(7).minusMinutes(1);
+        reviewerGroupRepository.save(
+                new ReviewerGroup(reviewee, "그룹A", "그룹 설명", createdAt)
+        );
+        Keyword keyword = keywordRepository.save(new Keyword("꼼꼼해요"));
+
+        CreateReviewContentRequest contentRequest = new CreateReviewContentRequest(
+                1L, "소프트스킬이 어떤가요?", "소통을 잘해요"
+        );
+        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+                1L, 1L, List.of(contentRequest), List.of(keyword.getId())
+        );
+
+        // when, then
+        assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
+                .isInstanceOf(DeadlineExpiredException.class);
     }
 }

@@ -1,9 +1,9 @@
-// import Sidebar from './components/Sidebar';
+import { css } from '@emotion/react';
+import React from 'react';
 import { Outlet } from 'react-router';
-import ReviewWriting from './pages/ReviewWriting';
+
 import { Header } from './components';
 import Main from './components/Main';
-import { css } from '@emotion/react';
 import Sidebar from './components/Sidebar';
 
 const App = () => {
@@ -19,7 +19,6 @@ const App = () => {
         <Main>
           <Outlet />
         </Main>
-        {/* <ReviewWriting /> */}
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import reviewme.member.domain.exception.DescriptionLengthExceedException;
+import reviewme.member.domain.exception.DescriptionLengthExceededException;
 import reviewme.member.domain.exception.InvalidGroupNameLengthException;
 
 @Entity
@@ -48,7 +48,7 @@ public class ReviewerGroup {
             throw new InvalidGroupNameLengthException(MAX_GROUP_NAME_LENGTH);
         }
         if (description.length() > MAX_DESCRIPTION_LENGTH) {
-            throw new DescriptionLengthExceedException(MAX_DESCRIPTION_LENGTH);
+            throw new DescriptionLengthExceededException(MAX_DESCRIPTION_LENGTH);
         }
         this.reviewee = reviewee;
         this.groupName = groupName;
