@@ -41,8 +41,8 @@ class ReviewKeywordRepositoryTest {
     @Test
     void 리뷰에_해당하는_키워드를_모두_삭제한다() {
         // given
-        Member sancho = memberRepository.save(new Member("산초"));
-        Member kirby = memberRepository.save(new Member("커비"));
+        Member sancho = memberRepository.save(new Member("산초", "sancho"));
+        Member kirby = memberRepository.save(new Member("커비", "kirby"));
         ReviewerGroup group = reviewerGroupRepository.save(리뷰_그룹.create(sancho));
         Review review = reviewRepository.save(new Review(kirby, group));
         List<ReviewKeyword> reviewKeywords = Stream.of(꼼꼼하게_기록해요, 회의를_이끌어요, 의견을_잘_조율해요)
