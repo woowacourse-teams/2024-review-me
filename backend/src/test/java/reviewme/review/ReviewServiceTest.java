@@ -118,20 +118,11 @@ class ReviewServiceTest {
         );
         githubReviewerGroupRepository.save(new GithubReviewerGroup("kirby", reviewerGroup));
 
-        Keyword keyword1 = keywordRepository.save(new Keyword("꼼꼼해요"));
-        Keyword keyword2 = keywordRepository.save(new Keyword("친절해요"));
-
-        CreateReviewContentRequest contentRequest1 = new CreateReviewContentRequest(
-                1L, "소프트스킬이 어떤가요?", "소통을 잘해요"
-        );
-        CreateReviewContentRequest contentRequest2 = new CreateReviewContentRequest(
-                2L, "기술역량이 어떤가요?", "스트림을 잘다뤄요"
-        );
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(
                 reviewer.getId(),
                 reviewerGroup.getId(),
-                List.of(contentRequest1, contentRequest2),
-                List.of(keyword1.getId(), keyword2.getId())
+                List.of(),
+                List.of()
         );
 
         // when, then
@@ -152,20 +143,11 @@ class ReviewServiceTest {
         );
         githubReviewerGroupRepository.save(new GithubReviewerGroup("ted", reviewerGroup));
 
-        Keyword keyword1 = keywordRepository.save(new Keyword("꼼꼼해요"));
-        Keyword keyword2 = keywordRepository.save(new Keyword("친절해요"));
-
-        CreateReviewContentRequest contentRequest1 = new CreateReviewContentRequest(
-                1L, "소프트스킬이 어떤가요?", "소통을 잘해요"
-        );
-        CreateReviewContentRequest contentRequest2 = new CreateReviewContentRequest(
-                2L, "기술역량이 어떤가요?", "스트림을 잘다뤄요"
-        );
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(
                 reviewer.getId(),
                 reviewerGroup.getId(),
-                List.of(contentRequest1, contentRequest2),
-                List.of(keyword1.getId(), keyword2.getId())
+                List.of(),
+                List.of()
         );
 
         reviewService.createReview(createReviewRequest);
