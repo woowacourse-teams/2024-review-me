@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import reviewme.member.domain.exception.DescriptionLengthExceedException;
+import reviewme.member.domain.exception.DescriptionLengthExceededException;
 import reviewme.member.domain.exception.InvalidGroupNameLengthException;
 
 class ReviewerGroupTest {
@@ -44,6 +44,6 @@ class ReviewerGroupTest {
         LocalDateTime createdAt = LocalDateTime.of(2024, 7, 17, 12, 0);
         // when, then
         assertThatThrownBy(() -> new ReviewerGroup(sancho, "그룹 이름", description, createdAt))
-                .isInstanceOf(DescriptionLengthExceedException.class);
+                .isInstanceOf(DescriptionLengthExceededException.class);
     }
 }

@@ -14,7 +14,7 @@ import reviewme.member.domain.ReviewerGroup;
 import reviewme.member.repository.MemberRepository;
 import reviewme.member.repository.ReviewerGroupRepository;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.exception.DeadlineExceedException;
+import reviewme.review.domain.exception.DeadlineExpiredException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewResponse;
@@ -114,6 +114,6 @@ class ReviewServiceTest {
 
         // when, then
         assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
-                .isInstanceOf(DeadlineExceedException.class);
+                .isInstanceOf(DeadlineExpiredException.class);
     }
 }

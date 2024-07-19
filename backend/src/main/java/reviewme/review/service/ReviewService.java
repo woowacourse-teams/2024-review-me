@@ -17,7 +17,7 @@ import reviewme.member.repository.ReviewerGroupRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
-import reviewme.review.domain.exception.DeadlineExceedException;
+import reviewme.review.domain.exception.DeadlineExpiredException;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewContentResponse;
 import reviewme.review.dto.response.ReviewResponse;
@@ -61,7 +61,7 @@ public class ReviewService {
 
     private void validateIsDeadlinePassed(ReviewerGroup reviewerGroup) {
         if (reviewerGroup.isDeadlineExceeded(LocalDateTime.now())) {
-            throw new DeadlineExceedException();
+            throw new DeadlineExpiredException();
         }
     }
 
