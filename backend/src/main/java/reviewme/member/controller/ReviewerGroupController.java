@@ -10,7 +10,7 @@ import reviewme.member.service.ReviewerGroupService;
 
 @RestController
 @RequiredArgsConstructor
-public class ReviewerGroupController {
+public class ReviewerGroupController implements ReviewerGroupApi {
 
     private final ReviewerGroupService reviewerGroupService;
 

@@ -9,7 +9,7 @@ import reviewme.keyword.service.KeywordService;
 
 @RestController
 @RequiredArgsConstructor
-public class KeywordController {
+public class KeywordController implements KeywordApi {
 
     private final KeywordService keywordService;
 
