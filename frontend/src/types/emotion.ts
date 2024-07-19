@@ -1,5 +1,5 @@
 import '@emotion/react';
-import theme, { colors, fontSize, fontWeight, zIndex } from '../styles/theme';
+import { colors, fontSize, fontWeight, zIndex } from '../styles/theme';
 
 export type colorType = typeof colors;
 export type zIndexType = typeof zIndex;
