@@ -29,7 +29,9 @@ public class GlobalExceptionHandler {
                         fieldError.getDefaultMessage()))
                 .toList();
 
-        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST, "요청 형식이 올바르지 않습니다."
+        );
         Map<String, Object> properties = Map.of("fieldErrors", fieldErrors);
         problemDetail.setProperties(properties);
         return problemDetail;
