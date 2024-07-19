@@ -96,7 +96,7 @@ class ReviewServiceTest {
                 "그룹 설명",
                 LocalDateTime.of(2024, 1, 1, 1, 1))
         );
-        Review review = reviewRepository.save(new Review(reviewer, reviewerGroup));
+        Review review = reviewRepository.save(new Review(reviewer, reviewerGroup, LocalDateTime.now()));
 
         // when
         ReviewResponse response = reviewService.findReview(review.getId());
@@ -151,7 +151,7 @@ class ReviewServiceTest {
                 List.of()
         );
 
-        reviewRepository.save(new Review(reviewer, reviewerGroup));
+        reviewRepository.save(new Review(reviewer, reviewerGroup, LocalDateTime.now()));
 
         // when, then
         assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
