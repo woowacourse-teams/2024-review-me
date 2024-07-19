@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 
-export const ReviewWritingForm = styled.form`
+export const ReviewWritingPage = styled.form`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 80rem;
   height: fit-content;
   border-top: 0.5rem solid #aedaff;
 `;
 
-export const InfoContainer = styled.div`
+export const ReviewFormHeader = styled.header`
   display: flex;
   flex-direction: column;
 
@@ -16,8 +16,28 @@ export const InfoContainer = styled.div`
   margin-bottom: 3rem;
 `;
 
+export const InfoContainer = styled.div`
+  display: flex;
+
+  gap: 1.5rem;
+`;
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  width: 100%;
+`;
+
+export const LogoImage = styled.img`
+  width: 6rem;
+  height: 6rem;
+`;
+
 export const ProjectName = styled.div`
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 700;
 `;
 
@@ -26,34 +46,28 @@ export const ReviewInfo = styled.div`
   justify-content: space-between;
 `;
 
-export const ReviewList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-`;
-
-export const ReviewItem = styled.li`
-  display: flex;
-  flex-direction: column;
-
-  margin-bottom: 1rem;
-
-  & > div {
-    font-weight: 600;
+export const Reviewee = styled.div`
+  & > span {
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
-export const ReviewTextarea = styled.textarea`
-  width: 100%;
-  height: 10rem;
-  max-width: 100%;
+export const ReviewExpirationDate = styled.div`
+  display: flex;
 
-  padding: 1rem;
-  border-radius: 1rem;
-  margin-top: 0.5rem;
+  gap: 0.5rem;
+`;
 
-  resize: none;
+export const ReviewFormMain = styled.main`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const ReviewContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2.4rem;
 `;
 
 export const ButtonContainer = styled.div`

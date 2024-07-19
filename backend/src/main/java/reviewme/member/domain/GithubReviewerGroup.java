@@ -1,5 +1,6 @@
-package reviewme.review.domain;
+package reviewme.member.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,29 +11,26 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import reviewme.member.domain.Member;
-import reviewme.member.domain.ReviewerGroup;
 
 @Entity
-@Table(name = "review")
+@Table(name = "github_reviewer_group")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Review {
+public class GithubReviewerGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "reviewer_id", nullable = false)
-    private Member reviewer;
+    @Column(name = "github_id", nullable = false)
+    private String githubId;
 
     @ManyToOne
-    @JoinColumn(name = "reviewer_group_id", nullable = false)
+    @JoinColumn(name = "reviewer_group_id")
     private ReviewerGroup reviewerGroup;
 
-    public Review(Member reviewer, ReviewerGroup reviewerGroup) {
-        this.reviewer = reviewer;
+    public GithubReviewerGroup(String githubId, ReviewerGroup reviewerGroup) {
+        this.githubId = githubId;
         this.reviewerGroup = reviewerGroup;
     }
 }

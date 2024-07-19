@@ -1,5 +1,6 @@
 package reviewme.review.controller;
 
+import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class ReviewController implements ReviewApi {
     private final ReviewService reviewService;
 
     @PostMapping("/reviews")
-    public ResponseEntity<Void> createReview(@RequestBody CreateReviewRequest request) {
+    public ResponseEntity<Void> createReview(@Valid @RequestBody CreateReviewRequest request) {
         long id = reviewService.createReview(request);
         return ResponseEntity.created(URI.create("/reviews/" + id)).build();
     }

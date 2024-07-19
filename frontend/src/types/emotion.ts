@@ -1,4 +1,5 @@
 import '@emotion/react';
+
 import { colors, fontSize, fontWeight, zIndex, breakpoints, sidebarWidth } from '../styles/theme';
 
 export type colorType = typeof colors;
