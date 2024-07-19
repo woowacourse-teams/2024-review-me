@@ -6,6 +6,9 @@ import ClockLogo from '@/assets/clock.svg';
 import GithubLogo from '@/assets/githubLogo.svg';
 import Button from '@/components/common/Button';
 import { ReviewData } from '@/types';
+import { REVIEW } from './../../constants/review';
+import RevieweeComment from './components/RevieweeComment';
+import ReviewItem from './components/ReviewItem';
 
 const ReviewWritingPage = () => {
   const handleSubmitReview = async (event: React.FormEvent) => {
@@ -45,34 +48,28 @@ const ReviewWritingPage = () => {
   return (
     <S.ReviewWritingPage onSubmit={handleSubmitReview}>
       <S.ReviewFormHeader>
-        <S.LogoImage src={GithubLogo} alt="깃허브 로고" />
         <S.InfoContainer>
-          <S.ProjectName>2024-review-me</S.ProjectName>
-          <S.ReviewInfo>
-            <S.Reviewee>
-              <span>chysis</span>님을 리뷰해주세요!
-            </S.Reviewee>
-            <S.ReviewExpirationDate>
-              <img src={ClockLogo} alt="시계" />
-              리뷰 마감일: 2024/07/22
-            </S.ReviewExpirationDate>
-          </S.ReviewInfo>
+          <S.LogoImage src={GithubLogo} alt="깃허브 로고" />
+          <S.Container>
+            <S.ProjectName>2024-review-me</S.ProjectName>
+            <S.ReviewInfo>
+              <S.Reviewee>
+                <span>chysis</span>님을 리뷰해주세요!
+              </S.Reviewee>
+              <S.ReviewExpirationDate>
+                <img src={ClockLogo} alt="시계" />
+                리뷰 마감일: 2024/07/22
+              </S.ReviewExpirationDate>
+            </S.ReviewInfo>
+          </S.Container>
         </S.InfoContainer>
+        <RevieweeComment text={''}></RevieweeComment>
       </S.ReviewFormHeader>
       <S.ReviewFormMain>
         <S.ReviewContainer>
-          <S.ReviewItem>
-            <S.ReviewQuestion>1. 동료의 개발 역량 향상을 위해 피드백을 남겨 주세요.</S.ReviewQuestion>
-            <S.ReviewTextarea name="question1" id="question1"></S.ReviewTextarea>
-          </S.ReviewItem>
-          <S.ReviewItem>
-            <S.ReviewQuestion>2. 동료의 소프트 스킬의 성장을 위해 피드백을 남겨 주세요.</S.ReviewQuestion>
-            <S.ReviewTextarea name="question2" id="question2"></S.ReviewTextarea>
-          </S.ReviewItem>
-          <S.ReviewItem>
-            <S.ReviewQuestion>3. 팀 동료로 근무한다면 같이 일 하고 싶은 개발자인가요?</S.ReviewQuestion>
-            <S.ReviewTextarea name="question2" id="question2"></S.ReviewTextarea>
-          </S.ReviewItem>
+          {REVIEW.questionList.map((question, idx) => {
+            return <ReviewItem question={question} key={idx} />;
+          })}
         </S.ReviewContainer>
         <S.KeywordContainer>
           <S.KeywordTitle>키워드</S.KeywordTitle>

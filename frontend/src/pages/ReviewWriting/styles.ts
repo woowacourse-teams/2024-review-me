@@ -3,19 +3,26 @@ import styled from '@emotion/styled';
 export const ReviewWritingPage = styled.form`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 80rem;
   height: fit-content;
   border-top: 0.5rem solid #aedaff;
 `;
 
 export const ReviewFormHeader = styled.header`
   display: flex;
+  flex-direction: column;
 
   gap: 1rem;
   margin-bottom: 3rem;
 `;
 
 export const InfoContainer = styled.div`
+  display: flex;
+
+  gap: 1.5rem;
+`;
+
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -61,31 +68,6 @@ export const ReviewContainer = styled.section`
   flex-direction: column;
   gap: 1rem;
   margin-bottom: 2.4rem;
-`;
-
-export const ReviewItem = styled.article`
-  display: flex;
-  flex-direction: column;
-
-  margin-bottom: 1rem;
-
-  & > div {
-    font-weight: 600;
-  }
-`;
-
-export const ReviewQuestion = styled.div``;
-
-export const ReviewTextarea = styled.textarea`
-  width: 100%;
-  height: 10rem;
-  max-width: 100%;
-
-  padding: 1.6rem;
-  border-radius: 1.6rem;
-  margin-top: 0.8rem;
-
-  resize: none;
 `;
 
 export const ButtonContainer = styled.div`
