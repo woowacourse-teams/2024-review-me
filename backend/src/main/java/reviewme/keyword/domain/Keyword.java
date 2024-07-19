@@ -41,11 +41,17 @@ public class Keyword {
         if (!(o instanceof Keyword keyword)) {
             return false;
         }
+        if (id == null) {
+            return Objects.equals(detail, keyword.detail);
+        }
         return Objects.equals(id, keyword.id);
     }
 
     @Override
     public int hashCode() {
+        if (id == null) {
+            return Objects.hash(detail);
+        }
         return Objects.hash(id);
     }
 }
