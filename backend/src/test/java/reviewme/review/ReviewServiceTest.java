@@ -150,7 +150,7 @@ class ReviewServiceTest {
                 List.of()
         );
 
-        reviewService.createReview(createReviewRequest);
+        reviewRepository.save(new Review(reviewer, reviewerGroup));
 
         // when, then
         assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
