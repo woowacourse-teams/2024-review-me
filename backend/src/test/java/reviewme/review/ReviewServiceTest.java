@@ -21,6 +21,7 @@ import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewResponse;
 import reviewme.review.exception.GithubReviewerGroupNotFoundException;
 import reviewme.review.exception.ReviewContentExistException;
+import reviewme.review.exception.GithubReviewerGroupUnAuthorizedException;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.ReviewService;
@@ -136,7 +137,7 @@ class ReviewServiceTest {
 
         // when, then
         assertThatThrownBy(() -> reviewService.createReview(createReviewRequest))
-                .isInstanceOf(GithubReviewerGroupNotFoundException.class);
+                .isInstanceOf(GithubReviewerGroupUnAuthorizedException.class);
     }
 
     @Test

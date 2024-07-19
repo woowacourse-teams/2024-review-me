@@ -22,6 +22,7 @@ import reviewme.review.dto.response.ReviewContentResponse;
 import reviewme.review.dto.response.ReviewResponse;
 import reviewme.review.exception.GithubReviewerGroupNotFoundException;
 import reviewme.review.exception.ReviewContentExistException;
+import reviewme.review.exception.GithubReviewerGroupUnAuthorizedException;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
@@ -48,7 +49,7 @@ public class ReviewService {
                 reviewerGroup
         );
         if (!isValidReviewer) {
-            throw new GithubReviewerGroupNotFoundException();
+            throw new GithubReviewerGroupUnAuthorizedException();
         }
 
         if (reviewRepository.existsByReviewerAndReviewerGroup(reviewer, reviewerGroup)) {
