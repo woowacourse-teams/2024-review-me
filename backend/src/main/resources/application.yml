@@ -11,3 +11,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  profiles:
+    include: api-docs
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
+    operations-sorter: alpha
+    tags-sorter: alpha
