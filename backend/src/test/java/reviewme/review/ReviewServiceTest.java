@@ -109,10 +109,7 @@ class ReviewServiceTest {
                 1L, "소프트스킬이 어떤가요?", "소통을 잘해요"
         );
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(
-                1L,
-                1L,
-                List.of(contentRequest),
-                List.of(keyword.getId())
+                1L, 1L, List.of(contentRequest), List.of(keyword.getId())
         );
 
         // when, then
