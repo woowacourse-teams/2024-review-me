@@ -14,7 +14,12 @@ const PATH = {
   reviewGroupManagement: '/user/review-group-management',
 };
 
+interface SidebarProps {
+  isSidebarOpen: boolean;
+  closeSidebar: () => void;
+}
 
+const Sidebar = ({ isSidebarOpen, closeSidebar }: SidebarProps) => {
   const location = useLocation();
 
   const menuItems = [
