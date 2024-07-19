@@ -24,8 +24,13 @@ public class Keyword {
     @Column(name = "detail", nullable = false)
     private String detail;
 
-    public Keyword(String detail) {
+    Keyword(Long id, String detail) {
+        this.id = id;
         this.detail = detail;
+    }
+
+    public Keyword(String detail) {
+        this(null, detail);
     }
 
     @Override

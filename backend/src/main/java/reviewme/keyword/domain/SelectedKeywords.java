@@ -23,7 +23,6 @@ public class SelectedKeywords {
 
     private boolean hasDuplicateKeywords(List<Keyword> selectedKeywords) {
         long distinctKeywordCount = selectedKeywords.stream()
-                .map(Keyword::getDetail)
                 .distinct()
                 .count();
         return selectedKeywords.size() != distinctKeywordCount;
