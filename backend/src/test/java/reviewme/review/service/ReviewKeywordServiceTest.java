@@ -80,6 +80,7 @@ class ReviewKeywordServiceTest {
                 .toList();
         reviewKeywordRepository.save(new ReviewKeyword(review, keywords.get(0)));
         List<Keyword> selectedKeywords = List.of(keywords.get(1), keywords.get(2));
+
         // when
         reviewKeywordService.attachSelectedKeywordsOnReview(review, selectedKeywords);
 
