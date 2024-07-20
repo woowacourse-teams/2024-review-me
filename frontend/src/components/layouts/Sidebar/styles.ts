@@ -4,21 +4,23 @@ interface SidebarProps {
   $isOpen: boolean;
 }
 export const Sidebar = styled.div<SidebarProps>`
-  width: ${({ theme }) => theme.sidebarWidth.desktop};
-  height: 100vh;
   position: fixed;
+  z-index: ${({ theme }) => theme.zIndex.sidebar};
   left: 0;
+  transform: translateX(${(props) => (props.$isOpen ? 0 : '-100%')});
 
   display: flex;
   flex-direction: column;
-  padding: 1rem 1rem 0.7rem 1rem;
-  transform: translateX(${(props) => (props.$isOpen ? 0 : '-100%')});
 
-  background-color: #ffffff;
-  border-radius: 0 1rem 1rem 0;
-  transition: transform 1s ease-in-out;
-  z-index: ${({ theme }) => theme.zIndex.sidebar};
+  width: ${({ theme }) => theme.sidebarWidth.desktop};
+  height: 100vh;
+  padding: 1rem 1rem 0.7rem;
+
+  background-color: #fff;
   filter: drop-shadow(0.25rem 0.25rem 0.25rem lightgrey);
+  border-radius: 0 1rem 1rem 0;
+
+  transition: transform 1s ease-in-out;
 
   @media screen and (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     width: ${({ theme }) => theme.sidebarWidth.mobile};
@@ -26,13 +28,12 @@ export const Sidebar = styled.div<SidebarProps>`
 `;
 
 export const Top = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   width: 100%;
   height: 3rem;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
   margin-bottom: 5rem;
 `;
 
@@ -42,27 +43,29 @@ export const MenuList = styled.ul`
 `;
 
 export const MenuItem = styled.li<{ selected: boolean }>`
-  display: flex;
-  align-items: center;
-  height: 3.5rem;
-
-  padding-left: 1rem;
-  font-size: 1.2rem;
-  font-weight: 700;
   cursor: pointer;
 
-  border-left: ${({ selected }) => (selected ? '2px solid #7361df' : 'none')};
+  display: flex;
+  align-items: center;
+
+  height: 3.5rem;
+  padding-left: 1rem;
+
+  font-size: 1.2rem;
+  font-weight: 700;
   color: ${({ selected }) => (selected ? '#7361df' : 'none')};
 
+  border-left: ${({ selected }) => (selected ? '2px solid #7361df' : 'none')};
+
   &:hover {
-    border-left: 2px solid #7361df;
-    color: #7361df;
     font-weight: 800;
+    color: #7361df;
+    border-left: 2px solid #7361df;
   }
 
   a:visited,
   a:active,
-  a:-webkit-any-link {
+  a:any-link {
     text-decoration-line: none;
   }
 `;
