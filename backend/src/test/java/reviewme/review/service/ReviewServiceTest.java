@@ -167,13 +167,8 @@ class ReviewServiceTest {
                 new ReviewerGroup(reviewee, "그룹A", "그룹 설명", createdAt)
         );
         githubReviewerGroupRepository.save(new GithubReviewerGroup("sancho", reviewerGroup));
-        Keyword keyword = keywordRepository.save(new Keyword("꼼꼼해요"));
-
-        CreateReviewContentRequest contentRequest = new CreateReviewContentRequest(
-                1L, "소프트스킬이 어떤가요?", "소통을 잘해요"
-        );
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(
-                1L, 1L, List.of(contentRequest), List.of(keyword.getId())
+                1L, 1L, List.of(), List.of()
         );
 
         // when, then
