@@ -1,4 +1,4 @@
-package reviewme.review;
+package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -24,7 +24,6 @@ import reviewme.review.exception.GithubReviewerGroupUnAuthorizedException;
 import reviewme.review.exception.ReviewAlreadySubmittedException;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewRepository;
-import reviewme.review.service.ReviewService;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
