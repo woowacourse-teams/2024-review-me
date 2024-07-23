@@ -11,7 +11,7 @@ export const Button = styled.button<{ buttonType: ButtonType }>`
   height: 4rem;
   padding: 2rem;
 
-  color: ${({ theme, buttonType }) => (buttonType === 'primary' ? theme.colors.white : theme.colors.pri)};
+  color: ${({ theme, buttonType }) => (buttonType === 'primary' ? theme.colors.white : theme.colors.primary)};
 
   background-color: ${({ theme, buttonType }) =>
     buttonType === 'primary' ? theme.colors.primary : theme.colors.white};
@@ -19,7 +19,7 @@ export const Button = styled.button<{ buttonType: ButtonType }>`
   border-radius: 0.8rem;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.black};
     background-color: ${({ theme, buttonType }) => (buttonType ? theme.colors.primaryHover : theme.colors.lightGray)};
+    border: 0.1rem solid ${({ theme }) => theme.colors.primaryHover};
   }
 `;

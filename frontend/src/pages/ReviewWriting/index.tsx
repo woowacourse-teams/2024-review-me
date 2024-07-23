@@ -50,7 +50,7 @@ const ReviewWritingPage = () => {
   return (
     <S.ReviewWritingPage onSubmit={handleSubmitReview}>
       <S.ReviewFormHeader>
-        <S.InfoContainer>
+        <S.ReviewInfoContainer>
           <S.LogoImage src={GithubLogo} alt="깃허브 로고" />
           <S.Container>
             <S.ProjectName>2024-review-me</S.ProjectName>
@@ -60,11 +60,11 @@ const ReviewWritingPage = () => {
               </S.Reviewee>
               <S.ReviewExpirationDate>
                 <img src={ClockLogo} alt="시계" />
-                리뷰 마감일: 2024/07/22
+                리뷰 마감일: 2024-08-05
               </S.ReviewExpirationDate>
             </S.ReviewInfo>
           </S.Container>
-        </S.InfoContainer>
+        </S.ReviewInfoContainer>
         <RevieweeComment text={''}></RevieweeComment>
       </S.ReviewFormHeader>
       <S.ReviewFormMain>

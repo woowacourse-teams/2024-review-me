@@ -27,7 +27,8 @@ export const fontWeight: ThemeProperty<CSSProperties['fontWeight']> = {
 
 export const colors: ThemeProperty<CSSProperties['color']> = {
   primary: '#7361DF',
-  primaryHover: '#E6E3F6',
+  primaryHover: '#9082E6',
+  lightPurple: '#E6E3F6',
   black: '#1E2022',
   white: '#FFFFFF',
   lightGray: '#F1F2F4',

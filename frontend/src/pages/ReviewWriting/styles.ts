@@ -6,8 +6,6 @@ export const ReviewWritingPage = styled.form`
 
   width: 80rem;
   height: fit-content;
-
-  border-top: 0.5rem solid #aedaff;
 `;
 
 export const ReviewFormHeader = styled.header`
@@ -17,7 +15,7 @@ export const ReviewFormHeader = styled.header`
   margin-bottom: 3rem;
 `;
 
-export const InfoContainer = styled.div`
+export const ReviewInfoContainer = styled.div`
   display: flex;
   gap: 1.5rem;
 `;
