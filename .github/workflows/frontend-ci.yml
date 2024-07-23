@@ -1,0 +1,37 @@
+name: Build test with Webpack
+
+on:
+  pull_request:
+    branches: ['develop']
+    paths:
+      - 'frontend/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency: # action 도중 새 PR이 올라오면 기존 action 취소
+  group: 'ci-group'
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout to current repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Build
+        run: yarn build
+        env: 
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
