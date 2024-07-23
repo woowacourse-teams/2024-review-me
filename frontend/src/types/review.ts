@@ -10,7 +10,7 @@ export interface DetailReviewData {
     memberId: number;
     name: string;
   };
-  reviewGroup: {
+  reviewerGroup: {
     groupId: number;
     name: string;
   };

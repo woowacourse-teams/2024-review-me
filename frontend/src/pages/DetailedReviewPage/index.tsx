@@ -15,7 +15,7 @@ const MOCK_DATA: DetailReviewData = {
     name: '올리',
   },
   createdAt: new Date('2024-07-16'),
-  reviewGroup: {
+  reviewerGroup: {
     groupId: 123456,
     name: 'review-me',
   },
@@ -38,7 +38,7 @@ const DetailedReviewPage = ({}) => {
   const fetch = async () => {
     try {
       setIsLoading(true);
-      getDetailedReviewApi({ reviewId: 123456 }).then((result) => {
+      getDetailedReviewApi({ reviewId: 4 }).then((result) => {
         setDetailReview(result);
         setErrorMessage('');
       });
@@ -52,13 +52,24 @@ const DetailedReviewPage = ({}) => {
   };
 
   useEffect(() => {
-    //fetch();
+    fetch();
   }, []);
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (errorMessage) return <div>Error: {errorMessage}</div>;
 
   return (
     <>
-      <ReviewDescription projectName={MOCK_DATA.reviewGroup.name} createdAt={MOCK_DATA.createdAt} isLock={true} />
-      {MOCK_DATA.contents.map((item, index) => (
+      <ReviewDescription
+        projectName={detailReview.reviewerGroup.name}
+        // NOTE: 프론트에서는 리뷰 작성일을 보여주지만,
+        // 현재 서버에서 오는 데이터가 deadline인 관계로 (속성 이름, value의 성격 모두 다름)
+        // 임의의 Date 객체로 하드코딩한 상태임
+        createdAt={new Date('2024-01-22')}
+        isLock={true}
+      />
+      {detailReview.contents.map((item, index) => (
         <ReviewViewSection question={item.question} answer={item.answer} key={index} />
       ))}
     </>
