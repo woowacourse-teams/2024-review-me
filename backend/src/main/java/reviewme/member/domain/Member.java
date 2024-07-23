@@ -1,6 +1,7 @@
 package reviewme.member.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +10,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import reviewme.member.GithubId;
 
 @Entity
 @Table(name = "member")
@@ -23,11 +25,11 @@ public class Member {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "github_id", nullable = false)
-    private String githubId;
+    @Embedded
+    private GithubId githubId;
 
-    public Member(String name, String githubId) {
+    public Member(String name, long githubId) {
         this.name = name;
-        this.githubId = githubId;
+        this.githubId = new GithubId(githubId);
     }
 }

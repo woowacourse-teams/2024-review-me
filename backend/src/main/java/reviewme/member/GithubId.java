@@ -1,10 +1,17 @@
 package reviewme.member;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class GithubId {
 
+    @Column(name = "github_id", nullable = false)
     private long id;
 
     public GithubId(long id) {
