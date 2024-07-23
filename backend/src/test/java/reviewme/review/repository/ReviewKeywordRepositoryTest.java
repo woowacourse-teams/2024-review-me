@@ -6,6 +6,7 @@ import static reviewme.fixture.KeywordFixture.의견을_잘_조율해요;
 import static reviewme.fixture.KeywordFixture.회의를_이끌어요;
 import static reviewme.fixture.ReviewerGroupFixture.리뷰_그룹;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,7 @@ class ReviewKeywordRepositoryTest {
         Member sancho = memberRepository.save(new Member("산초", "sancho"));
         Member kirby = memberRepository.save(new Member("커비", "kirby"));
         ReviewerGroup group = reviewerGroupRepository.save(리뷰_그룹.create(sancho));
-        Review review = reviewRepository.save(new Review(kirby, group));
+        Review review = reviewRepository.save(new Review(kirby, group, LocalDateTime.now()));
         List<ReviewKeyword> reviewKeywords = Stream.of(꼼꼼하게_기록해요, 회의를_이끌어요, 의견을_잘_조율해요)
                 .map(KeywordFixture::create)
                 .map(keywordRepository::save)
