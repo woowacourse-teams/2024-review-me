@@ -60,6 +60,10 @@ const ReviewWritingPage = () => {
   const handleSubmitReview = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    if (!confirm('리뷰를 제출할까요? (제출한 뒤에는 수정할 수 없어요)')) {
+      return;
+    }
+
     const reviewData: ReviewData = {
       reviewerId: 8,
       reviewerGroupId: 5,
