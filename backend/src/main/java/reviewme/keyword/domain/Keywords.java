@@ -5,13 +5,13 @@ import java.util.List;
 import reviewme.keyword.domain.exception.DuplicateKeywordException;
 import reviewme.keyword.domain.exception.KeywordLimitExceedException;
 
-public class SelectedKeywords {
+public class Keywords {
 
     private static final int MAX_KEYWORD_COUNT = 5;
 
     private final List<Keyword> keywords;
 
-    public SelectedKeywords(List<Keyword> selectedKeywords) {
+    public Keywords(List<Keyword> selectedKeywords) {
         if (selectedKeywords.size() > MAX_KEYWORD_COUNT) {
             throw new KeywordLimitExceedException(MAX_KEYWORD_COUNT);
         }
