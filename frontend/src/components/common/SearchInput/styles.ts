@@ -5,9 +5,10 @@ interface InputProps {
   $height: string;
 }
 export const Input = styled.input<InputProps>`
+  width: ${(props) => props.$width};
+  height: ${(props) => props.$height};
+  padding: 1.6rem;
+
   border: 1px solid ${({ theme }) => theme.colors.black};
   border-radius: 1.5rem;
-  height: ${(props) => props.$height};
-  width: ${(props) => props.$width};
-  padding: 1.6rem;
 `;

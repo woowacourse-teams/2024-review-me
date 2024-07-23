@@ -2,6 +2,9 @@ package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static reviewme.fixture.KeywordFixture.꼼꼼하게_기록해요;
+import static reviewme.fixture.KeywordFixture.회의를_이끌어요;
+import static reviewme.fixture.ReviewerGroupFixture.리뷰_그룹;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -59,8 +62,8 @@ class ReviewServiceTest {
                 new ReviewerGroup(reviewee, "그룹A", "그룹 설명", LocalDateTime.now().minusDays(1))
         );
         githubReviewerGroupRepository.save(new GithubReviewerGroup("sancho", reviewerGroup));
-        Keyword keyword1 = keywordRepository.save(new Keyword("꼼꼼해요"));
-        Keyword keyword2 = keywordRepository.save(new Keyword("친절해요"));
+        Keyword keyword1 = keywordRepository.save(꼼꼼하게_기록해요.create());
+        Keyword keyword2 = keywordRepository.save(회의를_이끌어요.create());
 
         CreateReviewContentRequest contentRequest1 = new CreateReviewContentRequest(
                 1L, "소프트스킬이 어떤가요?", "소통을 잘해요"
@@ -89,12 +92,7 @@ class ReviewServiceTest {
         Member reviewer = memberRepository.save(new Member("테드", "ted"));
         Member reviewee = memberRepository.save(new Member("아루", "aru"));
         memberRepository.save(new Member("산초", "sancho"));
-        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(new ReviewerGroup(
-                reviewee,
-                "그룹A",
-                "그룹 설명",
-                LocalDateTime.of(2024, 1, 1, 1, 1))
-        );
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(리뷰_그룹.create(reviewee));
         Review review = reviewRepository.save(new Review(reviewer, reviewerGroup, LocalDateTime.now()));
 
         // when
@@ -110,12 +108,7 @@ class ReviewServiceTest {
         // given
         Member reviewee = memberRepository.save(new Member("아루", "aru"));
         Member reviewer = memberRepository.save(new Member("테드", "ted"));
-        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(new ReviewerGroup(
-                reviewee,
-                "그룹A",
-                "그룹 설명",
-                LocalDateTime.of(2024, 1, 1, 1, 1))
-        );
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(리뷰_그룹.create(reviewee));
         githubReviewerGroupRepository.save(new GithubReviewerGroup("kirby", reviewerGroup));
 
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(
@@ -135,12 +128,7 @@ class ReviewServiceTest {
         // given
         Member reviewee = memberRepository.save(new Member("아루", "aru"));
         Member reviewer = memberRepository.save(new Member("테드", "ted"));
-        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(new ReviewerGroup(
-                reviewee,
-                "그룹A",
-                "그룹 설명",
-                LocalDateTime.of(2024, 1, 1, 1, 1))
-        );
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(리뷰_그룹.create(reviewee));
         githubReviewerGroupRepository.save(new GithubReviewerGroup("ted", reviewerGroup));
 
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(

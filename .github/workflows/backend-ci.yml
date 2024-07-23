@@ -1,0 +1,48 @@
+name: Build test with Gradle
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to current repository
+        uses: actions/checkout@v4
+
+      - name: Setup JDK Corretto using cached gradle dependencies
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.8
+
+      - name: Build and test with gradle
+        run: |
+          cd ./backend
+          ./gradlew test
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            ./backend/build/test-results/**/*.xml

@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 
 export const Description = styled.ul`
+  width: 100%;
   margin: 0;
   padding-left: 0;
-  width: 100%;
 `;
 
 export const ProjectAndLockButtonContainer = styled.div`
@@ -12,20 +12,21 @@ export const ProjectAndLockButtonContainer = styled.div`
   width: 100%;
 `;
 export const ListItem = styled.li`
-  list-style: none;
   padding: 0;
+  list-style: none;
+
   span {
     display: inline-block;
   }
 `;
 export const Title = styled.span`
+  width: 6rem;
   font-size: 1.1rem;
   font-weight: bold;
-  width: 6rem;
 `;
 export const Clone = styled.span`
-  font-size: 1rem;
   margin: 0 0.5rem;
+  font-size: 1rem;
 `;
 export const Contents = styled.span`
   font-size: 1rem;
