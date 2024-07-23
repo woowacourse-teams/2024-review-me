@@ -1,6 +1,7 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -49,6 +50,9 @@ module.exports = (env, argv) => {
         hash: true,
       }),
       new CleanWebpackPlugin(),
+      new Dotenv({
+        path: './.env',
+      }),
     ],
     devtool: isProduction ? 'hidden-source-map' : 'eval',
     devServer: {
