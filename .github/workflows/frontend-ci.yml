@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - develop
+      - fe/ci/85-build-ci
     #paths:
     #  - "frontend/**"
   pull_request:
