@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 export const ReviewWritingPage = styled.form`
   display: flex;
   flex-direction: column;
-
   width: 80rem;
   height: fit-content;
 `;
@@ -61,7 +60,7 @@ export const ReviewFormMain = styled.main`
 export const ReviewContainer = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
   margin-bottom: 2.4rem;
 `;
 
@@ -83,8 +82,12 @@ export const KeywordContainer = styled.div`
 `;
 
 export const KeywordTitle = styled.div`
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   font-weight: 600;
+
+  &::after {
+    content: ' (1개 ~ 5개)';
+  }
 `;
 
 export const KeywordList = styled.ul`

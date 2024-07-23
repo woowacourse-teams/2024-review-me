@@ -1,43 +1,70 @@
-import KeywordButton from './components/KeywordButton';
-import * as S from './styles';
+import { useEffect, useState } from 'react';
 
-import { postReviewApi } from '@/apis/review';
+import { getDataToWriteReview, postReviewApi } from '@/apis/review';
 import ClockLogo from '@/assets/clock.svg';
 import GithubLogo from '@/assets/githubLogo.svg';
 import Button from '@/components/common/Button';
-import { ReviewData } from '@/types';
-import { REVIEW } from './../../constants/review';
+import { Keyword, ReviewContent, ReviewData, WritingReviewInfoData } from '@/types';
+
+import KeywordButton from './components/KeywordButton';
 import RevieweeComment from './components/RevieweeComment';
 import ReviewItem from './components/ReviewItem';
+import * as S from './styles';
+
+const DUMMY = {
+  questionList: [
+    { id: 0, content: '1. 동료의 개발 역량 향상을 위해 피드백을 남겨 주세요.' },
+    { id: 1, content: '2. 동료의 소프트 스킬의 성장을 위해 피드백을 남겨 주세요.' },
+    { id: 2, content: '3. 팀 동료로 근무한다면 같이 일하고 싶은 개발자인가요?' },
+  ],
+  keywords: [
+    { id: 0, content: '성실해요' },
+    { id: 1, content: '잘 먹어요' },
+    { id: 2, content: '호감이에요' },
+  ],
+};
 
 const ReviewWritingPage = () => {
+  const [dataToWrite, setDataToWrite] = useState<WritingReviewInfoData | null>(null);
+  const [answers, setAnswers] = useState<ReviewContent[]>([
+    { questionId: 0, answer: '' },
+    { questionId: 1, answer: '' },
+    { questionId: 2, answer: '' },
+  ]);
+  const [selectedKeywords, setSelectedKeywords] = useState<number[]>([]);
+  const isValidForm =
+    !answers.some((id) => id.answer.length < 20) && selectedKeywords.length >= 1 && selectedKeywords.length <= 5;
+  // useEffect(() => {
+  //   const getDataToWrite = async () => {
+  //     const data = await getDataToWriteReview(1); // id: 임의 값
+  //     setDataToWrite(data);
+  //     setAnswers(data.questions.map((question) => ({ questionId: question.id, answer: '' })));
+  //   };
+
+  //   getDataToWrite();
+  // }, []);
+
+  const handleAnswerChange = (questionId: number, value: string) => {
+    setAnswers((prev) =>
+      prev.map((answer) => (answer.questionId === questionId ? { ...answer, answer: value } : answer)),
+    );
+  };
+
+  const handleKeywordButtonClick = (keyword: Keyword) => {
+    console.log(selectedKeywords);
+    setSelectedKeywords((prev) =>
+      prev.includes(keyword.id) ? selectedKeywords.filter((id) => id !== keyword.id) : [...prev, keyword.id],
+    );
+  };
+
   const handleSubmitReview = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    // NOTE: 모킹 데이터
     const reviewData: ReviewData = {
       reviewerId: 8,
       reviewerGroupId: 5,
-      contents: [
-        {
-          order: 1,
-          question: '1. 동료의 개발 역량 향상을 위해 피드백을 남겨 주세요.',
-          answer: (event.target as any).question1.value,
-        },
-        {
-          order: 2,
-          question: '2. 동료의 소프트 스킬의 성장을 위해 피드백을 남겨 주세요.',
-
-          answer: (event.target as any).question2.value,
-        },
-        {
-          order: 3,
-          question: '3. 마지막 질문',
-
-          answer: (event.target as any).question2.value,
-        },
-      ],
-      selectedKeywordIds: [1, 2],
+      reviewContents: answers,
+      keywords: [1, 2],
     };
 
     try {
@@ -69,20 +96,59 @@ const ReviewWritingPage = () => {
       </S.ReviewFormHeader>
       <S.ReviewFormMain>
         <S.ReviewContainer>
-          {REVIEW.questionList.map((question, idx) => {
-            return <ReviewItem question={question} key={idx} />;
+          {DUMMY.questionList.map((question) => {
+            return (
+              <ReviewItem
+                question={question.content}
+                key={question.id}
+                answerValue={answers.find((answer) => answer.questionId === question.id)?.answer || ''}
+                onWrite={(value) => handleAnswerChange(question.id, value)}
+              />
+            );
           })}
+          {/* {dataToWrite &&
+            dataToWrite.questions.map((question) => {
+              return (
+                <ReviewItem
+                  question={question.content}
+                  key={question.id}
+                  answerValue={answers.find((answer) => answer.questionId === question.id)?.answer || ''}
+                  onWrite={(value) => handleAnswerChange(question.id, value)}
+                />
+              );
+            })} */}
         </S.ReviewContainer>
         <S.KeywordContainer>
-          <S.KeywordTitle>키워드</S.KeywordTitle>
+          <S.KeywordTitle>{DUMMY.questionList.length + 1}. 키워드</S.KeywordTitle>
           <S.KeywordList>
-            <KeywordButton isSelected={false}>잘 먹어요</KeywordButton>
-            <KeywordButton isSelected={true}>성실해요</KeywordButton>
+            {/* {dataToWrite &&
+              dataToWrite.keywords.map((keyword) => {
+                return (
+                  <KeywordButton
+                    isSelected={selectedKeywords.includes(keyword.id)}
+                    key={keyword.id}
+                    onClick={() => handleKeywordButtonClick(keyword)}
+                  >
+                    {keyword.content}
+                  </KeywordButton>
+                );
+              })} */}
+            {DUMMY.keywords.map((keyword) => {
+              return (
+                <KeywordButton
+                  isSelected={selectedKeywords.includes(keyword.id)}
+                  key={keyword.id}
+                  onClick={() => handleKeywordButtonClick(keyword)}
+                >
+                  {keyword.content}
+                </KeywordButton>
+              );
+            })}
           </S.KeywordList>
         </S.KeywordContainer>
         <S.ButtonContainer>
           {/* <Button buttonType="secondary" text="저장" /> */}
-          <Button buttonType="primary" text="제출" />
+          <Button buttonType={isValidForm ? 'primary' : 'disabled'} text="제출" />
         </S.ButtonContainer>
       </S.ReviewFormMain>
     </S.ReviewWritingPage>
