@@ -40,7 +40,6 @@ const DetailedReviewPage = ({}) => {
       setIsLoading(true);
       getDetailedReviewApi({ reviewId: 4 }).then((result) => {
         setDetailReview(result);
-        console.log(result);
         setErrorMessage('');
       });
     } catch (error) {
