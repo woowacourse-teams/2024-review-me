@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { ButtonType } from '@/types/styles';
@@ -11,15 +12,42 @@ export const Button = styled.button<{ buttonType: ButtonType }>`
   height: 4rem;
   padding: 2rem;
 
-  color: ${({ theme, buttonType }) => (buttonType === 'primary' ? theme.colors.white : theme.colors.primary)};
-
-  background-color: ${({ theme, buttonType }) =>
-    buttonType === 'primary' ? theme.colors.primary : theme.colors.white};
   border: 0.1rem solid ${({ theme }) => theme.colors.primary};
   border-radius: 0.8rem;
 
-  &:hover {
-    background-color: ${({ theme, buttonType }) => (buttonType ? theme.colors.primaryHover : theme.colors.lightGray)};
-    border: 0.1rem solid ${({ theme }) => theme.colors.primaryHover};
-  }
+  ${({ theme, buttonType }) => {
+    switch (buttonType) {
+      case 'primary':
+        return `
+          color: ${theme.colors.white};
+          background-color: ${theme.colors.primary};
+
+          &:hover {
+            background-color: ${theme.colors.primaryHover};
+          }
+        `;
+      case 'secondary':
+        return `
+          color: ${theme.colors.primary};
+          background-color: ${theme.colors.white};
+
+          &:hover {
+            background-color: ${theme.colors.lightPurple};
+          }
+        `;
+      case 'disabled':
+        return `
+          pointer-events: none;
+          color: ${theme.colors.disabledText};
+          background-color: ${theme.colors.disabled};
+          border-color: ${theme.colors.disabled};
+
+          &:hover {
+            background-color: ${theme.colors.disabled};
+          }
+        `;
+      default:
+        return css``;
+    }
+  }}
 `;
