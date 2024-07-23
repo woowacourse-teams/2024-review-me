@@ -81,7 +81,7 @@ const ReviewWritingPage = () => {
           </S.KeywordList>
         </S.KeywordContainer>
         <S.ButtonContainer>
-          <Button buttonType="secondary" text="저장" />
+          {/* <Button buttonType="secondary" text="저장" /> */}
           <Button buttonType="primary" text="제출" />
         </S.ButtonContainer>
       </S.ReviewFormMain>
