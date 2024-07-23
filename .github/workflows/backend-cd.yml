@@ -35,7 +35,9 @@ jobs:
           gradle-version: 8.8
 
       - name: Build and test with gradle
-        run: ./gradlew clean bootJar
+        run: |
+          cd ./backend
+          ./gradlew clean bootJar
 
       - name: Rename artifact file
         run: |
