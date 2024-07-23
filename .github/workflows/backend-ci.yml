@@ -35,15 +35,12 @@ jobs:
         with:
           gradle-version: 8.8
 
-      - name: move to backend directory
-        run: cd ./backend
-
       - name: Build and test with gradle
-        run: ./gradlew test
+        run: ./backend/gradlew test
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
           files: |
-            ./build/test-results/**/*.xml
+            ./backend/build/test-results/**/*.xml
