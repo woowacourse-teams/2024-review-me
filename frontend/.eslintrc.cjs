@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   root: true,
   env: { browser: true, es2020: true },
@@ -48,12 +50,9 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      node: {
+      alias: {
+        map: [['@', path.resolve(__dirname, 'src')]],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        paths: ['src'],
-        alias: {
-          '@': path.resolve(__dirname, 'src/'),
-        },
       },
     },
   },
