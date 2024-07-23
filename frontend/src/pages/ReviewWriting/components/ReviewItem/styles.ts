@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 export const ReviewItem = styled.article`
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.6rem;
+  gap: 0.8rem;
 
   & > * {
     font-weight: 600;
@@ -19,11 +19,12 @@ export const ReviewQuestion = styled.div`
 export const ReviewTextarea = styled.textarea`
   resize: none;
 
+  overflow-y: auto;
+
   width: 100%;
   max-width: 100%;
-  height: 10rem;
-  margin-top: 0.8rem;
+  height: 15rem;
   padding: 1.6rem;
 
-  border-radius: 1.6rem;
+  border-radius: 0.8rem;
 `;
