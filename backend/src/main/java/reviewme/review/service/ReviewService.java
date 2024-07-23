@@ -108,7 +108,7 @@ public class ReviewService {
                 .map(ReviewKeyword::getKeyword)
                 .toList();
         List<KeywordResponse> keywordResponses = keywords.stream()
-                .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getDetail()))
+                .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getContent()))
                 .toList();
 
         return new ReviewResponse(
