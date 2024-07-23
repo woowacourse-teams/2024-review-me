@@ -54,10 +54,6 @@ module.exports = {
         map: [['@', path.resolve(__dirname, 'src')]],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        paths: ['src'],
-      },
     },
   },
 };
