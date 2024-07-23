@@ -22,8 +22,6 @@ jobs:
     steps:
       - name: Checkout to current repository
         uses: actions/checkout@v4
-        with:
-          path: ./backend
 
       - name: Setup JDK Corretto using cached gradle dependencies
         uses: actions/setup-java@v4
@@ -38,11 +36,13 @@ jobs:
           gradle-version: 8.8
 
       - name: Build and test with gradle
-        run: ./gradlew test
+        run: |
+          cd ./backend
+          ./gradlew test
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
           files: |
-            ./build/test-results/**/*.xml
+            ./backend/build/test-results/**/*.xml
