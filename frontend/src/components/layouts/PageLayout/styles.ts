@@ -6,17 +6,13 @@ export const Layout = styled.div`
 `;
 
 export const Wrapper = styled.div`
-  width: inherit;
-  //margin: 0 auto;
   position: relative;
-  background-color: ${({ theme }) => theme.colors.white};
-  //max-width: ${({ theme }) => theme.breakpoints.desktop};
+
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
 
-  /* @media screen and (min-width: ${({ theme }) => theme.breakpoints.desktop}) {
-    width: ${({ theme }) => theme.breakpoints.desktop};
-    margin: 0 auto;
-  } */
+  width: inherit;
+
+  background-color: ${({ theme }) => theme.colors.white};
 `;

@@ -3,31 +3,29 @@ import styled from '@emotion/styled';
 export const ReviewWritingPage = styled.form`
   display: flex;
   flex-direction: column;
+
   width: 80rem;
   height: fit-content;
+
   border-top: 0.5rem solid #aedaff;
 `;
 
 export const ReviewFormHeader = styled.header`
   display: flex;
   flex-direction: column;
-
   gap: 1rem;
   margin-bottom: 3rem;
 `;
 
 export const InfoContainer = styled.div`
   display: flex;
-
   gap: 1.5rem;
 `;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-
   justify-content: space-between;
-
   width: 100%;
 `;
 
@@ -54,7 +52,6 @@ export const Reviewee = styled.div`
 
 export const ReviewExpirationDate = styled.div`
   display: flex;
-
   gap: 0.5rem;
 `;
 
@@ -72,15 +69,13 @@ export const ReviewContainer = styled.section`
 
 export const ButtonContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
-
   gap: 1rem;
+  justify-content: flex-end;
 `;
 
 export const Button = styled.button`
   width: 3.5rem;
   height: 2rem;
-
   border: 0.0625rem solid black;
 `;
 
@@ -97,21 +92,18 @@ export const KeywordTitle = styled.div`
 export const KeywordList = styled.ul`
   display: flex;
   flex-direction: column;
-
   gap: 1rem;
-
   margin: 1rem 0;
 `;
 
 export const KeywordItem = styled.li`
   display: flex;
+  gap: 0.5rem;
   align-items: center;
 
-  gap: 0.5rem;
-
   & > input {
+    top: 0.09375rem;
     width: 1rem;
     height: 1rem;
-    top: 0.09375rem;
   }
 `;
