@@ -35,6 +35,9 @@ jobs:
         with:
           gradle-version: 8.8
 
+      - name: move to backend directory
+        run: cd ./backend
+
       - name: Build and test with gradle
         run: ./gradlew test
 
