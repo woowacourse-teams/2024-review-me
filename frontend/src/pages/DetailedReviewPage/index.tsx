@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 
+import { ReviewComment } from '@/components';
 import { DetailReviewData } from '@/types';
 
 import { getDetailedReviewApi } from '../../apis/review';
 
 import ReviewDescription from './components/ReviewDescription';
-import ReviewViewSection from './components/ReviewViewSection';
+import ReviewSection from './components/ReviewSection';
 
 const ANSWER =
-  '림순의 바람은 그윽한 산들바람처럼 잔잔하게 흘러갔습니다. \n 눈부신 햇살이 그의 어깨를 감싸며, 푸른 하늘 아래 펼쳐진 들판을 바라보았습니다.\n 그의 마음은 자연의 아름다움 속에서 평온을 찾았고, 그 순간마다 삶의 소중함을 느꼈습니다.\n 그는 늘 그러한 순간들을 기억하며, 미래의 나날들을 기대했습니다. \n 바람은 여전히 그를 감싸며, 그의 마음 속 깊은 곳에 있는 꿈과 희망을 불러일으켰습니다.\n 림순은 미소 지으며 앞으로 나아갔습니다.림순의 바람은 그윽한 산들바람처럼 잔잔하게 흘러갔습니다. \n 눈부신 햇살이 그의 어깨를 감싸며, 푸른 하늘 아래 펼쳐진 들판을 바라보았습니다.\n 그의 마음은 자연의 아름다움 속에서 평온을 찾았고, 그 순간마다 삶의 소중함을 느꼈습니다.\n 그는 늘 그러한 순간들을 기억하며, 미래의 나날들을 기대했습니다. ';
+  '림순의 바람은 그윽한 산들바람처럼 잔잔하게 흘러갔습니다. \n 눈부신 햇살이 그의 어깨를 감싸며, 푸른 하늘 아래 펼쳐진 들판을 바라보았습니다.\n 그의 마음은 자연의 아름다움 속에서 평온을 찾았고, 그 순간마다 삶의 소중함을 느꼈습니다.\n 그는 늘 그러한 순간들을 기억하며, 미래의 나날들을 기대했습니다. \n 바람은 여전히 그를 감싸며, 그의 마음 속 깊은 곳에 있는 꿈과 희망을 불러일으켰습니다.\n 림순은 미소 지으며 앞으로 나아갔습니다.림순의 바람은 그윽한 산들바람처럼 잔잔하게 흘러갔습니다. \n 눈부신 햇살이 그의 어깨를 감싸며, 푸른 하늘 아래 펼쳐진 들판을 바라보았습니다.\n 그의 마음은 자연의 아름다움 속에서 평온을 찾았고, 그 순간마다 삶의 소중함을 느꼈습니다.\n 그는 늘 그러한 순간들을 기억하며, 미래의 나날들을 기대했습니다. 림순의 바람은 그윽한 산들바람처럼 잔잔하게 흘러갔습니다. \n 눈부신 햇살이 그의 어깨를 감싸며, 푸른 하늘 아래 펼쳐진 들판을 바라보았습니다.\n 그의 마음은 자연의 아름다움 속에서 평온을 찾았고, 그 순간마다 삶의 소중함을 느꼈습니다.\n 그는 늘 그러한 순간들을 기억하며, 미래의 나날들을 기대했습니다. \n 바람은 여전히 그를 감싸며, 그의 마음 속 깊은 곳에 있는 꿈과 희망을 불러일으켰습니다.\n 림순은 미소 지으며 앞으로 나아갔습니다.림순의 바람은 그윽한 산들바람처럼 잔잔하게 흘러갔습니다. \n 눈부신 햇살이 그의 어깨를 감싸며, 푸른 하늘 아래 펼쳐진 들판을 바라보았습니다.\n 그의 마음은 자연의 아름다움 속에서 평온을 찾았고, 그 순간마다 삶의 소중함을 느꼈습니다.\n 그는 늘 그러한 순간들을 기억하며, 미래의 나날들을 기대했습니다. ';
 
 const MOCK_DATA: DetailReviewData = {
   id: 123456,
@@ -31,6 +32,8 @@ const MOCK_DATA: DetailReviewData = {
   ],
   keywords: [{ id: 1, detail: '친절해요' }],
 };
+
+const COMMENT = 'VITE 쓰고 싶다.';
 
 const DetailedReviewPage = ({}) => {
   const [detailReview, setDetailReview] = useState<DetailReviewData>(MOCK_DATA);
@@ -68,11 +71,13 @@ const DetailedReviewPage = ({}) => {
         // NOTE: 프론트에서는 리뷰 작성일을 보여주지만,
         // 현재 서버에서 오는 데이터가 deadline인 관계로 (속성 이름, value의 성격 모두 다름)
         // 임의의 Date 객체로 하드코딩한 상태임
-        createdAt={new Date('2024-01-22')}
+        date={new Date('2024-01-22')}
         isLock={true}
+        handleClickToggleButton={() => console.log('click toggle ')}
       />
+      <ReviewComment comment={COMMENT} />
       {detailReview.contents.map((item, index) => (
-        <ReviewViewSection question={item.question} answer={item.answer} key={index} />
+        <ReviewSection question={item.question} answer={item.answer} key={index} />
       ))}
     </>
   );
