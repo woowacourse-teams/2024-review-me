@@ -56,8 +56,8 @@ public class ReviewService {
             throw new ReviewAlreadySubmittedException();
         }
         validateIsDeadlinePassed(reviewerGroup);
-      
-        Review review = reviewRepository.save(new Review(reviewer, reviewerGroup));
+
+        Review review = reviewRepository.save(new Review(reviewer, reviewerGroup, LocalDateTime.now()));
 
         List<ReviewContent> contents = request.contents()
                 .stream()
@@ -83,13 +83,9 @@ public class ReviewService {
 
     public ReviewResponse findReview(long id) {
         Review review = reviewRepository.getReviewById(id);
-
-        // todo: 모든 리뷰는 기본적으로 익명이므로, 이것을 리턴하면 안된다! ReviewReponse에서 MemberResponse 자체를 없애야 한다.
-        Member member = memberRepository.getMemberById(review.getReviewer().getId());
-        MemberResponse memberResponse = new MemberResponse(member.getId(), member.getName());
-
-        ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(review.getReviewerGroup().getId());
+        ReviewerGroup reviewerGroup = review.getReviewerGroup();
         Member reviewee = reviewerGroup.getReviewee();
+
         ReviewerGroupResponse reviewerGroupResponse = new ReviewerGroupResponse(
                 reviewerGroup.getId(),
                 reviewerGroup.getGroupName(),
@@ -117,7 +113,7 @@ public class ReviewService {
 
         return new ReviewResponse(
                 review.getId(),
-                memberResponse,
+                review.getCreatedAt(),
                 reviewerGroupResponse,
                 reviewContentResponse,
                 keywordResponses
