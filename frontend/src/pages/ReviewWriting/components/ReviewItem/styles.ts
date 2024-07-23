@@ -10,7 +10,11 @@ export const ReviewItem = styled.article`
   }
 `;
 
-export const ReviewQuestion = styled.div``;
+export const ReviewQuestion = styled.div`
+  &::after {
+    content: ' (20자 이상)';
+  }
+`;
 
 export const ReviewTextarea = styled.textarea`
   resize: none;
