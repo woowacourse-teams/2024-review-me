@@ -14,9 +14,10 @@ const ReviewWritingPage = () => {
   const handleSubmitReview = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    // NOTE: 모킹 데이터
     const reviewData: ReviewData = {
-      reviewerId: 1,
-      reviewerGroupId: 1,
+      reviewerId: 8,
+      reviewerGroupId: 5,
       contents: [
         {
           order: 1,
@@ -26,20 +27,21 @@ const ReviewWritingPage = () => {
         {
           order: 2,
           question: '2. 동료의 소프트 스킬의 성장을 위해 피드백을 남겨 주세요.',
+
+          answer: (event.target as any).question2.value,
+        },
+        {
+          order: 3,
+          question: '3. 마지막 질문',
+
           answer: (event.target as any).question2.value,
         },
       ],
-      selectedKeywordIds: [
-        (event.target as any).keyword1.checked ? 1 : null,
-        (event.target as any).keyword2.checked ? 2 : null,
-        (event.target as any).keyword3.checked ? 3 : null,
-      ].filter(Boolean) as number[],
+      selectedKeywordIds: [1, 2],
     };
 
-    //console.log(reviewData);
     try {
       await postReviewApi({ reviewData });
-      console.log('Review submitted successfully');
     } catch (error) {
       console.error('Failed to submit review:', error);
     }
