@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Layout = styled.div`
-  width: 100vw;
+  width: 100%;
   background-color: ${({ theme }) => theme.colors.sidebarBackground};
 `;
 
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  width: inherit;
+  width: 100%;
 
   background-color: ${({ theme }) => theme.colors.white};
 `;
