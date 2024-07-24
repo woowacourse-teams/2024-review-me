@@ -21,6 +21,9 @@ const DUMMY = {
     { id: 0, content: '성실해요' },
     { id: 1, content: '잘 먹어요' },
     { id: 2, content: '호감이에요' },
+    { id: 3, content: '시간 약속을 잘 지켜요' },
+    { id: 4, content: '열정 가득해요' },
+    { id: 5, content: '또 함께하고 싶어요' },
   ],
 };
 
@@ -51,7 +54,7 @@ const ReviewWritingPage = () => {
   };
 
   const handleKeywordButtonClick = (keyword: Keyword) => {
-    if (selectedKeywords.length === 5) {
+    if (selectedKeywords.length === 5 && !selectedKeywords.includes(keyword.id)) {
       alert('키워드는 최대 5개까지 선택할 수 있어요.');
       return;
     }
