@@ -3,6 +3,7 @@ package reviewme.member.domain;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static reviewme.fixture.MemberFixture.회원_산초;
+import static reviewme.fixture.MemberFixture.회원_커비;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reviewme.member.domain.exception.DescriptionLengthExceededException;
+import reviewme.member.domain.exception.DuplicateReviewerException;
 import reviewme.member.domain.exception.EmptyReviewerException;
 import reviewme.member.domain.exception.InvalidGroupNameLengthException;
 import reviewme.member.domain.exception.SelfReviewException;
@@ -83,4 +85,22 @@ class ReviewerGroupTest {
         assertThatThrownBy(() -> new ReviewerGroup(member, githubIds, groupName, description, createdAt))
                 .isInstanceOf(EmptyReviewerException.class);
     }
+
+    @Test
+    void 리뷰어를_중복으로_추가할_수_없다() {
+        // given
+        Member reviewee = 회원_산초.create();
+        Member reviewer = 회원_커비.create();
+
+        String groupName = "Group";
+        String description = "Description";
+        LocalDateTime createdAt = LocalDateTime.now();
+        List<GithubId> githubIds = List.of(reviewer.getGithubId());
+        ReviewerGroup reviewerGroup = new ReviewerGroup(reviewee, githubIds, groupName, description, createdAt);
+        GithubIdReviewerGroup githubIdReviewerGroup = new GithubIdReviewerGroup(reviewee.getGithubId(), reviewerGroup);
+        // when, then
+        assertThatThrownBy(() -> reviewerGroup.addReviewerGithubId(githubIdReviewerGroup))
+                .isInstanceOf(DuplicateReviewerException.class);
+    }
+
 }
