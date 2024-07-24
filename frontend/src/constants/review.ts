@@ -1,7 +1,10 @@
 export const REVIEW = {
-  answerMaxLengthMessage: '최대 1000자까지 입력 가능해요.',
   answerMaxLength: 1000,
   answerMinLength: 20,
   keywordMaxCount: 5,
   keywordMinCount: 1,
+};
+
+export const REVIEW_MESSAGE = {
+  answerMaxLength: `최대 ${REVIEW.answerMaxLength}자까지 입력 가능해요.`,
 };

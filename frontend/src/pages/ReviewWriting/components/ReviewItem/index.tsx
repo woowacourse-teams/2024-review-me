@@ -1,4 +1,4 @@
-import { REVIEW } from '@/constants/review';
+import { REVIEW, REVIEW_MESSAGE } from '@/constants/review';
 
 import * as S from './styles';
 
@@ -19,7 +19,7 @@ const ReviewItem = ({ question, answerValue, onWrite }: ReviewItemProps) => {
   return (
     <S.ReviewItem>
       <S.ReviewQuestion>{question}</S.ReviewQuestion>
-      <S.ReviewTextarea placeholder={REVIEW.answerMaxLengthMessage} value={answerValue} onChange={handleInputChange} />
+      <S.ReviewTextarea placeholder={REVIEW_MESSAGE.answerMaxLength} value={answerValue} onChange={handleInputChange} />
       <S.ReviewTextLength>
         {answerValue.length} / {REVIEW.answerMaxLength}
       </S.ReviewTextLength>
