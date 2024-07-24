@@ -1,14 +1,14 @@
-import App from '@/App';
-import { css, Global } from '@emotion/react';
-import { ThemeProvider } from '@emotion/react';
-
+import { Global, ThemeProvider } from '@emotion/react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import reset from './styles/reset';
-import globalStyles from './styles/globalStyles';
-import ReviewWritingPage from './pages/ReviewWriting';
-import DetailedReviewPage from './pages/DetailedReviewPage';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import App from '@/App';
+
+import DetailedReviewPage from './pages/DetailedReviewPage';
+import ReviewPreviewListPage from './pages/ReviewPreviewListPage';
+import ReviewWritingPage from './pages/ReviewWriting';
+import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
 const router = createBrowserRouter([
@@ -24,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: 'user/review-writing',
         element: <ReviewWritingPage />,
+      },
+      {
+        path: 'user/review-preview-list',
+        element: <ReviewPreviewListPage />,
       },
       {
         path: 'user/detailed-review',
