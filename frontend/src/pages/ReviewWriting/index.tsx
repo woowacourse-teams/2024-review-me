@@ -81,11 +81,13 @@ const ReviewWritingPage = () => {
       keywords: selectedKeywords,
     };
 
-    try {
-      await postReviewApi({ reviewData });
-    } catch (error) {
-      console.error('Failed to submit review:', error);
-    }
+    console.log(reviewData);
+
+    // try {
+    //   await postReviewApi({ reviewData });
+    // } catch (error) {
+    //   console.error('Failed to submit review:', error);
+    // }
   };
 
   return (
