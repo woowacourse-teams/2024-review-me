@@ -1,11 +1,5 @@
 name: Build test with Webpack
 on:
-  push:
-    branches:
-      - develop
-      - fe/ci/85-build-ci
-    #paths:
-    #  - "frontend/**"
   pull_request:
     branches:
       - develop
@@ -16,7 +10,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
-concurrency: # action 도중 새 PR이 올라오면 기존 action 취소
+concurrency: # NOTE: action 도중 새 PR이 올라오면 기존 action 취소
   group: "ci-group"
   cancel-in-progress: true
 jobs:
@@ -26,29 +20,29 @@ jobs:
       - name: Checkout to current repository
         uses: actions/checkout@v4
 
+      - name: Change to frontend directory
+        run: cd frontend
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "yarn"
-          cache-dependency-path: ./frontend/yarn.lock
+          cache-dependency-path: yarn.lock
 
       - name: Create .env file
-        run: echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" > ./frontend/.env
+        run: echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" > .env
 
       - name: Set environment file permissions
-        run: chmod 644 ./frontend/.env
+        run: chmod 644 .env
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-        working-directory: frontend
 
       - name: Run tests
         run: yarn test
-        working-directory: frontend
 
       - name: Build
         run: yarn build
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
-        working-directory: frontend
