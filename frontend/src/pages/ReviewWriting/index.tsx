@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import { getDataToWriteReview, postReviewApi } from '@/apis/review';
 import ClockLogo from '@/assets/clock.svg';
@@ -28,6 +29,8 @@ const DUMMY = {
 };
 
 const ReviewWritingPage = () => {
+  const navigate = useNavigate();
+
   const [dataToWrite, setDataToWrite] = useState<WritingReviewInfoData | null>(null);
   const [answers, setAnswers] = useState<ReviewContent[]>([
     { questionId: 0, answer: '' },
@@ -82,9 +85,11 @@ const ReviewWritingPage = () => {
     };
 
     console.log(reviewData);
+    navigate('/user/review-writing-complete', { replace: true });
 
     // try {
     //   await postReviewApi({ reviewData });
+    //   navigate('/user/review-writing-complete', { replace: true });
     // } catch (error) {
     //   console.error('Failed to submit review:', error);
     // }
