@@ -40,10 +40,10 @@ const ReviewWritingPage = () => {
   ]);
   const [selectedKeywords, setSelectedKeywords] = useState<number[]>([]);
 
-  const isValidAnswerLength = !answers.some((id) => id.answer.length < REVIEW.answerMinLength);
+  const isValidAnswersLength = !answers.some((id) => id.answer.length < REVIEW.answerMinLength);
   const isValidKeywordSelection =
     selectedKeywords.length >= REVIEW.keywordMinCount && selectedKeywords.length <= REVIEW.keywordMaxCount;
-  const isValidForm = isValidAnswerLength && isValidKeywordSelection;
+  const isValidForm = isValidAnswersLength && isValidKeywordSelection;
 
   // useEffect(() => {
   //   const getDataToWrite = async () => {
@@ -75,9 +75,7 @@ const ReviewWritingPage = () => {
   const handleSubmitReview = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!confirm('리뷰를 제출할까요? 제출한 뒤에는 수정할 수 없어요.')) {
-      return;
-    }
+    if (!confirm('리뷰를 제출할까요? 제출한 뒤에는 수정할 수 없어요.')) return;
 
     const reviewData: ReviewData = {
       reviewerId: 8,
