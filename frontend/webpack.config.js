@@ -52,7 +52,7 @@ module.exports = (env, argv) => {
       new CleanWebpackPlugin(),
       new Dotenv({
         systemvars: true,
-        path: './.env',
+        path: path.resolve(__dirname, './.env'),
       }),
     ],
     devtool: isProduction ? 'hidden-source-map' : 'eval',
