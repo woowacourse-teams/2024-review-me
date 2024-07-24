@@ -42,7 +42,8 @@ public class ReviewerGroup {
     @JoinColumn(name = "reviewee_id", nullable = false)
     private Member reviewee;
 
-    @OneToMany(mappedBy = "reviewerGroup")
+    @OneToMany
+    @JoinColumn(name = "reviewer_group_id")
     private List<Review> reviews;
 
     @Column(name = "group_name", nullable = false)

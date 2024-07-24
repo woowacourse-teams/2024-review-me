@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.domain.Keywords;
 import reviewme.member.domain.Member;
-import reviewme.member.domain.ReviewerGroup;
 import reviewme.review.domain.exception.IllegalReviewerException;
 
 @Entity
@@ -38,26 +37,19 @@ public class Review {
     @JoinColumn(name = "reviewee_id", nullable = false)
     private Member reviewee;
 
-    @ManyToOne
-    @JoinColumn(name = "reviewer_group_id", nullable = false)
-    private ReviewerGroup reviewerGroup;
-
     @Embedded
     private Keywords keywords;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Review(Member reviewer, Member reviewee, ReviewerGroup reviewerGroup,
-                  List<Keyword> keywords, LocalDateTime createdAt) {
+    public Review(Member reviewer, Member reviewee, List<Keyword> keywords, LocalDateTime createdAt) {
         if (reviewer.equals(reviewee)) {
             throw new IllegalReviewerException();
         }
         this.reviewer = reviewer;
         this.reviewee = reviewee;
-        this.reviewerGroup = reviewerGroup;
         this.keywords = new Keywords(keywords);
         this.createdAt = createdAt;
-        reviewerGroup.addReview(this);
     }
 }
