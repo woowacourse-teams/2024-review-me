@@ -67,6 +67,7 @@ public class Review {
         this.keywords = new Keywords(keywords);
         this.createdAt = createdAt;
         reviewerGroup.addReview(this);
+        this.reviewerGroup = reviewerGroup;
         this.isPublic = false;
     }
 
