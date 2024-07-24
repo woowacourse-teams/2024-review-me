@@ -6,13 +6,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.domain.Keywords;
+import reviewme.keyword.dto.response.KeywordResponse;
 import reviewme.keyword.repository.KeywordRepository;
+import reviewme.keyword.service.KeywordService;
 import reviewme.member.domain.Member;
 import reviewme.member.domain.ReviewerGroup;
 import reviewme.member.repository.MemberRepository;
-import reviewme.member.repository.ReviewerGroupRepository;
+import reviewme.member.service.ReviewerGroupService;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
+import reviewme.review.dto.ReviewCreationResponse;
+import reviewme.review.dto.response.QuestionResponse;
+import reviewme.member.dto.response.ReviewCreationReviewerGroupResponse;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewDetailReviewContentResponse;
@@ -25,9 +30,11 @@ import reviewme.review.repository.ReviewRepository;
 @RequiredArgsConstructor
 public class ReviewService {
 
+    private final ReviewerGroupService reviewerGroupService;
+    private final KeywordService keywordService;
+    private final QuestionService questionService;
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
-    private final ReviewerGroupRepository reviewerGroupRepository;
     private final ReviewContentRepository reviewContentRepository;
     private final KeywordRepository keywordRepository;
 
@@ -74,5 +81,12 @@ public class ReviewService {
                 reviewContentResponses,
                 keywordContents
         );
+    }
+
+    public ReviewCreationResponse findReviewCreationSetup(long reviewerGroupId) {
+        ReviewCreationReviewerGroupResponse reviewerGroup = reviewerGroupService.findReviewCreationReviewerGroup(reviewerGroupId);
+        List<QuestionResponse> questions = questionService.findAllQuestions();
+        List<KeywordResponse> keywords = keywordService.findAllKeywords();
+        return new ReviewCreationResponse(reviewerGroup, questions, keywords);
     }
 }
