@@ -1,5 +1,6 @@
-import LockIcon from '../../../../assets/Lock.svg';
-import UnlockIcon from '../../../../assets/Unlock.svg';
+//import UnlockIcon from '@/assets/Unlock.svg';
+import LockIcon from '@/assets/lock.svg';
+import UnlockIcon from '@/assets/unLock.svg';
 
 interface LockButtonProps {
   isLock: boolean;

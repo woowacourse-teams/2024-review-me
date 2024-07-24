@@ -1,7 +1,8 @@
 import { useLocation, Link } from 'react-router-dom';
 
-import CloseIcon from '../../../assets/close.svg';
-import LogoIcon from '../../../assets/logo.svg';
+import CloseIcon from '@/assets/close.svg';
+import LogoIcon from '@/assets/logo.svg';
+
 import { PAGE } from '../../../constants';
 
 import * as S from './styles';
