@@ -52,10 +52,3 @@ jobs:
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
         working-directory: frontend
-
-        # ghpages에 임시 배포
-      - name: Deploy to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.PERSONAL_TOKEN }}
-          publish_dir: ./frontend/dist
