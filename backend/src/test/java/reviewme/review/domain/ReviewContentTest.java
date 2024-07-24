@@ -17,7 +17,7 @@ class ReviewContentTest {
         String content = "A".repeat(length);
 
         // when, then
-        assertDoesNotThrow(() -> new ReviewContent(question, content));
+        assertDoesNotThrow(() -> new ReviewContent(null, question, content));
     }
 
     @ParameterizedTest
@@ -28,7 +28,7 @@ class ReviewContentTest {
         String content = "A".repeat(length);
 
         // when, then
-        assertThatThrownBy(() -> new ReviewContent(question, content))
+        assertThatThrownBy(() -> new ReviewContent(null, question, content))
                 .isInstanceOf(InvalidAnswerLengthException.class);
     }
 }

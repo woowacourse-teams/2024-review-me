@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -26,6 +27,10 @@ public class ReviewContent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "review_id", nullable = false)
+    private Review review;
+
     @OneToOne
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
@@ -33,8 +38,9 @@ public class ReviewContent {
     @Column(name = "answer", nullable = false)
     private String answer;
 
-    public ReviewContent(Question question, String answer) {
+    public ReviewContent(Review review, Question question, String answer) {
         validateAnswerLength(answer);
+        this.review = review;
         this.question = question;
         this.answer = answer;
     }
