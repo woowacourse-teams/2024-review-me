@@ -48,6 +48,9 @@ public class Review {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "is_public", nullable = false)
+    private boolean isPublic;
+
     public Review(Member reviewer, Member reviewee, ReviewerGroup reviewerGroup,
                   List<Keyword> keywords, LocalDateTime createdAt) {
         if (reviewer.equals(reviewee)) {
@@ -58,9 +61,14 @@ public class Review {
         this.keywords = new Keywords(keywords);
         this.createdAt = createdAt;
         reviewerGroup.addReview(this);
+        this.isPublic = false;
     }
 
     public boolean isSubmittedBy(Member member) {
         return reviewer.equals(member);
+    }
+
+    public boolean isForReviewee(Member member) {
+        return reviewee.equals(member);
     }
 }

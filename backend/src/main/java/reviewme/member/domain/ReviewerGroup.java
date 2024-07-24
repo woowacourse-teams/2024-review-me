@@ -59,6 +59,9 @@ public class ReviewerGroup {
     @Column(name = "deadline", nullable = false)
     private LocalDateTime deadline;
 
+    @Column(name = "thumbnail_url", nullable = false)
+    private String thumbnailUrl;
+
     public ReviewerGroup(Member reviewee, List<GithubId> reviewerGithubIds,
                          String groupName, String description, LocalDateTime deadline) {
         if (groupName.isBlank() || groupName.length() > MAX_GROUP_NAME_LENGTH) {
@@ -76,6 +79,7 @@ public class ReviewerGroup {
         this.description = description;
         this.deadline = deadline;
         this.reviews = new ArrayList<>();
+        this.thumbnailUrl = "https://github.com/octocat.png";
     }
 
     public boolean isDeadlineExceeded(LocalDateTime now) {

@@ -50,4 +50,8 @@ public class ReviewContent {
             throw new InvalidAnswerLengthException(MIN_ANSWER_LENGTH, MAX_ANSWER_LENGTH);
         }
     }
+
+    public String getQuestion() {
+        return question.getContent();
+    }
 }
