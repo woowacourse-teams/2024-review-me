@@ -5,6 +5,7 @@ import { getDataToWriteReview, postReviewApi } from '@/apis/review';
 import ClockLogo from '@/assets/clock.svg';
 import GithubLogo from '@/assets/githubLogo.svg';
 import Button from '@/components/common/Button';
+import { REVIEW } from '@/constants/review';
 import { Keyword, ReviewContent, ReviewData, WritingReviewInfoData } from '@/types';
 
 import KeywordButton from './components/KeywordButton';
@@ -14,9 +15,9 @@ import * as S from './styles';
 
 const DUMMY = {
   questionList: [
-    { id: 0, content: '1. 동료의 개발 역량 향상을 위해 피드백을 남겨 주세요.' },
-    { id: 1, content: '2. 동료의 소프트 스킬의 성장을 위해 피드백을 남겨 주세요.' },
-    { id: 2, content: '3. 팀 동료로 근무한다면 같이 일하고 싶은 개발자인가요?' },
+    { id: 0, content: '동료의 개발 역량 향상을 위해 피드백을 남겨 주세요.' },
+    { id: 1, content: '동료의 소프트 스킬의 성장을 위해 피드백을 남겨 주세요.' },
+    { id: 2, content: '팀 동료로 근무한다면 같이 일하고 싶은 개발자인가요?' },
   ],
   keywords: [
     { id: 0, content: '성실해요' },
@@ -39,8 +40,9 @@ const ReviewWritingPage = () => {
   ]);
   const [selectedKeywords, setSelectedKeywords] = useState<number[]>([]);
 
-  const isValidAnswerLength = !answers.some((id) => id.answer.length < 20);
-  const isValidKeywordSelection = selectedKeywords.length >= 1 && selectedKeywords.length <= 5;
+  const isValidAnswerLength = !answers.some((id) => id.answer.length < REVIEW.answerMinLength);
+  const isValidKeywordSelection =
+    selectedKeywords.length >= REVIEW.keywordMinCount && selectedKeywords.length <= REVIEW.keywordMaxCount;
   const isValidForm = isValidAnswerLength && isValidKeywordSelection;
 
   // useEffect(() => {
@@ -60,7 +62,7 @@ const ReviewWritingPage = () => {
   };
 
   const handleKeywordButtonClick = (keyword: Keyword) => {
-    if (selectedKeywords.length === 5 && !selectedKeywords.includes(keyword.id)) {
+    if (selectedKeywords.length === REVIEW.keywordMaxCount && !selectedKeywords.includes(keyword.id)) {
       alert('키워드는 최대 5개까지 선택할 수 있어요.');
       return;
     }
@@ -73,7 +75,7 @@ const ReviewWritingPage = () => {
   const handleSubmitReview = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!confirm('리뷰를 제출할까요? (제출한 뒤에는 수정할 수 없어요)')) {
+    if (!confirm('리뷰를 제출할까요? 제출한 뒤에는 수정할 수 없어요.')) {
       return;
     }
 
@@ -95,6 +97,8 @@ const ReviewWritingPage = () => {
     // }
   };
 
+  // if (!dataToWrite) return <div>Loading...</div>;
+
   return (
     <S.ReviewWritingPage onSubmit={handleSubmitReview}>
       <S.ReviewFormHeader>
@@ -102,14 +106,22 @@ const ReviewWritingPage = () => {
           <S.LogoImage src={GithubLogo} alt="깃허브 로고" />
           <S.Container>
             <S.ProjectName>2024-review-me</S.ProjectName>
+            {/* <S.ProjectName>{dataToWrite && dataToWrite.reviewerGroup.name}</S.ProjectName> */}
             <S.ReviewInfo>
               <S.Reviewee>
                 <span>chysis</span>님을 리뷰해주세요!
               </S.Reviewee>
+              {/* <S.Reviewee>
+                <span>{dataToWrite && dataToWrite.reviewerGroup.reviewee.name}</span>님을 리뷰해주세요!
+              </S.Reviewee> */}
               <S.ReviewExpirationDate>
                 <S.ClockImage src={ClockLogo} alt="시계" />
                 리뷰 마감일: 2024-08-05
               </S.ReviewExpirationDate>
+              {/* <S.ReviewExpirationDate>
+                <S.ClockImage src={ClockLogo} alt="시계" />
+                리뷰 마감일: {dataToWrite && dataToWrite.reviewerGroup.deadline.toDateString()}
+              </S.ReviewExpirationDate> */}
             </S.ReviewInfo>
           </S.Container>
         </S.ReviewInfoContainer>
@@ -117,10 +129,10 @@ const ReviewWritingPage = () => {
       </S.ReviewFormHeader>
       <S.ReviewFormMain>
         <S.ReviewContainer>
-          {DUMMY.questionList.map((question) => {
+          {DUMMY.questionList.map((question, index) => {
             return (
               <ReviewItem
-                question={question.content}
+                question={`${index + 1}. ${question.content}`}
                 key={question.id}
                 answerValue={answers.find((answer) => answer.questionId === question.id)?.answer || ''}
                 onWrite={(value) => handleAnswerChange(question.id, value)}
@@ -128,10 +140,10 @@ const ReviewWritingPage = () => {
             );
           })}
           {/* {dataToWrite &&
-            dataToWrite.questions.map((question) => {
+            dataToWrite.questions.map((question, index) => {
               return (
                 <ReviewItem
-                  question={question.content}
+                  question={`${index + 1}. ${question.content}`}
                   key={question.id}
                   answerValue={answers.find((answer) => answer.questionId === question.id)?.answer || ''}
                   onWrite={(value) => handleAnswerChange(question.id, value)}
