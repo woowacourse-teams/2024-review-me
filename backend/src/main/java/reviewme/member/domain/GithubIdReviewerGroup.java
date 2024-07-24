@@ -9,7 +9,6 @@ import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import reviewme.member.GithubId;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

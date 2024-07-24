@@ -17,7 +17,6 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import reviewme.member.GithubId;
 import reviewme.member.domain.exception.DescriptionLengthExceededException;
 import reviewme.member.domain.exception.InvalidGroupNameLengthException;
 import reviewme.member.domain.exception.SelfReviewException;

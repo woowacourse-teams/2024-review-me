@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import reviewme.member.GithubId;
 import reviewme.member.domain.exception.DuplicateReviewerException;
 import reviewme.member.domain.exception.EmptyReviewerException;
 
