@@ -5,6 +5,7 @@ import { DetailReviewData } from '@/types';
 
 import { getDetailedReviewApi } from '../../apis/review';
 
+import KeywordSection from './components/KeywordSection';
 import ReviewDescription from './components/ReviewDescription';
 import ReviewSection from './components/ReviewSection';
 
@@ -13,29 +14,37 @@ const ANSWER =
 
 const MOCK_DATA: DetailReviewData = {
   id: 123456,
-  reviewer: {
-    memberId: 123456,
-    name: '올리',
-  },
   createdAt: new Date('2024-07-16'),
   reviewerGroup: {
-    groupId: 123456,
+    id: 123456,
     name: 'review-me',
+    deadline: new Date('2024-07-01'),
+    reviewee: {
+      id: 78910,
+      name: '바다',
+    },
   },
   contents: [
     {
-      question: '1. [공개] 동료의 개발 역량 향상을 위해 피드백을 남겨 주세요.',
+      id: 23456,
+      question: '[공개] 동료의 개발 역량 향상을 위해 피드백을 남겨 주세요.',
       answer: ANSWER,
     },
-    { question: '2. [공개] 동료의 소프트 스킬의 성장을 위해 피드백을 남겨 주세요.', answer: ANSWER },
-    { question: '3. [비공개] 팀 동료로 근무한다면 같이 일 하고 싶은 개발자인가요?', answer: ANSWER },
+    { id: 567810, question: '[공개] 동료의 소프트 스킬의 성장을 위해 피드백을 남겨 주세요.', answer: ANSWER },
+    { id: 98761, question: '[비공개] 팀 동료로 근무한다면 같이 일 하고 싶은 개발자인가요?', answer: ANSWER },
   ],
-  keywords: [{ id: 1, detail: '친절해요' }],
+  keywords: [
+    { id: 1, detail: '친절해요' },
+    { id: 12, detail: '친절합니다!' },
+    { id: 11, detail: '친절해요요요요요' },
+    { id: 14, detail: '친절해해해해해' },
+    { id: 18, detail: '친절해요요용' },
+  ],
 };
 
 const COMMENT = 'VITE 쓰고 싶다.';
 
-const DetailedReviewPage = ({}) => {
+const DetailedReviewPage = () => {
   const [detailReview, setDetailReview] = useState<DetailReviewData>(MOCK_DATA);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -77,8 +86,9 @@ const DetailedReviewPage = ({}) => {
       />
       <ReviewComment comment={COMMENT} />
       {detailReview.contents.map((item, index) => (
-        <ReviewSection question={item.question} answer={item.answer} key={index} />
+        <ReviewSection question={item.question} answer={item.answer} key={index} index={index} />
       ))}
+      <KeywordSection keywords={MOCK_DATA.keywords} index={detailReview.contents.length} />
     </>
   );
 };
