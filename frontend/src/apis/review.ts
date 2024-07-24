@@ -1,6 +1,7 @@
 //리뷰 작성
 
 import { ReviewData, WritingReviewInfoData } from '@/types';
+
 import endPoint from './endpoints';
 
 export const getInfoToWriteReview = async (reviewerGroupId: number) => {
