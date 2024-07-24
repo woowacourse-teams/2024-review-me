@@ -26,7 +26,13 @@ export const ReviewTextarea = styled.textarea`
   height: 15rem;
   padding: 1.6rem;
 
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+
   border-radius: 0.8rem;
+
+  &::placeholder {
+    font-weight: ${({ theme }) => theme.fontWeight.medium};
+  }
 `;
 
 export const ReviewTextLength = styled.p`
