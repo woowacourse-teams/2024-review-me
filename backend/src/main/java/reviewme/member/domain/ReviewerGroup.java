@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,9 @@ public class ReviewerGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(mappedBy = "reviewerGroup")
+    private Set<GithubIdReviewerGroup> reviewerGithubIds;
 
     @ManyToOne
     @JoinColumn(name = "reviewee_id", nullable = false)
@@ -70,5 +74,9 @@ public class ReviewerGroup {
 
     public void addReview(Review review) {
         reviews.add(review);
+    }
+
+    public void addReviewerGithubId(GithubIdReviewerGroup githubIdReviewerGroup) {
+        reviewerGithubIds.add(githubIdReviewerGroup);
     }
 }
