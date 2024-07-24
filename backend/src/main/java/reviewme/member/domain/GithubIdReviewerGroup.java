@@ -5,12 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "github_id_reviewer_group")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class GithubIdReviewerGroup {
@@ -23,6 +26,7 @@ public class GithubIdReviewerGroup {
     private GithubId githubId;
 
     @ManyToOne
+    @JoinColumn(name = "reviewer_group_id", nullable = false)
     private ReviewerGroup reviewerGroup;
 
     public GithubIdReviewerGroup(GithubId githubId, ReviewerGroup reviewerGroup) {
