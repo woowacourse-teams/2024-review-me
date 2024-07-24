@@ -29,8 +29,13 @@ public class Member {
     @Embedded
     private GithubId githubId;
 
-    public Member(String name, long githubId) {
+    public Member(Long id, String name, GithubId githubId) {
+        this.id = id;
         this.name = name;
-        this.githubId = new GithubId(githubId);
+        this.githubId = githubId;
+    }
+
+    public Member(String name, long githubId) {
+        this(null, name, new GithubId(githubId));
     }
 }
