@@ -82,7 +82,7 @@ const DetailedReviewPage = () => {
       <ReviewDescription
         projectName={detailReview.reviewerGroup.name}
         date={detailReview.reviewerGroup.deadline}
-        isLock={true}
+        isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
       />
       <ReviewComment comment={COMMENT} />

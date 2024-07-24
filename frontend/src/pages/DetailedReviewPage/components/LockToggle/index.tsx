@@ -17,13 +17,13 @@ const IMAGE = {
 };
 interface ToggleButtonProps {
   name: keyof typeof IMAGE;
-  $isLock: boolean;
+  $isPublic: boolean;
   handleClickToggleButton: () => void;
 }
 
-const ToggleButton = ({ name, $isLock, handleClickToggleButton }: ToggleButtonProps) => {
+const ToggleButton = ({ name, $isPublic, handleClickToggleButton }: ToggleButtonProps) => {
   const { src, alt, text } = IMAGE[name];
-  const $isActive = name === 'lock' ? $isLock : !$isLock;
+  const $isActive = name === 'lock' ? $isPublic : !$isPublic;
 
   return (
     <S.Button type="button" $isActive={$isActive} name={name} onClick={handleClickToggleButton}>

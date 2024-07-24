@@ -9,14 +9,14 @@ import * as S from './styles';
 const PROJECT_IMAGE_SIZE = '6rem';
 
 interface ReviewDescriptionProps extends Omit<ProjectImgProps, '$size'>, Omit<ReviewDateProps, 'dateTitle'> {
-  isLock: boolean;
+  isPublic: boolean;
   handleClickToggleButton: () => void;
 }
 
 const ReviewDescription = ({
   projectImgSrc,
   projectName,
-  isLock,
+  isPublic,
   date,
   handleClickToggleButton,
 }: ReviewDescriptionProps) => {
@@ -30,7 +30,7 @@ const ReviewDescription = ({
         </S.ProjectNameAndDateContainer>
       </S.DescriptionSide>
       <S.DescriptionSide>
-        <LockToggle $isLock={isLock} handleClickToggleButton={handleClickToggleButton} />
+        <LockToggle $isPublic={isPublic} handleClickToggleButton={handleClickToggleButton} />
       </S.DescriptionSide>
     </S.Description>
   );
