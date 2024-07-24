@@ -9,7 +9,7 @@ export const Button = styled.button<{ buttonType: ButtonType }>`
 
   width: 10rem;
   height: 4rem;
-  padding: 2rem;
+  padding: 1rem 2rem;
 
   color: ${({ theme, buttonType }) => (buttonType === 'primary' ? theme.colors.white : theme.colors.pri)};
 
