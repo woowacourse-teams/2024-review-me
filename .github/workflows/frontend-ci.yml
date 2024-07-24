@@ -33,6 +33,12 @@ jobs:
           cache: "yarn"
           cache-dependency-path: ./frontend/yarn.lock
 
+      - name: Create .env file
+        run: echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" > ./frontend/.env
+
+      - name: Set environment file permissions
+        run: chmod 644 ./frontend/.env
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
         working-directory: frontend
