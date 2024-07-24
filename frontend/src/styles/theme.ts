@@ -3,6 +3,7 @@ import { CSSProperties } from 'react';
 
 import { ThemeProperty } from '../types';
 
+export const formWidth = '86.7rem';
 export const sidebarWidth: ThemeProperty<string> = {
   desktop: '25rem',
   mobile: '100vw',
@@ -56,6 +57,7 @@ const theme: Theme = {
   breakpoints,
   sidebarWidth,
   borderRadius,
+  formWidth,
 };
 
 export default theme;

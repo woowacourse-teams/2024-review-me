@@ -1,6 +1,7 @@
 import '@emotion/react';
 
 import { colors, fontSize, fontWeight, zIndex, breakpoints, sidebarWidth, borderRadius } from '../styles/theme';
+
 // TODO: export 해서 사용하지 않다면 리팩토링
 export type colorType = typeof colors;
 export type zIndexType = typeof zIndex;
@@ -18,6 +19,7 @@ type ThemeType = {
   breakpoints: breakpoints;
   sidebarWidth: sidebarWidth;
   borderRadius: borderRadius;
+  formWidth: string;
 };
 
 declare module '@emotion/react' {
