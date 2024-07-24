@@ -23,6 +23,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Set environment file permissions
+        run: chmod 644 ./frontend/.env
+
       - name: Checkout to current repository
         uses: actions/checkout@v4
 
@@ -46,3 +49,10 @@ jobs:
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
         working-directory: frontend
+
+      # 아티팩트를 사용해 배포 파일 저장
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: production-artifacts
+          path: ./frontend/dist
