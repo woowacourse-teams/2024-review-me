@@ -55,7 +55,7 @@ module.exports = (env, argv) => {
       new CleanWebpackPlugin(),
       new Dotenv({
         systemvars: true,
-        path: '/home/runner/work/2024-review-me/2024-review-me/frontend/.env.',
+        path: '/home/runner/work/2024-review-me/frontend/.env.',
         //path: './.env',
       }),
     ],
