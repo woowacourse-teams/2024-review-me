@@ -41,35 +41,35 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러가 발생했습니다.");
     }
 
-    // default error
+    // Following exceptions are exceptions that occur in Spring
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ProblemDetail handleHttpRequestMethodNotSupportedException(RuntimeException ex) {
+    public ProblemDetail handleHttpRequestMethodNotSupportedException(Exception ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP 메서드입니다.");
     }
 
     @ExceptionHandler(HttpMediaTypeException.class)
-    public ProblemDetail handleHttpMediaTypeException(RuntimeException ex) {
+    public ProblemDetail handleHttpMediaTypeException(Exception ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "잘못된 media type 입니다.");
     }
 
     @ExceptionHandler({MissingRequestValueException.class, MissingServletRequestPartException.class})
-    public ProblemDetail handleMissingRequestException(RuntimeException ex) {
+    public ProblemDetail handleMissingRequestException(Exception ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "필수 요청 데이터가 누락되었습니다.");
     }
 
     @ExceptionHandler({ServletRequestBindingException.class, HttpMessageNotReadableException.class})
-    public ProblemDetail handleServletRequestBindingException(RuntimeException ex) {
+    public ProblemDetail handleServletRequestBindingException(Exception ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "요청을 읽을 수 없습니다.");
     }
 
     @ExceptionHandler({MethodValidationException.class, BindException.class,
             TypeMismatchException.class, HandlerMethodValidationException.class})
-    public ProblemDetail handleRequestFormatException(RuntimeException ex) {
+    public ProblemDetail handleRequestFormatException(Exception ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "요청의 형식이 잘못되었습니다.");
     }
 
     @ExceptionHandler({NoHandlerFoundException.class, NoResourceFoundException.class})
-    public ProblemDetail handleNoHandlerFoundException(RuntimeException ex) {
+    public ProblemDetail handleNoHandlerFoundException(Exception ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "잘못된 경로의 요청입니다.");
     }
 
