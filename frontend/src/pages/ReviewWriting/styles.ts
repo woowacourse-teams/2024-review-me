@@ -92,7 +92,7 @@ export const KeywordTitle = styled.div`
 
 export const KeywordList = styled.ul`
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 1rem;
   margin: 1rem 0;
 `;
