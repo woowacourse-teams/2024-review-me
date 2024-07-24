@@ -107,7 +107,7 @@ const ReviewWritingPage = () => {
                 <span>chysis</span>님을 리뷰해주세요!
               </S.Reviewee>
               <S.ReviewExpirationDate>
-                <img src={ClockLogo} alt="시계" />
+                <S.ClockImage src={ClockLogo} alt="시계" />
                 리뷰 마감일: 2024-08-05
               </S.ReviewExpirationDate>
             </S.ReviewInfo>

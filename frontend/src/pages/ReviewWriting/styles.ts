@@ -52,6 +52,11 @@ export const ReviewExpirationDate = styled.div`
   gap: 0.5rem;
 `;
 
+export const ClockImage = styled.img`
+  width: 1.5rem;
+  height: 2.4rem;
+`;
+
 export const ReviewFormMain = styled.main`
   display: flex;
   flex-direction: column;
