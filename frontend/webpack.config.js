@@ -3,6 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 
+//console.log('Loading .env file from:', path.resolve(__dirname, './.env')); // 디버그 로그 추가
+//console.log('Loading .env file from:', path.resolve(__dirname, './.env')); // 디버그 로그 추가
+
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
 
@@ -52,7 +55,8 @@ module.exports = (env, argv) => {
       new CleanWebpackPlugin(),
       new Dotenv({
         systemvars: true,
-        path: './frontend/.env',
+        path: '/home/runner/work/2024-review-me/2024-review-me/frontend/.env.',
+        //path: './.env',
       }),
     ],
     devtool: isProduction ? 'hidden-source-map' : 'eval',
