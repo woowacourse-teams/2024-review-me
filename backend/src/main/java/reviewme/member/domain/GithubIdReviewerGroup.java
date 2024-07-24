@@ -29,6 +29,5 @@ public class GithubIdReviewerGroup {
     public GithubIdReviewerGroup(GithubId githubId, ReviewerGroup reviewerGroup) {
         this.githubId = githubId;
         this.reviewerGroup = reviewerGroup;
-        reviewerGroup.addReviewerGithubId(this);
     }
 }
