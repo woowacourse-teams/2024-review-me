@@ -18,11 +18,7 @@ import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.domain.Keywords;
 import reviewme.member.domain.Member;
 import reviewme.member.domain.ReviewerGroup;
-import reviewme.review.domain.exception.DeadlineExpiredException;
 import reviewme.review.domain.exception.IllegalReviewerException;
-import reviewme.review.domain.exception.RevieweeMismatchException;
-import reviewme.review.exception.GithubReviewerGroupUnAuthorizedException;
-import reviewme.review.exception.ReviewAlreadySubmittedException;
 
 @Entity
 @Table(name = "review")
