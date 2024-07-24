@@ -5,14 +5,14 @@ import * as S from './styles';
 interface ReviewItemProps {
   question: string;
   answerValue: string;
-  onWrite: (value: string) => void;
+  handleWrite: (value: string) => void;
 }
 
-const ReviewItem = ({ question, answerValue, onWrite }: ReviewItemProps) => {
+const ReviewItem = ({ question, answerValue, handleWrite }: ReviewItemProps) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     if (value.length <= REVIEW.answerMaxLength) {
-      onWrite(value);
+      handleWrite(value);
     }
   };
 

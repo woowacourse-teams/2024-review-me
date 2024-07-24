@@ -135,7 +135,7 @@ const ReviewWritingPage = () => {
                 question={`${index + 1}. ${question.content}`}
                 key={question.id}
                 answerValue={answers.find((answer) => answer.questionId === question.id)?.answer || ''}
-                onWrite={(value) => handleAnswerChange(question.id, value)}
+                handleWrite={(value) => handleAnswerChange(question.id, value)}
               />
             );
           })}

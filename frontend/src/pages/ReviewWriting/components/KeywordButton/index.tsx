@@ -1,21 +1,14 @@
-import { PropsWithChildren } from 'react';
+import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
 import * as S from './styles';
 
-interface KeywordButtonProps {
+interface KeywordButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isSelected: boolean;
-  onClick: () => void;
 }
 
-const KeywordButton = ({ isSelected, children, onClick }: PropsWithChildren<KeywordButtonProps>) => {
+const KeywordButton = ({ isSelected, children, ...props }: PropsWithChildren<KeywordButtonProps>) => {
   return (
-    <S.KeywordButton
-      isSelected={isSelected}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick();
-      }}
-    >
+    <S.KeywordButton isSelected={isSelected} type="button" {...props}>
       {children}
     </S.KeywordButton>
   );
