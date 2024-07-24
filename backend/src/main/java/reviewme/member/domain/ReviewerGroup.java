@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import reviewme.member.GithubId;
 import reviewme.member.domain.exception.DescriptionLengthExceededException;
 import reviewme.member.domain.exception.InvalidGroupNameLengthException;
+import reviewme.member.domain.exception.SelfReviewException;
 import reviewme.review.domain.Review;
 
 @Entity
@@ -62,6 +63,9 @@ public class ReviewerGroup {
         }
         if (description.length() > MAX_DESCRIPTION_LENGTH) {
             throw new DescriptionLengthExceededException(MAX_DESCRIPTION_LENGTH);
+        }
+        if (reviewerGithubIds.contains(reviewee.getGithubId())) {
+            throw new SelfReviewException();
         }
         this.reviewee = reviewee;
         this.reviewerGithubIds = new ReviewerGroupGithubIds(this, reviewerGithubIds);
