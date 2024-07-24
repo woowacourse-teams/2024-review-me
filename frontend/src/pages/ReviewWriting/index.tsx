@@ -51,7 +51,11 @@ const ReviewWritingPage = () => {
   };
 
   const handleKeywordButtonClick = (keyword: Keyword) => {
-    console.log(selectedKeywords);
+    if (selectedKeywords.length === 5) {
+      alert('키워드는 최대 5개까지 선택할 수 있어요.');
+      return;
+    }
+
     setSelectedKeywords((prev) =>
       prev.includes(keyword.id) ? selectedKeywords.filter((id) => id !== keyword.id) : [...prev, keyword.id],
     );
@@ -68,7 +72,7 @@ const ReviewWritingPage = () => {
       reviewerId: 8,
       reviewerGroupId: 5,
       reviewContents: answers,
-      keywords: [1, 2],
+      keywords: selectedKeywords,
     };
 
     try {
