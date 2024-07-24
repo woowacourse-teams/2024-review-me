@@ -14,7 +14,7 @@ interface ReviewDescriptionProps extends Omit<ProjectImgProps, '$size'>, Omit<Re
 }
 
 const ReviewDescription = ({
-  projectImgSrc,
+  thumbnailUrl,
   projectName,
   isPublic,
   date,
@@ -23,7 +23,7 @@ const ReviewDescription = ({
   return (
     <S.Description>
       <S.DescriptionSide>
-        <ProjectImg projectImgSrc={projectImgSrc} projectName={projectName} $size={PROJECT_IMAGE_SIZE} />
+        <ProjectImg thumbnailUrl={thumbnailUrl} projectName={projectName} $size={PROJECT_IMAGE_SIZE} />
         <S.ProjectNameAndDateContainer>
           <S.ProjectName>{projectName}</S.ProjectName>
           <ReviewDate date={date} dateTitle="리뷰 작성일" />
