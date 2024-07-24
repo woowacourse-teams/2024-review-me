@@ -7,14 +7,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import reviewme.member.domain.exception.DescriptionLengthExceededException;
 import reviewme.member.domain.exception.InvalidGroupNameLengthException;
+import reviewme.review.domain.Review;
 
 @Entity
 @Table(name = "reviewer_group")
@@ -34,16 +38,19 @@ public class ReviewerGroup {
     @JoinColumn(name = "reviewee_id", nullable = false)
     private Member reviewee;
 
+    @OneToMany(mappedBy = "reviewerGroup")
+    private List<Review> reviews;
+
     @Column(name = "group_name", nullable = false)
     private String groupName;
 
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "createdAt", nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "deadline", nullable = false)
+    private LocalDateTime deadline;
 
-    public ReviewerGroup(Member reviewee, String groupName, String description, LocalDateTime createdAt) {
+    public ReviewerGroup(Member reviewee, String groupName, String description, LocalDateTime deadline) {
         if (groupName.isBlank() || groupName.length() > MAX_GROUP_NAME_LENGTH) {
             throw new InvalidGroupNameLengthException(MAX_GROUP_NAME_LENGTH);
         }
@@ -53,14 +60,15 @@ public class ReviewerGroup {
         this.reviewee = reviewee;
         this.groupName = groupName;
         this.description = description;
-        this.createdAt = createdAt;
+        this.deadline = deadline;
+        this.reviews = new ArrayList<>();
     }
 
     public boolean isDeadlineExceeded(LocalDateTime now) {
-        return now.isAfter(getDeadline());
+        return now.isAfter(deadline);
     }
 
-    public LocalDateTime getDeadline() {
-        return createdAt.plus(DEADLINE_DURATION);
+    public void addReview(Review review) {
+        reviews.add(review);
     }
 }
