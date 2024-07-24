@@ -4,7 +4,7 @@ export const ReviewWritingPage = styled.form`
   display: flex;
   flex-direction: column;
 
-  width: 80rem;
+  width: 86.7rem;
   height: fit-content;
 
   border-top: 0.5rem solid #aedaff;
