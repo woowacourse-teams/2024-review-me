@@ -11,7 +11,7 @@ interface ReviewItemProps {
 const ReviewItem = ({ question, answerValue, onWrite }: ReviewItemProps) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
-    if (value.length <= 1000) {
+    if (value.length <= REVIEW.answerMaxLength) {
       onWrite(value);
     }
   };
@@ -19,12 +19,10 @@ const ReviewItem = ({ question, answerValue, onWrite }: ReviewItemProps) => {
   return (
     <S.ReviewItem>
       <S.ReviewQuestion>{question}</S.ReviewQuestion>
-      <S.ReviewTextarea
-        placeholder={REVIEW.answerMaxLengthMessage}
-        value={answerValue}
-        onChange={(e) => handleInputChange(e)}
-      />
-      <S.ReviewTextLength>{answerValue.length} / 1000</S.ReviewTextLength>
+      <S.ReviewTextarea placeholder={REVIEW.answerMaxLengthMessage} value={answerValue} onChange={handleInputChange} />
+      <S.ReviewTextLength>
+        {answerValue.length} / {REVIEW.answerMaxLength}
+      </S.ReviewTextLength>
     </S.ReviewItem>
   );
 };
