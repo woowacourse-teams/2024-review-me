@@ -10,8 +10,8 @@ export const ReviewDate = styled.div`
   display: flex;
   align-items: center;
   font-size: 1.6rem;
+`;
 
-  span:nth-child(2) {
-    margin: 0 1rem;
-  }
+export const Colon = styled.span`
+  margin: 0 1rem;
 `;

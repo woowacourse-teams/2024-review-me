@@ -14,7 +14,7 @@ const ReviewDate = ({ date, dateTitle }: ReviewDateProps) => {
     <S.ReviewDate>
       <S.ClockImg src={ClockIcon} alt="시계 아이콘" />
       <span>{dateTitle}</span>
-      <span>:</span>
+      <S.Colon>:</S.Colon>
       <span>
         {year}-{month}-{day}
       </span>
