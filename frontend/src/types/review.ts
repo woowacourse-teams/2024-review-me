@@ -39,3 +39,19 @@ export interface WritingReviewInfoData {
     name: string;
   };
 }
+
+export interface ReviewPreview {
+  id: number;
+  isPublic: boolean;
+  reviewerGroup: {
+    id: number;
+    name: string;
+    thumbnailUrl: string;
+  };
+  createdAt: string;
+  contentPreview: string;
+  keywords: Array<{
+    id: number;
+    content: string;
+  }>;
+}
