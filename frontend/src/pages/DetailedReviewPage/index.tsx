@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
 
 import { ReviewComment } from '@/components';
 import { DetailReviewData } from '@/types';
@@ -46,17 +47,19 @@ const MOCK_DATA: DetailReviewData = {
 const COMMENT = 'VITE 쓰고 싶다.';
 
 const DetailedReviewPage = () => {
+  const { id: reviewId } = useParams();
   const [detailReview, setDetailReview] = useState<DetailReviewData>(MOCK_DATA);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const fetch = async () => {
+    if (!reviewId) return;
     try {
       setIsLoading(true);
-      getDetailedReviewApi({ reviewId: 4 }).then((result) => {
-        setDetailReview(result);
-        setErrorMessage('');
-      });
+      const result = await getDetailedReviewApi({ reviewId: Number(reviewId) });
+
+      setDetailReview(result);
+      setErrorMessage('');
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
@@ -78,10 +81,7 @@ const DetailedReviewPage = () => {
     <S.DetailedReviewPage>
       <ReviewDescription
         projectName={detailReview.reviewerGroup.name}
-        // NOTE: 프론트에서는 리뷰 작성일을 보여주지만,
-        // 현재 서버에서 오는 데이터가 deadline인 관계로 (속성 이름, value의 성격 모두 다름)
-        // 임의의 Date 객체로 하드코딩한 상태임
-        date={new Date('2024-01-22')}
+        date={detailReview.reviewerGroup.deadline}
         isLock={true}
         handleClickToggleButton={() => console.log('click toggle ')}
       />
@@ -89,7 +89,7 @@ const DetailedReviewPage = () => {
       {detailReview.contents.map((item, index) => (
         <ReviewSection question={item.question} answer={item.answer} key={index} index={index} />
       ))}
-      <KeywordSection keywords={MOCK_DATA.keywords} index={detailReview.contents.length} />
+      <KeywordSection keywords={detailReview.keywords} index={detailReview.contents.length} />
     </S.DetailedReviewPage>
   );
 };
