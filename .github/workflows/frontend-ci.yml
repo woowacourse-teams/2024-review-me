@@ -20,29 +20,29 @@ jobs:
       - name: Checkout to current repository
         uses: actions/checkout@v4
 
-      - name: Change to frontend directory
-        run: cd frontend
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "yarn"
-          cache-dependency-path: yarn.lock
+          cache-dependency-path: ./frontend/yarn.lock
 
       - name: Create .env file
-        run: echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" > .env
+        run: echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" > ./frontend/.env
 
       - name: Set environment file permissions
-        run: chmod 644 .env
+        run: chmod 644 ./frontend/.env
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+        working-directory: frontend
 
       - name: Run tests
         run: yarn test
+        working-directory: frontend
 
       - name: Build
         run: yarn build
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
+        working-directory: frontend
