@@ -28,3 +28,9 @@ export const ReviewTextarea = styled.textarea`
 
   border-radius: 0.8rem;
 `;
+
+export const ReviewTextLength = styled.p`
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
+`;
