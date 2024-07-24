@@ -22,7 +22,7 @@ class ReviewTest {
         List<Keyword> keywords = List.of(꼼꼼하게_기록해요.create(), 의견을_잘_조율해요.create());
 
         // when, then
-        assertThatThrownBy(() -> new Review(member, member, keywords, createdAt))
+        assertThatThrownBy(() -> new Review(member, member, null, keywords, createdAt))
                 .isInstanceOf(IllegalReviewerException.class);
     }
 }
