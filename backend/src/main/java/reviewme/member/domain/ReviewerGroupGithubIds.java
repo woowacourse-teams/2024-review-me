@@ -37,4 +37,11 @@ public class ReviewerGroupGithubIds {
         }
         reviewerGithubIds.add(githubIdReviewerGroup);
     }
+
+    public boolean doesNotContain(Member reviewer) {
+        GithubId githubId = reviewer.getGithubId();
+        return reviewerGithubIds.stream()
+                .map(GithubIdReviewerGroup::getGithubId)
+                .noneMatch(githubId::equals);
+    }
 }

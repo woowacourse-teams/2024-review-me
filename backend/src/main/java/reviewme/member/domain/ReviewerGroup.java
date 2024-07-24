@@ -22,6 +22,10 @@ import reviewme.member.domain.exception.DescriptionLengthExceededException;
 import reviewme.member.domain.exception.InvalidGroupNameLengthException;
 import reviewme.member.domain.exception.SelfReviewException;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.exception.DeadlineExpiredException;
+import reviewme.review.domain.exception.RevieweeMismatchException;
+import reviewme.review.exception.GithubReviewerGroupUnAuthorizedException;
+import reviewme.review.exception.ReviewAlreadySubmittedException;
 
 @Entity
 @Table(name = "reviewer_group")
@@ -80,7 +84,25 @@ public class ReviewerGroup {
     }
 
     public void addReview(Review review) {
+        Member reviewer = review.getReviewer();
+        if (isDeadlineExceeded(review.getCreatedAt())) {
+            throw new DeadlineExpiredException();
+        }
+        if (hasSubmittedReviewBy(reviewer)) {
+            throw new ReviewAlreadySubmittedException();
+        }
+        if (reviewerGithubIds.doesNotContain(reviewer)) {
+            throw new GithubReviewerGroupUnAuthorizedException();
+        }
+        if (!review.getReviewee().equals(reviewee)) {
+            throw new RevieweeMismatchException();
+        }
         reviews.add(review);
+    }
+
+    private boolean hasSubmittedReviewBy(Member reviewer) {
+        return reviews.stream()
+                .anyMatch(review -> review.isSubmittedBy(reviewer));
     }
 
     public void addReviewerGithubId(GithubIdReviewerGroup githubIdReviewerGroup) {
