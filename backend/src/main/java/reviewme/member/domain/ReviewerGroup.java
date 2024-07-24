@@ -1,6 +1,7 @@
 package reviewme.member.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,10 +14,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import reviewme.member.GithubId;
 import reviewme.member.domain.exception.DescriptionLengthExceededException;
 import reviewme.member.domain.exception.InvalidGroupNameLengthException;
 import reviewme.review.domain.Review;
@@ -35,8 +36,8 @@ public class ReviewerGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "reviewerGroup")
-    private Set<GithubIdReviewerGroup> reviewerGithubIds;
+    @Embedded
+    private ReviewerGroupGithubIds reviewerGithubIds;
 
     @ManyToOne
     @JoinColumn(name = "reviewee_id", nullable = false)
@@ -54,7 +55,8 @@ public class ReviewerGroup {
     @Column(name = "deadline", nullable = false)
     private LocalDateTime deadline;
 
-    public ReviewerGroup(Member reviewee, String groupName, String description, LocalDateTime deadline) {
+    public ReviewerGroup(Member reviewee, List<GithubId> reviewerGithubIds,
+                         String groupName, String description, LocalDateTime deadline) {
         if (groupName.isBlank() || groupName.length() > MAX_GROUP_NAME_LENGTH) {
             throw new InvalidGroupNameLengthException(MAX_GROUP_NAME_LENGTH);
         }
@@ -62,6 +64,7 @@ public class ReviewerGroup {
             throw new DescriptionLengthExceededException(MAX_DESCRIPTION_LENGTH);
         }
         this.reviewee = reviewee;
+        this.reviewerGithubIds = new ReviewerGroupGithubIds(this, reviewerGithubIds);
         this.groupName = groupName;
         this.description = description;
         this.deadline = deadline;
