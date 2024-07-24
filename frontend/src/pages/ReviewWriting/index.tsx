@@ -35,8 +35,11 @@ const ReviewWritingPage = () => {
     { questionId: 2, answer: '' },
   ]);
   const [selectedKeywords, setSelectedKeywords] = useState<number[]>([]);
-  const isValidForm =
-    !answers.some((id) => id.answer.length < 20) && selectedKeywords.length >= 1 && selectedKeywords.length <= 5;
+
+  const isValidAnswerLength = !answers.some((id) => id.answer.length < 20);
+  const isValidKeywordSelection = selectedKeywords.length >= 1 && selectedKeywords.length <= 5;
+  const isValidForm = isValidAnswerLength && isValidKeywordSelection;
+
   // useEffect(() => {
   //   const getDataToWrite = async () => {
   //     const data = await getDataToWriteReview(1); // id: 임의 값
