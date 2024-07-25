@@ -15,11 +15,10 @@ const PATH = {
 };
 
 interface SidebarProps {
-  isSidebarOpen: boolean;
   closeSidebar: () => void;
 }
 
-const Sidebar = ({ isSidebarOpen, closeSidebar }: SidebarProps) => {
+const Sidebar = ({ closeSidebar }: SidebarProps) => {
   const location = useLocation();
 
   const menuItems = [
@@ -31,7 +30,7 @@ const Sidebar = ({ isSidebarOpen, closeSidebar }: SidebarProps) => {
   ];
 
   return (
-    <S.Sidebar $isOpen={isSidebarOpen}>
+    <S.Sidebar>
       <S.Top>
         <button>
           <S.LogoIcon src={LogoIcon} alt="로고" />
