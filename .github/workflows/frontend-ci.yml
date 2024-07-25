@@ -1,0 +1,48 @@
+name: Build test with Webpack
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - "frontend/**"
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency: # NOTE: action 도중 새 PR이 올라오면 기존 action 취소
+  group: "ci-group"
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to current repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "yarn"
+          cache-dependency-path: ./frontend/yarn.lock
+
+      - name: Create .env file
+        run: echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" > ./frontend/.env
+
+      - name: Set environment file permissions
+        run: chmod 644 ./frontend/.env
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: frontend
+
+      - name: Run tests
+        run: yarn test
+        working-directory: frontend
+
+      - name: Build
+        run: yarn build
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+        working-directory: frontend

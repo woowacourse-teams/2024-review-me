@@ -7,21 +7,22 @@ import java.util.List;
 
 @Schema(description = "리뷰 등록 요청")
 public record CreateReviewRequest(
-        @NotNull(message = "리뷰어 아이디를 입력해주세요.")
+
         @Schema(description = "리뷰어 ID")
+        @NotNull(message = "리뷰어 아이디를 입력해주세요.")
         Long reviewerId,
 
-        @NotNull(message = "리뷰어 그룹 아이디를 입력해주세요.")
         @Schema(description = "리뷰어 그룹 ID")
+        @NotNull(message = "리뷰어 그룹 아이디를 입력해주세요.")
         Long reviewerGroupId,
 
+        @Schema(description = "리뷰 내용 목록")
         @Valid
         @NotNull(message = "리뷰 내용을 입력해주세요.")
-        @Schema(description = "리뷰 내용 목록")
-        List<CreateReviewContentRequest> contents,
+        List<CreateReviewContentRequest> reviewContents,
 
-        @NotNull(message = "키워드를 입력해주세요.")
         @Schema(description = "선택된 키워드 ID 목록")
-        List<Long> selectedKeywordIds
+        @NotNull(message = "키워드를 입력해주세요.")
+        List<Long> keywords
 ) {
 }

@@ -16,7 +16,7 @@
       "@/*": ["src/*"]
     },
     "jsxImportSource": "@emotion/react",
-    "types": ["jest", "@testing-library/jest-dom"]
+    "types": ["jest", "@testing-library/jest-dom", "node"]
   },
   "include": ["src", "**/*.tsx", "types.d.ts"],
   "exclude": ["node_modules", "dist"]
