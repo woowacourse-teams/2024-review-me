@@ -9,14 +9,12 @@ import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.domain.Keywords;
 import reviewme.keyword.dto.response.KeywordResponse;
 import reviewme.keyword.repository.KeywordRepository;
-import reviewme.keyword.service.KeywordService;
 import reviewme.member.domain.Member;
 import reviewme.member.domain.ReviewerGroup;
 import reviewme.member.dto.response.MemberResponse;
 import reviewme.member.dto.response.ReviewCreationReviewerGroupResponse;
 import reviewme.member.repository.MemberRepository;
 import reviewme.member.repository.ReviewerGroupRepository;
-import reviewme.member.service.ReviewerGroupService;
 import reviewme.review.domain.Question;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
@@ -35,9 +33,6 @@ import reviewme.review.repository.ReviewRepository;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    private final ReviewerGroupService reviewerGroupService;
-    private final KeywordService keywordService;
-    private final QuestionService questionService;
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final ReviewerGroupRepository reviewerGroupRepository;
