@@ -2,10 +2,6 @@ export interface ReviewItem {
   question: string;
   answer: string;
 }
-export interface Keyword {
-  id: number;
-  detail: string;
-}
 
 export interface DetailReviewContent {
   id: number;
