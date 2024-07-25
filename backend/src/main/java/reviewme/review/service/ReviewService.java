@@ -80,6 +80,7 @@ public class ReviewService {
         );
     }
 
+    @Transactional(readOnly = true)
     public ReceivedReviewsResponse findMyReceivedReview(long memberId, long lastReviewId, int size) {
         PageRequest pageRequest = PageRequest.of(0, size);
         Page<Review> reviews = reviewRepository.findAllByRevieweeBeforeLastViewedId(memberId, lastReviewId,
