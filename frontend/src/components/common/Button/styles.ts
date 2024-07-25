@@ -53,7 +53,7 @@ export const Button = styled.button<{ buttonType: ButtonType }>`
 
   width: 10rem;
   height: 4rem;
-  padding: 2rem;
+  padding: 1rem 2rem;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.primary};
   border-radius: 0.8rem;

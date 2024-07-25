@@ -15,7 +15,7 @@ import reviewme.member.domain.exception.EmptyReviewerException;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewerGroupGithubIds {
 
-    @OneToMany(mappedBy = "reviewerGroup", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reviewerGroup", cascade = CascadeType.PERSIST)
     private Set<GithubIdReviewerGroup> reviewerGithubIds;
 
     public ReviewerGroupGithubIds(ReviewerGroup reviewerGroup, List<GithubId> githubIds) {
