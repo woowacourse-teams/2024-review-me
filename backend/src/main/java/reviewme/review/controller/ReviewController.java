@@ -17,7 +17,7 @@ import reviewme.review.service.ReviewService;
 
 @RestController
 @RequiredArgsConstructor
-public class ReviewController {
+public class ReviewController implements ReviewApi{
 
     private final ReviewService reviewService;
 

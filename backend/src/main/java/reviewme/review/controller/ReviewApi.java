@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import reviewme.review.dto.ReviewCreationResponse;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewDetailResponse;
 
@@ -23,5 +25,11 @@ public interface ReviewApi {
             summary = "리뷰 조회",
             description = "단일 리뷰를 조회한다."
     )
-    ResponseEntity<ReviewDetailResponse> findReview(@PathVariable long id);
+    ResponseEntity<ReviewDetailResponse> findReview(@PathVariable long id, @RequestParam long memberId);
+
+    @Operation(
+            summary = "리뷰 생성 시 필요한 정보 조회",
+            description = "리뷰 생성 시 필요한 정보를 조회한다."
+    )
+    ResponseEntity<ReviewCreationResponse> findReviewCreationSetup(@RequestParam long reviewerGroupId);
 }
