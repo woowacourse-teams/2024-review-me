@@ -15,7 +15,7 @@ import reviewme.member.repository.MemberRepository;
 import reviewme.member.service.ReviewerGroupService;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
-import reviewme.review.dto.ReviewCreationResponse;
+import reviewme.review.dto.response.ReviewCreationResponse;
 import reviewme.review.dto.response.QuestionResponse;
 import reviewme.member.dto.response.ReviewCreationReviewerGroupResponse;
 import reviewme.review.dto.request.CreateReviewRequest;

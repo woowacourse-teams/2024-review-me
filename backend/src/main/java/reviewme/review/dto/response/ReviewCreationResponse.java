@@ -1,10 +1,9 @@
-package reviewme.review.dto;
+package reviewme.review.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import reviewme.keyword.dto.response.KeywordResponse;
 import reviewme.member.dto.response.ReviewCreationReviewerGroupResponse;
-import reviewme.review.dto.response.QuestionResponse;
 
 @Schema(description = "리뷰 생성 시 필요한 정보 응답")
 public record ReviewCreationResponse(
