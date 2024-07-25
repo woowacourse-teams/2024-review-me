@@ -21,7 +21,7 @@ class ReviewerGroupTest {
     @Test
     void 리뷰_그룹이_올바르게_생성된다() {
         // given
-        Member sancho = new Member("산초", 1);
+        Member member = 회원_산초.create();
         String groupName = "a".repeat(100);
         String description = "a".repeat(50);
         LocalDateTime createdAt = LocalDateTime.now();
@@ -29,7 +29,7 @@ class ReviewerGroupTest {
 
         // when, then
         assertDoesNotThrow(
-                () -> new ReviewerGroup(sancho, githubIds, groupName, description, createdAt));
+                () -> new ReviewerGroup(member, githubIds, groupName, description, createdAt));
     }
 
     @ParameterizedTest
