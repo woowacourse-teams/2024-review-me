@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 @Getter
 public class GithubId {
 
