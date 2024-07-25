@@ -27,5 +27,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             LIMIT :size
             """
     )
-    List<Review> findAllByRevieweeBeforeLastViewedReviewId(long revieweeId, long lastViewedReviewId, int size);
+    List<Review> findLimitedReviewsWrittenForReviewee(long revieweeId, long lastViewedReviewId, int size);
 }

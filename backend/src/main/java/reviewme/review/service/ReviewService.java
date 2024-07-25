@@ -28,7 +28,6 @@ import reviewme.review.repository.ReviewRepository;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    public static final int REVIEW_CONTENT_PREIVEW_MAX_LENGHT = 150;
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final ReviewContentRepository reviewContentRepository;
@@ -82,40 +81,41 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReceivedReviewsResponse findMyReceivedReview(long memberId, long lastReviewId, int size) {
-        List<Review> reviews = reviewRepository.findAllByRevieweeBeforeLastViewedReviewId(
-                memberId, lastReviewId, size);
+        List<Review> reviews = reviewRepository.findLimitedReviewsWrittenForReviewee(memberId, lastReviewId, size);
 
-        int totalSize = reviews.size();
-        if (totalSize == 0) {
+        if (reviews.isEmpty()) {
             return new ReceivedReviewsResponse(0, 0, List.of());
         }
 
         return new ReceivedReviewsResponse(
                 reviews.size(),
-                reviews.get(totalSize - 1).getId(),
+                reviews.get(reviews.size() - 1).getId(),
                 reviews.stream()
-                        .map(review -> new ReceivedReviewResponse(
-                                review.getId(),
-                                review.isPublic(),
-                                review.getCreatedAt().toLocalDate(),
-                                getReviewContentPreview(review),
-                                new ReceivedReviewReviewerGroupResponse(
-                                        review.getReviewerGroup().getId(),
-                                        review.getReviewerGroup().getGroupName(),
-                                        review.getReviewerGroup().getThumbnailUrl()
-                                ),
-                                getKeywordResponse(review)))
+                        .map(this::createReceivedReviewResponse)
                         .toList());
     }
 
-    private String getReviewContentPreview(Review review) {
-        String firstContentAnswer = reviewContentRepository.findAllByReviewId(review.getId())
-                .get(0)
-                .getAnswer();
-        return firstContentAnswer.substring(0, REVIEW_CONTENT_PREIVEW_MAX_LENGHT);
+    private ReceivedReviewResponse createReceivedReviewResponse(Review review) {
+        return new ReceivedReviewResponse(
+                review.getId(),
+                review.isPublic(),
+                review.getCreatedAt().toLocalDate(),
+                createReviewContentPreview(review),
+                new ReceivedReviewReviewerGroupResponse(
+                        review.getReviewerGroup().getId(),
+                        review.getReviewerGroup().getGroupName(),
+                        review.getReviewerGroup().getThumbnailUrl()
+                ),
+                createKeywordResponse(review));
     }
 
-    private List<ReceivedReviewKeywordsResponse> getKeywordResponse(Review review) {
+    private String createReviewContentPreview(Review review) {
+        return reviewContentRepository.findAllByReviewId(review.getId())
+                .get(0)
+                .getAnswerPreview();
+    }
+
+    private List<ReceivedReviewKeywordsResponse> createKeywordResponse(Review review) {
         return review.getKeywords().getKeywordIds()
                 .stream()
                 .map(keywordRepository::getKeywordById)
