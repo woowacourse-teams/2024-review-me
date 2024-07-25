@@ -25,9 +25,9 @@ public class ReviewerGroupGithubIds {
         Set<GithubIdReviewerGroup> reviewers = githubIds.stream()
                 .map(githubId -> new GithubIdReviewerGroup(githubId, reviewerGroup))
                 .collect(Collectors.toSet());
-        if (reviewers.size() != githubIds.size()) {
-            throw new DuplicateReviewerException();
-        }
+//        if (reviewers.size() != githubIds.size()) {
+//            throw new DuplicateReviewerException();
+//        }
         this.reviewerGithubIds = reviewers;
     }
 

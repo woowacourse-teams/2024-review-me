@@ -12,6 +12,7 @@ import reviewme.member.domain.ReviewerGroup;
 @Getter
 public enum ReviewerGroupFixture {
 
+    리뷰_그룹("리뷰 그룹", "그룹 설명", LocalDateTime.of(2024, 1, 1, 12, 0)),
     데드라인_남은_그룹("데드라인 이전 그룹", "설명", LocalDateTime.now().plusDays(1)),
     데드라인_지난_그룹("데드라인 지난 그룹", "설명", LocalDateTime.now().minusDays(1)),
     ;

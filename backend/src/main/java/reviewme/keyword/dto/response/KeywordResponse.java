@@ -9,6 +9,6 @@ public record KeywordResponse(
         long id,
 
         @Schema(description = "키워드명")
-        String detail
+        String content
 ) {
 }
