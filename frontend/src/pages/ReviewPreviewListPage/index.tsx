@@ -85,7 +85,7 @@ const ReviewPreviewListPage = () => {
   }, []);
 
   const handleReviewClick = (id: number) => {
-    navigate(`/user/detailed-review/${id}`);
+    navigate(`/user/detailed-review/${id}?memberId=${4}`);
   };
 
   return (
