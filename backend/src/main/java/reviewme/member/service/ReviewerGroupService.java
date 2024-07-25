@@ -33,7 +33,7 @@ public class ReviewerGroupService {
                 reviewerGroup.getId(),
                 reviewerGroup.getGroupName(),
                 reviewerGroup.getDescription(),
-                reviewerGroup.getDeadline().toLocalDate(),
+                reviewerGroup.getDeadline(),
                 reviewerGroup.getThumbnailUrl(),
                 new MemberResponse(reviewee.getId(), reviewee.getName())
         );

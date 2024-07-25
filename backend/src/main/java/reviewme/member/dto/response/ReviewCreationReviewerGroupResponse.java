@@ -1,7 +1,7 @@
 package reviewme.member.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Schema(description = "리뷰 생성 시 필요한 리뷰어 그룹 응답")
 public record ReviewCreationReviewerGroupResponse(
@@ -16,7 +16,7 @@ public record ReviewCreationReviewerGroupResponse(
         String description,
 
         @Schema(description = "리뷰 작성 기한")
-        LocalDate deadline,
+        LocalDateTime deadline,
 
         @Schema(description = "썸네일 URL")
         String thumbnailUrl,
