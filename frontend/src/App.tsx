@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router';
 
-import { Main, PageLayout, Sidebar, Topbar } from './components';
-import SideModal from './components/common/modals/SideModal';
+import { Main, PageLayout, Sidebar, Topbar, SideModal } from './components';
 import { useSidebar } from './hooks';
 
 const App = () => {
