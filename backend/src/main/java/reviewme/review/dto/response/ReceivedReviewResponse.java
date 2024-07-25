@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import java.util.List;
 
+@Schema(description = "리뷰 내용 응답")
 public record ReceivedReviewResponse(
 
         @Schema(description = "리뷰 아이디")

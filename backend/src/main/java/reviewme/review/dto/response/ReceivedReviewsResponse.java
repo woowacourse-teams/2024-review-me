@@ -3,6 +3,7 @@ package reviewme.review.dto.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
+@Schema(description = "내가 받은 리뷰 응답")
 public record ReceivedReviewsResponse(
 
         @Schema(description = "응답 크기")
