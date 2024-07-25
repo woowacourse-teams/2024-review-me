@@ -8,17 +8,21 @@ interface ModalPortalProps {
 }
 
 const ModalPortal: React.FC<PropsWithChildren<ModalPortalProps>> = ({ children: Modal, id }) => {
-  const stopModalPropagation = (e: globalThis.MouseEvent) => {
-    e.stopPropagation();
+  const preventBodyScroll = () => {
+    document.body.style.overflow = 'hidden';
+  };
+
+  const allowBodyScroll = () => {
+    document.body.style.overflow = '';
   };
 
   useEffect(() => {
-    document.body.addEventListener('click', stopModalPropagation);
+    preventBodyScroll();
 
     return () => {
-      document.body.removeEventListener('click', stopModalPropagation);
+      allowBodyScroll();
     };
-  }, []);
+  });
 
   return createPortal(<S.ModalPortal id={id || 'modal-portal'}>{Modal}</S.ModalPortal>, document.body);
 };
