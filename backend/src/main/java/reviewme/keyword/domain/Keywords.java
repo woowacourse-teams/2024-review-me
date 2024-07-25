@@ -3,6 +3,7 @@ package reviewme.keyword.domain;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +22,7 @@ public class Keywords {
 
     private static final int MAX_KEYWORD_COUNT = 5;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "review_keyword", joinColumns = @JoinColumn(name = "review_id"))
     private Set<Long> keywordIds;
 

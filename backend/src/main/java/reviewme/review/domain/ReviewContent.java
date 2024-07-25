@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,6 +21,7 @@ public class ReviewContent {
 
     private static final int MIN_ANSWER_LENGTH = 20;
     private static final int MAX_ANSWER_LENGTH = 1_000;
+    private static final int REVIEW_CONTENT_PREVIEW_MAX_LENGTH = 150;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,11 +31,11 @@ public class ReviewContent {
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    @Column(name = "answer", nullable = false)
+    @Column(name = "answer", nullable = false, length = MAX_ANSWER_LENGTH)
     private String answer;
 
     public ReviewContent(Review review, Question question, String answer) {
@@ -50,6 +50,10 @@ public class ReviewContent {
         if (answer.length() < MIN_ANSWER_LENGTH || answer.length() > MAX_ANSWER_LENGTH) {
             throw new InvalidAnswerLengthException(MIN_ANSWER_LENGTH, MAX_ANSWER_LENGTH);
         }
+    }
+
+    public String getAnswerPreview() {
+        return answer.substring(0, REVIEW_CONTENT_PREVIEW_MAX_LENGTH);
     }
 
     public String getQuestion() {

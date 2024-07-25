@@ -12,16 +12,20 @@ import reviewme.keyword.repository.KeywordRepository;
 import reviewme.keyword.service.KeywordService;
 import reviewme.member.domain.Member;
 import reviewme.member.domain.ReviewerGroup;
+import reviewme.member.dto.response.ReviewCreationReviewerGroupResponse;
 import reviewme.member.repository.MemberRepository;
 import reviewme.member.repository.ReviewerGroupRepository;
 import reviewme.member.service.ReviewerGroupService;
 import reviewme.review.domain.Question;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
-import reviewme.review.dto.response.ReviewCreationResponse;
-import reviewme.review.dto.response.QuestionResponse;
-import reviewme.member.dto.response.ReviewCreationReviewerGroupResponse;
 import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.response.QuestionResponse;
+import reviewme.review.dto.response.ReceivedReviewKeywordsResponse;
+import reviewme.review.dto.response.ReceivedReviewResponse;
+import reviewme.review.dto.response.ReceivedReviewReviewerGroupResponse;
+import reviewme.review.dto.response.ReceivedReviewsResponse;
+import reviewme.review.dto.response.ReviewCreationResponse;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewDetailReviewContentResponse;
 import reviewme.review.dto.response.ReviewDetailReviewerGroupResponse;
@@ -112,9 +116,57 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewCreationResponse findReviewCreationSetup(long reviewerGroupId) {
-        ReviewCreationReviewerGroupResponse reviewerGroup = reviewerGroupService.findReviewCreationReviewerGroup(reviewerGroupId);
+        ReviewCreationReviewerGroupResponse reviewerGroup = reviewerGroupService.findReviewCreationReviewerGroup(
+                reviewerGroupId);
         List<QuestionResponse> questions = questionService.findAllQuestions();
         List<KeywordResponse> keywords = keywordService.findAllKeywords();
         return new ReviewCreationResponse(reviewerGroup, questions, keywords);
+    }
+
+    @Transactional(readOnly = true)
+    public ReceivedReviewsResponse findMyReceivedReview(long memberId, Long lastReviewId, int size) {
+        List<Review> reviews = reviewRepository.findLimitedReviewsWrittenForReviewee(memberId, lastReviewId, size);
+
+        if (reviews.isEmpty()) {
+            return new ReceivedReviewsResponse(0, 0, List.of());
+        }
+
+        return new ReceivedReviewsResponse(
+                reviews.size(),
+                reviews.get(reviews.size() - 1).getId(),
+                reviews.stream()
+                        .map(this::createReceivedReviewResponse)
+                        .toList());
+    }
+
+    private ReceivedReviewResponse createReceivedReviewResponse(Review review) {
+        return new ReceivedReviewResponse(
+                review.getId(),
+                review.isPublic(),
+                review.getCreatedAt().toLocalDate(),
+                createReviewContentPreview(review),
+                new ReceivedReviewReviewerGroupResponse(
+                        review.getReviewerGroup().getId(),
+                        review.getReviewerGroup().getGroupName(),
+                        review.getReviewerGroup().getThumbnailUrl()
+                ),
+                createKeywordResponse(review));
+    }
+
+    private String createReviewContentPreview(Review review) {
+        return reviewContentRepository.findAllByReviewId(review.getId())
+                .get(0)
+                .getAnswerPreview();
+    }
+
+    private List<ReceivedReviewKeywordsResponse> createKeywordResponse(Review review) {
+        return review.getKeywords().getKeywordIds()
+                .stream()
+                .map(keywordRepository::getKeywordById)
+                .map(keyword -> new ReceivedReviewKeywordsResponse(
+                        keyword.getId(),
+                        keyword.getContent()
+                ))
+                .toList();
     }
 }

@@ -63,11 +63,11 @@ public class Review {
         }
         this.reviewer = reviewer;
         this.reviewee = reviewee;
+        this.reviewerGroup = reviewerGroup;
         this.reviewContents = new ArrayList<>();
         this.keywords = new Keywords(keywords);
         this.createdAt = createdAt;
         reviewerGroup.addReview(this);
-        this.reviewerGroup = reviewerGroup;
         this.isPublic = false;
     }
 
