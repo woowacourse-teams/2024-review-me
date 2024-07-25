@@ -25,7 +25,7 @@ import reviewme.review.exception.ReviewAlreadySubmittedException;
 class ReviewTest {
 
     @Test
-    void 리뷰어와_리뷰이가_다른_경우_예외를_발생한다() {
+    void 리뷰어와_리뷰이가_같을_수_없다() {
         // given
         Member member = 회원_산초.create();
         LocalDateTime createdAt = LocalDateTime.now();
