@@ -10,9 +10,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import reviewme.member.domain.exception.InvalidDescriptionLengthException;
 import reviewme.member.domain.exception.DuplicateReviewerException;
 import reviewme.member.domain.exception.EmptyReviewerException;
+import reviewme.member.domain.exception.InvalidDescriptionLengthException;
 import reviewme.member.domain.exception.InvalidGroupNameLengthException;
 import reviewme.member.domain.exception.SelfReviewException;
 
@@ -25,11 +25,11 @@ class ReviewerGroupTest {
         String groupName = "a".repeat(100);
         String description = "a".repeat(50);
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
-        List<GithubId> githubIds = List.of(new GithubId(3));
+        List<GithubId> reviewerGithubIds = List.of(new GithubId(3));
 
         // when, then
         assertDoesNotThrow(
-                () -> new ReviewerGroup(member, githubIds, groupName, description, deadline));
+                () -> new ReviewerGroup(member, reviewerGithubIds, groupName, description, deadline));
     }
 
     @ParameterizedTest
@@ -39,10 +39,10 @@ class ReviewerGroupTest {
         String groupName = "a".repeat(length);
         Member sancho = 회원_산초.create();
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
-        List<GithubId> githubIds = List.of();
+        List<GithubId> reviewerGithubIds = List.of();
 
         // when, then
-        assertThatThrownBy(() -> new ReviewerGroup(sancho, githubIds, groupName, "설명", deadline))
+        assertThatThrownBy(() -> new ReviewerGroup(sancho, reviewerGithubIds, groupName, "설명", deadline))
                 .isInstanceOf(InvalidGroupNameLengthException.class);
     }
 
@@ -52,10 +52,10 @@ class ReviewerGroupTest {
         String description = "a".repeat(51);
         Member sancho = 회원_산초.create();
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
-        List<GithubId> githubIds = List.of();
+        List<GithubId> reviewerGithubIds = List.of();
 
         // when, then
-        assertThatThrownBy(() -> new ReviewerGroup(sancho, githubIds, "그룹 이름", description, deadline))
+        assertThatThrownBy(() -> new ReviewerGroup(sancho, reviewerGithubIds, "그룹 이름", description, deadline))
                 .isInstanceOf(InvalidDescriptionLengthException.class);
     }
 
@@ -79,10 +79,10 @@ class ReviewerGroupTest {
         String groupName = "Group";
         String description = "Description";
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
-        List<GithubId> githubIds = List.of();
+        List<GithubId> reviewerGithubIds = List.of();
 
         // when, then
-        assertThatThrownBy(() -> new ReviewerGroup(member, githubIds, groupName, description, deadline))
+        assertThatThrownBy(() -> new ReviewerGroup(member, reviewerGithubIds, groupName, description, deadline))
                 .isInstanceOf(EmptyReviewerException.class);
     }
 
@@ -95,13 +95,12 @@ class ReviewerGroupTest {
         String groupName = "Group";
         String description = "Description";
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
-        List<GithubId> githubIds = List.of(reviewer.getGithubId());
-        ReviewerGroup reviewerGroup = new ReviewerGroup(reviewee, githubIds, groupName, description, deadline);
+        List<GithubId> reviewerGithubIds = List.of(reviewer.getGithubId());
+        ReviewerGroup reviewerGroup = new ReviewerGroup(reviewee, reviewerGithubIds, groupName, description, deadline);
         GithubIdReviewerGroup githubIdReviewerGroup = new GithubIdReviewerGroup(reviewee.getGithubId(), reviewerGroup);
 
         // when, then
         assertThatThrownBy(() -> reviewerGroup.addReviewerGithubId(githubIdReviewerGroup))
                 .isInstanceOf(DuplicateReviewerException.class);
     }
-
 }
