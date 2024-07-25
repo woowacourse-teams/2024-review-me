@@ -11,7 +11,10 @@ phases:
       - ./gradlew build
   post_build:
     commands:
+      - cd backend
+      - mv build/libs/*.jar build/libs/review-me-dev.jar
       - echo Build completed on `date`
 artifacts:
   files:
-    - target/review-me-dev.jar
+    - build/libs/review-me-dev.jar
+  base-directory: backend
