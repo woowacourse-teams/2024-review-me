@@ -6,23 +6,20 @@ const ANSWER =
 export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
   id: 123456,
   createdAt: new Date('2024-07-16'),
+  isPublic: false,
   reviewerGroup: {
     id: 123456,
     name: 'review-me',
-    deadline: new Date('2024-07-01'),
-    reviewee: {
-      id: 78910,
-      name: '바다',
-    },
+    description: 'vite 쓰고 싶다.',
+    thumnailUrl: '',
   },
-  contents: [
+  reviews: [
     {
-      id: 23456,
       question: '[공개] 동료의 개발 역량 향상을 위해 피드백을 남겨 주세요.',
       answer: ANSWER,
     },
-    { id: 567810, question: '[공개] 동료의 소프트 스킬의 성장을 위해 피드백을 남겨 주세요.', answer: ANSWER },
-    { id: 98761, question: '[비공개] 팀 동료로 근무한다면 같이 일 하고 싶은 개발자인가요?', answer: ANSWER },
+    { question: '[공개] 동료의 소프트 스킬의 성장을 위해 피드백을 남겨 주세요.', answer: ANSWER },
+    { question: '[비공개] 팀 동료로 근무한다면 같이 일 하고 싶은 개발자인가요?', answer: ANSWER },
   ],
   keywords: ['친절해요', '친절합니다!', '친절해요요요요요', '친절해해해해해', '친절해요요용'],
 };
