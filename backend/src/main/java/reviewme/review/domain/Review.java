@@ -58,6 +58,7 @@ public class Review {
         }
         this.reviewer = reviewer;
         this.reviewee = reviewee;
+        this.reviewerGroup = reviewerGroup;
         this.keywords = new Keywords(keywords);
         this.createdAt = createdAt;
         reviewerGroup.addReview(this);
