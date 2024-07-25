@@ -13,6 +13,11 @@ phases:
     commands:
       - mv build/libs/*.jar build/libs/review-me-dev.jar
       - echo Build completed on `date`
+
+cache:
+  paths:
+    - '/root/.gradle/caches/**/*'
+
 artifacts:
   files:
     - build/libs/review-me-dev.jar
