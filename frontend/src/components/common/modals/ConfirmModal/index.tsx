@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 
 import { ButtonType } from '@/types/styles';
 
@@ -17,9 +17,14 @@ interface ConfirmModalButton {
 interface ConfirmModalProps {
   confirmButton: ConfirmModalButton;
   cancelButton: ConfirmModalButton;
+  children: React.ReactNode;
 }
 
-const ConfirmModal: React.FC<PropsWithChildren<ConfirmModalProps>> = ({ children, confirmButton, cancelButton }) => {
+const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
+  children,
+  confirmButton,
+  cancelButton,
+}) => {
   const buttonList = [confirmButton, cancelButton];
   return (
     <ModalPortal>
