@@ -87,6 +87,21 @@ class ReviewerGroupTest {
     }
 
     @Test
+    void 리뷰어를_중복으로_가지게_그룹을_생성할_수_없다() {
+        // given
+        Member reviewer = 회원_산초.create();
+        Member reviewee = 회원_커비.create();
+        String groupName = "Group";
+        String description = "Description";
+        LocalDateTime deadline = LocalDateTime.now().plusDays(1);
+        List<GithubId> reviewerGithubIds = List.of(reviewer.getGithubId(), reviewer.getGithubId());
+
+        // when, then
+        assertThatThrownBy(() -> new ReviewerGroup(reviewee, reviewerGithubIds, groupName, description, deadline))
+                .isInstanceOf(DuplicateReviewerException.class);
+    }
+
+    @Test
     void 리뷰어를_중복으로_추가할_수_없다() {
         // given
         Member reviewee = 회원_산초.create();
