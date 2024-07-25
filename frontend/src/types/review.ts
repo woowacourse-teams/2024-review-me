@@ -2,42 +2,64 @@ export interface ReviewItem {
   question: string;
   answer: string;
 }
+export interface Keyword {
+  id: number;
+  detail: string;
+}
 
+export interface DetailReviewContent {
+  id: number;
+  question: string;
+  answer: string;
+}
 export interface DetailReviewData {
   id: number;
   createdAt: Date;
-  reviewer: {
-    memberId: number;
-    name: string;
-  };
   reviewerGroup: {
-    groupId: number;
+    id: number;
     name: string;
+    deadline: Date;
+    reviewee: {
+      id: number;
+      name: string;
+    };
   };
-  contents: ReviewItem[];
-  keywords: { id: number; detail: string }[];
+  contents: DetailReviewContent[];
+  keywords: string[];
 }
 
 // api
 export interface ReviewData {
   reviewerId: number; // 추후 제거한 뒤 토큰으로 대체
   reviewerGroupId: number; // 임의 설정
-  contents: {
-    order: number;
-    question: string;
-    answer: string;
-  }[];
-  selectedKeywordIds: number[];
+  reviewContents: ReviewContent[];
+  keywords: number[];
+}
+
+export interface ReviewContent {
+  questionId: number;
+  answer: string;
+}
+
+export interface Question {
+  id: number;
+  content: string;
 }
 
 export interface WritingReviewInfoData {
-  id: number;
-  name: string;
-  deadline: Date;
-  reviewee: {
+  reviewerGroup: {
     id: number;
     name: string;
+    description: string;
+    deadline: Date;
+    thumbnailUrl: string;
+    reviewee: {
+      id: number;
+      name: string;
+    };
   };
+  questions: Question[];
+  keywords: Keyword[];
 }
 
 export interface ReviewPreview {

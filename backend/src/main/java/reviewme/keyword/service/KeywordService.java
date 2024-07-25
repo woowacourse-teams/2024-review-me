@@ -16,7 +16,7 @@ public class KeywordService {
     public KeywordsResponse findAllKeywords() {
         List<KeywordResponse> responses = keywordRepository.findAll()
                 .stream()
-                .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getDetail()))
+                .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getContent()))
                 .toList();
         return new KeywordsResponse(responses);
     }

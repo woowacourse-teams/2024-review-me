@@ -5,7 +5,7 @@ const endPoint = {
   gettingReviewList: (revieweeId: number, lastReviewId: number, memberId: number) =>
     `${process.env.API_BASE_URL}/reviews?revieweeId=${revieweeId}&lastReviewId=${lastReviewId}&memberId=${memberId}`,
   gettingInfoToWriteReview: (reviewerGroupId: number) => `/reviewer-groups/${reviewerGroupId}`,
-  gettingKeyword: `${process.env.API_BASE_URL}/keywords`,
+  gettingKeyword: `${process.env.API_BASE_URL}keywords`,
 };
 
 export default endPoint;

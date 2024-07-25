@@ -15,7 +15,8 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "jsxImportSource": "@emotion/react"
+    "jsxImportSource": "@emotion/react",
+    "types": ["jest", "@testing-library/jest-dom", "node"]
   },
   "include": ["src", "**/*.tsx", "types.d.ts"],
   "exclude": ["node_modules", "dist"]

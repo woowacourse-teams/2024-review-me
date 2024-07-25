@@ -1,10 +1,9 @@
 //리뷰 작성
-
 import { ReviewData, WritingReviewInfoData } from '@/types';
 
 import endPoint from './endpoints';
 
-export const getInfoToWriteReview = async (reviewerGroupId: number) => {
+export const getDataToWriteReviewApi = async (reviewerGroupId: number) => {
   const response = await fetch(endPoint.gettingInfoToWriteReview(reviewerGroupId), {
     method: 'GET',
   });
