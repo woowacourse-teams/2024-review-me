@@ -70,25 +70,21 @@ class ReviewServiceTest {
                 "빼깬드그룹 설명",
                 LocalDateTime.now().plusDays(3)
         ));
-        Question question1 = questionRepository.save(new Question("질문1"));
+        Question question = questionRepository.save(new Question("질문"));
 
         Review sanchoReview = reviewRepository.save(
                 new Review(reviewerSancho, reviewee, reviewerGroup, List.of(keyword1), LocalDateTime.now().minusDays(1))
         );
-        reviewContentRepository.save(
-                new ReviewContent(sanchoReview, question1, "산초의 답변1".repeat(50))
-        );
         Review kirbyReview = reviewRepository.save(
                 new Review(reviewerKirby, reviewee, reviewerGroup, List.of(keyword2), LocalDateTime.now())
-        );
-        reviewContentRepository.save(
-                new ReviewContent(kirbyReview, question1, "커비의 답변1".repeat(50))
         );
         Review tedReview = reviewRepository.save(
                 new Review(reviewerTed, reviewee, reviewerGroup, List.of(keyword1, keyword2), LocalDateTime.now().plusDays(1))
         );
-        reviewContentRepository.save(
-                new ReviewContent(tedReview, question1, "테드의 답변1".repeat(50))
+        reviewContentRepository.saveAll(List.of(
+                new ReviewContent(sanchoReview, question, "산초의 답변".repeat(50)),
+                new ReviewContent(kirbyReview, question, "커비의 답변".repeat(50)),
+                new ReviewContent(tedReview, question, "테드의 답변".repeat(50)))
         );
 
         // when
@@ -99,8 +95,8 @@ class ReviewServiceTest {
 
         // then
          assertAll(
-                () -> assertThat(가장_최근에_받은_리뷰_조회.reviews().size())
-                        .isEqualTo(2),
+                () -> assertThat(가장_최근에_받은_리뷰_조회.reviews())
+                        .hasSize(2),
                 () -> assertThat(가장_최근에_받은_리뷰_조회.reviews().get(0).id())
                         .isEqualTo(tedReview.getId()),
                 () -> assertThat(가장_최근에_받은_리뷰_조회.reviews().get(1).id())
@@ -108,8 +104,8 @@ class ReviewServiceTest {
                 () -> assertThat(가장_최근에_받은_리뷰_조회.reviews().get(0).contentPreview().length())
                         .isLessThanOrEqualTo(150),
 
-                () -> assertThat(특정_리뷰_이전_리뷰_조회.reviews().size())
-                        .isEqualTo(1),
+                () -> assertThat(특정_리뷰_이전_리뷰_조회.reviews())
+                        .hasSize(1),
                 () -> assertThat(특정_리뷰_이전_리뷰_조회.reviews().get(0).id())
                         .isEqualTo(sanchoReview.getId()),
                 () -> assertThat(특정_리뷰_이전_리뷰_조회.reviews().get(0).contentPreview().length())
