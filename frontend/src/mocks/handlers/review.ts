@@ -5,7 +5,7 @@ import endPoint from '@/apis/endpoints';
 import { DETAILED_REVIEW_MOCK_DATA } from '../mockData/detailedReviewMockData';
 
 const getDetailedReview = () =>
-  http.get(endPoint.gettingDetailedReview(0), async ({ request }) => {
+  http.get(endPoint.gettingDetailedReview(0, 1), async ({ request }) => {
     return HttpResponse.json(DETAILED_REVIEW_MOCK_DATA);
   });
 

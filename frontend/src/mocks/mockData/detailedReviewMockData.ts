@@ -24,11 +24,5 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
     { id: 567810, question: '[공개] 동료의 소프트 스킬의 성장을 위해 피드백을 남겨 주세요.', answer: ANSWER },
     { id: 98761, question: '[비공개] 팀 동료로 근무한다면 같이 일 하고 싶은 개발자인가요?', answer: ANSWER },
   ],
-  keywords: [
-    { id: 1, detail: '친절해요' },
-    { id: 12, detail: '친절합니다!' },
-    { id: 11, detail: '친절해요요요요요' },
-    { id: 14, detail: '친절해해해해해' },
-    { id: 18, detail: '친절해요요용' },
-  ],
+  keywords: ['친절해요', '친절합니다!', '친절해요요요요요', '친절해해해해해', '친절해요요용'],
 };
