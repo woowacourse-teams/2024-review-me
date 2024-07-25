@@ -54,16 +54,15 @@ class ReviewServiceTest {
         // given
         Member reviewer = memberRepository.save(회원_산초.create());
         Member reviewee = memberRepository.save(회원_아루.create());
-
         List<GithubId> reviewerGithubIds = List.of(reviewer.getGithubId());
+
         ReviewerGroup reviewerGroup = reviewerGroupRepository.save(
                 new ReviewerGroup(reviewee, reviewerGithubIds, "그룹명", "그룹설명", LocalDateTime.now().plusDays(1))
         );
-
         Question question = questionRepository.save(new Question("질문"));
         Keyword keyword = keywordRepository.save(추진력이_좋아요.create());
-
         CreateReviewContentRequest contentRequest = new CreateReviewContentRequest(question.getId(), "답변".repeat(10));
+
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(reviewer.getId(), reviewerGroup.getId(),
                 List.of(contentRequest), List.of(keyword.getId())
         );
