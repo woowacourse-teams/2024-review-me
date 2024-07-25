@@ -83,6 +83,7 @@ public class ReviewService {
         );
     }
 
+    @Transactional(readOnly = true)
     public ReviewCreationResponse findReviewCreationSetup(long reviewerGroupId) {
         ReviewCreationReviewerGroupResponse reviewerGroup = reviewerGroupService.findReviewCreationReviewerGroup(reviewerGroupId);
         List<QuestionResponse> questions = questionService.findAllQuestions();

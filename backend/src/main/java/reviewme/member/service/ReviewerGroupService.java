@@ -2,6 +2,7 @@ package reviewme.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reviewme.member.domain.Member;
 import reviewme.member.domain.ReviewerGroup;
 import reviewme.member.dto.response.MemberResponse;
@@ -26,6 +27,7 @@ public class ReviewerGroupService {
         );
     }
 
+    @Transactional(readOnly = true)
     public ReviewCreationReviewerGroupResponse findReviewCreationReviewerGroup(long reviewerGroupId) {
         ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(reviewerGroupId);
         Member reviewee = reviewerGroup.getReviewee();
