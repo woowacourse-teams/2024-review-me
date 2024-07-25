@@ -5,13 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import reviewme.fixture.QuestionFixure;
 import reviewme.review.dto.response.QuestionResponse;
 import reviewme.review.repository.QuestionRepository;
+import reviewme.support.ServiceTest;
 
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+@ServiceTest
 class QuestionServiceTest {
 
     @Autowired

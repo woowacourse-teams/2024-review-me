@@ -1,18 +1,16 @@
 package reviewme.keyword.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import reviewme.fixture.KeywordFixture;
 import reviewme.keyword.dto.response.KeywordResponse;
 import reviewme.keyword.repository.KeywordRepository;
+import reviewme.support.ServiceTest;
 
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+@ServiceTest
 class KeywordServiceTest {
 
     @Autowired

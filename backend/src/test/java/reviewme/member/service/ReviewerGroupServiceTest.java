@@ -7,16 +7,15 @@ import static reviewme.fixture.ReviewerGroupFixture.리뷰_그룹;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import reviewme.member.domain.GithubId;
 import reviewme.member.domain.Member;
 import reviewme.member.domain.ReviewerGroup;
 import reviewme.member.dto.response.ReviewCreationReviewerGroupResponse;
 import reviewme.member.repository.MemberRepository;
 import reviewme.member.repository.ReviewerGroupRepository;
+import reviewme.support.ServiceTest;
 
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+@ServiceTest
 class ReviewerGroupServiceTest {
 
     @Autowired
