@@ -8,15 +8,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "github_id_reviewer_group")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = "id")
 @Getter
 public class GithubIdReviewerGroup {
 
@@ -34,5 +33,28 @@ public class GithubIdReviewerGroup {
     public GithubIdReviewerGroup(GithubId githubId, ReviewerGroup reviewerGroup) {
         this.githubId = githubId;
         this.reviewerGroup = reviewerGroup;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if(id == null) {
+            return Objects.equals(githubId, ((GithubIdReviewerGroup) o).githubId);
+        }
+
+        return Objects.equals(id, ((GithubIdReviewerGroup) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        if(id == null) {
+            return Objects.hash(githubId);
+        }
+        return Objects.hash(id);
     }
 }
