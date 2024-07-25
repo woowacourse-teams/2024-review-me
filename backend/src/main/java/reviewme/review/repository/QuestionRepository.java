@@ -8,7 +8,7 @@ import reviewme.review.exception.QuestionNotFoundException;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    default Question getQuestionById(Long id) {
+    default Question getQuestionById(long id) {
         return findById(id).orElseThrow(QuestionNotFoundException::new);
     }
 }
