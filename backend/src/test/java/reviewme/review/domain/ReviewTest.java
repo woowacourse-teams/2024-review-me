@@ -68,8 +68,8 @@ class ReviewTest {
     @Test
     void 리뷰어로_등록되지_않은_회원은_리뷰를_등록할_수_없다() {
         // given
-        Member reviewer = 회원_산초.create();
-        Member reviewee = 회원_아루.create();
+        Member reviewer = new Member("reviewer", 1);
+        Member reviewee = new Member("reviewee", 2);
         ReviewerGroup reviewerGroup = 데드라인_남은_그룹.create(reviewee, List.of(new GithubId(3)));
         LocalDateTime createdAt = LocalDateTime.now();
         List<Keyword> keywords = List.of();
