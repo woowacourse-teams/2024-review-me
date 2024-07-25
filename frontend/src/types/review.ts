@@ -1,26 +1,28 @@
+export interface Keyword {
+  id: number;
+  content: string;
+}
+
 export interface ReviewItem {
   question: string;
   answer: string;
 }
 
 export interface DetailReviewContent {
-  id: number;
   question: string;
   answer: string;
 }
 export interface DetailReviewData {
   id: number;
   createdAt: Date;
+  isPublic: boolean;
   reviewerGroup: {
     id: number;
     name: string;
-    deadline: Date;
-    reviewee: {
-      id: number;
-      name: string;
-    };
+    description: string;
+    thumnailUrl: string;
   };
-  contents: DetailReviewContent[];
+  reviews: DetailReviewContent[];
   keywords: string[];
 }
 
