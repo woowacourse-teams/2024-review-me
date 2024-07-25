@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import reviewme.member.domain.exception.InvalidDescriptionLengthException;
@@ -29,6 +30,7 @@ import reviewme.review.exception.ReviewAlreadySubmittedException;
 @Entity
 @Table(name = "reviewer_group")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = "id")
 @Getter
 public class ReviewerGroup {
 

@@ -8,8 +8,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -42,6 +44,9 @@ public class Review {
     @JoinColumn(name = "reviewer_group_id", nullable = false)
     private ReviewerGroup reviewerGroup;
 
+    @OneToMany(mappedBy = "review")
+    private List<ReviewContent> reviewContents;
+
     @Embedded
     private Keywords keywords;
 
@@ -58,9 +63,11 @@ public class Review {
         }
         this.reviewer = reviewer;
         this.reviewee = reviewee;
+        this.reviewContents = new ArrayList<>();
         this.keywords = new Keywords(keywords);
         this.createdAt = createdAt;
         reviewerGroup.addReview(this);
+        this.reviewerGroup = reviewerGroup;
         this.isPublic = false;
     }
 
@@ -70,5 +77,9 @@ public class Review {
 
     public boolean isForReviewee(Member member) {
         return reviewee.equals(member);
+    }
+
+    public void addReviewContents(ReviewContent reviewContent) {
+        reviewContents.add(reviewContent);
     }
 }

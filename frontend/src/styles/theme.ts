@@ -42,13 +42,13 @@ export const colors: ThemeProperty<CSSProperties['color']> = {
   lightGray: '#F1F2F4',
   placeholder: '#D3D3D3',
   gray: '#7F7F7F',
-  sidebarBackground: '#F5F5F5',
+  sidebarBackground: `rgba(0, 0, 0, 0.25)`,
   disabled: '#D8D8D8',
   disabledText: '#7F7F7F',
 };
 
 export const zIndex: ThemeProperty<CSSProperties['zIndex']> = {
-  sidebar: 999,
+  modal: 999,
 };
 
 const theme: Theme = {

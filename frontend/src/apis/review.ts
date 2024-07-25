@@ -4,7 +4,7 @@ import { ReviewData, WritingReviewInfoData } from '@/types';
 import endPoint from './endpoints';
 
 export const getDataToWriteReviewApi = async (reviewerGroupId: number) => {
-  const response = await fetch(endPoint.gettingInfoToWriteReview(reviewerGroupId), {
+  const response = await fetch(endPoint.gettingDataToWriteReview(reviewerGroupId), {
     method: 'GET',
   });
 

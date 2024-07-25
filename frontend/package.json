@@ -10,9 +10,6 @@
     "lint:styles": "stylelint \"src/**/styles.ts\" --fix",
     "test": "jest"
   },
-  "jest": {
-    "testEnvironment": "jest-environment-jsdom"
-  },
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -25,7 +22,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^6.24.1",
-    "react-router-dom": "^6.24.1"
+    "react-router-dom": "^6.24.1",
+    "jest": "^29.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.7",

@@ -2,7 +2,7 @@ import { ButtonType } from '@/types/styles';
 
 import * as S from './styles';
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   buttonType: ButtonType;
   text: string;
 }

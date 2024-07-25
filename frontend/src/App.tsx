@@ -1,27 +1,18 @@
-import { useState } from 'react';
 import { Outlet } from 'react-router';
 
-import { Main, PageLayout, Sidebar, Topbar } from './components';
+import { Main, PageLayout, Sidebar, Topbar, SideModal } from './components';
+import { useSidebar } from './hooks';
 
 const App = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isSidebarHidden, setIsSidebarHidden] = useState(true);
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-    setTimeout(() => {
-      setIsSidebarHidden(true);
-    }, 1000);
-  };
-
-  const openSidebar = () => {
-    setIsSidebarHidden(false);
-    setIsSidebarOpen(true);
-  };
+  const { isSidebarHidden, isSidebarModalOpen, closeSidebar, openSidebar } = useSidebar();
 
   return (
     <PageLayout>
-      {!isSidebarHidden && <Sidebar closeSidebar={closeSidebar} isSidebarOpen={isSidebarOpen} />}
+      {isSidebarModalOpen && (
+        <SideModal isSidebarHidden={isSidebarHidden}>
+          <Sidebar closeSidebar={closeSidebar} />
+        </SideModal>
+      )}
       <Topbar openSidebar={openSidebar} />
       <Main>
         <Outlet />
