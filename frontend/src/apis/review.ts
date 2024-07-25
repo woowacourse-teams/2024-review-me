@@ -60,20 +60,17 @@ export const getReviewListApi = async ({
   lastReviewId: number;
   memberId: number;
 }) => {
-  const response = await fetch(
-    `/api/reviews?revieweeId=${revieweeId}&lastReviewId=${lastReviewId}&memberId=${memberId}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  const response = await fetch(endPoint.gettingReviewList(revieweeId, lastReviewId, memberId), {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+  });
 
   if (!response.ok) {
     throw new Error('리뷰 리스트를 불러오는 데 실패했습니다.');
   }
-
+  console.log(response);
   const data = await response.json();
   return data;
 };
