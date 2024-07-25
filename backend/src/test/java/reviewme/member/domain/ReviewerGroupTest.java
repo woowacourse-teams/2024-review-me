@@ -98,6 +98,7 @@ class ReviewerGroupTest {
         List<GithubId> githubIds = List.of(reviewer.getGithubId());
         ReviewerGroup reviewerGroup = new ReviewerGroup(reviewee, githubIds, groupName, description, createdAt);
         GithubIdReviewerGroup githubIdReviewerGroup = new GithubIdReviewerGroup(reviewee.getGithubId(), reviewerGroup);
+
         // when, then
         assertThatThrownBy(() -> reviewerGroup.addReviewerGithubId(githubIdReviewerGroup))
                 .isInstanceOf(DuplicateReviewerException.class);
