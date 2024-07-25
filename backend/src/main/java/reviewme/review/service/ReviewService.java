@@ -82,11 +82,17 @@ public class ReviewService {
 
     public ReceivedReviewsResponse findMyReceivedReview(long memberId, long lastReviewId, int size) {
         PageRequest pageRequest = PageRequest.of(0, size);
-        Page<Review> reviews = reviewRepository.findAllByRevieweeBeforeLastViewedId(memberId, lastReviewId, pageRequest);
+        Page<Review> reviews = reviewRepository.findAllByRevieweeBeforeLastViewedId(memberId, lastReviewId,
+                pageRequest);
+        int totalSize = reviews.getContent().size();
+
+        if (totalSize == 0) {
+            return new ReceivedReviewsResponse(0, 0, List.of());
+        }
 
         return new ReceivedReviewsResponse(
                 reviews.getContent().size(),
-                reviews.getContent().get(reviews.getContent().size() - 1).getId(),
+                reviews.getContent().get(totalSize - 1).getId(),
                 reviews.getContent().stream()
                         .map(review -> new ReceivedReviewResponse(
                                 review.getId(),
