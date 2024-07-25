@@ -39,7 +39,7 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 async function enableMocking() {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.MSW) {
     const { worker } = await import('./mocks/browser');
     return worker.start();
   }
