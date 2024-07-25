@@ -1,11 +1,5 @@
 import styled from '@emotion/styled';
 
-export const SidebarBackground = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: ${({ theme }) => theme.colors.sidebarBackground};
-`;
-
 interface SidebarWrapperProps {
   $isSidebarHidden: boolean;
 }

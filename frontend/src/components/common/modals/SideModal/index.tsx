@@ -2,6 +2,8 @@ import React, { PropsWithChildren } from 'react';
 
 import ModalPortal from '@/components/common/modals/ModalPortal';
 
+import ModalBackground from '../ModalBackground';
+
 import * as S from './styles';
 
 interface SideModalProps {
@@ -11,9 +13,9 @@ interface SideModalProps {
 const SideModal: React.FC<PropsWithChildren<SideModalProps>> = ({ children: Sidebar, isSidebarHidden }) => {
   return (
     <ModalPortal id="sidebarModal-portal">
-      <S.SidebarBackground>
+      <ModalBackground>
         <S.SidebarWrapper $isSidebarHidden={isSidebarHidden}>{Sidebar}</S.SidebarWrapper>
-      </S.SidebarBackground>
+      </ModalBackground>
     </ModalPortal>
   );
 };
