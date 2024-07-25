@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.service.ReviewService;
 
@@ -31,5 +32,13 @@ public class ReviewController {
                                                            @RequestParam long memberId) {
         ReviewDetailResponse response = reviewService.findReview(id, memberId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/reviews")
+    public ResponseEntity<ReceivedReviewsResponse> findMyReceivedReview(@RequestParam long memberId,
+                                                                        @RequestParam(defaultValue = "9999") long lastReviewId,
+                                                                        @RequestParam(defaultValue = "10") int size) {
+        ReceivedReviewsResponse myReceivedReview = reviewService.findMyReceivedReview(memberId, lastReviewId, size);
+        return ResponseEntity.ok(myReceivedReview);
     }
 }
