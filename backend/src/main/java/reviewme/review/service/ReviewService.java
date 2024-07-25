@@ -38,16 +38,15 @@ public class ReviewService {
     @Transactional
     public Long createReview(CreateReviewRequest request) {
         ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(request.reviewerGroupId());
-
         Member reviewer = memberRepository.getMemberById(request.reviewerId());
-        Member reviewee = memberRepository.getMemberById(reviewerGroup.getReviewee().getId());
 
         List<Keyword> keywordList = request.keywords()
                 .stream()
                 .map(keywordRepository::getKeywordById)
                 .toList();
 
-        Review review = new Review(reviewer, reviewee, reviewerGroup, keywordList, LocalDateTime.now());
+        Review review = new Review(reviewer, reviewerGroup.getReviewee(),
+                reviewerGroup, keywordList, LocalDateTime.now());
         Review savedReview = reviewRepository.save(review);
 
         request.reviewContents()
