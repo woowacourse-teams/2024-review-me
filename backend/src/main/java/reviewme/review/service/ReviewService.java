@@ -2,8 +2,6 @@ package reviewme.review.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.keyword.domain.Keyword;
@@ -30,6 +28,7 @@ import reviewme.review.repository.ReviewRepository;
 @RequiredArgsConstructor
 public class ReviewService {
 
+    public static final int REVIEW_CONTENT_PREIVEW_MAX_LENGHT = 150;
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final ReviewContentRepository reviewContentRepository;
@@ -58,7 +57,8 @@ public class ReviewService {
                 reviewerGroup.getDescription(),
                 reviewerGroup.getThumbnailUrl()
         );
-        List<ReviewDetailReviewContentResponse> reviewContentResponses = reviewContents.stream()
+        List<ReviewDetailReviewContentResponse> reviewContentResponses = reviewContents
+                .stream()
                 .map(content -> new ReviewDetailReviewContentResponse(
                         content.getQuestion(),
                         content.getAnswer()
@@ -82,19 +82,18 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReceivedReviewsResponse findMyReceivedReview(long memberId, long lastReviewId, int size) {
-        PageRequest pageRequest = PageRequest.of(0, size);
-        Page<Review> reviews = reviewRepository.findAllByRevieweeBeforeLastViewedId(memberId, lastReviewId,
-                pageRequest);
-        int totalSize = reviews.getContent().size();
+        List<Review> reviews = reviewRepository.findAllByRevieweeBeforeLastViewedReviewId(
+                memberId, lastReviewId, size);
 
+        int totalSize = reviews.size();
         if (totalSize == 0) {
             return new ReceivedReviewsResponse(0, 0, List.of());
         }
 
         return new ReceivedReviewsResponse(
-                reviews.getContent().size(),
-                reviews.getContent().get(totalSize - 1).getId(),
-                reviews.getContent().stream()
+                reviews.size(),
+                reviews.get(totalSize - 1).getId(),
+                reviews.stream()
                         .map(review -> new ReceivedReviewResponse(
                                 review.getId(),
                                 review.isPublic(),
@@ -110,17 +109,15 @@ public class ReviewService {
     }
 
     private String getReviewContentPreview(Review review) {
-        String answer = reviewContentRepository.findAllByReviewId(review.getId())
+        String firstContentAnswer = reviewContentRepository.findAllByReviewId(review.getId())
                 .get(0)
                 .getAnswer();
-        if (answer.length() > 150) {
-            return answer.substring(0, 150);
-        }
-        return answer;
+        return firstContentAnswer.substring(0, REVIEW_CONTENT_PREIVEW_MAX_LENGHT);
     }
 
     private List<ReceivedReviewKeywordsResponse> getKeywordResponse(Review review) {
-        return review.getKeywords().getKeywordIds().stream()
+        return review.getKeywords().getKeywordIds()
+                .stream()
                 .map(keywordRepository::getKeywordById)
                 .map(keyword -> new ReceivedReviewKeywordsResponse(
                         keyword.getId(),
