@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const Wrapper = styled.select`
+export const Container = styled.select`
   width: 12rem;
   padding: 8px;
 

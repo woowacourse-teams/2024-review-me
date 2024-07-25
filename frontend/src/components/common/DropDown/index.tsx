@@ -11,13 +11,13 @@ const DropDown = ({ onChange, options }: DropDownProps) => {
   };
 
   return (
-    <S.Wrapper onChange={handleChange}>
+    <S.Container onChange={handleChange}>
       {options.map((option) => (
         <option key={option} value={option}>
           {option}
         </option>
       ))}
-    </S.Wrapper>
+    </S.Container>
   );
 };
 
