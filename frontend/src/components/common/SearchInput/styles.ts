@@ -10,5 +10,10 @@ export const Input = styled.input<InputProps>`
   padding: 1.6rem;
 
   border: 1px solid ${({ theme }) => theme.colors.black};
-  border-radius: 1.5rem;
+  border-radius: 0.8rem;
+
+  &::placeholder {
+    font-size: 1.2rem;
+    color: ${({ theme }) => theme.colors.placeholder};
+  }
 `;
