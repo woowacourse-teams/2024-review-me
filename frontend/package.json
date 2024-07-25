@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "dev": "webpack-dev-server --mode=development --open --hot --progress",
     "start": "webpack serve --open --config webpack.config.js",
     "build": "webpack --config webpack.config.js",
     "lint:styles": "stylelint \"src/**/styles.ts\" --fix",
