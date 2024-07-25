@@ -3,6 +3,7 @@ import { CSSProperties } from 'react';
 
 import { ThemeProperty } from '../types';
 
+export const formWidth = '86.7rem';
 export const sidebarWidth: ThemeProperty<string> = {
   desktop: '25rem',
   mobile: '100vw',
@@ -15,6 +16,13 @@ export const breakpoints: ThemeProperty<string> = {
 // NOTE: 1rem = 10px
 export const fontSize: ThemeProperty<CSSProperties['fontSize']> = {
   basic: '1.6rem',
+  medium: '2.4rem',
+  large: '3.2rem',
+  h2: '4.8rem',
+};
+
+export const borderRadius: ThemeProperty<CSSProperties['borderRadius']> = {
+  basic: '0.8rem',
 };
 
 export const fontWeight: ThemeProperty<CSSProperties['fontWeight']> = {
@@ -33,7 +41,7 @@ export const colors: ThemeProperty<CSSProperties['color']> = {
   white: '#FFFFFF',
   lightGray: '#F1F2F4',
   placeholder: '#D3D3D3',
-  gray: '#8D8C8C',
+  gray: '#7F7F7F',
   sidebarBackground: '#F5F5F5',
   disabled: '#D8D8D8',
   disabledText: '#7F7F7F',
@@ -50,6 +58,8 @@ const theme: Theme = {
   colors,
   breakpoints,
   sidebarWidth,
+  borderRadius,
+  formWidth,
 };
 
 export default theme;

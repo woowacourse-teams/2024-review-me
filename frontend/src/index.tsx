@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         element: <ReviewWritingCompletePage />,
       },
       {
-        path: 'user/detailed-review',
+        path: 'user/detailed-review/:id',
         element: <DetailedReviewPage />,
       },
     ],
@@ -37,11 +37,21 @@ const router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <Global styles={globalStyles} />
-      <RouterProvider router={router} />
-    </ThemeProvider>
-  </React.StrictMode>,
-);
+
+async function enableMocking() {
+  if (process.env.NODE_ENV === 'development') {
+    const { worker } = await import('./mocks/browser');
+    return worker.start();
+  }
+}
+
+enableMocking().then(() => {
+  root.render(
+    <React.StrictMode>
+      <ThemeProvider theme={theme}>
+        <Global styles={globalStyles} />
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </React.StrictMode>,
+  );
+});

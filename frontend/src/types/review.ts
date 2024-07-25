@@ -2,20 +2,30 @@ export interface ReviewItem {
   question: string;
   answer: string;
 }
+export interface Keyword {
+  id: number;
+  detail: string;
+}
 
+export interface DetailReviewContent {
+  id: number;
+  question: string;
+  answer: string;
+}
 export interface DetailReviewData {
   id: number;
   createdAt: Date;
-  reviewer: {
-    memberId: number;
-    name: string;
-  };
   reviewerGroup: {
-    groupId: number;
+    id: number;
     name: string;
+    deadline: Date;
+    reviewee: {
+      id: number;
+      name: string;
+    };
   };
-  contents: ReviewItem[];
-  keywords: { id: number; detail: string }[];
+  contents: DetailReviewContent[];
+  keywords: Keyword[];
 }
 
 // api
