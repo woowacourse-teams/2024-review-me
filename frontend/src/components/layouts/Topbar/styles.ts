@@ -6,8 +6,10 @@ export const Layout = styled.section`
 
   box-sizing: border-box;
   width: 100%;
-  height: 8rem;
-  padding: 1.8rem 2.5rem;
+  height: 7rem;
+  padding: 2rem 2.5rem;
+
+  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.lightGray};
 `;
 
 export const Container = styled.div`
