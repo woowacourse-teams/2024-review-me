@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import reviewme.review.dto.request.CreateReviewRequest;
-import reviewme.review.dto.response.ReviewResponse;
+import reviewme.review.dto.response.ReviewDetailResponse;
 
 @Tag(name = "리뷰 관리")
 public interface ReviewApi {
@@ -23,5 +23,5 @@ public interface ReviewApi {
             summary = "리뷰 조회",
             description = "단일 리뷰를 조회한다."
     )
-    ResponseEntity<ReviewResponse> findReview(@PathVariable long id);
+    ResponseEntity<ReviewDetailResponse> findReview(@PathVariable long id);
 }

@@ -3,11 +3,8 @@ import styled from '@emotion/styled';
 export const ReviewWritingPage = styled.form`
   display: flex;
   flex-direction: column;
-
   width: ${({ theme }) => theme.formWidth};
   height: fit-content;
-
-  border-top: 0.5rem solid #aedaff;
 `;
 
 export const ReviewFormHeader = styled.header`
@@ -17,7 +14,7 @@ export const ReviewFormHeader = styled.header`
   margin-bottom: 3rem;
 `;
 
-export const InfoContainer = styled.div`
+export const ReviewInfoContainer = styled.div`
   display: flex;
   gap: 1.5rem;
 `;
@@ -55,6 +52,11 @@ export const ReviewExpirationDate = styled.div`
   gap: 0.5rem;
 `;
 
+export const ClockImage = styled.img`
+  width: 1.5rem;
+  height: 2.4rem;
+`;
+
 export const ReviewFormMain = styled.main`
   display: flex;
   flex-direction: column;
@@ -63,7 +65,7 @@ export const ReviewFormMain = styled.main`
 export const ReviewContainer = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
   margin-bottom: 2.4rem;
 `;
 
@@ -85,13 +87,17 @@ export const KeywordContainer = styled.div`
 `;
 
 export const KeywordTitle = styled.div`
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   font-weight: 600;
+
+  &::after {
+    content: ' (1개 ~ 5개)';
+  }
 `;
 
 export const KeywordList = styled.ul`
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 1rem;
   margin: 1rem 0;
 `;
