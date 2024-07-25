@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         element: <ReviewPreviewListPage />,
       },
       {
-        path: 'user/detailed-review',
+        path: 'user/detailed-review/:id',
         element: <DetailedReviewPage />,
       },
     ],
