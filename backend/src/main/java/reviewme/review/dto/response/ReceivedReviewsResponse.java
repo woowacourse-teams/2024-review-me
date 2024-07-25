@@ -6,7 +6,7 @@ import java.util.List;
 @Schema(description = "내가 받은 리뷰 응답")
 public record ReceivedReviewsResponse(
 
-        @Schema(description = "응답 크기")
+        @Schema(description = "응답 개수")
         long size,
 
         @Schema(description = "마지막 리뷰 아이디")
