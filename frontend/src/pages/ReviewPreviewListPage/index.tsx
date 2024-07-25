@@ -1,3 +1,7 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+
+import { getReviewListApi } from '@/apis/review';
 import ReviewPreviewCard from '@/components/ReviewPreviewCard';
 import { ReviewPreview } from '@/types';
 
@@ -59,21 +63,64 @@ const mockReviewPreviews: ReviewPreview[] = [
 ];
 
 const ReviewPreviewListPage = () => {
+  const [reviews, setReviews] = useState<ReviewPreview[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const data = await getReviewListApi({ revieweeId: 1, lastReviewId: 4, memberId: 4 });
+        setReviews(data.reviews);
+        setLoading(false);
+      } catch (error) {
+        setError('리뷰 리스트를 불러오는 데 실패했습니다.');
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
+  const handleReviewClick = (id: number) => {
+    navigate(`/user/detailed-review/${id}`);
+  };
+
   return (
     <>
       <S.Layout>
         <SearchSection onChange={() => {}} options={options} placeholder={USER_SEARCH_PLACE_HOLDER} />
         <S.ReviewSection>
           {mockReviewPreviews.map((item) => (
-            <ReviewPreviewCard
-              key={item.id}
-              reviewerGroup={item.reviewerGroup}
-              createdAt={item.createdAt}
-              contentPreview={item.contentPreview}
-              keywords={item.keywords}
-              isPublic={item.isPublic}
-            />
+            <div key={item.id} onClick={() => handleReviewClick(item.id)}>
+              <ReviewPreviewCard
+                key={item.id}
+                reviewerGroup={item.reviewerGroup}
+                createdAt={item.createdAt}
+                contentPreview={item.contentPreview}
+                keywords={item.keywords}
+                isPublic={item.isPublic}
+              />
+            </div>
           ))}
+          {/* {loading && <p>로딩 중...</p>}
+          {error && <p>{error}</p>}
+          {!loading &&
+            !error &&
+            reviews.map((item) => (
+              <div key={item.id} onClick={() => handleReviewClick(item.id)}>
+                <ReviewPreviewCard
+                  key={item.id}
+                  reviewerGroup={item.reviewerGroup}
+                  createdAt={item.createdAt}
+                  contentPreview={item.contentPreview}
+                  keywords={item.keywords}
+                  isPublic={item.isPublic}
+                />
+              </div>
+            ))} */}
         </S.ReviewSection>
       </S.Layout>
     </>
