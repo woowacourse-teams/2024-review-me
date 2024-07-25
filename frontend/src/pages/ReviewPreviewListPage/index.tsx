@@ -9,7 +9,7 @@ import SearchSection from './components/SearchSection';
 import * as S from './styles';
 
 const USER_SEARCH_PLACE_HOLDER = '레포지토리명을 검색하세요.';
-const options = ['최신순', '오래된순'];
+const OPTIONS = ['최신순', '오래된순'];
 
 const ReviewPreviewListPage = () => {
   const [reviews, setReviews] = useState<ReviewPreview[]>([]);
@@ -34,13 +34,14 @@ const ReviewPreviewListPage = () => {
   }, []);
 
   const handleReviewClick = (id: number) => {
-    navigate(`/user/detailed-review/${id}?memberId=${4}`);
+    //navigate(`/user/detailed-review/${id}?memberId=${4}`);
+    navigate(`/user/detailed-review/${123456}?memberId=${123456}`); // NOTE: MSW용 하드코딩
   };
 
   return (
     <>
       <S.Layout>
-        <SearchSection onChange={() => {}} options={options} placeholder={USER_SEARCH_PLACE_HOLDER} />
+        <SearchSection onChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} />
         <S.ReviewSection>
           {loading && <p>로딩 중...</p>}
           {error && <p>{error}</p>}
