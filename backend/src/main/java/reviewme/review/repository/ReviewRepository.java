@@ -22,10 +22,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             SELECT r
             FROM Review r
             WHERE r.reviewee.id = :revieweeId
-            AND r.id < :lastViewedReviewId
+            AND :lastViewedReviewId IS NULL OR r.id < :lastViewedReviewId
             ORDER BY r.createdAt DESC
             LIMIT :size
             """
     )
-    List<Review> findLimitedReviewsWrittenForReviewee(long revieweeId, long lastViewedReviewId, int size);
+    List<Review> findLimitedReviewsWrittenForReviewee(long revieweeId, Long lastViewedReviewId, int size);
 }
