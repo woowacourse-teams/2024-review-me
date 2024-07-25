@@ -69,7 +69,7 @@ class ReviewServiceTest {
         );
 
         // when
-        Long savedReviewId = reviewService.createReview(createReviewRequest);
+        reviewService.createReview(createReviewRequest);
 
         // then
         List<Review> actual = reviewRepository.findAll();
