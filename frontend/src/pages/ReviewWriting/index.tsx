@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { getDataToWriteReview, postReviewApi } from '@/apis/review';
+import { getDataToWriteReviewApi, postReviewApi } from '@/apis/review';
 import ClockLogo from '@/assets/clock.svg';
 import GithubLogo from '@/assets/githubLogo.svg';
 import Button from '@/components/common/Button';
