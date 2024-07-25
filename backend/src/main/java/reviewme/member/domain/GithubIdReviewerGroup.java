@@ -40,19 +40,19 @@ public class GithubIdReviewerGroup {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof GithubIdReviewerGroup githubIdReviewerGroup)) {
             return false;
         }
-        if(id == null) {
-            return Objects.equals(githubId, ((GithubIdReviewerGroup) o).githubId);
+        if (id == null) {
+            return Objects.equals(githubId, githubIdReviewerGroup.githubId);
         }
 
-        return Objects.equals(id, ((GithubIdReviewerGroup) o).id);
+        return Objects.equals(id, githubIdReviewerGroup.id);
     }
 
     @Override
     public int hashCode() {
-        if(id == null) {
+        if (id == null) {
             return Objects.hash(githubId);
         }
         return Objects.hash(id);
