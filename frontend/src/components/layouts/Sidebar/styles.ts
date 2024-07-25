@@ -1,13 +1,7 @@
 import styled from '@emotion/styled';
 
-interface SidebarProps {
-  $isOpen: boolean;
-}
-export const Sidebar = styled.div<SidebarProps>`
+export const Sidebar = styled.div`
   position: fixed;
-  z-index: ${({ theme }) => theme.zIndex.sidebar};
-  left: 0;
-  transform: translateX(${(props) => (props.$isOpen ? 0 : '-100%')});
 
   display: flex;
   flex-direction: column;
@@ -19,8 +13,6 @@ export const Sidebar = styled.div<SidebarProps>`
   background-color: #fff;
   filter: drop-shadow(0.25rem 0.25rem 0.25rem lightgrey);
   border-radius: 0 1rem 1rem 0;
-
-  transition: transform 1s ease-in-out;
 
   @media screen and (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     width: ${({ theme }) => theme.sidebarWidth.mobile};
