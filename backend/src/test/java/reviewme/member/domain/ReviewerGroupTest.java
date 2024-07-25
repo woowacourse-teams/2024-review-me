@@ -38,8 +38,9 @@ class ReviewerGroupTest {
         // given
         String groupName = "a".repeat(length);
         Member reviewee = 회원_산초.create();
+        Member reviewer = 회원_커비.create();
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
-        List<GithubId> reviewerGithubIds = List.of();
+        List<GithubId> reviewerGithubIds = List.of(reviewer.getGithubId());
 
         // when, then
         assertThatThrownBy(() -> new ReviewerGroup(reviewee, reviewerGithubIds, groupName, "설명", deadline))
@@ -51,8 +52,9 @@ class ReviewerGroupTest {
         // given
         String description = "a".repeat(51);
         Member reviewee = 회원_산초.create();
+        Member reviewer = 회원_커비.create();
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
-        List<GithubId> reviewerGithubIds = List.of();
+        List<GithubId> reviewerGithubIds = List.of(reviewer.getGithubId());
 
         // when, then
         assertThatThrownBy(() -> new ReviewerGroup(reviewee, reviewerGithubIds, "그룹 이름", description, deadline))
