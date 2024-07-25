@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import reviewme.member.domain.exception.DescriptionLengthExceededException;
+import reviewme.member.domain.exception.InvalidDescriptionLengthException;
 import reviewme.member.domain.exception.DuplicateReviewerException;
 import reviewme.member.domain.exception.EmptyReviewerException;
 import reviewme.member.domain.exception.InvalidGroupNameLengthException;
@@ -56,7 +56,7 @@ class ReviewerGroupTest {
 
         // when, then
         assertThatThrownBy(() -> new ReviewerGroup(sancho, githubIds, "그룹 이름", description, createdAt))
-                .isInstanceOf(DescriptionLengthExceededException.class);
+                .isInstanceOf(InvalidDescriptionLengthException.class);
     }
 
     @Test
