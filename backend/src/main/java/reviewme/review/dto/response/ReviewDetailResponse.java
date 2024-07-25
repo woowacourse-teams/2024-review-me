@@ -20,7 +20,7 @@ public record ReviewDetailResponse(
         ReviewDetailReviewerGroupResponse reviewerGroup,
 
         @Schema(description = "리뷰 내용 목록")
-        List<ReviewDetailReviewContentResponse> contents,
+        List<ReviewDetailReviewContentResponse> reviews,
 
         @Schema(description = "선택된 키워드 목록")
         List<String> keywords
