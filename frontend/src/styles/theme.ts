@@ -27,13 +27,16 @@ export const fontWeight: ThemeProperty<CSSProperties['fontWeight']> = {
 
 export const colors: ThemeProperty<CSSProperties['color']> = {
   primary: '#7361DF',
-  primaryHover: '#E6E3F6',
+  primaryHover: '#9082E6',
+  lightPurple: '#E6E3F6',
   black: '#1E2022',
   white: '#FFFFFF',
   lightGray: '#F1F2F4',
   placeholder: '#D3D3D3',
   gray: '#8D8C8C',
   sidebarBackground: '#F5F5F5',
+  disabled: '#D8D8D8',
+  disabledText: '#7F7F7F',
 };
 
 export const zIndex: ThemeProperty<CSSProperties['zIndex']> = {

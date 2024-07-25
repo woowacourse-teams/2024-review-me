@@ -15,7 +15,7 @@ const globalStyles = css`
     padding: 0;
     box-sizing: border-box;
 
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 `;
 
