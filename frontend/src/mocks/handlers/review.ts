@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw';
 import endPoint from '@/apis/endpoints';
 
 import { DETAILED_REVIEW_MOCK_DATA } from '../mockData/detailedReviewMockData';
+import { REVIEW_PREVIEW_LIST } from '../mockData/reviewPreviewList';
 import { REVIEW_WRITING_DATA } from '../mockData/reviewWritingData';
 
 const getDetailedReview = () =>
@@ -15,6 +16,11 @@ const getDataToWriteReview = () =>
     return HttpResponse.json(REVIEW_WRITING_DATA);
   });
 
-const reviewHandler = [getDetailedReview(), getDataToWriteReview()];
+const getReviewPreviewList = () =>
+  http.get(endPoint.gettingReviewList(1, 3, 1), async ({ request }) => {
+    return HttpResponse.json(REVIEW_PREVIEW_LIST);
+  });
+
+const reviewHandler = [getDetailedReview(), getReviewPreviewList(), getDataToWriteReview()];
 
 export default reviewHandler;
