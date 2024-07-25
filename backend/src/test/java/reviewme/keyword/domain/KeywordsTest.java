@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import reviewme.keyword.domain.exception.DuplicateKeywordException;
 import reviewme.keyword.domain.exception.KeywordLimitExceedException;
 
-class SelectedKeywordsTest {
+class KeywordsTest {
 
     @Test
     void 키워드는_최대_5개만_선택할_수_있다() {
@@ -20,7 +20,7 @@ class SelectedKeywordsTest {
                 .toList();
 
         // when, then
-        assertDoesNotThrow(() -> new SelectedKeywords(keywords));
+        assertDoesNotThrow(() -> new Keywords(keywords));
     }
 
     @Test
@@ -31,7 +31,7 @@ class SelectedKeywordsTest {
                 .toList();
 
         // when, then
-        assertThatThrownBy(() -> new SelectedKeywords(keywords))
+        assertThatThrownBy(() -> new Keywords(keywords))
                 .isInstanceOf(KeywordLimitExceedException.class);
     }
 
@@ -44,7 +44,7 @@ class SelectedKeywordsTest {
         );
 
         // when, then
-        assertThatThrownBy(() -> new SelectedKeywords(keywords))
+        assertThatThrownBy(() -> new Keywords(keywords))
                 .isInstanceOf(DuplicateKeywordException.class);
     }
 }

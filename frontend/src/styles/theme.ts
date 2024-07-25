@@ -43,6 +43,8 @@ export const colors: ThemeProperty<CSSProperties['color']> = {
   placeholder: '#D3D3D3',
   gray: '#7F7F7F',
   sidebarBackground: '#F5F5F5',
+  disabled: '#D8D8D8',
+  disabledText: '#7F7F7F',
 };
 
 export const zIndex: ThemeProperty<CSSProperties['zIndex']> = {
