@@ -1,5 +1,6 @@
 package reviewme.member.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;
 import java.util.List;
@@ -14,7 +15,7 @@ import reviewme.member.domain.exception.EmptyReviewerException;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewerGroupGithubIds {
 
-    @OneToMany(mappedBy = "reviewerGroup")
+    @OneToMany(mappedBy = "reviewerGroup", cascade = CascadeType.ALL)
     private Set<GithubIdReviewerGroup> reviewerGithubIds;
 
     public ReviewerGroupGithubIds(ReviewerGroup reviewerGroup, List<GithubId> githubIds) {
@@ -24,9 +25,9 @@ public class ReviewerGroupGithubIds {
         Set<GithubIdReviewerGroup> reviewers = githubIds.stream()
                 .map(githubId -> new GithubIdReviewerGroup(githubId, reviewerGroup))
                 .collect(Collectors.toSet());
-        if (reviewers.size() != githubIds.size()) {
-            throw new DuplicateReviewerException();
-        }
+//        if (reviewers.size() != githubIds.size()) {
+//            throw new DuplicateReviewerException();
+//        }
         this.reviewerGithubIds = reviewers;
     }
 
