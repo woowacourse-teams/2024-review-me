@@ -21,16 +21,11 @@ public class Keyword {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "detail", nullable = false)
-    private String detail;
+    @Column(name = "content", nullable = false)
+    private String content;
 
-    Keyword(Long id, String detail) {
-        this.id = id;
-        this.detail = detail;
-    }
-
-    public Keyword(String detail) {
-        this(null, detail);
+    public Keyword(String content) {
+        this.content = content;
     }
 
     @Override
@@ -42,7 +37,7 @@ public class Keyword {
             return false;
         }
         if (id == null) {
-            return Objects.equals(detail, keyword.detail);
+            return Objects.equals(content, keyword.content);
         }
         return Objects.equals(id, keyword.id);
     }
@@ -50,7 +45,7 @@ public class Keyword {
     @Override
     public int hashCode() {
         if (id == null) {
-            return Objects.hash(detail);
+            return Objects.hash(content);
         }
         return Objects.hash(id);
     }

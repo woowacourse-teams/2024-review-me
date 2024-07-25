@@ -5,7 +5,7 @@ export const KeywordButton = styled.button<{ isSelected: boolean }>`
   align-items: center;
   justify-content: flex-start;
 
-  width: 30rem;
+  width: fit-content;
   height: 5rem;
   padding: 2rem;
 
