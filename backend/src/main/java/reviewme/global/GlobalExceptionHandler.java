@@ -2,6 +2,8 @@ package reviewme.global;
 
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -22,9 +24,12 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import reviewme.global.exception.BadRequestException;
 import reviewme.global.exception.FieldErrorResponse;
 import reviewme.global.exception.NotFoundException;
+import reviewme.global.exception.UnAuthorizedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(NotFoundException.class)
     public ProblemDetail handleNotFoundException(NotFoundException ex) {
@@ -36,8 +41,15 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getErrorMessage());
     }
 
+    @ExceptionHandler(UnAuthorizedException.class)
+    public ProblemDetail handleUnAuthorizedException(UnAuthorizedException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getErrorMessage());
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleException(Exception ex) {
+        log.error("An error occurred", ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러가 발생했습니다.");
     }
 
