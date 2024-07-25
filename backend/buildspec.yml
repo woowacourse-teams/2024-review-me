@@ -8,7 +8,7 @@ phases:
     commands: 
       - cd backend
       - chmod +x ./gradlew
-      - ./gradlew build
+      - ./gradlew clean bootJar
   post_build:
     commands:
       - mv build/libs/*.jar build/libs/review-me-dev.jar
