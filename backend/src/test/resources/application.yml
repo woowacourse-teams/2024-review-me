@@ -13,7 +13,6 @@ spring:
       ddl-auto: update
   profiles:
     include: api-docs
-    active: local
 
 springdoc:
   swagger-ui:
