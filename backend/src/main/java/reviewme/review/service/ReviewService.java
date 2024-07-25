@@ -12,16 +12,17 @@ import reviewme.keyword.repository.KeywordRepository;
 import reviewme.keyword.service.KeywordService;
 import reviewme.member.domain.Member;
 import reviewme.member.domain.ReviewerGroup;
+import reviewme.member.dto.response.MemberResponse;
+import reviewme.member.dto.response.ReviewCreationReviewerGroupResponse;
 import reviewme.member.repository.MemberRepository;
 import reviewme.member.repository.ReviewerGroupRepository;
 import reviewme.member.service.ReviewerGroupService;
 import reviewme.review.domain.Question;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
-import reviewme.review.dto.response.ReviewCreationResponse;
-import reviewme.review.dto.response.QuestionResponse;
-import reviewme.member.dto.response.ReviewCreationReviewerGroupResponse;
 import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.response.QuestionResponse;
+import reviewme.review.dto.response.ReviewCreationResponse;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewDetailReviewContentResponse;
 import reviewme.review.dto.response.ReviewDetailReviewerGroupResponse;
@@ -112,9 +113,24 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewCreationResponse findReviewCreationSetup(long reviewerGroupId) {
-        ReviewCreationReviewerGroupResponse reviewerGroup = reviewerGroupService.findReviewCreationReviewerGroup(reviewerGroupId);
-        List<QuestionResponse> questions = questionService.findAllQuestions();
-        List<KeywordResponse> keywords = keywordService.findAllKeywords();
-        return new ReviewCreationResponse(reviewerGroup, questions, keywords);
+        ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(reviewerGroupId);
+        Member reviewee = reviewerGroup.getReviewee();
+        ReviewCreationReviewerGroupResponse reviewerGroupResponse = new ReviewCreationReviewerGroupResponse(
+                reviewerGroup.getId(),
+                reviewerGroup.getGroupName(),
+                reviewerGroup.getDescription(),
+                reviewerGroup.getDeadline(),
+                reviewerGroup.getThumbnailUrl(),
+                new MemberResponse(reviewee.getId(), reviewee.getName())
+        );
+        List<QuestionResponse> questions = questionRepository.findAll()
+                .stream()
+                .map(question -> new QuestionResponse(question.getId(), question.getContent()))
+                .toList();
+        List<KeywordResponse> keywords = keywordRepository.findAll()
+                .stream()
+                .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getContent()))
+                .toList();
+        return new ReviewCreationResponse(reviewerGroupResponse, questions, keywords);
     }
 }
