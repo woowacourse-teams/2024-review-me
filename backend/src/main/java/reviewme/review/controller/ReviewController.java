@@ -34,6 +34,12 @@ public class ReviewController implements ReviewApi {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/reviews/write")
+    public ResponseEntity<ReviewCreationResponse> findReviewCreationSetup(@RequestParam long reviewerGroupId) {
+        ReviewCreationResponse response = reviewService.findReviewCreationSetup(reviewerGroupId);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/reviews")
     public ResponseEntity<ReceivedReviewsResponse> findMyReceivedReview(@RequestParam long memberId,
                                                                         @RequestParam(required = false) Long lastReviewId,

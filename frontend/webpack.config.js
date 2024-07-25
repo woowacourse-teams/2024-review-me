@@ -51,6 +51,7 @@ module.exports = (env, argv) => {
       }),
       new CleanWebpackPlugin(),
       new Dotenv({
+        systemvars: true,
         path: './.env',
       }),
     ],

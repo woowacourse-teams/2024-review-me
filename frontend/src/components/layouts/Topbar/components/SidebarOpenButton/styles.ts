@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
 export const HamburgerButton = styled.button`
-  width: 3.7rem;
-  height: 3.7rem;
+  width: 2.3rem;
+  height: 2.3rem;
 
   img {
     width: 100%;

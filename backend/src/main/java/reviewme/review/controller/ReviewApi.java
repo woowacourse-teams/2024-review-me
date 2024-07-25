@@ -34,4 +34,5 @@ public interface ReviewApi {
     ResponseEntity<ReceivedReviewsResponse> findMyReceivedReview(@RequestParam long memberId,
                                                                  @RequestParam Long lastReviewId,
                                                                  @RequestParam(defaultValue = "10") int size);
+
 }

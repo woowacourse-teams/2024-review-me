@@ -43,6 +43,7 @@ public class ReviewContent {
         this.review = review;
         this.question = question;
         this.answer = answer;
+        review.addReviewContents(this);
     }
 
     private void validateAnswerLength(String answer) {

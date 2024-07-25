@@ -1,7 +1,8 @@
 import { useLocation, Link } from 'react-router-dom';
 
-import CloseIcon from '../../../assets/close.svg';
-import LogoIcon from '../../../assets/logo.svg';
+import CloseIcon from '@/assets/close.svg';
+import LogoIcon from '@/assets/logo.svg';
+
 import { PAGE } from '../../../constants';
 
 import * as S from './styles';
@@ -9,7 +10,7 @@ import * as S from './styles';
 const PATH = {
   myPage: '/user/mypage',
   reviewWriting: '/user/review-writing',
-  allReview: '/user/all-review',
+  reviewPreviewList: '/user/review-preview-list',
   detailedReview: '/user/detailed-review',
   reviewGroupManagement: '/user/review-group-management',
 };
@@ -25,7 +26,7 @@ const Sidebar = ({ isSidebarOpen, closeSidebar }: SidebarProps) => {
   const menuItems = [
     { path: PATH.myPage, label: PAGE.myPage },
     { path: PATH.reviewWriting, label: PAGE.reviewWriting },
-    { path: PATH.allReview, label: PAGE.allReview },
+    { path: PATH.reviewPreviewList, label: PAGE.reviewPreviewList },
     { path: PATH.detailedReview, label: PAGE.detailedReview },
     { path: PATH.reviewGroupManagement, label: PAGE.reviewGroupManagement },
   ];
