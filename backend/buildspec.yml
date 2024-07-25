@@ -17,6 +17,7 @@ phases:
 cache:
   paths:
     - '/root/.gradle/caches/**/*'
+    - '/root/.gradle/wrapper/**/*'
 
 artifacts:
   files:
