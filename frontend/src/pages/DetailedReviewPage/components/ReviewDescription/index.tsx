@@ -1,44 +1,37 @@
-import LockButton from '../LockButton';
+import { ProjectImg, ReviewDate } from '@/components';
+import { ProjectImgProps } from '@/components/common/ProjectImg';
+import { ReviewDateProps } from '@/components/common/ReviewDate';
+
+import LockToggle from '../LockToggle';
+
 import * as S from './styles';
 
-interface ReviewDescriptionItemProps {
-  title: string;
-  contents: string;
-}
-const ReviewDescriptionItem = ({ title, contents }: ReviewDescriptionItemProps) => {
-  return (
-    <S.ListItem>
-      <S.Title>{title}</S.Title>
-      <S.Clone>:</S.Clone>
-      <S.Contents>{contents}</S.Contents>
-    </S.ListItem>
-  );
-};
+const PROJECT_IMAGE_SIZE = '6rem';
 
-interface ReviewDescriptionProps {
-  projectName: string;
-  createdAt: Date;
-  isLock: boolean;
+interface ReviewDescriptionProps extends Omit<ProjectImgProps, '$size'>, Omit<ReviewDateProps, 'dateTitle'> {
+  isPublic: boolean;
+  handleClickToggleButton: () => void;
 }
 
-const formatDate = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  //const minutes = String(date.getMinutes()).padStart(2, '0');
-
-  return `${year}/${month}/${day}`;
-};
-
-const ReviewDescription = ({ projectName, createdAt, isLock }: ReviewDescriptionProps) => {
+const ReviewDescription = ({
+  thumbnailUrl,
+  projectName,
+  isPublic,
+  date,
+  handleClickToggleButton,
+}: ReviewDescriptionProps) => {
   return (
     <S.Description>
-      <S.ProjectAndLockButtonContainer>
-        <ReviewDescriptionItem title="프로젝트명" contents={projectName} />
-        <LockButton isLock={isLock} onClick={() => console.log('lock')} />
-      </S.ProjectAndLockButtonContainer>
-
-      <ReviewDescriptionItem title="작성일" contents={formatDate(createdAt)} />
+      <S.DescriptionSide>
+        <ProjectImg thumbnailUrl={thumbnailUrl} projectName={projectName} $size={PROJECT_IMAGE_SIZE} />
+        <S.ProjectNameAndDateContainer>
+          <S.ProjectName>{projectName}</S.ProjectName>
+          <ReviewDate date={date} dateTitle="리뷰 작성일" />
+        </S.ProjectNameAndDateContainer>
+      </S.DescriptionSide>
+      <S.DescriptionSide>
+        <LockToggle $isPublic={isPublic} handleClickToggleButton={handleClickToggleButton} />
+      </S.DescriptionSide>
     </S.Description>
   );
 };

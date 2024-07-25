@@ -1,4 +1,5 @@
 import { ButtonType } from '@/types/styles';
+
 import * as S from './styles';
 
 interface ButtonProps {
