@@ -21,7 +21,7 @@ class ReviewerGroupTest {
     @Test
     void 리뷰_그룹이_올바르게_생성된다() {
         // given
-        Member member = 회원_산초.create();
+        Member reviewee = 회원_산초.create();
         String groupName = "a".repeat(100);
         String description = "a".repeat(50);
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
@@ -29,7 +29,7 @@ class ReviewerGroupTest {
 
         // when, then
         assertDoesNotThrow(
-                () -> new ReviewerGroup(member, reviewerGithubIds, groupName, description, deadline));
+                () -> new ReviewerGroup(reviewee, reviewerGithubIds, groupName, description, deadline));
     }
 
     @ParameterizedTest
@@ -37,12 +37,12 @@ class ReviewerGroupTest {
     void 리뷰_그룹_이름_길이_제한을_벗어날_수_없다(int length) {
         // given
         String groupName = "a".repeat(length);
-        Member sancho = 회원_산초.create();
+        Member reviewee = 회원_산초.create();
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
         List<GithubId> reviewerGithubIds = List.of();
 
         // when, then
-        assertThatThrownBy(() -> new ReviewerGroup(sancho, reviewerGithubIds, groupName, "설명", deadline))
+        assertThatThrownBy(() -> new ReviewerGroup(reviewee, reviewerGithubIds, groupName, "설명", deadline))
                 .isInstanceOf(InvalidGroupNameLengthException.class);
     }
 
@@ -50,39 +50,39 @@ class ReviewerGroupTest {
     void 리뷰_그룹_설명_길이_제한을_벗어날_수_없다() {
         // given
         String description = "a".repeat(51);
-        Member sancho = 회원_산초.create();
+        Member reviewee = 회원_산초.create();
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
         List<GithubId> reviewerGithubIds = List.of();
 
         // when, then
-        assertThatThrownBy(() -> new ReviewerGroup(sancho, reviewerGithubIds, "그룹 이름", description, deadline))
+        assertThatThrownBy(() -> new ReviewerGroup(reviewee, reviewerGithubIds, "그룹 이름", description, deadline))
                 .isInstanceOf(InvalidDescriptionLengthException.class);
     }
 
     @Test
     void 리뷰어_목록에_리뷰이가_들어갈_수_없다() {
         // given
-        Member member = 회원_산초.create();
+        Member reviewee = 회원_산초.create();
         String groupName = "Group";
         String description = "Description";
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
-        List<GithubId> reviewerGithubIds = List.of(member.getGithubId());
+        List<GithubId> reviewerGithubIds = List.of(reviewee.getGithubId());
 
         // when, then
-        assertThatThrownBy(() -> new ReviewerGroup(member, reviewerGithubIds, groupName, description, deadline))
+        assertThatThrownBy(() -> new ReviewerGroup(reviewee, reviewerGithubIds, groupName, description, deadline))
                 .isInstanceOf(SelfReviewException.class);
     }
 
     @Test
     void 리뷰어_목록이_비어있을_수_없다() {
-        Member member = 회원_산초.create();
+        Member reviewee = 회원_산초.create();
         String groupName = "Group";
         String description = "Description";
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
         List<GithubId> reviewerGithubIds = List.of();
 
         // when, then
-        assertThatThrownBy(() -> new ReviewerGroup(member, reviewerGithubIds, groupName, description, deadline))
+        assertThatThrownBy(() -> new ReviewerGroup(reviewee, reviewerGithubIds, groupName, description, deadline))
                 .isInstanceOf(EmptyReviewerException.class);
     }
 
@@ -104,8 +104,8 @@ class ReviewerGroupTest {
     @Test
     void 리뷰어를_중복으로_추가할_수_없다() {
         // given
-        Member reviewee = 회원_산초.create();
         Member reviewer = 회원_커비.create();
+        Member reviewee = 회원_산초.create();
 
         String groupName = "Group";
         String description = "Description";
