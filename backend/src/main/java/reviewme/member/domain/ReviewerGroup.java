@@ -17,7 +17,7 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import reviewme.member.domain.exception.DescriptionLengthExceededException;
+import reviewme.member.domain.exception.InvalidDescriptionLengthException;
 import reviewme.member.domain.exception.InvalidGroupNameLengthException;
 import reviewme.member.domain.exception.SelfReviewException;
 import reviewme.review.domain.Review;
@@ -68,7 +68,7 @@ public class ReviewerGroup {
             throw new InvalidGroupNameLengthException(MAX_GROUP_NAME_LENGTH);
         }
         if (description.length() > MAX_DESCRIPTION_LENGTH) {
-            throw new DescriptionLengthExceededException(MAX_DESCRIPTION_LENGTH);
+            throw new InvalidDescriptionLengthException(MAX_DESCRIPTION_LENGTH);
         }
         if (reviewerGithubIds.contains(reviewee.getGithubId())) {
             throw new SelfReviewException();

@@ -1,33 +1,27 @@
 import styled from '@emotion/styled';
 
-export const Description = styled.ul`
+export const Description = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   width: 100%;
+  height: 6rem;
   margin: 0;
   padding-left: 0;
 `;
-
-export const ProjectAndLockButtonContainer = styled.div`
+export const DescriptionSide = styled.div`
   display: flex;
-  justify-content: space-between;
-  width: 100%;
 `;
-export const ListItem = styled.li`
-  padding: 0;
-  list-style: none;
+export const ProjectNameAndDateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-left: 1rem;
+`;
 
-  span {
-    display: inline-block;
-  }
-`;
-export const Title = styled.span`
-  width: 6rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-`;
-export const Clone = styled.span`
-  margin: 0 0.5rem;
-  font-size: 1rem;
-`;
-export const Contents = styled.span`
-  font-size: 1rem;
+export const ProjectName = styled.p`
+  margin-top: 0;
+  font-size: ${({ theme }) => theme.fontSize.medium};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;

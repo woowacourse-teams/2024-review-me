@@ -1,9 +1,9 @@
 //리뷰 작성
-
 import { ReviewData, WritingReviewInfoData } from '@/types';
+
 import endPoint from './endpoints';
 
-export const getInfoToWriteReview = async (reviewerGroupId: number) => {
+export const getDataToWriteReviewApi = async (reviewerGroupId: number) => {
   const response = await fetch(endPoint.gettingInfoToWriteReview(reviewerGroupId), {
     method: 'GET',
   });
@@ -34,8 +34,8 @@ export const postReviewApi = async ({ reviewData }: { reviewData: ReviewData }) 
 };
 
 // 상세리뷰
-export const getDetailedReviewApi = async ({ reviewId }: { reviewId: number }) => {
-  const response = await fetch(endPoint.gettingDetailedReview(reviewId), {
+export const getDetailedReviewApi = async ({ reviewId, memberId }: { reviewId: number; memberId: number }) => {
+  const response = await fetch(endPoint.gettingDetailedReview(reviewId, memberId), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

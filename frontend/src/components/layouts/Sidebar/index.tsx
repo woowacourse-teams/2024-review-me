@@ -10,7 +10,7 @@ const PATH = {
   myPage: '/user/mypage',
   reviewWriting: '/user/review-writing',
   allReview: '/user/all-review',
-  detailedReview: '/user/detailed-review',
+  detailedReview: '/user/detailed-review/0?memberId=1',
   reviewGroupManagement: '/user/review-group-management',
 };
 
