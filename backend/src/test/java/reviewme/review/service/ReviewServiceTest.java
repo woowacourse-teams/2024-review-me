@@ -89,9 +89,9 @@ class ReviewServiceTest {
 
         // when
         ReceivedReviewsResponse 가장_최근에_받은_리뷰_조회
-                = reviewService.findMyReceivedReview(reviewee.getId(), 999, 2);
+                = reviewService.findMyReceivedReview(reviewee.getId(), null, 2);
         ReceivedReviewsResponse 특정_리뷰_이전_리뷰_조회
-                = reviewService.findMyReceivedReview(reviewee.getId(), 2, 2);
+                = reviewService.findMyReceivedReview(reviewee.getId(), 2L, 2);
 
         // then
          assertAll(

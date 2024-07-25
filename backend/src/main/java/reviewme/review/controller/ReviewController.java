@@ -17,7 +17,7 @@ import reviewme.review.service.ReviewService;
 
 @RestController
 @RequiredArgsConstructor
-public class ReviewController {
+public class ReviewController implements ReviewApi {
 
     private final ReviewService reviewService;
 
@@ -36,7 +36,7 @@ public class ReviewController {
 
     @GetMapping("/reviews")
     public ResponseEntity<ReceivedReviewsResponse> findMyReceivedReview(@RequestParam long memberId,
-                                                                        @RequestParam(defaultValue = "9999") long lastReviewId,
+                                                                        @RequestParam(required = false) Long lastReviewId,
                                                                         @RequestParam(defaultValue = "10") int size) {
         ReceivedReviewsResponse myReceivedReview = reviewService.findMyReceivedReview(memberId, lastReviewId, size);
         return ResponseEntity.ok(myReceivedReview);

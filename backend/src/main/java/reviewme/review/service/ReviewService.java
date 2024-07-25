@@ -80,7 +80,10 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReceivedReviewsResponse findMyReceivedReview(long memberId, long lastReviewId, int size) {
+    public ReceivedReviewsResponse findMyReceivedReview(long memberId, Long lastReviewId, int size) {
+        if(lastReviewId == null) {
+            lastReviewId = Long.MAX_VALUE;
+        }
         List<Review> reviews = reviewRepository.findLimitedReviewsWrittenForReviewee(memberId, lastReviewId, size);
 
         if (reviews.isEmpty()) {
