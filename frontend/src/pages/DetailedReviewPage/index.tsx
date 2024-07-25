@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 
 import { ReviewComment } from '@/components';
 import { DetailReviewData } from '@/types';
@@ -15,15 +15,19 @@ const COMMENT = 'VITE 쓰고 싶다.';
 
 const DetailedReviewPage = () => {
   const { id: reviewId } = useParams();
-  const [detailedReview, setDetailedReview] = useState<DetailReviewData | null>(null);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const memberId = searchParams.get('memberId');
+
+  const [detailedReview, setDetailedReview] = useState<DetailReviewData>();
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const fetch = async () => {
     if (!reviewId) return;
     try {
       setIsLoading(true);
-      const result = await getDetailedReviewApi({ reviewId: Number(reviewId) });
+      const result = await getDetailedReviewApi({ reviewId: Number(reviewId), memberId: Number(memberId) });
 
       setDetailedReview(result);
       setErrorMessage('');
@@ -43,7 +47,7 @@ const DetailedReviewPage = () => {
   if (isLoading) return <div>Loading...</div>;
 
   if (errorMessage) return <div>Error: {errorMessage}</div>;
-  if (!detailedReview) return <div>Error: '상세보기 리뷰 데이터를 가져올 수 없어요.'</div>;
+  if (!detailedReview) return <div>Error: 상세보기 리뷰 데이터를 가져올 수 없어요.</div>;
 
   return (
     <S.DetailedReviewPage>

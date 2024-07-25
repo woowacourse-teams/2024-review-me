@@ -21,7 +21,7 @@ export interface DetailReviewData {
     };
   };
   contents: DetailReviewContent[];
-  keywords: Keyword[];
+  keywords: string[];
 }
 
 // api
@@ -38,11 +38,6 @@ export interface ReviewContent {
 }
 
 export interface Question {
-  id: number;
-  content: string;
-}
-
-export interface Keyword {
   id: number;
   content: string;
 }
