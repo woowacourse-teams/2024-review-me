@@ -70,7 +70,7 @@ export const getReviewListApi = async ({
   if (!response.ok) {
     throw new Error('리뷰 리스트를 불러오는 데 실패했습니다.');
   }
-  console.log(response);
+
   const data = await response.json();
   return data;
 };
