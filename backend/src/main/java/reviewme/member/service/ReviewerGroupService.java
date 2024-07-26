@@ -6,9 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import reviewme.member.domain.Member;
 import reviewme.member.domain.ReviewerGroup;
 import reviewme.member.dto.response.MemberResponse;
+import reviewme.member.dto.response.ReviewCreationReviewerGroupResponse;
 import reviewme.member.dto.response.ReviewerGroupResponse;
 import reviewme.member.repository.ReviewerGroupRepository;
-import reviewme.member.dto.response.ReviewCreationReviewerGroupResponse;
 
 @Service
 @RequiredArgsConstructor
