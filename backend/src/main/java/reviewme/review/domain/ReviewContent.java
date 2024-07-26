@@ -53,6 +53,9 @@ public class ReviewContent {
     }
 
     public String getAnswerPreview() {
+        if (answer.length() <= REVIEW_CONTENT_PREVIEW_MAX_LENGTH) {
+            return answer;
+        }
         return answer.substring(0, REVIEW_CONTENT_PREVIEW_MAX_LENGTH);
     }
 
