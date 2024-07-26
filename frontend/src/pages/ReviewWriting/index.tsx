@@ -27,7 +27,7 @@ const ReviewWritingPage = () => {
 
   useEffect(() => {
     const getDataToWrite = async () => {
-      const data = await getDataToWriteReviewApi(10);
+      const data = await getDataToWriteReviewApi(1);
       setDataToWrite(data);
       setAnswers(data.questions.map((question) => ({ questionId: question.id, answer: '' })));
     };
