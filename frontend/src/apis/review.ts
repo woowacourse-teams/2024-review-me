@@ -1,5 +1,5 @@
 //리뷰 작성
-import { ReviewData, WritingReviewInfoData } from '@/types';
+import { DetailReviewData, ReviewData, WritingReviewInfoData } from '@/types';
 
 import endPoint from './endpoints';
 
@@ -46,7 +46,7 @@ export const getDetailedReviewApi = async ({ reviewId, memberId }: { reviewId: n
     throw new Error('상세 리뷰를 불러오는 데 실패했습니다.');
   }
 
-  const data = await response.json();
+  const data: DetailReviewData = await response.json();
   return data;
 };
 

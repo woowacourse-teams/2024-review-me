@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useLocation, useParams } from 'react-router';
 
+import { getDetailedReviewApi } from '@/apis/review';
 import { RevieweeComments } from '@/components';
 import { DetailReviewData } from '@/types';
-
-import { getDetailedReviewApi } from '../../apis/review';
 
 import KeywordSection from './components/KeywordSection';
 import ReviewDescription from './components/ReviewDescription';
@@ -17,30 +16,24 @@ const DetailedReviewPage = () => {
   const queryParams = new URLSearchParams(location.search);
   const memberId = queryParams.get('memberId');
 
-  const [detailedReview, setDetailReview] = useState<DetailReviewData>();
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const fetchDetailedReview = async (reviewId: number, memberId: number) => {
+    const result = await getDetailedReviewApi({ reviewId, memberId });
+    return result;
+  };
 
-  useEffect(() => {
-    const fetchReview = async () => {
-      try {
-        const result = await getDetailedReviewApi({ reviewId: Number(id), memberId: Number(memberId) });
-
-        setDetailReview(result);
-        setErrorMessage('');
-      } catch (error) {
-        setErrorMessage('리뷰를 불러오는 데 실패했습니다.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchReview();
-  }, [id]);
+  const {
+    data: detailedReview,
+    isLoading,
+    error,
+  } = useQuery<DetailReviewData, Error>({
+    queryKey: ['detailedReview', id, memberId],
+    queryFn: () => fetchDetailedReview(Number(id), Number(memberId)),
+    enabled: !!id && !!memberId,
+  });
 
   if (isLoading) return <div>Loading...</div>;
 
-  if (errorMessage) return <div>Error: {errorMessage}</div>;
+  if (error) return <div>Error: {error.message}</div>;
   if (!detailedReview) return <div>Error: 상세보기 리뷰 데이터를 가져올 수 없어요.</div>;
 
   return (
