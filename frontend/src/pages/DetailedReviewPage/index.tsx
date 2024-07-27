@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useLocation, useParams } from 'react-router';
 
 import { getDetailedReviewApi } from '@/apis/review';
@@ -7,7 +7,7 @@ import { DetailReviewData } from '@/types';
 
 import KeywordSection from './components/KeywordSection';
 import ReviewDescription from './components/ReviewDescription';
-import ReviewSection from './components/ReviewSection/index';
+import ReviewSection from './components/ReviewSection';
 import * as S from './styles';
 
 const DetailedReviewPage = () => {
@@ -21,20 +21,12 @@ const DetailedReviewPage = () => {
     return result;
   };
 
-  const {
-    data: detailedReview,
-    isLoading,
-    error,
-  } = useQuery<DetailReviewData, Error>({
+  const { data: detailedReview } = useSuspenseQuery<DetailReviewData>({
     queryKey: ['detailedReview', id, memberId],
     queryFn: () => fetchDetailedReview(Number(id), Number(memberId)),
-    enabled: !!id && !!memberId,
   });
 
-  if (isLoading) return <div>Loading...</div>;
-
-  if (error) return <div>Error: {error.message}</div>;
-  if (!detailedReview) return <div>Error: 상세보기 리뷰 데이터를 가져올 수 없어요.</div>;
+  if (!detailedReview) throw new Error(' 상세보기 리뷰 데이터를 가져올 수 없어요.');
 
   return (
     <S.DetailedReviewPage>
