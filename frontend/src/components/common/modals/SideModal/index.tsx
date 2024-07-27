@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useRef } from 'react';
 
 import ModalPortal from '@/components/common/modals/ModalPortal';
-import useModalClose from '@/hooks/useModalClose';
+import { useModalClose } from '@/hooks';
 
 import ModalBackground from '../ModalBackground';
 
