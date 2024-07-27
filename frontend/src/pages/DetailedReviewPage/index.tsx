@@ -1,6 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useLocation, useParams } from 'react-router';
 
+import { DETAILED_REVIEW_API_PARAMS } from '@/apis/endpoints';
 import { getDetailedReviewApi } from '@/apis/review';
 import { RevieweeComments } from '@/components';
 import { DetailReviewData } from '@/types';
@@ -14,7 +15,7 @@ const DetailedReviewPage = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const memberId = queryParams.get('memberId');
+  const memberId = queryParams.get(DETAILED_REVIEW_API_PARAMS.queryString.memberId);
 
   const fetchDetailedReview = async (reviewId: number, memberId: number) => {
     const result = await getDetailedReviewApi({ reviewId, memberId });
