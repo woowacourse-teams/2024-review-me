@@ -38,20 +38,11 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-async function enableMocking() {
-  if (process.env.MSW) {
-    const { worker } = await import('./mocks/browser');
-    return worker.start();
-  }
-}
-
-enableMocking().then(() => {
-  root.render(
-    <React.StrictMode>
-      <ThemeProvider theme={theme}>
-        <Global styles={globalStyles} />
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </React.StrictMode>,
-  );
-});
+root.render(
+  <React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <Global styles={globalStyles} />
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  </React.StrictMode>,
+);
