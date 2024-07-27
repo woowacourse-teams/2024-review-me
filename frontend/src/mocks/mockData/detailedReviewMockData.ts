@@ -10,7 +10,7 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
   reviewerGroup: {
     id: 123456,
     name: 'review-me',
-    description: 'vite 쓰고 싶다.',
+    description: '',
     thumnailUrl: '',
   },
   reviews: [

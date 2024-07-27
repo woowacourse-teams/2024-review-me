@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router';
 
-import { ReviewComment } from '@/components';
+import { RevieweeComments } from '@/components';
 import { DetailReviewData } from '@/types';
 
 import { getDetailedReviewApi } from '../../apis/review';
@@ -51,7 +51,7 @@ const DetailedReviewPage = () => {
         isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
       />
-      <ReviewComment comment={detailedReview.reviewerGroup.description} />
+      <RevieweeComments comment={detailedReview.reviewerGroup.description} />
       {detailedReview.reviews.map((item, index) => (
         <ReviewSection question={item.question} answer={item.answer} key={index} index={index} />
       ))}
