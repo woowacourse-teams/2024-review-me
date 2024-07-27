@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const useSidebar = () => {
-  const OPEN_TIME = 0.5;
+  const OPEN_TIME = 0.2;
 
   const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
   const [isSidebarHidden, setIsSidebarHidden] = useState(true);

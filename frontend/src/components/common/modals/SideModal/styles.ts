@@ -8,5 +8,5 @@ export const SidebarWrapper = styled.div<SidebarWrapperProps>`
   position: absolute;
   top: 0;
   left: ${(props) => (props.$isSidebarHidden ? '-100%' : 0)};
-  transition: left 1s ease-in-out;
+  transition: left 0.2s ease-in-out;
 `;
