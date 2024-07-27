@@ -4,6 +4,7 @@ import { useLocation, useParams } from 'react-router';
 import { DETAILED_REVIEW_API_PARAMS } from '@/apis/endpoints';
 import { getDetailedReviewApi } from '@/apis/review';
 import { RevieweeComments } from '@/components';
+import { REVIEW_QUERY_KEYS } from '@/constants';
 import { DetailReviewData } from '@/types';
 
 import KeywordSection from './components/KeywordSection';
@@ -23,7 +24,7 @@ const DetailedReviewPage = () => {
   };
 
   const { data: detailedReview } = useSuspenseQuery<DetailReviewData>({
-    queryKey: ['detailedReview', id, memberId],
+    queryKey: [REVIEW_QUERY_KEYS.detailedReview, id, memberId],
     queryFn: () => fetchDetailedReview(Number(id), Number(memberId)),
   });
 
