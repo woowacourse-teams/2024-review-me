@@ -12,7 +12,16 @@ import ReviewWritingPage from './pages/ReviewWriting';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      throwOnError: true,
+    },
+    mutations: {
+      throwOnError: true,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
