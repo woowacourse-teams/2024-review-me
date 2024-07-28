@@ -11,10 +11,10 @@ export const Layout = styled.div`
 
   &:hover {
     cursor: pointer;
-    border: 1px solid ${({ theme }) => theme.colors.primaryHover};
+    border: 1px solid ${({ theme }) => theme.colors.lightPurple};
 
     & > div:first-of-type {
-      background-color: ${({ theme }) => theme.colors.primaryHover};
+      background-color: ${({ theme }) => theme.colors.lightPurple};
     }
   }
 `;
@@ -74,13 +74,15 @@ export const Main = styled.div`
 
 export const Keyword = styled.div`
   display: flex;
-  gap: 3rem;
+  flex-wrap: wrap;
+  gap: 2.5rem;
   align-items: center;
+
   font-size: 1.4rem;
 
   div {
     padding: 0.5rem 3rem;
-    background-color: ${({ theme }) => theme.colors.primaryHover};
+    background-color: ${({ theme }) => theme.colors.lightPurple};
     border-radius: 0.8rem;
   }
 `;
