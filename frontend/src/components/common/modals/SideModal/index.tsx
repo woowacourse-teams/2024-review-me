@@ -1,7 +1,6 @@
-import React, { PropsWithChildren, useRef } from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import ModalPortal from '@/components/common/modals/ModalPortal';
-import { useModalClose } from '@/hooks';
 
 import ModalBackground from '../ModalBackground';
 
@@ -13,15 +12,10 @@ interface SideModalProps {
 }
 
 const SideModal: React.FC<PropsWithChildren<SideModalProps>> = ({ children: Sidebar, isSidebarHidden, closeModal }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
-  useModalClose(closeModal, modalRef);
-
   return (
     <ModalPortal id="sidebarModal-portal">
-      <ModalBackground>
-        <S.SidebarWrapper ref={modalRef} $isSidebarHidden={isSidebarHidden}>
-          {Sidebar}
-        </S.SidebarWrapper>
+      <ModalBackground closeModal={closeModal}>
+        <S.SidebarWrapper $isSidebarHidden={isSidebarHidden}>{Sidebar}</S.SidebarWrapper>
       </ModalBackground>
     </ModalPortal>
   );
