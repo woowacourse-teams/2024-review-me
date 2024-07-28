@@ -60,6 +60,12 @@ export interface WritingReviewInfoData {
   keywords: Keyword[];
 }
 
+export interface ReviewPreviewList {
+  size: number;
+  lastReviewId: number;
+  reviews: ReviewPreview[];
+}
+
 export interface ReviewPreview {
   id: number;
   isPublic: boolean;
@@ -70,8 +76,5 @@ export interface ReviewPreview {
   };
   createdAt: string;
   contentPreview: string;
-  keywords: Array<{
-    id: number;
-    content: string;
-  }>;
+  keywords: Keyword[];
 }
