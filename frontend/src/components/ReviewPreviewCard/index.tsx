@@ -1,28 +1,13 @@
 import GithubLogo from '@/assets/githubLogo.svg';
 import Lock from '@/assets/lock.svg';
 import UnLock from '@/assets/unLock.svg';
+import { ReviewPreview } from '@/types';
 
 import * as S from './styles';
 
-interface ReviewPreviewCardProps {
-  reviewerGroup: {
-    name: string;
-  };
-  createdAt: string;
-  contentPreview: string;
-  keywords: { id: number; content: string }[];
-  isPublic: boolean;
-}
-
-const ReviewPreviewCard = ({
-  reviewerGroup,
-  createdAt,
-  contentPreview,
-  keywords,
-  isPublic,
-}: ReviewPreviewCardProps) => {
+const ReviewPreviewCard = ({ id, reviewerGroup, createdAt, contentPreview, keywords, isPublic }: ReviewPreview) => {
   return (
-    <S.Layout>
+    <S.Layout data-id={id}>
       <S.Header>
         <S.HeaderContainer>
           <div>
