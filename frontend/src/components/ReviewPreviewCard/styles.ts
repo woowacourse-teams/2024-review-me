@@ -27,11 +27,10 @@ export const Header = styled.div`
   padding: 1rem 3rem;
 
   background-color: ${({ theme }) => theme.colors.lightGray};
-  border-top-left-radius: 0.8rem;
-  border-top-right-radius: 0.8rem;
+  border-radius: 0.8rem 0.8rem 0 0;
 `;
 
-export const HeaderContainer = styled.div`
+export const HeaderContent = styled.div`
   display: flex;
   gap: 1rem;
 

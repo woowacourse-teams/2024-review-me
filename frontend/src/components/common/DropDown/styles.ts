@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 export const Container = styled.select`
   width: 12rem;
-  padding: 8px;
+  padding: 0.8rem;
 
   font-size: 1.6rem;
 

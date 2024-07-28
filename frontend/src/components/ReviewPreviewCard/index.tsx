@@ -9,17 +9,17 @@ const ReviewPreviewCard = ({ id, reviewerGroup, createdAt, contentPreview, keywo
   return (
     <S.Layout data-id={id}>
       <S.Header>
-        <S.HeaderContainer>
+        <S.HeaderContent>
           <div>
-            <img src={GithubLogo} />
+            <img src={GithubLogo} alt="깃허브 로고" />
           </div>
           <div>
             <S.Title>{reviewerGroup.name}</S.Title>
             <S.SubTitle>{createdAt}</S.SubTitle>
           </div>
-        </S.HeaderContainer>
+        </S.HeaderContent>
         <S.Visibility>
-          <img src={isPublic ? UnLock : Lock} />
+          <img src={isPublic ? UnLock : Lock} alt="자물쇠 아이콘" />
           <span>{isPublic ? '공개' : '비공개'}</span>
         </S.Visibility>
       </S.Header>
