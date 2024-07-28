@@ -41,22 +41,13 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-async function enableMocking() {
-  if (process.env.NODE_ENV === 'development') {
-    const { worker } = await import('./mocks/browser');
-    return worker.start();
-  }
-}
-
-enableMocking().then(() => {
-  root.render(
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-          <Global styles={globalStyles} />
-          <RouterProvider router={router} />
-        </ThemeProvider>
-      </QueryClientProvider>
-    </React.StrictMode>,
-  );
-});
+root.render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <Global styles={globalStyles} />
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
+  </React.StrictMode>,
+);
