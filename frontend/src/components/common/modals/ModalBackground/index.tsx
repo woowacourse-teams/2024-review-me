@@ -9,14 +9,10 @@ interface ModalBackgroundProps {
 }
 
 const ModalBackground: React.FC<PropsWithChildren<ModalBackgroundProps>> = ({ children, closeModal }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
-  useModalClose(closeModal, modalRef);
+  const modalBackgroundRef = useRef<HTMLDivElement>(null);
+  useModalClose(closeModal, modalBackgroundRef);
 
-  return (
-    <S.ModalBackground>
-      <div ref={modalRef}>{children}</div>
-    </S.ModalBackground>
-  );
+  return <S.ModalBackground ref={modalBackgroundRef}>{children}</S.ModalBackground>;
 };
 
 export default ModalBackground;
