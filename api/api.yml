@@ -1,0 +1,407 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: Review
+servers:
+  - url: https://review-me.page
+    description: Dev server
+
+paths:
+  /groups:
+    post:
+      summary: 리뷰 그룹을 생성합니다.
+      operationId: createGroup
+      tags:
+        - group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupCreationRequest'
+      responses:
+        '200':
+          description: 리뷰 그룹이 성공적으로 생성되었습니다. 방 ID와 확인코드를 포함합니다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCreationResponse'
+
+  /reviews:
+    get:
+      summary: 그룹 리뷰 조회를 요청합니다.
+      operationId: findAllGroupReviews
+      tags:
+        - review
+      parameters:
+        - in: header
+          name: groupAccessCode
+          required: true
+          schema:
+            type: string
+            example: Pv3n42
+          description: 그룹 리뷰 확인용 코드
+      responses:
+        '200':
+          description: 코드에 해당하는 리뷰 목록을 반환합니다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupReviewResponse'
+        '400':
+          description: 그룹 접근 코드가 존재하지 않을 때 발생합니다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              examples:
+                badRequest:
+                  value:
+                    type: "about:blank"
+                    title: "Bad Request"
+                    status: 400
+                    detail: "올바르지 않은 확인 코드입니다."
+                    instance: "/reviews"
+
+    post:
+      summary: 리뷰를 작성합니다.
+      operationId: createReview
+      tags:
+        - review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewCreationRequest'
+      responses:
+        '201':
+          description: 리뷰가 성공적으로 생성되었습니다.
+          headers:
+            Location:
+              description: 생성된 리뷰의 URL
+              schema:
+                type: string
+                example: /reviews/1258
+
+  /reviews/{reviewId}:
+    get:
+      summary: 리뷰를 조회합니다.
+      operationId: findReview
+      tags:
+        - review
+      parameters:
+        - in: header
+          name: groupAccessCode
+          required: true
+          schema:
+            type: string
+            example: Pv3n42
+          description: 그룹 리뷰 확인용 코드
+        - in: path
+          name: reviewId
+          required: true
+          schema:
+            type: integer
+            example: 1258
+          description: 리뷰 ID
+      responses:
+        '200':
+          description: ID에 해당하는 리뷰를 반환합니다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleReviewResponse'
+        '400':
+          description: 리뷰 ID가 존재하지 않거나, 코드가 일치하지 않을 때.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              examples:
+                badRequest:
+                  value:
+                    type: "about:blank"
+                    title: "Bad Request"
+                    status: 400
+                    detail: "올바르지 않은 확인 코드입니다."
+                    instance: "/reviews"
+
+  /reviews/write:
+    get:
+      summary: 리뷰 작성을 위한 질문을 조회합니다.
+      operationId: findQuestions
+      tags:
+        - review
+      parameters:
+        - in: query
+          name: reviewRequestCode
+          required: true
+          schema:
+            type: string
+            example: Pv3n42
+          description: 그룹 리뷰 확인용 코드
+      responses:
+        '200':
+          description: 질문 목록을 반환합니다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDetailResponse'
+        '400':
+          description: 그룹 접근 코드가 존재하지 않을 때 발생합니다.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              examples:
+                badRequest:
+                  value:
+                    type: "about:blank"
+                    title: "Bad Request"
+                    status: 400
+                    detail: "올바르지 않은 확인 코드입니다."
+                    instance: "/reviews/write"
+
+components:
+  schemas:
+    ProblemDetails:
+      description: API 오류에 대한 공통 처리 방법을 정의합니다.
+      properties:
+        type:
+          description: 오류에 대한 설명과 해결 방안을 담은 URL을 제공합니다. 존재하지 않는 경우 "about:blank"로 고정합니다.
+          type: string
+          example: "about:blank"
+        title:
+          description: 오류의 유형을 정의합니다.
+          type: string
+          example: Bad Request
+        status:
+          description: HTTP 상태 코드입니다.
+          type: integer
+          format: int32
+          example: 400
+        detail:
+          description: 오류에 대한 자세한 설명을 제공합니다.
+          type: string
+          example: "생성에 실패했습니다."
+        instance:
+          description: 오류가 발생한 URL을 제공합니다.
+          type: string
+          example: "/reviews"
+
+    GroupCreationRequest:
+      properties:
+        revieweeName:
+          type: string
+          description: 리뷰이 이름
+          example: 산초
+          minLength: 1
+          maxLength: 50
+        projectName:
+          type: string
+          description: 프로젝트 이름
+          example: 리뷰미
+          minLength: 1
+          maxLength: 50
+
+    ReviewCreationRequest:
+      properties:
+        reviewRequestCode:
+          type: string
+          description: 리뷰 요청 코드
+          example: VN53pTY
+        reviewContents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewContentRequest'
+          example:
+            - questionId: 16
+              answer: 산초는 리뷰미 프로젝트에서 열심히 일했습니다. 이건 지피티가 아니라 진짜 리뷰입니다. ...
+            - questionId: 24
+              answer: 팀원과 관계 아주 좋아요~
+        keywords:
+          description: 선택한 키워드 ID 목록
+          type: array
+          items:
+            properties:
+              keywordId:
+                type: integer
+                format: int64
+                description: 키워드 ID
+                example: 14
+          example: [14, 15]
+
+    ReviewContentRequest:
+      properties:
+        questionId:
+          type: integer
+          format: int64
+          description: 질문 ID
+          example: 16
+        answer:
+          type: string
+          description: 답변
+          example: 산초는 리뷰미 프로젝트에서 열심히 일했습니다. 이건 지피티가 아니라 진짜 리뷰입니다. ...
+
+    GroupCreationResponse:
+      properties:
+        reviewRequestCode:
+          type: string
+          description: 리뷰 요청 코드
+          example: VN53pTY
+        groupAccessCode:
+          type: string
+          description: 리뷰 그룹 확인 코드
+          example: Pv3n42
+
+    GroupReviewResponse:
+      properties:
+        revieweeName:
+          type: string
+          description: 리뷰이 이름
+          example: 산초
+        projectName:
+          type: string
+          description: 프로젝트 이름
+          example: 리뷰미
+        reviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewPreviewResponse'
+
+    SingleReviewResponse:
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 리뷰 ID
+          example: 1258
+        createdAt:
+          type: date
+          format: yyyy-MM-dd
+          description: 리뷰 생성일
+          example: 2021-08-01
+        projectName:
+          type: string
+          description: 프로젝트 이름
+          example: 리뷰미
+        revieweeName:
+          type: string
+          description: 리뷰이 이름
+          example: 산초
+        contents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewContentResponse'
+          example:
+            - id: 36
+              question: 소프트스킬은 어떤가요?
+              answer: 산초는 리뷰미 프로젝트에서 열심히 일했습니다. 이건 지피티가 아니라 진짜 리뷰입니다. ...
+            - id: 48
+              question: 팀원과의 관계는 어떤가요?
+              answer: 팀원과 관계 아주 좋아요~
+        keywords:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeywordResponse'
+          example:
+            - id: 1
+              content: 의견을 잘 조율해요
+            - id: 2
+              content: 활발하게 토의해요
+
+    ReviewContentResponse:
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 리뷰 내용 ID
+          example: 1
+        question:
+          type: string
+          description: 질문
+          example: 소프트스킬은 어떤가요?
+        answer:
+          type: string
+          description: 답변
+          example: 산초는 리뷰미 프로젝트에서 열심히 일했습니다. 이건 지피티가 아니라 진짜 리뷰입니다. ...
+
+    ReviewPreviewResponse:
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 리뷰 ID
+          example: 1258
+        createdAt:
+          type: date
+          format: yyyy-MM-dd
+          description: 리뷰 생성일
+          example: 2021-08-01
+        contentPreview:
+          type: string
+          description: 리뷰 내용 미리보기 (최대 150자)
+          example: 산초는 리뷰미 프로젝트에서 열심히 일했습니다. 이건 지피티가 아니라 진짜 리뷰입니다. ...
+        keywords:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeywordResponse'
+          example:
+            - id: 1
+              content: 의견을 잘 조율해요
+            - id: 2
+              content: 활발하게 토의해요
+
+    GroupDetailResponse:
+      properties:
+        revieweeName:
+          type: string
+          description: 리뷰이 이름
+          example: 산초
+        projectName:
+          type: string
+          description: 프로젝트 이름
+          example: 리뷰미
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionResponse'
+          example:
+            - id: 16
+              content: 소프트스킬은 어떤가요?
+            - id: 24
+              content: 팀원과의 관계는 어떤가요?
+        keywords:
+          type: array
+          items:
+              $ref: '#/components/schemas/KeywordResponse'
+          example:
+              - id: 1
+                content: 의견을 잘 조율해요
+              - id: 2
+                content: 활발하게 토의해요
+
+    QuestionResponse:
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 질문 ID
+          example: 16
+        content:
+          type: string
+          description: 질문 내용
+          example: 소프트스킬은 어떤가요?
+
+    KeywordResponse:
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 키워드 ID
+          example: 14
+        content:
+          type: string
+          description: 키워드 내용
+          example: 의견을 잘 조율해요
