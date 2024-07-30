@@ -10,15 +10,15 @@ interface UseTopButtonResult {
 const useTopButton = (): UseTopButtonResult => {
   const [showTopButton, setShowTopButton] = useState(false);
 
-  useEffect(() => {
-    const handleShowTopButton = () => {
-      if (window.scrollY > TOP_BUTTON_DISPLAY_THRESHOLD) {
-        setShowTopButton(true);
-      } else {
-        setShowTopButton(false);
-      }
-    };
+  const handleShowTopButton = () => {
+    if (window.scrollY > TOP_BUTTON_DISPLAY_THRESHOLD) {
+      setShowTopButton(true);
+    } else {
+      setShowTopButton(false);
+    }
+  };
 
+  useEffect(() => {
     window.addEventListener('scroll', handleShowTopButton);
 
     return () => {
