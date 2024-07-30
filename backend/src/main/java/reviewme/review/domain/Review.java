@@ -39,16 +39,4 @@ public class Review {
         this.reviewContents = reviewContents;
         this.createdAt = createdAt;
     }
-
-//    public boolean isSubmittedBy(Member member) {
-//        return reviewer.equals(member);
-//    }
-//
-//    public boolean isForReviewee(Member member) {
-//        return reviewee.equals(member);
-//    }
-//
-//    public void addReviewContents(ReviewContent reviewContent) {
-//        reviewContents.add(reviewContent);
-//    }
 }
