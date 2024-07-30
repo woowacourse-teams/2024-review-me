@@ -1,11 +1,16 @@
-import { useEffect, RefObject } from 'react';
+import { useEffect } from 'react';
 
-const useExistentElement = <T extends HTMLElement>(ref: RefObject<T>, elementName: string) => {
+export type NullableElement = HTMLElement | Element | null | undefined;
+
+const useExistentElement = (element: NullableElement, elementName: string) => {
   useEffect(() => {
-    if (!ref.current) {
+    const isExistentElement = element !== null && element !== undefined;
+    const isHTMLElementOrElement = element instanceof HTMLElement || element instanceof Element;
+
+    if (!isExistentElement || !isHTMLElementOrElement) {
       console.error(`${elementName}을/를 찾을 수 없습니다.`);
     }
-  }, [ref, elementName]);
+  }, [element, elementName]);
 };
 
 export default useExistentElement;
