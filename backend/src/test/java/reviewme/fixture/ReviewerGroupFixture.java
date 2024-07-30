@@ -4,9 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import reviewme.member.domain.GithubId;
-import reviewme.member.domain.Member;
-import reviewme.member.domain.ReviewerGroup;
 
 @RequiredArgsConstructor
 @Getter

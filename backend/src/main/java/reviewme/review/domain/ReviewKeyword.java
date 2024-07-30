@@ -11,19 +11,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "question")
+@Table(name = "review_keyword")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Question {
+public class ReviewKeyword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content", nullable = false)
-    private String content;
+    @Column(name = "review_id", nullable = false)
+    private long reviewId;
 
-    public Question(String content) {
-        this.content = content;
+    @Column(name = "keyword_id", nullable = false)
+    private long keywordId;
+
+    public ReviewKeyword(long reviewId, long keywordId) {
+        this.reviewId = reviewId;
+        this.keywordId = keywordId;
     }
 }
