@@ -44,7 +44,7 @@ public class ReviewController implements ReviewApi {
     @GetMapping("/reviews")
     public ResponseEntity<ReceivedReviewsResponse> findMyReceivedReview(@RequestParam long memberId,
                                                                         @RequestParam(required = false) Long lastReviewId,
-                                                                        @RequestParam(defaultValue = "10") int size) {
+                                                                        @RequestParam(defaultValue = "3") int size) {
         ReceivedReviewsResponse myReceivedReview = reviewService.findMyReceivedReview(memberId, lastReviewId, size);
         return ResponseEntity.ok(myReceivedReview);
     }

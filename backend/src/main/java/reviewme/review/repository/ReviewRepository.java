@@ -4,8 +4,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import reviewme.member.domain.Member;
-import reviewme.member.domain.ReviewerGroup;
 import reviewme.review.domain.Review;
 import reviewme.review.exception.ReviewNotFoundException;
 

@@ -2,7 +2,6 @@ package reviewme.fixture;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import reviewme.member.domain.Member;
 
 @RequiredArgsConstructor
 @Getter

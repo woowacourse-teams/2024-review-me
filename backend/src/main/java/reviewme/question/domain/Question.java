@@ -1,4 +1,4 @@
-package reviewme.keyword.domain;
+package reviewme.question.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,10 +11,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "keyword")
+@Table(name = "question")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Keyword {
+public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class Keyword {
     @Column(name = "content", nullable = false)
     private String content;
 
-    public Keyword(String content) {
+    public Question(String content) {
         this.content = content;
     }
 }
