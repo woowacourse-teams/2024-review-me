@@ -27,9 +27,6 @@ public class Review {
     @Column(name = "group_id", nullable = false)
     private long groupId;
 
-    @Column(name = "reviewee", nullable = false)
-    private String reviewee;
-
     @OneToMany
     @JoinColumn(name = "review_id", nullable = false)
     private List<ReviewContent> reviewContents;
@@ -37,9 +34,8 @@ public class Review {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Review(long groupId, String reviewee, List<ReviewContent> reviewContents, LocalDateTime createdAt) {
+    public Review(long groupId, List<ReviewContent> reviewContents, LocalDateTime createdAt) {
         this.groupId = groupId;
-        this.reviewee = reviewee;
         this.reviewContents = reviewContents;
         this.createdAt = createdAt;
     }
