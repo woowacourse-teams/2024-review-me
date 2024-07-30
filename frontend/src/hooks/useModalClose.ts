@@ -9,6 +9,17 @@ const useModalClose = (closeModal: () => void, modalBackgroundRef: RefObject<HTM
     return modalBackgroundRef.current ? modalBackgroundRef.current === targetElement : false;
   };
 
+  const isHTMLElement = (element: Element | null): element is HTMLElement => {
+    return element instanceof HTMLElement;
+  };
+
+  const blurFocusing = () => {
+    const activeElement = document.activeElement;
+
+    if (!isHTMLElement(activeElement)) return;
+    if (typeof activeElement.blur === 'function') activeElement.blur();
+  };
+
   useEffect(() => {
     const handleBackgroundClick = (event: MouseEvent) => {
       if (isNodeElement(event.target) && isModalBackground(event.target)) {
@@ -17,16 +28,20 @@ const useModalClose = (closeModal: () => void, modalBackgroundRef: RefObject<HTM
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') closeModal();
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        blurFocusing();
+        closeModal();
+      }
     };
 
-    const modalBackGroundElement = modalBackgroundRef.current;
+    const modalBackgroundElement = modalBackgroundRef.current;
 
-    modalBackGroundElement?.addEventListener('click', handleBackgroundClick);
+    modalBackgroundElement?.addEventListener('click', handleBackgroundClick);
     document.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      modalBackGroundElement?.removeEventListener('click', handleBackgroundClick);
+      modalBackgroundElement?.removeEventListener('click', handleBackgroundClick);
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [closeModal, modalBackgroundRef]);
