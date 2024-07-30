@@ -53,6 +53,7 @@ export const Visibility = styled.div`
   display: flex;
   gap: 0.6rem;
   align-items: center;
+
   font-size: 1.6rem;
   font-weight: 700;
 
