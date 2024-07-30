@@ -7,10 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.keyword.domain.exception.DuplicateKeywordException;
 import reviewme.keyword.domain.exception.KeywordLimitExceedException;
+import reviewme.question.domain.exception.DuplicateQuestionException;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
+import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.exception.QuestionNotFoundException;
+import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
@@ -28,6 +32,7 @@ public class ReviewService {
     private final ReviewKeywordRepository reviewKeywordRepository;
     private final ReviewContentRepository reviewContentRepository;
     private final ReviewGroupRepository reviewGroupRepository;
+    private final QuestionRepository questionRepository;
 
     @Transactional
     public Long createReview(CreateReviewRequest request) {
@@ -38,6 +43,7 @@ public class ReviewService {
 
     private Review saveReview(CreateReviewRequest request) {
         ReviewGroup reviewGroup = reviewGroupRepository.getReviewGroupByReviewRequestCode(request.reviewRequestCode());
+        validateQuestion(request.reviewContents());
         List<ReviewContent> reviewContents = request.reviewContents()
                 .stream()
                 .map(r -> new ReviewContent(r.questionId(), r.answer()))
@@ -47,6 +53,23 @@ public class ReviewService {
         Review savedReview = reviewRepository.save(review);
         reviewContentRepository.saveAll(reviewContents);
         return savedReview;
+    }
+
+    private void validateQuestion(List<CreateReviewContentRequest> createReviewContentRequests) {
+        int questionsCount = createReviewContentRequests.size();
+        long distinctCount = createReviewContentRequests.stream()
+                .map(CreateReviewContentRequest::questionId)
+                .distinct()
+                .count();
+        if (questionsCount != distinctCount) {
+            throw new DuplicateQuestionException();
+        }
+
+        boolean doesExistsQuestion = createReviewContentRequests.stream()
+                .anyMatch(content -> questionRepository.existsById(content.questionId()));
+        if (!doesExistsQuestion) {
+            throw new QuestionNotFoundException();
+        }
     }
 
     private void saveReviewKeywords(List<Long> selectedKeywordIds, long savedReviewId) {
