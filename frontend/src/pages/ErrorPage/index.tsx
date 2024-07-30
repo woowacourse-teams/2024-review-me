@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router';
+
 import { Main, PageLayout, SideModal, Sidebar, Topbar } from '@/components';
 import { useSidebar } from '@/hooks';
 
@@ -9,6 +11,15 @@ const ERROR_MESSAGE = {
 
 const ErrorPage = () => {
   const { isSidebarHidden, isSidebarModalOpen, closeSidebar, openSidebar } = useSidebar();
+  const navigate = useNavigate();
+
+  const handleReLoad = () => {
+    window.location.reload();
+  };
+
+  const handleGoHome = () => {
+    navigate('/'); // TODO: 홈 페이지 경로가 결정되면 변경 필요
+  };
 
   return (
     <PageLayout>
@@ -19,7 +30,11 @@ const ErrorPage = () => {
       )}
       <Topbar openSidebar={openSidebar} />
       <Main>
-        <ErrorSection errorMessage={ERROR_MESSAGE.server_unstable} />
+        <ErrorSection
+          errorMessage={ERROR_MESSAGE.server_unstable}
+          handleReLoad={handleReLoad}
+          handleGoHome={handleGoHome}
+        />
       </Main>
     </PageLayout>
   );

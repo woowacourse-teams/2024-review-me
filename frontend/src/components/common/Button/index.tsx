@@ -8,9 +8,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: string;
 }
 
-const Button = ({ buttonType, text, icon }: ButtonProps) => {
+const Button = ({ buttonType, text, icon, onClick }: ButtonProps) => {
   return (
-    <S.Button buttonType={buttonType}>
+    <S.Button buttonType={buttonType} onClick={onClick}>
       {icon && <S.Icon src={icon} alt="아이콘" />}
       {text}
     </S.Button>
