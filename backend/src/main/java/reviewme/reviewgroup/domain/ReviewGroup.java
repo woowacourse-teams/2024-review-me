@@ -1,4 +1,4 @@
-package reviewme.group.domain;
+package reviewme.reviewgroup.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,10 +13,10 @@ import reviewme.review.domain.exception.InvalidProjectNameLengthException;
 import reviewme.review.domain.exception.InvalidRevieweeNameLengthException;
 
 @Entity
-@Table(name = "group")
+@Table(name = "review_group")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Group {
+public class ReviewGroup {
 
     private static final int MAX_REVIEWEE_LENGTH = 50;
     private static final int MAX_PROJECT_NAME_LENGTH = 50;
@@ -37,7 +37,7 @@ public class Group {
     @Column(name = "group_access_code")
     private String groupAccessCode;
 
-    public Group(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode) {
+    public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode) {
         if (reviewee.length() > MAX_REVIEWEE_LENGTH || reviewee.isBlank()) {
             throw new InvalidRevieweeNameLengthException(MAX_REVIEWEE_LENGTH);
         }
