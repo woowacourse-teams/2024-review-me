@@ -21,39 +21,18 @@ import reviewme.reviewgroup.repository.ReviewGroupRepository;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    private final ReviewerGroupService reviewerGroupService;
-    private final KeywordService keywordService;
-    private final QuestionService questionService;
+    private static final int MAX_KEYWORD_COUNT = 5;
+    private static final int MIN_KEYWORD_COUNT = 1;
+
     private final ReviewRepository reviewRepository;
-    private final MemberRepository memberRepository;
-    private final ReviewerGroupRepository reviewerGroupRepository;
+    private final ReviewKeywordRepository reviewKeywordRepository;
     private final ReviewContentRepository reviewContentRepository;
     private final ReviewGroupRepository reviewGroupRepository;
 
     @Transactional
     public Long createReview(CreateReviewRequest request) {
-        ReviewerGroup reviewerGroup = reviewerGroupRepository.getReviewerGroupById(request.reviewerGroupId());
-        Member reviewer = memberRepository.getMemberById(request.reviewerId());
-
-        List<Keyword> keywordList = request.keywords()
-                .stream()
-                .map(keywordRepository::getKeywordById)
-                .toList();
-
-        Review review = new Review(reviewer, reviewerGroup.getReviewee(),
-                reviewerGroup, keywordList, LocalDateTime.now());
-        Review savedReview = reviewRepository.save(review);
-
-        request.reviewContents()
-                .forEach(contentsRequest -> {
-                    Question question = questionRepository.getQuestionById(contentsRequest.questionId());
-                    String answer = contentsRequest.answer();
-
-                    ReviewContent reviewContent = new ReviewContent(savedReview, question, answer);
-                    reviewContentRepository.save(reviewContent);
-                });
-
         Review savedReview = saveReview(request);
+        saveReviewKeywords(request.keywords(), savedReview.getId());
         return savedReview.getId();
     }
 
