@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from '@/App';
 
 import DetailedReviewPage from './pages/DetailedReviewPage';
+import ErrorPage from './pages/ErrorPage';
 import ReviewPreviewListPage from './pages/ReviewPreviewListPage';
 import ReviewWritingPage from './pages/ReviewWriting';
 import globalStyles from './styles/globalStyles';
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: 'user',
