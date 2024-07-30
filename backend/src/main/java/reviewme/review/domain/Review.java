@@ -24,8 +24,8 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "group_id", nullable = false)
-    private long groupId;
+    @Column(name = "review_group_id", nullable = false)
+    private long reviewGroupId;
 
     @OneToMany
     @JoinColumn(name = "review_id", nullable = false)
@@ -34,8 +34,8 @@ public class Review {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Review(long groupId, List<ReviewContent> reviewContents, LocalDateTime createdAt) {
-        this.groupId = groupId;
+    public Review(long reviewGroupId, List<ReviewContent> reviewContents, LocalDateTime createdAt) {
+        this.reviewGroupId = reviewGroupId;
         this.reviewContents = reviewContents;
         this.createdAt = createdAt;
     }
