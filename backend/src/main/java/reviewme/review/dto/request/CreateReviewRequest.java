@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
-@Schema(description = "리뷰 작성 요청")
+@Schema(name = "리뷰 작성 요청")
 public record CreateReviewRequest(
 
         @Schema(description = "리뷰 요청 코드")
