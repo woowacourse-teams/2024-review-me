@@ -19,7 +19,7 @@ const DetailedReviewPage = () => {
   const memberId = queryParams.get('memberId');
 
   const [detailedReview, setDetailReview] = useState<DetailReviewData>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
