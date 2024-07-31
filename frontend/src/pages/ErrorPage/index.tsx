@@ -24,7 +24,7 @@ const ErrorPage = () => {
   return (
     <PageLayout>
       {isSidebarModalOpen && (
-        <SideModal isSidebarHidden={isSidebarHidden}>
+        <SideModal isSidebarHidden={isSidebarHidden} closeModal={closeSidebar}>
           <Sidebar closeSidebar={closeSidebar} />
         </SideModal>
       )}
