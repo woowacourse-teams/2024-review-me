@@ -5,6 +5,8 @@ import { getReviewListApi } from '@/apis/review';
 import ReviewPreviewCard from '@/components/ReviewPreviewCard';
 import { ReviewPreview } from '@/types';
 
+import LoadingPage from '../LoadingPage';
+
 import SearchSection from './components/SearchSection';
 import * as S from './styles';
 
@@ -44,7 +46,7 @@ const ReviewPreviewListPage = () => {
       <S.Layout>
         <SearchSection onChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} />
         <S.ReviewSection>
-          {loading && <p>로딩 중...</p>}
+          {loading && <LoadingPage />}
           {error && <p>{error}</p>}
           {!loading &&
             !error &&

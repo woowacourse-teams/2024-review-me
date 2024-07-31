@@ -4,31 +4,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.KeywordFixture.추진력이_좋아요;
 import static reviewme.fixture.KeywordFixture.회의를_이끌어요;
-import static reviewme.fixture.MemberFixture.회원_산초;
-import static reviewme.fixture.MemberFixture.회원_아루;
-import static reviewme.fixture.MemberFixture.회원_커비;
-import static reviewme.fixture.MemberFixture.회원_테드;
+import static reviewme.fixture.QuestionFixure.기술역량이_어떤가요;
+import static reviewme.fixture.QuestionFixure.소프트스킬이_어떤가요;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.repository.KeywordRepository;
-import reviewme.member.domain.GithubId;
-import reviewme.member.domain.Member;
-import reviewme.member.domain.ReviewerGroup;
-import reviewme.member.repository.MemberRepository;
-import reviewme.member.repository.ReviewerGroupRepository;
-import reviewme.review.domain.Question;
+import reviewme.question.domain.Question;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.ReviewContent;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
-import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.ReviewContentRepository;
+import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
+import reviewme.reviewgroup.domain.ReviewGroup;
+import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
@@ -41,12 +35,6 @@ class ReviewServiceTest {
     ReviewRepository reviewRepository;
 
     @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
-    ReviewerGroupRepository reviewerGroupRepository;
-
-    @Autowired
     KeywordRepository keywordRepository;
 
     @Autowired
@@ -55,91 +43,40 @@ class ReviewServiceTest {
     @Autowired
     QuestionRepository questionRepository;
 
-    @Test
-    void 리뷰를_작성한다() {
-        // given
-        Member reviewer = memberRepository.save(회원_산초.create());
-        Member reviewee = memberRepository.save(회원_아루.create());
-        List<GithubId> reviewerGithubIds = List.of(reviewer.getGithubId());
+    @Autowired
+    ReviewGroupRepository reviewGroupRepository;
 
-        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(
-                new ReviewerGroup(reviewee, reviewerGithubIds, "그룹명", "그룹설명", LocalDateTime.now().plusDays(1))
-        );
-        Question question = questionRepository.save(new Question("질문"));
-        Keyword keyword = keywordRepository.save(추진력이_좋아요.create());
-        CreateReviewContentRequest contentRequest = new CreateReviewContentRequest(question.getId(), "답변".repeat(10));
-
-        CreateReviewRequest createReviewRequest = new CreateReviewRequest(reviewer.getId(), reviewerGroup.getId(),
-                List.of(contentRequest), List.of(keyword.getId())
-        );
-
-        // when
-        reviewService.createReview(createReviewRequest);
-
-        // then
-        List<Review> actual = reviewRepository.findAll();
-        assertThat(actual).hasSize(1);
-    }
+    @Autowired
+    ReviewKeywordRepository reviewKeywordRepository;
 
     @Test
-    void 내가_받은_리뷰를_조회한다() {
+    void 리뷰를_생성한다() {
         // given
-        Member reviewee = memberRepository.save(회원_아루.create());
-        Member reviewerSancho = memberRepository.save(회원_산초.create());
-        Member reviewerKirby = memberRepository.save(회원_커비.create());
-        Member reviewerTed = memberRepository.save(회원_테드.create());
         Keyword keyword1 = keywordRepository.save(추진력이_좋아요.create());
         Keyword keyword2 = keywordRepository.save(회의를_이끌어요.create());
-        ReviewerGroup reviewerGroup = reviewerGroupRepository.save(new ReviewerGroup(
-                reviewee,
-                List.of(reviewerSancho.getGithubId(),
-                        reviewerKirby.getGithubId(),
-                        reviewerTed.getGithubId()),
-                "빼깬드그룹",
-                "빼깬드그룹 설명",
-                LocalDateTime.now().plusDays(3)
-        ));
-        Question question = questionRepository.save(new Question("질문"));
+        Question question1 = questionRepository.save(소프트스킬이_어떤가요.create());
+        Question question2 = questionRepository.save(기술역량이_어떤가요.create());
 
-        Review sanchoReview = reviewRepository.save(
-                new Review(reviewerSancho, reviewee, reviewerGroup, List.of(keyword1), LocalDateTime.now().minusDays(1))
-        );
-        Review kirbyReview = reviewRepository.save(
-                new Review(reviewerKirby, reviewee, reviewerGroup, List.of(keyword2), LocalDateTime.now())
-        );
-        Review tedReview = reviewRepository.save(
-                new Review(reviewerTed, reviewee, reviewerGroup, List.of(keyword1, keyword2),
-                        LocalDateTime.now().plusDays(1))
-        );
-        reviewContentRepository.saveAll(List.of(
-                new ReviewContent(sanchoReview, question, "산초의 답변".repeat(50)),
-                new ReviewContent(kirbyReview, question, "커비의 답변".repeat(50)),
-                new ReviewContent(tedReview, question, "테드의 답변".repeat(50)))
-        );
+        String reviewRequestCode = "reviewRequestCode";
+        reviewGroupRepository.save(new ReviewGroup("산초", "리뷰미 프로젝트", reviewRequestCode, "groupAccessCode"));
+
+        CreateReviewContentRequest request1 = new CreateReviewContentRequest(question1.getId(), "답변".repeat(20));
+        CreateReviewContentRequest request2 = new CreateReviewContentRequest(question2.getId(), "응답".repeat(20));
+        CreateReviewRequest reviewRequest1 = new CreateReviewRequest(reviewRequestCode, List.of(request1, request2),
+                List.of(keyword1.getId(), keyword2.getId()));
+        CreateReviewRequest reviewRequest2 = new CreateReviewRequest(reviewRequestCode, List.of(request1),
+                List.of(keyword1.getId()));
 
         // when
-        ReceivedReviewsResponse 가장_최근에_받은_리뷰_조회
-                = reviewService.findMyReceivedReview(reviewee.getId(), null, 2);
-        ReceivedReviewsResponse 특정_리뷰_이전_리뷰_조회
-                = reviewService.findMyReceivedReview(reviewee.getId(), 2L, 2);
+        long reviewId = reviewService.createReview(reviewRequest1);
+        reviewService.createReview(reviewRequest2);
 
         // then
+        Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+        assertThat(optionalReview).isPresent();
         assertAll(
-                () -> assertThat(가장_최근에_받은_리뷰_조회.reviews())
-                        .hasSize(2),
-                () -> assertThat(가장_최근에_받은_리뷰_조회.reviews().get(0).id())
-                        .isEqualTo(tedReview.getId()),
-                () -> assertThat(가장_최근에_받은_리뷰_조회.reviews().get(1).id())
-                        .isEqualTo(kirbyReview.getId()),
-                () -> assertThat(가장_최근에_받은_리뷰_조회.reviews().get(0).contentPreview().length())
-                        .isLessThanOrEqualTo(150),
-
-                () -> assertThat(특정_리뷰_이전_리뷰_조회.reviews())
-                        .hasSize(1),
-                () -> assertThat(특정_리뷰_이전_리뷰_조회.reviews().get(0).id())
-                        .isEqualTo(sanchoReview.getId()),
-                () -> assertThat(특정_리뷰_이전_리뷰_조회.reviews().get(0).contentPreview().length())
-                        .isLessThanOrEqualTo(150)
+                () -> assertThat(optionalReview.get().getReviewContents()).hasSize(2),
+                () -> assertThat(reviewKeywordRepository.findAllByReviewId(reviewId)).hasSize(2)
         );
     }
 }

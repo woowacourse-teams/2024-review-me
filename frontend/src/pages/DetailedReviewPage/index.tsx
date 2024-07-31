@@ -3,7 +3,6 @@ import { useLocation, useParams } from 'react-router';
 
 import { DETAILED_REVIEW_API_PARAMS } from '@/apis/endpoints';
 import { getDetailedReviewApi } from '@/apis/review';
-import { RevieweeComments } from '@/components';
 import { REVIEW_QUERY_KEYS } from '@/constants';
 import { ReviewDescription, ReviewSection, KeywordSection } from '@/pages/DetailedReviewPage/components';
 import { DetailReviewData } from '@/types';
@@ -36,7 +35,7 @@ const DetailedReviewPage = () => {
         isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
       />
-      <RevieweeComments comment={detailedReview.reviewerGroup.description} />
+      {/* 시연때 숨김 <RevieweeComments comment={detailedReview.reviewerGroup.description} /> */}
       {detailedReview.reviews.map((item, index) => (
         <ReviewSection question={item.question} answer={item.answer} key={index} index={index} />
       ))}

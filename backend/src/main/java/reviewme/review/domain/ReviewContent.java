@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,45 +19,26 @@ public class ReviewContent {
 
     private static final int MIN_ANSWER_LENGTH = 20;
     private static final int MAX_ANSWER_LENGTH = 1_000;
-    private static final int REVIEW_CONTENT_PREVIEW_MAX_LENGTH = 150;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "review_id", nullable = false)
-    private Review review;
-
-    @ManyToOne
-    @JoinColumn(name = "question_id", nullable = false)
-    private Question question;
+    @Column(name = "question_id", nullable = false)
+    private long questionId;
 
     @Column(name = "answer", nullable = false, length = MAX_ANSWER_LENGTH)
     private String answer;
 
-    public ReviewContent(Review review, Question question, String answer) {
+    public ReviewContent(long questionId, String answer) {
         validateAnswerLength(answer);
-        this.review = review;
-        this.question = question;
+        this.questionId = questionId;
         this.answer = answer;
-        review.addReviewContents(this);
     }
 
     private void validateAnswerLength(String answer) {
         if (answer.length() < MIN_ANSWER_LENGTH || answer.length() > MAX_ANSWER_LENGTH) {
             throw new InvalidAnswerLengthException(MIN_ANSWER_LENGTH, MAX_ANSWER_LENGTH);
         }
-    }
-
-    public String getAnswerPreview() {
-        if (answer.length() <= REVIEW_CONTENT_PREVIEW_MAX_LENGTH) {
-            return answer;
-        }
-        return answer.substring(0, REVIEW_CONTENT_PREVIEW_MAX_LENGTH);
-    }
-
-    public String getQuestion() {
-        return question.getContent();
     }
 }
