@@ -4,7 +4,7 @@ interface ApiErrorMessages {
 }
 
 export const API_ERROR_MESSAGE: ApiErrorMessages = {
-  400: '잘못된 요청에요.',
+  400: '잘못된 요청이에요.',
   401: '인증을 실패했어요.',
   403: '요청권한이 없어요.',
   404: '요청하신 내용을 찾을 수 없어요.',
