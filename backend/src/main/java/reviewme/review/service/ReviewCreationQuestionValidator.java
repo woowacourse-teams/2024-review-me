@@ -15,7 +15,7 @@ public class ReviewCreationQuestionValidator {
 
     void validate(List<Long> questionIds) {
         validateUniqueQuestion(questionIds);
-        validateExistsQuestion(questionIds, questionRepository);
+        validateExistsQuestion(questionIds);
     }
 
     private void validateUniqueQuestion(List<Long> questionIds) {
@@ -28,7 +28,7 @@ public class ReviewCreationQuestionValidator {
         }
     }
 
-    private void validateExistsQuestion(List<Long> questionIds, QuestionRepository questionRepository) {
+    private void validateExistsQuestion(List<Long> questionIds) {
         boolean doesQuestionExist = questionIds.stream()
                 .anyMatch(questionRepository::existsById);
         if (!doesQuestionExist) {
