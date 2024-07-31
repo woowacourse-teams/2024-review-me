@@ -2,6 +2,7 @@ package reviewme.review.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +28,7 @@ public class Review {
     @Column(name = "review_group_id", nullable = false)
     private long reviewGroupId;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "review_id", nullable = false)
     private List<ReviewContent> reviewContents;
 
