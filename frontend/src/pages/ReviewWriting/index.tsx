@@ -8,6 +8,8 @@ import Button from '@/components/common/Button';
 import { REVIEW } from '@/constants/review';
 import { Keyword, ReviewContent, ReviewData, WritingReviewInfoData } from '@/types';
 
+import LoadingPage from '../LoadingPage';
+
 import KeywordButton from './components/KeywordButton';
 import RevieweeComment from './components/RevieweeComment';
 import ReviewItem from './components/ReviewItem';
@@ -74,7 +76,7 @@ const ReviewWritingPage = () => {
     }
   };
 
-  if (!dataToWrite) return <div>Loading...</div>;
+  if (!dataToWrite) return <LoadingPage />;
 
   return (
     <S.ReviewWritingPage onSubmit={handleSubmitReview}>

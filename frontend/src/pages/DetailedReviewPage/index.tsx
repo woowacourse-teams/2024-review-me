@@ -5,6 +5,7 @@ import { ReviewComment } from '@/components';
 import { DetailReviewData } from '@/types';
 
 import { getDetailedReviewApi } from '../../apis/review';
+import LoadingPage from '../LoadingPage';
 
 import KeywordSection from './components/KeywordSection';
 import ReviewDescription from './components/ReviewDescription';
@@ -24,8 +25,9 @@ const DetailedReviewPage = () => {
   useEffect(() => {
     const fetchReview = async () => {
       try {
-        const result = await getDetailedReviewApi({ reviewId: Number(id), memberId: Number(memberId) });
+        setIsLoading(true);
 
+        const result = await getDetailedReviewApi({ reviewId: Number(id), memberId: Number(memberId) });
         setDetailReview(result);
         setErrorMessage('');
       } catch (error) {
@@ -38,7 +40,7 @@ const DetailedReviewPage = () => {
     fetchReview();
   }, [id]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingPage />;
 
   if (errorMessage) return <div>Error: {errorMessage}</div>;
   if (!detailedReview) return <div>Error: 상세보기 리뷰 데이터를 가져올 수 없어요.</div>;
