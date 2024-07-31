@@ -17,6 +17,7 @@ import reviewme.question.domain.Question;
 import reviewme.review.domain.Review;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
@@ -77,6 +78,31 @@ class ReviewServiceTest {
         assertAll(
                 () -> assertThat(optionalReview.get().getReviewContents()).hasSize(2),
                 () -> assertThat(reviewKeywordRepository.findAllByReviewId(reviewId)).hasSize(2)
+        );
+    }
+
+    @Test
+    void 리뷰_작성을_위해_필요한_정보를_조회한다() {
+        // given
+        Keyword keyword1 = keywordRepository.save(추진력이_좋아요.create());
+        Keyword keyword2 = keywordRepository.save(회의를_이끌어요.create());
+        Question question1 = questionRepository.save(소프트스킬이_어떤가요.create());
+        Question question2 = questionRepository.save(기술역량이_어떤가요.create());
+
+        String reviewee = "테드";
+        String projectName = "리뷰미 프로젝트";
+        String reviewRequestCode = "reviewRequestCode";
+        reviewGroupRepository.save(new ReviewGroup(reviewee, projectName, reviewRequestCode, "groupAccessCode"));
+
+        // when
+        ReviewSetupResponse reviewCreationSetup = reviewService.findReviewCreationSetup(reviewRequestCode);
+
+        // then
+        assertAll(
+                () -> assertThat(reviewCreationSetup.revieweeName()).isEqualTo(reviewee),
+                () -> assertThat(reviewCreationSetup.projectName()).isEqualTo(projectName),
+                () -> assertThat(reviewCreationSetup.questions()).hasSize(2),
+                () -> assertThat(reviewCreationSetup.keywords()).hasSize(2)
         );
     }
 }
