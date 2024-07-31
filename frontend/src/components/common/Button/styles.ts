@@ -46,18 +46,22 @@ const getButtonStyle = (buttonType: ButtonType, theme: Theme) => {
   }
 };
 
-export const Button = styled.button<{ buttonType: ButtonType }>`
+interface ButtonProps {
+  buttonType: ButtonType;
+  $style?: React.CSSProperties;
+}
+
+export const Button = styled.button<ButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 10rem;
-  height: 4rem;
   padding: 1rem 2rem;
 
   border: 0.1rem solid ${({ theme }) => theme.colors.primary};
   border-radius: 0.8rem;
 
+  ${({ $style }) => $style && { ...$style }};
   ${({ buttonType, theme }) => getButtonStyle(buttonType, theme)};
 `;
 
