@@ -1,10 +1,8 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router';
 
-import { getReviewListApi } from '@/apis/review';
 import ReviewPreviewCard from '@/components/ReviewPreviewCard';
-import { QUERY_KEYS } from '@/constants/queryKeys';
+import { useReviewPreviewList } from '@/hooks/useReviewPreviewList';
 import { ReviewPreview } from '@/types';
 
 import LoadingPage from '../LoadingPage';
@@ -18,22 +16,7 @@ const MEMBER_ID = 2;
 
 const ReviewPreviewListPage = () => {
   const navigate = useNavigate();
-
-  const { data, fetchNextPage, hasNextPage, isLoading, error } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.reviews],
-    queryFn: ({ pageParam = 0 }) =>
-      getReviewListApi({
-        revieweeId: 1,
-        lastReviewId: pageParam,
-        memberId: MEMBER_ID,
-      }),
-    initialPageParam: 0,
-    getNextPageParam: (data) => {
-      if (data.lastReviewId) return data.lastReviewId;
-
-      return null;
-    },
-  });
+  const { data, fetchNextPage, hasNextPage, isLoading, error } = useReviewPreviewList();
 
   const handleReviewClick = (id: number) => {
     navigate(`/user/detailed-review/${id}?memberId=${MEMBER_ID}`);
