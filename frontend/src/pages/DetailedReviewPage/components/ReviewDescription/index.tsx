@@ -30,9 +30,9 @@ const ReviewDescription = ({
           <ReviewDate date={date} dateTitle={DATE_TITLE} />
         </S.ProjectNameAndDateContainer>
       </S.DescriptionSide>
-      <S.DescriptionSide>
+      {/* 시현 때 숨김 <S.DescriptionSide>
         <LockToggle $isPublic={isPublic} handleClickToggleButton={handleClickToggleButton} />
-      </S.DescriptionSide>
+      </S.DescriptionSide> */}
     </S.Description>
   );
 };

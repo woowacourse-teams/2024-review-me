@@ -35,7 +35,7 @@ const DetailedReviewPage = () => {
         isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
       />
-      {/* 시연때 숨김 <RevieweeComments comment={detailedReview.reviewerGroup.description} /> */}
+      {/* 시연 때 숨김 <RevieweeComments comment={detailedReview.reviewerGroup.description} /> */}
       {detailedReview.reviews.map((item, index) => (
         <ReviewSection question={item.question} answer={item.answer} key={index} index={index} />
       ))}
