@@ -38,15 +38,23 @@ public class ReviewGroup {
     private String groupAccessCode;
 
     public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode) {
-        if (reviewee.length() > MAX_REVIEWEE_LENGTH || reviewee.isBlank()) {
-            throw new InvalidRevieweeNameLengthException(MAX_REVIEWEE_LENGTH);
-        }
-        if (projectName.length() > MAX_PROJECT_NAME_LENGTH || projectName.isBlank()) {
-            throw new InvalidProjectNameLengthException(MAX_PROJECT_NAME_LENGTH);
-        }
+        validateRevieweeLength(reviewee);
+        validateProjectNameLength(projectName);
         this.reviewee = reviewee;
         this.projectName = projectName;
         this.reviewRequestCode = reviewRequestCode;
         this.groupAccessCode = groupAccessCode;
+    }
+
+    private void validateRevieweeLength(String reviewee) {
+        if (reviewee.isBlank() || reviewee.length() > MAX_REVIEWEE_LENGTH) {
+            throw new InvalidRevieweeNameLengthException(MAX_REVIEWEE_LENGTH);
+        }
+    }
+
+    private void validateProjectNameLength(String projectName) {
+        if (projectName.isBlank() || projectName.length() > MAX_PROJECT_NAME_LENGTH) {
+            throw new InvalidProjectNameLengthException(MAX_PROJECT_NAME_LENGTH);
+        }
     }
 }
