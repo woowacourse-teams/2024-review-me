@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { PropsWithChildren, useRef } from 'react';
+
+import { useModalClose } from '@/hooks';
 
 import * as S from './styles';
 
-const ModalBackground = ({ children }: React.PropsWithChildren) => {
-  return <S.ModalBackground>{children}</S.ModalBackground>;
+interface ModalBackgroundProps {
+  closeModal: () => void;
+}
+
+const ModalBackground: React.FC<PropsWithChildren<ModalBackgroundProps>> = ({ children, closeModal }) => {
+  const modalBackgroundRef = useRef<HTMLDivElement>(null);
+  useModalClose(closeModal, modalBackgroundRef);
+
+  return <S.ModalBackground ref={modalBackgroundRef}>{children}</S.ModalBackground>;
 };
 
 export default ModalBackground;

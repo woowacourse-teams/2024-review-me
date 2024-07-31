@@ -1,21 +1,19 @@
 import { useState } from 'react';
 
 const useSidebar = () => {
-  const CLOSE_TIME = 1000;
-  const OPEN_TIME = 0.5;
+  const OPEN_TIME = 0.2;
 
   const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
   const [isSidebarHidden, setIsSidebarHidden] = useState(true);
 
   const closeSidebar = () => {
+    setIsSidebarModalOpen(false);
     setIsSidebarHidden(true);
-    setTimeout(() => {
-      setIsSidebarModalOpen(false);
-    }, CLOSE_TIME);
   };
 
   const openSidebar = () => {
     setIsSidebarModalOpen(true);
+
     setTimeout(() => {
       setIsSidebarHidden(false);
     }, OPEN_TIME);

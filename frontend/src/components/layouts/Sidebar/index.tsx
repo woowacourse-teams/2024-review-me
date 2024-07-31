@@ -44,7 +44,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
       <S.MenuList>
         {menuItems.map((item) => (
           <S.MenuItem key={item.path} selected={location.pathname === item.path}>
-            <Link to={item.path}>{item.label}</Link>
+            <Link to={item.path} onClick={closeSidebar}>{item.label}</Link>
           </S.MenuItem>
         ))}
       </S.MenuList>

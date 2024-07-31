@@ -1,6 +1,7 @@
 //리뷰 작성
 import { DetailReviewData, ReviewData, WritingReviewInfoData } from '@/types';
 
+import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
 export const getDataToWriteReviewApi = async (reviewerGroupId: number) => {
@@ -9,7 +10,7 @@ export const getDataToWriteReviewApi = async (reviewerGroupId: number) => {
   });
 
   if (!response.ok) {
-    throw new Error('리뷰 쓰기 위한 정보를 가져오는데 실패했습니다.');
+    throw new Error(createApiErrorMessage(response.status));
   }
 
   const data = await response.json();
@@ -26,7 +27,7 @@ export const postReviewApi = async ({ reviewData }: { reviewData: ReviewData }) 
   });
 
   if (!response.ok) {
-    throw new Error('리뷰를 작성하는 데 실패했습니다.');
+    throw new Error(createApiErrorMessage(response.status));
   }
 
   const data = await response.json();
@@ -43,7 +44,7 @@ export const getDetailedReviewApi = async ({ reviewId, memberId }: { reviewId: n
   });
 
   if (!response.ok) {
-    throw new Error('상세 리뷰를 불러오는 데 실패했습니다.');
+    throw new Error(createApiErrorMessage(response.status));
   }
 
   const data: DetailReviewData = await response.json();
@@ -68,7 +69,7 @@ export const getReviewListApi = async ({
   });
 
   if (!response.ok) {
-    throw new Error('리뷰 리스트를 불러오는 데 실패했습니다.');
+    throw new Error(createApiErrorMessage(response.status));
   }
 
   const data = await response.json();

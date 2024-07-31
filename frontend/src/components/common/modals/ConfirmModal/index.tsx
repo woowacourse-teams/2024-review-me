@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ButtonType } from '@/types/styles';
+import { ButtonType } from '@/types';
 
 import Button from '../../Button';
 import ModalBackground from '../ModalBackground';
