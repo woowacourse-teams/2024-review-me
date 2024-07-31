@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.keyword.domain.exception.DuplicateKeywordException;
 import reviewme.keyword.domain.exception.KeywordLimitExceedException;
-import reviewme.keyword.exception.KeywordNotFoundException;
+import reviewme.keyword.domain.exception.KeywordNotFoundException;
 import reviewme.keyword.repository.KeywordRepository;
 
 @Component

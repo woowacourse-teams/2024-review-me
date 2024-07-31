@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.exception.DuplicateQuestionException;
-import reviewme.review.exception.QuestionNotFoundException;
+import reviewme.question.domain.exception.QuestionNotFoundException;
 import reviewme.review.repository.QuestionRepository;
 
 @Component

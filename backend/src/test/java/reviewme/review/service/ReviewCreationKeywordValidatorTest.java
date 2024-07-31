@@ -10,7 +10,7 @@ import reviewme.fixture.KeywordFixture;
 import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.domain.exception.DuplicateKeywordException;
 import reviewme.keyword.domain.exception.KeywordLimitExceedException;
-import reviewme.keyword.exception.KeywordNotFoundException;
+import reviewme.keyword.domain.exception.KeywordNotFoundException;
 import reviewme.keyword.repository.KeywordRepository;
 import reviewme.support.ServiceTest;
 

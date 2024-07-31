@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.exception.DuplicateQuestionException;
-import reviewme.review.exception.QuestionNotFoundException;
+import reviewme.question.domain.exception.QuestionNotFoundException;
 import reviewme.review.repository.QuestionRepository;
 import reviewme.support.ServiceTest;
 
