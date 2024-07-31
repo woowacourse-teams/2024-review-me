@@ -18,9 +18,9 @@ public class ReviewCreationKeywordValidator {
     private final KeywordRepository keywordRepository;
 
     void validate(List<Long> selectedKeywordIds) {
+        validateKeywordCount(selectedKeywordIds.size());
         validateUniqueKeyword(selectedKeywordIds);
         validateExistsKeyword(selectedKeywordIds);
-        validateKeywordCount(selectedKeywordIds.size());
     }
 
     private void validateUniqueKeyword(List<Long> selectedKeywordIds) {
