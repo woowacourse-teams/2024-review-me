@@ -1,7 +1,7 @@
 import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { ButtonType } from '@/types/styles';
+import { ButtonType } from '@/types';
 
 const primaryStyle = (theme: Theme) => css`
   color: ${theme.colors.white};

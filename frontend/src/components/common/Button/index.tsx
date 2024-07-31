@@ -1,4 +1,4 @@
-import { ButtonType } from '@/types/styles';
+import { ButtonType } from '@/types';
 
 import * as S from './styles';
 
