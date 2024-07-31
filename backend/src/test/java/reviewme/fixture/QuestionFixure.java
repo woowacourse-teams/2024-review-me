@@ -1,6 +1,6 @@
 package reviewme.fixture;
 
-import reviewme.review.domain.Question;
+import reviewme.question.domain.Question;
 
 public enum QuestionFixure {
 
