@@ -32,6 +32,7 @@ const DetailedReviewPage = () => {
       <ReviewDescription
         projectName={detailedReview.reviewerGroup.name}
         date={new Date(detailedReview.createdAt)}
+        revieweeName={detailedReview.revieweeName}
         isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
       />

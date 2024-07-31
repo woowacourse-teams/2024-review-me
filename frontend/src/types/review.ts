@@ -15,6 +15,7 @@ export interface DetailReviewContent {
 export interface DetailReviewData {
   id: number;
   createdAt: Date;
+  revieweeName: string;
   isPublic: boolean;
   reviewerGroup: {
     id: number;

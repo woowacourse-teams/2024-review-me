@@ -16,6 +16,7 @@ const ANSWER =
 export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
   id: 123456,
   createdAt: new Date('2024-07-16'),
+  revieweeName: 'badahertz52',
   isPublic: false,
   reviewerGroup: {
     id: 123456,
