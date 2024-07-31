@@ -25,16 +25,16 @@ public class ReviewGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "reviewee")
+    @Column(name = "reviewee", nullable = false)
     private String reviewee;
 
-    @Column(name = "project_name")
+    @Column(name = "project_name", nullable = false)
     private String projectName;
 
-    @Column(name = "review_request_code")
+    @Column(name = "review_request_code", nullable = false)
     private String reviewRequestCode;
 
-    @Column(name = "group_access_code")
+    @Column(name = "group_access_code", nullable = false)
     private String groupAccessCode;
 
     public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode) {
