@@ -14,6 +14,7 @@ import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
+import reviewme.reviewgroup.domain.exception.InvalidReviewRequestCodeException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
 @Service
@@ -35,7 +36,9 @@ public class ReviewService {
     }
 
     private Review saveReview(CreateReviewRequest request) {
-        ReviewGroup reviewGroup = reviewGroupRepository.getReviewGroupByReviewRequestCode(request.reviewRequestCode());
+        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(request.reviewRequestCode())
+                .orElseThrow(InvalidReviewRequestCodeException::new);
+
         List<Long> questionIds = request.reviewContents()
                 .stream()
                 .map(CreateReviewContentRequest::questionId)
