@@ -61,6 +61,6 @@ export const Button = styled.button<{ buttonType: ButtonType }>`
   ${({ buttonType, theme }) => getButtonStyle(buttonType, theme)};
 `;
 
-export const Icon = styled.img`
-  margin-right: 8px;
+export const Image = styled.img`
+  margin-right: 0.8rem;
 `;

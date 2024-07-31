@@ -5,13 +5,14 @@ import * as S from './styles';
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   buttonType: ButtonType;
   text: string;
-  icon?: string;
+  image?: string;
+  imageDescription?: string;
 }
 
-const Button = ({ buttonType, text, icon, onClick }: ButtonProps) => {
+const Button = ({ buttonType, text, image, imageDescription, onClick }: ButtonProps) => {
   return (
     <S.Button buttonType={buttonType} onClick={onClick}>
-      {icon && <S.Icon src={icon} alt="아이콘" />}
+      {image && <S.Image src={image} alt={imageDescription || ''} />}
       {text}
     </S.Button>
   );

@@ -6,15 +6,15 @@ import { useSidebar } from '@/hooks';
 import ErrorSection from './components/ErrorSection';
 
 const ERROR_MESSAGE = {
-  server_unstable: '서버와의 통신이 불안정합니다.',
+  serverUnstable: '서버와의 통신이 불안정합니다.',
 };
 
 const ErrorPage = () => {
   const { isSidebarHidden, isSidebarModalOpen, closeSidebar, openSidebar } = useSidebar();
   const navigate = useNavigate();
 
-  const handleReLoad = () => {
-    window.location.reload();
+  const handleReload = () => {
+    navigate(0);
   };
 
   const handleGoHome = () => {
@@ -31,8 +31,8 @@ const ErrorPage = () => {
       <Topbar openSidebar={openSidebar} />
       <Main>
         <ErrorSection
-          errorMessage={ERROR_MESSAGE.server_unstable}
-          handleReLoad={handleReLoad}
+          errorMessage={ERROR_MESSAGE.serverUnstable}
+          handleReload={handleReload}
           handleGoHome={handleGoHome}
         />
       </Main>
