@@ -18,7 +18,7 @@ interface AlertModalProps {
 const AlertModal = ({ closeButton, children }: EssentialPropsWithChildren<AlertModalProps>) => {
   return (
     <ModalPortal>
-      <ModalBackground closeModal={closeButton.handleClick}>
+      <ModalBackground closeModal={() => {}}>
         <S.AlertModalContainer>
           <S.Contents>{children}</S.Contents>
           <Button
