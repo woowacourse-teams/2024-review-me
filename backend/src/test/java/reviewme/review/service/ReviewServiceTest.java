@@ -1,7 +1,9 @@
 package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.KeywordFixture.추진력이_좋아요;
+import static reviewme.fixture.KeywordFixture.회의를_이끌어요;
 import static reviewme.fixture.QuestionFixure.기술역량이_어떤가요;
 import static reviewme.fixture.QuestionFixure.소프트스킬이_어떤가요;
 
@@ -50,7 +52,8 @@ class ReviewServiceTest {
     @Test
     void 리뷰를_생성한다() {
         // given
-        Keyword keyword = keywordRepository.save(추진력이_좋아요.create());
+        Keyword keyword1 = keywordRepository.save(추진력이_좋아요.create());
+        Keyword keyword2 = keywordRepository.save(회의를_이끌어요.create());
         Question question1 = questionRepository.save(소프트스킬이_어떤가요.create());
         Question question2 = questionRepository.save(기술역량이_어떤가요.create());
 
@@ -60,9 +63,9 @@ class ReviewServiceTest {
         CreateReviewContentRequest request1 = new CreateReviewContentRequest(question1.getId(), "답변".repeat(20));
         CreateReviewContentRequest request2 = new CreateReviewContentRequest(question2.getId(), "응답".repeat(20));
         CreateReviewRequest reviewRequest1 = new CreateReviewRequest(reviewRequestCode, List.of(request1, request2),
-                List.of(keyword.getId()));
+                List.of(keyword1.getId(), keyword2.getId()));
         CreateReviewRequest reviewRequest2 = new CreateReviewRequest(reviewRequestCode, List.of(request1),
-                List.of(keyword.getId()));
+                List.of(keyword1.getId()));
 
         // when
         long reviewId = reviewService.createReview(reviewRequest1);
@@ -71,6 +74,9 @@ class ReviewServiceTest {
         // then
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
         assertThat(optionalReview).isPresent();
-        assertThat(optionalReview.get().getReviewContents()).hasSize(2);
+        assertAll(
+                () -> assertThat(optionalReview.get().getReviewContents()).hasSize(2),
+                () -> assertThat(reviewKeywordRepository.findAllByReviewId(reviewId)).hasSize(2)
+        );
     }
 }
