@@ -13,6 +13,7 @@ const useModalClose = (closeModal: () => void, modalBackgroundRef: RefObject<HTM
     return element instanceof HTMLElement;
   };
 
+  // NOTE: esc 키를 눌렀을 때 햄버거 버튼이 포커싱되는 문제 해결을 위한 함수
   const blurFocusing = () => {
     const activeElement = document.activeElement;
 
@@ -20,21 +21,22 @@ const useModalClose = (closeModal: () => void, modalBackgroundRef: RefObject<HTM
     if (typeof activeElement.blur === 'function') activeElement.blur();
   };
 
+  const handleBackgroundClick = (event: MouseEvent) => {
+    if (isNodeElement(event.target) && isModalBackground(event.target)) {
+      closeModal();
+    }
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+
+      blurFocusing();
+      closeModal();
+    }
+  };
+
   useEffect(() => {
-    const handleBackgroundClick = (event: MouseEvent) => {
-      if (isNodeElement(event.target) && isModalBackground(event.target)) {
-        closeModal();
-      }
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        blurFocusing();
-        closeModal();
-      }
-    };
-
     const modalBackgroundElement = modalBackgroundRef.current;
 
     modalBackgroundElement?.addEventListener('click', handleBackgroundClick);
