@@ -1,13 +1,16 @@
 import styled from '@emotion/styled';
 
 export const Layout = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   display: flex;
   flex-direction: column;
   gap: 3rem;
   align-items: center;
   justify-content: center;
-
-  height: calc(100vh - 21rem);
 `;
 
 export const ErrorLogoWrapper = styled.div`
