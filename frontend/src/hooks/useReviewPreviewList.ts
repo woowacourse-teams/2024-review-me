@@ -1,31 +1,25 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+// import { useInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
 
-import { getReviewListApi } from '@/apis/review';
-import { QUERY_KEYS } from '@/constants/queryKeys';
+// import { getReviewListApi } from '@/apis/review';
+// import { QUERY_KEYS } from '@/constants/queryKeys';
 
-const MEMBER_ID = 2;
+export const GROUP_ACCESS_CODE = 'cJWJ22kv'; // NOTE: 임시 그룹코드
 
 export const useReviewPreviewList = () => {
-  const { data, fetchNextPage, hasNextPage, isLoading, error } = useInfiniteQuery({
-    queryKey: [QUERY_KEYS.reviews],
-    queryFn: ({ pageParam = 0 }) =>
-      getReviewListApi({
-        revieweeId: 1,
-        lastReviewId: pageParam,
-        memberId: MEMBER_ID,
-      }),
-    initialPageParam: 0,
-    getNextPageParam: (data) => {
-      if (data.lastReviewId) return data.lastReviewId;
-      return null;
-    },
-  });
+  // const { data, fetchNextPage, hasNextPage, isLoading, error } = useInfiniteQuery({
+  //   queryKey: [QUERY_KEYS.reviews],
+  //   queryFn: ({ pageParam }) => getReviewListApi(pageParam),
+  //   initialPageParam: GROUP_ACCESS_CODE,
+  //   getNextPageParam: (data) => {
+  //     return data.lastReviewId ? data.lastReviewId : undefined; // 마지막 리뷰 ID가 없을 경우 undefined 반환
+  //   },
+  // });
 
   return {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-    error,
+    // data,
+    // fetchNextPage,
+    // hasNextPage,
+    // isLoading,
+    // error,
   };
 };

@@ -1,4 +1,4 @@
-import { ReviewData, WritingReviewInfoData } from '@/types';
+import { ReviewData, ReviewPreviewList, WritingReviewInfoData } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
@@ -65,5 +65,5 @@ export const getReviewListApi = async (groupAccessCode: string) => {
   }
 
   const data = await response.json();
-  return data;
+  return data as ReviewPreviewList;
 };
