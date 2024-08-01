@@ -2,6 +2,7 @@ import { Global, ThemeProvider } from '@emotion/react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
 
 import App from '@/App';
 
@@ -44,7 +45,9 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <Global styles={globalStyles} />
-      <RouterProvider router={router} />
+      <RecoilRoot>
+        <RouterProvider router={router} />
+      </RecoilRoot>
     </ThemeProvider>
   </React.StrictMode>,
 );
