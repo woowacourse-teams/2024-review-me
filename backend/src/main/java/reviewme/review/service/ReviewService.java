@@ -143,10 +143,11 @@ public class ReviewService {
     public ReceivedReviewsResponse findReceivedReviews(String groupAccessCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
                 .orElseThrow(ReviewGroupNotFoundException::new);
-        List<ReceivedReviewResponse> reviewResponses = reviewRepository.findAllByReviewGroupId(reviewGroup.getId())
-                .stream()
-                .map(this::extractResponse)
-                .toList();
+        List<ReceivedReviewResponse> reviewResponses =
+                reviewRepository.findReceivedReviewsByGroupId(reviewGroup.getId())
+                        .stream()
+                        .map(this::extractResponse)
+                        .toList();
         return new ReceivedReviewsResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewResponses);
     }
 
