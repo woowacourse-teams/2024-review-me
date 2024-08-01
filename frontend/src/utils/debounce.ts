@@ -22,7 +22,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function debounce<T extends (...args: any[]) => void>(func: T, wait: number): T {
-  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  let timeoutId: ReturnType<typeof setTimeout> | null;
 
   return function (this: any, ...args: any[]) {
     if (timeoutId) clearTimeout(timeoutId);
