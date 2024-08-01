@@ -1,7 +1,7 @@
 import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { ButtonType } from '@/types';
+import { ButtonStyleType } from '@/types';
 
 const primaryStyle = (theme: Theme) => css`
   color: ${theme.colors.white};
@@ -33,7 +33,7 @@ const disabledStyle = (theme: Theme) => css`
   }
 `;
 
-const getButtonStyle = (buttonType: ButtonType, theme: Theme) => {
+const getButtonStyle = (buttonType: ButtonStyleType, theme: Theme) => {
   switch (buttonType) {
     case 'primary':
       return primaryStyle(theme);
@@ -47,7 +47,7 @@ const getButtonStyle = (buttonType: ButtonType, theme: Theme) => {
 };
 
 interface ButtonProps {
-  buttonType: ButtonType;
+  buttonType: ButtonStyleType;
   $style?: React.CSSProperties;
 }
 

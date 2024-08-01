@@ -1,4 +1,4 @@
-import { ButtonType, EssentialPropsWithChildren } from '@/types';
+import { ButtonStyleType, EssentialPropsWithChildren } from '@/types';
 
 import Button from '../../Button';
 import ModalBackground from '../ModalBackground';
@@ -7,7 +7,7 @@ import ModalPortal from '../ModalPortal';
 import * as S from './styles';
 
 interface CloseButton {
-  type: ButtonType;
+  type: ButtonStyleType;
   handleClick: () => void;
 }
 
@@ -22,7 +22,7 @@ const AlertModal = ({ closeButton, children }: EssentialPropsWithChildren<AlertM
         <S.AlertModalContainer>
           <S.Contents>{children}</S.Contents>
           <Button
-            buttonType={closeButton.type}
+            styleType={closeButton.type}
             onClick={closeButton.handleClick}
             style={{ width: '100%', minWidth: '30rem', height: '4rem' }}
           >

@@ -1,14 +1,14 @@
-import { ButtonType, EssentialPropsWithChildren } from '@/types';
+import { ButtonStyleType, EssentialPropsWithChildren } from '@/types';
 
 import * as S from './styles';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  buttonType: ButtonType;
+  styleType: ButtonStyleType;
 }
 
-const Button = ({ buttonType, style, children, onClick }: EssentialPropsWithChildren<ButtonProps>) => {
+const Button = ({ styleType: buttonType, type, style, children, onClick }: EssentialPropsWithChildren<ButtonProps>) => {
   return (
-    <S.Button buttonType={buttonType} onClick={onClick} $style={style}>
+    <S.Button buttonType={buttonType} type={type} onClick={onClick} $style={style}>
       {children}
     </S.Button>
   );

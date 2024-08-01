@@ -2,7 +2,7 @@ import AlertTriangle from '@/assets/alertTriangle.svg';
 import HomeIcon from '@/assets/home.svg';
 import ReloadIcon from '@/assets/reload.svg';
 import { Button } from '@/components';
-import { ButtonType } from '@/types/styles';
+import { ButtonStyleType } from '@/types/styles';
 
 import * as S from './styles';
 
@@ -15,14 +15,14 @@ interface ErrorSectionProps {
 const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSectionProps) => {
   const buttons = [
     {
-      buttonType: 'primary' as ButtonType,
+      buttonType: 'primary' as ButtonStyleType,
       text: '새로고침하기',
       image: ReloadIcon,
       imageDescription: '새로고침 이미지',
       onClick: handleReload,
     },
     {
-      buttonType: 'secondary' as ButtonType,
+      buttonType: 'secondary' as ButtonStyleType,
       text: '홈으로 이동하기',
       image: HomeIcon,
       imageDescription: '홈 이미지',
@@ -40,7 +40,7 @@ const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSection
         {buttons.map((button, index) => (
           <S.ButtonContainer key={index}>
             <Button
-              buttonType={button.buttonType}
+              styleType={button.buttonType}
               text={button.text}
               image={button.image}
               imageDescription={button.imageDescription}

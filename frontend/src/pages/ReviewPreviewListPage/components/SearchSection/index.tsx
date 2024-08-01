@@ -13,7 +13,7 @@ const SearchSection = ({ onChange, options, placeholder }: SearchSectionProps) =
     <S.Container>
       <S.SearchBox>
         <SearchInput $width="48rem" $height="100%" placeholder={placeholder} />
-        <Button buttonType="secondary" text="검색" />
+        <Button styleType="secondary" text="검색" />
       </S.SearchBox>
       <DropDown onChange={onChange} options={options} />
     </S.Container>

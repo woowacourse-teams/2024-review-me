@@ -129,7 +129,7 @@ const ReviewWritingPage = () => {
         </S.KeywordContainer>
         <S.ButtonContainer>
           {/* <Button buttonType="secondary" text="저장" /> */}
-          <Button buttonType={isValidForm ? 'primary' : 'disabled'}>제출</Button>
+          <Button styleType={isValidForm ? 'primary' : 'disabled'}>제출</Button>
         </S.ButtonContainer>
       </S.ReviewFormMain>
     </S.ReviewWritingPage>

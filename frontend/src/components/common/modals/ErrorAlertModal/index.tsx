@@ -1,5 +1,5 @@
 import AlertTrianglePrimaryIcon from '@/assets/alertTrianglePrimary.svg';
-import { ButtonType } from '@/types';
+import { ButtonStyleType } from '@/types';
 
 import Button from '../../Button';
 import ModalBackground from '../ModalBackground';
@@ -8,7 +8,7 @@ import ModalPortal from '../ModalPortal';
 import * as S from './styles';
 
 interface CloseButton {
-  type: ButtonType;
+  type: ButtonStyleType;
   handleClick: () => void;
 }
 
@@ -27,7 +27,7 @@ const ErrorAlertModal = ({ closeButton, text }: ErrorAlertModalProps) => {
             <S.AlertMessage>{text}</S.AlertMessage>
           </S.Contents>
           <Button
-            buttonType={closeButton.type}
+            styleType={closeButton.type}
             onClick={closeButton.handleClick}
             style={{ width: '100%', minWidth: '30rem', height: '4rem' }}
           >
