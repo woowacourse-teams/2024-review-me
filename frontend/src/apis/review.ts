@@ -50,20 +50,12 @@ export const getDetailedReviewApi = async ({ reviewId, memberId }: { reviewId: n
   return data as DetailReviewData;
 };
 
-// 리뷰 리스트
-export const getReviewListApi = async ({
-  revieweeId,
-  lastReviewId,
-  memberId,
-}: {
-  revieweeId: number;
-  lastReviewId: number;
-  memberId: number;
-}) => {
-  const response = await fetch(endPoint.gettingReviewList(revieweeId, lastReviewId, memberId), {
+export const getReviewListApi = async (groupAccessCode: string) => {
+  const response = await fetch(endPoint.gettingReviewList, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      GroupAccessCode: groupAccessCode,
     },
   });
 
