@@ -1,9 +1,12 @@
 package reviewme.review.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reviewme.global.exception.BadRequestException;
 
 class ReviewContentTest {
@@ -41,5 +44,32 @@ class ReviewContentTest {
                 () -> assertThatCode(() -> new ReviewContent(1L, exceedLengthAnswer))
                         .isInstanceOf(BadRequestException.class)
         );
+    }
+
+    @Test
+    void 답변_내용이_미리보기_최대_글자를_넘는_경우_미리보기_길이만큼_잘라서_반환한다() {
+        // given
+        String answer = "*".repeat(151);
+        ReviewContent reviewContent = new ReviewContent(1L, answer);
+
+        // when
+        String actual = reviewContent.getAnswerPreview();
+
+        // then
+        assertThat(actual).hasSize(150);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {149, 150})
+    void 답변_내용이_미리보기_최대_글자를_넘지_않는_경우_전체_내용을_반환한다(int length) {
+        // given
+        String answer = "*".repeat(length);
+        ReviewContent reviewContent = new ReviewContent(1L, answer);
+
+        // when
+        String actual = reviewContent.getAnswerPreview();
+
+        // then
+        assertThat(actual).hasSize(length);
     }
 }
