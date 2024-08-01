@@ -7,6 +7,7 @@ import { ReviewPreview } from '@/types';
 
 import LoadingPage from '../LoadingPage';
 
+import DescriptionSection from './components/DescriptionSection';
 import SearchSection from './components/SearchSection';
 import * as S from './styles';
 
@@ -26,7 +27,7 @@ const ReviewPreviewListPage = () => {
 
   const lastReviewElementRef = useCallback(
     (node: HTMLElement | null) => {
-      if (isLoading) return console.log('isLoading', isLoading);
+      if (isLoading) return <LoadingPage />;
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
@@ -43,6 +44,10 @@ const ReviewPreviewListPage = () => {
   return (
     <>
       <S.Layout>
+        <DescriptionSection
+          projectName={data?.pages[0].projectName}
+          revieweeName={`${data?.pages[0].revieweeName} 님에게 달린 리뷰입니다!`}
+        />
         <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} />
         <S.ReviewSection>
           {isLoading && <LoadingPage />}
@@ -55,11 +60,10 @@ const ReviewPreviewListPage = () => {
                   <div key={item.id} onClick={() => handleReviewClick(item.id)}>
                     <ReviewPreviewCard
                       id={item.id}
-                      reviewerGroup={item.reviewerGroup}
+                      projectName={page.projectName}
                       createdAt={item.createdAt}
                       contentPreview={item.contentPreview}
                       keywords={item.keywords}
-                      isPublic={item.isPublic}
                     />
                     <div ref={isLastElement ? lastReviewElementRef : null}></div>
                   </div>
