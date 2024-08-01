@@ -12,19 +12,31 @@ interface ErrorSectionProps {
   handleGoHome: () => void;
 }
 
+interface ErrorSectionButton {
+  buttonType: ButtonStyleType;
+  key: string;
+  text: string;
+  /* eslint-disable */
+  imageSrc: any;
+  imageDescription: string;
+  onClick: () => void;
+}
+
 const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSectionProps) => {
-  const buttons = [
+  const buttonList: ErrorSectionButton[] = [
     {
-      buttonType: 'primary' as ButtonStyleType,
+      buttonType: 'primary',
+      key: 'refreshButton',
       text: '새로고침하기',
-      image: ReloadIcon,
+      imageSrc: ReloadIcon,
       imageDescription: '새로고침 이미지',
       onClick: handleReload,
     },
     {
-      buttonType: 'secondary' as ButtonStyleType,
+      buttonType: 'secondary' as ButtonType,
+      key: 'homeButton',
       text: '홈으로 이동하기',
-      image: HomeIcon,
+      imageSrc: HomeIcon,
       imageDescription: '홈 이미지',
       onClick: handleGoHome,
     },
@@ -37,16 +49,16 @@ const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSection
       </S.ErrorLogoWrapper>
       <S.ErrorMessage>{errorMessage}</S.ErrorMessage>
       <S.Container>
-        {buttons.map((button, index) => (
-          <S.ButtonContainer key={index}>
-            <Button
-              styleType={button.buttonType}
-              text={button.text}
-              image={button.image}
-              imageDescription={button.imageDescription}
-              onClick={button.onClick}
-            />
-          </S.ButtonContainer>
+        {buttonList.map((button) => (
+          <Button
+            type="button"
+            key={button.key}
+            buttonType={button.buttonType}
+            text={button.text}
+            image={button.imageSrc}
+            imageDescription={button.imageDescription}
+            onClick={button.onClick}
+          />
         ))}
       </S.Container>
     </S.Layout>

@@ -1,5 +1,6 @@
 package reviewme.review.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,7 +29,7 @@ public class Review {
     @Column(name = "review_group_id", nullable = false)
     private long reviewGroupId;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "review_id", nullable = false, updatable = false)
     private List<ReviewContent> reviewContents;
 

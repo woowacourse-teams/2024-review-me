@@ -3,7 +3,7 @@ import { CSSProperties } from 'react';
 
 import { ThemeProperty } from '../types';
 
-export const formWidth = '86.7rem';
+export const formWidth = '65rem';
 export const sidebarWidth: ThemeProperty<string> = {
   desktop: '25rem',
   mobile: '100vw',
@@ -15,6 +15,7 @@ export const breakpoints: ThemeProperty<string> = {
 };
 // NOTE: 1rem = 10px
 export const fontSize: ThemeProperty<CSSProperties['fontSize']> = {
+  small: '1.4rem',
   basic: '1.6rem',
   medium: '2.4rem',
   large: '3.2rem',

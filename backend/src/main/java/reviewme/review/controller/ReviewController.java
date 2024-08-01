@@ -1,5 +1,6 @@
 package reviewme.review.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -10,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.service.ReviewService;
 
 @RestController
 @RequiredArgsConstructor
-public class ReviewController implements ReviewApi{
+public class ReviewController implements ReviewApi {
 
     private final ReviewService reviewService;
 
@@ -23,6 +25,13 @@ public class ReviewController implements ReviewApi{
     public ResponseEntity<Void> createReview(@Valid @RequestBody CreateReviewRequest request) {
         long savedReviewId = reviewService.createReview(request);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
+    }
+
+    @GetMapping("/reviews")
+    public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(HttpServletRequest request) {
+        String groupAccessCode = request.getHeader("GroupAccessCode");
+        ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/reviews/write")
