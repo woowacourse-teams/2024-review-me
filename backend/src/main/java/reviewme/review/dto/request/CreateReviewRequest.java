@@ -9,15 +9,15 @@ import java.util.List;
 public record CreateReviewRequest(
 
         @Schema(description = "리뷰 요청 코드")
-        @NotBlank(message = "리뷰 요청 코드가 필요합니다.")
+        @NotBlank(message = "리뷰 요청 코드가 필요해요.")
         String reviewRequestCode,
 
         @Schema(description = "리뷰 답변 목록")
-        @NotNull(message = "리뷰 답변이 없습니다.")
+        @NotNull(message = "리뷰 답변이 없어요.")
         List<CreateReviewContentRequest> reviewContents,
 
         @Schema(description = "선택 키워드 ID 목록")
-        @NotNull(message = "선택된 키워드가 없습니다.")
+        @NotNull(message = "선택된 키워드가 없어요.")
         List<Long> keywords
 ) {
 }
