@@ -6,7 +6,7 @@ import LockToggle from '../LockToggle';
 
 import * as S from './styles';
 
-export const PROJECT_IMAGE_SIZE = '6rem';
+const PROJECT_IMAGE_SIZE = '6rem';
 const DATE_TITLE = '리뷰 작성일';
 
 interface ReviewDescriptionProps extends Omit<ProjectImgProps, '$size'>, Omit<ReviewDateProps, 'dateTitle'> {
