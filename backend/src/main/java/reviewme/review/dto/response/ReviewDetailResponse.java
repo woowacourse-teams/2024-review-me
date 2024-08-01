@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Schema(name = "리뷰 상세 조회 응답")
-public record ReviewBygroupAccessCodeResponse(
+public record ReviewDetailResponse(
 
         @Schema(description = "리뷰 ID")
         long id,

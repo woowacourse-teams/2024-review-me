@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reviewme.review.dto.response.ReviewBygroupAccessCodeResponse;
+import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.service.ReviewService;
@@ -35,9 +35,9 @@ public class ReviewController implements ReviewApi{
     }
 
     @GetMapping("/reviews/{id}")
-    public ResponseEntity<ReviewBygroupAccessCodeResponse> findReview(@PathVariable long id, HttpServletRequest request) {
+    public ResponseEntity<ReviewDetailResponse> findReview(@PathVariable long id, HttpServletRequest request) {
         String groupAccessCode = request.getHeader("GroupAccessCode");
-        ReviewBygroupAccessCodeResponse response = reviewService.findReviewByGroupAccessCode(groupAccessCode, id);
+        ReviewDetailResponse response = reviewService.findReview(groupAccessCode, id);
         return ResponseEntity.ok(response);
     }
 }
