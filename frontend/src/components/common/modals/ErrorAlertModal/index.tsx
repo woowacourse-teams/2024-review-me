@@ -1,41 +1,29 @@
 import AlertTrianglePrimaryIcon from '@/assets/alertTrianglePrimary.svg';
 import { ButtonStyleType } from '@/types';
 
-import Button from '../../Button';
-import ModalBackground from '../ModalBackground';
-import ModalPortal from '../ModalPortal';
+import AlertModal from '../AlertModal';
 
 import * as S from './styles';
 
 interface CloseButton {
   type: ButtonStyleType;
   handleClick: () => void;
+  content: React.ReactNode;
 }
 
 interface ErrorAlertModalProps {
   closeButton: CloseButton;
-  text: string;
+  errorText: string;
 }
 
-const ErrorAlertModal = ({ closeButton, text }: ErrorAlertModalProps) => {
+const ErrorAlertModal = ({ closeButton, errorText }: ErrorAlertModalProps) => {
   return (
-    <ModalPortal>
-      <ModalBackground closeModal={closeButton.handleClick}>
-        <S.ErrorAlertModalContainer>
-          <S.Contents>
-            <S.AlertTriangle src={AlertTrianglePrimaryIcon} alt="경고 마크" />
-            <S.AlertMessage>{text}</S.AlertMessage>
-          </S.Contents>
-          <Button
-            styleType={closeButton.type}
-            onClick={closeButton.handleClick}
-            style={{ width: '100%', minWidth: '30rem', height: '4rem' }}
-          >
-            닫기
-          </Button>
-        </S.ErrorAlertModalContainer>
-      </ModalBackground>
-    </ModalPortal>
+    <AlertModal closeButton={closeButton}>
+      <S.Contents>
+        <S.AlertTriangle src={AlertTrianglePrimaryIcon} alt="경고 마크" />
+        <S.AlertMessage>{errorText}</S.AlertMessage>
+      </S.Contents>
+    </AlertModal>
   );
 };
 
