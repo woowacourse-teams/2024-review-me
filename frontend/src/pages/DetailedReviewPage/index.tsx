@@ -1,12 +1,10 @@
-import { useRecoilValue } from 'recoil';
-
 import { ErrorSuspenseContainer, LoginRedirectModal } from '@/components';
-import { groupAccessCodeAtom } from '@/recoil';
+import { useGroupAccessCode } from '@/hooks';
 
 import { DetailedReviewPageContents } from './components';
 
 const DetailedReviewPage = () => {
-  const groupAccessCode = useRecoilValue(groupAccessCodeAtom);
+  const { groupAccessCode } = useGroupAccessCode();
 
   return (
     <>
