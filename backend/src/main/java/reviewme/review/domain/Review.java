@@ -29,7 +29,7 @@ public class Review {
     private long reviewGroupId;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "review_id", nullable = false)
+    @JoinColumn(name = "review_id", nullable = false, updatable = false)
     private List<ReviewContent> reviewContents;
 
     @Column(name = "created_at", nullable = false)
