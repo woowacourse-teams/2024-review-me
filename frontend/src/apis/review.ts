@@ -34,11 +34,20 @@ export const postReviewApi = async ({ reviewData }: { reviewData: ReviewData }) 
 };
 
 // 상세 리뷰
-export const getDetailedReviewApi = async ({ reviewId, memberId }: { reviewId: number; memberId: number }) => {
+export const getDetailedReviewApi = async ({
+  reviewId,
+  memberId,
+  groupAccessCode,
+}: {
+  reviewId: number;
+  memberId: number;
+  groupAccessCode: string;
+}) => {
   const response = await fetch(endPoint.gettingDetailedReview(reviewId, memberId), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      GroupAccessCode: groupAccessCode,
     },
   });
 
@@ -55,15 +64,18 @@ export const getReviewListApi = async ({
   revieweeId,
   lastReviewId,
   memberId,
+  groupAccessCode,
 }: {
   revieweeId: number;
   lastReviewId: number;
   memberId: number;
+  groupAccessCode: string;
 }) => {
   const response = await fetch(endPoint.gettingReviewList(revieweeId, lastReviewId, memberId), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      GroupAccessCode: groupAccessCode,
     },
   });
 
