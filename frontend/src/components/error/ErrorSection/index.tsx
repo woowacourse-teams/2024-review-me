@@ -33,7 +33,7 @@ const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSection
       onClick: handleReload,
     },
     {
-      buttonType: 'secondary' as ButtonType,
+      buttonType: 'secondary',
       key: 'homeButton',
       text: '홈으로 이동하기',
       imageSrc: HomeIcon,
@@ -50,15 +50,9 @@ const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSection
       <S.ErrorMessage>{errorMessage}</S.ErrorMessage>
       <S.Container>
         {buttonList.map((button) => (
-          <Button
-            type="button"
-            key={button.key}
-            buttonType={button.buttonType}
-            text={button.text}
-            image={button.imageSrc}
-            imageDescription={button.imageDescription}
-            onClick={button.onClick}
-          />
+          <Button type="button" key={button.key} styleType={button.buttonType} onClick={button.onClick}>
+            ''
+          </Button>
         ))}
       </S.Container>
     </S.Layout>
