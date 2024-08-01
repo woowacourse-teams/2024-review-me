@@ -9,4 +9,8 @@ import reviewme.reviewgroup.domain.ReviewGroup;
 public interface ReviewGroupRepository extends JpaRepository<ReviewGroup, Long> {
 
     Optional<ReviewGroup> findByReviewRequestCode(String reviewRequestCode);
+
+    boolean existsByReviewRequestCode(String reviewRequestCode);
+
+    boolean existsByGroupAccessCode(String groupAccessCode);
 }
