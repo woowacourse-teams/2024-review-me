@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
 
-import { FormDirection } from './components/FormLayout';
-
 export const LandingPage = styled.div`
   display: flex;
   flex-direction: column;
