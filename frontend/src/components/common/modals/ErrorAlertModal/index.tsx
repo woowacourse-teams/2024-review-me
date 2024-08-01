@@ -22,7 +22,7 @@ const ErrorAlertModal = ({ closeButton, errorText, handleClose }: ErrorAlertModa
     <AlertModal closeButton={closeButton} isClosableOnBackground={true} handleClose={handleClose}>
       <S.Contents>
         <S.AlertTriangle src={AlertTrianglePrimaryIcon} alt="경고 마크" />
-        <S.AlertMessage>{errorText}</S.AlertMessage>
+        <p>{errorText}</p>
       </S.Contents>
     </AlertModal>
   );

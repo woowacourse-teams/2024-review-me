@@ -10,5 +10,3 @@ export const AlertTriangle = styled.img`
   width: 6rem;
   height: 6rem;
 `;
-
-export const AlertMessage = styled.p``;
