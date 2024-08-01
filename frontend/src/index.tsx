@@ -7,7 +7,6 @@ import { RecoilRoot } from 'recoil';
 
 import App from '@/App';
 
-import { ErrorSuspenseContainer } from './components';
 import DetailedReviewPage from './pages/DetailedReviewPage';
 import ErrorPage from './pages/ErrorPage';
 import ReviewPreviewListPage from './pages/ReviewPreviewListPage';
@@ -46,11 +45,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'user/detailed-review/:id',
-        element: (
-          <ErrorSuspenseContainer>
-            <DetailedReviewPage />
-          </ErrorSuspenseContainer>
-        ),
+        element: <DetailedReviewPage />,
+      },
+      {
+        path: 'home',
+        element: <div>성공</div>,
       },
     ],
   },

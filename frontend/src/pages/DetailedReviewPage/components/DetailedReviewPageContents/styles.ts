@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
 
-export const DetailedReviewPage = styled.div`
+export const DetailedReviewPageContents = styled.div`
   width: ${({ theme }) => theme.formWidth};
 `;
