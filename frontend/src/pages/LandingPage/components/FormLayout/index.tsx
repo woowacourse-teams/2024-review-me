@@ -5,11 +5,9 @@ import { EssentialPropsWithChildren } from '@/types';
 import * as S from '../../styles';
 import FormBody from '../FormBody';
 
-export type FormDirection = 'col' | 'row';
-
 interface FormProps {
   title: string;
-  direction: FormDirection;
+  direction: React.CSSProperties['flexDirection'];
 }
 
 const FormLayout: React.FC<EssentialPropsWithChildren<FormProps>> = ({ title, direction, children }) => {
