@@ -14,7 +14,7 @@ export const DescriptionSide = styled.div`
   display: flex;
   width: 100%;
 `;
-// 6rem :깃헙 로고 사이즈
+//NOTE: 6rem :깃헙 로고 사이즈
 export const ProjectInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
