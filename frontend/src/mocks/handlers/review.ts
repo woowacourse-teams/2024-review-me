@@ -24,7 +24,7 @@ const getDataToWriteReview = () =>
   });
 
 const getReviewPreviewList = () => {
-  return http.get(endPoint.gettingReviewList(1, 6, 2), async ({ request }) => {
+  return http.get(endPoint.gettingReviewList, async ({ request }) => {
     const url = new URL(request.url);
 
     const lastReviewId = Number(url.searchParams.get('lastReviewId'));
