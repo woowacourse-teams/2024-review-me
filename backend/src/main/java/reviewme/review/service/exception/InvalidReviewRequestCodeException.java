@@ -1,4 +1,4 @@
-package reviewme.reviewgroup.domain.exception;
+package reviewme.review.service.exception;
 
 import reviewme.global.exception.BadRequestException;
 
