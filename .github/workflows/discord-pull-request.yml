@@ -38,7 +38,7 @@ jobs:
           echo PR Prefix : $PR_PREFIX
 
       - name: Notify on PR
-        if: env.PR_PREFIX == 'BE' || env.PR_PREFIX == 'FE'
+        if: env.PR_PREFIX == 'BE' || env.PR_PREFIX == 'FE' || env.PR_PREFIX == 'All'
         run: |
           echo "Notify on Discord"
           
