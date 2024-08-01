@@ -10,6 +10,7 @@ import reviewme.question.domain.Question;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
+import reviewme.review.domain.exception.ReviewGroupNotFoundException;
 import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
@@ -23,8 +24,6 @@ import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.domain.exception.InvalidGroupAccessCodeException;
-import reviewme.reviewgroup.domain.exception.InvalidReviewRequestCodeException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
 @Service
@@ -50,7 +49,7 @@ public class ReviewService {
 
     private Review saveReview(CreateReviewRequest request) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(request.reviewRequestCode())
-                .orElseThrow(InvalidReviewRequestCodeException::new);
+                .orElseThrow(ReviewGroupNotFoundException::new);
 
         List<Long> questionIds = request.reviewContents()
                 .stream()
@@ -80,7 +79,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReviewSetupResponse findReviewCreationSetup(String reviewRequestCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(InvalidReviewRequestCodeException::new);
+                .orElseThrow(ReviewGroupNotFoundException::new);
         return createReviewSetupResponse(reviewGroup);
     }
 
@@ -103,7 +102,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReviewDetailResponse findReview(String groupAccessCode, long reviewId) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
-                .orElseThrow(InvalidGroupAccessCodeException::new);
+                .orElseThrow(ReviewGroupNotFoundException::new);
 
         Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
                 .orElseThrow(ReviewIsNotInReviewGroupException::new);

@@ -17,6 +17,7 @@ import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.repository.KeywordRepository;
 import reviewme.question.domain.Question;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.exception.ReviewGroupNotFoundException;
 import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
@@ -27,7 +28,6 @@ import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.domain.exception.InvalidGroupAccessCodeException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
 
@@ -137,7 +137,7 @@ class ReviewServiceTest {
 
         // when, then
         assertThatThrownBy(() -> reviewService.findReview("wrongGroupAccessCode", review.getId()))
-                .isInstanceOf(InvalidGroupAccessCodeException.class);
+                .isInstanceOf(ReviewGroupNotFoundException.class);
     }
 
     @Test
