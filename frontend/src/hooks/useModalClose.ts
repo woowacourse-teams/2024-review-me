@@ -1,6 +1,11 @@
 import { useEffect, RefObject } from 'react';
 
-const useModalClose = (closeModal: () => void, modalBackgroundRef: RefObject<HTMLElement>) => {
+interface UseModalCloseProps {
+  closeModal: (() => void) | null;
+  modalBackgroundRef: RefObject<HTMLElement>;
+}
+
+const useModalClose = ({ closeModal, modalBackgroundRef }: UseModalCloseProps) => {
   const isNodeElement = (element: EventTarget | null): element is Node => {
     return element instanceof Node;
   };
@@ -23,6 +28,7 @@ const useModalClose = (closeModal: () => void, modalBackgroundRef: RefObject<HTM
 
   const handleBackgroundClick = (event: MouseEvent) => {
     if (isNodeElement(event.target) && isModalBackground(event.target)) {
+      if (!closeModal) return;
       closeModal();
     }
   };
@@ -32,6 +38,8 @@ const useModalClose = (closeModal: () => void, modalBackgroundRef: RefObject<HTM
       event.preventDefault();
 
       blurFocusing();
+
+      if (!closeModal) return;
       closeModal();
     }
   };
