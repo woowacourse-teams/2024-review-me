@@ -7,6 +7,7 @@ import App from '@/App';
 
 import DetailedReviewPage from './pages/DetailedReviewPage';
 import ErrorPage from './pages/ErrorPage';
+import LandingPage from './pages/LandingPage';
 import ReviewPreviewListPage from './pages/ReviewPreviewListPage';
 import ReviewWritingPage from './pages/ReviewWriting';
 import globalStyles from './styles/globalStyles';
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: 'user/detailed-review/:id',
         element: <DetailedReviewPage />,
+      },
+      {
+        path: 'home',
+        element: <LandingPage />,
       },
     ],
   },
