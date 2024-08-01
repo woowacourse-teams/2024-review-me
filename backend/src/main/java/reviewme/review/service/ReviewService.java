@@ -85,18 +85,19 @@ public class ReviewService {
     }
 
     private ReviewSetupResponse createReviewSetupResponse(ReviewGroup reviewGroup) {
-        List<QuestionSetupResponse> questionSetupRespons = questionRepository.findAll()
+        List<QuestionSetupResponse> questionSetupResponse = questionRepository.findAll()
                 .stream()
                 .map(question -> new QuestionSetupResponse(question.getId(), question.getContent()))
                 .toList();
 
-        List<KeywordResponse> keywordResponseRespons = keywordRepository.findAll()
+        List<KeywordResponse> keywordResponse = keywordRepository.findAll()
                 .stream()
                 .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getContent()))
                 .toList();
 
-        return new ReviewSetupResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(),
-                questionSetupRespons, keywordResponseRespons);
+        return new ReviewSetupResponse(
+                reviewGroup.getReviewee(), reviewGroup.getProjectName(), questionSetupResponse, keywordResponse
+        );
     }
 
     @Transactional(readOnly = true)
