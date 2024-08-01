@@ -16,6 +16,6 @@ public record ReviewSetupResponse(
         List<QuestionSetupResponse> questions,
 
         @Schema(description = "키워드 목록")
-        List<ReviewSetUpKeyword> keywords
+        List<KeywordResponse> keywords
 ) {
 }
