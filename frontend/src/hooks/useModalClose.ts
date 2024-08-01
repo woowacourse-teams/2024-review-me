@@ -1,12 +1,11 @@
 import { useEffect, RefObject } from 'react';
 
 interface UseModalCloseProps {
-  closeModalOnBackground: () => void;
-  closeModalOnEsc: () => void;
+  closeModal: (() => void) | null;
   modalBackgroundRef: RefObject<HTMLElement>;
 }
 
-const useModalClose = ({ closeModalOnBackground, closeModalOnEsc, modalBackgroundRef }: UseModalCloseProps) => {
+const useModalClose = ({ closeModal, modalBackgroundRef }: UseModalCloseProps) => {
   const isNodeElement = (element: EventTarget | null): element is Node => {
     return element instanceof Node;
   };
@@ -29,7 +28,8 @@ const useModalClose = ({ closeModalOnBackground, closeModalOnEsc, modalBackgroun
 
   const handleBackgroundClick = (event: MouseEvent) => {
     if (isNodeElement(event.target) && isModalBackground(event.target)) {
-      closeModalOnBackground();
+      if (!closeModal) return;
+      closeModal();
     }
   };
 
@@ -38,7 +38,9 @@ const useModalClose = ({ closeModalOnBackground, closeModalOnEsc, modalBackgroun
       event.preventDefault();
 
       blurFocusing();
-      closeModalOnEsc();
+
+      if (!closeModal) return;
+      closeModal();
     }
   };
 
@@ -52,7 +54,7 @@ const useModalClose = ({ closeModalOnBackground, closeModalOnEsc, modalBackgroun
       modalBackgroundElement?.removeEventListener('click', handleBackgroundClick);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [closeModalOnBackground, closeModalOnEsc, modalBackgroundRef]);
+  }, [closeModal, modalBackgroundRef]);
 };
 
 export default useModalClose;

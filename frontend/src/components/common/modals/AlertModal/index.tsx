@@ -14,24 +14,19 @@ interface CloseButton {
 
 interface AlertModalProps {
   closeButton: CloseButton;
-  isCloseOnBackground?: boolean;
-  isCloseOnEsc?: boolean;
-  handleClose?: () => void;
+  isClosableOnBackground: boolean;
+  handleClose: (() => void) | null;
 }
 
 const AlertModal = ({
   closeButton,
-  isCloseOnBackground = true,
-  isCloseOnEsc = true,
-  handleClose = closeButton.handleClick,
+  isClosableOnBackground,
+  handleClose,
   children,
 }: EssentialPropsWithChildren<AlertModalProps>) => {
   return (
     <ModalPortal>
-      <ModalBackground
-        closeModalOnBackground={isCloseOnBackground ? handleClose : () => {}}
-        closeModalOnEsc={isCloseOnEsc ? handleClose : () => {}}
-      >
+      <ModalBackground closeModal={isClosableOnBackground ? handleClose : null}>
         <S.AlertModalContainer>
           <S.Contents>{children}</S.Contents>
           <Button

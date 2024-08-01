@@ -14,11 +14,12 @@ interface CloseButton {
 interface ErrorAlertModalProps {
   closeButton: CloseButton;
   errorText: string;
+  handleClose: () => void;
 }
 
-const ErrorAlertModal = ({ closeButton, errorText }: ErrorAlertModalProps) => {
+const ErrorAlertModal = ({ closeButton, errorText, handleClose }: ErrorAlertModalProps) => {
   return (
-    <AlertModal closeButton={closeButton}>
+    <AlertModal closeButton={closeButton} isClosableOnBackground={true} handleClose={handleClose}>
       <S.Contents>
         <S.AlertTriangle src={AlertTrianglePrimaryIcon} alt="경고 마크" />
         <S.AlertMessage>{errorText}</S.AlertMessage>
