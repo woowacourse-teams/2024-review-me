@@ -1,13 +1,9 @@
 import { useNavigate } from 'react-router';
 
-import { Main, PageLayout, SideModal, Sidebar, Topbar } from '@/components';
+import { Main, PageLayout, SideModal, Sidebar, Topbar, ErrorSection } from '@/components';
 import { useSidebar } from '@/hooks';
 
-import ErrorSection from './components/ErrorSection';
-
-const ERROR_MESSAGE = {
-  serverUnstable: '서버와의 통신이 불안정합니다.',
-};
+const ERROR_MESSAGE = '찾으시는 페이지가 없어요.';
 
 const ErrorPage = () => {
   const { isSidebarHidden, isSidebarModalOpen, closeSidebar, openSidebar } = useSidebar();
@@ -24,17 +20,13 @@ const ErrorPage = () => {
   return (
     <PageLayout>
       {isSidebarModalOpen && (
-        <SideModal isSidebarHidden={isSidebarHidden}>
+        <SideModal isSidebarHidden={isSidebarHidden} closeModal={closeSidebar}>
           <Sidebar closeSidebar={closeSidebar} />
         </SideModal>
       )}
       <Topbar openSidebar={openSidebar} />
       <Main>
-        <ErrorSection
-          errorMessage={ERROR_MESSAGE.serverUnstable}
-          handleReload={handleReload}
-          handleGoHome={handleGoHome}
-        />
+        <ErrorSection errorMessage={ERROR_MESSAGE} handleReload={handleReload} handleGoHome={handleGoHome} />
       </Main>
     </PageLayout>
   );

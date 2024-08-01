@@ -2,6 +2,7 @@ import { useLocation, Link } from 'react-router-dom';
 
 import CloseIcon from '@/assets/close.svg';
 import LogoIcon from '@/assets/logo.svg';
+import { DETAILED_PAGE_MOCK_API_SETTING_VALUES } from '@/mocks/mockData/detailedReviewMockData';
 
 import { PAGE } from '../../../constants';
 
@@ -11,7 +12,7 @@ const PATH = {
   myPage: '/user/mypage',
   reviewWriting: '/user/review-writing',
   reviewPreviewList: '/user/review-preview-list',
-  detailedReview: '/user/detailed-review/0?memberId=1',
+  detailedReview: `/user/detailed-review/${DETAILED_PAGE_MOCK_API_SETTING_VALUES.reviewId}?memberId=${DETAILED_PAGE_MOCK_API_SETTING_VALUES.memberId}`,
   reviewGroupManagement: '/user/review-group-management',
 };
 
