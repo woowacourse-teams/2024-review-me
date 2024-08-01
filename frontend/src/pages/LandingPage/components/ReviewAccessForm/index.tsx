@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import { Input, Button } from '@/components';
 
-import FormLayout from '../components/FormLayout';
-import * as S from '../styles';
+import * as S from '../../styles';
+import FormLayout from '../FormLayout';
 
 const ReviewAccessForm = () => {
   const [groupAccessCode, setGroupAccessCode] = useState('');
