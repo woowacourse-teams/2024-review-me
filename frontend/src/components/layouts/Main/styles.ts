@@ -19,6 +19,7 @@ export const Contents = styled.div`
   width: 100%;
   max-width: ${({ theme }) => theme.breakpoints.desktop};
   height: 100%;
+  margin-bottom: 2.4rem;
 
   border-radius: 0.5rem;
 `;
