@@ -3,8 +3,10 @@ import styled from '@emotion/styled';
 export const ReviewWritingPage = styled.form`
   display: flex;
   flex-direction: column;
+
   width: ${({ theme }) => theme.formWidth};
   height: fit-content;
+  margin-bottom: 5rem;
 `;
 
 export const ReviewFormHeader = styled.header`
