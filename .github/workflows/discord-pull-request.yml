@@ -1,0 +1,86 @@
+name: Mention Discord on Pull Request
+
+on:
+  pull_request:
+    types: [ opened, reopened ] # PR이 열렸을 때에만 작동합니다.
+
+env:
+  "31026350": "206298119661420544"
+  "64690761": "243991296060948491"
+  "69838872": "1165830186990850110"
+  "111052302": "859318944195149855"
+  "145949635": "1164111111193366580"
+  "76177848": "710749110570975243"
+  "110809927": "971312723260493834"
+  "80167893": "1162754699099906169"
+  "backend": "1263405654534525051"
+  "frontend": "1263406763382931467"
+
+jobs:
+  notify-on-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find prefix for PR title
+        run: |
+          echo "Finding prefix for PR title"
+          PR_TITLE='${{ github.event.pull_request.title }}'
+          PR_PREFIX=$(echo $PR_TITLE | cut -d ' ' -f1)
+          if [ "$PR_PREFIX" = '[BE]' ]; then
+            echo Backend PR Found!
+            echo "PR_PREFIX=BE" >> $GITHUB_ENV
+          elif [ "$PR_PREFIX" = '[FE]' ]; then
+            echo Frontend PR Found!
+            echo "PR_PREFIX=FE" >> $GITHUB_ENV
+          elif [ "$PR_PREFIX" = '[All]' ]; then
+            echo All PR Found!
+            echo "PR_PREFIX=All" >> $GITHUB_ENV
+          fi
+          echo PR Prefix : $PR_PREFIX
+
+      - name: Notify on PR
+        if: env.PR_PREFIX == 'BE' || env.PR_PREFIX == 'FE' || env.PR_PREFIX == 'All'
+        run: |
+          echo "Notify on Discord"
+          
+          PR_URL='${{ github.event.pull_request.html_url }}'
+          PR_TITLE='${{ github.event.pull_request.title }}'
+          PR_AUTHOR='${{ github.event.sender.login }}'
+          DISCORD_ID='${{ env[github.event.sender.id] }}'
+          PR_BODY='${{ github.event.pull_request.body }}'
+          if [ "${{ env.PR_PREFIX }}" = 'BE' ]; then
+            NOTIFY_CONTENT="<@&${{ env.backend }}>"
+            WEBHOOK_URL=${{ secrets.DISCORD_BE_PR_WEBHOOK_URL }}
+          elif [ "${{ env.PR_PREFIX }}" = 'FE' ]; then
+            NOTIFY_CONTENT="<@&${{ env.frontend }}>"
+            WEBHOOK_URL=${{ secrets.DISCORD_FE_PR_WEBHOOK_URL }}
+          elif [ "${{ env.PR_PREFIX }}" = 'All' ]; then
+            NOTIFY_CONTENT="<@&${{ env.backend }}> <@&${{ env.frontend }}>"
+            WEBHOOK_URL=${{ secrets.DISCORD_ALL_PR_WEBHOOK_URL }}
+          fi
+          
+          JSON_FILE=$(mktemp)
+          cat > $JSON_FILE <<EOF
+          {
+            "content": "$NOTIFY_CONTENT 새로운 Pull Request가 등록됐어요 🔥",
+            "embeds": [
+              {
+                "author": {
+                    "name": "$PR_AUTHOR",
+                    "icon_url": "https://github.com/$PR_AUTHOR.png"
+                },
+                "title": "$PR_TITLE",
+                "url": "$PR_URL",
+                "color": 6156543,
+                "footer": {
+                  "text": "2024-review-me"
+                },
+                "timestamp": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+              }
+            ]
+          }
+          EOF
+          cat $JSON_FILE
+          curl -X POST -H 'Content-type: application/json' \
+          --data @$JSON_FILE \
+          $WEBHOOK_URL
+          rm $JSON_FILE
