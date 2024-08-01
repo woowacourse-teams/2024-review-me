@@ -12,6 +12,7 @@ import DetailedReviewPage from './pages/DetailedReviewPage';
 import ErrorPage from './pages/ErrorPage';
 import ReviewPreviewListPage from './pages/ReviewPreviewListPage';
 import ReviewWritingPage from './pages/ReviewWriting';
+import ReviewWritingCompletePage from './pages/ReviewWritingCompletePage';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
@@ -37,9 +38,10 @@ const router = createBrowserRouter([
         element: <div>user</div>,
       },
       {
-        path: 'user/review-writing',
+        path: 'user/review-writing/:reviewRequestId',
         element: <ReviewWritingPage />,
       },
+      { path: 'user/review-writing-complete', element: <ReviewWritingCompletePage /> },
       {
         path: 'user/review-preview-list',
         element: <ReviewPreviewListPage />,
@@ -70,3 +72,23 @@ root.render(
     </QueryClientProvider>
   </React.StrictMode>,
 );
+
+// async function enableMocking() {
+//   if (process.env.MSW) {
+//     const { worker } = await import('./mocks/browser');
+//     return worker.start();
+//   }
+// }
+
+// enableMocking().then(() => {
+//   root.render(
+//     <React.StrictMode>
+//       <QueryClientProvider client={queryClient}>
+//         <ThemeProvider theme={theme}>
+//           <Global styles={globalStyles} />
+//           <RouterProvider router={router} />
+//         </ThemeProvider>
+//       </QueryClientProvider>
+//     </React.StrictMode>,
+//   );
+// });
