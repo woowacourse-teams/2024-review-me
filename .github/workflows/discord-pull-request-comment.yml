@@ -31,6 +31,9 @@ jobs:
           elif [ "$PR_PREFIX" = '[FE]' ]; then
             echo Frontend PR Found!
             echo "PR_PREFIX=FE" >> $GITHUB_ENV
+          elif [ "$PR_PREFIX" = '[All]' ]; then
+            echo All PR Found!
+            echo "PR_PREFIX=All" >> $GITHUB_ENV
           fi
           echo PR Prefix : $PR_PREFIX
           echo PR Prefix on env : ${{ env.PR_PREFIX }}
@@ -51,16 +54,16 @@ jobs:
           
           if [ "${{ env.PR_PREFIX }}" = 'BE' ]; then
             WEBHOOK_URL=${{ secrets.DISCORD_BE_PR_WEBHOOK_URL }}
-          else if [ "${{ env.PR_PREFIX }}" = 'FE' ]; then
+          elif [ "${{ env.PR_PREFIX }}" = 'FE' ]; then
             WEBHOOK_URL=${{ secrets.DISCORD_FE_PR_WEBHOOK_URL }}
-          else if [ "${{ env.PR_PREFIX }}" = 'All' ]; then
+          elif [ "${{ env.PR_PREFIX }}" = 'All' ]; then
             WEBHOOK_URL=${{ secrets.DISCORD_ALL_PR_WEBHOOK_URL }}
           fi
           
           if [ "${{ github.event.review.state }}" = 'approved' ]; then
             COMMENT="PR Approved 되었습니다 🚀"
             COLOR=65305
-          if [ "${{ github.event.review.state }}" = 'changes_requested' ]; then
+          elif [ "${{ github.event.review.state }}" = 'changes_requested' ]; then
             COMMENT="PR에 수정 요구사항이 있습니다 👀"
             COLOR=16736293
           else 
