@@ -5,11 +5,16 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reviewme.review.dto.response.ReviewSetUpKeyword;
+import reviewme.keyword.repository.KeywordRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.response.QuestionSetupResponse;
+import reviewme.review.dto.response.ReviewSetupResponse;
+import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
@@ -25,6 +30,9 @@ public class ReviewService {
     private final ReviewKeywordRepository reviewKeywordRepository;
     private final ReviewContentRepository reviewContentRepository;
     private final ReviewGroupRepository reviewGroupRepository;
+    private final QuestionRepository questionRepository;
+    private final KeywordRepository keywordRepository;
+
     private final ReviewCreationQuestionValidator reviewCreationQuestionValidator;
     private final ReviewCreationKeywordValidator reviewCreationKeywordValidator;
 
@@ -62,5 +70,27 @@ public class ReviewService {
                 .map(keyword -> new ReviewKeyword(savedReviewId, keyword))
                 .toList();
         reviewKeywordRepository.saveAll(reviewKeywords);
+    }
+
+    @Transactional(readOnly = true)
+    public ReviewSetupResponse findReviewCreationSetup(String reviewRequestCode) {
+        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(InvalidReviewRequestCodeException::new);
+        return createReviewSetupResponse(reviewGroup);
+    }
+
+    private ReviewSetupResponse createReviewSetupResponse(ReviewGroup reviewGroup) {
+        List<QuestionSetupResponse> questionSetupRespons = questionRepository.findAll()
+                .stream()
+                .map(question -> new QuestionSetupResponse(question.getId(), question.getContent()))
+                .toList();
+
+        List<ReviewSetUpKeyword> reviewSetUpKeywordRespons = keywordRepository.findAll()
+                .stream()
+                .map(keyword -> new ReviewSetUpKeyword(keyword.getId(), keyword.getContent()))
+                .toList();
+
+        return new ReviewSetupResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(),
+                questionSetupRespons, reviewSetUpKeywordRespons);
     }
 }
