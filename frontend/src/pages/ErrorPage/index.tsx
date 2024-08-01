@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router';
 
 import { Main, PageLayout, SideModal, Sidebar, Topbar, ErrorSection } from '@/components';
+import { ROUTE_ERROR_MESSAGE } from '@/constants';
 import { useSidebar } from '@/hooks';
-
-const ERROR_MESSAGE = '찾으시는 페이지가 없어요.';
 
 const ErrorPage = () => {
   const { isSidebarHidden, isSidebarModalOpen, closeSidebar, openSidebar } = useSidebar();
@@ -26,7 +25,7 @@ const ErrorPage = () => {
       )}
       <Topbar openSidebar={openSidebar} />
       <Main>
-        <ErrorSection errorMessage={ERROR_MESSAGE} handleReload={handleReload} handleGoHome={handleGoHome} />
+        <ErrorSection errorMessage={ROUTE_ERROR_MESSAGE} handleReload={handleReload} handleGoHome={handleGoHome} />
       </Main>
     </PageLayout>
   );
