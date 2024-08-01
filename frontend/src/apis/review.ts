@@ -3,8 +3,8 @@ import { DetailReviewData, ReviewData, WritingReviewInfoData } from '@/types';
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
-export const getDataToWriteReviewApi = async (reviewerGroupId: number) => {
-  const response = await fetch(endPoint.gettingDataToWriteReview(reviewerGroupId), {
+export const getDataToWriteReviewApi = async (reviewRequestCode: string) => {
+  const response = await fetch(endPoint.gettingDataToWriteReview(reviewRequestCode), {
     method: 'GET',
   });
 
@@ -29,8 +29,7 @@ export const postReviewApi = async ({ reviewData }: { reviewData: ReviewData }) 
     throw new Error(createApiErrorMessage(response.status));
   }
 
-  const data = await response.json();
-  return data;
+  return;
 };
 
 // 상세 리뷰
