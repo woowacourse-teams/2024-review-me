@@ -1,16 +1,17 @@
 import * as S from './styles';
 
-interface InputProps {
+export interface InputStyleProps {
+  $style?: React.CSSProperties;
+}
+interface InputProps extends InputStyleProps {
   value: string;
   onChange: (value: string) => void;
   type: string;
   id?: string;
   placeholder?: string;
-  $width?: string;
-  $height?: string;
 }
 
-const Input = ({ id, value, onChange, type, placeholder, $width, $height, ...rest }: InputProps) => {
+const Input = ({ id, value, onChange, type, placeholder, $style, ...rest }: InputProps) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
   };
@@ -22,8 +23,7 @@ const Input = ({ id, value, onChange, type, placeholder, $width, $height, ...res
       type={type}
       onChange={handleChange}
       placeholder={placeholder}
-      $width={$width}
-      $height={$height}
+      $style={$style}
       {...rest}
     />
   );
