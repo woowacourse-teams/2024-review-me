@@ -13,9 +13,10 @@ interface ErrorSectionProps {
 }
 
 const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSectionProps) => {
-  const buttons = [
+  const buttonList = [
     {
       buttonType: 'primary' as ButtonType,
+      key: 'refreshButton',
       text: '새로고침하기',
       image: ReloadIcon,
       imageDescription: '새로고침 이미지',
@@ -23,6 +24,7 @@ const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSection
     },
     {
       buttonType: 'secondary' as ButtonType,
+      key: 'homeButton',
       text: '홈으로 이동하기',
       image: HomeIcon,
       imageDescription: '홈 이미지',
@@ -37,16 +39,15 @@ const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSection
       </S.ErrorLogoWrapper>
       <S.ErrorMessage>{errorMessage}</S.ErrorMessage>
       <S.Container>
-        {buttons.map((button, index) => (
-          <S.ButtonContainer key={index}>
-            <Button
-              buttonType={button.buttonType}
-              text={button.text}
-              image={button.image}
-              imageDescription={button.imageDescription}
-              onClick={button.onClick}
-            />
-          </S.ButtonContainer>
+        {buttonList.map((button) => (
+          <Button
+            key={button.key}
+            buttonType={button.buttonType}
+            text={button.text}
+            image={button.image}
+            imageDescription={button.imageDescription}
+            onClick={button.onClick}
+          />
         ))}
       </S.Container>
     </S.Layout>

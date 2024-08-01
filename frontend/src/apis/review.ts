@@ -1,4 +1,4 @@
-import { ReviewData, WritingReviewInfoData } from '@/types';
+import { DetailReviewData, ReviewData, WritingReviewInfoData } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
@@ -47,7 +47,7 @@ export const getDetailedReviewApi = async ({ reviewId, memberId }: { reviewId: n
   }
 
   const data = await response.json();
-  return data;
+  return data as DetailReviewData;
 };
 
 // 리뷰 리스트

@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.response.ReceivedReviewsResponse;
+import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.service.ReviewService;
 
 @RestController
 @RequiredArgsConstructor
-public class ReviewController implements ReviewApi{
+public class ReviewController implements ReviewApi {
 
     private static final String GROUP_ACCESS_CODE_HEADER = "GroupAccessCode";
 
@@ -28,6 +29,13 @@ public class ReviewController implements ReviewApi{
     public ResponseEntity<Void> createReview(@Valid @RequestBody CreateReviewRequest request) {
         long savedReviewId = reviewService.createReview(request);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
+    }
+
+    @GetMapping("/reviews")
+    public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(HttpServletRequest request) {
+        String groupAccessCode = request.getHeader(GROUP_ACCESS_CODE_HEADER);
+        ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/reviews/write")

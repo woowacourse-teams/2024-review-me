@@ -16,6 +16,9 @@ import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.KeywordResponse;
 import reviewme.review.dto.response.QuestionSetupResponse;
+import reviewme.review.dto.response.ReceivedReviewKeywordsResponse;
+import reviewme.review.dto.response.ReceivedReviewResponse;
+import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.dto.response.ReviewContentResponse;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
@@ -40,6 +43,8 @@ public class ReviewService {
     private final ReviewCreationQuestionValidator reviewCreationQuestionValidator;
     private final ReviewCreationKeywordValidator reviewCreationKeywordValidator;
 
+    private final ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
+
     @Transactional
     public Long createReview(CreateReviewRequest request) {
         Review savedReview = saveReview(request);
@@ -63,9 +68,7 @@ public class ReviewService {
                 .toList();
         Review review = new Review(reviewGroup.getId(), reviewContents, LocalDateTime.now());
 
-        Review savedReview = reviewRepository.save(review);
-        reviewContentRepository.saveAll(reviewContents);
-        return savedReview;
+        return reviewRepository.save(review);
     }
 
     private void saveReviewKeywords(List<Long> selectedKeywordIds, long savedReviewId) {
@@ -133,6 +136,32 @@ public class ReviewService {
                 reviewGroup.getReviewee(),
                 reviewContents,
                 keywords
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public ReceivedReviewsResponse findReceivedReviews(String groupAccessCode) {
+        ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
+                .orElseThrow(ReviewGroupNotFoundException::new);
+        List<ReceivedReviewResponse> reviewResponses = reviewRepository.findAllByReviewGroupId(reviewGroup.getId())
+                .stream()
+                .map(this::extractResponse)
+                .toList();
+        return new ReceivedReviewsResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewResponses);
+    }
+
+    private ReceivedReviewResponse extractResponse(Review review) {
+        List<ReceivedReviewKeywordsResponse> keywordsResponses =
+                reviewKeywordRepository.findAllByReviewId(review.getId())
+                        .stream()
+                        .map(reviewKeyword -> keywordRepository.getKeywordById(reviewKeyword.getKeywordId()))
+                        .map(keyword -> new ReceivedReviewKeywordsResponse(keyword.getId(), keyword.getContent()))
+                        .toList();
+        return new ReceivedReviewResponse(
+                review.getId(),
+                review.getCreatedAt().toLocalDate(),
+                reviewPreviewGenerator.generatePreview(review.getReviewContents()),
+                keywordsResponses
         );
     }
 }

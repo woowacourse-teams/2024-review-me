@@ -3,6 +3,7 @@ package reviewme.review.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static reviewme.fixture.KeywordFixture.꼼꼼하게_기록해요;
 import static reviewme.fixture.KeywordFixture.추진력이_좋아요;
 import static reviewme.fixture.KeywordFixture.회의를_이끌어요;
 import static reviewme.fixture.QuestionFixure.기술역량이_어떤가요;
@@ -17,16 +18,20 @@ import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.repository.KeywordRepository;
 import reviewme.question.domain.Question;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.ReviewContent;
+import reviewme.review.domain.ReviewKeyword;
 import reviewme.review.domain.exception.ReviewGroupNotFoundException;
 import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
+import reviewme.review.service.exception.InvalidGroupAccessCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -109,6 +114,41 @@ class ReviewServiceTest {
                 () -> assertThat(reviewCreationSetup.questions()).hasSize(2),
                 () -> assertThat(reviewCreationSetup.keywords()).hasSize(2)
         );
+    }
+
+    @Test
+    void 확인_코드에_해당하는_그룹이_없는_경우_예외가_발생한다() {
+        assertThatThrownBy(() -> reviewService.findReceivedReviews("abc"))
+                .isInstanceOf(ReviewGroupNotFoundException.class);
+    }
+
+    @Test
+    void 확인_코드에_해당하는_그룹이_존재하면_리뷰_리스트를_반환한다() {
+        // given
+        String groupAccessCode = "5678";
+        ReviewGroup reviewGroup = reviewGroupRepository.save(new ReviewGroup("산초", "리뷰미", "1234", groupAccessCode));
+        Question question = questionRepository.save(기술역량이_어떤가요.create());
+        Keyword keyword = keywordRepository.save(꼼꼼하게_기록해요.create());
+        ReviewContent reviewContent1 = new ReviewContent(question.getId(), "기술역량 최고입니다 최고예요 !!!!!");
+        ReviewContent reviewContent2 = new ReviewContent(question.getId(), "기술역량은 별로라고 생각해요 !!!!!");
+
+        Review review1 = reviewRepository.save(
+                new Review(reviewGroup.getId(), List.of(reviewContent1), LocalDateTime.now())
+        );
+        Review review2 = reviewRepository.save(
+                new Review(reviewGroup.getId(), List.of(reviewContent2), LocalDateTime.now())
+        );
+
+        reviewKeywordRepository.saveAll(List.of(
+                new ReviewKeyword(review1.getId(), keyword.getId()),
+                new ReviewKeyword(review2.getId(), keyword.getId())
+        ));
+
+        // when
+        ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
+
+        // then
+        assertThat(response.reviews()).hasSize(2);
     }
 
     @Test
