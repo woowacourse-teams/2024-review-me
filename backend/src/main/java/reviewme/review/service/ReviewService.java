@@ -72,7 +72,7 @@ public class ReviewService {
         reviewKeywordRepository.saveAll(reviewKeywords);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public ReviewSetupResponse findReviewCreationSetup(String reviewRequestCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(InvalidReviewRequestCodeException::new);
