@@ -30,17 +30,17 @@ const DetailedReviewPage = () => {
   return (
     <S.DetailedReviewPage>
       <ReviewDescription
-        projectName={detailedReview.reviewerGroup.name}
+        projectName={detailedReview.projectName}
         date={new Date(detailedReview.createdAt)}
         revieweeName={detailedReview.revieweeName}
         isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
       />
       {/* 시연 때 숨김 <RevieweeComments comment={detailedReview.reviewerGroup.description} /> */}
-      {detailedReview.reviews.map((item, index) => (
-        <ReviewSection question={item.question} answer={item.answer} key={index} index={index} />
+      {detailedReview.contents.map(({ id, question, answer }, index) => (
+        <ReviewSection key={id} question={question} answer={answer} index={index} />
       ))}
-      <KeywordSection keywords={detailedReview.keywords} index={detailedReview.reviews.length} />
+      <KeywordSection keywords={detailedReview.keywords} index={detailedReview.contents.length} />
     </S.DetailedReviewPage>
   );
 };
