@@ -5,14 +5,14 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.keyword.dto.response.KeywordResponse;
+import reviewme.review.dto.response.ReviewSetUpKeyword;
 import reviewme.keyword.repository.KeywordRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
-import reviewme.review.dto.response.QuestionResponse;
+import reviewme.review.dto.response.QuestionSetupResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.ReviewContentRepository;
@@ -80,17 +80,17 @@ public class ReviewService {
     }
 
     private ReviewSetupResponse createReviewSetupResponse(ReviewGroup reviewGroup) {
-        List<QuestionResponse> questionResponses = questionRepository.findAll()
+        List<QuestionSetupResponse> questionSetupRespons = questionRepository.findAll()
                 .stream()
-                .map(question -> new QuestionResponse(question.getId(), question.getContent()))
+                .map(question -> new QuestionSetupResponse(question.getId(), question.getContent()))
                 .toList();
 
-        List<KeywordResponse> keywordResponses = keywordRepository.findAll()
+        List<ReviewSetUpKeyword> reviewSetUpKeywordRespons = keywordRepository.findAll()
                 .stream()
-                .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getContent()))
+                .map(keyword -> new ReviewSetUpKeyword(keyword.getId(), keyword.getContent()))
                 .toList();
 
         return new ReviewSetupResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(),
-                questionResponses, keywordResponses);
+                questionSetupRespons, reviewSetUpKeywordRespons);
     }
 }
