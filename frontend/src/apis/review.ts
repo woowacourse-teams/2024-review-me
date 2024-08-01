@@ -1,4 +1,3 @@
-//리뷰 작성
 import { DetailReviewData, ReviewData, WritingReviewInfoData } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
