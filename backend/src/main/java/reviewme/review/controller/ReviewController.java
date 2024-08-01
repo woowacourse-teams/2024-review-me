@@ -21,7 +21,7 @@ public class ReviewController implements ReviewApi{
 
     @PostMapping("/reviews")
     public ResponseEntity<Void> createReview(@Valid @RequestBody CreateReviewRequest request) {
-        Long savedReviewId = reviewService.createReview(request);
+        long savedReviewId = reviewService.createReview(request);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
