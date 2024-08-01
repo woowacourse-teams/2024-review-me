@@ -48,13 +48,13 @@ jobs:
           DISCORD_ID='${{ env[github.event.sender.id] }}'
           PR_BODY='${{ github.event.pull_request.body }}'
           if [ "${{ env.PR_PREFIX }}" = 'BE' ]; then
-            NOTIFY_CONTENT= "<@&${{ env.backend }}>"
+            NOTIFY_CONTENT="<@&${{ env.backend }}>"
             WEBHOOK_URL=${{ secrets.DISCORD_BE_PR_WEBHOOK_URL }}
           elif [ "${{ env.PR_PREFIX }}" = 'FE' ]; then
-            NOTIFY_CONTENT= "<@&${{ env.frontend }}>"
+            NOTIFY_CONTENT="<@&${{ env.frontend }}>"
             WEBHOOK_URL=${{ secrets.DISCORD_FE_PR_WEBHOOK_URL }}
           elif [ "${{ env.PR_PREFIX }}" = 'All' ]; then
-            NOTIFY_CONTENT= "<@&${{ env.backend }}> <@&${{ env.frontend }}>"
+            NOTIFY_CONTENT="<@&${{ env.backend }}> <@&${{ env.frontend }}>"
             WEBHOOK_URL=${{ secrets.DISCORD_ALL_PR_WEBHOOK_URL }}
           fi
           
