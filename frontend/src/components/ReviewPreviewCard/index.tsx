@@ -1,42 +1,29 @@
-import GithubLogo from '@/assets/githubLogo.svg';
-import Lock from '@/assets/lock.svg';
-import UnLock from '@/assets/unLock.svg';
+import GithubLogoIcon from '@/assets/githubLogo.svg';
+import { ReviewPreview } from '@/types';
 
 import * as S from './styles';
 
-interface ReviewPreviewCardProps {
-  reviewerGroup: {
-    name: string;
-  };
-  createdAt: string;
-  contentPreview: string;
-  keywords: { id: number; content: string }[];
-  isPublic: boolean;
+interface ReviewPreviewCardProps extends ReviewPreview {
+  projectName: string;
 }
 
-const ReviewPreviewCard = ({
-  reviewerGroup,
-  createdAt,
-  contentPreview,
-  keywords,
-  isPublic,
-}: ReviewPreviewCardProps) => {
+const ReviewPreviewCard = ({ id, projectName, createdAt, contentPreview, keywords }: ReviewPreviewCardProps) => {
   return (
-    <S.Layout>
+    <S.Layout data-id={id}>
       <S.Header>
-        <S.HeaderContainer>
+        <S.HeaderContent>
           <div>
-            <img src={GithubLogo} />
+            <img src={GithubLogoIcon} alt="깃허브 로고" />
           </div>
           <div>
-            <S.Title>{reviewerGroup.name}</S.Title>
+            <S.Title>{projectName}</S.Title>
             <S.SubTitle>{createdAt}</S.SubTitle>
           </div>
-        </S.HeaderContainer>
-        <S.Visibility>
-          <img src={isPublic ? UnLock : Lock} />
+        </S.HeaderContent>
+        {/* 추후에 사용될 수 있어서 일단 주석 처리 <S.Visibility>
+          <img src={isPublic ? UnLock : Lock} alt="자물쇠 아이콘" />
           <span>{isPublic ? '공개' : '비공개'}</span>
-        </S.Visibility>
+        </S.Visibility> */}
       </S.Header>
       <S.Main>
         <span>{contentPreview}</span>

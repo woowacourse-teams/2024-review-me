@@ -46,6 +46,7 @@ export const colors: ThemeProperty<CSSProperties['color']> = {
   sidebarBackground: `rgba(0, 0, 0, 0.25)`,
   disabled: '#D8D8D8',
   disabledText: '#7F7F7F',
+  red: '#FF0000',
 };
 
 export const zIndex: ThemeProperty<CSSProperties['zIndex']> = {
