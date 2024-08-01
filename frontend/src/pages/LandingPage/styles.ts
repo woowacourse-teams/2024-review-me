@@ -37,9 +37,9 @@ export const ReviewAccessFormBody = styled.div`
   width: 100%;
 `;
 
-export const FormBody = styled.div<{ direction: FormDirection }>`
+export const FormBody = styled.div<{ direction: React.CSSProperties['flexDirection'] }>`
   display: flex;
-  flex-direction: ${({ direction }) => (direction === 'col' ? 'column' : 'row')};
+  flex-direction: ${({ direction }) => direction};
   gap: 1.6em;
 `;
 

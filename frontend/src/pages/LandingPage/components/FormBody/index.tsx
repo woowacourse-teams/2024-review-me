@@ -3,10 +3,9 @@ import React from 'react';
 import { EssentialPropsWithChildren } from '@/types';
 
 import * as S from '../../styles';
-import { FormDirection } from '../FormLayout';
 
 interface FormBodyProps {
-  direction: FormDirection;
+  direction: React.CSSProperties['flexDirection'];
 }
 
 const FormBody: React.FC<EssentialPropsWithChildren<FormBodyProps>> = ({ direction, children }) => {
