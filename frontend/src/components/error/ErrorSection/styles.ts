@@ -36,3 +36,11 @@ export const Container = styled.div`
     font-size: 1.4rem;
   }
 `;
+
+export const ErrorSectionButtonContents = styled.div`
+  display: flex;
+  align-items: center;
+  span {
+    margin-left: 1rem;
+  }
+`;
