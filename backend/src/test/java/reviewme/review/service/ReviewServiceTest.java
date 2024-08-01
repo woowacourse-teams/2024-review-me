@@ -20,9 +20,12 @@ import reviewme.question.domain.Question;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
+import reviewme.review.domain.exception.ReviewGroupNotFoundException;
+import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
+import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.ReviewContentRepository;
@@ -116,7 +119,7 @@ class ReviewServiceTest {
     @Test
     void 확인_코드에_해당하는_그룹이_없는_경우_예외가_발생한다() {
         assertThatThrownBy(() -> reviewService.findReceivedReviews("abc"))
-                .isInstanceOf(InvalidGroupAccessCodeException.class);
+                .isInstanceOf(ReviewGroupNotFoundException.class);
     }
 
     @Test
@@ -146,5 +149,51 @@ class ReviewServiceTest {
 
         // then
         assertThat(response.reviews()).hasSize(2);
+    }
+
+    @Test
+    void 리뷰를_조회한다() {
+        // given
+        String groupAccessCode = "groupAccessCode";
+        ReviewGroup reviewGroup = reviewGroupRepository.save(
+                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode", groupAccessCode));
+        Review review = reviewRepository.save(new Review(reviewGroup.getId(), List.of(), LocalDateTime.now()));
+
+        // when
+        ReviewDetailResponse response = reviewService.findReceivedReviewDetail(groupAccessCode,
+                review.getId());
+
+        // then
+        assertThat(response.id()).isEqualTo(review.getId());
+    }
+
+    @Test
+    void 잘못된_그룹_액세스_코드로_리뷰를_조회할_경우_예외를_발생한다() {
+        // given
+        ReviewGroup reviewGroup = reviewGroupRepository.save(
+                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode", "groupAccessCode"));
+
+        Review review = reviewRepository.save(new Review(reviewGroup.getId(), List.of(), LocalDateTime.now()));
+
+        // when, then
+        assertThatThrownBy(() -> reviewService.findReceivedReviewDetail("wrongGroupAccessCode", review.getId()))
+                .isInstanceOf(ReviewGroupNotFoundException.class);
+    }
+
+    @Test
+    void 리뷰_그룹에_해당하는_않는_리뷰를_조회할_경우_예외를_발생한다() {
+        // given
+        ReviewGroup reviewGroup1 = reviewGroupRepository.save(
+                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode1", "groupAccessCode1"));
+        ReviewGroup reviewGroup2 = reviewGroupRepository.save(
+                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode2", "groupAccessCode2"));
+
+        Review review1 = reviewRepository.save(new Review(reviewGroup1.getId(), List.of(), LocalDateTime.now()));
+        Review review2 = reviewRepository.save(new Review(reviewGroup2.getId(), List.of(), LocalDateTime.now()));
+
+        // when, then
+        assertThatThrownBy(
+                () -> reviewService.findReceivedReviewDetail(reviewGroup1.getGroupAccessCode(), review2.getId()))
+                .isInstanceOf(ReviewIsNotInReviewGroupException.class);
     }
 }

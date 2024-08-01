@@ -41,4 +41,8 @@ public class Review {
         this.reviewContents = reviewContents;
         this.createdAt = createdAt;
     }
+
+    public boolean isGroupIdEqualTo(long reviewGroupId) {
+        return this.reviewGroupId == reviewGroupId;
+    }
 }

@@ -6,23 +6,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.keyword.repository.KeywordRepository;
+import reviewme.question.domain.Question;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
+import reviewme.review.domain.exception.ReviewGroupNotFoundException;
+import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.response.KeywordResponse;
 import reviewme.review.dto.response.QuestionSetupResponse;
 import reviewme.review.dto.response.ReceivedReviewKeywordsResponse;
 import reviewme.review.dto.response.ReceivedReviewResponse;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
-import reviewme.review.dto.response.ReviewSetUpKeyword;
+import reviewme.review.dto.response.ReviewContentResponse;
+import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
-import reviewme.review.service.exception.InvalidGroupAccessCodeException;
-import reviewme.review.service.exception.InvalidReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -51,7 +54,7 @@ public class ReviewService {
 
     private Review saveReview(CreateReviewRequest request) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(request.reviewRequestCode())
-                .orElseThrow(InvalidReviewRequestCodeException::new);
+                .orElseThrow(ReviewGroupNotFoundException::new);
 
         List<Long> questionIds = request.reviewContents()
                 .stream()
@@ -79,29 +82,67 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReviewSetupResponse findReviewCreationSetup(String reviewRequestCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(InvalidReviewRequestCodeException::new);
+                .orElseThrow(ReviewGroupNotFoundException::new);
         return createReviewSetupResponse(reviewGroup);
     }
 
     private ReviewSetupResponse createReviewSetupResponse(ReviewGroup reviewGroup) {
-        List<QuestionSetupResponse> questionSetupRespons = questionRepository.findAll()
+        List<QuestionSetupResponse> questionSetupResponse = questionRepository.findAll()
                 .stream()
                 .map(question -> new QuestionSetupResponse(question.getId(), question.getContent()))
                 .toList();
 
-        List<ReviewSetUpKeyword> reviewSetUpKeywordRespons = keywordRepository.findAll()
+        List<KeywordResponse> keywordResponse = keywordRepository.findAll()
                 .stream()
-                .map(keyword -> new ReviewSetUpKeyword(keyword.getId(), keyword.getContent()))
+                .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getContent()))
                 .toList();
 
-        return new ReviewSetupResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(),
-                questionSetupRespons, reviewSetUpKeywordRespons);
+        return new ReviewSetupResponse(
+                reviewGroup.getReviewee(), reviewGroup.getProjectName(), questionSetupResponse, keywordResponse
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public ReviewDetailResponse findReceivedReviewDetail(String groupAccessCode, long reviewId) {
+        ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
+                .orElseThrow(ReviewGroupNotFoundException::new);
+
+        Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
+                .orElseThrow(ReviewIsNotInReviewGroupException::new);
+
+        return createReviewDetailResponse(review, reviewGroup);
+    }
+
+    private ReviewDetailResponse createReviewDetailResponse(Review review, ReviewGroup reviewGroup) {
+        List<ReviewContentResponse> reviewContents = review.getReviewContents()
+                .stream()
+                .map(reviewContent -> {
+                    Question question = questionRepository.getQuestionById(reviewContent.getQuestionId());
+                    return new ReviewContentResponse(reviewContent.getId(), question.getContent(),
+                            reviewContent.getAnswer());
+                })
+                .toList();
+
+        List<KeywordResponse> keywords = reviewKeywordRepository.findAllByReviewId(review.getId())
+                .stream()
+                .map(reviewKeyword -> keywordRepository.getKeywordById(reviewKeyword.getKeywordId()))
+                .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getContent()))
+                .toList();
+
+        return new ReviewDetailResponse(
+                review.getId(),
+                review.getCreatedAt().toLocalDate(),
+                reviewGroup.getProjectName(),
+                reviewGroup.getReviewee(),
+                reviewContents,
+                keywords
+        );
     }
 
     @Transactional(readOnly = true)
     public ReceivedReviewsResponse findReceivedReviews(String groupAccessCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
-                .orElseThrow(InvalidGroupAccessCodeException::new);
+                .orElseThrow(ReviewGroupNotFoundException::new);
         List<ReceivedReviewResponse> reviewResponses = reviewRepository.findAllByReviewGroupId(reviewGroup.getId())
                 .stream()
                 .map(this::extractResponse)
