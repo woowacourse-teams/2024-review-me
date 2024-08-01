@@ -26,7 +26,9 @@ const reset = () => css`
   blockquote,
   dl,
   dd {
+    margin: 0;
     margin-block-end: 0;
+    padding: 0;
   }
 
   /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
@@ -43,8 +45,8 @@ const reset = () => css`
 
   /* Set core body defaults */
   body {
-    margin: 0;
     min-height: 100vh;
+    margin: 0;
     line-height: 1.5;
   }
 
@@ -85,8 +87,8 @@ const reset = () => css`
   button,
   textarea,
   select {
-    font-size: inherit;
     font-family: inherit;
+    font-size: inherit;
   }
 
   /* Make sure textareas without a rows attribute are not tiny */
@@ -101,11 +103,13 @@ const reset = () => css`
 
   button {
     cursor: pointer;
+
     box-sizing: border-box;
-    border: none;
-    background-color: transparent;
-    padding: 0;
     margin: 0;
+    padding: 0;
+
+    background-color: transparent;
+    border: none;
   }
 `;
 
