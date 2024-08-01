@@ -29,8 +29,7 @@ export interface DetailReviewData {
 
 // api
 export interface ReviewData {
-  reviewerId: number; // 추후 제거한 뒤 토큰으로 대체
-  reviewerGroupId: number; // 임의 설정
+  reviewRequestCode: string;
   reviewContents: ReviewContent[];
   keywords: number[];
 }
@@ -46,17 +45,8 @@ export interface Question {
 }
 
 export interface WritingReviewInfoData {
-  reviewerGroup: {
-    id: number;
-    name: string;
-    description: string;
-    deadline: Date;
-    thumbnailUrl: string;
-    reviewee: {
-      id: number;
-      name: string;
-    };
-  };
+  revieweeName: string;
+  projectName: string;
   questions: Question[];
   keywords: Keyword[];
 }
