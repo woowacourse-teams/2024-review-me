@@ -61,19 +61,13 @@ export interface WritingReviewInfoData {
 }
 
 export interface ReviewPreviewList {
-  size: number;
-  lastReviewId: number;
+  revieweeName: string;
+  projectName: string;
   reviews: ReviewPreview[];
 }
 
 export interface ReviewPreview {
   id: number;
-  isPublic: boolean;
-  reviewerGroup: {
-    id: number;
-    name: string;
-    thumbnailUrl: string;
-  };
   createdAt: string;
   contentPreview: string;
   keywords: Keyword[];
