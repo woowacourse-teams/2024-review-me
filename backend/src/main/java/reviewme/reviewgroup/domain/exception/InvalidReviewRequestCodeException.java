@@ -5,6 +5,6 @@ import reviewme.global.exception.BadRequestException;
 public class InvalidReviewRequestCodeException extends BadRequestException {
 
     public InvalidReviewRequestCodeException() {
-        super("잘못된 리뷰 요청코드입니다.");
+        super("잘못된 리뷰 요청코드예요.");
     }
 }
