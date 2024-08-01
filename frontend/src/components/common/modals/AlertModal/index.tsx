@@ -9,16 +9,29 @@ import * as S from './styles';
 interface CloseButton {
   type: ButtonStyleType;
   handleClick: () => void;
+  content: React.ReactNode;
 }
 
 interface AlertModalProps {
   closeButton: CloseButton;
+  isCloseOnBackground?: boolean;
+  isCloseOnEsc?: boolean;
+  handleClose?: () => void;
 }
 
-const AlertModal = ({ closeButton, children }: EssentialPropsWithChildren<AlertModalProps>) => {
+const AlertModal = ({
+  closeButton,
+  isCloseOnBackground = true,
+  isCloseOnEsc = true,
+  handleClose = closeButton.handleClick,
+  children,
+}: EssentialPropsWithChildren<AlertModalProps>) => {
   return (
     <ModalPortal>
-      <ModalBackground closeModal={() => {}}>
+      <ModalBackground
+        closeModalOnBackground={isCloseOnBackground ? handleClose : () => {}}
+        closeModalOnEsc={isCloseOnEsc ? handleClose : () => {}}
+      >
         <S.AlertModalContainer>
           <S.Contents>{children}</S.Contents>
           <Button
@@ -26,7 +39,7 @@ const AlertModal = ({ closeButton, children }: EssentialPropsWithChildren<AlertM
             onClick={closeButton.handleClick}
             style={{ width: '100%', minWidth: '30rem', height: '4rem' }}
           >
-            닫기
+            {closeButton.content}
           </Button>
         </S.AlertModalContainer>
       </ModalBackground>
