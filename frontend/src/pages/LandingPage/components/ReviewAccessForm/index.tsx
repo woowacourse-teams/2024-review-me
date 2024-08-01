@@ -37,11 +37,13 @@ const ReviewAccessForm = () => {
               $style={{ width: '18rem' }}
             />
             <Button
-              buttonType={groupAccessCode ? 'primary' : 'disabled'}
-              text="리뷰 확인하기"
+              type="button"
+              styleType={groupAccessCode ? 'primary' : 'disabled'}
               onClick={handleAccessReviewButtonClick}
               disabled={!groupAccessCode}
-            />
+            >
+              리뷰 확인하기
+            </Button>
           </S.ReviewAccessFormBody>
           {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
         </S.ReviewAccessFormContent>
