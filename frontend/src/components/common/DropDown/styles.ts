@@ -6,6 +6,6 @@ export const Container = styled.select`
 
   font-size: 1.6rem;
 
-  border: 1px solid ${({ theme }) => theme.colors.placeholder};
+  border: 0.1rem solid ${({ theme }) => theme.colors.placeholder};
   border-radius: 0.8rem;
 `;

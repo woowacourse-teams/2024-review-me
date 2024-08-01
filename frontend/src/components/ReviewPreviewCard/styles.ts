@@ -6,12 +6,12 @@ export const Layout = styled.div`
 
   width: 100%;
 
-  border: 1px solid ${({ theme }) => theme.colors.lightGray};
-  border-radius: 8px;
+  border: 0.1rem solid ${({ theme }) => theme.colors.lightGray};
+  border-radius: 0.8rem;
 
   &:hover {
     cursor: pointer;
-    border: 1px solid ${({ theme }) => theme.colors.lightPurple};
+    border: 0.1rem solid ${({ theme }) => theme.colors.lightPurple};
 
     & > div:first-of-type {
       background-color: ${({ theme }) => theme.colors.lightPurple};
