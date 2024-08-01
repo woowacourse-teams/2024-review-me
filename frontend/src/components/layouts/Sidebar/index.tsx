@@ -8,9 +8,11 @@ import { PAGE } from '../../../constants';
 
 import * as S from './styles';
 
+const WRITING_PAGE_REQUEST_CODE = 'Gt9lvr9j';
+
 const PATH = {
   myPage: '/user/mypage',
-  reviewWriting: '/user/review-writing',
+  reviewWriting: `/user/review-writing/${WRITING_PAGE_REQUEST_CODE}`,
   reviewPreviewList: '/user/review-preview-list',
   detailedReview: `/user/detailed-review/${DETAILED_PAGE_MOCK_API_SETTING_VALUES.reviewId}?memberId=${DETAILED_PAGE_MOCK_API_SETTING_VALUES.memberId}`,
   reviewGroupManagement: '/user/review-group-management',
@@ -44,7 +46,9 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
       <S.MenuList>
         {menuItems.map((item) => (
           <S.MenuItem key={item.path} selected={location.pathname === item.path}>
-            <Link to={item.path} onClick={closeSidebar}>{item.label}</Link>
+            <Link to={item.path} onClick={closeSidebar}>
+              {item.label}
+            </Link>
           </S.MenuItem>
         ))}
       </S.MenuList>
