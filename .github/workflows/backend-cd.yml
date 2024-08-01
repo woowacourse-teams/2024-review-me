@@ -85,4 +85,4 @@ jobs:
 
       - name: Start server
         run: |
-          sudo nohup java -jar ${{ env.ARTIFACT_DIRECTORY }}/${{ env.ARTIFACT_NAME }}.jar --server.port=80 &
+          sudo nohup java -jar ${{ env.ARTIFACT_DIRECTORY }}/${{ env.ARTIFACT_NAME }}.jar --server.port=80 --spring.profiles.active=local &
