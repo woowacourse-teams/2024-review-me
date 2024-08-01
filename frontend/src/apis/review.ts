@@ -47,8 +47,8 @@ export const getDetailedReviewApi = async ({ reviewId, memberId }: { reviewId: n
     throw new Error(createApiErrorMessage(response.status));
   }
 
-  const data: DetailReviewData = await response.json();
-  return data;
+  const data = await response.json();
+  return data as DetailReviewData;
 };
 
 // 리뷰 리스트
