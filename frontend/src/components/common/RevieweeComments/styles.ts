@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const ReviewComment = styled.p`
+export const RevieweeComments = styled.p`
   width: inherit;
   height: 3rem;
   margin-top: 1.6rem;
