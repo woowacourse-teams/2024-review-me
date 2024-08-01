@@ -35,9 +35,9 @@ public class ReviewController implements ReviewApi{
     }
 
     @GetMapping("/reviews/{id}")
-    public ResponseEntity<ReviewDetailResponse> findReview(@PathVariable long id, HttpServletRequest request) {
+    public ResponseEntity<ReviewDetailResponse> findReceivedReviewDetail(@PathVariable long id, HttpServletRequest request) {
         String groupAccessCode = request.getHeader("GroupAccessCode");
-        ReviewDetailResponse response = reviewService.findReview(groupAccessCode, id);
+        ReviewDetailResponse response = reviewService.findReceivedReviewDetail(groupAccessCode, id);
         return ResponseEntity.ok(response);
     }
 }

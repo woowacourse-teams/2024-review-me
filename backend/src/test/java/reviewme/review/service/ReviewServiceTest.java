@@ -120,7 +120,7 @@ class ReviewServiceTest {
         Review review = reviewRepository.save(new Review(reviewGroup.getId(), List.of(), LocalDateTime.now()));
 
         // when
-        ReviewDetailResponse response = reviewService.findReview(groupAccessCode,
+        ReviewDetailResponse response = reviewService.findReceivedReviewDetail(groupAccessCode,
                 review.getId());
 
         // then
@@ -136,7 +136,7 @@ class ReviewServiceTest {
         Review review = reviewRepository.save(new Review(reviewGroup.getId(), List.of(), LocalDateTime.now()));
 
         // when, then
-        assertThatThrownBy(() -> reviewService.findReview("wrongGroupAccessCode", review.getId()))
+        assertThatThrownBy(() -> reviewService.findReceivedReviewDetail("wrongGroupAccessCode", review.getId()))
                 .isInstanceOf(ReviewGroupNotFoundException.class);
     }
 
@@ -153,7 +153,7 @@ class ReviewServiceTest {
 
         // when, then
         assertThatThrownBy(
-                () -> reviewService.findReview(reviewGroup1.getGroupAccessCode(), review2.getId()))
+                () -> reviewService.findReceivedReviewDetail(reviewGroup1.getGroupAccessCode(), review2.getId()))
                 .isInstanceOf(ReviewIsNotInReviewGroupException.class);
     }
 }

@@ -100,7 +100,7 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewDetailResponse findReview(String groupAccessCode, long reviewId) {
+    public ReviewDetailResponse findReceivedReviewDetail(String groupAccessCode, long reviewId) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
                 .orElseThrow(ReviewGroupNotFoundException::new);
 
