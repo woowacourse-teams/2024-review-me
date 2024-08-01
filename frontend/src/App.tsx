@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
 
-import { Main, PageLayout, Sidebar, Topbar, SideModal, ErrorSuspenseContainer } from './components';
+import { Main, PageLayout, Sidebar, Topbar, SideModal } from './components';
 import { useSidebar } from './hooks';
 
 const App = () => {
@@ -15,9 +15,7 @@ const App = () => {
       )}
       <Topbar openSidebar={openSidebar} />
       <Main>
-        <ErrorSuspenseContainer>
-          <Outlet />
-        </ErrorSuspenseContainer>
+        <Outlet />
       </Main>
     </PageLayout>
   );

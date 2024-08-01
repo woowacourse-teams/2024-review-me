@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import App from '@/App';
 
+import { ErrorSuspenseContainer } from './components';
 import DetailedReviewPage from './pages/DetailedReviewPage';
 import ErrorPage from './pages/ErrorPage';
 import ReviewPreviewListPage from './pages/ReviewPreviewListPage';
@@ -44,7 +45,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'user/detailed-review/:id',
-        element: <DetailedReviewPage />,
+        element: (
+          <ErrorSuspenseContainer>
+            <DetailedReviewPage />
+          </ErrorSuspenseContainer>
+        ),
       },
     ],
   },
