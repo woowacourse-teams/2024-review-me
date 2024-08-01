@@ -5,7 +5,10 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.review.dto.response.ReviewSetUpKeyword;
+import reviewme.question.domain.Question;
+import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
+import reviewme.review.dto.response.ReviewDetailResponse;
+import reviewme.review.dto.response.KeywordResponse;
 import reviewme.keyword.repository.KeywordRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
@@ -13,12 +16,14 @@ import reviewme.review.domain.ReviewKeyword;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.QuestionSetupResponse;
+import reviewme.review.dto.response.ReviewContentResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
+import reviewme.reviewgroup.domain.exception.InvalidGroupAccessCodeException;
 import reviewme.reviewgroup.domain.exception.InvalidReviewRequestCodeException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -85,12 +90,51 @@ public class ReviewService {
                 .map(question -> new QuestionSetupResponse(question.getId(), question.getContent()))
                 .toList();
 
-        List<ReviewSetUpKeyword> reviewSetUpKeywordRespons = keywordRepository.findAll()
+        List<KeywordResponse> keywordResponseRespons = keywordRepository.findAll()
                 .stream()
-                .map(keyword -> new ReviewSetUpKeyword(keyword.getId(), keyword.getContent()))
+                .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getContent()))
                 .toList();
 
         return new ReviewSetupResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(),
-                questionSetupRespons, reviewSetUpKeywordRespons);
+                questionSetupRespons, keywordResponseRespons);
+    }
+
+    @Transactional(readOnly = true)
+    public ReviewDetailResponse findReview(String groupAccessCode, long reviewId) {
+        ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
+                .orElseThrow(InvalidGroupAccessCodeException::new);
+
+        Review review = reviewRepository.getReviewById(reviewId);
+        if (!review.isGroupIdEqualTo(reviewGroup.getId())) {
+            throw new ReviewIsNotInReviewGroupException();
+        }
+
+        return createReviewDetailResponse(review, reviewGroup);
+    }
+
+    private ReviewDetailResponse createReviewDetailResponse(Review review, ReviewGroup reviewGroup) {
+        List<ReviewContentResponse> reviewContents = review.getReviewContents()
+                .stream()
+                .map(reviewContent -> {
+                    Question question = questionRepository.getQuestionById(reviewContent.getQuestionId());
+                    return new ReviewContentResponse(reviewContent.getId(), question.getContent(),
+                            reviewContent.getAnswer());
+                })
+                .toList();
+
+        List<KeywordResponse> keywords = reviewKeywordRepository.findAllByReviewId(review.getId())
+                .stream()
+                .map(reviewKeyword -> keywordRepository.getKeywordById(reviewKeyword.getKeywordId()))
+                .map(keyword -> new KeywordResponse(keyword.getId(), keyword.getContent()))
+                .toList();
+
+        return new ReviewDetailResponse(
+                review.getId(),
+                review.getCreatedAt(),
+                reviewGroup.getProjectName(),
+                reviewGroup.getReviewee(),
+                reviewContents,
+                keywords
+        );
     }
 }
