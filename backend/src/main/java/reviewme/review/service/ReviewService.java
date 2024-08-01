@@ -63,9 +63,7 @@ public class ReviewService {
                 .toList();
         Review review = new Review(reviewGroup.getId(), reviewContents, LocalDateTime.now());
 
-        Review savedReview = reviewRepository.save(review);
-        reviewContentRepository.saveAll(reviewContents);
-        return savedReview;
+        return reviewRepository.save(review);
     }
 
     private void saveReviewKeywords(List<Long> selectedKeywordIds, long savedReviewId) {
