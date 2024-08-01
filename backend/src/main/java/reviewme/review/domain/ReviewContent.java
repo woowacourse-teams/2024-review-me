@@ -19,7 +19,6 @@ public class ReviewContent {
 
     private static final int MIN_ANSWER_LENGTH = 20;
     private static final int MAX_ANSWER_LENGTH = 1_000;
-    private static final int ANSWER_PREVIEW_LENGTH = 150;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,12 +40,5 @@ public class ReviewContent {
         if (answer.length() < MIN_ANSWER_LENGTH || answer.length() > MAX_ANSWER_LENGTH) {
             throw new InvalidAnswerLengthException(MIN_ANSWER_LENGTH, MAX_ANSWER_LENGTH);
         }
-    }
-
-    public String getAnswerPreview() {
-        if (answer.length() > ANSWER_PREVIEW_LENGTH) {
-            return answer.substring(0, ANSWER_PREVIEW_LENGTH);
-        }
-        return answer;
     }
 }

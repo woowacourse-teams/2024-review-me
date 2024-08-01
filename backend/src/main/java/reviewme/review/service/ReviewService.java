@@ -40,6 +40,8 @@ public class ReviewService {
     private final ReviewCreationQuestionValidator reviewCreationQuestionValidator;
     private final ReviewCreationKeywordValidator reviewCreationKeywordValidator;
 
+    private final ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
+
     @Transactional
     public Long createReview(CreateReviewRequest request) {
         Review savedReview = saveReview(request);
@@ -117,7 +119,7 @@ public class ReviewService {
         return new ReceivedReviewResponse(
                 review.getId(),
                 review.getCreatedAt().toLocalDate(),
-                review.getReviewContents().get(0).getAnswerPreview(),
+                reviewPreviewGenerator.generatePreview(review.getReviewContents()),
                 keywordsResponses
         );
     }
