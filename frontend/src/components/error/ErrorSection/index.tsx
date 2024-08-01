@@ -2,7 +2,7 @@ import AlertTriangle from '@/assets/alertTriangle.svg';
 import HomeIcon from '@/assets/home.svg';
 import ReloadIcon from '@/assets/reload.svg';
 import { Button } from '@/components';
-import { ButtonType } from '@/types/styles';
+import { ButtonStyleType } from '@/types/styles';
 
 import * as S from './styles';
 
@@ -12,13 +12,23 @@ interface ErrorSectionProps {
   handleGoHome: () => void;
 }
 
+interface ErrorSectionButton {
+  buttonType: ButtonStyleType;
+  key: string;
+  text: string;
+  /* eslint-disable */
+  imageSrc: any;
+  imageDescription: string;
+  onClick: () => void;
+}
+
 const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSectionProps) => {
-  const buttonList = [
+  const buttonList: ErrorSectionButton[] = [
     {
-      buttonType: 'primary' as ButtonType,
+      buttonType: 'primary',
       key: 'refreshButton',
       text: '새로고침하기',
-      image: ReloadIcon,
+      imageSrc: ReloadIcon,
       imageDescription: '새로고침 이미지',
       onClick: handleReload,
     },
@@ -26,7 +36,7 @@ const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSection
       buttonType: 'secondary' as ButtonType,
       key: 'homeButton',
       text: '홈으로 이동하기',
-      image: HomeIcon,
+      imageSrc: HomeIcon,
       imageDescription: '홈 이미지',
       onClick: handleGoHome,
     },
@@ -41,10 +51,11 @@ const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSection
       <S.Container>
         {buttonList.map((button) => (
           <Button
+            type="button"
             key={button.key}
             buttonType={button.buttonType}
             text={button.text}
-            image={button.image}
+            image={button.imageSrc}
             imageDescription={button.imageDescription}
             onClick={button.onClick}
           />
