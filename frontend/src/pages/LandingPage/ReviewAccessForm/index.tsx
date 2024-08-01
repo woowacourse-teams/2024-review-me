@@ -32,7 +32,7 @@ const ReviewAccessForm = () => {
             <Input
               value={groupAccessCode}
               onChange={handleGroupAccessCodeInputChange}
-              type="value"
+              type="text"
               placeholder="확인 코드를 입력해주세요."
               $width="18rem"
             />

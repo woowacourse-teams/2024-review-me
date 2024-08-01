@@ -29,11 +29,11 @@ const URLGeneratorForm = () => {
 
   return (
     <FormLayout title="함께한 팀원으로부터 리뷰를 받아보세요!" direction="col">
-      <Input value={name} onChange={handleNameInputChange} type="value" placeholder="이름을 입력해주세요" />
+      <Input value={name} onChange={handleNameInputChange} type="text" placeholder="이름을 입력해주세요" />
       <Input
         value={projectName}
         onChange={handleProjectNameInputChange}
-        type="value"
+        type="text"
         placeholder="함께한 프로젝트 이름을 입력해주세요"
       />
       <Button
