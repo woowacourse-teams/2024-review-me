@@ -1,7 +1,7 @@
 package reviewme.review.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Schema(name = "리뷰 상세 조회 응답")
@@ -11,7 +11,7 @@ public record ReviewDetailResponse(
         long id,
 
         @Schema(description = "리뷰 작성일")
-        LocalDateTime createdAt,
+        LocalDate createdAt,
 
         @Schema(description = "프로젝트명")
         String projectName,

@@ -131,7 +131,7 @@ public class ReviewService {
 
         return new ReviewDetailResponse(
                 review.getId(),
-                review.getCreatedAt(),
+                review.getCreatedAt().toLocalDate(),
                 reviewGroup.getProjectName(),
                 reviewGroup.getReviewee(),
                 reviewContents,
