@@ -11,21 +11,13 @@ interface InputProps extends InputStyleProps {
   placeholder?: string;
 }
 
-const Input = ({ id, value, onChange, type, placeholder, $style, ...rest }: InputProps) => {
+const Input = ({ id, value, onChange, type, placeholder, $style }: InputProps) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
   };
 
   return (
-    <S.Input
-      id={id}
-      value={value}
-      type={type}
-      onChange={handleChange}
-      placeholder={placeholder}
-      $style={$style}
-      {...rest}
-    />
+    <S.Input id={id} value={value} type={type} onChange={handleChange} placeholder={placeholder} $style={$style} />
   );
 };
 
