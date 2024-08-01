@@ -23,7 +23,6 @@ import reviewme.review.dto.response.ReviewContentResponse;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.repository.QuestionRepository;
-import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -35,7 +34,6 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ReviewKeywordRepository reviewKeywordRepository;
-    private final ReviewContentRepository reviewContentRepository;
     private final ReviewGroupRepository reviewGroupRepository;
     private final QuestionRepository questionRepository;
     private final KeywordRepository keywordRepository;
@@ -143,10 +141,11 @@ public class ReviewService {
     public ReceivedReviewsResponse findReceivedReviews(String groupAccessCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
                 .orElseThrow(ReviewGroupNotFoundException::new);
-        List<ReceivedReviewResponse> reviewResponses = reviewRepository.findAllByReviewGroupId(reviewGroup.getId())
-                .stream()
-                .map(this::extractResponse)
-                .toList();
+        List<ReceivedReviewResponse> reviewResponses =
+                reviewRepository.findReceivedReviewsByGroupId(reviewGroup.getId())
+                        .stream()
+                        .map(this::extractResponse)
+                        .toList();
         return new ReceivedReviewsResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewResponses);
     }
 
