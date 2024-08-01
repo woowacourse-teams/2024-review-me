@@ -84,10 +84,10 @@ class ReviewServiceTest {
     @Test
     void 리뷰_작성을_위해_필요한_정보를_조회한다() {
         // given
-        Keyword keyword1 = keywordRepository.save(추진력이_좋아요.create());
-        Keyword keyword2 = keywordRepository.save(회의를_이끌어요.create());
-        Question question1 = questionRepository.save(소프트스킬이_어떤가요.create());
-        Question question2 = questionRepository.save(기술역량이_어떤가요.create());
+        keywordRepository.save(추진력이_좋아요.create());
+        keywordRepository.save(회의를_이끌어요.create());
+        questionRepository.save(소프트스킬이_어떤가요.create());
+        questionRepository.save(기술역량이_어떤가요.create());
 
         String reviewee = "테드";
         String projectName = "리뷰미 프로젝트";
