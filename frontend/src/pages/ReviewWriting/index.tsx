@@ -89,14 +89,14 @@ const ReviewWritingPage = () => {
               <S.Reviewee>
                 <span>{dataToWrite.reviewerGroup.reviewee.name}</span>님을 리뷰해주세요!
               </S.Reviewee>
-              <S.ReviewExpirationDate>
+              {/* <S.ReviewExpirationDate>
                 <S.ClockImage src={ClockLogo} alt="시계" />
                 리뷰 마감일: {dataToWrite.reviewerGroup.deadline.toString()}
-              </S.ReviewExpirationDate>
+              </S.ReviewExpirationDate> */}
             </S.ReviewInfo>
           </S.Container>
         </S.ReviewInfoContainer>
-        <RevieweeComment text={dataToWrite.reviewerGroup.description}></RevieweeComment>
+        {/* <RevieweeComment text={dataToWrite.reviewerGroup.description}></RevieweeComment> */}
       </S.ReviewFormHeader>
       <S.ReviewFormMain>
         <S.ReviewContainer>
