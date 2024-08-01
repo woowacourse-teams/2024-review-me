@@ -91,7 +91,7 @@ export const KeywordTitle = styled.div`
   font-weight: 600;
 
   &::after {
-    content: ' (1개 ~ 5개)';
+    content: ' (최소 1개 ~ 최대 5개)';
   }
 `;
 
