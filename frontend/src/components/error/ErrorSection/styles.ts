@@ -29,13 +29,6 @@ export const Container = styled.div`
   gap: 3.5rem;
   align-items: center;
   justify-content: center;
-`;
-
-export const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 3rem;
 
   & > button {
     width: 17rem;

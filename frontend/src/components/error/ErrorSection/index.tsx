@@ -37,16 +37,15 @@ const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSection
       </S.ErrorLogoWrapper>
       <S.ErrorMessage>{errorMessage}</S.ErrorMessage>
       <S.Container>
-        {buttons.map((button, index) => (
-          <S.ButtonContainer key={index}>
-            <Button
-              buttonType={button.buttonType}
-              text={button.text}
-              image={button.image}
-              imageDescription={button.imageDescription}
-              onClick={button.onClick}
-            />
-          </S.ButtonContainer>
+        {buttons.map((button) => (
+          <Button
+            key={button.text}
+            buttonType={button.buttonType}
+            text={button.text}
+            image={button.image}
+            imageDescription={button.imageDescription}
+            onClick={button.onClick}
+          />
         ))}
       </S.Container>
     </S.Layout>
