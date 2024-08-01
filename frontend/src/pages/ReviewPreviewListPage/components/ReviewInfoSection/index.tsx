@@ -1,11 +1,11 @@
 import * as S from './styles';
 
-interface DescriptionSectionProps {
+interface ReviewInfoSectionProps {
   projectName: string;
   revieweeName: string;
 }
 
-const DescriptionSection = ({ projectName, revieweeName }: DescriptionSectionProps) => {
+const ReviewInfoSection = ({ projectName, revieweeName }: ReviewInfoSectionProps) => {
   return (
     <S.Container>
       <S.ProjectName>{projectName}</S.ProjectName>
@@ -14,4 +14,4 @@ const DescriptionSection = ({ projectName, revieweeName }: DescriptionSectionPro
   );
 };
 
-export default DescriptionSection;
+export default ReviewInfoSection;

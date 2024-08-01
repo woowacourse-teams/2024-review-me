@@ -6,9 +6,9 @@ export const Container = styled.div`
 `;
 
 export const ProjectName = styled.span`
-  font-size: 2.4rem;
+  font-size: 2.6rem;
 `;
 
 export const RevieweeName = styled.span`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 `;

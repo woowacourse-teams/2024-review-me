@@ -7,7 +7,7 @@ import { ReviewPreview } from '@/types';
 
 import LoadingPage from '../LoadingPage';
 
-import DescriptionSection from './components/DescriptionSection';
+import ReviewInfoSection from './components/ReviewInfoSection';
 import SearchSection from './components/SearchSection';
 import * as S from './styles';
 
@@ -44,9 +44,9 @@ const ReviewPreviewListPage = () => {
   return (
     <>
       <S.Layout>
-        <DescriptionSection
+        <ReviewInfoSection
           projectName={data?.pages[0].projectName}
-          revieweeName={`${data?.pages[0].revieweeName} 님에게 달린 리뷰입니다!`}
+          revieweeName={`${data?.pages[0].revieweeName}님에게 달린 리뷰입니다!`}
         />
         <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} />
         <S.ReviewSection>
