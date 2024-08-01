@@ -10,7 +10,7 @@ interface FormBodyProps {
 }
 
 const FormBody: React.FC<EssentialPropsWithChildren<FormBodyProps>> = ({ direction, children }) => {
-  return <div css={S.FormBody(direction)}>{children}</div>;
+  return <S.FormBody direction={direction}>{children}</S.FormBody>;
 };
 
 export default FormBody;

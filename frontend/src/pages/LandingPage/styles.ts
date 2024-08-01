@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { FormDirection } from './components/FormLayout';
@@ -38,9 +37,9 @@ export const ReviewAccessFormBody = styled.div`
   width: 100%;
 `;
 
-export const FormBody = (direction: FormDirection) => css`
+export const FormBody = styled.div<{ direction: FormDirection }>`
   display: flex;
-  flex-direction: ${direction === 'col' ? 'column' : 'row'};
+  flex-direction: ${({ direction }) => (direction === 'col' ? 'column' : 'row')};
   gap: 1.6em;
 `;
 
