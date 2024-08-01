@@ -29,7 +29,7 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
     { id: 3, question: '[비공개] 팀 동료로 근무한다면 같이 일 하고 싶은 개발자인가요?', answer: ANSWER },
   ],
   keywords: [
-    { id: 11, detail: '친절해요' },
-    { id: 22, detail: '이야기를 잘 들어줘요.' },
+    { id: 11, content: '친절해요' },
+    { id: 22, content: '이야기를 잘 들어줘요.' },
   ],
 };
