@@ -20,6 +20,8 @@ import reviewme.review.service.ReviewService;
 @RequiredArgsConstructor
 public class ReviewController implements ReviewApi{
 
+    private static final String GROUP_ACCESS_CODE_HEADER = "GroupAccessCode";
+
     private final ReviewService reviewService;
 
     @PostMapping("/reviews")
@@ -36,7 +38,7 @@ public class ReviewController implements ReviewApi{
 
     @GetMapping("/reviews/{id}")
     public ResponseEntity<ReviewDetailResponse> findReceivedReviewDetail(@PathVariable long id, HttpServletRequest request) {
-        String groupAccessCode = request.getHeader("GroupAccessCode");
+        String groupAccessCode = request.getHeader(GROUP_ACCESS_CODE_HEADER);
         ReviewDetailResponse response = reviewService.findReceivedReviewDetail(groupAccessCode, id);
         return ResponseEntity.ok(response);
     }
