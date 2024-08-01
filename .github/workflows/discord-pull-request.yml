@@ -5,14 +5,14 @@ on:
     types: [ opened, reopened ] # PR이 열렸을 때에만 작동합니다.
 
 env:
-  "donghoony": "206298119661420544"
-  "chysis": "243991296060948491"
-  "badahertz52": "1165830186990850110"
-  "ImxYJL": "859318944195149855"
-  "Kimprodp": "1164111111193366580"
-  "nayonsoso": "710749110570975243"
-  "skylar1220": "971312723260493834"
-  "soosoo22": "1162754699099906169"
+  "31026350": "206298119661420544"   // donghoony
+  "64690761": "243991296060948491"   // chysis
+  "69838872": "1165830186990850110"  // BadaHertz52
+  "111052302": "859318944195149855"  // ImxYJL
+  "145949635": "1164111111193366580" // Kimprodp
+  "76177848": "710749110570975243"   // nayonsoso
+  "110809927": "971312723260493834"  // skylar1220
+  "80167893": "1162754699099906169"  // soosoo22
   "backend": "1263405654534525051"
   "frontend": "1263406763382931467"
 
@@ -42,20 +42,23 @@ jobs:
           PR_URL='${{ github.event.pull_request.html_url }}'
           PR_TITLE='${{ github.event.pull_request.title }}'
           PR_AUTHOR='${{ github.event.sender.login }}'
-          DISCORD_ID='${{ env[github.event.sender.login] }}'
+          DISCORD_ID='${{ env[github.event.sender.id] }}'
           PR_BODY='${{ github.event.pull_request.body }}'
           if [ "${{ env.PR_PREFIX }}" = 'BE' ]; then
-            NOTIFY_ID=${{ env.backend }}
+            NOTIFY_CONTENT= "<@&${{ env.backend }}>"
             WEBHOOK_URL=${{ secrets.DISCORD_BE_PR_WEBHOOK_URL }}
-          else
-            NOTIFY_ID=${{ env.frontend }}
+          else if [ "${{ env.PR_PREFIX }}" = 'FE' ]; then
+            NOTIFY_CONTENT= "<@&${{ env.frontend }}>"
             WEBHOOK_URL=${{ secrets.DISCORD_FE_PR_WEBHOOK_URL }}
+          else if [ "${{ env.PR_PREFIX }}" = 'All' ]; then
+            NOTIFY_CONTENT= "<@&${{ env.backend }}> <@&${{ env.frontend }}>"
+            WEBHOOK_URL=${{ secrets.DISCORD_ALL_PR_WEBHOOK_URL }}
           fi
           
           JSON_FILE=$(mktemp)
           cat > $JSON_FILE <<EOF
           {
-            "content": "<@&$NOTIFY_ID> 새로운 Pull Request가 등록됐어요 🔥",
+            "content": "$NOTIFY_CONTENT 새로운 Pull Request가 등록됐어요 🔥",
             "embeds": [
               {
                 "author": {
