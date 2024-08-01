@@ -1,4 +1,4 @@
-name: Discord Notification on CI/CD
+name: Mention Discord on Pull Request Review
 
 on:
   pull_request_review:
