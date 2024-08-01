@@ -1,12 +1,14 @@
 package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.KeywordFixture.추진력이_좋아요;
 import static reviewme.fixture.KeywordFixture.회의를_이끌어요;
 import static reviewme.fixture.QuestionFixure.기술역량이_어떤가요;
 import static reviewme.fixture.QuestionFixure.소프트스킬이_어떤가요;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -15,14 +17,17 @@ import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.repository.KeywordRepository;
 import reviewme.question.domain.Question;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.ReviewContentRepository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
+import reviewme.reviewgroup.domain.exception.InvalidGroupAccessCodeException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
 
@@ -104,5 +109,51 @@ class ReviewServiceTest {
                 () -> assertThat(reviewCreationSetup.questions()).hasSize(2),
                 () -> assertThat(reviewCreationSetup.keywords()).hasSize(2)
         );
+    }
+
+    @Test
+    void 리뷰를_조회한다() {
+        // given
+        String groupAccessCode = "groupAccessCode";
+        ReviewGroup reviewGroup = reviewGroupRepository.save(
+                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode", groupAccessCode));
+        Review review = reviewRepository.save(new Review(reviewGroup.getId(), List.of(), LocalDateTime.now()));
+
+        // when
+        ReviewDetailResponse response = reviewService.findReview(groupAccessCode,
+                review.getId());
+
+        // then
+        assertThat(response.id()).isEqualTo(review.getId());
+    }
+
+    @Test
+    void 잘못된_그룹_액세스_코드로_리뷰를_조회할_경우_예외를_발생한다() {
+        // given
+        ReviewGroup reviewGroup = reviewGroupRepository.save(
+                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode", "groupAccessCode"));
+
+        Review review = reviewRepository.save(new Review(reviewGroup.getId(), List.of(), LocalDateTime.now()));
+
+        // when, then
+        assertThatThrownBy(() -> reviewService.findReview("wrongGroupAccessCode", review.getId()))
+                .isInstanceOf(InvalidGroupAccessCodeException.class);
+    }
+
+    @Test
+    void 리뷰_그룹에_해당하는_않는_리뷰를_조회할_경우_예외를_발생한다() {
+        // given
+        ReviewGroup reviewGroup1 = reviewGroupRepository.save(
+                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode1", "groupAccessCode1"));
+        ReviewGroup reviewGroup2 = reviewGroupRepository.save(
+                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode2", "groupAccessCode2"));
+
+        Review review1 = reviewRepository.save(new Review(reviewGroup1.getId(), List.of(), LocalDateTime.now()));
+        Review review2 = reviewRepository.save(new Review(reviewGroup2.getId(), List.of(), LocalDateTime.now()));
+
+        // when, then
+        assertThatThrownBy(
+                () -> reviewService.findReview(reviewGroup1.getGroupAccessCode(), review2.getId()))
+                .isInstanceOf(ReviewIsNotInReviewGroupException.class);
     }
 }
