@@ -7,7 +7,7 @@ import reviewme.keyword.dto.response.KeywordResponse;
 @Schema(name = "리뷰 작성 폼 응답")
 public record ReviewSetupResponse(
 
-        @Schema(description = "리뷰이")
+        @Schema(description = "리뷰이 이름")
         String revieweeName,
 
         @Schema(description = "프로젝트명")
