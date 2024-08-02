@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 
 import { getDataToWriteReviewApi, postReviewApi } from '@/apis/review';
 // import ClockLogo from '@/assets/clock.svg';
-import GithubLogo from '@/assets/githubLogo.svg';
+import GithubLogoIcon from '@/assets/githubLogo.svg';
 import { ConfirmModal, ErrorAlertModal } from '@/components';
 import Button from '@/components/common/Button';
 import { REVIEW } from '@/constants/review';
@@ -94,7 +94,7 @@ const ReviewWritingPage = () => {
     <S.ReviewWritingPage onSubmit={handleClickSubmitButton}>
       <S.ReviewFormHeader>
         <S.ReviewInfoContainer>
-          <S.LogoImage src={GithubLogo} alt="깃허브 로고" />
+          <S.LogoImage src={GithubLogoIcon} alt="깃허브 로고" />
           <S.Container>
             <S.ProjectName>{dataToWrite.projectName}</S.ProjectName>
             <S.ReviewInfo>
