@@ -16,7 +16,7 @@ export const ReviewQuestion = styled.div`
   }
 `;
 
-export const ReviewTextarea = styled.textarea`
+export const ReviewTextarea = styled.textarea<{ $isError: boolean }>`
   resize: none;
 
   overflow-y: auto;
@@ -28,6 +28,7 @@ export const ReviewTextarea = styled.textarea`
 
   font-weight: ${({ theme }) => theme.fontWeight.medium};
 
+  border: 0.1rem solid ${({ $isError, theme }) => ($isError ? theme.colors.red : theme.colors.black)};
   border-radius: 0.8rem;
 
   &::placeholder {
@@ -35,8 +36,17 @@ export const ReviewTextarea = styled.textarea`
   }
 `;
 
+export const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const ReviewTextLength = styled.p`
   display: flex;
   justify-content: flex-end;
   margin: 0;
+`;
+
+export const ReviewTextareaError = styled.p`
+  color: ${({ theme }) => theme.colors.red};
 `;
