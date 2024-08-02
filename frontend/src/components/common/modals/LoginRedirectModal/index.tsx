@@ -16,7 +16,7 @@ const LoginRedirectModal = () => {
     >
       <div>
         <p>유효하지 않은 접근이에요.</p>
-        <p>로그인인 후 사용해주세요.</p>
+        <p>로그인 후 사용해주세요.</p>
       </div>
     </AlertModal>
   );
