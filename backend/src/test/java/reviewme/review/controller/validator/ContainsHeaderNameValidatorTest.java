@@ -21,14 +21,14 @@ class ContainsHeaderNameValidatorTest {
 
     @Test
     void 검증값이_헤더이름으로_존재하지_않으면_검증에_실패한다() {
-        // Given
+        // given
         MockHttpServletRequest request = new MockHttpServletRequest();
         validator.initialize(validationAnnotation);
 
-        // When
+        // when
         boolean result = validator.isValid(request, null);
 
-        // Then
+        // then
         assertThat(result).isFalse();
     }
 
