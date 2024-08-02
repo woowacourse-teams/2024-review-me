@@ -7,6 +7,7 @@ import { debounce } from '@/utils/debounce';
 
 import FormLayout from '../FormLayout';
 import ReviewGroupDataModal from '../ReviewGroupDataModal';
+
 const DEBOUNCE_TIME = 300;
 
 const URLGeneratorForm = () => {
@@ -17,6 +18,10 @@ const URLGeneratorForm = () => {
 
   const { updateGroupAccessCode } = useGroupAccessCode();
 
+  const getCompleteURL = (reviewRequestCode: string) => {
+    return `${window.location.origin}/user/review-writing/${reviewRequestCode}`;
+  };
+
   const getCreatedGroupData = async (name: string, projectName: string) => {
     const dataForURL = {
       revieweeName: name,
@@ -26,7 +31,9 @@ const URLGeneratorForm = () => {
     const data = await getCreatedGroupDataApi(dataForURL);
 
     if (data) {
-      setReviewRequestCode(data.reviewRequestCode);
+      const completeURL = getCompleteURL(data.reviewRequestCode);
+
+      setReviewRequestCode(completeURL);
       updateGroupAccessCode(data.groupAccessCode);
     }
   };
