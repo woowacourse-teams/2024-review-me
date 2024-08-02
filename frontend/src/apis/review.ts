@@ -1,10 +1,10 @@
-import { DetailReviewData, ReviewData, WritingReviewInfoData } from '@/types';
+import { DetailReviewData, ReviewData, ReviewPreviewList, WritingReviewInfoData } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
-export const getDataToWriteReviewApi = async (reviewerGroupId: number) => {
-  const response = await fetch(endPoint.gettingDataToWriteReview(reviewerGroupId), {
+export const getDataToWriteReviewApi = async (reviewRequestCode: string) => {
+  const response = await fetch(endPoint.gettingDataToWriteReview(reviewRequestCode), {
     method: 'GET',
   });
 
@@ -29,16 +29,24 @@ export const postReviewApi = async ({ reviewData }: { reviewData: ReviewData }) 
     throw new Error(createApiErrorMessage(response.status));
   }
 
-  const data = await response.json();
-  return data;
+  return;
 };
 
 // 상세 리뷰
-export const getDetailedReviewApi = async ({ reviewId, memberId }: { reviewId: number; memberId: number }) => {
+export const getDetailedReviewApi = async ({
+  reviewId,
+  memberId,
+  groupAccessCode,
+}: {
+  reviewId: number;
+  memberId: number;
+  groupAccessCode: string;
+}) => {
   const response = await fetch(endPoint.gettingDetailedReview(reviewId, memberId), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      GroupAccessCode: groupAccessCode,
     },
   });
 
@@ -64,7 +72,7 @@ export const getReviewListApi = async (groupAccessCode: string) => {
   }
 
   const data = await response.json();
-  return data;
+  return data as ReviewPreviewList;
 };
 
 export const checkGroupAccessCodeApi = async (groupAccessCode: string) => {

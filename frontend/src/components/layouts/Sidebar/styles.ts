@@ -47,12 +47,12 @@ export const MenuItem = styled.li<{ selected: boolean }>`
   font-weight: 700;
   color: ${({ selected }) => (selected ? '#7361df' : 'none')};
 
-  border-left: ${({ selected }) => (selected ? '2px solid #7361df' : 'none')};
+  border-left: ${({ selected }) => (selected ? '0.2rem solid #7361df' : 'none')};
 
   &:hover {
     font-weight: 800;
     color: #7361df;
-    border-left: 2px solid #7361df;
+    border-left: 0.2rem solid #7361df;
   }
 
   a:visited,

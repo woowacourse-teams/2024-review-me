@@ -12,5 +12,5 @@ export const RevieweeComment = styled.section`
   color: ${({ theme }) => theme.colors.black};
 
   background-color: ${({ theme }) => theme.colors.white};
-  border-left: 4px solid ${({ theme }) => theme.colors.black};
+  border-left: 0.4rem solid ${({ theme }) => theme.colors.black};
 `;

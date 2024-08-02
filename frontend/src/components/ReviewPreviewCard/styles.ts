@@ -6,15 +6,15 @@ export const Layout = styled.div`
 
   width: 100%;
 
-  border: 1px solid ${({ theme }) => theme.colors.lightGray};
-  border-radius: 8px;
+  border: 0.1rem solid ${({ theme }) => theme.colors.lightGray};
+  border-radius: 0.8rem;
 
   &:hover {
     cursor: pointer;
-    border: 1px solid ${({ theme }) => theme.colors.primaryHover};
+    border: 0.1rem solid ${({ theme }) => theme.colors.lightPurple};
 
     & > div:first-of-type {
-      background-color: ${({ theme }) => theme.colors.primaryHover};
+      background-color: ${({ theme }) => theme.colors.lightPurple};
     }
   }
 `;
@@ -27,11 +27,10 @@ export const Header = styled.div`
   padding: 1rem 3rem;
 
   background-color: ${({ theme }) => theme.colors.lightGray};
-  border-top-left-radius: 0.8rem;
-  border-top-right-radius: 0.8rem;
+  border-radius: 0.8rem 0.8rem 0 0;
 `;
 
-export const HeaderContainer = styled.div`
+export const HeaderContent = styled.div`
   display: flex;
   gap: 1rem;
 
@@ -74,13 +73,15 @@ export const Main = styled.div`
 
 export const Keyword = styled.div`
   display: flex;
-  gap: 3rem;
+  flex-wrap: wrap;
+  gap: 2.5rem;
   align-items: center;
+
   font-size: 1.4rem;
 
   div {
     padding: 0.5rem 3rem;
-    background-color: ${({ theme }) => theme.colors.primaryHover};
+    background-color: ${({ theme }) => theme.colors.lightPurple};
     border-radius: 0.8rem;
   }
 `;

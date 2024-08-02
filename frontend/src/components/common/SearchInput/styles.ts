@@ -9,7 +9,7 @@ export const Input = styled.input<InputProps>`
   height: ${(props) => props.$height};
   padding: 1.6rem;
 
-  border: 1px solid ${({ theme }) => theme.colors.black};
+  border: 0.1rem solid ${({ theme }) => theme.colors.black};
   border-radius: 0.8rem;
 
   &::placeholder {

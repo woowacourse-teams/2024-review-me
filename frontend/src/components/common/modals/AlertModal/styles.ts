@@ -12,6 +12,8 @@ export const AlertModalContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 
+  min-width: 30rem;
+  max-width: 80vw;
   max-height: 80vh;
   padding: 3.2rem;
 
@@ -21,4 +23,6 @@ export const AlertModalContainer = styled.div`
 
 export const Contents = styled.div`
   display: flex;
+  align-items: center;
+  white-space: pre-line;
 `;
