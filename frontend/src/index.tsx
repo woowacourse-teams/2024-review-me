@@ -72,23 +72,3 @@ root.render(
     </QueryClientProvider>
   </React.StrictMode>,
 );
-
-// async function enableMocking() {
-//   if (process.env.MSW) {
-//     const { worker } = await import('./mocks/browser');
-//     return worker.start();
-//   }
-// }
-
-// enableMocking().then(() => {
-//   root.render(
-//     <React.StrictMode>
-//       <QueryClientProvider client={queryClient}>
-//         <ThemeProvider theme={theme}>
-//           <Global styles={globalStyles} />
-//           <RouterProvider router={router} />
-//         </ThemeProvider>
-//       </QueryClientProvider>
-//     </React.StrictMode>,
-//   );
-// });
