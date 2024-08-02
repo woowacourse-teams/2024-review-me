@@ -20,7 +20,7 @@ class ContainsHeaderNameValidatorTest {
     }
 
     @Test
-    void 헤더에_값이_존재하지_않는_경우_검증에_실패한다() {
+    void 검증값이_헤더이름으로_존재하지_않으면_검증에_실패한다() {
         // Given
         MockHttpServletRequest request = new MockHttpServletRequest();
         validator.initialize(validationAnnotation);
@@ -33,7 +33,7 @@ class ContainsHeaderNameValidatorTest {
     }
 
     @Test
-    void 헤더에_값이_존재하는_경우_검증에_성공한다() {
+    void 검증값이_헤더에_존재하면_검증에_성공한다() {
         // given
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("test", "value");
