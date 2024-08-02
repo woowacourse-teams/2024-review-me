@@ -51,18 +51,15 @@ export interface WritingReviewInfoData {
   keywords: Keyword[];
 }
 
+export interface ReviewPreviewList {
+  revieweeName: string;
+  projectName: string;
+  reviews: ReviewPreview[];
+}
+
 export interface ReviewPreview {
   id: number;
-  isPublic: boolean;
-  reviewerGroup: {
-    id: number;
-    name: string;
-    thumbnailUrl: string;
-  };
   createdAt: string;
   contentPreview: string;
-  keywords: Array<{
-    id: number;
-    content: string;
-  }>;
+  keywords: Keyword[];
 }

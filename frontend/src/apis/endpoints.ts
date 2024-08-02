@@ -17,8 +17,7 @@ const endPoint = {
     `${process.env.API_BASE_URL}/${DETAILED_REVIEW_API_PARAMS.resource}/${reviewId}?${DETAILED_REVIEW_API_PARAMS.queryString.memberId}=${memberId}`,
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${process.env.API_BASE_URL}/reviews/write?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
-  gettingReviewList: (revieweeId: number, lastReviewId: number, memberId: number) =>
-    `${process.env.API_BASE_URL}/reviews?revieweeId=${revieweeId}&lastReviewId=${lastReviewId}&memberId=${memberId}`,
+  gettingReviewList: `${process.env.API_BASE_URL}/reviews`,
 };
 
 export default endPoint;

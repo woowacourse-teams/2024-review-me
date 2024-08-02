@@ -10,6 +10,7 @@ import App from '@/App';
 import { ErrorSuspenseContainer } from './components';
 import DetailedReviewPage from './pages/DetailedReviewPage';
 import ErrorPage from './pages/ErrorPage';
+import LandingPage from './pages/LandingPage';
 import ReviewPreviewListPage from './pages/ReviewPreviewListPage';
 import ReviewWritingPage from './pages/ReviewWriting';
 import ReviewWritingCompletePage from './pages/ReviewWritingCompletePage';
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
             <DetailedReviewPage />
           </ErrorSuspenseContainer>
         ),
+      },
+      {
+        path: 'home',
+        element: <LandingPage />,
       },
     ],
   },
