@@ -13,3 +13,5 @@ export const API_ERROR_MESSAGE: ApiErrorMessages = {
 };
 
 export const SERVER_ERROR_REGEX = /^5\d{2}$/;
+
+export const ROUTE_ERROR_MESSAGE = '찾으시는 페이지가 없어요.';

@@ -43,27 +43,28 @@ const getDataToWriteReview = () =>
 
 const getReviewPreviewList = () => {
   return http.get(endPoint.gettingReviewList, async ({ request }) => {
-    const url = new URL(request.url);
+    // const url = new URL(request.url);
 
-    const lastReviewId = Number(url.searchParams.get('lastReviewId'));
+    // const lastReviewId = Number(url.searchParams.get('lastReviewId'));
 
-    const isFirstPage = lastReviewId === 0;
-    const limit = isFirstPage ? PAGE.defaultPageSize : PAGE.additionalPageSize;
-    const startIndex = isFirstPage
-      ? PAGE.firstPageStartIndex
-      : REVIEW_PREVIEW_LIST.reviews.findIndex((review) => review.id === lastReviewId) + 1;
+    // const isFirstPage = lastReviewId === 0;
+    // const limit = isFirstPage ? PAGE.defaultPageSize : PAGE.additionalPageSize;
+    // const startIndex = isFirstPage
+    //   ? PAGE.firstPageStartIndex
+    //   : REVIEW_PREVIEW_LIST.reviews.findIndex((review) => review.id === lastReviewId) + 1;
 
-    const endIndex = startIndex + limit;
+    // const endIndex = startIndex + limit;
 
-    const paginatedReviews = REVIEW_PREVIEW_LIST.reviews.slice(startIndex, endIndex);
+    // const paginatedReviews = REVIEW_PREVIEW_LIST.reviews.slice(startIndex, endIndex);
 
-    const isLastPage = endIndex >= REVIEW_PREVIEW_LIST.reviews.length;
+    // const isLastPage = endIndex >= REVIEW_PREVIEW_LIST.reviews.length;
 
-    return HttpResponse.json({
-      size: paginatedReviews.length,
-      lastReviewId: isLastPage ? null : lastReviewId + limit,
-      reviews: paginatedReviews,
-    });
+    // return HttpResponse.json({
+    //   size: paginatedReviews.length,
+    //   lastReviewId: isLastPage ? null : lastReviewId + limit,
+    //   reviews: paginatedReviews,
+    // });
+    return HttpResponse.json(REVIEW_PREVIEW_LIST);
   });
 };
 

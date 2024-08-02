@@ -1,4 +1,4 @@
 export * from './page';
-export * from './apiErrorMessage';
+export * from './errorMessage';
 export * from './review';
 export * from './queryKeys';
