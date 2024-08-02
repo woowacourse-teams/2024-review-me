@@ -17,7 +17,9 @@ public class ReviewGroupController {
     private final ReviewGroupService reviewGroupService;
 
     @PostMapping("/groups")
-    public ResponseEntity<ReviewGroupCreationResponse> createReviewGroup(@Valid @RequestBody ReviewGroupCreationRequest request) {
+    public ResponseEntity<ReviewGroupCreationResponse> createReviewGroup(
+            @Valid @RequestBody ReviewGroupCreationRequest request
+    ) {
         ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request);
         return ResponseEntity.ok(response);
     }
