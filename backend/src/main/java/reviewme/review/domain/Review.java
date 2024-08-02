@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
@@ -44,5 +45,9 @@ public class Review {
 
     public boolean isGroupIdEqualTo(long reviewGroupId) {
         return this.reviewGroupId == reviewGroupId;
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdAt.toLocalDate();
     }
 }
