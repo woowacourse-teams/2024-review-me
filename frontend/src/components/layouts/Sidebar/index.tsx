@@ -10,7 +10,7 @@ import * as S from './styles';
 
 const PATH = {
   myPage: '/user/mypage',
-  reviewWriting: '/user/review-writing',
+  // reviewWriting: `/user/review-writing`,
   reviewPreviewList: '/user/review-preview-list',
   detailedReview: `/user/detailed-review/${DETAILED_PAGE_MOCK_API_SETTING_VALUES.reviewId}?memberId=${DETAILED_PAGE_MOCK_API_SETTING_VALUES.memberId}`,
   reviewGroupManagement: '/user/review-group-management',
@@ -25,7 +25,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
 
   const menuItems = [
     { path: PATH.myPage, label: PAGE.myPage },
-    { path: PATH.reviewWriting, label: PAGE.reviewWriting },
+    // { path: PATH.reviewWriting, label: PAGE.reviewWriting },
     { path: PATH.reviewPreviewList, label: PAGE.reviewPreviewList },
     { path: PATH.detailedReview, label: PAGE.detailedReview },
     { path: PATH.reviewGroupManagement, label: PAGE.reviewGroupManagement },
@@ -44,7 +44,9 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
       <S.MenuList>
         {menuItems.map((item) => (
           <S.MenuItem key={item.path} selected={location.pathname === item.path}>
-            <Link to={item.path} onClick={closeSidebar}>{item.label}</Link>
+            <Link to={item.path} onClick={closeSidebar}>
+              {item.label}
+            </Link>
           </S.MenuItem>
         ))}
       </S.MenuList>
