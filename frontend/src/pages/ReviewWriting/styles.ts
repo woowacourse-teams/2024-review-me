@@ -3,8 +3,10 @@ import styled from '@emotion/styled';
 export const ReviewWritingPage = styled.form`
   display: flex;
   flex-direction: column;
+
   width: ${({ theme }) => theme.formWidth};
   height: fit-content;
+  margin-bottom: 5rem;
 `;
 
 export const ReviewFormHeader = styled.header`
@@ -91,7 +93,7 @@ export const KeywordTitle = styled.div`
   font-weight: 600;
 
   &::after {
-    content: ' (1개 ~ 5개)';
+    content: ' (최소 1개 ~ 최대 5개)';
   }
 `;
 
