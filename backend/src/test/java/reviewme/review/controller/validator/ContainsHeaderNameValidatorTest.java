@@ -44,4 +44,9 @@ class ContainsHeaderNameValidatorTest {
         // then
         assertThat(result).isTrue();
     }
+
+    @Test
+    void 요청이_null인_경우_예외를_발생하지_않고_검증에_실패한다() {
+        assertThat(validator.isValid(null, null)).isFalse();
+    }
 }

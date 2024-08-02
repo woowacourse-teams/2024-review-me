@@ -15,6 +15,9 @@ public class ContainsHeaderValidator implements ConstraintValidator<ContainsHead
 
     @Override
     public boolean isValid(HttpServletRequest request, ConstraintValidatorContext context) {
+        if (request == null) {
+            return false;
+        }
         return request.getHeader(headerName) != null;
     }
 }
