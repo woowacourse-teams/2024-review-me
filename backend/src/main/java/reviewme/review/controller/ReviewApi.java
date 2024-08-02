@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +20,7 @@ public interface ReviewApi {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "리뷰 등록 요청 성공")
     })
-    ResponseEntity<Void> createReview(@RequestBody CreateReviewRequest request);
+    ResponseEntity<Void> createReview(@Valid @RequestBody CreateReviewRequest request);
 
     @Operation(summary = "리뷰 작성 정보 조회", description = "리뷰 생성 시 필요한 정보를 조회한다.")
     @ApiResponses(value = {
