@@ -43,10 +43,6 @@ public class Review {
         this.createdAt = createdAt;
     }
 
-    public boolean isGroupIdEqualTo(long reviewGroupId) {
-        return this.reviewGroupId == reviewGroupId;
-    }
-
     public LocalDate getCreatedDate() {
         return createdAt.toLocalDate();
     }
