@@ -33,7 +33,6 @@ const PageContents = ({ groupAccessCode }: PageContentsProps) => {
   const handleReviewClick = (id: number) => {
     navigate(`/user/detailed-review/${id}?memberId=${MEMBER_ID}`);
   };
-  console.log('data', data);
 
   // const observer = useRef<IntersectionObserver | null>(null);
 

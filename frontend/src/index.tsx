@@ -50,10 +50,6 @@ const router = createBrowserRouter([
       },
       {
         path: 'home',
-        element: <div>성공</div>,
-      },
-      {
-        path: 'home',
         element: <LandingPage />,
       },
     ],
