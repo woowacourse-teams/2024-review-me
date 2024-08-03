@@ -7,7 +7,7 @@ import {
   DETAILED_PAGE_MOCK_API_SETTING_VALUES,
   DETAILED_PAGE_ERROR_API_VALUES,
 } from '../mockData/detailedReviewMockData';
-import { REVIEW_PREVIEW_LIST } from '../mockData/reviewPreviewList';
+import { REVIEW_LIST } from '../mockData/reviewListMockData';
 import { REVIEW_WRITING_DATA } from '../mockData/reviewWritingData';
 
 export const PAGE = {
@@ -41,7 +41,7 @@ const getDataToWriteReview = () =>
     return HttpResponse.json(REVIEW_WRITING_DATA);
   });
 
-const getReviewPreviewList = () => {
+const getReviewList = () => {
   return http.get(endPoint.gettingReviewList, async ({ request }) => {
     // const url = new URL(request.url);
 
@@ -64,10 +64,10 @@ const getReviewPreviewList = () => {
     //   lastReviewId: isLastPage ? null : lastReviewId + limit,
     //   reviews: paginatedReviews,
     // });
-    return HttpResponse.json(REVIEW_PREVIEW_LIST);
+    return HttpResponse.json(REVIEW_LIST);
   });
 };
 
-const reviewHandler = [getDetailedReview(), getWrongDetailReview(), getReviewPreviewList(), getDataToWriteReview()];
+const reviewHandler = [getDetailedReview(), getWrongDetailReview(), getReviewList(), getDataToWriteReview()];
 
 export default reviewHandler;

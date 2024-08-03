@@ -3,8 +3,8 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 
 import { getReviewListApi } from '@/apis/review';
-// import { useReviewPreviewList } from '@/hooks/useReviewPreviewList';
-import ReviewPreviewCard from '@/components/ReviewPreviewCard';
+// import { useReviewList } from '@/hooks/useReviewList';
+import ReviewCard from '@/components/ReviewCard';
 import { REVIEW_QUERY_KEYS } from '@/constants';
 import LoadingPage from '@/pages/LoadingPage';
 
@@ -23,7 +23,7 @@ interface PageContentsProps {
 const PageContents = ({ groupAccessCode }: PageContentsProps) => {
   const navigate = useNavigate();
   // NOTE: 무한스크롤 코드 일단 주석 처리
-  // const { data, fetchNextPage, hasNextPage, isLoading, error } = useReviewPreviewList();
+  // const { data, fetchNextPage, hasNextPage, isLoading, error } = useReviewList();
 
   const { data, isLoading, error } = useSuspenseQuery({
     queryKey: [REVIEW_QUERY_KEYS.reviews],
@@ -70,7 +70,7 @@ const PageContents = ({ groupAccessCode }: PageContentsProps) => {
               data.reviews.map((review) => (
                 // const isLastElement = pageIndex === data.pages.length - 1 && reviewIndex === page.reviews.length - 1;
                 <div key={review.id} onClick={() => handleReviewClick(review.id)}>
-                  <ReviewPreviewCard
+                  <ReviewCard
                     id={review.id}
                     projectName={data.projectName}
                     createdAt={review.createdAt}

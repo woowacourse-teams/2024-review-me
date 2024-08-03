@@ -3,7 +3,7 @@ import { useGroupAccessCode } from '@/hooks';
 
 import PageContents from './components/PageContents';
 
-const ReviewPreviewListPage = () => {
+const ReviewListPage = () => {
   const { groupAccessCode } = useGroupAccessCode();
 
   // const observer = useRef<IntersectionObserver | null>(null);
@@ -37,4 +37,4 @@ const ReviewPreviewListPage = () => {
   );
 };
 
-export default ReviewPreviewListPage;
+export default ReviewListPage;

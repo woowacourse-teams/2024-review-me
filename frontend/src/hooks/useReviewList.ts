@@ -5,7 +5,7 @@
 
 export const GROUP_ACCESS_CODE = 'cJWJ22kv'; // NOTE: 임시 그룹코드
 
-export const useReviewPreviewList = () => {
+const useReviewList = () => {
   // const { data, fetchNextPage, hasNextPage, isLoading, error } = useInfiniteQuery({
   //   queryKey: [QUERY_KEYS.reviews],
   //   queryFn: ({ pageParam }) => getReviewListApi(pageParam),
@@ -23,3 +23,5 @@ export const useReviewPreviewList = () => {
     // error,
   };
 };
+
+export default useReviewList;

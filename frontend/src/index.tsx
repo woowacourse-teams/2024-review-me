@@ -10,7 +10,7 @@ import App from '@/App';
 import DetailedReviewPage from './pages/DetailedReviewPage';
 import ErrorPage from './pages/ErrorPage';
 import LandingPage from './pages/LandingPage';
-import ReviewPreviewListPage from './pages/ReviewPreviewListPage';
+import ReviewListPage from './pages/ReviewListPage';
 import ReviewWritingPage from './pages/ReviewWriting';
 import ReviewWritingCompletePage from './pages/ReviewWritingCompletePage';
 import globalStyles from './styles/globalStyles';
@@ -43,8 +43,8 @@ const router = createBrowserRouter([
       },
       { path: 'user/review-writing-complete', element: <ReviewWritingCompletePage /> },
       {
-        path: 'user/review-preview-list',
-        element: <ReviewPreviewListPage />,
+        path: 'user/review-list',
+        element: <ReviewListPage />,
       },
       {
         path: 'user/detailed-review/:id',
@@ -60,15 +60,37 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-root.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <Global styles={globalStyles} />
-        <RecoilRoot>
-          <RouterProvider router={router} />
-        </RecoilRoot>
-      </ThemeProvider>
-    </QueryClientProvider>
-  </React.StrictMode>,
-);
+async function enableMocking() {
+  if (process.env.MSW) {
+    const { worker } = await import('./mocks/browser');
+    return worker.start();
+  }
+}
+
+enableMocking().then(() => {
+  root.render(
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <Global styles={globalStyles} />
+          <RecoilRoot>
+            <RouterProvider router={router} />
+          </RecoilRoot>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </React.StrictMode>,
+  );
+});
+
+// root.render(
+//   <React.StrictMode>
+//     <QueryClientProvider client={queryClient}>
+//       <ThemeProvider theme={theme}>
+//         <Global styles={globalStyles} />
+//         <RecoilRoot>
+//           <RouterProvider router={router} />
+//         </RecoilRoot>
+//       </ThemeProvider>
+//     </QueryClientProvider>
+//   </React.StrictMode>,
+// );
