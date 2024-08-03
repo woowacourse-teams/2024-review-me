@@ -6,8 +6,8 @@ interface DataForURL {
   projectName: string;
 }
 
-export const getCreatedGroupDataApi = async (dataForURL: DataForURL) => {
-  const response = await fetch(endPoint.gettingCreatedGroupData, {
+export const postCreatedGroupDataApi = async (dataForURL: DataForURL) => {
+  const response = await fetch(endPoint.postingCreatedGroupData, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

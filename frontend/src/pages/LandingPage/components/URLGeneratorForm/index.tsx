@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { getCreatedGroupDataApi } from '@/apis/group';
+import { postCreatedGroupDataApi } from '@/apis/group';
 import { Button, Input } from '@/components';
 import { useGroupAccessCode } from '@/hooks';
 import { debounce } from '@/utils/debounce';
@@ -28,7 +28,7 @@ const URLGeneratorForm = () => {
       projectName: projectName,
     };
 
-    const data = await getCreatedGroupDataApi(dataForURL);
+    const data = await postCreatedGroupDataApi(dataForURL);
 
     if (data) {
       const completeURL = getCompleteURL(data.reviewRequestCode);
