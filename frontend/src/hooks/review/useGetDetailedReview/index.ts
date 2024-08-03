@@ -22,15 +22,12 @@ const useGetDetailedReview = ({ reviewId, memberId, groupAccessCode }: UseGetDet
     return result;
   };
 
-  const { data: detailedReview, error } = useSuspenseQuery<DetailReviewData>({
+  const result = useSuspenseQuery<DetailReviewData>({
     queryKey: [REVIEW_QUERY_KEYS.detailedReview, reviewId, memberId],
     queryFn: () => fetchDetailedReview({ reviewId, memberId, groupAccessCode }),
   });
 
-  return {
-    detailedReview,
-    error,
-  };
+  return result;
 };
 
 export default useGetDetailedReview;

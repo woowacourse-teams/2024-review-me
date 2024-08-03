@@ -13,7 +13,7 @@ const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageConte
     queryStringKey: DETAILED_REVIEW_API_PARAMS.queryString.memberId,
   });
 
-  const { detailedReview } = useGetDetailedReview({
+  const { data: detailedReview } = useGetDetailedReview({
     reviewId: Number(reviewId),
     memberId: Number(memberId),
     groupAccessCode,
