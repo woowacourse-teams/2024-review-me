@@ -8,13 +8,13 @@ interface DetailedReviewPageContentsProps {
   groupAccessCode: string;
 }
 const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageContentsProps) => {
-  const { param: id, queryString: memberId } = useSearchParamAndQuery({
-    paramKey: 'id',
+  const { param: reviewId, queryString: memberId } = useSearchParamAndQuery({
+    paramKey: 'reviewId',
     queryStringKey: DETAILED_REVIEW_API_PARAMS.queryString.memberId,
   });
 
   const { detailedReview } = useGetDetailedReview({
-    id: Number(id),
+    reviewId: Number(reviewId),
     memberId: Number(memberId),
     groupAccessCode,
   });
