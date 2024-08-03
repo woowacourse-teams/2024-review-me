@@ -26,13 +26,8 @@ const getDetailedReview = () =>
       return HttpResponse.json(DETAILED_REVIEW_MOCK_DATA);
     }
 
-const getWrongDetailReview = () =>
-  http.get(
-    endPoint.gettingDetailedReview(DETAILED_PAGE_ERROR_API_VALUES.reviewId, DETAILED_PAGE_ERROR_API_VALUES.memberId),
-    async () => {
-      return HttpResponse.json({ error: '잘못된 상세리뷰 요청' }, { status: 404 });
-    },
-  );
+    return HttpResponse.json({ error: '잘못된 상세리뷰 요청' }, { status: 404 });
+  });
 
 const getDataToWriteReview = () =>
   http.get(endPoint.gettingDataToWriteReview(10), async ({ request }) => {
@@ -66,6 +61,6 @@ const getReviewPreviewList = () => {
   });
 };
 
-const reviewHandler = [getDetailedReview(), getWrongDetailReview(), getReviewPreviewList(), getDataToWriteReview()];
+const reviewHandler = [getDetailedReview(), getReviewPreviewList(), getDataToWriteReview()];
 
 export default reviewHandler;
