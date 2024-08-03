@@ -11,7 +11,7 @@ module.exports = {
     'plugin:react/recommended',
     'prettier',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'webpack.config.js'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'webpack.config.js', 'jest.config.js', 'tsconfig.json'],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],
   rules: {
