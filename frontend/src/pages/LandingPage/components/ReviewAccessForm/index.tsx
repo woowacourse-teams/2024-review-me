@@ -6,8 +6,9 @@ import { Input, Button } from '@/components';
 import { useGroupAccessCode } from '@/hooks';
 import { debounce } from '@/utils/debounce';
 
-import * as S from '../../styles';
 import FormLayout from '../FormLayout';
+
+import * as S from './styles';
 
 const DEBOUNCE_TIME = 300;
 
@@ -36,7 +37,7 @@ const ReviewAccessForm = () => {
       if (isValid) {
         updateGroupAccessCode(groupAccessCode);
         setErrorMessage('');
-        
+
         navigate('/user/review-preview-list');
       } else {
         setErrorMessage('유효하지 않은 그룹 접근 코드입니다.');
