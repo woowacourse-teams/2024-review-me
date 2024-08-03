@@ -1,12 +1,8 @@
 import { http, HttpResponse } from 'msw';
 
-import endPoint from '@/apis/endpoints';
+import endPoint, { DETAILED_REVIEW_API_PARAMS, DETAILED_REVIEW_API_URL } from '@/apis/endpoints';
 
-import {
-  DETAILED_REVIEW_MOCK_DATA,
-  DETAILED_PAGE_MOCK_API_SETTING_VALUES,
-  DETAILED_PAGE_ERROR_API_VALUES,
-} from '../mockData/detailedReviewMockData';
+import { DETAILED_REVIEW_MOCK_DATA, DETAILED_PAGE_MOCK_API_SETTING_VALUES } from '../mockData/detailedReviewMockData';
 import { REVIEW_PREVIEW_LIST } from '../mockData/reviewPreviewList';
 import { REVIEW_WRITING_DATA } from '../mockData/reviewWritingData';
 
@@ -18,15 +14,17 @@ export const PAGE = {
 };
 
 const getDetailedReview = () =>
-  http.get(
-    endPoint.gettingDetailedReview(
-      DETAILED_PAGE_MOCK_API_SETTING_VALUES.reviewId,
-      DETAILED_PAGE_MOCK_API_SETTING_VALUES.memberId,
-    ),
-    async () => {
+  http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), async ({ request }) => {
+    //요청 url에서 reviewId, memberId 추출
+    const url = new URL(request.url);
+    const urlReviewId = url.pathname.replace(`/${DETAILED_REVIEW_API_PARAMS.resource}/`, '');
+    const urlMemberId = url.searchParams.get(DETAILED_REVIEW_API_PARAMS.queryString.memberId);
+
+    const { reviewId, memberId } = DETAILED_PAGE_MOCK_API_SETTING_VALUES;
+    // 유효한 reviewId, memberId일 경우에만 데이터 반환
+    if (Number(urlReviewId) == reviewId && Number(urlMemberId) === memberId) {
       return HttpResponse.json(DETAILED_REVIEW_MOCK_DATA);
-    },
-  );
+    }
 
 const getWrongDetailReview = () =>
   http.get(
