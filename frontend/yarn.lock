@@ -7817,6 +7817,11 @@ undici-types@~5.26.4:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-5.26.5.tgz#bcd539893d00b56e964fd2657a4866b221a65617"
   integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
 
+undici@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-5.0.0.tgz#3c1e08c7f0df90c485d5d8dbb0517e11e34f2090"
+  integrity sha512-VhUpiZ3No1DOPPQVQnsDZyfcbTTcHdcgWej1PdFnSvOeJmOVDgiOHkunJmBLfmjt4CqgPQddPVjSWW0dsTs5Yg==
+
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/unicode-canonical-property-names-ecmascript/-/unicode-canonical-property-names-ecmascript-2.0.0.tgz#301acdc525631670d39f6146e0e77ff6bbdebddc"
