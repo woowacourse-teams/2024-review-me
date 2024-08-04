@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { checkGroupAccessCodeApi } from '@/apis/review';
+import { getIsValidGroupAccessCodeApi } from '@/apis/group';
 import { Input, Button } from '@/components';
 import { useGroupAccessCode } from '@/hooks';
 import { debounce } from '@/utils/debounce';
@@ -20,7 +20,7 @@ const ReviewAccessForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const isValidGroupAccessCode = async () => {
-    const isValid = await checkGroupAccessCodeApi(groupAccessCode);
+    const isValid = await getIsValidGroupAccessCodeApi(groupAccessCode);
     return isValid;
   };
 
@@ -32,18 +32,12 @@ const ReviewAccessForm = () => {
     event.preventDefault();
 
     try {
-      const isValid = await isValidGroupAccessCode();
+      await isValidGroupAccessCode();
 
-      if (isValid) {
-        updateGroupAccessCode(groupAccessCode);
-        setErrorMessage('');
-
-        navigate('/user/review-preview-list');
-      } else {
-        setErrorMessage('유효하지 않은 그룹 접근 코드입니다.');
-      }
+      updateGroupAccessCode(groupAccessCode);
+      setErrorMessage('');
     } catch (error) {
-      setErrorMessage('오류가 발생했습니다. 다시 시도해주세요.');
+      if (error instanceof Error) setErrorMessage(error.message);
     }
   }, DEBOUNCE_TIME);
 
