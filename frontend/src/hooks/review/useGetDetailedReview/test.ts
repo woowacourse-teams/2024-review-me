@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 
 import { DETAILED_PAGE_MOCK_API_SETTING_VALUES } from '@/mocks/mockData/detailedReviewMockData';
-import queryClientWrapper from '@/queryTestSetup/queryClientWrapper';
+import QueryClientWrapper from '@/queryTestSetup/QueryClientWrapper';
 
 import useGetDetailedReview from '.';
 // 아래의 테스트는 로그인이 유효하다는 가정하에서 진행
@@ -14,7 +14,7 @@ describe('리뷰 상세페이지 데이터 요청 테스트', () => {
 
     const { result } = renderHook(
       () => useGetDetailedReview({ reviewId, memberId, groupAccessCode: GROUND_ACCESS_CODE }),
-      { wrapper: queryClientWrapper },
+      { wrapper: QueryClientWrapper },
     );
 
     await waitFor(() => {

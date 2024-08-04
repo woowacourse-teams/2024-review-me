@@ -4,8 +4,8 @@ import { EssentialPropsWithChildren } from '@/types';
 
 const queryClient = new QueryClient();
 
-const queryClientWrapper = ({ children }: EssentialPropsWithChildren) => (
+const QueryClientWrapper = ({ children }: EssentialPropsWithChildren) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
-export default queryClientWrapper;
+export default QueryClientWrapper;
