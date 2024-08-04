@@ -6,7 +6,7 @@ import { Input, Button } from '@/components';
 import { useGroupAccessCode } from '@/hooks';
 import { debounce } from '@/utils/debounce';
 
-import FormLayout from '../FormLayout';
+import { FormLayout } from '../index';
 
 import * as S from './styles';
 

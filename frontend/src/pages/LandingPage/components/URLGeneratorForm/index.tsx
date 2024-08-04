@@ -6,8 +6,7 @@ import { useGroupAccessCode } from '@/hooks';
 import { debounce } from '@/utils/debounce';
 
 import usePostDataForURL from '../../queries/usePostDataForURL';
-import FormLayout from '../FormLayout';
-import ReviewGroupDataModal from '../ReviewGroupDataModal';
+import { FormLayout, ReviewGroupDataModal } from '../index';
 
 // TODO: 디바운스 시간을 모든 경우에 0.3초로 고정할 것인지(전역 상수로 사용) 논의하기
 const DEBOUNCE_TIME = 300;
@@ -20,6 +19,18 @@ const URLGeneratorForm = () => {
 
   const mutation = usePostDataForURL();
   const { updateGroupAccessCode } = useGroupAccessCode();
+
+  const postDataForURL = () => {
+    const dataForURL: DataForURL = { revieweeName, projectName };
+
+    mutation.mutate(dataForURL, {
+      onSuccess: (data) => {
+        const completeURL = getCompleteURL(data.reviewRequestCode);
+        setReviewRequestCode(completeURL);
+        updateGroupAccessCode(data.groupAccessCode);
+      },
+    });
+  };
 
   const getCompleteURL = (reviewRequestCode: string) => {
     return `${window.location.origin}/user/review-writing/${reviewRequestCode}`;
@@ -35,19 +46,8 @@ const URLGeneratorForm = () => {
 
   const handleUrlCreationButtonClick = debounce((event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-
-    if (revieweeName && projectName) {
-      const dataForURL: DataForURL = { revieweeName, projectName };
-
-      mutation.mutate(dataForURL, {
-        onSuccess: (data) => {
-          const completeURL = getCompleteURL(data.reviewRequestCode);
-          setReviewRequestCode(completeURL);
-          updateGroupAccessCode(data.groupAccessCode);
-          setIsModalOpen(true);
-        },
-      });
-    }
+    postDataForURL();
+    setIsModalOpen(true);
   }, DEBOUNCE_TIME);
 
   return (
