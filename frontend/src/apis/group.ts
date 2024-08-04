@@ -1,13 +1,13 @@
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
-interface DataForURL {
+export interface DataForURL {
   revieweeName: string;
   projectName: string;
 }
 
-export const postCreatedGroupDataApi = async (dataForURL: DataForURL) => {
-  const response = await fetch(endPoint.postingCreatedGroupData, {
+export const postDataForURL = async (dataForURL: DataForURL) => {
+  const response = await fetch(endPoint.postingDataForURL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
