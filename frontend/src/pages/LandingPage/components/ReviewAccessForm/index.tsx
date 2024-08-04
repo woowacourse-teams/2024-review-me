@@ -24,6 +24,11 @@ const ReviewAccessForm = () => {
     return isValid;
   };
 
+  const isAlphanumeric = (groupAccessCode: string) => {
+    const alphanumericRegex = /^[A-Za-z0-9]*$/;
+    return alphanumericRegex.test(groupAccessCode);
+  };
+
   const handleGroupAccessCodeInputChange = (value: string) => {
     setGroupAccessCode(value);
   };
@@ -32,10 +37,16 @@ const ReviewAccessForm = () => {
     event.preventDefault();
 
     try {
+      if (!isAlphanumeric(groupAccessCode)) {
+        setErrorMessage('알파벳 대소문자와 숫자만 입력 가능합니다.');
+        return;
+      }
+
       await isValidGroupAccessCode();
 
       updateGroupAccessCode(groupAccessCode);
       setErrorMessage('');
+      navigate('/user/review-preview-list');
     } catch (error) {
       if (error instanceof Error) setErrorMessage(error.message);
     }
