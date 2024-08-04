@@ -7,6 +7,7 @@ import { RecoilRoot } from 'recoil';
 
 import App from '@/App';
 
+import ErrorSuspenseContainer from './components/error/ErrorSuspenseContainer/index';
 import DetailedReviewPage from './pages/DetailedReviewPage';
 import ErrorPage from './pages/ErrorPage';
 import LandingPage from './pages/LandingPage';
@@ -52,7 +53,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'home',
-        element: <LandingPage />,
+        element: (
+          <ErrorSuspenseContainer>
+            <LandingPage />
+          </ErrorSuspenseContainer>
+        ),
       },
     ],
   },
