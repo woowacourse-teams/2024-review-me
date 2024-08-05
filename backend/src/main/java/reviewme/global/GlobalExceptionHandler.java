@@ -5,7 +5,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
-import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -75,7 +74,10 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "요청을 읽을 수 없습니다.");
     }
 
-    @ExceptionHandler({MethodValidationException.class, BindException.class, TypeMismatchException.class})
+    @ExceptionHandler({
+            MethodValidationException.class, BindException.class,
+            TypeMismatchException.class, HandlerMethodValidationException.class
+    })
     public ProblemDetail handleRequestFormatException(Exception ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "요청의 형식이 잘못되었습니다.");
     }
@@ -102,15 +104,5 @@ public class GlobalExceptionHandler {
         Map<String, Object> properties = Map.of("fieldErrors", fieldErrors);
         problemDetail.setProperties(properties);
         return problemDetail;
-    }
-
-    @ExceptionHandler(HandlerMethodValidationException.class)
-    public ProblemDetail handleHandlerMethodValidationException(HandlerMethodValidationException ex) {
-        String message = ex.getAllErrors()
-                .stream()
-                .map(MessageSourceResolvable::getDefaultMessage)
-                .toList()
-                .get(0);
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, message);
     }
 }
