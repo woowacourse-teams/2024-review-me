@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { postReviewApi } from '@/apis/review';
 // import ClockLogo from '@/assets/clock.svg';
@@ -8,6 +8,7 @@ import Button from '@/components/common/Button';
 import useConfirmModal from '@/hooks/useConfirmModal';
 import useErrorModal from '@/hooks/useErrorModal';
 import useReviewForm from '@/hooks/useReviewForm';
+import useReviewRequestCode from '@/hooks/useReviewRequestCode';
 import { ReviewData } from '@/types';
 
 import LoadingPage from '../LoadingPage';
@@ -23,9 +24,7 @@ const SUBMIT_CONFIRM_MESSAGE = `리뷰를 제출할까요?
 const ReviewWritingPage = () => {
   const navigate = useNavigate();
 
-  const location = useLocation();
-  const params = location.pathname.split('/');
-  const reviewRequestCode = params.slice(-1).toString();
+  const { reviewRequestCode } = useReviewRequestCode();
 
   const { isConfirmModalOpen, openConfirmModal, closeConfirmModal } = useConfirmModal();
   const { isErrorModalOpen, errorMessage, openErrorModal, closeErrorModal } = useErrorModal();
