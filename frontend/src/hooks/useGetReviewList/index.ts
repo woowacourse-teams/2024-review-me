@@ -4,7 +4,7 @@ import { getReviewListApi } from '@/apis/review';
 import { REVIEW_QUERY_KEYS } from '@/constants';
 
 const useGetReviewList = (groupAccessCode: string) => {
-  const { data, isLoading, error } = useSuspenseQuery({
+  const { data, isLoading, error, isSuccess } = useSuspenseQuery({
     queryKey: [REVIEW_QUERY_KEYS.reviews],
     queryFn: () => getReviewListApi(groupAccessCode),
   });
@@ -23,6 +23,7 @@ const useGetReviewList = (groupAccessCode: string) => {
     data,
     isLoading,
     error,
+    isSuccess,
     // fetchNextPage,
     // hasNextPage,
   };
