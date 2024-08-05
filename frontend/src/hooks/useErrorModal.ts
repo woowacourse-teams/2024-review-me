@@ -8,7 +8,11 @@ const useErrorModal = () => {
     setErrorMessage(errorMessage);
     setIsErrorModalOpen(true);
   };
-  const closeErrorModal = () => setIsErrorModalOpen(false);
+
+  const closeErrorModal = () => {
+    setErrorMessage('');
+    setIsErrorModalOpen(false);
+  };
 
   return {
     isErrorModalOpen,
