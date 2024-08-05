@@ -1,4 +1,4 @@
-package reviewme.review.controller;
+package reviewme.global;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
@@ -6,26 +6,27 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import reviewme.review.controller.exception.MissingGroupAccessCodeException;
+import reviewme.global.exception.MissingHeaderPropertyException;
 
-public class GroupAccessCodeArgumentResolver implements HandlerMethodArgumentResolver {
-
-    private static final String GROUP_ACCESS_CODE_HEADER = "GroupAccessCode";
+public class HeaderPropertyArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(ValidGroupAccessCode.class);
+        return parameter.hasParameterAnnotation(HeaderProperty.class);
     }
 
     @Override
     public String resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        String groupAccessCode = request.getHeader(GROUP_ACCESS_CODE_HEADER);
 
-        if (groupAccessCode == null) {
-            throw new MissingGroupAccessCodeException();
+        HeaderProperty parameterAnnotation = parameter.getParameterAnnotation(HeaderProperty.class);
+        String headerName = parameterAnnotation.headerName();
+        String headerProperty = request.getHeader(headerName);
+
+        if (headerProperty == null) {
+            throw new MissingHeaderPropertyException();
         }
-        return groupAccessCode;
+        return headerProperty;
     }
 }

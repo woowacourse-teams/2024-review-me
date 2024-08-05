@@ -1,4 +1,4 @@
-package reviewme.review.controller;
+package reviewme.global;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -10,39 +10,44 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.NativeWebRequest;
-import reviewme.review.controller.exception.MissingGroupAccessCodeException;
+import reviewme.global.exception.MissingHeaderPropertyException;
 
-class GroupAccessCodeArgumentResolverTest {
+class HeaderPropertyArgumentResolverTest {
 
-    private final GroupAccessCodeArgumentResolver resolver = new GroupAccessCodeArgumentResolver();
+    private final HeaderPropertyArgumentResolver resolver = new HeaderPropertyArgumentResolver();
     private final MethodParameter parameter = mock(MethodParameter.class);
+    private final HeaderProperty headerProperty = mock(HeaderProperty.class);
 
     @BeforeEach
     void setUp() {
-        given(parameter.hasParameterAnnotation(ValidGroupAccessCode.class)).willReturn(true);
+        given(parameter.hasParameterAnnotation(HeaderProperty.class)).willReturn(true);
+        given(parameter.getParameterAnnotation(HeaderProperty.class)).willReturn(headerProperty);
     }
 
     @Test
-    void 검증값이_헤더이름으로_존재하지_않으면_검증에_실패한다() {
+    void 검증값이_헤더에_존재하지_않으면_검증에_실패한다() {
         // given
         NativeWebRequest request = mock(NativeWebRequest.class);
         given(request.getNativeRequest()).willReturn(new MockHttpServletRequest());
+        given(headerProperty.headerName()).willReturn("test");
 
         // when, then
         assertThatThrownBy(() -> resolver.resolveArgument(parameter, null, request, null))
-                .isInstanceOf(MissingGroupAccessCodeException.class);
+                .isInstanceOf(MissingHeaderPropertyException.class);
     }
 
     @Test
-    void 검증값이_헤더에_존재하면_검증에_성공한다() {
+    void 검증값이_헤더에_존재하면_값을_반환한다() {
         // given
         NativeWebRequest request = mock(NativeWebRequest.class);
         MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-        mockRequest.addHeader("GroupAccessCode", "1234");
+        mockRequest.addHeader("test", "1234");
         given(request.getNativeRequest()).willReturn(mockRequest);
+        given(headerProperty.headerName()).willReturn("test");
 
         // when
         String actual = resolver.resolveArgument(parameter, null, request, null);
+
         // then
         assertThat(actual).isEqualTo("1234");
     }
