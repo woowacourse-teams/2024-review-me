@@ -36,12 +36,12 @@ const URLGeneratorForm = () => {
     return `${window.location.origin}/user/review-writing/${reviewRequestCode}`;
   };
 
-  const handleNameInputChange = (value: string) => {
-    setRevieweeName(value);
+  const handleNameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRevieweeName(event.target.value);
   };
 
-  const handleProjectNameInputChange = (value: string) => {
-    setProjectName(value);
+  const handleProjectNameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setProjectName(event.target.value);
   };
 
   const handleUrlCreationButtonClick = debounce((event: React.MouseEvent<HTMLElement>) => {

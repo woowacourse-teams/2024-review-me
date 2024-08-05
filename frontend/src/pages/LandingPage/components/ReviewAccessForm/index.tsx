@@ -13,11 +13,11 @@ import * as S from './styles';
 const DEBOUNCE_TIME = 300;
 
 const ReviewAccessForm = () => {
-  const navigate = useNavigate();
-  const { updateGroupAccessCode } = useGroupAccessCode();
-
   const [groupAccessCode, setGroupAccessCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const navigate = useNavigate();
+  const { updateGroupAccessCode } = useGroupAccessCode();
 
   const isValidGroupAccessCode = async () => {
     const isValid = await getIsValidGroupAccessCodeApi(groupAccessCode);
@@ -29,8 +29,8 @@ const ReviewAccessForm = () => {
     return alphanumericRegex.test(groupAccessCode);
   };
 
-  const handleGroupAccessCodeInputChange = (value: string) => {
-    setGroupAccessCode(value);
+  const handleGroupAccessCodeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setGroupAccessCode(event.target.value);
   };
 
   const handleAccessReviewButtonClick = debounce(async (event: React.MouseEvent<HTMLElement>) => {
@@ -46,6 +46,7 @@ const ReviewAccessForm = () => {
 
       updateGroupAccessCode(groupAccessCode);
       setErrorMessage('');
+
       navigate('/user/review-preview-list');
     } catch (error) {
       if (error instanceof Error) setErrorMessage(error.message);
