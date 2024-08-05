@@ -60,37 +60,15 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-async function enableMocking() {
-  if (process.env.MSW) {
-    const { worker } = await import('./mocks/browser');
-    return worker.start();
-  }
-}
-
-enableMocking().then(() => {
-  root.render(
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-          <Global styles={globalStyles} />
-          <RecoilRoot>
-            <RouterProvider router={router} />
-          </RecoilRoot>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </React.StrictMode>,
-  );
-});
-
-// root.render(
-//   <React.StrictMode>
-//     <QueryClientProvider client={queryClient}>
-//       <ThemeProvider theme={theme}>
-//         <Global styles={globalStyles} />
-//         <RecoilRoot>
-//           <RouterProvider router={router} />
-//         </RecoilRoot>
-//       </ThemeProvider>
-//     </QueryClientProvider>
-//   </React.StrictMode>,
-// );
+root.render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <Global styles={globalStyles} />
+        <RecoilRoot>
+          <RouterProvider router={router} />
+        </RecoilRoot>
+      </ThemeProvider>
+    </QueryClientProvider>
+  </React.StrictMode>,
+);
