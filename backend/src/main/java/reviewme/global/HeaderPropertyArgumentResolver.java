@@ -25,7 +25,7 @@ public class HeaderPropertyArgumentResolver implements HandlerMethodArgumentReso
         String headerProperty = request.getHeader(headerName);
 
         if (headerProperty == null) {
-            throw new MissingHeaderPropertyException();
+            throw new MissingHeaderPropertyException(headerName);
         }
         return headerProperty;
     }
