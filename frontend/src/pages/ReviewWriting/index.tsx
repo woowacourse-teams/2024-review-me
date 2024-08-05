@@ -103,13 +103,6 @@ const ReviewWritingPage = () => {
                 </KeywordButton>
               );
             })}
-            <KeywordButton
-              isSelected={selectedKeywords.includes(99)}
-              key={999}
-              onClick={() => handleKeywordButtonClick({ id: 99, content: 'test' })}
-            >
-              test
-            </KeywordButton>
           </S.KeywordList>
         </S.KeywordContainer>
         <S.ButtonContainer>
