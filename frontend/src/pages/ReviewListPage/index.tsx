@@ -6,6 +6,8 @@ import PageContents from './components/PageContents';
 const ReviewListPage = () => {
   const { groupAccessCode } = useGroupAccessCode();
 
+  // NOTE: 무한스크롤 코드 일단 주석 처리
+  // const { data, fetchNextPage, hasNextPage, isLoading, error } = useGetReviewList();
   // const observer = useRef<IntersectionObserver | null>(null);
 
   // const lastReviewElementRef = useCallback(
