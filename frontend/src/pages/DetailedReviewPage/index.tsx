@@ -6,16 +6,12 @@ import { DetailedReviewPageContents } from './components';
 const DetailedReviewPage = () => {
   const { groupAccessCode } = useGroupAccessCode();
 
+  if (!groupAccessCode) return <LoginRedirectModal />;
+
   return (
-    <>
-      {groupAccessCode ? (
-        <ErrorSuspenseContainer>
-          <DetailedReviewPageContents groupAccessCode={groupAccessCode} />
-        </ErrorSuspenseContainer>
-      ) : (
-        <LoginRedirectModal />
-      )}
-    </>
+    <ErrorSuspenseContainer>
+      <DetailedReviewPageContents groupAccessCode={groupAccessCode} />
+    </ErrorSuspenseContainer>
   );
 };
 

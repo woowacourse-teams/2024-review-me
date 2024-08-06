@@ -7,7 +7,7 @@ import { RecoilRoot } from 'recoil';
 
 import App from '@/App';
 
-import ErrorSuspenseContainer from './components/error/ErrorSuspenseContainer/index';
+import { DEV_ENVIRONMENT } from './constants';
 import DetailedReviewPage from './pages/DetailedReviewPage';
 import ErrorPage from './pages/ErrorPage';
 import LandingPage from './pages/LandingPage';
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         element: <ReviewPreviewListPage />,
       },
       {
-        path: 'user/detailed-review/:id',
+        path: 'user/detailed-review/:reviewId',
         element: <DetailedReviewPage />,
       },
       {
@@ -62,7 +62,10 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 async function enableMocking() {
-  if (process.env.MSW) {
+  const { hostname, port } = DEV_ENVIRONMENT;
+  const isDev = window?.location.hostname === hostname && window.location.port === port;
+
+  if (isDev) {
     const { worker } = await import('./mocks/browser');
     return worker.start();
   }
@@ -82,15 +85,3 @@ enableMocking().then(() => {
     </React.StrictMode>,
   );
 });
-// root.render(
-//   <React.StrictMode>
-//     <QueryClientProvider client={queryClient}>
-//       <ThemeProvider theme={theme}>
-//         <Global styles={globalStyles} />
-//         <RecoilRoot>
-//           <RouterProvider router={router} />
-//         </RecoilRoot>
-//       </ThemeProvider>
-//     </QueryClientProvider>
-//   </React.StrictMode>,
-// );

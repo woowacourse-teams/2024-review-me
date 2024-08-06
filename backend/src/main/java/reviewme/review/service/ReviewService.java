@@ -129,7 +129,7 @@ public class ReviewService {
 
         return new ReviewDetailResponse(
                 review.getId(),
-                review.getCreatedAt().toLocalDate(),
+                review.getCreatedDate(),
                 reviewGroup.getProjectName(),
                 reviewGroup.getReviewee(),
                 reviewContents,
@@ -144,12 +144,12 @@ public class ReviewService {
         List<ReceivedReviewResponse> reviewResponses =
                 reviewRepository.findReceivedReviewsByGroupId(reviewGroup.getId())
                         .stream()
-                        .map(this::extractResponse)
+                        .map(this::createReceivedReviewResponse)
                         .toList();
         return new ReceivedReviewsResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewResponses);
     }
 
-    private ReceivedReviewResponse extractResponse(Review review) {
+    private ReceivedReviewResponse createReceivedReviewResponse(Review review) {
         List<ReceivedReviewKeywordsResponse> keywordsResponses =
                 reviewKeywordRepository.findAllByReviewId(review.getId())
                         .stream()
