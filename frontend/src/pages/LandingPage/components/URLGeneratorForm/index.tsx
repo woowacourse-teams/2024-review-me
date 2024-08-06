@@ -26,10 +26,18 @@ const URLGeneratorForm = () => {
     mutation.mutate(dataForURL, {
       onSuccess: (data) => {
         const completeURL = getCompleteURL(data.reviewRequestCode);
+
         setReviewRequestCode(completeURL);
         updateGroupAccessCode(data.groupAccessCode);
+
+        resetInputs();
       },
     });
+  };
+
+  const resetInputs = () => {
+    setRevieweeName('');
+    setProjectName('');
   };
 
   const getCompleteURL = (reviewRequestCode: string) => {
