@@ -2,6 +2,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
+const { sentryWebpackPlugin } = require('@sentry/webpack-plugin');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -38,6 +39,7 @@ module.exports = (env, argv) => {
         },
       ],
     },
+    devtool: 'source-map',
     plugins: [
       new HtmlWebpackPlugin({
         template: './public/index.html',
@@ -53,6 +55,11 @@ module.exports = (env, argv) => {
       new Dotenv({
         systemvars: true,
         path: './.env',
+      }),
+      sentryWebpackPlugin({
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: 'review-me',
+        project: 'review-me',
       }),
     ],
     devtool: isProduction ? 'hidden-source-map' : 'eval',

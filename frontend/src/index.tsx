@@ -1,4 +1,5 @@
 import { Global, ThemeProvider } from '@emotion/react';
+import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -16,6 +17,20 @@ import ReviewWritingPage from './pages/ReviewWriting';
 import ReviewWritingCompletePage from './pages/ReviewWritingCompletePage';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
+
+const { hostname, port } = DEV_ENVIRONMENT;
+const isDev = window?.location.hostname === hostname && window.location.port === port;
+const baseUrlPattern = new RegExp(`^${process.env.API_BASE_URL?.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}`);
+
+Sentry.init({
+  dsn: `${process.env.SENTRY_DSN}`,
+  enabled: !isDev,
+  environment: 'production',
+  tracesSampleRate: 1.0,
+  tracePropagationTargets: [baseUrlPattern],
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -62,9 +77,6 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 async function enableMocking() {
-  const { hostname, port } = DEV_ENVIRONMENT;
-  const isDev = window?.location.hostname === hostname && window.location.port === port;
-
   if (isDev) {
     const { worker } = await import('./mocks/browser');
     return worker.start();
