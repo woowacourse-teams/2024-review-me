@@ -1,6 +1,5 @@
 package reviewme.review.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reviewme.global.HeaderProperty;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.dto.response.ReviewDetailResponse;
@@ -32,8 +32,9 @@ public class ReviewController implements ReviewApi {
     }
 
     @GetMapping("/reviews")
-    public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(HttpServletRequest request) {
-        String groupAccessCode = request.getHeader(GROUP_ACCESS_CODE_HEADER);
+    public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
+            @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode
+    ) {
         ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
         return ResponseEntity.ok(response);
     }
@@ -45,9 +46,9 @@ public class ReviewController implements ReviewApi {
     }
 
     @GetMapping("/reviews/{id}")
-    public ResponseEntity<ReviewDetailResponse> findReceivedReviewDetail(@PathVariable long id,
-                                                                         HttpServletRequest request) {
-        String groupAccessCode = request.getHeader(GROUP_ACCESS_CODE_HEADER);
+    public ResponseEntity<ReviewDetailResponse> findReceivedReviewDetail(
+            @PathVariable long id,
+            @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode) {
         ReviewDetailResponse response = reviewService.findReceivedReviewDetail(groupAccessCode, id);
         return ResponseEntity.ok(response);
     }
