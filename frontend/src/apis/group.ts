@@ -1,4 +1,4 @@
-import { API_ERROR_MESSAGE, INVALID_GROUP_ACCESS_CODE_MESSAGE } from '@/constants';
+import { INVALID_GROUP_ACCESS_CODE_MESSAGE } from '@/constants';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
@@ -38,7 +38,7 @@ export const getIsValidGroupAccessCodeApi = async (groupAccessCode: string) => {
   });
 
   if (response.status === 400) throw new Error(INVALID_GROUP_ACCESS_CODE_MESSAGE);
-  if (response.status === 500) throw new Error(API_ERROR_MESSAGE.serverError);
+  if (!response.ok) throw new Error(createApiErrorMessage(response.status));
 
   return response.ok;
 };
