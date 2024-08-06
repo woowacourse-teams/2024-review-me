@@ -46,7 +46,6 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getErrorMessage());
     }
 
-
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleException(Exception ex) {
         log.error("An error occurred", ex);
