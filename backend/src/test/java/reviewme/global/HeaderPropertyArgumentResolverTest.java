@@ -39,16 +39,17 @@ class HeaderPropertyArgumentResolverTest {
     @Test
     void 검증값이_헤더에_존재하면_값을_반환한다() {
         // given
+        String headerName = "test";
+        String headerValue = "1234";
         NativeWebRequest request = mock(NativeWebRequest.class);
-        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-        mockRequest.addHeader("test", "1234");
+        MockHttpServletRequest mockRequest = (new MockHttpServletRequest());
+        mockRequest.addHeader(headerName, headerValue);
         given(request.getNativeRequest()).willReturn(mockRequest);
-        given(headerProperty.headerName()).willReturn("test");
+        given(headerProperty.headerName()).willReturn(headerName);
 
         // when
         String actual = resolver.resolveArgument(parameter, null, request, null);
 
         // then
-        assertThat(actual).isEqualTo("1234");
-    }
+        assertThat(actual).isEqualTo(headerValue);
 }
