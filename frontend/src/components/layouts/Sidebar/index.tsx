@@ -11,7 +11,7 @@ import * as S from './styles';
 const PATH = {
   myPage: '/user/mypage',
   // reviewWriting: `/user/review-writing`,
-  reviewPreviewList: '/user/review-preview-list',
+  reviewList: '/user/review-list',
   detailedReview: `/user/detailed-review/${DETAILED_PAGE_MOCK_API_SETTING_VALUES.reviewId}?memberId=${DETAILED_PAGE_MOCK_API_SETTING_VALUES.memberId}`,
   reviewGroupManagement: '/user/review-group-management',
 };
@@ -26,7 +26,7 @@ const Sidebar = ({ closeSidebar }: SidebarProps) => {
   const menuItems = [
     { path: PATH.myPage, label: PAGE.myPage },
     // { path: PATH.reviewWriting, label: PAGE.reviewWriting },
-    { path: PATH.reviewPreviewList, label: PAGE.reviewPreviewList },
+    { path: PATH.reviewList, label: PAGE.reviewList },
     { path: PATH.detailedReview, label: PAGE.detailedReview },
     { path: PATH.reviewGroupManagement, label: PAGE.reviewGroupManagement },
   ];

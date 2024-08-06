@@ -1,13 +1,13 @@
 import GithubLogoIcon from '@/assets/githubLogo.svg';
-import { ReviewPreview } from '@/types';
+import { ReviewInfo } from '@/types';
 
 import * as S from './styles';
 
-interface ReviewPreviewCardProps extends ReviewPreview {
+interface ReviewCardProps extends ReviewInfo {
   projectName: string;
 }
 
-const ReviewPreviewCard = ({ id, projectName, createdAt, contentPreview, keywords }: ReviewPreviewCardProps) => {
+const ReviewCard = ({ id, projectName, createdAt, contentPreview, keywords }: ReviewCardProps) => {
   return (
     <S.Layout data-id={id}>
       <S.Header>
@@ -37,4 +37,4 @@ const ReviewPreviewCard = ({ id, projectName, createdAt, contentPreview, keyword
   );
 };
 
-export default ReviewPreviewCard;
+export default ReviewCard;

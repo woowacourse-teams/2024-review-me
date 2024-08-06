@@ -1,11 +1,7 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
-// import { useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router';
 
-import { getReviewListApi } from '@/apis/review';
-// import { useReviewPreviewList } from '@/hooks/useReviewPreviewList';
-import ReviewPreviewCard from '@/components/ReviewPreviewCard';
-import { REVIEW_QUERY_KEYS } from '@/constants';
+import ReviewCard from '@/components/ReviewCard';
+import { useGetReviewList } from '@/hooks';
 import LoadingPage from '@/pages/LoadingPage';
 
 import ReviewInfoSection from '../ReviewInfoSection';
@@ -22,35 +18,11 @@ interface PageContentsProps {
 }
 const PageContents = ({ groupAccessCode }: PageContentsProps) => {
   const navigate = useNavigate();
-  // NOTE: 무한스크롤 코드 일단 주석 처리
-  // const { data, fetchNextPage, hasNextPage, isLoading, error } = useReviewPreviewList();
-
-  const { data, isLoading, error } = useSuspenseQuery({
-    queryKey: [REVIEW_QUERY_KEYS.reviews],
-    queryFn: () => getReviewListApi(groupAccessCode),
-  });
+  const { data, isLoading, error } = useGetReviewList(groupAccessCode);
 
   const handleReviewClick = (id: number) => {
     navigate(`/user/detailed-review/${id}?memberId=${MEMBER_ID}`);
   };
-
-  // const observer = useRef<IntersectionObserver | null>(null);
-
-  // const lastReviewElementRef = useCallback(
-  //   (node: HTMLElement | null) => {
-  //     if (isLoading) return <LoadingPage />;
-  //     if (observer.current) observer.current.disconnect();
-
-  //     observer.current = new IntersectionObserver((entries) => {
-  //       if (entries[0].isIntersecting && hasNextPage) {
-  //         fetchNextPage();
-  //       }
-  //     });
-
-  //     if (node) observer.current.observe(node);
-  //   },
-  //   [isLoading, fetchNextPage, hasNextPage],
-  // );
 
   return (
     <>
@@ -70,7 +42,7 @@ const PageContents = ({ groupAccessCode }: PageContentsProps) => {
               data.reviews.map((review) => (
                 // const isLastElement = pageIndex === data.pages.length - 1 && reviewIndex === page.reviews.length - 1;
                 <div key={review.id} onClick={() => handleReviewClick(review.id)}>
-                  <ReviewPreviewCard
+                  <ReviewCard
                     id={review.id}
                     projectName={data.projectName}
                     createdAt={review.createdAt}

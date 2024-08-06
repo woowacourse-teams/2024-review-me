@@ -47,13 +47,13 @@ export interface WritingReviewInfoData {
   keywords: Keyword[];
 }
 
-export interface ReviewPreviewList {
+export interface ReviewList {
   revieweeName: string;
   projectName: string;
-  reviews: ReviewPreview[];
+  reviews: ReviewInfo[];
 }
 
-export interface ReviewPreview {
+export interface ReviewInfo {
   id: number;
   createdAt: string;
   contentPreview: string;
