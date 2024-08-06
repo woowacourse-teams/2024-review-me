@@ -11,7 +11,7 @@ import { DEV_ENVIRONMENT } from './constants';
 import DetailedReviewPage from './pages/DetailedReviewPage';
 import ErrorPage from './pages/ErrorPage';
 import LandingPage from './pages/LandingPage';
-import ReviewPreviewListPage from './pages/ReviewPreviewListPage';
+import ReviewListPage from './pages/ReviewListPage';
 import ReviewWritingPage from './pages/ReviewWriting';
 import ReviewWritingCompletePage from './pages/ReviewWritingCompletePage';
 import globalStyles from './styles/globalStyles';
@@ -44,8 +44,8 @@ const router = createBrowserRouter([
       },
       { path: 'user/review-writing-complete', element: <ReviewWritingCompletePage /> },
       {
-        path: 'user/review-preview-list',
-        element: <ReviewPreviewListPage />,
+        path: 'user/review-list',
+        element: <ReviewListPage />,
       },
       {
         path: 'user/detailed-review/:reviewId',
