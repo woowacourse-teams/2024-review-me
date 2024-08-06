@@ -24,7 +24,8 @@ const baseUrlPattern = new RegExp(`^${process.env.API_BASE_URL?.replace(/[-\/\\^
 
 Sentry.init({
   dsn: `${process.env.SENTRY_DSN}`,
-  enabled: !isDev,
+  enabled: true,
+  integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
   environment: 'production',
   tracesSampleRate: 1.0,
   tracePropagationTargets: [baseUrlPattern],
