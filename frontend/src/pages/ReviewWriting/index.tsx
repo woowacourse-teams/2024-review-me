@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
-import { getDataToWriteReviewApi, postReviewApi } from '@/apis/review';
+import { postReviewApi } from '@/apis/review';
 // import ClockLogo from '@/assets/clock.svg';
 import GithubLogoIcon from '@/assets/githubLogo.svg';
 import { ConfirmModal, ErrorAlertModal } from '@/components';
 import Button from '@/components/common/Button';
-import { REVIEW } from '@/constants/review';
-import { Keyword, ReviewContent, ReviewData, WritingReviewInfoData } from '@/types';
+import useConfirmModal from '@/hooks/useConfirmModal';
+import useErrorModal from '@/hooks/useErrorModal';
+import useReviewForm from '@/hooks/useReviewForm';
+import useReviewRequestCode from '@/hooks/useReviewRequestCode';
+import { ReviewData } from '@/types';
 
 import LoadingPage from '../LoadingPage';
 
@@ -22,53 +24,17 @@ const SUBMIT_CONFIRM_MESSAGE = `리뷰를 제출할까요?
 const ReviewWritingPage = () => {
   const navigate = useNavigate();
 
-  const [dataToWrite, setDataToWrite] = useState<WritingReviewInfoData | null>(null);
-  const [answers, setAnswers] = useState<ReviewContent[]>([]);
-  const [selectedKeywords, setSelectedKeywords] = useState<number[]>([]);
+  const { reviewRequestCode } = useReviewRequestCode();
 
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const { isConfirmModalOpen, openConfirmModal, closeConfirmModal } = useConfirmModal();
+  const { isErrorModalOpen, errorMessage, openErrorModal, closeErrorModal } = useErrorModal();
 
-  const isValidAnswersLength = !answers.some((id) => id.answer.length < REVIEW.answerMinLength);
-  const isValidKeywordSelection =
-    selectedKeywords.length >= REVIEW.keywordMinCount && selectedKeywords.length <= REVIEW.keywordMaxCount;
-  const isValidForm = isValidAnswersLength && isValidKeywordSelection;
-
-  const location = useLocation();
-  const params = location.pathname.split('/');
-  const reviewRequestCode = params.slice(-1).toString();
-
-  useEffect(() => {
-    const getDataToWrite = async () => {
-      const data = await getDataToWriteReviewApi(reviewRequestCode);
-      setDataToWrite(data);
-      setAnswers(data.questions.map((question) => ({ questionId: question.id, answer: '' })));
-    };
-
-    getDataToWrite();
-  }, []);
-
-  const handleAnswerChange = (questionId: number, value: string) => {
-    setAnswers((prev) =>
-      prev.map((answer) => (answer.questionId === questionId ? { ...answer, answer: value } : answer)),
-    );
-  };
-
-  const handleKeywordButtonClick = (keyword: Keyword) => {
-    if (selectedKeywords.length === REVIEW.keywordMaxCount && !selectedKeywords.includes(keyword.id)) {
-      alert('키워드는 최대 5개까지 선택할 수 있어요.');
-      return;
-    }
-
-    setSelectedKeywords((prev) =>
-      prev.includes(keyword.id) ? selectedKeywords.filter((id) => id !== keyword.id) : [...prev, keyword.id],
-    );
-  };
+  const { dataToWrite, answers, selectedKeywords, isValidForm, handleAnswerChange, handleKeywordButtonClick } =
+    useReviewForm({ reviewRequestCode, openErrorModal });
 
   const handleClickSubmitButton = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    setIsConfirmModalOpen(true);
+    openConfirmModal();
   };
 
   const handleSubmitReview = async () => {
@@ -80,11 +46,11 @@ const ReviewWritingPage = () => {
 
     try {
       await postReviewApi({ reviewData });
-      setIsConfirmModalOpen(false);
+      closeConfirmModal();
       navigate('/user/review-writing-complete', { replace: true });
     } catch (error) {
-      setIsConfirmModalOpen(false);
-      setIsErrorModalOpen(true);
+      closeConfirmModal();
+      openErrorModal('리뷰를 제출할 수 없어요.');
     }
   };
 
@@ -149,8 +115,8 @@ const ReviewWritingPage = () => {
       {isConfirmModalOpen && (
         <ConfirmModal
           confirmButton={{ type: 'primary', text: '확인', handleClick: handleSubmitReview }}
-          cancelButton={{ type: 'secondary', text: '취소', handleClick: () => setIsConfirmModalOpen(false) }}
-          handleClose={() => setIsConfirmModalOpen(false)}
+          cancelButton={{ type: 'secondary', text: '취소', handleClick: closeConfirmModal }}
+          handleClose={closeConfirmModal}
           isClosableOnBackground={true}
         >
           {SUBMIT_CONFIRM_MESSAGE}
@@ -158,9 +124,9 @@ const ReviewWritingPage = () => {
       )}
       {isErrorModalOpen && (
         <ErrorAlertModal
-          errorText="오류로 인해 리뷰를 제출할 수 없어요."
-          closeButton={{ content: '닫기', type: 'primary', handleClick: () => setIsErrorModalOpen(false) }}
-          handleClose={() => setIsErrorModalOpen(false)}
+          errorText={errorMessage}
+          closeButton={{ content: '닫기', type: 'primary', handleClick: closeErrorModal }}
+          handleClose={closeErrorModal}
         />
       )}
     </S.ReviewWritingPage>
