@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
-import endPoint from '@/apis/endpoints';
+import endPoint, { DETAILED_REVIEW_API_PARAMS, DETAILED_REVIEW_API_URL } from '@/apis/endpoints';
 
 import {
   DETAILED_REVIEW_MOCK_DATA,
@@ -8,6 +8,7 @@ import {
   DETAILED_PAGE_ERROR_API_VALUES,
 } from '../mockData/detailedReviewMockData';
 import { REVIEW_LIST } from '../mockData/reviewListMockData';
+import { DETAILED_REVIEW_MOCK_DATA, DETAILED_PAGE_MOCK_API_SETTING_VALUES } from '../mockData/detailedReviewMockData';
 import { REVIEW_WRITING_DATA } from '../mockData/reviewWritingData';
 
 export const PAGE = {
@@ -18,23 +19,20 @@ export const PAGE = {
 };
 
 const getDetailedReview = () =>
-  http.get(
-    endPoint.gettingDetailedReview(
-      DETAILED_PAGE_MOCK_API_SETTING_VALUES.reviewId,
-      DETAILED_PAGE_MOCK_API_SETTING_VALUES.memberId,
-    ),
-    async () => {
-      return HttpResponse.json(DETAILED_REVIEW_MOCK_DATA);
-    },
-  );
+  http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), async ({ request }) => {
+    //요청 url에서 reviewId, memberId 추출
+    const url = new URL(request.url);
+    const urlReviewId = url.pathname.replace(`/${DETAILED_REVIEW_API_PARAMS.resource}/`, '');
+    const urlMemberId = url.searchParams.get(DETAILED_REVIEW_API_PARAMS.queryString.memberId);
 
-const getWrongDetailReview = () =>
-  http.get(
-    endPoint.gettingDetailedReview(DETAILED_PAGE_ERROR_API_VALUES.reviewId, DETAILED_PAGE_ERROR_API_VALUES.memberId),
-    async () => {
-      return HttpResponse.json({ error: '잘못된 상세리뷰 요청' }, { status: 404 });
-    },
-  );
+    const { reviewId, memberId } = DETAILED_PAGE_MOCK_API_SETTING_VALUES;
+    // 유효한 reviewId, memberId일 경우에만 데이터 반환
+    if (Number(urlReviewId) == reviewId && Number(urlMemberId) === memberId) {
+      return HttpResponse.json(DETAILED_REVIEW_MOCK_DATA);
+    }
+
+    return HttpResponse.json({ error: '잘못된 상세리뷰 요청' }, { status: 404 });
+  });
 
 const getDataToWriteReview = () =>
   http.get(endPoint.gettingDataToWriteReview(10), async ({ request }) => {
