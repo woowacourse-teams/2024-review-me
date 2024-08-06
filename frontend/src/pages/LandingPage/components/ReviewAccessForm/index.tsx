@@ -47,7 +47,7 @@ const ReviewAccessForm = () => {
       updateGroupAccessCode(groupAccessCode);
       setErrorMessage('');
 
-      navigate('/user/review-preview-list');
+      navigate('/user/review-list');
     } catch (error) {
       if (error instanceof Error) setErrorMessage(error.message);
     }
