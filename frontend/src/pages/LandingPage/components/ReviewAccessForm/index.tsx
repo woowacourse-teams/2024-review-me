@@ -12,6 +12,11 @@ import * as S from './styles';
 
 const DEBOUNCE_TIME = 300;
 
+// NOTE: groupAccessCode가 유효한지를 확인하는 API 호출은 fetch로 고정!
+// 1. 요청을 통해 단순히 true, false 정도의 데이터를 단발적으로 가져오는 API이므로 
+// 리액트 쿼리를 사용할 만큼 서버 상태를 정교하게 가지고 있을 필요 없음
+// 2. 리액트 쿼리를 도입했을 때 Errorboundary로 Form을 감싸지 않았고, useQuery를 사용했음에도 불구하고 
+// error fallback이 뜨는 버그 존재 
 const ReviewAccessForm = () => {
   const [groupAccessCode, setGroupAccessCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
