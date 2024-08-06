@@ -52,4 +52,5 @@ class HeaderPropertyArgumentResolverTest {
 
         // then
         assertThat(actual).isEqualTo(headerValue);
+    }
 }
