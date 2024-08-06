@@ -2,13 +2,8 @@ import { http, HttpResponse } from 'msw';
 
 import endPoint, { DETAILED_REVIEW_API_PARAMS, DETAILED_REVIEW_API_URL } from '@/apis/endpoints';
 
-import {
-  DETAILED_REVIEW_MOCK_DATA,
-  DETAILED_PAGE_MOCK_API_SETTING_VALUES,
-  DETAILED_PAGE_ERROR_API_VALUES,
-} from '../mockData/detailedReviewMockData';
-import { REVIEW_LIST } from '../mockData/reviewListMockData';
 import { DETAILED_REVIEW_MOCK_DATA, DETAILED_PAGE_MOCK_API_SETTING_VALUES } from '../mockData/detailedReviewMockData';
+import { REVIEW_LIST } from '../mockData/reviewListMockData';
 import { REVIEW_WRITING_DATA } from '../mockData/reviewWritingData';
 
 export const PAGE = {
@@ -66,6 +61,6 @@ const getReviewList = () => {
   });
 };
 
-const reviewHandler = [getDetailedReview(), getWrongDetailReview(), getReviewList(), getDataToWriteReview()];
+const reviewHandler = [getDetailedReview(), getReviewList(), getDataToWriteReview()];
 
 export default reviewHandler;
