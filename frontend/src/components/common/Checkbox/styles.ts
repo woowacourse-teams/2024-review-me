@@ -3,9 +3,6 @@ import styled from '@emotion/styled';
 import { CheckboxStyleProps } from './index';
 
 export const CheckboxContainer = styled.div<CheckboxStyleProps>`
-  width: ${(props) => props.$style?.width || '2.8rem'};
-  height: ${(props) => props.$style?.height || '2.8rem'};
-
   padding: 0;
 
   background-color: transparent;
@@ -18,6 +15,7 @@ export const CheckboxContainer = styled.div<CheckboxStyleProps>`
     width: 0;
     height: 0;
   }
+  ${({ $style }) => $style && { ...$style }};
 `;
 
 export const CheckboxLabel = styled.label`

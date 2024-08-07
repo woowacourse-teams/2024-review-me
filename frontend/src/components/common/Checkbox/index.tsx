@@ -20,7 +20,7 @@ interface CheckboxProps extends CheckboxStyleProps {
 
 const Checkbox = ({ id, name, isChecked, isDisabled, onChange, $style }: CheckboxProps) => {
   return (
-    <S.CheckboxContainer style={$style}>
+    <S.CheckboxContainer $style={$style}>
       <S.CheckboxLabel>
         <input
           id={id}
