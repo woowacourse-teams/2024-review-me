@@ -73,8 +73,10 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "요청을 읽을 수 없습니다.");
     }
 
-    @ExceptionHandler({MethodValidationException.class, BindException.class,
-            TypeMismatchException.class, HandlerMethodValidationException.class})
+    @ExceptionHandler({
+            MethodValidationException.class, BindException.class,
+            TypeMismatchException.class, HandlerMethodValidationException.class
+    })
     public ProblemDetail handleRequestFormatException(Exception ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "요청의 형식이 잘못되었습니다.");
     }
