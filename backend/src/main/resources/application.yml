@@ -1,4 +1,12 @@
 spring:
+  profiles:
+    active: local
+
+  config:
+    import:
+      - classpath:api-docs.yml
+      - classpath:logback.yml
+
   datasource:
     url: jdbc:h2:mem:test
     username: sa
@@ -11,30 +19,3 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-  config:
-    import:
-      - classpath:/secret/application-actuator.yml
-      - classpath:/application-api-docs.yml
-  profiles:
-    active: local
-
-springdoc:
-  swagger-ui:
-    path: /api-docs
-    operations-sorter: alpha
-    tags-sorter: alpha
-
-logging:
-  config: classpath:logback-spring.xml
-  file:
-    path: logs
-    name: review-me.log
-  level:
-    springframework: DEBUG
-  logback:
-    rolling-policy:
-      max-history: 100
-      file-name-pattern: review-me.%d{yyyy-MM-dd}.log
-  pattern:
-    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } [%15.15t] %-40.40logger{39} : %m%n%wEx"
