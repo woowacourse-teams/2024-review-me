@@ -1,23 +1,3 @@
-spring:
-  datasource:
-    url: jdbc:h2:mem:test
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-
-springdoc:
-  swagger-ui:
-    path: /api-docs
-    operations-sorter: alpha
-    tags-sorter: alpha
-
 logging:
   config: classpath:logback-spring.xml
   file:
