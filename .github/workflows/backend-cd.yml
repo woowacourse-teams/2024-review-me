@@ -56,7 +56,7 @@ jobs:
 
     steps:
       - name: Checkout to secret repository
-        uses: actions/checktout@v4
+        uses: actions/checkout@v4
         with:
           repository: ${{ secrets.PRIVATE_REPOSITORY_URL }}
           token: ${{ secrets.PRIVATE_REPOSITORY_TOKEN }}
