@@ -74,15 +74,3 @@ export const getReviewListApi = async (groupAccessCode: string) => {
   const data = await response.json();
   return data as ReviewList;
 };
-
-export const checkGroupAccessCodeApi = async (groupAccessCode: string) => {
-  const response = await fetch(endPoint.gettingReviewList, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      GroupAccessCode: groupAccessCode,
-    },
-  });
-
-  return response.ok;
-};
