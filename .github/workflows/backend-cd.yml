@@ -58,8 +58,8 @@ jobs:
       - name: Checkout to secret repository
         uses: actions/checktout@v4
         with:
-          repository: ${{ secret.PRIVATE_REPOSITORY_URL }}
-          token: ${{ secret.PRIVATE_REPOSITORY_TOKEN }}
+          repository: ${{ secrets.PRIVATE_REPOSITORY_URL }}
+          token: ${{ secrets.PRIVATE_REPOSITORY_TOKEN }}
 
       - name: Download uploaded artifact
         uses: actions/download-artifact@v4
