@@ -2,8 +2,9 @@ import React from 'react';
 
 import { EssentialPropsWithChildren } from '@/types';
 
-import * as S from '../../styles';
-import FormBody from '../FormBody';
+import { FormBody } from '../index';
+
+import * as S from './styles';
 
 interface FormProps {
   title: string;

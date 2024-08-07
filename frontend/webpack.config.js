@@ -41,6 +41,11 @@ module.exports = (env, argv) => {
     },
     devtool: 'source-map',
     plugins: [
+      sentryWebpackPlugin({
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: 'review-me',
+        project: 'woowacourse-review-me',
+      }),
       new HtmlWebpackPlugin({
         template: './public/index.html',
         minify: isProduction

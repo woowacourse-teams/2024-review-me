@@ -25,11 +25,18 @@ const baseUrlPattern = new RegExp(`^${process.env.API_BASE_URL?.replace(/[-\/\\^
 Sentry.init({
   dsn: `${process.env.SENTRY_DSN}`,
   enabled: !isDev,
+<<<<<<< HEAD
   environment: 'production',
   tracesSampleRate: 1.0,
   tracePropagationTargets: [baseUrlPattern],
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
+=======
+  integrations: [Sentry.browserTracingIntegration()],
+  environment: 'production',
+  tracesSampleRate: 1.0,
+  tracePropagationTargets: [baseUrlPattern],
+>>>>>>> 1d75ffbfa0847bc426e716c223f3238bdaf74ba0
 });
 
 const queryClient = new QueryClient({
