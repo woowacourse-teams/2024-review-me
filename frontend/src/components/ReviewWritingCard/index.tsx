@@ -9,8 +9,10 @@ interface ReviewWritingCardProps {
 const ReviewWritingCard = ({ title, children }: EssentialPropsWithChildren<ReviewWritingCardProps>) => {
   return (
     <S.Container>
-      <S.Title>{title}</S.Title>
-      {children}
+      <S.Header>
+        <S.Title>{title}</S.Title>
+      </S.Header>
+      <S.Main>{children}</S.Main>
     </S.Container>
   );
 };
