@@ -11,10 +11,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  config:
+    import:
+      - classpath:/secret/application-actuator.yml
+      - classpath:/application-api-docs.yml
   profiles:
-    include:
-      - actuator
-      - api-docs
     active: local
 
 springdoc:
