@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { DataForURL, postDataForURL } from '@/apis/group';
+import { DataForURL, postDataForURLApi } from '@/apis/group';
 import { GROUP_QUERY_KEY } from '@/constants';
 
 const usePostDataForURL = () => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: (dataForURL: DataForURL) => postDataForURL(dataForURL),
+    mutationFn: (dataForURL: DataForURL) => postDataForURLApi(dataForURL),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [GROUP_QUERY_KEY.dataForURL] });
     },

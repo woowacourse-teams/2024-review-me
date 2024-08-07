@@ -8,7 +8,7 @@ export interface DataForURL {
   projectName: string;
 }
 
-export const postDataForURL = async (dataForURL: DataForURL) => {
+export const postDataForURLApi = async (dataForURL: DataForURL) => {
   const response = await fetch(endPoint.postingDataForURL, {
     method: 'POST',
     headers: {
