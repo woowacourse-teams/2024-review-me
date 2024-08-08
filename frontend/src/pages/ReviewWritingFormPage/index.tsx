@@ -39,6 +39,7 @@ const ReviewWritingFormPage = () => {
       );
       const newQuestions = [COMMON_QUESTIONS[0], ...selectedCategoryQuestionList, ...COMMON_QUESTIONS.slice(1)];
       setQuestions(newQuestions);
+      setCurrentIndex(currentIndex + 1);
     }
 
     // 2. 페이지 이동
