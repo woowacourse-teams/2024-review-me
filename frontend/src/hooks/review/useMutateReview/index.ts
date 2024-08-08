@@ -25,7 +25,7 @@ const useMutateReview = () => {
     reviewMutation.mutate({ reviewData });
   };
 
-  return { postReview };
+  return { reviewMutation, postReview };
 };
 
 export default useMutateReview;
