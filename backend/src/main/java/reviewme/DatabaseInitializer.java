@@ -21,10 +21,10 @@ public class DatabaseInitializer {
     @PostConstruct
     @Transactional
     void setup() {
-        questionRepository.save(new Question("{revieweeName}을 한줄로 소개해주세요."));
-        questionRepository.save(new Question("{revieweeName}으로부터 배우고 싶은 모습이 있나요?"));
-        questionRepository.save(new Question("{revieweeName}이 없었더라면 우리 팀에는 어떤 점이 부족했을까요?"));
-        questionRepository.save(new Question("{revieweeName}이 다음 목표로 어떤 것을 설정한다면 앞으로의 성장에 더 도움이 될까요?"));
+        questionRepository.save(new Question("{revieweeName}을(를) 한줄로 소개해주세요."));
+        questionRepository.save(new Question("{revieweeName}(으)로부터 배우고 싶은 모습이 있나요?"));
+        questionRepository.save(new Question("{revieweeName}이(가) 없었더라면 우리 팀에는 어떤 점이 부족했을까요?"));
+        questionRepository.save(new Question("{revieweeName}이(가) 다음 목표로 어떤 것을 설정한다면 앞으로의 성장에 더 도움이 될까요?"));
         questionRepository.save(new Question("{revieweeName}에게 남기고 싶은 말이 있나요? 고맙거나 미안한 점, 응원하고 싶은 점 등 자유롭게 작성해주세요."));
 
         keywordRepository.save(new Keyword("회의를 잘 이끌어요"));
