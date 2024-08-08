@@ -145,7 +145,7 @@ export const COMMON_QUESTIONS: QuestionType[] = [
   {
     name: 'plusReview',
     title: '🤗리뷰를 더 하고 싶은 리뷰어를 위한 추가 리뷰!',
-    question: `${REVIEWEE}}에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요.`,
+    question: `${REVIEWEE}에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요.`,
     answerType: 'essay',
   },
 ];
