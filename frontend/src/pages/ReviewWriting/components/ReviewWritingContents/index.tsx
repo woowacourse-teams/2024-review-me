@@ -61,7 +61,7 @@ const ReviewWritingContents = () => {
   if (!dataToWrite) return <LoadingPage />;
 
   return (
-    <S.ReviewWritingPage onSubmit={handleClickSubmitButton}>
+    <S.ReviewWritingContents onSubmit={handleClickSubmitButton}>
       <S.ReviewFormHeader>
         <S.ReviewInfoContainer>
           <S.LogoImage src={GithubLogoIcon} alt="깃허브 로고" />
@@ -133,7 +133,7 @@ const ReviewWritingContents = () => {
           handleClose={closeErrorModal}
         />
       )}
-    </S.ReviewWritingPage>
+    </S.ReviewWritingContents>
   );
 };
 
