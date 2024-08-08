@@ -60,6 +60,7 @@ public class GlobalExceptionHandler {
         logSpringException(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP 메서드입니다.");
     }
+
     @ExceptionHandler(HttpMediaTypeException.class)
     public ProblemDetail handleHttpMediaTypeException(Exception ex) {
         logSpringException(ex);
