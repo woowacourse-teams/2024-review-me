@@ -50,6 +50,10 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
+        path: '',
+        element: <LandingPage />,
+      },
+      {
         path: 'user',
         element: <div>user</div>,
       },
@@ -67,10 +71,6 @@ const router = createBrowserRouter([
       {
         path: 'user/detailed-review/:reviewId',
         element: <DetailedReviewPage />,
-      },
-      {
-        path: 'home',
-        element: <LandingPage />,
       },
     ],
   },
