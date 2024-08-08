@@ -8,11 +8,11 @@ const App = () => {
 
   return (
     <PageLayout>
-      {isSidebarModalOpen && (
+      {/* {isSidebarModalOpen && (
         <SideModal isSidebarHidden={isSidebarHidden} closeModal={closeSidebar}>
           <Sidebar closeSidebar={closeSidebar} />
         </SideModal>
-      )}
+      )} */}
       <Topbar openSidebar={openSidebar} />
       <Main>
         <Outlet />
