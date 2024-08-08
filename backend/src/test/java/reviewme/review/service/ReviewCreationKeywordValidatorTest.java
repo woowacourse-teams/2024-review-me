@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.domain.exception.DuplicateKeywordException;
 import reviewme.keyword.domain.exception.KeywordLimitExceedException;
-import reviewme.keyword.domain.exception.KeywordNotFoundException;
 import reviewme.keyword.repository.KeywordRepository;
 import reviewme.support.ServiceTest;
 
@@ -25,23 +24,6 @@ class ReviewCreationKeywordValidatorTest {
 
     @Autowired
     KeywordRepository keywordRepository;
-
-    @Test
-    void 존재하는_키워드의_아이디인지_검사한다() {
-        // given
-        Keyword keyword1 = keywordRepository.save(회의를_이끌어요.create());
-        Keyword keyword2 = keywordRepository.save(추진력이_좋아요.create());
-        long nonExistKeywordId = Long.MAX_VALUE;
-
-        // when, then
-        assertAll(
-                () -> assertThatCode(
-                        () -> reviewCreationKeywordValidator.validate(List.of(keyword1.getId(), keyword2.getId())))
-                        .doesNotThrowAnyException(),
-                () -> assertThatCode(() -> reviewCreationKeywordValidator.validate(List.of(nonExistKeywordId)))
-                        .isInstanceOf(KeywordNotFoundException.class)
-        );
-    }
 
     @Test
     void 중복되는_아이디의_키워드인지_검사한다() {

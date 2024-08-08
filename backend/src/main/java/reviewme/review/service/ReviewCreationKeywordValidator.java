@@ -5,8 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.keyword.domain.exception.DuplicateKeywordException;
 import reviewme.keyword.domain.exception.KeywordLimitExceedException;
-import reviewme.keyword.domain.exception.KeywordNotFoundException;
-import reviewme.keyword.repository.KeywordRepository;
 
 @Component
 @RequiredArgsConstructor
@@ -15,12 +13,9 @@ public class ReviewCreationKeywordValidator {
     private static final int MIN_KEYWORD_COUNT = 1;
     private static final int MAX_KEYWORD_COUNT = 5;
 
-    private final KeywordRepository keywordRepository;
-
     void validate(List<Long> selectedKeywordIds) {
         validateKeywordCount(selectedKeywordIds.size());
         validateUniqueKeyword(selectedKeywordIds);
-        validateExistsKeyword(selectedKeywordIds);
     }
 
     private void validateUniqueKeyword(List<Long> selectedKeywordIds) {
@@ -29,15 +24,7 @@ public class ReviewCreationKeywordValidator {
                 .distinct()
                 .count();
         if (keywordsCount != distinctCount) {
-            throw new DuplicateKeywordException();
-        }
-    }
-
-    private void validateExistsKeyword(List<Long> selectedKeywordIds) {
-        boolean doesKeywordExist = selectedKeywordIds.stream()
-                .anyMatch(keywordRepository::existsById);
-        if (!doesKeywordExist) {
-            throw new KeywordNotFoundException();
+            throw new DuplicateKeywordException(selectedKeywordIds);
         }
     }
 

@@ -6,12 +6,14 @@
     <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <charset>UTF-8</charset>
         <encoder>
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
 
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <charset>UTF-8</charset>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
             <charset>utf8</charset>
