@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.keyword.domain.Keyword;
 import reviewme.keyword.domain.exception.DuplicateKeywordException;
 import reviewme.keyword.domain.exception.KeywordLimitExceedException;
-import reviewme.keyword.domain.exception.KeywordNotFoundException;
+import reviewme.keyword.domain.exception.KeywordsNotFoundException;
 import reviewme.keyword.repository.KeywordRepository;
 import reviewme.support.ServiceTest;
 
@@ -39,7 +39,7 @@ class ReviewCreationKeywordValidatorTest {
                         () -> reviewCreationKeywordValidator.validate(List.of(keyword1.getId(), keyword2.getId())))
                         .doesNotThrowAnyException(),
                 () -> assertThatCode(() -> reviewCreationKeywordValidator.validate(List.of(nonExistKeywordId)))
-                        .isInstanceOf(KeywordNotFoundException.class)
+                        .isInstanceOf(KeywordsNotFoundException.class)
         );
     }
 

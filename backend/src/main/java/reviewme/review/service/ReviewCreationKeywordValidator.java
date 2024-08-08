@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.keyword.domain.exception.DuplicateKeywordException;
 import reviewme.keyword.domain.exception.KeywordLimitExceedException;
-import reviewme.keyword.domain.exception.KeywordNotFoundException;
+import reviewme.keyword.domain.exception.KeywordsNotFoundException;
 import reviewme.keyword.repository.KeywordRepository;
 
 @Component
@@ -37,7 +37,7 @@ public class ReviewCreationKeywordValidator {
         boolean doesKeywordExist = selectedKeywordIds.stream()
                 .anyMatch(keywordRepository::existsById);
         if (!doesKeywordExist) {
-            throw new KeywordNotFoundException();
+            throw new KeywordsNotFoundException(selectedKeywordIds);
         }
     }
 
