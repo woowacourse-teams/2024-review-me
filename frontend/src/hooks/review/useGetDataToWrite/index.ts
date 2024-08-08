@@ -18,12 +18,17 @@ const useGetDataToWrite = ({ reviewRequestCode }: UseGetDataToWriteProps) => {
     return result;
   };
 
-  const { data: dataToWrite } = useSuspenseQuery<WritingReviewInfoData>({
+  const {
+    data: dataToWrite,
+    isSuccess,
+    error,
+    isLoading,
+  } = useSuspenseQuery<WritingReviewInfoData>({
     queryKey: [REVIEW_QUERY_KEYS.writingReviewInfo],
     queryFn: () => fetchDataToWrite({ reviewRequestCode }),
   });
 
-  return dataToWrite;
+  return { dataToWrite, isSuccess, error, isLoading };
 };
 
 export default useGetDataToWrite;
