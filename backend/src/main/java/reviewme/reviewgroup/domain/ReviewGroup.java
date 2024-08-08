@@ -18,7 +18,9 @@ import reviewme.review.domain.exception.InvalidRevieweeNameLengthException;
 @Getter
 public class ReviewGroup {
 
+    private static final int MIN_REVIEWEE_LENGTH = 1;
     private static final int MAX_REVIEWEE_LENGTH = 50;
+    private static final int MIN_PROJECT_NAME_LENGTH = 1;
     private static final int MAX_PROJECT_NAME_LENGTH = 50;
 
     @Id
@@ -47,14 +49,16 @@ public class ReviewGroup {
     }
 
     private void validateRevieweeLength(String reviewee) {
-        if (reviewee.isBlank() || reviewee.length() > MAX_REVIEWEE_LENGTH) {
-            throw new InvalidRevieweeNameLengthException(MAX_REVIEWEE_LENGTH);
+        if (reviewee.length() < MIN_REVIEWEE_LENGTH || reviewee.length() > MAX_REVIEWEE_LENGTH) {
+            throw new InvalidRevieweeNameLengthException(reviewee.length(), MIN_REVIEWEE_LENGTH, MAX_REVIEWEE_LENGTH);
         }
     }
 
     private void validateProjectNameLength(String projectName) {
-        if (projectName.isBlank() || projectName.length() > MAX_PROJECT_NAME_LENGTH) {
-            throw new InvalidProjectNameLengthException(MAX_PROJECT_NAME_LENGTH);
+        if (projectName.length() < MIN_PROJECT_NAME_LENGTH || projectName.length() > MAX_PROJECT_NAME_LENGTH) {
+            throw new InvalidProjectNameLengthException(
+                    projectName.length(), MIN_PROJECT_NAME_LENGTH, MAX_PROJECT_NAME_LENGTH
+            );
         }
     }
 }
