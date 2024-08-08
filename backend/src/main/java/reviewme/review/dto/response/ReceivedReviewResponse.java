@@ -7,7 +7,7 @@ import java.util.List;
 @Schema(name = "리뷰 내용 응답")
 public record ReceivedReviewResponse(
 
-        @Schema(description = "리뷰 아이디")
+        @Schema(description = "리뷰 ID")
         long id,
 
         @Schema(description = "리뷰 작성일")

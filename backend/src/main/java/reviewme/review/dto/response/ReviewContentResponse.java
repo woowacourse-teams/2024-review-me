@@ -2,7 +2,7 @@ package reviewme.review.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "리뷰 내용 응답")
+@Schema(name = "리뷰 내용 응답")
 public record ReviewContentResponse(
 
         @Schema(description = "리뷰 내용 ID")

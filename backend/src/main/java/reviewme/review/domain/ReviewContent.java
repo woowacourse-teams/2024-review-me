@@ -38,7 +38,7 @@ public class ReviewContent {
 
     private void validateAnswerLength(String answer) {
         if (answer.length() < MIN_ANSWER_LENGTH || answer.length() > MAX_ANSWER_LENGTH) {
-            throw new InvalidAnswerLengthException(MIN_ANSWER_LENGTH, MAX_ANSWER_LENGTH);
+            throw new InvalidAnswerLengthException(answer.length(), MIN_ANSWER_LENGTH, MAX_ANSWER_LENGTH);
         }
     }
 }
