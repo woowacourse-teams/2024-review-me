@@ -2,7 +2,7 @@ import React from 'react';
 
 import { EssentialPropsWithChildren } from '@/types';
 
-import * as S from '../../styles';
+import * as S from './styles';
 
 interface FormBodyProps {
   direction: React.CSSProperties['flexDirection'];

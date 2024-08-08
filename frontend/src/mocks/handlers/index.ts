@@ -1,5 +1,6 @@
+import groupHandler from './group';
 import reviewHandler from './review';
 
-const handlers = [...reviewHandler];
+const handlers = [...reviewHandler, ...groupHandler];
 
 export default handlers;

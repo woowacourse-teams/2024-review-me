@@ -1,4 +1,12 @@
 spring:
+  profiles:
+    active: local
+
+  config:
+    import:
+      - classpath:api-docs.yml
+      - classpath:logback.yml
+
   datasource:
     url: jdbc:h2:mem:test
     username: sa
@@ -11,12 +19,3 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-  profiles:
-    include: api-docs
-    active: local
-
-springdoc:
-  swagger-ui:
-    path: /api-docs
-    operations-sorter: alpha
-    tags-sorter: alpha
