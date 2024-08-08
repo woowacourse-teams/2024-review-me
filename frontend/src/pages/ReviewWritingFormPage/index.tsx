@@ -72,6 +72,8 @@ const ReviewWritingFormPage = () => {
 
   const isValidatedAnswer = (index: number) => {
     const currentQuestion = questions[index];
+    if (!currentQuestion) return;
+
     const { targetAnswer } = findTargetAnswer(currentQuestion.name);
     const { answerType, isExtraEssay } = currentQuestion;
     if (!targetAnswer) return false;
