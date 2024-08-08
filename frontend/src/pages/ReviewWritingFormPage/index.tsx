@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components';
-import QuestionCard from '@/components/QuestionCard';
-import ReviewWritingCard from '@/components/ReviewWritingCard';
 import { ButtonStyleType } from '@/types';
 
+import { QuestionCard, ReviewWritingCard } from './components';
 import * as S from './styles';
 
 const REVIEWEE = '쑤쑤';
