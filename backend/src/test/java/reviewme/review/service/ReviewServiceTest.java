@@ -20,7 +20,7 @@ import reviewme.question.domain.Question;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
-import reviewme.review.domain.exception.ReviewGroupNotFoundException;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
@@ -118,7 +118,7 @@ class ReviewServiceTest {
     @Test
     void 확인_코드에_해당하는_그룹이_없는_경우_예외가_발생한다() {
         assertThatThrownBy(() -> reviewService.findReceivedReviews("abc"))
-                .isInstanceOf(ReviewGroupNotFoundException.class);
+                .isInstanceOf(ReviewGroupNotFoundByGroupAccessCodeException.class);
     }
 
     @Test
@@ -176,7 +176,7 @@ class ReviewServiceTest {
 
         // when, then
         assertThatThrownBy(() -> reviewService.findReceivedReviewDetail("wrongGroupAccessCode", review.getId()))
-                .isInstanceOf(ReviewGroupNotFoundException.class);
+                .isInstanceOf(ReviewGroupNotFoundByGroupAccessCodeException.class);
     }
 
     @Test

@@ -2,7 +2,7 @@ package reviewme.reviewgroup.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "리뷰 그룹 생성 완료 응답")
+@Schema(name = "리뷰 그룹 생성 완료 응답")
 public record ReviewGroupCreationResponse(
 
         @Schema(description = "리뷰 요청 코드")

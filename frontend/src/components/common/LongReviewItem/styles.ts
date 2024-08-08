@@ -1,28 +1,21 @@
 import styled from '@emotion/styled';
 
-export const ReviewItem = styled.article`
+export const TextareaContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
-
-  & > * {
-    font-weight: 600;
-  }
 `;
 
-export const ReviewQuestion = styled.div`
-  &::after {
-    content: ' (20자 이상)';
-  }
-`;
+interface TextareaProps {
+  $isError: boolean;
+  $style?: React.CSSProperties;
+}
 
-export const ReviewTextarea = styled.textarea<{ $isError: boolean }>`
+export const Textarea = styled.textarea<TextareaProps>`
   resize: none;
 
   overflow-y: auto;
 
   width: 100%;
-  max-width: 100%;
   height: 15rem;
   padding: 1.6rem;
 
@@ -34,19 +27,23 @@ export const ReviewTextarea = styled.textarea<{ $isError: boolean }>`
   &::placeholder {
     font-weight: ${({ theme }) => theme.fontWeight.medium};
   }
+
+  ${({ $style }) => $style && { ...$style }};
 `;
 
-export const Container = styled.div`
+export const TextareaInfoContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 0.8rem;
+`;
+
+export const ReviewTextareaError = styled.p`
+  color: ${({ theme }) => theme.colors.red};
 `;
 
 export const ReviewTextLength = styled.p`
   display: flex;
   justify-content: flex-end;
   margin: 0;
-`;
-
-export const ReviewTextareaError = styled.p`
-  color: ${({ theme }) => theme.colors.red};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;

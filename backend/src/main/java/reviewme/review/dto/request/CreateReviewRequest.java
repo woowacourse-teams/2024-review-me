@@ -16,7 +16,7 @@ public record CreateReviewRequest(
         @NotNull(message = "리뷰 답변이 없어요.")
         List<CreateReviewContentRequest> reviewContents,
 
-        @Schema(description = "선택 키워드 ID 목록")
+        @Schema(description = "선택 키워드 ID 목록", minLength = 1)
         @NotNull(message = "선택된 키워드가 없어요.")
         List<Long> keywords
 ) {
