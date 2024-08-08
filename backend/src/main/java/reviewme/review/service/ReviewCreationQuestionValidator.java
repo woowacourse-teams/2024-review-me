@@ -32,7 +32,7 @@ public class ReviewCreationQuestionValidator {
         boolean doesQuestionExist = questionIds.stream()
                 .anyMatch(questionRepository::existsById);
         if (!doesQuestionExist) {
-            throw new QuestionNotFoundException();
+            throw new QuestionsNotFoundException(questionIds);
         }
     }
 }
