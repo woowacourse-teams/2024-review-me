@@ -8,6 +8,8 @@ export interface QuestionType {
   answerType: 'choice' | 'essay';
   options?: string[];
   isExtraEssay?: boolean;
+  choiceMinLength?: number;
+  choiceMaxLength?: number;
 }
 
 export interface AnswerType {
@@ -15,6 +17,8 @@ export interface AnswerType {
   choiceAnswer?: string[];
   essayAnswer?: string;
 }
+const CHOICE_MIN_LENGTH = 1;
+const OPENING_CHOICE_MAX_LENGTH = 2;
 
 export const TAIL_QUESTIONS: QuestionType[] = [
   {
@@ -32,6 +36,7 @@ export const TAIL_QUESTIONS: QuestionType[] = [
       '서로 다른 분야간의 소통도 중요하게 생각해요.',
     ],
     isExtraEssay: true,
+    choiceMinLength: CHOICE_MIN_LENGTH,
   },
   {
     name: 'solution',
@@ -49,6 +54,7 @@ export const TAIL_QUESTIONS: QuestionType[] = [
       '문제 원인과 해결책에 대한 가설을 세우고 직접 실험해봐요.',
     ],
     isExtraEssay: true,
+    choiceMinLength: CHOICE_MIN_LENGTH,
   },
   {
     name: 'time',
@@ -63,6 +69,7 @@ export const TAIL_QUESTIONS: QuestionType[] = [
       '회의 시간과 같은 약속된 시간을 잘 지켜요.',
     ],
     isExtraEssay: true,
+    choiceMinLength: CHOICE_MIN_LENGTH,
   },
   {
     name: 'techSkill',
@@ -84,6 +91,7 @@ export const TAIL_QUESTIONS: QuestionType[] = [
       '지속적인 학습과 공유를 통해 팀의 기술 수준을 높였어요.',
     ],
     isExtraEssay: true,
+    choiceMinLength: CHOICE_MIN_LENGTH,
   },
   {
     name: 'growthMind',
@@ -103,6 +111,7 @@ export const TAIL_QUESTIONS: QuestionType[] = [
       '새로운 아이디어를 시도하고, 기존의 틀을 깨는 것을 두려워하지 않아요.',
     ],
     isExtraEssay: true,
+    choiceMinLength: CHOICE_MIN_LENGTH,
   },
 ];
 // NOTE: Map 객체로 변환 생각해보자
@@ -119,6 +128,8 @@ export const COMMON_QUESTIONS: QuestionType[] = [
       '🤓 기술적 역량, 전문 지식 (ex: 요구 사항을 이해하고 이를 구현하는 능력)',
       '🌱 성장 마인드셋 (ex: 새로운 분야나 잘 모르는 분야에 도전하는 마음, 꾸준한 노력으로 프로젝트 이전보다 성장하는 모습)',
     ],
+    choiceMinLength: CHOICE_MIN_LENGTH,
+    choiceMaxLength: OPENING_CHOICE_MAX_LENGTH,
   },
 
   {

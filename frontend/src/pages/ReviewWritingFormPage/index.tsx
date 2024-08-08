@@ -13,7 +13,7 @@ const ReviewWritingFormPage = () => {
   const [answers, setAnswers] = useState<AnswerType[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideWidth, setSlideWidth] = useState(0);
-
+  const [isOpenLimitGuide, setIsOpenLimitGuide] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -35,13 +35,40 @@ const ReviewWritingFormPage = () => {
   const buttons = [
     { styleType: 'secondary' as ButtonStyleType, onClick: handlePrev, text: '이전' },
     { styleType: 'primary' as ButtonStyleType, onClick: handleNext, text: '다음' },
+    // NOTE: 제출 버튼은 따로 만들어야 하남
   ];
+
+  const findTargetAnswer = (questionName: string) => {
+    const targetAnswer = answers?.find((answer) => answer.questionName === questionName);
+    const targetAnswerIndex = answers?.findIndex((answer) => answer.questionName === questionName);
+
+    return { targetAnswer, targetAnswerIndex };
+  };
+  const findTargetQuestion = (questionName: string) => {
+    return {
+      targetQuestion: questions.find((question) => question.name === questionName),
+      targetQuestionIndex: questions.findIndex((question) => question.name === questionName),
+    };
+  };
+
+  const findTargetQuestionChoiceLimit = (questionName: string) => {
+    const { targetQuestion } = findTargetQuestion(questionName);
+    return { minLength: targetQuestion?.choiceMinLength, maxLength: targetQuestion?.choiceMaxLength };
+  };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, label: string) => {
     const { name, checked } = event.currentTarget;
     const questionName = name.split('_')[0];
-    const targetAnswer = answers?.find((answer) => answer.questionName === questionName);
-    const targetAnswerIndex = answers?.findIndex((answer) => answer.questionName === questionName);
+    const { targetAnswer, targetAnswerIndex } = findTargetAnswer(questionName);
+    const { maxLength } = findTargetQuestionChoiceLimit(questionName);
+
+    //최대 개수 도달 시 안내 문구 띄우기
+    if (targetAnswer?.choiceAnswer && targetAnswer.choiceAnswer.every((choice) => choice !== label) && maxLength) {
+      const isMaxLength = targetAnswer.choiceAnswer.length >= maxLength;
+      if (isMaxLength) return setIsOpenLimitGuide(true);
+    }
+    setIsOpenLimitGuide(false);
+
     let newChoice = targetAnswer?.choiceAnswer;
     let newAnswers;
 
@@ -64,7 +91,7 @@ const ReviewWritingFormPage = () => {
     if (answers && !targetAnswer && !targetAnswerIndex) {
       newAnswers = [...answers, { questionName, choiceAnswer: newChoice }];
     }
-    // 2-3.  answer가 없는 경우
+    // 2-3. answer가 없는 경우
     if (!answers) {
       newAnswers = [{ questionName, choiceAnswer: newChoice }];
     }
@@ -85,6 +112,7 @@ const ReviewWritingFormPage = () => {
           <S.Slide key={index}>
             <ReviewWritingCard title={question.title}>
               <QuestionCard questionType="normal" question={question.question} />
+
               {question.answerType === 'choice' &&
                 question.options?.map((option, index) => (
                   <CheckboxItem
@@ -97,6 +125,11 @@ const ReviewWritingFormPage = () => {
                     onChange={(event) => handleCheckboxChange(event, option)}
                   />
                 ))}
+              {question.answerType === 'choice' && isOpenLimitGuide && (
+                <S.LimitGuideMessage>
+                  😮 최대 {findTargetQuestionChoiceLimit(question.name).maxLength}개까지 선택가능해요.
+                </S.LimitGuideMessage>
+              )}
               {/* {question.answerType ==='essay' &&}
               {question.isExtraEssay && // 서술형 TAIL_QUESTIONS.find((value)=> value.name === question.name)} */}
             </ReviewWritingCard>
