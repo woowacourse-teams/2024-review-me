@@ -2,7 +2,10 @@ import styled from '@emotion/styled';
 
 import { QuestionCardStyleType } from '@/types';
 
-export const QuestionCard = styled.span<{ questionType: QuestionCardStyleType }>`
-  font-size: ${({ theme }) => theme.fontSize.basic};
+export const QuestionCard = styled.div<{ questionType: QuestionCardStyleType }>`
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  font-weight: ${({ questionType, theme }) =>
+    questionType === 'guideline' ? theme.fontWeight.normal : theme.fontWeight.semibold};
   color: ${({ questionType, theme }) => (questionType === 'guideline' ? theme.colors.placeholder : theme.colors.black)};
 `;
