@@ -7,8 +7,8 @@ const Logo = () => {
     <S.Logo>
       <img src={LogoIcon} alt="로고 아이콘" />
       <S.LogoText>
-        <span>review</span>
-        <span>me</span>
+        <span>REVIEW</span>
+        <span>ME</span>
       </S.LogoText>
     </S.Logo>
   );

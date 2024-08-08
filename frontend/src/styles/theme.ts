@@ -17,6 +17,7 @@ export const breakpoints: ThemeProperty<string> = {
 export const fontSize: ThemeProperty<CSSProperties['fontSize']> = {
   small: '1.4rem',
   basic: '1.6rem',
+  mediumSmall: '2.0rem',
   medium: '2.4rem',
   large: '3.2rem',
   h2: '4.8rem',

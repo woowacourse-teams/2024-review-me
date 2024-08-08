@@ -9,6 +9,7 @@ export const Input = styled.input<InputStyleProps>`
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
   padding: 1.2rem 1.6rem;
+
   font-size: 1.3rem;
 
   ::placeholder {
