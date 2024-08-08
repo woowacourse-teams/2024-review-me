@@ -48,7 +48,8 @@ const ReviewWritingFormPage = () => {
   };
 
   const handleSubmit = () => {
-    console.log('제출 버튼 클릭');
+    console.log('---제출되는 답변---');
+    console.log('답번:', answers);
   };
 
   const findTargetAnswer = (questionName: string) => {
@@ -161,26 +162,34 @@ const ReviewWritingFormPage = () => {
     questionName: string;
   }
   const handleEssayChange = ({ event, questionName }: HandleEssayChangeParams) => {
-    // 서술형 답볍을 새로 하는 상황
     const essayAnswer = isValidatedEssayLength(event.target.value) ? event.target.value : undefined;
+    // 서술형 답볍을 새로 하는 상황 - 아예 answer가 없는 경우
     if (!answers) {
-      setAnswers([
+      return setAnswers([
         {
           questionName,
           essayAnswer,
         },
       ]);
     }
+    const newAnswers = [...answers];
     const { targetAnswer, targetAnswerIndex } = findTargetAnswer(questionName);
     //서술형 답볍을 바꾸는 상황
     if (targetAnswer && targetAnswerIndex && answers) {
-      const newTargetAnswer = {
+      const newTargetAnswer: AnswerType = {
         ...targetAnswer,
         essayAnswer,
       };
-      const newAnswers = [...answers];
       newAnswers.splice(targetAnswerIndex, 1, newTargetAnswer);
       setAnswers(newAnswers);
+    }
+    // 해당 답변에 대한 새로운 서술형 답변을 넣는 경우
+    if (answers) {
+      const newTargetAnswer: AnswerType = {
+        questionName,
+        essayAnswer,
+      };
+      setAnswers(newAnswers.concat(newTargetAnswer));
     }
   };
 
@@ -216,8 +225,7 @@ const ReviewWritingFormPage = () => {
                   😮 최대 {findTargetQuestionChoiceLimit(question.name).maxLength}개까지 선택가능해요.
                 </S.LimitGuideMessage>
               )}
-              {/* {question.answerType ==='essay' &&}
-               */}
+
               {question.isExtraEssay && (
                 <>
                   <QuestionCard questionType="normal" question={question.question} />
@@ -225,6 +233,7 @@ const ReviewWritingFormPage = () => {
                     questionType="guideline"
                     question={ESSAY.find((essay) => essay.name === question.name)?.guideLine ?? ''}
                   />
+
                   <LongReviewItem
                     initialValue={findTargetAnswer(question.name).targetAnswer?.essayAnswer}
                     minLength={20}
@@ -232,6 +241,14 @@ const ReviewWritingFormPage = () => {
                     handleTextareaChange={(event) => handleEssayChange({ event, questionName: question.name })}
                   />
                 </>
+              )}
+              {question.answerType === 'essay' && (
+                <LongReviewItem
+                  initialValue={findTargetAnswer(question.name).targetAnswer?.essayAnswer}
+                  minLength={20}
+                  maxLength={1000}
+                  handleTextareaChange={(event) => handleEssayChange({ event, questionName: question.name })}
+                />
               )}
             </ReviewWritingCard>
           </S.Slide>
