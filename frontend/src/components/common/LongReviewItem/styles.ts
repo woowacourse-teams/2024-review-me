@@ -31,6 +31,12 @@ export const Textarea = styled.textarea<TextareaProps>`
   ${({ $style }) => $style && { ...$style }};
 `;
 
+export const TextareaInfoContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.8rem;
+`;
+
 export const ReviewTextareaError = styled.p`
   color: ${({ theme }) => theme.colors.red};
 `;
@@ -39,4 +45,5 @@ export const ReviewTextLength = styled.p`
   display: flex;
   justify-content: flex-end;
   margin: 0;
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
