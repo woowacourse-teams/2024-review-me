@@ -3,7 +3,7 @@ package reviewme.reviewgroup.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
-@Schema(description = "리뷰 그룹 생성 요청")
+@Schema(name = "리뷰 그룹 생성 요청")
 public record ReviewGroupCreationRequest(
 
         @Schema(description = "리뷰이 이름", maxLength = 50)
