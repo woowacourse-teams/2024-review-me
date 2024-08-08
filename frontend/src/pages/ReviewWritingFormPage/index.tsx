@@ -1,29 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@/components';
+import CheckboxItem from '@/components/common/CheckboxItem';
 import { ButtonStyleType } from '@/types';
 
 import { QuestionCard, ReviewWritingCard } from './components';
+import { AnswerType, COMMON_QUESTIONS, QuestionType, TAIL_QUESTIONS } from './question';
 import * as S from './styles';
 
-const REVIEWEE = '쑤쑤';
-
-const QUESTIONS = [
-  {
-    title: `💡${REVIEWEE}와 함께 한 기억을 떠올려볼게요.`,
-    question: `프로젝트 기간 동안, ${REVIEWEE}의 강점이 드러났던 순간을 선택해주세요. (1~2개)`,
-  },
-  {
-    title: `선택한 순간들을 바탕으로 ${REVIEWEE}에 대한 리뷰를 작성해볼게요.`,
-    question: `커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요. (1개 이상)`,
-  },
-  {
-    title: ``,
-    question: `앞으로의 성장을 위해서 ${REVIEWEE}가 어떤 목표를 설정하면 좋을까요?`,
-  },
-];
-
 const ReviewWritingFormPage = () => {
+  const [questions, setQuestions] = useState<QuestionType[]>(COMMON_QUESTIONS);
+  const [answers, setAnswers] = useState<AnswerType[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideWidth, setSlideWidth] = useState(0);
 
@@ -40,7 +27,7 @@ const ReviewWritingFormPage = () => {
   };
 
   const handleNext = () => {
-    if (currentIndex < QUESTIONS.length - 1) {
+    if (currentIndex < COMMON_QUESTIONS.length - 1) {
       setCurrentIndex(currentIndex + 1);
     }
   };
@@ -50,13 +37,68 @@ const ReviewWritingFormPage = () => {
     { styleType: 'primary' as ButtonStyleType, onClick: handleNext, text: '다음' },
   ];
 
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, label: string) => {
+    const { name, checked } = event.currentTarget;
+    const questionName = name.split('_')[0];
+    const targetAnswer = answers?.find((answer) => answer.questionName === questionName);
+    const targetAnswerIndex = answers?.findIndex((answer) => answer.questionName === questionName);
+    let newChoice = targetAnswer?.choiceAnswer;
+    let newAnswers;
+
+    // 1. 새로운 선택 답변 만들기
+    // 문항을 추가하려는 지
+    if (checked) {
+      newChoice = newChoice ? newChoice.concat(label) : [label];
+    }
+    // 문항을 취소하려는 지
+    if (!checked) {
+      newChoice = newChoice?.filter((choice) => choice !== label);
+    }
+    // 2. 새로운 선택 답변을 넣은 새로운 answers
+    // 2-1 answer가 있고, targetAnswer가 있는 경우
+    if (targetAnswerIndex !== undefined && answers && targetAnswer) {
+      newAnswers = [...answers];
+      newAnswers.splice(targetAnswerIndex, 1, { ...targetAnswer, choiceAnswer: newChoice });
+    }
+    // 2-2. answer가 있고, targetAnswer가 없는 경우
+    if (answers && !targetAnswer && !targetAnswerIndex) {
+      newAnswers = [...answers, { questionName, choiceAnswer: newChoice }];
+    }
+    // 2-3.  answer가 없는 경우
+    if (!answers) {
+      newAnswers = [{ questionName, choiceAnswer: newChoice }];
+    }
+    setAnswers(newAnswers ?? null);
+  };
+
+  const isSelectedCheckbox = (questionName: string, option: string) => {
+    const targetAnswer = answers?.find((answer) => answer.questionName === questionName);
+    if (!targetAnswer?.choiceAnswer) return false;
+
+    return targetAnswer.choiceAnswer.some((choice) => choice === option);
+  };
+
   return (
     <S.CardLayout>
       <S.SliderContainer ref={wrapperRef} translateX={currentIndex * slideWidth}>
-        {QUESTIONS.map(({ question, title }, index) => (
+        {questions.map((question, index) => (
           <S.Slide key={index}>
-            <ReviewWritingCard title={title}>
-              <QuestionCard questionType="normal" question={question} />
+            <ReviewWritingCard title={question.title}>
+              <QuestionCard questionType="normal" question={question.question} />
+              {question.answerType === 'choice' &&
+                question.options?.map((option, index) => (
+                  <CheckboxItem
+                    key={`${question.name}_${index}`}
+                    id={`${question.name}_${index}`}
+                    name={`${question.name}_${index}`}
+                    isChecked={isSelectedCheckbox(question.name, option)}
+                    isDisabled={false}
+                    label={option}
+                    onChange={(event) => handleCheckboxChange(event, option)}
+                  />
+                ))}
+              {/* {question.answerType ==='essay' &&}
+              {question.isExtraEssay && // 서술형 TAIL_QUESTIONS.find((value)=> value.name === question.name)} */}
             </ReviewWritingCard>
           </S.Slide>
         ))}
