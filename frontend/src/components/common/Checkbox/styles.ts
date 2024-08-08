@@ -3,15 +3,16 @@ import styled from '@emotion/styled';
 import { CheckboxStyleProps } from './index';
 
 export const CheckboxContainer = styled.div<CheckboxStyleProps>`
+  width: 2.7rem;
+  height: 2.7rem;
   padding: 0;
 
   background-color: transparent;
   border: none;
 
   input {
-    display: hidden;
-
     position: absolute;
+    display: hidden;
     width: 0;
     height: 0;
   }
@@ -20,10 +21,7 @@ export const CheckboxContainer = styled.div<CheckboxStyleProps>`
 
 export const CheckboxLabel = styled.label`
   cursor: pointer;
-  object-fit: contain;
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
+  display: inline-block;
+  width: 2.7rem;
+  height: 2.7rem;
 `;

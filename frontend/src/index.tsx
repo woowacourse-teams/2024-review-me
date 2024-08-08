@@ -50,15 +50,19 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
+        path: '',
+        element: <LandingPage />,
+      },
+      {
         path: 'user',
         element: <div>user</div>,
       },
       {
         path: 'user/review-writing/:reviewRequestId',
         // NOTE: 리뷰 작성 페이지 UI 변경으로 인해 일단 주석 처리
-        // element: <ReviewWritingPage />,
-        element: <ReviewWritingFormPage />,
+        element: <ReviewWritingPage />,
       },
+      { path: 'user/review-writing-form', element: <ReviewWritingFormPage /> },
       { path: 'user/review-writing-complete', element: <ReviewWritingCompletePage /> },
       {
         path: 'user/review-list',
@@ -67,10 +71,6 @@ const router = createBrowserRouter([
       {
         path: 'user/detailed-review/:reviewId',
         element: <DetailedReviewPage />,
-      },
-      {
-        path: 'home',
-        element: <LandingPage />,
       },
     ],
   },

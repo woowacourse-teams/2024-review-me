@@ -10,7 +10,7 @@ import reviewme.keyword.repository.KeywordRepository;
 import reviewme.question.domain.Question;
 import reviewme.review.repository.QuestionRepository;
 
-@Profile("local")
+@Profile({"local", "dev"})
 @Component
 @RequiredArgsConstructor
 public class DatabaseInitializer {

@@ -12,6 +12,7 @@ on:
 env:
   ARTIFACT_NAME: review-me-dev
   ARTIFACT_DIRECTORY: ./backend/build/libs
+  APPLICATION_DIRECTORY: ~/review-me-app
 
 jobs:
   build:
@@ -66,6 +67,10 @@ jobs:
         with:
           name: ${{ env.ARTIFACT_NAME }}
 
+      - name: Copy application related files to other directory
+        run: |
+          sudo mv * ${{ env.APPLICATION_DIRECTORY }}
+
       - name: Find ${{ env.ARTIFACT_NAME }} process
         run: |
           echo "Checking processes..."
@@ -90,4 +95,5 @@ jobs:
 
       - name: Start server
         run: |
+          cd ${{ env.APPLICATION_DIRECTORY }}
           sudo nohup java -jar ${{ env.ARTIFACT_NAME }}.jar --server.port=80 --spring.config.location=application-dev.yml &

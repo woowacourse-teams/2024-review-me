@@ -5,7 +5,7 @@ import AlertModal from '../AlertModal';
 const LoginRedirectModal = () => {
   const navigate = useNavigate();
   const handleClickCloseButton = () => {
-    navigate('/home');
+    navigate('/');
   };
 
   return (

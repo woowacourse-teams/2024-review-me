@@ -12,7 +12,7 @@ import reviewme.reviewgroup.service.ReviewGroupService;
 
 @RestController
 @RequiredArgsConstructor
-public class ReviewGroupController {
+public class ReviewGroupController implements ReviewGroupApi {
 
     private final ReviewGroupService reviewGroupService;
 

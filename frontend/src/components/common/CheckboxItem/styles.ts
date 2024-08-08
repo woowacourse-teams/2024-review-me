@@ -1,10 +1,15 @@
 import styled from '@emotion/styled';
 
-export const CheckboxItem = styled.div``;
+export const CheckboxItem = styled.div`
+  display: flex;
+  margin-bottom: 1rem;
+`;
 
 export const CheckboxLabel = styled.label`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
   display: flex;
-  align-items: center;
   gap: 0.7rem;
+  align-items: center;
+
+  font-size: ${({ theme }) => theme.fontSize.basic};
+  line-height: 1.5;
 `;
