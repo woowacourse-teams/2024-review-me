@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { Button, Textarea } from '@/components';
+import { Button } from '@/components';
 import CheckboxItem from '@/components/common/CheckboxItem';
+import LongReviewItem from '@/components/common/LongReviewItem';
 import { ButtonStyleType } from '@/types';
 
 import { QuestionCard, ReviewWritingCard } from './components';
-import { AnswerType, COMMON_QUESTIONS, QuestionType, TAIL_QUESTIONS, TailQuestionType } from './question';
+import { AnswerType, COMMON_QUESTIONS, ESSAY, QuestionType, TAIL_QUESTIONS, TailQuestionType } from './question';
 import * as S from './styles';
 
 const ReviewWritingFormPage = () => {
@@ -14,6 +15,7 @@ const ReviewWritingFormPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideWidth, setSlideWidth] = useState(0);
   const [isOpenLimitGuide, setIsOpenLimitGuide] = useState(false);
+
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -40,7 +42,7 @@ const ReviewWritingFormPage = () => {
     }
 
     // 2. 페이지 이동
-    if (currentIndex < COMMON_QUESTIONS.length - 1) {
+    if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1);
     }
   };
@@ -67,8 +69,8 @@ const ReviewWritingFormPage = () => {
     return { minLength: targetQuestion?.choiceMinLength, maxLength: targetQuestion?.choiceMaxLength };
   };
 
-  const isValidatedAnswer = () => {
-    const currentQuestion = questions[currentIndex];
+  const isValidatedAnswer = (index: number) => {
+    const currentQuestion = questions[index];
     const { targetAnswer } = findTargetAnswer(currentQuestion.name);
     const { answerType, isExtraEssay } = currentQuestion;
     if (!targetAnswer) return false;
@@ -82,6 +84,13 @@ const ReviewWritingFormPage = () => {
     if (answerType === 'essay') return !!essayAnswer;
   };
 
+  const isAbleSubmit = () => {
+    return !!answers?.every((answer, index) => isValidatedAnswer(index));
+  };
+
+  const isShowSubmitButton = () => {
+    return currentIndex && currentIndex === questions.length - 1;
+  };
   const buttons = [
     {
       styleType: currentIndex === 0 ? 'disabled' : ('secondary' as ButtonStyleType),
@@ -90,10 +99,10 @@ const ReviewWritingFormPage = () => {
       disabled: currentIndex === 0,
     },
     {
-      styleType: isValidatedAnswer() ? ('primary' as ButtonStyleType) : 'disabled',
-      onClick: currentIndex === COMMON_QUESTIONS.length - 1 ? handleSubmit : handleNext,
-      text: currentIndex < COMMON_QUESTIONS.length - 1 ? '다음' : '제출',
-      disabled: isValidatedAnswer(),
+      styleType: isValidatedAnswer(currentIndex) ? ('primary' as ButtonStyleType) : 'disabled',
+      onClick: isShowSubmitButton() ? handleSubmit : handleNext,
+      text: isShowSubmitButton() ? '제출' : '다음',
+      disabled: isShowSubmitButton() ? isAbleSubmit() : isValidatedAnswer(currentIndex),
     },
   ];
 
@@ -129,14 +138,50 @@ const ReviewWritingFormPage = () => {
       newAnswers.splice(targetAnswerIndex, 1, { ...targetAnswer, choiceAnswer: newChoice });
     }
     // 2-2. answer가 있고, targetAnswer가 없는 경우
-    if (answers && !targetAnswer && !targetAnswerIndex) {
+    if (answers && !targetAnswer) {
       newAnswers = [...answers, { questionName, choiceAnswer: newChoice }];
     }
     // 2-3. answer가 없는 경우
     if (!answers) {
       newAnswers = [{ questionName, choiceAnswer: newChoice }];
     }
-    setAnswers(newAnswers ?? null);
+    if (newAnswers) {
+      setAnswers(newAnswers);
+    }
+  };
+
+  const isValidatedEssayLength = (value: string) => {
+    const MIN = 20;
+    const MAX = 1000;
+
+    return value.length >= MIN && value.length <= MAX;
+  };
+  interface HandleEssayChangeParams {
+    event: React.ChangeEvent<HTMLTextAreaElement>;
+    questionName: string;
+  }
+  const handleEssayChange = ({ event, questionName }: HandleEssayChangeParams) => {
+    // 서술형 답볍을 새로 하는 상황
+    const essayAnswer = isValidatedEssayLength(event.target.value) ? event.target.value : undefined;
+    if (!answers) {
+      setAnswers([
+        {
+          questionName,
+          essayAnswer,
+        },
+      ]);
+    }
+    const { targetAnswer, targetAnswerIndex } = findTargetAnswer(questionName);
+    //서술형 답볍을 바꾸는 상황
+    if (targetAnswer && targetAnswerIndex && answers) {
+      const newTargetAnswer = {
+        ...targetAnswer,
+        essayAnswer,
+      };
+      const newAnswers = [...answers];
+      newAnswers.splice(targetAnswerIndex, 1, newTargetAnswer);
+      setAnswers(newAnswers);
+    }
   };
 
   const isSelectedCheckbox = (questionName: string, option: string) => {
@@ -172,7 +217,22 @@ const ReviewWritingFormPage = () => {
                 </S.LimitGuideMessage>
               )}
               {/* {question.answerType ==='essay' &&}
-              {question.isExtraEssay && // 서술형 TAIL_QUESTIONS.find((value)=> value.name === question.name)} */}
+               */}
+              {question.isExtraEssay && (
+                <>
+                  <QuestionCard questionType="normal" question={question.question} />
+                  <QuestionCard
+                    questionType="guideline"
+                    question={ESSAY.find((essay) => essay.name === question.name)?.guideLine ?? ''}
+                  />
+                  <LongReviewItem
+                    initialValue={findTargetAnswer(question.name).targetAnswer?.essayAnswer}
+                    minLength={20}
+                    maxLength={1000}
+                    handleTextareaChange={(event) => handleEssayChange({ event, questionName: question.name })}
+                  />
+                </>
+              )}
             </ReviewWritingCard>
           </S.Slide>
         ))}
