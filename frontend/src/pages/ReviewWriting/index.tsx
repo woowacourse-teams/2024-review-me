@@ -5,6 +5,7 @@ import { postReviewApi } from '@/apis/review';
 import GithubLogoIcon from '@/assets/githubLogo.svg';
 import { ConfirmModal, ErrorAlertModal } from '@/components';
 import Button from '@/components/common/Button';
+import LongReviewItem from '@/components/common/LongReviewItem';
 import useConfirmModal from '@/hooks/useConfirmModal';
 import useErrorModal from '@/hooks/useErrorModal';
 import useReviewForm from '@/hooks/useReviewForm';
@@ -15,7 +16,6 @@ import LoadingPage from '../LoadingPage';
 
 import KeywordButton from './components/KeywordButton';
 // import RevieweeComment from './components/RevieweeComment';
-import ReviewItem from './components/ReviewItem';
 import * as S from './styles';
 
 const SUBMIT_CONFIRM_MESSAGE = `리뷰를 제출할까요?
@@ -78,15 +78,8 @@ const ReviewWritingPage = () => {
       </S.ReviewFormHeader>
       <S.ReviewFormMain>
         <S.ReviewContainer>
-          {dataToWrite.questions.map((question, index) => {
-            return (
-              <ReviewItem
-                question={`${index + 1}. ${question.content}`}
-                key={question.id}
-                answerValue={answers.find((answer) => answer.questionId === question.id)?.answer || ''}
-                handleWrite={(value) => handleAnswerChange(question.id, value)}
-              />
-            );
+          {dataToWrite.questions.map((_, index) => {
+            return <LongReviewItem key={index} minLength={20} maxLength={1000} />;
           })}
         </S.ReviewContainer>
         <S.KeywordContainer>
