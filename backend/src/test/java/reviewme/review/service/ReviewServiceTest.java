@@ -24,6 +24,7 @@ import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeExce
 import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.response.QuestionSetupResponse;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
@@ -194,5 +195,21 @@ class ReviewServiceTest {
         assertThatThrownBy(
                 () -> reviewService.findReceivedReviewDetail(reviewGroup1.getGroupAccessCode(), review2.getId()))
                 .isInstanceOf(ReviewIsNotInReviewGroupException.class);
+    }
+
+    @Test
+    void 리뷰_질문_내용에서_특정_문자열을_리뷰이의_이름으로_치환한다() {
+        // given
+        reviewGroupRepository.save(
+                new ReviewGroup("에프이", "리뷰미 프로젝트", "ABCD1234", "1234ABCD")
+        );
+        questionRepository.save(new Question("{revieweeName}에게 응원의 메시지를 전해주세요."));
+
+        // when
+        ReviewSetupResponse response = reviewService.findReviewCreationSetup("ABCD1234");
+        QuestionSetupResponse questionResponse = response.questions().get(0);
+
+        // then
+        assertThat(questionResponse.content()).contains("에프이");
     }
 }
