@@ -32,16 +32,6 @@ const ReviewWritingFormPage = () => {
     }
   };
 
-  const buttons = [
-    {
-      styleType: currentIndex === 0 ? 'disabled' : ('secondary' as ButtonStyleType),
-      onClick: handlePrev,
-      text: '이전',
-      disabled: currentIndex === 0,
-    },
-    { styleType: 'primary' as ButtonStyleType, onClick: handleNext, text: '다음' },
-    // NOTE: 제출 버튼은 따로 만들어야 하남
-  ];
 
   const findTargetAnswer = (questionName: string) => {
     const targetAnswer = answers?.find((answer) => answer.questionName === questionName);
@@ -60,6 +50,36 @@ const ReviewWritingFormPage = () => {
     const { targetQuestion } = findTargetQuestion(questionName);
     return { minLength: targetQuestion?.choiceMinLength, maxLength: targetQuestion?.choiceMaxLength };
   };
+
+  const isValidatedAnswer = () => {
+    const currentQuestion = questions[currentIndex];
+    const { targetAnswer } = findTargetAnswer(currentQuestion.name);
+    const { answerType, isExtraEssay } = currentQuestion;
+    if (!targetAnswer) return false;
+    const { choiceAnswer, essayAnswer } = targetAnswer;
+    // case1. 객관식만
+    if (answerType === 'choice' && !isExtraEssay) return !!choiceAnswer?.length;
+    // case2. 객관식 + 서술형
+    if (answerType === 'choice' && isExtraEssay) return !!choiceAnswer?.length && !!essayAnswer;
+
+    // case3. 서술형
+    if (answerType === 'essay') return !!essayAnswer;
+  };
+
+  const buttons = [
+    {
+      styleType: currentIndex === 0 ? 'disabled' : ('secondary' as ButtonStyleType),
+      onClick: handlePrev,
+      text: '이전',
+      disabled: currentIndex === 0,
+    },
+    {
+      styleType: isValidatedAnswer() ? ('primary' as ButtonStyleType) : 'disabled',
+      onClick: handleNext,
+      text: '다음',
+      disabled: isValidatedAnswer(),
+    },
+  ];
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, label: string) => {
     const { name, checked } = event.currentTarget;
