@@ -33,7 +33,12 @@ const ReviewWritingFormPage = () => {
   };
 
   const buttons = [
-    { styleType: 'secondary' as ButtonStyleType, onClick: handlePrev, text: '이전' },
+    {
+      styleType: currentIndex === 0 ? 'disabled' : ('secondary' as ButtonStyleType),
+      onClick: handlePrev,
+      text: '이전',
+      disabled: currentIndex === 0,
+    },
     { styleType: 'primary' as ButtonStyleType, onClick: handleNext, text: '다음' },
     // NOTE: 제출 버튼은 따로 만들어야 하남
   ];
@@ -138,7 +143,7 @@ const ReviewWritingFormPage = () => {
       </S.SliderContainer>
       <S.ButtonContainer>
         {buttons.map((button, index) => (
-          <Button key={index} styleType={button.styleType} onClick={button.onClick}>
+          <Button key={index} styleType={button.styleType} onClick={button.onClick} disabled={button.disabled}>
             {button.text}
           </Button>
         ))}
