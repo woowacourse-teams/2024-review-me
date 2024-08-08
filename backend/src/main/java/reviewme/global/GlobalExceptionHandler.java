@@ -62,16 +62,19 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(HttpMediaTypeException.class)
     public ProblemDetail handleHttpMediaTypeException(Exception ex) {
+        logSpringException(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "잘못된 media type 입니다.");
     }
 
     @ExceptionHandler({MissingRequestValueException.class, MissingServletRequestPartException.class})
     public ProblemDetail handleMissingRequestException(Exception ex) {
+        logSpringException(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "필수 요청 데이터가 누락되었습니다.");
     }
 
     @ExceptionHandler({ServletRequestBindingException.class, HttpMessageNotReadableException.class})
     public ProblemDetail handleServletRequestBindingException(Exception ex) {
+        logSpringException(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "요청을 읽을 수 없습니다.");
     }
 
@@ -80,16 +83,19 @@ public class GlobalExceptionHandler {
             TypeMismatchException.class, HandlerMethodValidationException.class
     })
     public ProblemDetail handleRequestFormatException(Exception ex) {
+        logSpringException(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "요청의 형식이 잘못되었습니다.");
     }
 
     @ExceptionHandler({NoHandlerFoundException.class, NoResourceFoundException.class})
     public ProblemDetail handleNoHandlerFoundException(Exception ex) {
+        logSpringException(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "잘못된 경로의 요청입니다.");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        logSpringException(ex);
         List<FieldErrorResponse> fieldErrors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -119,6 +125,6 @@ public class GlobalExceptionHandler {
     }
 
     private void logSpringException(Exception ex) {
-        log.info("Spring error is occurred - {}", ex.getClass().getSimpleName());
+        log.info("Spring error is occurred - {}: {}", ex.getClass().getSimpleName(), ex.getLocalizedMessage());
     }
 }
