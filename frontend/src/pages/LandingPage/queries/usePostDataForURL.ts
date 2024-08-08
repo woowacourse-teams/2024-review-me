@@ -6,7 +6,7 @@ import { GROUP_QUERY_KEY } from '@/constants';
 const usePostDataForURL = () => {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation({
+  const { mutate, isSuccess, data } = useMutation({
     mutationFn: (dataForURL: DataForURL) => postDataForURLApi(dataForURL),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [GROUP_QUERY_KEY.dataForURL] });
@@ -18,6 +18,8 @@ const usePostDataForURL = () => {
 
   return {
     mutate,
+    isSuccess,
+    data,
   };
 };
 
