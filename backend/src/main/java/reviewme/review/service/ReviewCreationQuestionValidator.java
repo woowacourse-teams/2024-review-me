@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.exception.DuplicateQuestionException;
-import reviewme.question.domain.exception.QuestionNotFoundException;
+import reviewme.question.domain.exception.QuestionsNotFoundException;
 import reviewme.review.repository.QuestionRepository;
 
 @Component
@@ -24,7 +24,7 @@ public class ReviewCreationQuestionValidator {
                 .distinct()
                 .count();
         if (questionsCount != distinctCount) {
-            throw new DuplicateQuestionException();
+            throw new DuplicateQuestionException(questionIds);
         }
     }
 
