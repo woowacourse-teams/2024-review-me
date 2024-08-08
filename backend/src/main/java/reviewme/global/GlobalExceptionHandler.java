@@ -117,7 +117,8 @@ public class GlobalExceptionHandler {
         log.info("{} is occurred - {}",
                 ex.getClass().getSuperclass().getSimpleName(),
                 ex.getClass().getSimpleName(),
-                ex);
+                ex
+        );
     }
 
     private void logInitialServerError(Exception ex) {
