@@ -1,5 +1,4 @@
 export const REVIEWEE = '쑤쑤';
-import { TAIL_CATEGORY } from './question';
 export const TAIL_QUESTION_TITLE = `✏️선택한 순간들을 바탕으로 ${REVIEWEE}에 대한 리뷰를 작성해볼게요.`;
 
 export interface QuestionType {
@@ -162,30 +161,26 @@ export const ESSAY: EssayType[] = [
   {
     name: 'communication',
     question: ESSAY_QUESTION,
-    guideLine:
-      '상황을 자세하게 기록할수록 OO에게 도움이 돼요. OO 덕분에 팀이 원활한 소통을 이뤘거나, 함께 일하면서 배울 점이 있었는지 떠올려 보세요.',
+    guideLine: `상황을 자세하게 기록할수록 ${REVIEWEE}에게 도움이 돼요. ${REVIEWEE} 덕분에 팀이 원활한 소통을 이뤘거나, 함께 일하면서 배울 점이 있었는지 떠올려 보세요.`,
   },
   {
     name: 'solution',
     question: ESSAY_QUESTION,
-    guideLine:
-      '상황을 자세하게 기록할수록 OO에게 도움이 돼요. 어떤 문제 상황이 발생했고, OO이 어떻게 해결했는지 그 과정을 떠올려 보세요.',
+    guideLine: `상황을 자세하게 기록할수록 ${REVIEWEE}에게 도움이 돼요. 어떤 문제 상황이 발생했고, ${REVIEWEE}가 어떻게 해결했는지 그 과정을 떠올려 보세요.`,
   },
   {
     name: 'time',
     question: ESSAY_QUESTION,
-    guideLine:
-      '상황을 자세하게 기록할수록 OO에게 도움이 돼요. OO 덕분에 팀이 효율적으로 시간관리를 할 수 있었는지 떠올려 보세요.',
+    guideLine: `상황을 자세하게 기록할수록 ${REVIEWEE}에게 도움이 돼요. ${REVIEWEE} 덕분에 팀이 효율적으로 시간관리를 할 수 있었는지 떠올려 보세요.`,
   },
   {
     name: 'techSkill',
     question: ESSAY_QUESTION,
-    guideLine:
-      '상황을 자세하게 기록할수록 OO에게 도움이 돼요. OO 덕분에 기술적 역량, 전문 지식적으로 도움을 받은 경험을 떠올려 보세요.',
+    guideLine: `상황을 자세하게 기록할수록 ${REVIEWEE}에게 도움이 돼요. ${REVIEWEE} 덕분에 기술적 역량, 전문 지식적으로 도움을 받은 경험을 떠올려 보세요.`,
   },
   {
     name: 'growthMind',
     question: ESSAY_QUESTION,
-    guideLine: '상황을 자세하게 기록할수록 OO에게 도움이 돼요. 인상깊었던 OO의 성장 마인드셋을 떠올려 보세요.',
+    guideLine: `상황을 자세하게 기록할수록 ${REVIEWEE}에게 도움이 돼요. 인상깊었던 ${REVIEWEE}의 성장 마인드셋을 떠올려 보세요.`,
   },
 ];
