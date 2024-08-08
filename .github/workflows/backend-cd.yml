@@ -55,11 +55,16 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Checkout to secret repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.PRIVATE_REPOSITORY_URL }}
+          token: ${{ secrets.PRIVATE_REPOSITORY_TOKEN }}
+
       - name: Download uploaded artifact
         uses: actions/download-artifact@v4
         with:
           name: ${{ env.ARTIFACT_NAME }}
-          path: ${{ env.ARTIFACT_DIRECTORY }}
 
       - name: Find ${{ env.ARTIFACT_NAME }} process
         run: |
@@ -85,4 +90,4 @@ jobs:
 
       - name: Start server
         run: |
-          sudo nohup java -jar ${{ env.ARTIFACT_DIRECTORY }}/${{ env.ARTIFACT_NAME }}.jar --server.port=80 --spring.profiles.active=local &
+          sudo nohup java -jar ${{ env.ARTIFACT_NAME }}.jar --server.port=80 --spring.config.location=application-dev.yml &

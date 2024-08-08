@@ -61,6 +61,11 @@ module.exports = (env, argv) => {
         systemvars: true,
         path: './.env',
       }),
+      sentryWebpackPlugin({
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: 'review-me',
+        project: 'review-me',
+      }),
     ],
     devtool: isProduction ? 'hidden-source-map' : 'eval',
     devServer: {
