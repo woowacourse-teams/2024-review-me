@@ -31,17 +31,17 @@ public class ReviewController implements ReviewApi {
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
+    @GetMapping("/reviews/write")
+    public ResponseEntity<ReviewSetupResponse> findReviewCreationSetup(@RequestParam String reviewRequestCode) {
+        ReviewSetupResponse response = reviewService.findReviewCreationSetup(reviewRequestCode);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/reviews")
     public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
             @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode
     ) {
         ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/reviews/write")
-    public ResponseEntity<ReviewSetupResponse> findReviewCreationSetup(@RequestParam String reviewRequestCode) {
-        ReviewSetupResponse response = reviewService.findReviewCreationSetup(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 
