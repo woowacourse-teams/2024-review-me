@@ -110,7 +110,8 @@ public class GlobalExceptionHandler {
     private void logReviewMeException(ReviewMeException ex) {
         log.info("{} is occurred - {}",
                 ex.getClass().getSuperclass().getSimpleName(),
-                ex.getClass().getSimpleName());
+                ex.getClass().getSimpleName(),
+                ex);
     }
 
     private void logInitialServerError(Exception ex) {
