@@ -1,10 +1,9 @@
 import { AlertModal } from '@/components';
 import { useGroupAccessCode } from '@/hooks';
 
-import CopyIcon from '../../../../assets/copy.svg';
+import CopyTextButton from '../CopyTextButton';
 
 import * as S from './styles';
-
 interface URLModalProps {
   reviewRequestCode: string;
   closeModal: () => void;
@@ -25,12 +24,15 @@ const ReviewGroupDataModal = ({ reviewRequestCode, closeModal }: URLModalProps) 
           <S.ReviewGroupDataItem>
             <S.DataName>리뷰 요청 URL</S.DataName>
             <S.Data>{reviewRequestCode}</S.Data>
-            <img src={CopyIcon} alt="리뷰 요청 URL 복사하기" />
+            <CopyTextButton targetText={reviewRequestCode} alt="리뷰 요청 URL 복사하기"></CopyTextButton>
           </S.ReviewGroupDataItem>
           <S.ReviewGroupDataItem>
             <S.DataName>리뷰 확인 코드</S.DataName>
             <S.Data>{groupAccessCode}</S.Data>
-            <img src={CopyIcon} alt="리뷰 확인 코드 복사하기" />
+            <CopyTextButton
+              targetText={groupAccessCode ? groupAccessCode : ''}
+              alt="리뷰 확인 코드 복사하기"
+            ></CopyTextButton>
           </S.ReviewGroupDataItem>
           <S.CheckContainer>
             <S.Checkbox />
