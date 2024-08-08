@@ -88,8 +88,10 @@ public class ReviewService {
     private ReviewSetupResponse createReviewSetupResponse(ReviewGroup reviewGroup) {
         List<QuestionSetupResponse> questionSetupResponse = questionRepository.findAll()
                 .stream()
-                .map(question -> new QuestionSetupResponse(question.getId(),
-                        question.convertContent("{revieweeName}", reviewGroup.getReviewee())))
+                .map(question -> new QuestionSetupResponse(
+                        question.getId(),
+                        question.convertContent("{revieweeName}", reviewGroup.getReviewee())
+                ))
                 .toList();
 
         List<KeywordResponse> keywordResponse = keywordRepository.findAll()
