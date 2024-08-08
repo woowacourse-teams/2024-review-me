@@ -29,7 +29,7 @@ public class ReviewCreationKeywordValidator {
                 .distinct()
                 .count();
         if (keywordsCount != distinctCount) {
-            throw new DuplicateKeywordException();
+            throw new DuplicateKeywordException(selectedKeywordIds);
         }
     }
 
