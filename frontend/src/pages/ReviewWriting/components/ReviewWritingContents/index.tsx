@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import GithubLogoIcon from '@/assets/githubLogo.svg';
 import { ConfirmModal, ErrorAlertModal } from '@/components';
 import Button from '@/components/common/Button';
+import LongReviewItem from '@/components/common/LongReviewItem';
 import useGetDataToWrite from '@/hooks/review/useGetDataToWrite';
 import useMutateReview from '@/hooks/review/useMutateReview';
 import useConfirmModal from '@/hooks/useConfirmModal';
@@ -15,7 +16,6 @@ import { ReviewData } from '@/types';
 import LoadingPage from '../../../LoadingPage';
 import KeywordButton from '../KeywordButton';
 // import RevieweeComment from './components/RevieweeComment';
-import ReviewItem from '../ReviewItem';
 
 import * as S from './styles';
 
@@ -84,12 +84,24 @@ const ReviewWritingContents = () => {
         <S.ReviewContainer>
           {dataToWrite.questions.map((question, index) => {
             return (
-              <ReviewItem
-                question={`${index + 1}. ${question.content}`}
-                key={question.id}
-                answerValue={answers.find((answer) => answer.questionId === question.id)?.answer || ''}
-                handleWrite={(value) => handleAnswerChange(question.id, value)}
-              />
+              <>
+                <p>
+                  {question.id + 1}. {question.content}
+                </p>
+                <LongReviewItem
+                  key={index}
+                  minLength={20}
+                  maxLength={1000}
+                  handleTextareaChange={(e) => handleAnswerChange(question.id, e.target.value)}
+                />
+              </>
+
+              // <ReviewItem
+              //   question={`${index + 1}. ${question.content}`}
+              //   key={question.id}
+              //   answerValue={answers.find((answer) => answer.questionId === question.id)?.answer || ''}
+              //   handleWrite={(value) => handleAnswerChange(question.id, value)}
+              // />
             );
           })}
         </S.ReviewContainer>
