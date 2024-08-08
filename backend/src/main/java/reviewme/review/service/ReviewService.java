@@ -107,7 +107,7 @@ public class ReviewService {
                 .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
 
         Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
-                .orElseThrow(ReviewIsNotInReviewGroupException::new);
+                .orElseThrow(() -> new ReviewIsNotInReviewGroupException(reviewId, reviewGroup.getId()));
 
         return createReviewDetailResponse(review, reviewGroup);
     }
