@@ -7,8 +7,8 @@ export const ReviewGroupDataModal = styled.div`
 `;
 
 export const ReviewGroupDataTitle = styled.h3`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
   font-size: 2rem;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 export const ReviewGroupDataContainer = styled.div`
@@ -19,9 +19,8 @@ export const ReviewGroupDataContainer = styled.div`
 
 export const ReviewGroupDataItem = styled.div`
   display: flex;
-  justify-content: space-between;
   gap: 2.1rem;
-
+  justify-content: space-between;
   font-size: 1.5rem;
 `;
 
@@ -35,21 +34,19 @@ export const Data = styled.span`
 
 export const CheckContainer = styled.div`
   display: flex;
-
   font-size: 1.5rem;
 `;
 
 export const Checkbox = styled.input`
-  height: 1rem;
-  width: 1rem;
-  margin-right: 0.5rem;
-
   cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
 `;
 
 export const CheckMessage = styled.p``;
 
 export const Warning = styled.p`
-  color: ${({ theme }) => theme.colors.red};
   font-size: smaller;
+  color: ${({ theme }) => theme.colors.red};
 `;
