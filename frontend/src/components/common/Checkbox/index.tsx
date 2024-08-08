@@ -10,15 +10,15 @@ export interface CheckboxStyleProps {
   $style?: React.CSSProperties;
 }
 
-interface CheckboxProps extends CheckboxStyleProps {
+export interface CheckboxProps extends CheckboxStyleProps {
   id: string;
   isChecked: boolean;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: ChangeEvent<HTMLInputElement>, label?: string) => void;
   name?: string;
   isDisabled?: boolean;
 }
 
-const Checkbox = ({ id, name, isChecked, isDisabled, onChange, $style }: CheckboxProps) => {
+const Checkbox = ({ id, name, isChecked, isDisabled = false, onChange, $style }: CheckboxProps) => {
   return (
     <S.CheckboxContainer $style={$style}>
       <S.CheckboxLabel>
