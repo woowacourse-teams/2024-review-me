@@ -1,5 +1,7 @@
 package reviewme.reviewgroup.controller;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,7 +25,7 @@ public interface ReviewGroupApi {
                     responseCode = "200",
                     description = "응답 성공 : 리뷰 그룹 생성",
                     content = @Content(
-                            mediaType = APPLICATION_JSON,
+                            mediaType = APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ReviewGroupCreationRequest.class)
                     )
             )

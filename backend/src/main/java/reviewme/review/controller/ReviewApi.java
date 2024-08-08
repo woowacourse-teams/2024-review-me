@@ -1,5 +1,7 @@
 package reviewme.review.controller;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.headers.Header;
@@ -22,15 +24,13 @@ import reviewme.review.dto.response.ReviewSetupResponse;
 @Tag(name = "리뷰 관리")
 public interface ReviewApi {
 
-    String APPLICATION_JSON = "application/json";
-
     @Operation(summary = "리뷰 등록", description = "리뷰 작성 정보를 받아 리뷰를 등록한다.")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
                     description = "응답 성공 : 리뷰 등록 완료",
                     headers = {
-                            @Header(name = "Content-Type", description = APPLICATION_JSON),
+                            @Header(name = "Content-Type", description = APPLICATION_JSON_VALUE),
                             @Header(name = "Location", description = "/reviews/{reviewId}")
                     }
             ),
@@ -38,7 +38,7 @@ public interface ReviewApi {
                     responseCode = "400",
                     description = "응답 실패 : 올바르지 않은 리뷰 요청 코드",
                     content = @Content(
-                            mediaType = APPLICATION_JSON,
+                            mediaType = APPLICATION_JSON_VALUE,
                             examples = @ExampleObject(value = """
                                     {
                                       "type": "about:blank",
@@ -60,7 +60,7 @@ public interface ReviewApi {
                     responseCode = "200",
                     description = "응답 성공 : 리뷰 작성을 위한 정보 응답",
                     content = @Content(
-                            mediaType = APPLICATION_JSON,
+                            mediaType = APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ReviewSetupResponse.class)
                     )
             ),
@@ -68,7 +68,7 @@ public interface ReviewApi {
                     responseCode = "400",
                     description = "응답 실패 : 올바르지 않은 리뷰 요청 코드",
                     content = @Content(
-                            mediaType = APPLICATION_JSON,
+                            mediaType = APPLICATION_JSON_VALUE,
                             examples = @ExampleObject(value = """
                                     {
                                       "type": "about:blank",
@@ -94,7 +94,7 @@ public interface ReviewApi {
                     responseCode = "200",
                     description = "응답 성공 : 리뷰 목록 응답",
                     content = @Content(
-                            mediaType = APPLICATION_JSON,
+                            mediaType = APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ReceivedReviewsResponse.class)
                     )
             ),
@@ -102,7 +102,7 @@ public interface ReviewApi {
                     responseCode = "400",
                     description = "응답 실패 : 올바르지 않은 그룹 액세스 코드",
                     content = @Content(
-                            mediaType = APPLICATION_JSON,
+                            mediaType = APPLICATION_JSON_VALUE,
                             examples = @ExampleObject(value = """
                                     {
                                       "type": "about:blank",
@@ -129,7 +129,7 @@ public interface ReviewApi {
                     responseCode = "200",
                     description = "응답 성공 : 리뷰 정보 응답",
                     content = @Content(
-                            mediaType = APPLICATION_JSON,
+                            mediaType = APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ReviewDetailResponse.class)
                     )
             ),
@@ -137,7 +137,7 @@ public interface ReviewApi {
                     responseCode = "400",
                     description = "응답 실패 : 올바르지 않은 그룹 액세스 코드",
                     content = @Content(
-                            mediaType = APPLICATION_JSON,
+                            mediaType = APPLICATION_JSON_VALUE,
                             examples = @ExampleObject(value = """
                                     {
                                       "type": "about:blank",
