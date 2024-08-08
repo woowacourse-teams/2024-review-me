@@ -30,7 +30,7 @@ const getDetailedReview = () =>
   });
 
 const getDataToWriteReview = () =>
-  http.get(endPoint.gettingDataToWriteReview(10), async ({ request }) => {
+  http.get(endPoint.gettingDataToWriteReview('ABCD1234'), async ({ request }) => {
     return HttpResponse.json(REVIEW_WRITING_DATA);
   });
 
@@ -61,6 +61,11 @@ const getReviewList = () => {
   });
 };
 
-const reviewHandler = [getDetailedReview(), getReviewList(), getDataToWriteReview()];
+const postReview = () =>
+  http.post(endPoint.postingReview, async () => {
+    return HttpResponse.json({ message: 'post 성공' }, { status: 201 });
+  });
+
+const reviewHandler = [getDetailedReview(), getReviewList(), getDataToWriteReview(), postReview()];
 
 export default reviewHandler;

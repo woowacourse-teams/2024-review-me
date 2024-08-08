@@ -1,17 +1,8 @@
 import { WritingReviewInfoData } from '@/types';
 
 export const REVIEW_WRITING_DATA: WritingReviewInfoData = {
-  reviewerGroup: {
-    id: 8,
-    name: '2024-review-me',
-    description: '',
-    deadline: new Date(2024, 8, 2, 14, 30),
-    thumbnailUrl: '',
-    reviewee: {
-      id: 5,
-      name: 'chysis',
-    },
-  },
+  revieweeName: 'chysis',
+  projectName: 'woowacourse 6th',
   questions: [
     { id: 0, content: '동료의 개발 역량 향상을 위해 피드백을 남겨 주세요.' },
     { id: 1, content: '동료의 소프트 스킬의 성장을 위해 피드백을 남겨 주세요.' },
