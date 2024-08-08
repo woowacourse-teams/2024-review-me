@@ -9,6 +9,6 @@ import reviewme.keyword.domain.exception.KeywordNotFoundException;
 public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 
     default Keyword getKeywordById(long id) {
-        return findById(id).orElseThrow(KeywordNotFoundException::new);
+        return findById(id).orElseThrow(() -> new KeywordNotFoundException(id));
     }
 }
