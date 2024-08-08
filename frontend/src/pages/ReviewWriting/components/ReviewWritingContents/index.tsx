@@ -29,7 +29,7 @@ const ReviewWritingContents = () => {
   const { isConfirmModalOpen, openConfirmModal, closeConfirmModal } = useConfirmModal();
   const { isErrorModalOpen, errorMessage, openErrorModal, closeErrorModal } = useErrorModal();
   const { postReview } = useMutateReview();
-  const dataToWrite = useGetDataToWrite({ reviewRequestCode });
+  const { dataToWrite } = useGetDataToWrite({ reviewRequestCode });
 
   const { answers, selectedKeywords, isValidForm, handleAnswerChange, handleKeywordButtonClick } = useReviewForm({
     dataToWrite,
