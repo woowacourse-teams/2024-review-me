@@ -11,8 +11,8 @@ export const CardLayout = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 `;
 
-export const SliderContainer = styled.div<{ translateX: number }>`
-  transform: ${({ translateX }) => `translateX(-${translateX}px)`};
+export const SliderContainer = styled.div<{ $translateX: number }>`
+  transform: ${({ $translateX }) => `translateX(-${$translateX}px)`};
   display: flex;
   width: 100%;
   transition: transform 0.5s ease-in-out;

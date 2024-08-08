@@ -205,7 +205,7 @@ const ReviewWritingFormPage = () => {
 
   return (
     <S.CardLayout>
-      <S.SliderContainer ref={wrapperRef} translateX={currentIndex * slideWidth}>
+      <S.SliderContainer ref={wrapperRef} $translateX={currentIndex * slideWidth}>
         {questions.map((question, index) => (
           <S.Slide key={index}>
             <ReviewWritingCard title={question.title}>
