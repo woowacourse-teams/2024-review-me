@@ -1,16 +1,9 @@
-// src/styles.ts
 import styled from '@emotion/styled';
 
 export const CopyTextButton = styled.button`
-  width: 2.2rem;
-  height: 2.2rem;
-  padding: 0;
+  width: 2.4rem;
+  min-width: 2.4rem;
+  height: 2.4rem;
   border: none;
   background: none;
-
-  img {
-    width: 2.2rem;
-    height: 2.2rem;
-    object-fit: contain;
-  }
 `;
