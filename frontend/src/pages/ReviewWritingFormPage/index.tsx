@@ -102,7 +102,7 @@ const ReviewWritingFormPage = () => {
       disabled: currentIndex === 0,
     },
     {
-      styleType: isValidatedAnswer(currentIndex) ? ('primary' as ButtonStyleType) : 'disabled',
+      styleType: isAbleSubmit() || isValidatedAnswer(currentIndex) ? ('primary' as ButtonStyleType) : 'disabled',
       onClick: isShowSubmitButton() ? handleSubmit : handleNext,
       text: isShowSubmitButton() ? '제출' : '다음',
       disabled: isShowSubmitButton() ? isAbleSubmit() : isValidatedAnswer(currentIndex),
