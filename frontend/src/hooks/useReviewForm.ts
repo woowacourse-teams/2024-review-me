@@ -10,7 +10,7 @@ interface UseReviewFormProps {
 
 const useReviewForm = ({ dataToWrite, openErrorModal }: UseReviewFormProps) => {
   const [answers, setAnswers] = useState<ReviewContent[]>(
-    dataToWrite.questions.map((question: Question) => ({ questionId: question.id, answer: '' })),
+    dataToWrite.questions.map((question: Question) => ({ questionId: question.id, answer: '' })) || [],
   );
   const [selectedKeywords, setSelectedKeywords] = useState<number[]>([]);
 
