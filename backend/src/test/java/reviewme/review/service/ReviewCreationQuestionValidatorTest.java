@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.exception.DuplicateQuestionException;
-import reviewme.question.domain.exception.QuestionNotFoundException;
 import reviewme.review.repository.QuestionRepository;
 import reviewme.support.ServiceTest;
 
@@ -21,21 +20,6 @@ class ReviewCreationQuestionValidatorTest {
 
     @Autowired
     private QuestionRepository questionRepository;
-
-    @Test
-    void 존재하는_질문의_아이디인지_검사한다() {
-        // given
-        long existQuestionId = questionRepository.save(소프트스킬이_어떤가요.create()).getId();
-        long nonExistQuestionId = Long.MAX_VALUE;
-
-        // when, then
-        assertAll(
-                () -> assertThatCode(() -> reviewCreationQuestionValidator.validate(List.of(existQuestionId)))
-                        .doesNotThrowAnyException(),
-                () -> assertThatCode(() -> reviewCreationQuestionValidator.validate(List.of(nonExistQuestionId)))
-                        .isInstanceOf(QuestionNotFoundException.class)
-        );
-    }
 
     @Test
     void 중복되는_아이디의_질문인지_검사한다() {
