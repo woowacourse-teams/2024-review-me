@@ -1,9 +1,11 @@
 export const REVIEWEE = '쑤쑤';
+import { TAIL_CATEGORY } from './question';
 export const TAIL_QUESTION_TITLE = `✏️선택한 순간들을 바탕으로 ${REVIEWEE}에 대한 리뷰를 작성해볼게요.`;
 
 export interface QuestionType {
   name: string;
   title: string;
+  tailCategory?: string;
   question: string;
   answerType: 'choice' | 'essay';
   options?: string[];
@@ -11,7 +13,9 @@ export interface QuestionType {
   choiceMinLength?: number;
   choiceMaxLength?: number;
 }
-
+export interface TailQuestionType extends QuestionType {
+  tailCategory: string;
+}
 export interface AnswerType {
   questionName: string;
   choiceAnswer?: string[];
@@ -20,10 +24,11 @@ export interface AnswerType {
 const CHOICE_MIN_LENGTH = 1;
 const OPENING_CHOICE_MAX_LENGTH = 2;
 
-export const TAIL_QUESTIONS: QuestionType[] = [
+export const TAIL_QUESTIONS: TailQuestionType[] = [
   {
     name: 'communication',
     title: TAIL_QUESTION_TITLE,
+    tailCategory: '🗣️ 커뮤니케이션, 협업 능력  (ex: 팀원간의 원활한 정보 공유, 명확한 의사소통)',
     question: '커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요. (1개 이상)',
     answerType: 'choice',
     options: [
@@ -41,6 +46,7 @@ export const TAIL_QUESTIONS: QuestionType[] = [
   {
     name: 'solution',
     title: TAIL_QUESTION_TITLE,
+    tailCategory: '💡 문제 해결 능력  (ex: 프로젝트 중 만난 버그/오류를 분석하고 이를 해결하는 능력)',
     question: '문제해결 능력에서 어느 부분이 인상 깊었는지 선택해주세요. (1개 이상)',
     answerType: 'choice',
     options: [
@@ -59,6 +65,7 @@ export const TAIL_QUESTIONS: QuestionType[] = [
   {
     name: 'time',
     title: TAIL_QUESTION_TITLE,
+    tailCategory: '⏰ 시간 관리 능력 (ex: 일정과 마감 기한 준수, 업무의 우선 순위 분배)',
     question: '시간 관리 능력을 선택하셨다면 어떤 부분에서 인상 깊었는지 선택해주세요.',
     answerType: 'choice',
     options: [
@@ -74,6 +81,7 @@ export const TAIL_QUESTIONS: QuestionType[] = [
   {
     name: 'techSkill',
     title: TAIL_QUESTION_TITLE,
+    tailCategory: '🤓 기술적 역량, 전문 지식 (ex: 요구 사항을 이해하고 이를 구현하는 능력)',
     question: '기술 역량, 전문 지식에서 어떤 부분에서 인상 깊었는지 선택해주세요.',
     answerType: 'choice',
     options: [
@@ -96,6 +104,8 @@ export const TAIL_QUESTIONS: QuestionType[] = [
   {
     name: 'growthMind',
     title: TAIL_QUESTION_TITLE,
+    tailCategory:
+      '🌱 성장 마인드셋 (ex: 새로운 분야나 잘 모르는 분야에 도전하는 마음, 꾸준한 노력으로 프로젝트 이전보다 성장하는 모습)',
     question: '성장 마인드셋을 선택하셨다면 어떤 부분이 인상 깊었는지 선택해주세요.',
     answerType: 'choice',
     options: [
@@ -114,6 +124,7 @@ export const TAIL_QUESTIONS: QuestionType[] = [
     choiceMinLength: CHOICE_MIN_LENGTH,
   },
 ];
+
 // NOTE: Map 객체로 변환 생각해보자
 export const COMMON_QUESTIONS: QuestionType[] = [
   {
@@ -121,13 +132,7 @@ export const COMMON_QUESTIONS: QuestionType[] = [
     title: `💡${REVIEWEE}와 함께 한 기억을 떠올려볼게요.`,
     question: `프로젝트 기간 동안, ${REVIEWEE}의 강점이 드러났던 순간을 선택해주세요. (1~2개)`,
     answerType: 'choice',
-    options: [
-      '🗣️ 커뮤니케이션, 협업 능력  (ex: 팀원간의 원활한 정보 공유, 명확한 의사소통)',
-      '💡 문제 해결 능력  (ex: 프로젝트 중 만난 버그/오류를 분석하고 이를 해결하는 능력)',
-      '⏰ 시간 관리 능력 (ex: 일정과 마감 기한 준수, 업무의 우선 순위 분배)',
-      '🤓 기술적 역량, 전문 지식 (ex: 요구 사항을 이해하고 이를 구현하는 능력)',
-      '🌱 성장 마인드셋 (ex: 새로운 분야나 잘 모르는 분야에 도전하는 마음, 꾸준한 노력으로 프로젝트 이전보다 성장하는 모습)',
-    ],
+    options: TAIL_QUESTIONS.map((question) => question.tailCategory),
     choiceMinLength: CHOICE_MIN_LENGTH,
     choiceMaxLength: OPENING_CHOICE_MAX_LENGTH,
   },

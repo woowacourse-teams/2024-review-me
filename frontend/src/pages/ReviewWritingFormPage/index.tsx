@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { Button } from '@/components';
+import { Button, Textarea } from '@/components';
 import CheckboxItem from '@/components/common/CheckboxItem';
 import { ButtonStyleType } from '@/types';
 
 import { QuestionCard, ReviewWritingCard } from './components';
-import { AnswerType, COMMON_QUESTIONS, QuestionType, TAIL_QUESTIONS } from './question';
+import { AnswerType, COMMON_QUESTIONS, QuestionType, TAIL_QUESTIONS, TailQuestionType } from './question';
 import * as S from './styles';
 
 const ReviewWritingFormPage = () => {
-  const [questions, setQuestions] = useState<QuestionType[]>(COMMON_QUESTIONS);
+  const [questions, setQuestions] = useState<(QuestionType | TailQuestionType)[]>([COMMON_QUESTIONS[0]]);
   const [answers, setAnswers] = useState<AnswerType[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideWidth, setSlideWidth] = useState(0);
@@ -27,11 +27,27 @@ const ReviewWritingFormPage = () => {
   };
 
   const handleNext = () => {
+    // 1. 카테고리 저장하기
+    if (currentIndex === 0 && answers) {
+      const selectedCategoryList = answers[0].choiceAnswer;
+      if (!selectedCategoryList) return;
+
+      const selectedCategoryQuestionList = TAIL_QUESTIONS.filter((question) =>
+        selectedCategoryList.includes(question.tailCategory),
+      );
+      const newQuestions = [COMMON_QUESTIONS[0], ...selectedCategoryQuestionList, ...COMMON_QUESTIONS.slice(1)];
+      setQuestions(newQuestions);
+    }
+
+    // 2. 페이지 이동
     if (currentIndex < COMMON_QUESTIONS.length - 1) {
       setCurrentIndex(currentIndex + 1);
     }
   };
 
+  const handleSubmit = () => {
+    console.log('제출 버튼 클릭');
+  };
 
   const findTargetAnswer = (questionName: string) => {
     const targetAnswer = answers?.find((answer) => answer.questionName === questionName);
@@ -75,8 +91,8 @@ const ReviewWritingFormPage = () => {
     },
     {
       styleType: isValidatedAnswer() ? ('primary' as ButtonStyleType) : 'disabled',
-      onClick: handleNext,
-      text: '다음',
+      onClick: currentIndex === COMMON_QUESTIONS.length - 1 ? handleSubmit : handleNext,
+      text: currentIndex < COMMON_QUESTIONS.length - 1 ? '다음' : '제출',
       disabled: isValidatedAnswer(),
     },
   ];
