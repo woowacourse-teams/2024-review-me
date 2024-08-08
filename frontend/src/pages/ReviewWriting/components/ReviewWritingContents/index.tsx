@@ -86,7 +86,7 @@ const ReviewWritingContents = () => {
             return (
               <>
                 <p>
-                  {question.id + 1}. {question.content}
+                  {index + 1}. {question.content}
                 </p>
                 <LongReviewItem
                   key={index}
