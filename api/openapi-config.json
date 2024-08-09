@@ -1,0 +1,11 @@
+{
+  "sourceFolder": "",
+  "modelPackage": "reviewme.dto",
+  "apiPackage": "reviewme.api",
+  "hideGenerationTimestamp": true,
+  "useJakartaEe": true,
+  "useBeanValidation": true,
+  "interfaceOnly": true,
+  "openApiNullable": false,
+  "additionalModelTypeAnnotations": "@lombok.AllArgsConstructor"
+}
