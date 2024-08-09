@@ -1,11 +1,11 @@
-import UserProfileIcon from '../../../assets/userProfile.svg';
-import { SearchInput } from '../../common';
+// import UserProfileIcon from '../../../assets/userProfile.svg';
+// import { SearchInput } from '../../common';
 
 import Logo from './components/Logo';
 import SidebarOpenButton from './components/SidebarOpenButton';
 import * as S from './styles';
 
-const USER_SEARCH_PLACE_HOLDER = '사용자를 입력해주세요.';
+// const USER_SEARCH_PLACE_HOLDER = '사용자를 입력해주세요.';
 
 interface TopbarProps {
   openSidebar: () => void;
@@ -18,8 +18,8 @@ const Topbar = ({ openSidebar }: TopbarProps) => {
         <Logo />
       </S.Container>
       <S.Container>
-        <SearchInput $width="30rem" $height="3.6rem" placeholder={USER_SEARCH_PLACE_HOLDER} />
-        <S.UserProfile src={UserProfileIcon} alt="로그인한 사용자 깃허브 프로필" />
+        {/* <SearchInput $width="30rem" $height="3.6rem" placeholder={USER_SEARCH_PLACE_HOLDER} /> */}
+        {/* <S.UserProfile src={UserProfileIcon} alt="로그인한 사용자 깃허브 프로필" /> */}
       </S.Container>
     </S.Layout>
   );
