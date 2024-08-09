@@ -4,6 +4,9 @@ export const ReviewGroupDataModal = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4rem;
+
+  width: 52rem;
+  height: 23rem;
 `;
 
 export const ReviewGroupDataTitle = styled.h3`
@@ -14,7 +17,8 @@ export const ReviewGroupDataTitle = styled.h3`
 export const ReviewGroupDataContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.7rem;
+  min-width: 0;
 `;
 
 export const ReviewGroupDataItem = styled.div`
@@ -25,10 +29,12 @@ export const ReviewGroupDataItem = styled.div`
 `;
 
 export const DataName = styled.span`
+  flex: 0.6;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 export const Data = styled.span`
+  flex: 2;
   color: ${({ theme }) => theme.colors.gray};
 `;
 

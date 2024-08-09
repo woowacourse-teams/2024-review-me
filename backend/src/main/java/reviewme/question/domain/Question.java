@@ -26,4 +26,8 @@ public class Question {
     public Question(String content) {
         this.content = content;
     }
+
+    public String convertContent(String target, String replacement) {
+        return content.replace(target, replacement);
+    }
 }

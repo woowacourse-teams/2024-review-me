@@ -9,7 +9,7 @@ const ReviewWritingCompletePage = () => {
   const navigate = useNavigate();
 
   const handleClickHomeButton = () => {
-    navigate('/home', { replace: true });
+    navigate('/', { replace: true });
   };
 
   return (

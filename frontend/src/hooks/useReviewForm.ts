@@ -1,33 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { getDataToWriteReviewApi } from '@/apis/review';
 import { REVIEW } from '@/constants';
-import { Keyword, ReviewContent, WritingReviewInfoData } from '@/types';
+import { Keyword, Question, ReviewContent, WritingReviewInfoData } from '@/types';
 
 interface UseReviewFormProps {
-  reviewRequestCode: string;
+  dataToWrite: WritingReviewInfoData;
   openErrorModal: (errorMessage: string) => void;
 }
 
-const useReviewForm = ({ reviewRequestCode, openErrorModal }: UseReviewFormProps) => {
-  const [dataToWrite, setDataToWrite] = useState<WritingReviewInfoData | null>(null);
-  const [answers, setAnswers] = useState<ReviewContent[]>([]);
+const useReviewForm = ({ dataToWrite, openErrorModal }: UseReviewFormProps) => {
+  const [answers, setAnswers] = useState<ReviewContent[]>(
+    dataToWrite.questions.map((question: Question) => ({ questionId: question.id, answer: '' })) || [],
+  );
   const [selectedKeywords, setSelectedKeywords] = useState<number[]>([]);
 
   const isValidAnswersLength = !answers.some((id) => id.answer.length < REVIEW.answerMinLength);
   const isValidKeywordSelection =
     selectedKeywords.length >= REVIEW.keywordMinCount && selectedKeywords.length <= REVIEW.keywordMaxCount;
   const isValidForm = isValidAnswersLength && isValidKeywordSelection;
-
-  useEffect(() => {
-    const getDataToWrite = async () => {
-      const data = await getDataToWriteReviewApi(reviewRequestCode);
-      setDataToWrite(data);
-      setAnswers(data.questions.map((question) => ({ questionId: question.id, answer: '' })));
-    };
-
-    getDataToWrite();
-  }, [reviewRequestCode]);
 
   const handleAnswerChange = (questionId: number, value: string) => {
     setAnswers((prev) =>
@@ -47,7 +37,6 @@ const useReviewForm = ({ reviewRequestCode, openErrorModal }: UseReviewFormProps
   };
 
   return {
-    dataToWrite,
     answers,
     selectedKeywords,
     isValidForm,
