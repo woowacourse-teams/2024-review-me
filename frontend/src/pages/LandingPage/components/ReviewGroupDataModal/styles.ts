@@ -3,16 +3,15 @@ import styled from '@emotion/styled';
 export const ReviewGroupDataModal = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 4rem;
 
   width: 52rem;
   height: 23rem;
-
-  gap: 4rem;
 `;
 
 export const ReviewGroupDataTitle = styled.h3`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
   font-size: 2rem;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 export const ReviewGroupDataContainer = styled.div`
@@ -24,9 +23,8 @@ export const ReviewGroupDataContainer = styled.div`
 
 export const ReviewGroupDataItem = styled.div`
   display: flex;
+  gap: 2.1rem;
   justify-content: space-between;
-  gap: 1.8rem;
-
   font-size: 1.5rem;
 `;
 
@@ -46,16 +44,15 @@ export const CheckContainer = styled.div`
 `;
 
 export const Checkbox = styled.input`
-  height: 1rem;
-  width: 1rem;
-  margin-right: 0.5rem;
-
   cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
 `;
 
 export const CheckMessage = styled.p``;
 
 export const Warning = styled.p`
-  color: ${({ theme }) => theme.colors.red};
   font-size: smaller;
+  color: ${({ theme }) => theme.colors.red};
 `;
