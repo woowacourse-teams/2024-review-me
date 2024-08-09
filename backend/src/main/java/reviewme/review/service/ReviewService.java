@@ -120,7 +120,9 @@ public class ReviewService {
                 .stream()
                 .map(reviewContent -> {
                     Question question = questionRepository.getQuestionById(reviewContent.getQuestionId());
-                    return new ReviewContentResponse(reviewContent.getId(), question.getContent(),
+                    return new ReviewContentResponse(
+                            reviewContent.getId(),
+                            question.convertContent("{revieweeName}", reviewGroup.getReviewee()),
                             reviewContent.getAnswer());
                 })
                 .toList();
