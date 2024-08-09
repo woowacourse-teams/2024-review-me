@@ -3,28 +3,28 @@ import styled from '@emotion/styled';
 export const ReviewGroupDataModal = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4rem;
 
   width: 52rem;
   height: 23rem;
 `;
 
 export const ReviewGroupDataTitle = styled.h3`
-  font-size: 2rem;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-size: 2rem;
+  margin-bottom: 4rem;
 `;
 
 export const ReviewGroupDataContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.7rem;
-  min-width: 0;
+  gap: 2.4rem;
 `;
 
 export const ReviewGroupDataItem = styled.div`
   display: flex;
-  gap: 2.1rem;
   justify-content: space-between;
+  gap: 1.8rem;
+  align-items: center;
   font-size: 1.5rem;
 `;
 
@@ -38,21 +38,35 @@ export const Data = styled.span`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-export const CheckContainer = styled.div`
+export const WarningContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  margin-top: 3.7rem;
+`;
+
+export const CheckContainer = styled.div`
   font-size: 1.5rem;
+
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 `;
 
 export const Checkbox = styled.input`
-  cursor: pointer;
-  width: 1rem;
   height: 1rem;
-  margin-right: 0.5rem;
+  width: 1rem;
+  margin-right: 0.3rem;
+
+  cursor: pointer;
 `;
 
-export const CheckMessage = styled.p``;
+export const CheckMessage = styled.p`
+  font-size: 1.3rem;
+`;
 
 export const Warning = styled.p`
-  font-size: smaller;
   color: ${({ theme }) => theme.colors.red};
+  font-size: smaller;
 `;
