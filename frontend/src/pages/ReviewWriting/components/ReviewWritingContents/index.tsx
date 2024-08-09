@@ -7,8 +7,7 @@ import Button from '@/components/common/Button';
 import LongReviewItem from '@/components/common/LongReviewItem';
 import useGetDataToWrite from '@/hooks/review/useGetDataToWrite';
 import useMutateReview from '@/hooks/review/useMutateReview';
-import useConfirmModal from '@/hooks/useConfirmModal';
-import useErrorModal from '@/hooks/useErrorModal';
+import useModals from '@/hooks/useModals';
 import useReviewForm from '@/hooks/useReviewForm';
 import useReviewRequestCode from '@/hooks/useReviewRequestCode';
 import { ReviewData } from '@/types';
@@ -22,23 +21,27 @@ import * as S from './styles';
 const SUBMIT_CONFIRM_MESSAGE = `리뷰를 제출할까요?
 제출한 뒤에는 수정할 수 없어요.`;
 
+const MODAL_KEYS = {
+  confirm: 'CONFIRM',
+  error: 'ERROR',
+};
+
 const ReviewWritingContents = () => {
   const navigate = useNavigate();
 
   const { reviewRequestCode } = useReviewRequestCode();
-  const { isConfirmModalOpen, openConfirmModal, closeConfirmModal } = useConfirmModal();
-  const { isErrorModalOpen, errorMessage, openErrorModal, closeErrorModal } = useErrorModal();
+  const { isOpen, openModal, closeModal } = useModals();
   const { postReview } = useMutateReview();
   const { dataToWrite } = useGetDataToWrite({ reviewRequestCode });
 
-  const { answers, selectedKeywords, isValidForm, handleAnswerChange, handleKeywordButtonClick } = useReviewForm({
-    dataToWrite,
-    openErrorModal,
-  });
+  const { answers, errorMessage, selectedKeywords, isValidForm, handleAnswerChange, handleKeywordButtonClick } =
+    useReviewForm({
+      dataToWrite,
+    });
 
   const handleClickSubmitButton = async (event: React.FormEvent) => {
     event.preventDefault();
-    openConfirmModal();
+    openModal(MODAL_KEYS.confirm);
   };
 
   const handleSubmitReview = async () => {
@@ -50,11 +53,11 @@ const ReviewWritingContents = () => {
 
     try {
       postReview({ reviewData });
-      closeConfirmModal();
+      closeModal(MODAL_KEYS.confirm);
       navigate('/user/review-writing-complete', { replace: true });
     } catch (error) {
-      closeConfirmModal();
-      openErrorModal('리뷰를 제출할 수 없어요.');
+      closeModal(MODAL_KEYS.confirm);
+      openModal(MODAL_KEYS.error);
     }
   };
 
@@ -128,21 +131,21 @@ const ReviewWritingContents = () => {
           </Button>
         </S.ButtonContainer>
       </S.ReviewFormMain>
-      {isConfirmModalOpen && (
+      {isOpen(MODAL_KEYS.confirm) && (
         <ConfirmModal
           confirmButton={{ type: 'primary', text: '확인', handleClick: handleSubmitReview }}
-          cancelButton={{ type: 'secondary', text: '취소', handleClick: closeConfirmModal }}
-          handleClose={closeConfirmModal}
+          cancelButton={{ type: 'secondary', text: '취소', handleClick: () => closeModal(MODAL_KEYS.confirm) }}
+          handleClose={() => closeModal(MODAL_KEYS.confirm)}
           isClosableOnBackground={true}
         >
           {SUBMIT_CONFIRM_MESSAGE}
         </ConfirmModal>
       )}
-      {isErrorModalOpen && (
+      {isOpen(MODAL_KEYS.error) && (
         <ErrorAlertModal
           errorText={errorMessage}
-          closeButton={{ content: '닫기', type: 'primary', handleClick: closeErrorModal }}
-          handleClose={closeErrorModal}
+          closeButton={{ content: '닫기', type: 'primary', handleClick: () => closeModal(MODAL_KEYS.error) }}
+          handleClose={() => closeModal(MODAL_KEYS.error)}
         />
       )}
     </S.ReviewWritingContents>

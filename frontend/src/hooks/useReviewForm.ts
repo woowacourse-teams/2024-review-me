@@ -5,14 +5,14 @@ import { Keyword, Question, ReviewContent, WritingReviewInfoData } from '@/types
 
 interface UseReviewFormProps {
   dataToWrite: WritingReviewInfoData;
-  openErrorModal: (errorMessage: string) => void;
 }
 
-const useReviewForm = ({ dataToWrite, openErrorModal }: UseReviewFormProps) => {
+const useReviewForm = ({ dataToWrite }: UseReviewFormProps) => {
   const [answers, setAnswers] = useState<ReviewContent[]>(
     dataToWrite.questions.map((question: Question) => ({ questionId: question.id, answer: '' })) || [],
   );
   const [selectedKeywords, setSelectedKeywords] = useState<number[]>([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const isValidAnswersLength = !answers.some((id) => id.answer.length < REVIEW.answerMinLength);
   const isValidKeywordSelection =
@@ -27,8 +27,7 @@ const useReviewForm = ({ dataToWrite, openErrorModal }: UseReviewFormProps) => {
 
   const handleKeywordButtonClick = (keyword: Keyword) => {
     if (selectedKeywords.length === REVIEW.keywordMaxCount && !selectedKeywords.includes(keyword.id)) {
-      openErrorModal('키워드는 최대 5개까지 선택할 수 있어요.');
-      return;
+      setErrorMessage('키워드는 최대 5개까지 선택할 수 있어요.');
     }
 
     setSelectedKeywords((prev) =>
@@ -38,6 +37,7 @@ const useReviewForm = ({ dataToWrite, openErrorModal }: UseReviewFormProps) => {
 
   return {
     answers,
+    errorMessage,
     selectedKeywords,
     isValidForm,
     handleAnswerChange,
