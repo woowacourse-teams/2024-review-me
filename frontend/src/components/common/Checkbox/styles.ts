@@ -3,8 +3,6 @@ import styled from '@emotion/styled';
 import { CheckboxStyleProps } from './index';
 
 export const CheckboxContainer = styled.div<CheckboxStyleProps>`
-  padding: 0;
-
   background-color: transparent;
   border: none;
 
