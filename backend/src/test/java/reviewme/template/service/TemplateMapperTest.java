@@ -1,0 +1,129 @@
+package reviewme.template.service;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.question.domain.OptionGroup;
+import reviewme.question.domain.OptionItem;
+import reviewme.question.domain.Question2;
+import reviewme.question.domain.QuestionType;
+import reviewme.question.domain.exception.NoOptionItemsInOptionGroupException;
+import reviewme.question.repository.OptionGroupRepository;
+import reviewme.question.repository.OptionItemRepository;
+import reviewme.question.repository.Question2Repository;
+import reviewme.reviewgroup.domain.ReviewGroup;
+import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.support.ServiceTest;
+import reviewme.template.domain.Section;
+import reviewme.template.domain.Template;
+import reviewme.template.domain.VisibleType;
+import reviewme.template.domain.exception.SectionNotFoundException;
+import reviewme.template.dto.response.TemplateResponse;
+import reviewme.template.repository.SectionRepository;
+import reviewme.template.repository.TemplateRepository;
+
+@ServiceTest
+class TemplateMapperTest {
+
+    @Autowired
+    TemplateMapper templateMapper;
+
+    @Autowired
+    TemplateRepository templateRepository;
+
+    @Autowired
+    SectionRepository sectionRepository;
+
+    @Autowired
+    Question2Repository questionRepository;
+
+    @Autowired
+    OptionGroupRepository optionGroupRepository;
+
+    @Autowired
+    OptionItemRepository optionItemRepository;
+
+    @Autowired
+    ReviewGroupRepository reviewGroupRepository;
+
+    @Test
+    void 리뷰_그룹과_템플릿으로_템플릿_응답을_매핑한다() {
+        // given
+        Question2 question1 = new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1);
+        Question2 question2 = new Question2(true, QuestionType.CHECKBOX, "질문", "가이드라인", 1);
+        questionRepository.saveAll(List.of(question1, question2));
+
+        OptionGroup optionGroup = new OptionGroup(question2.getId(), 1, 2);
+        optionGroupRepository.save(optionGroup);
+
+        OptionItem optionItem = new OptionItem("선택지", optionGroup.getId(), 1);
+        optionItemRepository.save(optionItem);
+
+        Section section1 = new Section(VisibleType.ALWAYS, List.of(question1.getId()), null, "말머리1", 1);
+        Section section2 = new Section(VisibleType.ALWAYS, List.of(question2.getId()), null, "말머리2", 2);
+        sectionRepository.saveAll(List.of(section1, section2));
+
+        Template template = new Template(List.of(section1.getId(), section2.getId()));
+        templateRepository.save(template);
+
+        ReviewGroup reviewGroup = new ReviewGroup("리뷰이명", "프로젝트명", "reviewRequestCode", "groupAccessCode");
+        reviewGroupRepository.save(reviewGroup);
+
+        // when
+        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup, template);
+
+        // then
+        assertAll(
+                () -> assertThat(templateResponse.revieweeName()).isEqualTo(reviewGroup.getReviewee()),
+                () -> assertThat(templateResponse.projectName()).isEqualTo(reviewGroup.getProjectName()),
+                () -> assertThat(templateResponse.sections()).hasSize(2),
+                () -> assertThat(templateResponse.sections().get(0).header()).isEqualTo(section1.getHeader()),
+                () -> assertThat(templateResponse.sections().get(0).questions()).hasSize(1),
+                () -> assertThat(templateResponse.sections().get(1).header()).isEqualTo(section2.getHeader()),
+                () -> assertThat(templateResponse.sections().get(1).questions()).hasSize(1)
+        );
+    }
+
+    @Test
+    void 템플릿_매핑_시_템플릿에_제공할_섹션이_없을_경우_예외가_발생한다() {
+        // given
+        Template template = new Template(List.of(1L));
+        templateRepository.save(template);
+
+        ReviewGroup reviewGroup = new ReviewGroup("리뷰이명", "프로젝트명", "reviewRequestCode", "groupAccessCode");
+        reviewGroupRepository.save(reviewGroup);
+
+        // when, then
+        assertThatThrownBy(() -> templateMapper.mapToTemplateResponse(reviewGroup, template))
+                .isInstanceOf(SectionNotFoundException.class);
+    }
+
+    @Test
+    void 템플릿_매핑_시_옵션_그룹에_해당하는_옵션_아이템이_없을_경우_예외가_발생한다() {
+        // given
+        Question2 question1 = new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1);
+        Question2 question2 = new Question2(true, QuestionType.CHECKBOX, "질문", "가이드라인", 1);
+        questionRepository.saveAll(List.of(question1, question2));
+
+        OptionGroup optionGroup = new OptionGroup(question2.getId(), 1, 2);
+        optionGroupRepository.save(optionGroup);
+
+        Section section1 = new Section(VisibleType.ALWAYS, List.of(question1.getId()), null, "말머리1", 1);
+        Section section2 = new Section(VisibleType.ALWAYS, List.of(question2.getId()), null, "말머리2", 2);
+        sectionRepository.saveAll(List.of(section1, section2));
+
+        Template template = new Template(List.of(section1.getId(), section2.getId()));
+        templateRepository.save(template);
+
+        ReviewGroup reviewGroup = new ReviewGroup("리뷰이명", "프로젝트명", "reviewRequestCode", "groupAccessCode");
+        reviewGroupRepository.save(reviewGroup);
+
+        // when, then
+        assertThatThrownBy(() -> templateMapper.mapToTemplateResponse(reviewGroup, template))
+                .isInstanceOf(NoOptionItemsInOptionGroupException.class);
+    }
+}
