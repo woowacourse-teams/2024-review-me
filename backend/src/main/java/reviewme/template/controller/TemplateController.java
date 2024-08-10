@@ -15,8 +15,8 @@ public class TemplateController {
     private final TemplateService templateService;
 
     @GetMapping("/reviews/write")
-    public ResponseEntity<TemplateResponse> findReviewTemplate(@RequestParam String reviewRequestCode) {
-        TemplateResponse response = templateService.findDefaultTemplate(reviewRequestCode);
+    public ResponseEntity<TemplateResponse> getReviewForm(@RequestParam String reviewRequestCode) {
+        TemplateResponse response = templateService.generateReviewForm(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 }
