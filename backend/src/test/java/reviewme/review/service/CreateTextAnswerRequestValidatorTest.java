@@ -10,6 +10,7 @@ import reviewme.question.domain.QuestionType;
 import reviewme.question.domain.exception.QuestionNotFoundException;
 import reviewme.question.repository.Question2Repository;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
+import reviewme.review.service.exception.RequiredQuestionMustBeAnsweredException;
 import reviewme.review.service.exception.TextAnswerIncudedOptionException;
 import reviewme.support.ServiceTest;
 
@@ -42,5 +43,17 @@ class CreateTextAnswerRequestValidatorTest {
         // when, then
         assertThatCode(() -> createTextAnswerRequestValidator.validate(request))
                 .isInstanceOf(TextAnswerIncudedOptionException.class);
+    }
+
+    @Test
+    void 필수_텍스트형_질문에_응답을_하지_않으면_예외가_발생한다() {
+        // given
+        Question2 savedQuestion
+                = question2Repository.save(new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1));
+        CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(savedQuestion.getId(), null, null);
+
+        // when, then
+        assertThatCode(() -> createTextAnswerRequestValidator.validate(request))
+                .isInstanceOf(RequiredQuestionMustBeAnsweredException.class);
     }
 }
