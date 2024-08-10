@@ -16,7 +16,7 @@ public record ReceivedReviewResponse(
         @Schema(description = "응답 내용 미리보기")
         String contentPreview,
 
-        @Schema(description = "선택된 키워드 목록")
-        List<ReceivedReviewKeywordsResponse> keywords
+        @Schema(description = "선택된 카테고리 목록")
+        List<ReceivedReviewCategoryResponse> categories
 ) {
 }
