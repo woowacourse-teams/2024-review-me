@@ -61,8 +61,9 @@ public class TemplateMapper {
 
     private QuestionResponse mapToQuestionResponse(long questionId) {
         Question2 question = questionRepository.getQuestionById(questionId);
-        OptionGroup optionGroup = optionGroupRepository.getOptionGroupByQuestionId(questionId);
-        OptionGroupResponse optionGroupResponse = mapToOptionGroupResponse(optionGroup);
+        OptionGroupResponse optionGroupResponse = optionGroupRepository.findByQuestionId(question.getId())
+                .map(this::mapToOptionGroupResponse)
+                .orElse(null);
 
         return new QuestionResponse(
                 question.getId(),
