@@ -1,7 +1,7 @@
 import { ReviewList } from '@/types';
 export const REVIEW_LIST: ReviewList = {
   revieweeName: '쑤쑤',
-  projectName: '2024-review-me',
+  projectName: 'review-me',
   reviews: [
     {
       reviewId: 5,
