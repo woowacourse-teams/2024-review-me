@@ -1,15 +1,16 @@
 package reviewme.template.domain;
 
-import jakarta.persistence.CollectionTable;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
@@ -33,10 +34,9 @@ public class Section {
     @Enumerated(EnumType.STRING)
     private VisibleType visibleType;
 
-    @ElementCollection
-    @CollectionTable(name = "section_question", joinColumns = @JoinColumn(name = "section_id"))
-    @Column(name = "question_id", nullable = false)
-    private List<Long> questionIds;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "section_id", nullable = false, updatable = false)
+    private List<SectionQuestionId> questionIds;
 
     @Column(name = "on_selected_option_id", nullable = true)
     private Long onSelectedOptionId;
@@ -50,7 +50,9 @@ public class Section {
     public Section(VisibleType visibleType, List<Long> questionIds,
                    Long onSelectedOptionId, String header, int position) {
         this.visibleType = visibleType;
-        this.questionIds = questionIds;
+        this.questionIds = questionIds.stream()
+                .map(SectionQuestionId::new)
+                .toList();
         this.onSelectedOptionId = onSelectedOptionId;
         this.header = header;
         this.position = position;

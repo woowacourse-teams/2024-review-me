@@ -1,13 +1,13 @@
 package reviewme.template.domain;
 
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
 import lombok.AccessLevel;
@@ -26,12 +26,13 @@ public class Template {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ElementCollection
-    @CollectionTable(name = "template_section", joinColumns = @JoinColumn(name = "template_id", nullable = false))
-    @Column(name = "section_id", nullable = false)
-    private List<Long> sectionIds;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "template_id", nullable = false, updatable = false)
+    private List<TemplateSectionId> sectionIds;
 
     public Template(List<Long> sectionIds) {
-        this.sectionIds = sectionIds;
+        this.sectionIds = sectionIds.stream()
+                .map(TemplateSectionId::new)
+                .toList();
     }
 }
