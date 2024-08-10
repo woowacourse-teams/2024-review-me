@@ -25,7 +25,7 @@ public class Review2 {
     private Long id;
 
     @Column(name = "template_id", nullable = false)
-    private long templateId;
+    private long templateId; // todo: templateId 를 여기가 아니라 reviewGroup 안에 둬야 함
 
     @Column(name = "review_group_id", nullable = false)
     private long reviewGroupId;

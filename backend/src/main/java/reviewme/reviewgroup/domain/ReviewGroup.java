@@ -39,6 +39,9 @@ public class ReviewGroup {
     @Column(name = "group_access_code", nullable = false)
     private String groupAccessCode;
 
+    @Column(name = "template_id", nullable = false)
+    private long templateId = 1L;
+
     public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode) {
         validateRevieweeLength(reviewee);
         validateProjectNameLength(projectName);
