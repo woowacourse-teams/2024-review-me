@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Template {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,4 +25,8 @@ public class Template {
     @ElementCollection
     @CollectionTable(name = "section_ids", joinColumns = @JoinColumn(name = "template_id"))
     List<Long> sectionIds;
+
+    public Template(List<Long> sectionIds) {
+        this.sectionIds = sectionIds;
+    }
 }
