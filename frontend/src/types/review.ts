@@ -96,3 +96,9 @@ export interface ReviewWritingQuestionOption {
   optionId: number;
   content: string;
 }
+
+export interface ReviewWritingAnswer {
+  questionId: number;
+  selectedOptionIds: number[] | null;
+  text: string | null;
+}
