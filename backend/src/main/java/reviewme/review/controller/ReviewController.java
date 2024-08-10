@@ -11,23 +11,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.global.HeaderProperty;
-import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.request.create.CreateReviewRequest;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
+import reviewme.review.service.CreateReviewService;
 import reviewme.review.service.ReviewService;
 
 @RestController
 @RequiredArgsConstructor
-public class ReviewController implements ReviewApi {
+public class ReviewController {
 
     private static final String GROUP_ACCESS_CODE_HEADER = "GroupAccessCode";
 
+    private final CreateReviewService createReviewService;
     private final ReviewService reviewService;
 
     @PostMapping("/reviews")
     public ResponseEntity<Void> createReview(@Valid @RequestBody CreateReviewRequest request) {
-        long savedReviewId = reviewService.createReview(request);
+        long savedReviewId = createReviewService.createReview(request);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
