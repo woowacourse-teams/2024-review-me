@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reviewme.question.domain.Question2;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.Question2Repository;
@@ -34,6 +35,7 @@ public class CreateReviewService {
     private final CreateTextAnswerRequestValidator createTextAnswerRequestValidator;
     private final CreateCheckBoxAnswerRequestValidator createCheckBoxAnswerRequestValidator;
 
+    @Transactional
     public long createReview(CreateReviewRequest request) {
         ReviewGroup reviewGroup = validateReviewGroupByRequestCode(request.reviewRequestCode());
         Template template = templateRepository.getTemplateById(reviewGroup.getTemplateId());
