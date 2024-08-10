@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router';
 
 import ReviewCard from '@/components/ReviewCard';
 import { useGetReviewList } from '@/hooks';
-import LoadingPage from '@/pages/LoadingPage';
 
 import ReviewInfoSection from '../ReviewInfoSection';
 import SearchSection from '../SearchSection';
