@@ -28,10 +28,7 @@ const PageContents = ({ groupAccessCode }: PageContentsProps) => {
   return (
     <>
       <S.Layout>
-        <ReviewInfoSection
-          projectName={data.projectName}
-          revieweeName={`${data.revieweeName}님에게 달린 리뷰입니다!`}
-        />
+        <ReviewInfoSection projectName={data.projectName} revieweeName={data.revieweeName} />
         <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} />
         <S.ReviewSection>
           {isLoading && <LoadingPage />}
