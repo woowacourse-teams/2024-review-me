@@ -11,10 +11,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "option")
+@Table(name = "option_item")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Option {
+public class OptionItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,6 @@ public class Option {
     @Column(name = "option_group_id", nullable = false)
     private long optionGroupId;
 
-    @Column(name = "order", nullable = false)
-    private int order;
+    @Column(name = "position", nullable = false)
+    private int position;
 }

@@ -35,6 +35,6 @@ public class Question2 {
     @Column(name = "guideline", nullable = true, length = 1_000)
     private String guideline;
 
-    @Column(name = "order", nullable = false)
-    private int order;
+    @Column(name = "position", nullable = false)
+    private int position;
 }

@@ -40,6 +40,6 @@ public class Section {
     @Column(name = "header", nullable = false, length = 1_000)
     private String header;
 
-    @Column(name = "order", nullable = false)
-    private int order;
+    @Column(name = "position", nullable = false)
+    private int position;
 }
