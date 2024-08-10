@@ -9,12 +9,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "question2")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = "id")
 @Getter
 public class Question2 {
 
@@ -37,4 +39,20 @@ public class Question2 {
 
     @Column(name = "position", nullable = false)
     private int position;
+
+    public Question2(boolean required, QuestionType questionType, String content, String guideline, int position) {
+        this.required = required;
+        this.questionType = questionType;
+        this.content = content;
+        this.guideline = guideline;
+        this.position = position;
+    }
+
+    public boolean isSelectable() {
+        return questionType == QuestionType.CHECKBOX;
+    }
+
+    public boolean hasGuideline() {
+        return guideline != null;
+    }
 }

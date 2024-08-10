@@ -7,12 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "option_item")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = "id")
 @Getter
 public class OptionItem {
 
@@ -28,4 +30,10 @@ public class OptionItem {
 
     @Column(name = "position", nullable = false)
     private int position;
+
+    public OptionItem(String content, long optionGroupId, int position) {
+        this.content = content;
+        this.optionGroupId = optionGroupId;
+        this.position = position;
+    }
 }

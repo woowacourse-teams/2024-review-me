@@ -11,14 +11,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
+import java.util.Collection;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "section")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = "id")
 @Getter
 public class Section {
 
@@ -31,7 +34,8 @@ public class Section {
     private VisibleType visibleType;
 
     @ElementCollection
-    @CollectionTable(name = "question_ids", joinColumns = @JoinColumn(name = "section_id"))
+    @CollectionTable(name = "section_question", joinColumns = @JoinColumn(name = "section_id"))
+    @Column(name = "question_id", nullable = false)
     private List<Long> questionIds;
 
     @Column(name = "on_selected_option_id", nullable = true)
@@ -42,4 +46,13 @@ public class Section {
 
     @Column(name = "position", nullable = false)
     private int position;
+
+    public Section(VisibleType visibleType, List<Long> questionIds,
+                   Long onSelectedOptionId, String header, int position) {
+        this.visibleType = visibleType;
+        this.questionIds = questionIds;
+        this.onSelectedOptionId = onSelectedOptionId;
+        this.header = header;
+        this.position = position;
+    }
 }
