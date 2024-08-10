@@ -20,27 +20,11 @@ export interface CheckboxProps extends CheckboxStyleProps {
   $isReadonly?: boolean;
 }
 
-const Checkbox = ({
-  id,
-  name,
-  isChecked,
-  $isReadonly = false,
-  isDisabled = false,
-  onChange,
-  $style,
-}: CheckboxProps) => {
+const Checkbox = ({ id, isChecked, $style, $isReadonly = false, ...rest }: CheckboxProps) => {
   return (
     <S.CheckboxContainer $style={$style} $isReadonly={$isReadonly}>
       <S.CheckboxLabel>
-        <input
-          id={id}
-          name={name}
-          checked={isChecked}
-          onChange={onChange}
-          disabled={isDisabled}
-          aria-hidden={false}
-          type="checkbox"
-        />
+        <input id={id} checked={isChecked} type="checkbox" {...rest} />
         <img src={isChecked ? CheckedIcon : UncheckedIcon} alt="체크박스" />
       </S.CheckboxLabel>
     </S.CheckboxContainer>
