@@ -7,20 +7,30 @@ import * as S from './styles';
 
 // NOTE: 공통 컴포넌트에서 이 스타일 속성을 계속 쓰는 것 같은데 이걸 아예 공통 타입으로 빼버릴지 고민
 export interface CheckboxStyleProps {
+  $isReadonly?: boolean;
   $style?: React.CSSProperties;
 }
 
 export interface CheckboxProps extends CheckboxStyleProps {
   id: string;
   isChecked: boolean;
-  onChange: (event: ChangeEvent<HTMLInputElement>, label?: string) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement>, label?: string) => void;
   name?: string;
   isDisabled?: boolean;
+  $isReadonly?: boolean;
 }
 
-const Checkbox = ({ id, name, isChecked, isDisabled = false, onChange, $style }: CheckboxProps) => {
+const Checkbox = ({
+  id,
+  name,
+  isChecked,
+  $isReadonly = false,
+  isDisabled = false,
+  onChange,
+  $style,
+}: CheckboxProps) => {
   return (
-    <S.CheckboxContainer $style={$style}>
+    <S.CheckboxContainer $style={$style} $isReadonly={$isReadonly}>
       <S.CheckboxLabel>
         <input
           id={id}
