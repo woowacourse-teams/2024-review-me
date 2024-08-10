@@ -37,4 +37,12 @@ public class Review2 {
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "review_id", nullable = false, updatable = false)
     private List<CheckboxAnswer> checkboxAnswers;
+
+    public Review2(long templateId, long reviewGroupId,
+                   List<TextAnswer> textAnswers, List<CheckboxAnswer> checkboxAnswers) {
+        this.templateId = templateId;
+        this.reviewGroupId = reviewGroupId;
+        this.textAnswers = textAnswers;
+        this.checkboxAnswers = checkboxAnswers;
+    }
 }

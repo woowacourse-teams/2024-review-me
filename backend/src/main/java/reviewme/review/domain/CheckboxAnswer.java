@@ -29,4 +29,9 @@ public class CheckboxAnswer {
     @ElementCollection
     @CollectionTable(name = "selected_option_ids")
     private List<Long> selectedOptionIds;
+
+    public CheckboxAnswer(long questionId, List<Long> selectedOptionIds) {
+        this.questionId = questionId;
+        this.selectedOptionIds = selectedOptionIds;
+    }
 }

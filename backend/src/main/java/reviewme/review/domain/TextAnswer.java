@@ -25,4 +25,9 @@ public class TextAnswer {
 
     @Column(name = "text", nullable = false, length = 1_000)
     private String text;
+
+    public TextAnswer(long questionId, String text) {
+        this.questionId = questionId;
+        this.text = text;
+    }
 }
