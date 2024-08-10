@@ -28,4 +28,10 @@ public class OptionGroup {
 
     @Column(name = "max_selection_count", nullable = false)
     private int maxSelectionCount;
+
+    public OptionGroup(long questionId, int minSelectionCount, int maxSelectionCount) {
+        this.questionId = questionId;
+        this.minSelectionCount = minSelectionCount;
+        this.maxSelectionCount = maxSelectionCount;
+    }
 }
