@@ -28,4 +28,10 @@ public class OptionItem {
 
     @Column(name = "position", nullable = false)
     private int position;
+
+    public OptionItem(String content, long optionGroupId, int position) {
+        this.content = content;
+        this.optionGroupId = optionGroupId;
+        this.position = position;
+    }
 }
