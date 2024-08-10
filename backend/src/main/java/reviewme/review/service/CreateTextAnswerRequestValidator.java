@@ -18,7 +18,7 @@ public class CreateTextAnswerRequestValidator {
     }
 
     private static void validateNotIncludingOptions(CreateReviewAnswerRequest request) {
-        if (!request.selectedOptionIds().isEmpty()) {
+        if (request.selectedOptionIds() != null) {
             throw new TextAnswerIncudedOptionException();
         }
     }
