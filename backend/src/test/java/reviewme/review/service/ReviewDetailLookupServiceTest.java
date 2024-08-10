@@ -27,10 +27,10 @@ import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
-class ReviewDetailServiceTest {
+class ReviewDetailLookupServiceTest {
 
     @Autowired
-    private ReviewDetailService reviewDetailService;
+    private ReviewDetailLookupService reviewDetailLookupService;
 
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
@@ -84,7 +84,7 @@ class ReviewDetailServiceTest {
         );
 
         // when
-        TemplateAnswerResponse reviewDetail = reviewDetailService.getReviewDetail("0000", review.getId());
+        TemplateAnswerResponse reviewDetail = reviewDetailLookupService.getReviewDetail("0000", review.getId());
 
         // then
         assertThat(reviewDetail.sections()).hasSize(2);
@@ -117,7 +117,7 @@ class ReviewDetailServiceTest {
         );
 
         // when
-        TemplateAnswerResponse reviewDetail = reviewDetailService.getReviewDetail("0000", review.getId());
+        TemplateAnswerResponse reviewDetail = reviewDetailLookupService.getReviewDetail("0000", review.getId());
 
         // then
         assertThat(reviewDetail.sections()).hasSize(1);

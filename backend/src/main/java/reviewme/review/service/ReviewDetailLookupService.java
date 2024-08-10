@@ -29,7 +29,7 @@ import reviewme.template.repository.SectionRepository;
 @Service
 @Transactional(readOnly = true)
 @AllArgsConstructor
-public class ReviewDetailService {
+public class ReviewDetailLookupService {
 
     private final SectionRepository sectionRepository;
     private final ReviewRepository2 reviewRepository;
