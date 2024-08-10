@@ -154,23 +154,26 @@ public class ReviewService {
     public ReceivedReviewsResponse findReceivedReviews(String groupAccessCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
-        List<ReceivedReviewResponse> reviewResponses =
-                review2Repository.findReceivedReviewsByGroupId(reviewGroup.getId())
-                        .stream()
-                        .map(this::createReceivedReviewResponse)
-                        .toList();
+
+        List<ReceivedReviewResponse> reviewResponses = review2Repository.findReceivedReviewsByGroupId(
+                        reviewGroup.getId())
+                .stream()
+                .map(this::createReceivedReviewResponse)
+                .toList();
+
         return new ReceivedReviewsResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewResponses);
     }
 
     private ReceivedReviewResponse createReceivedReviewResponse(Review2 review) {
         CheckboxAnswer checkboxAnswer = review.getCheckboxAnswers()
                 .stream()
-                .filter(answer -> optionRepository.existsByOptionTypeAndId(OptionType.CATEGORY, answer.getSelectedOptionIds().get(0)))
+                .filter(answer -> optionRepository.existsByOptionTypeAndId(OptionType.CATEGORY,
+                        answer.getSelectedOptionIds().get(0)))
                 .findFirst()
                 .orElseThrow();
 
-        List<ReceivedReviewCategoryResponse> categoryResponses =
-                optionRepository.findAllById(checkboxAnswer.getSelectedOptionIds())
+        List<ReceivedReviewCategoryResponse> categoryResponses = optionRepository.findAllById(
+                        checkboxAnswer.getSelectedOptionIds())
                 .stream()
                 .map(optionItem -> new ReceivedReviewCategoryResponse(optionItem.getId(), optionItem.getContent()))
                 .toList();
