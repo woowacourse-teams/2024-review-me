@@ -16,6 +16,7 @@ const MEMBER_ID = 2;
 interface PageContentsProps {
   groupAccessCode: string;
 }
+
 const PageContents = ({ groupAccessCode }: PageContentsProps) => {
   const navigate = useNavigate();
   const { data, isLoading, error } = useGetReviewList(groupAccessCode);
@@ -41,13 +42,12 @@ const PageContents = ({ groupAccessCode }: PageContentsProps) => {
             {data &&
               data.reviews.map((review) => (
                 // const isLastElement = pageIndex === data.pages.length - 1 && reviewIndex === page.reviews.length - 1;
-                <div key={review.id} onClick={() => handleReviewClick(review.id)}>
+                <div key={review.reviewId} onClick={() => handleReviewClick(review.reviewId)}>
                   <ReviewCard
-                    id={review.id}
                     projectName={data.projectName}
                     createdAt={review.createdAt}
                     contentPreview={review.contentPreview}
-                    keywords={review.keywords}
+                    categories={review.categories}
                   />
                   {/* <div ref={isLastElement ? lastReviewElementRef : null}></div> */}
                 </div>
