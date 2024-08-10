@@ -6,7 +6,7 @@ public record SectionResponse(
 
         long sectionId,
         String visible,
-        Integer onSelectedOptionId,
+        Long onSelectedOptionId,
         String header,
         List<QuestionResponse> questions
 ) {
