@@ -20,7 +20,7 @@ public class CreateTextAnswerRequestValidator {
         validateQuestionRequired(question, request);
     }
 
-    private static void validateNotIncludingOptions(CreateReviewAnswerRequest request) {
+    private void validateNotIncludingOptions(CreateReviewAnswerRequest request) {
         if (request.selectedOptionIds() != null) {
             throw new TextAnswerIncudedOptionException();
         }

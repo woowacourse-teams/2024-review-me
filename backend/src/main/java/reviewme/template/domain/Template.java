@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Template {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

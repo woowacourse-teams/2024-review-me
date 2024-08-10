@@ -28,6 +28,6 @@ class ReviewRepositoryTest {
 
         // then
         assertThat(actual).map(Review::getId)
-            .containsExactly(review4.getId(), review2.getId(), review1.getId(), review3.getId());
+                .containsExactly(review4.getId(), review2.getId(), review1.getId(), review3.getId());
     }
 }
