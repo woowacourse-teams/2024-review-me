@@ -59,3 +59,40 @@ export interface ReviewInfo {
   contentPreview: string;
   keywords: Keyword[];
 }
+
+// 리뷰 작성 카드 관련 타입들
+export interface ReviewWritingFrom {
+  formId: string;
+  revieweeName: string;
+  projectName: string;
+  sections: ReviewWritingCardSection[];
+}
+export interface ReviewWritingCardSection {
+  sectionId: number;
+  visible: 'ALWAYS' | 'CONDITIONAL';
+  onSelectedOptionId: number | null;
+  header: string;
+  questions: ReviewWritingCardQuestion[];
+}
+
+export interface ReviewWritingCardQuestion {
+  questionId: number;
+  required: boolean;
+  content: string; // 질문
+  questionType: 'CHECKBOX' | 'TEXT';
+  optionGroup: ReviewWritingQuestionOptionGroup | null; // 객관식이면 ReviewWritingQuestionOptionGroup, 아니면 null
+  hasGuideline: boolean;
+  guideline: string | null;
+}
+
+export interface ReviewWritingQuestionOptionGroup {
+  optionGroupId: number;
+  minCount: number; // 최소 몇개 체크해야함
+  maxCount: number; // 최대 몇개 체크해야함 (제한 없으면 options 사이즈로 드립니다)
+  options: ReviewWritingQuestionOption[];
+}
+
+export interface ReviewWritingQuestionOption {
+  optionId: number;
+  content: string;
+}
