@@ -31,25 +31,18 @@ const PageContents = ({ groupAccessCode }: PageContentsProps) => {
         <ReviewInfoSection projectName={data.projectName} revieweeName={data.revieweeName} />
         <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} />
         <S.ReviewSection>
-          {isLoading && <LoadingPage />}
-          {error && <p>{error.message}</p>}
-          <S.ReviewSection>
-            {isLoading && <LoadingPage />}
-            {error && <p>{error.message}</p>}
-            {data &&
-              data.reviews.map((review) => (
-                // const isLastElement = pageIndex === data.pages.length - 1 && reviewIndex === page.reviews.length - 1;
-                <div key={review.reviewId} onClick={() => handleReviewClick(review.reviewId)}>
-                  <ReviewCard
-                    projectName={data.projectName}
-                    createdAt={review.createdAt}
-                    contentPreview={review.contentPreview}
-                    categories={review.categories}
-                  />
-                  {/* <div ref={isLastElement ? lastReviewElementRef : null}></div> */}
-                </div>
-              ))}
-          </S.ReviewSection>
+          {data.reviews.map((review) => (
+            // const isLastElement = pageIndex === data.pages.length - 1 && reviewIndex === page.reviews.length - 1;
+            <div key={review.reviewId} onClick={() => handleReviewClick(review.reviewId)}>
+              <ReviewCard
+                projectName={data.projectName}
+                createdAt={review.createdAt}
+                contentPreview={review.contentPreview}
+                categories={review.categories}
+              />
+              {/* <div ref={isLastElement ? lastReviewElementRef : null}></div> */}
+            </div>
+          ))}
         </S.ReviewSection>
       </S.Layout>
     </>
