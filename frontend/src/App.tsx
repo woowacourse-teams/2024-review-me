@@ -14,7 +14,6 @@ const App = () => {
         </SideModal>
       )} */}
       <Topbar openSidebar={openSidebar} />
-      <div>주문하신 CD 반영입니다~</div>
       <Main>
         <Outlet />
       </Main>
