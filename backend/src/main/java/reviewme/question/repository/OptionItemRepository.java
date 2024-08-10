@@ -10,7 +10,7 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
 
     @Query(value = "" +
             "SELECT o.id FROM option_item o " +
-            "LEFT JOIN checkbox_answer ca "  +
+            "LEFT JOIN checkbox_answer ca " +
             "LEFT JOIN checkbox_answer_selected_option c " +
             "ON c.checkbox_answer_id = ca.id " +
             "WHERE ca.review_id = :reviewId " +
@@ -20,7 +20,7 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
 
     @Query(value = "" +
             "SELECT o.* FROM option_item o " +
-            "LEFT JOIN checkbox_answer ca "  +
+            "LEFT JOIN checkbox_answer ca " +
             "LEFT JOIN checkbox_answer_selected_option c " +
             "ON c.checkbox_answer_id = ca.id " +
             "WHERE ca.review_id = :reviewId " +

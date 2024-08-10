@@ -10,7 +10,7 @@ public interface OptionGroupRepository extends JpaRepository<OptionGroup, Long> 
     Optional<OptionGroup> findByQuestionId(long questionId);
 
     default OptionGroup getByQuestionId(long questionId) {
-          return findByQuestionId(questionId)
-                  .orElseThrow(() -> new OptionGroupNotFoundException(questionId));
+        return findByQuestionId(questionId)
+                .orElseThrow(() -> new OptionGroupNotFoundException(questionId));
     }
 }
