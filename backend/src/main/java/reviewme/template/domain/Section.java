@@ -55,4 +55,8 @@ public class Section {
         this.header = header;
         this.position = position;
     }
+
+    public boolean isVisibleBySelectedOptionIds(Collection<Long> selectedOptionIds) {
+        return visibleType == VisibleType.ALWAYS || selectedOptionIds.contains(onSelectedOptionId);
+    }
 }
