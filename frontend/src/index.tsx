@@ -7,15 +7,16 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import App from '@/App';
+import {
+  DetailedReviewPage,
+  ErrorPage,
+  LandingPage,
+  ReviewListPage,
+  ReviewWritingCompletePage,
+} from '@/pages';
 
 import { DEV_ENVIRONMENT } from './constants';
-import DetailedReviewPage from './pages/DetailedReviewPage';
-import ErrorPage from './pages/ErrorPage';
-import LandingPage from './pages/LandingPage';
-import ReviewListPage from './pages/ReviewListPage';
 import ReviewWritingPage from './pages/ReviewWriting';
-import ReviewWritingCompletePage from './pages/ReviewWritingCompletePage';
-import ReviewWritingFormPage from './pages/ReviewWritingFormPage';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
