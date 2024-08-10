@@ -16,7 +16,7 @@ public class TemplateController {
 
     @GetMapping("/reviews/write")
     public ResponseEntity<TemplateResponse> findReviewTemplate(@RequestParam String reviewRequestCode) {
-        TemplateResponse response = templateService.findDefaultTemplate();
+        TemplateResponse response = templateService.findDefaultTemplate(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 }
