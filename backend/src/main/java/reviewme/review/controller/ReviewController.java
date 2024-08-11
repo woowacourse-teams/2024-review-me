@@ -31,7 +31,7 @@ public class ReviewController implements ReviewApi {
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
-    @GetMapping("/reviews/write2")
+    @GetMapping("/reviews/write")
     public ResponseEntity<ReviewSetupResponse> findReviewCreationSetup(@RequestParam String reviewRequestCode) {
         ReviewSetupResponse response = reviewService.findReviewCreationSetup(reviewRequestCode);
         return ResponseEntity.ok(response);
