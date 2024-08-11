@@ -8,13 +8,13 @@ import * as S from './style';
 
 interface QnABoxProps {
   question: ReviewWritingCardQuestion;
-  updatedAnswer: (answer: ReviewWritingAnswer) => void;
+  updatedAnswerMap: (answer: ReviewWritingAnswer) => void;
 }
 const TEXT_ANSWER_LENGTH = {
   min: 20,
   max: 1000,
 };
-const QnABox = ({ question, updatedAnswer }: QnABoxProps) => {
+const QnABox = ({ question, updatedAnswerMap }: QnABoxProps) => {
   const [selectedOptionList, setSelectedOptionList] = useState<number[]>([]);
   const [isOpenLimitGuide, setIsOpenLimitGuide] = useState(false);
   const [textAnswer, setTextAnswer] = useState('');
@@ -34,7 +34,7 @@ const QnABox = ({ question, updatedAnswer }: QnABoxProps) => {
 
     const newSelectedOptionList = makeNewSelectedOptionList(event);
     setSelectedOptionList(newSelectedOptionList);
-    updatedAnswer({ questionId: question.questionId, selectedOptionIds: newSelectedOptionList, text: null });
+    updatedAnswerMap({ questionId: question.questionId, selectedOptionIds: newSelectedOptionList, text: null });
   };
   /**
    * checkbox의 change 이벤트에 따라 새로운 selectedOptionList를 반환하는 함수
@@ -66,7 +66,7 @@ const QnABox = ({ question, updatedAnswer }: QnABoxProps) => {
     // TODO: XSS 방어 되는 지 확인해봐야함
     if (isValidatedText) {
       setTextAnswer(value);
-      updatedAnswer({ questionId: question.questionId, selectedOptionIds: null, text: value });
+      updatedAnswerMap({ questionId: question.questionId, selectedOptionIds: null, text: value });
     }
   };
 

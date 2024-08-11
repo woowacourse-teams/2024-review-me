@@ -1,0 +1,55 @@
+import { useEffect, useState } from 'react';
+
+import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
+
+interface UseReviewerAnswerProps {
+  currentCardIndex: number;
+  questionList: ReviewWritingCardSection[];
+}
+
+const useReviewerAnswer = ({ currentCardIndex, questionList }: UseReviewerAnswerProps) => {
+  const [answerMap, setAnswerMap] = useState<Map<number, ReviewWritingAnswer>>();
+  const [isAbleNextStep, setIsAbleNextStep] = useState(false);
+
+  const updateAnswerMap = (answer: ReviewWritingAnswer) => {
+    const newAnswerMap = new Map(answerMap);
+    newAnswerMap.set(answer.questionId, answer);
+    setAnswerMap(newAnswerMap);
+  };
+
+  const isValidateAnswerList = () => {
+    return questionList[currentCardIndex].questions.every((question) => {
+      const { questionId, optionGroup, required } = question;
+      // case1. 필수가 아닌 답변
+      if (!required) return true;
+      // case2. 필수이 답변
+      // 2-1 답변 없음
+      if (!answerMap) return false;
+      const answer = answerMap.get(questionId);
+      if (!answer) return false;
+      // 2-2 답변이 있음 (세부적인 것을 확인)
+      // 2-2-1.객관식 인 경우 선택된 문항의 개수의 유효성 검사
+      if (optionGroup) {
+        const { minCount, maxCount } = optionGroup;
+        const length = answer.selectedOptionIds?.length;
+        if (!length) return false;
+        return length >= minCount && length <= maxCount;
+      }
+      // 2-2-2. 서술형
+      return !!answer.text?.length;
+    });
+  };
+
+  useEffect(() => {
+    const answerListValidation = isValidateAnswerList();
+    setIsAbleNextStep(answerListValidation);
+  }, [answerMap]);
+
+  return {
+    answerMap,
+    isAbleNextStep,
+    updateAnswerMap,
+  };
+};
+
+export default useReviewerAnswer;

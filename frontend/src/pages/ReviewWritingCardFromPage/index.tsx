@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
+import { useCurrentCardIndex, useReviewerAnswer, useSlideWidth } from '@/hooks';
 import { REVIEW_WRITING_FORM_CARD_DATA } from '@/mocks/mockData/reviewWritingCardFormData';
 import { ReviewWritingCardSection } from '@/types';
 
@@ -11,18 +12,20 @@ const ReviewWritingCardFormPage = () => {
 
   const { wrapperRef, slideWidth } = useSlideWidth();
   const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
+  const { answerMap, isAbleNextStep, updateAnswerMap } = useReviewerAnswer({ currentCardIndex, questionList });
 
   return (
     <S.CardLayout>
       <S.SliderContainer ref={wrapperRef} $translateX={currentCardIndex * slideWidth}>
-        {questionList.map((section, index) => (
+        {questionList.map((section) => (
           <S.Slide key={section.sectionId}>
             <ReviewWritingCard
               currentCardIndex={currentCardIndex}
               cardSection={section}
-              cardIndex={index}
+              isAbleNextStep={isAbleNextStep}
               isLastCard={questionList.length - 1 === currentCardIndex}
               handleCurrentCardIndex={handleCurrentCardIndex}
+              updatedAnswerMap={updateAnswerMap}
             />
           </S.Slide>
         ))}
