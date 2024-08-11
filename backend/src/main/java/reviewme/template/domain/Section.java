@@ -36,7 +36,7 @@ public class Section {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "section_id", nullable = false, updatable = false)
-    private List<SectionQuestionId> questionIds;
+    private List<SectionQuestion> questionIds;
 
     @Column(name = "on_selected_option_id", nullable = true)
     private Long onSelectedOptionId;
@@ -51,7 +51,7 @@ public class Section {
                    Long onSelectedOptionId, String header, int position) {
         this.visibleType = visibleType;
         this.questionIds = questionIds.stream()
-                .map(SectionQuestionId::new)
+                .map(SectionQuestion::new)
                 .toList();
         this.onSelectedOptionId = onSelectedOptionId;
         this.header = header;

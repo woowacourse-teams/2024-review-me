@@ -35,12 +35,12 @@ public class CheckboxAnswer {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "checkbox_answer_id", nullable = false, updatable = false)
-    private List<CheckBoxAnswerSelectedOptionId> selectedOptionIds;
+    private List<CheckBoxAnswerSelectedOption> selectedOptionIds;
 
     public CheckboxAnswer(long questionId, List<Long> selectedOptionIds) {
         this.questionId = questionId;
         this.selectedOptionIds = selectedOptionIds.stream()
-                .map(CheckBoxAnswerSelectedOptionId::new)
+                .map(CheckBoxAnswerSelectedOption::new)
                 .toList();
     }
 }

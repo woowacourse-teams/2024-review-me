@@ -28,11 +28,11 @@ public class Template {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "template_id", nullable = false, updatable = false)
-    private List<TemplateSectionId> sectionIds;
+    private List<TemplateSection> sectionIds;
 
     public Template(List<Long> sectionIds) {
         this.sectionIds = sectionIds.stream()
-                .map(TemplateSectionId::new)
+                .map(TemplateSection::new)
                 .toList();
     }
 }

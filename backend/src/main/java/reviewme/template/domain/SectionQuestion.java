@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "section_question")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class SectionQuestionId {
+public class SectionQuestion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class SectionQuestionId {
     @Column(name = "question_id", nullable = false)
     private long questionId;
 
-    public SectionQuestionId(long questionId) {
+    public SectionQuestion(long questionId) {
         this.questionId = questionId;
     }
 }
