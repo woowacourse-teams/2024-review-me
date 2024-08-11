@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question2;
 import reviewme.question.repository.Question2Repository;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
-import reviewme.review.service.exception.RequiredQuestionMustBeAnsweredException;
+import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
 import reviewme.review.service.exception.TextAnswerInculdedOptionException;
 
 @Component
@@ -33,7 +33,7 @@ public class CreateTextAnswerRequestValidator {
 
     private void validateQuestionRequired(Question2 question, CreateReviewAnswerRequest request) {
         if (question.isRequired() && request.text() == null) {
-            throw new RequiredQuestionMustBeAnsweredException(question.getId());
+            throw new MissingRequiredQuestionAnswerException(question.getId());
         }
     }
 }

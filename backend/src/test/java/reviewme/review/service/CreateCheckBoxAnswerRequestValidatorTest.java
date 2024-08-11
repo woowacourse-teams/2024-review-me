@@ -15,7 +15,7 @@ import reviewme.question.repository.Question2Repository;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
-import reviewme.review.service.exception.RequiredQuestionMustBeAnsweredException;
+import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
 import reviewme.review.service.exception.SelectedCheckBoxAnswerCountOutOfRange;
 import reviewme.support.ServiceTest;
 import reviewme.template.domain.exception.OptionGroupNotFoundException;
@@ -98,7 +98,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createCheckBoxAnswerRequestValidator.validate(request))
-                .isInstanceOf(RequiredQuestionMustBeAnsweredException.class);
+                .isInstanceOf(MissingRequiredQuestionAnswerException.class);
     }
 
     @Test

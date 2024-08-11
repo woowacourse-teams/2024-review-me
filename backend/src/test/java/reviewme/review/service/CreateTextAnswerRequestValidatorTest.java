@@ -10,7 +10,7 @@ import reviewme.question.domain.QuestionType;
 import reviewme.question.domain.exception.QuestionNotFoundException;
 import reviewme.question.repository.Question2Repository;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
-import reviewme.review.service.exception.RequiredQuestionMustBeAnsweredException;
+import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
 import reviewme.review.service.exception.TextAnswerInculdedOptionException;
 import reviewme.support.ServiceTest;
 
@@ -54,6 +54,6 @@ class CreateTextAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createTextAnswerRequestValidator.validate(request))
-                .isInstanceOf(RequiredQuestionMustBeAnsweredException.class);
+                .isInstanceOf(MissingRequiredQuestionAnswerException.class);
     }
 }
