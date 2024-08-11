@@ -22,15 +22,20 @@ const PrevButton = ({ currentCardIndex, handleCurrentCardIndex }: PrevButtonProp
 };
 
 interface NextButtonProps {
-  disabled: boolean;
+  isAbleNextStep: boolean;
   handleCurrentCardIndex: (direction: 'prev' | 'next') => void;
 }
 
-const NextButton = ({ disabled, handleCurrentCardIndex }: NextButtonProps) => {
-  const styledType: ButtonStyleType = disabled ? 'disabled' : 'primary';
+const NextButton = ({ isAbleNextStep, handleCurrentCardIndex }: NextButtonProps) => {
+  const styledType: ButtonStyleType = isAbleNextStep ? 'primary' : 'disabled';
 
   return (
-    <Button disabled={disabled} styleType={styledType} type={'button'} onClick={() => handleCurrentCardIndex('next')}>
+    <Button
+      disabled={!isAbleNextStep}
+      styleType={styledType}
+      type={'button'}
+      onClick={() => handleCurrentCardIndex('next')}
+    >
       다음
     </Button>
   );
@@ -46,18 +51,19 @@ const SubmitButton = ({ handleSubmitButtonClick }: SubmitButtonProps) => {
     </Button>
   );
 };
-
 interface PreviewButton {
-  handlePreviewClick: () => void;
+  handlePreviewButtonClick: () => void;
 }
 
-const PreviewButton = ({ handlePreviewClick }: PreviewButton) => {
+const PreviewButton = ({ handlePreviewButtonClick }: PreviewButton) => {
   return (
-    <Button styleType="secondary" type={'button'} onClick={handlePreviewClick}>
+    <Button styleType="secondary" type={'button'} onClick={handlePreviewButtonClick}>
       미리보기
     </Button>
   );
 };
+
+export interface CardSliderControllerProps extends PrevButtonProps, NextButtonProps, SubmitButtonProps, PreviewButton {}
 
 const CardSliderController = () => {
   return <></>;

@@ -2,15 +2,12 @@ import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
 
 import QnABox from '../QnABox';
 
-import CardSliderController from './../CardSliderController/index';
+import CardSliderController, { CardSliderControllerProps } from './../CardSliderController/index';
 import * as S from './style';
 
-interface ReviewWritingCardProps {
-  currentCardIndex: number;
+interface ReviewWritingCardProps extends CardSliderControllerProps {
   isLastCard: boolean;
   cardSection: ReviewWritingCardSection;
-  isAbleNextStep: boolean;
-  handleCurrentCardIndex: (direction: 'prev' | 'next') => void;
   updateAnswerMap: (answer: ReviewWritingAnswer) => void;
 }
 
@@ -21,6 +18,8 @@ const ReviewWritingCard = ({
   isAbleNextStep,
   handleCurrentCardIndex,
   updateAnswerMap,
+  handlePreviewButtonClick,
+  handleSubmitButtonClick,
 }: ReviewWritingCardProps) => {
   return (
     <S.ReviewWritingCard>
@@ -37,12 +36,12 @@ const ReviewWritingCard = ({
           />
           {isLastCard ? (
             <>
-              <CardSliderController.PreviewButton handlePreviewClick={() => {}} />
-              <CardSliderController.SubmitButton handleSubmitButtonClick={() => {}} />
+              <CardSliderController.PreviewButton handlePreviewButtonClick={handlePreviewButtonClick} />
+              <CardSliderController.SubmitButton handleSubmitButtonClick={handleSubmitButtonClick} />
             </>
           ) : (
             <CardSliderController.NextButton
-              disabled={!isAbleNextStep}
+              isAbleNextStep={isAbleNextStep}
               handleCurrentCardIndex={handleCurrentCardIndex}
             />
           )}
