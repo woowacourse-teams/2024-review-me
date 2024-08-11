@@ -38,13 +38,9 @@ const useReviewerAnswer = ({ currentCardIndex, questionList, updatedSelectedCate
       const answer = answerMap.get(questionId);
       if (!answer) return false;
       // 2-2 답변이 있음 (세부적인 것을 확인)
+      // 전제 조건: 유효한 답변인 경우에만 답변 값이 있고, 그렇지 않으면 답변값이 없음
       // 2-2-1.객관식 인 경우 선택된 문항의 개수의 유효성 검사
-      if (optionGroup) {
-        const { minCount, maxCount } = optionGroup;
-        const length = answer.selectedOptionIds?.length;
-        if (!length) return false;
-        return length >= minCount && length <= maxCount;
-      }
+      if (optionGroup) return !!answer.selectedOptionIds?.length;
       // 2-2-2. 서술형
       return !!answer.text?.length;
     });

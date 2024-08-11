@@ -23,8 +23,9 @@ const useTextAnswer = ({ question, updateAnswerMap }: UseTextAnswerProps) => {
     // TODO: XSS 방어 되는 지 확인해봐야함
     if (isValidatedText) {
       setTextAnswer(value);
-      updateAnswerMap({ questionId: question.questionId, selectedOptionIds: null, text: value });
     }
+    // 유효한 답변인지 여부에 따라 답변 변경
+    updateAnswerMap({ questionId: question.questionId, selectedOptionIds: null, text: isValidatedText ? value : null });
   };
 
   return {

@@ -17,13 +17,19 @@ const useMultipleChoice = ({ question, updateAnswerMap }: UseMultipleChoiceProps
     if (isAboveSelectionLimit(Number(id))) {
       return setIsOpenLimitGuide(true);
     }
-    // 유효한 객관식 문항 선택
+    // max를 넘어서는 선택을 하지 않은 경우
     setIsOpenLimitGuide(false);
 
     const newSelectedOptionList = makeNewSelectedOptionList(event);
     setSelectedOptionList(newSelectedOptionList);
-    updateAnswerMap({ questionId: question.questionId, selectedOptionIds: newSelectedOptionList, text: null });
+    // 유효한 선택(=객관식 문항의 최소,최대 개수를 지켰을 경우)인지에 따라 answer 변경
+    updateAnswerMap({
+      questionId: question.questionId,
+      selectedOptionIds: isValidatedChoice(newSelectedOptionList) ? newSelectedOptionList : null,
+      text: null,
+    });
   };
+
   /**
    * checkbox의 change 이벤트에 따라 새로운 selectedOptionList를 반환하는 함수
    */
@@ -37,8 +43,15 @@ const useMultipleChoice = ({ question, updateAnswerMap }: UseMultipleChoiceProps
     return selectedOptionList.filter((option) => option !== optionId);
   };
 
+  const isValidatedChoice = (newSelectedOptionList: number[]) => {
+    if (!question.optionGroup) return false;
+    const { minCount, maxCount } = question.optionGroup;
+    const { length } = newSelectedOptionList;
+    return length >= minCount && length <= maxCount;
+  };
+
   const isMaxCheckedNumber = () => {
-    if (!question.optionGroup) return;
+    if (!question.optionGroup) return false;
     return selectedOptionList.length >= question.optionGroup.maxCount;
   };
 
