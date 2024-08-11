@@ -18,8 +18,10 @@ const QnABox = ({ question, updateAnswerMap }: QnABoxProps) => {
   const { textAnswer, handelTextAnswerChange, TEXT_ANSWER_LENGTH } = useTextAnswer({ question, updateAnswerMap });
 
   return (
-    <section>
-      <p>{question.content}</p>
+    <S.QnASection>
+      <S.QuestionTitle>{question.content}</S.QuestionTitle>
+      {question.guideline && <S.QuestionGuideline>{question.guideline}</S.QuestionGuideline>}
+      {/*객관식*/}
       {question.questionType === 'CHECKBOX' &&
         question.optionGroup?.options.map((option) => (
           <CheckboxItem
@@ -34,6 +36,7 @@ const QnABox = ({ question, updateAnswerMap }: QnABoxProps) => {
       {isOpenLimitGuide && (
         <S.LimitGuideMessage>😮 최대 {question.optionGroup?.maxCount}개까지 선택가능해요.</S.LimitGuideMessage>
       )}
+      {/*서술형*/}
       {question.questionType === 'TEXT' && (
         <LongReviewItem
           initialValue={textAnswer}
@@ -42,7 +45,7 @@ const QnABox = ({ question, updateAnswerMap }: QnABoxProps) => {
           handleTextareaChange={handelTextAnswerChange}
         />
       )}
-    </section>
+    </S.QnASection>
   );
 };
 

@@ -3,6 +3,7 @@ import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
 import QnABox from '../QnABox';
 
 import CardSliderController from './../CardSliderController/index';
+import * as S from './style';
 
 interface ReviewWritingCardProps {
   currentCardIndex: number;
@@ -22,26 +23,32 @@ const ReviewWritingCard = ({
   updateAnswerMap,
 }: ReviewWritingCardProps) => {
   return (
-    <div>
-      <p>{cardSection.header}</p>
-      {cardSection.questions.map((question) => (
-        <QnABox key={question.questionId} question={question} updateAnswerMap={updateAnswerMap} />
-      ))}
-      <div>
-        <CardSliderController.PrevButton
-          currentCardIndex={currentCardIndex}
-          handleCurrentCardIndex={handleCurrentCardIndex}
-        />
-        {isLastCard ? (
-          <>
-            <CardSliderController.PreviewButton handlePreviewClick={() => {}} />
-            <CardSliderController.SubmitButton handleSubmitButtonClick={() => {}} />
-          </>
-        ) : (
-          <CardSliderController.NextButton disabled={!isAbleNextStep} handleCurrentCardIndex={handleCurrentCardIndex} />
-        )}
-      </div>
-    </div>
+    <S.ReviewWritingCard>
+      <S.Header>{cardSection.header}</S.Header>
+      <S.Main>
+        {cardSection.questions.map((question) => (
+          <QnABox key={question.questionId} question={question} updateAnswerMap={updateAnswerMap} />
+        ))}
+
+        <S.ButtonContainer>
+          <CardSliderController.PrevButton
+            currentCardIndex={currentCardIndex}
+            handleCurrentCardIndex={handleCurrentCardIndex}
+          />
+          {isLastCard ? (
+            <>
+              <CardSliderController.PreviewButton handlePreviewClick={() => {}} />
+              <CardSliderController.SubmitButton handleSubmitButtonClick={() => {}} />
+            </>
+          ) : (
+            <CardSliderController.NextButton
+              disabled={!isAbleNextStep}
+              handleCurrentCardIndex={handleCurrentCardIndex}
+            />
+          )}
+        </S.ButtonContainer>
+      </S.Main>
+    </S.ReviewWritingCard>
   );
 };
 
