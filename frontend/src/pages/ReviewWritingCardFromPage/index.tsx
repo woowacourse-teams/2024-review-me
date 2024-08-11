@@ -1,11 +1,11 @@
-import { useCurrentCardIndex, useQuestionList, useReviewerAnswer, useSlideWidth } from '@/hooks';
+import { useCurrentCardIndex, useQuestionList, useReviewerAnswer, useSlideWidthAndHeight } from '@/hooks';
 
 import ReviewWritingCard from './ReviewWritingCard';
 import * as S from './styles';
 
 const ReviewWritingCardFormPage = () => {
-  const { wrapperRef, slideWidth } = useSlideWidth();
   const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
+  const { wrapperRef, slideWidth, slideHeight, makeId } = useSlideWidthAndHeight({ currentCardIndex });
   const { questionList, updatedSelectedCategory } = useQuestionList();
   const { answerMap, isAbleNextStep, updateAnswerMap } = useReviewerAnswer({
     currentCardIndex,
@@ -15,9 +15,9 @@ const ReviewWritingCardFormPage = () => {
 
   return (
     <S.CardLayout>
-      <S.SliderContainer ref={wrapperRef} $translateX={currentCardIndex * slideWidth}>
-        {questionList?.map((section) => (
-          <S.Slide key={section.sectionId}>
+      <S.SliderContainer ref={wrapperRef} $translateX={currentCardIndex * slideWidth} $height={slideHeight}>
+        {questionList?.map((section, index) => (
+          <S.Slide id={makeId(index)} key={section.sectionId}>
             <ReviewWritingCard
               currentCardIndex={currentCardIndex}
               cardSection={section}
