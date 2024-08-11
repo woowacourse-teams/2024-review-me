@@ -53,7 +53,7 @@ const useReviewerAnswer = ({ currentCardIndex, questionList, updatedSelectedCate
   useEffect(() => {
     const answerListValidation = isValidateAnswerList();
     setIsAbleNextStep(answerListValidation);
-  }, [answerMap]);
+  }, [answerMap, currentCardIndex]);
 
   return {
     answerMap,
