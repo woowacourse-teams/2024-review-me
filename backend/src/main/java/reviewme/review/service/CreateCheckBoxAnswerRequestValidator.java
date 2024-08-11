@@ -64,8 +64,8 @@ public class CreateCheckBoxAnswerRequestValidator {
         List<Long> submittedOptionItemIds = request.selectedOptionIds();
 
         if (!new HashSet<>(providedOptionItemIds).containsAll(submittedOptionItemIds)) {
-            throw new CheckBoxAnswerIncludedNotProvidedOptionItemException(providedOptionItemIds,
-                    submittedOptionItemIds
+            throw new CheckBoxAnswerIncludedNotProvidedOptionItemException(
+                    request.questionId(), providedOptionItemIds, submittedOptionItemIds
             );
         }
     }
