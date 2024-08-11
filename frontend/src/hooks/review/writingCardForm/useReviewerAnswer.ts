@@ -4,20 +4,30 @@ import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
 
 interface UseReviewerAnswerProps {
   currentCardIndex: number;
-  questionList: ReviewWritingCardSection[];
+  questionList: ReviewWritingCardSection[] | null;
+  updatedSelectedCategory: (newSelectedCategory: number[]) => void;
 }
 
-const useReviewerAnswer = ({ currentCardIndex, questionList }: UseReviewerAnswerProps) => {
+const useReviewerAnswer = ({ currentCardIndex, questionList, updatedSelectedCategory }: UseReviewerAnswerProps) => {
   const [answerMap, setAnswerMap] = useState<Map<number, ReviewWritingAnswer>>();
   const [isAbleNextStep, setIsAbleNextStep] = useState(false);
+
+  const isCategoryAnswer = (answer: ReviewWritingAnswer) =>
+    answer.questionId === questionList?.[0].questions[0].questionId;
 
   const updateAnswerMap = (answer: ReviewWritingAnswer) => {
     const newAnswerMap = new Map(answerMap);
     newAnswerMap.set(answer.questionId, answer);
     setAnswerMap(newAnswerMap);
+
+    if (isCategoryAnswer(answer)) {
+      updatedSelectedCategory(answer.selectedOptionIds ?? []);
+    }
   };
 
   const isValidateAnswerList = () => {
+    if (!questionList) return false;
+
     return questionList[currentCardIndex].questions.every((question) => {
       const { questionId, optionGroup, required } = question;
       // case1. 필수가 아닌 답변

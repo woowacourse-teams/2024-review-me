@@ -89,7 +89,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
     {
       sectionId: 3, // 문제해결 능력
       visible: 'CONDITIONAL',
-      onSelectedOptionId: 1,
+      onSelectedOptionId: 2,
       header: '이제 선택한 순간을 바탕으로 리뷰를 작성해볼게요',
       questions: [
         {
@@ -142,7 +142,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
     {
       sectionId: 4, // 시간 관리 능력
       visible: 'CONDITIONAL',
-      onSelectedOptionId: 1,
+      onSelectedOptionId: 3,
       header: '이제 선택한 순간을 바탕으로 리뷰를 작성해볼게요',
       questions: [
         {
@@ -195,7 +195,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
     {
       sectionId: 5, // 기술적 역량, 전문 지식 능력
       visible: 'CONDITIONAL',
-      onSelectedOptionId: 1,
+      onSelectedOptionId: 4,
       header: '이제 선택한 순간을 바탕으로 리뷰를 작성해볼게요',
       questions: [
         {
@@ -248,7 +248,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
     {
       sectionId: 6, // 성장 마인드 셋
       visible: 'CONDITIONAL',
-      onSelectedOptionId: 1,
+      onSelectedOptionId: 5,
       header: '이제 선택한 순간을 바탕으로 리뷰를 작성해볼게요',
       questions: [
         {
@@ -301,12 +301,12 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
     {
       sectionId: 7,
       visible: 'ALWAYS',
-      onSelectedOptionId: null,
+      onSelectedOptionId: 6,
       header: `성장을 위한 다음 목표를 설정해볼게요.`,
       questions: [
         {
           questionId: 4,
-          required: false,
+          required: true,
           questionType: 'TEXT',
           content: '앞으로의 성장을 위해서 어떤 목표를 설정하면 좋을까요?',
           optionGroup: null,
