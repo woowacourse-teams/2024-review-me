@@ -27,8 +27,9 @@ public class CreateCheckBoxAnswerRequestValidator {
 
     public void validate(CreateReviewAnswerRequest request) {
         validateNotContainingText(request);
-        Question2 question = validateQuestionExists(request);
-        OptionGroup optionGroup = validateOptionGroupExists(question);
+        Question2 question = question2Repository.getQuestionById(request.questionId());
+        OptionGroup optionGroup = optionGroupRepository.findByQuestionId(question.getId())
+                .orElseThrow(() -> new OptionGroupNotFoundByQuestionIdException(question.getId()));
         validateRequiredQuestion(request, question);
         validateOnlyIncludingProvidedOptionItem(request, optionGroup);
         validateCheckedOptionItemCount(request, optionGroup);
@@ -38,16 +39,6 @@ public class CreateCheckBoxAnswerRequestValidator {
         if (request.text() != null) {
             throw new CheckBoxAnswerIncludedTextException();
         }
-    }
-
-    private Question2 validateQuestionExists(CreateReviewAnswerRequest request) {
-        long questionId = request.questionId();
-        return question2Repository.getQuestionById(questionId);
-    }
-
-    private OptionGroup validateOptionGroupExists(Question2 question) {
-        return optionGroupRepository.findByQuestionId(question.getId())
-                .orElseThrow(() -> new OptionGroupNotFoundByQuestionIdException(question.getId()));
     }
 
     private void validateRequiredQuestion(CreateReviewAnswerRequest request, Question2 question) {
