@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -39,11 +40,16 @@ public class Review2 {
     @JoinColumn(name = "review_id", nullable = false, updatable = false)
     private List<CheckboxAnswer> checkboxAnswers;
 
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
     public Review2(long templateId, long reviewGroupId,
-                   List<TextAnswer> textAnswers, List<CheckboxAnswer> checkboxAnswers) {
+                   List<TextAnswer> textAnswers, List<CheckboxAnswer> checkboxAnswers,
+                   LocalDateTime createdAt) {
         this.templateId = templateId;
         this.reviewGroupId = reviewGroupId;
         this.textAnswers = textAnswers;
         this.checkboxAnswers = checkboxAnswers;
+        this.createdAt = createdAt;
     }
 }

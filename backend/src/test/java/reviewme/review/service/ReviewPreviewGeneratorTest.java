@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import reviewme.review.domain.ReviewContent;
+import reviewme.review.domain.TextAnswer;
 
 class ReviewPreviewGeneratorTest {
 
@@ -15,10 +15,10 @@ class ReviewPreviewGeneratorTest {
         // given
         ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
         String answer = "*".repeat(151);
-        ReviewContent reviewContent = new ReviewContent(1L, answer);
+        TextAnswer textAnswer = new TextAnswer(1, answer);
 
         // when
-        String actual = reviewPreviewGenerator.generatePreview(List.of(reviewContent));
+        String actual = reviewPreviewGenerator.generatePreview2(List.of(textAnswer));
 
         // then
         assertThat(actual).hasSize(150);
@@ -30,10 +30,10 @@ class ReviewPreviewGeneratorTest {
         // given
         ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
         String answer = "*".repeat(length);
-        ReviewContent reviewContent = new ReviewContent(1L, answer);
+        TextAnswer textAnswer = new TextAnswer(1, answer);
 
         // when
-        String actual = reviewPreviewGenerator.generatePreview(List.of(reviewContent));
+        String actual = reviewPreviewGenerator.generatePreview2(List.of(textAnswer));
 
         // then
         assertThat(actual).hasSize(length);
