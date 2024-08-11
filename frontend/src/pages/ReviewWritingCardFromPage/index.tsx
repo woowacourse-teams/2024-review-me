@@ -7,7 +7,6 @@ import ReviewWritingCard from './ReviewWritingCard';
 import * as S from './styles';
 
 const ReviewWritingCardFormPage = () => {
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [questionList, setQuestionList] = useState<ReviewWritingCardSection[]>(REVIEW_WRITING_FORM_CARD_DATA.sections);
   const [slideWidth, setSlideWidth] = useState(0);
 
@@ -17,14 +16,7 @@ const ReviewWritingCardFormPage = () => {
     if (wrapperRef.current) setSlideWidth(wrapperRef.current.clientWidth);
   }, [wrapperRef]);
 
-  const handleCurrentCardIndex = (direction: 'prev' | 'next') => {
-    const STEP = {
-      next: 1,
-      prev: -1,
-    };
-
-    setCurrentCardIndex((prev) => prev + STEP[direction]);
-  };
+  const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
 
   return (
     <S.CardLayout>
