@@ -25,7 +25,7 @@ const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageConte
     <S.DetailedReviewPageContents>
       <ReviewDescription
         projectName={detailedReview.projectName}
-        date={detailedReview.createdAt}
+        date={new Date(detailedReview.createdAt)}
         revieweeName={detailedReview.revieweeName}
         isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
