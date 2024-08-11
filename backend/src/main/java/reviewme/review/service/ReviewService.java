@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reviewme.keyword.repository.KeywordRepository;
 import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question;
-import reviewme.question.repository.OptionRepository;
+import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.Review2;
@@ -44,7 +44,7 @@ public class ReviewService {
     private final ReviewGroupRepository reviewGroupRepository;
     private final QuestionRepository questionRepository;
     private final KeywordRepository keywordRepository;
-    private final OptionRepository optionRepository;
+    private final OptionItemRepository optionItemRepository;
     private final Review2Repository review2Repository;
 
     private final ReviewCreationQuestionValidator reviewCreationQuestionValidator;
@@ -168,12 +168,12 @@ public class ReviewService {
     private ReceivedReviewResponse createReceivedReviewResponse(Review2 review) {
         CheckboxAnswer checkboxAnswer = review.getCheckboxAnswers()
                 .stream()
-                .filter(answer -> optionRepository.existsByOptionTypeAndId(OptionType.CATEGORY,
+                .filter(answer -> optionItemRepository.existsByOptionTypeAndId(OptionType.CATEGORY,
                         answer.getSelectedOptionIds().get(0)))
                 .findFirst()
                 .orElseThrow(() -> new CategoryOptionByReviewNotFoundException(review.getId()));
 
-        List<ReceivedReviewCategoryResponse> categoryResponses = optionRepository.findAllById(
+        List<ReceivedReviewCategoryResponse> categoryResponses = optionItemRepository.findAllById(
                         checkboxAnswer.getSelectedOptionIds())
                 .stream()
                 .map(optionItem -> new ReceivedReviewCategoryResponse(optionItem.getId(), optionItem.getContent()))

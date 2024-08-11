@@ -20,7 +20,7 @@ import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
-import reviewme.question.repository.OptionRepository;
+import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.Review2;
@@ -73,7 +73,7 @@ class ReviewServiceTest {
     ReviewKeywordRepository reviewKeywordRepository;
 
     @Autowired
-    OptionRepository optionRepository;
+    OptionItemRepository optionItemRepository;
 
     @Autowired
     OptionGroupRepository optionGroupRepository;
@@ -160,7 +160,7 @@ class ReviewServiceTest {
         OptionGroup categoryOptionGroup = optionGroupRepository.save(new OptionGroup(question1.getId(), 1, 2));
         OptionItem categoryOption1 = new OptionItem("커뮤니케이션 능력 ", categoryOptionGroup.getId(), 1, OptionType.CATEGORY);
         OptionItem categoryOption2 = new OptionItem("시간 관리 능력", categoryOptionGroup.getId(), 2, OptionType.CATEGORY);
-        optionRepository.saveAll(List.of(categoryOption1, categoryOption2));
+        optionItemRepository.saveAll(List.of(categoryOption1, categoryOption2));
 
         Template template = templateRepository.save(new Template(List.of()));
 
@@ -255,7 +255,7 @@ class ReviewServiceTest {
         OptionItem categoryOption1 = new OptionItem("커뮤니케이션 능력 ", categoryOptionGroup.getId(), 1, OptionType.CATEGORY);
         OptionItem categoryOption2 = new OptionItem("시간 관리 능력", categoryOptionGroup.getId(), 2, OptionType.CATEGORY);
         OptionItem keywordOption = new OptionItem("얘기를 잘 들어줘요", keywordOptionGroup.getId(), 2, OptionType.KEYWORD);
-        optionRepository.saveAll(List.of(categoryOption1, categoryOption2, keywordOption));
+        optionItemRepository.saveAll(List.of(categoryOption1, categoryOption2, keywordOption));
 
         Section section1 = secionRepository.save(
                 new Section(VisibleType.ALWAYS, List.of(question1.getId()), null, "팀원과 함께 한 기억을 떠올려볼게요.", 1)
@@ -277,7 +277,7 @@ class ReviewServiceTest {
 
         // when
         ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
-        List<String> categoryContents = optionRepository.findAllByOptionType(OptionType.CATEGORY)
+        List<String> categoryContents = optionItemRepository.findAllByOptionType(OptionType.CATEGORY)
                 .stream()
                 .map(OptionItem::getContent)
                 .toList();

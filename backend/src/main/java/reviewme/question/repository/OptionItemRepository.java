@@ -7,7 +7,7 @@ import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 
 @Repository
-public interface OptionRepository extends JpaRepository<OptionItem, Long> {
+public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
 
     List<OptionItem> findAllByOptionType(OptionType optionType);
 
