@@ -23,6 +23,7 @@ import reviewme.template.domain.Template;
 import reviewme.template.domain.VisibleType;
 import reviewme.template.domain.exception.SectionNotFoundException;
 import reviewme.template.dto.response.QuestionResponse;
+import reviewme.template.dto.response.SectionResponse;
 import reviewme.template.dto.response.TemplateResponse;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
@@ -87,6 +88,29 @@ class TemplateMapperTest {
                 () -> assertThat(templateResponse.sections().get(1).header()).isEqualTo(section2.getHeader()),
                 () -> assertThat(templateResponse.sections().get(1).questions()).hasSize(1)
         );
+    }
+
+    @Test
+    void 섹션의_선택된_옵션이_필요없는_경우_제공하지_않는다() {
+        // given
+        Question2 question = new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1);
+        questionRepository.save(question);
+
+        Section section = new Section(VisibleType.ALWAYS, List.of(question.getId()), null, "말머리1", 1);
+        sectionRepository.save(section);
+
+        Template template = new Template(List.of(section.getId()));
+        templateRepository.save(template);
+
+        ReviewGroup reviewGroup = new ReviewGroup("리뷰이명", "프로젝트명", "reviewRequestCode", "groupAccessCode");
+        reviewGroupRepository.save(reviewGroup);
+
+        // when
+        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup, template);
+
+        // then
+        SectionResponse sectionResponse = templateResponse.sections().get(0);
+        assertThat(sectionResponse.onSelectedOptionId()).isNull();
     }
 
     @Test
