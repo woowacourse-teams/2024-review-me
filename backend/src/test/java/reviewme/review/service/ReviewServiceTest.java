@@ -21,7 +21,7 @@ import reviewme.review.domain.Review;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
-import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
+import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.QuestionSetupResponse;
@@ -194,7 +194,7 @@ class ReviewServiceTest {
         // when, then
         assertThatThrownBy(
                 () -> reviewService.findReceivedReviewDetail(reviewGroup1.getGroupAccessCode(), review2.getId()))
-                .isInstanceOf(ReviewIsNotInReviewGroupException.class);
+                .isInstanceOf(InvalidReviewAccessByReviewGroupException.class);
     }
 
     @Test

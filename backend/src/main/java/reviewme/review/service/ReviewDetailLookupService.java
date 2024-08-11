@@ -14,6 +14,7 @@ import reviewme.review.domain.Review2;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.TextAnswers;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
+import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
 import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.repository.ReviewRepository2;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
@@ -43,7 +44,7 @@ public class ReviewDetailLookupService {
                 .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
 
         Review2 review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
-                .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
+                .orElseThrow(() -> new InvalidReviewAccessByReviewGroupException(reviewId, reviewGroup.getId()));
         long templateId = review.getTemplateId();
 
         Set<Long> selectedOptionItemIds = optionItemRepository.findSelectedOptionItemIdsByReviewId(reviewId);

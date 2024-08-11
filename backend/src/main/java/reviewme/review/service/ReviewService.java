@@ -12,7 +12,7 @@ import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
-import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
+import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.KeywordResponse;
@@ -110,7 +110,7 @@ public class ReviewService {
                 .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
 
         Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
-                .orElseThrow(() -> new ReviewIsNotInReviewGroupException(reviewId, reviewGroup.getId()));
+                .orElseThrow(() -> new InvalidReviewAccessByReviewGroupException(reviewId, reviewGroup.getId()));
 
         return createReviewDetailResponse(review, reviewGroup);
     }
