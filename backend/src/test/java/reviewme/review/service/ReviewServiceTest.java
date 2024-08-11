@@ -30,7 +30,7 @@ import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.QuestionSetupResponse;
 import reviewme.review.dto.response.ReceivedReviewCategoryResponse;
-import reviewme.review.dto.response.ReceivedReviewsResponse;
+import reviewme.review.dto.response.ReceivedReviewsResponse2;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.repository.CheckboxAnswerRepository;
@@ -148,7 +148,7 @@ class ReviewServiceTest {
 
     @Test
     void 확인_코드에_해당하는_그룹이_없는_경우_예외가_발생한다() {
-        assertThatThrownBy(() -> reviewService.findReceivedReviews("abc"))
+        assertThatThrownBy(() -> reviewService.findReceivedReviews2("abc"))
                 .isInstanceOf(ReviewGroupNotFoundByGroupAccessCodeException.class);
     }
 
@@ -174,7 +174,7 @@ class ReviewServiceTest {
         review2Repository.saveAll(List.of(review1, review2));
 
         // when
-        ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
+        ReceivedReviewsResponse2 response = reviewService.findReceivedReviews2(groupAccessCode);
 
         // then
         assertThat(response.reviews()).hasSize(2);
@@ -276,7 +276,7 @@ class ReviewServiceTest {
         );
 
         // when
-        ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
+        ReceivedReviewsResponse2 response = reviewService.findReceivedReviews2(groupAccessCode);
 
         // then
         List<String> categoryContents = optionItemRepository.findAllByOptionType(OptionType.CATEGORY)

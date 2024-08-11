@@ -23,8 +23,11 @@ import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.KeywordResponse;
 import reviewme.review.dto.response.QuestionSetupResponse;
 import reviewme.review.dto.response.ReceivedReviewCategoryResponse;
+import reviewme.review.dto.response.ReceivedReviewKeywordsResponse;
 import reviewme.review.dto.response.ReceivedReviewResponse;
+import reviewme.review.dto.response.ReceivedReviewResponse2;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
+import reviewme.review.dto.response.ReceivedReviewsResponse2;
 import reviewme.review.dto.response.ReviewContentResponse;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
@@ -152,20 +155,20 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReceivedReviewsResponse findReceivedReviews(String groupAccessCode) {
+    public ReceivedReviewsResponse2 findReceivedReviews2(String groupAccessCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
 
-        List<ReceivedReviewResponse> reviewResponses = review2Repository.findReceivedReviewsByGroupId(
+        List<ReceivedReviewResponse2> reviewResponses = review2Repository.findReceivedReviewsByGroupId(
                         reviewGroup.getId())
                 .stream()
-                .map(this::createReceivedReviewResponse)
+                .map(this::createReceivedReviewResponse2)
                 .toList();
 
-        return new ReceivedReviewsResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewResponses);
+        return new ReceivedReviewsResponse2(reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewResponses);
     }
 
-    private ReceivedReviewResponse createReceivedReviewResponse(Review2 review) {
+    private ReceivedReviewResponse2 createReceivedReviewResponse2(Review2 review) {
         CheckboxAnswer checkboxAnswer = review.getCheckboxAnswers()
                 .stream()
                 .filter(answer -> optionItemRepository.existsByOptionTypeAndId(OptionType.CATEGORY,
@@ -179,11 +182,39 @@ public class ReviewService {
                 .map(optionItem -> new ReceivedReviewCategoryResponse(optionItem.getId(), optionItem.getContent()))
                 .toList();
 
-        return new ReceivedReviewResponse(
+        return new ReceivedReviewResponse2(
                 review.getId(),
                 review.getCreatedAt().toLocalDate(),
                 reviewPreviewGenerator.generatePreview2(review.getTextAnswers()),
                 categoryResponses
+        );
+    }
+
+
+    @Transactional(readOnly = true)
+    public ReceivedReviewsResponse findReceivedReviews(String groupAccessCode) {
+        ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
+        List<ReceivedReviewResponse> reviewResponses =
+                reviewRepository.findReceivedReviewsByGroupId(reviewGroup.getId())
+                        .stream()
+                        .map(this::createReceivedReviewResponse)
+                        .toList();
+        return new ReceivedReviewsResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewResponses);
+    }
+
+    private ReceivedReviewResponse createReceivedReviewResponse(Review review) {
+        List<ReceivedReviewKeywordsResponse> keywordsResponses =
+                reviewKeywordRepository.findAllByReviewId(review.getId())
+                        .stream()
+                        .map(reviewKeyword -> keywordRepository.getKeywordById(reviewKeyword.getKeywordId()))
+                        .map(keyword -> new ReceivedReviewKeywordsResponse(keyword.getId(), keyword.getContent()))
+                        .toList();
+        return new ReceivedReviewResponse(
+                review.getId(),
+                review.getCreatedAt().toLocalDate(),
+                reviewPreviewGenerator.generatePreview(review.getReviewContents()),
+                keywordsResponses
         );
     }
 }
