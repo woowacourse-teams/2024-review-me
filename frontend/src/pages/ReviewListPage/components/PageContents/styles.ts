@@ -4,7 +4,7 @@ export const Layout = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4rem;
-  width: 80%;
+  width: ${({ theme }) => theme.formWidth};
 `;
 
 export const ReviewSection = styled.div`
