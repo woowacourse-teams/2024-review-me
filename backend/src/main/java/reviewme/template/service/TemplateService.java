@@ -19,7 +19,7 @@ public class TemplateService {
     private final TemplateRepository templateRepository;
     private final TemplateMapper templateMapper;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public TemplateResponse generateReviewForm(String reviewRequestCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByRequestReviewCodeException(reviewRequestCode));
