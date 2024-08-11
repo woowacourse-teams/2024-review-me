@@ -42,8 +42,8 @@ public class Review2 {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Review2(long templateId, long reviewGroupId, List<TextAnswer> textAnswers,
-                   List<CheckboxAnswer> checkboxAnswers,
+    public Review2(long templateId, long reviewGroupId,
+                   List<TextAnswer> textAnswers, List<CheckboxAnswer> checkboxAnswers,
                    LocalDateTime createdAt) {
         this.templateId = templateId;
         this.reviewGroupId = reviewGroupId;

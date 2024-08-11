@@ -277,12 +277,13 @@ class ReviewServiceTest {
 
         // when
         ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
+
+        // then
         List<String> categoryContents = optionItemRepository.findAllByOptionType(OptionType.CATEGORY)
                 .stream()
                 .map(OptionItem::getContent)
                 .toList();
 
-        // then
         assertThat(response.reviews())
                 .map(review -> review.categories()
                         .stream()
