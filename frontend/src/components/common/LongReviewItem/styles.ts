@@ -1,5 +1,15 @@
 import styled from '@emotion/styled';
 
+export const LongReviewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const Question = styled.p`
+  margin-bottom: 0.8rem;
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+`;
+
 export const TextareaContainer = styled.div`
   display: flex;
   flex-direction: column;
