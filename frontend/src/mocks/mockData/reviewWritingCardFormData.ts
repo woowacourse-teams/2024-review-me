@@ -93,7 +93,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
       header: '이제 선택한 순간을 바탕으로 리뷰를 작성해볼게요',
       questions: [
         {
-          questionId: 2,
+          questionId: 4,
           required: true,
           questionType: 'CHECKBOX',
           content: ' 어떤 문제 해결 능력이 인상 깊었는지 선택해주세요.',
@@ -129,7 +129,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
           },
         },
         {
-          questionId: 3,
+          questionId: 5,
           required: true,
           questionType: 'TEXT',
           content: '인상깊은 상황을 이야기해주세요',
@@ -146,7 +146,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
       header: '이제 선택한 순간을 바탕으로 리뷰를 작성해볼게요',
       questions: [
         {
-          questionId: 2,
+          questionId: 6,
           required: true,
           questionType: 'CHECKBOX',
           content: '어떤 시간 관리 능력이 인상 깊었는지 선택해주세요.',
@@ -182,7 +182,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
           },
         },
         {
-          questionId: 3,
+          questionId: 7,
           required: true,
           questionType: 'TEXT',
           content: '인상깊은 상황을 이야기해주세요',
@@ -199,7 +199,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
       header: '이제 선택한 순간을 바탕으로 리뷰를 작성해볼게요',
       questions: [
         {
-          questionId: 2,
+          questionId: 8,
           required: true,
           questionType: 'CHECKBOX',
           content: '어떤 기술적 능력이 인상 깊었는지 선택해주세요.',
@@ -235,7 +235,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
           },
         },
         {
-          questionId: 3,
+          questionId: 9,
           required: true,
           questionType: 'TEXT',
           content: '인상깊은 상황을 이야기해주세요',
@@ -252,7 +252,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
       header: '이제 선택한 순간을 바탕으로 리뷰를 작성해볼게요',
       questions: [
         {
-          questionId: 2,
+          questionId: 10,
           required: true,
           questionType: 'CHECKBOX',
           content: '어떤 성장 마인드셋이 인상 깊었는지 선택해주세요.',
@@ -288,7 +288,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
           },
         },
         {
-          questionId: 3,
+          questionId: 11,
           required: true,
           questionType: 'TEXT',
           content: '인상깊은 상황을 이야기해주세요',
@@ -305,7 +305,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
       header: `성장을 위한 다음 목표를 설정해볼게요.`,
       questions: [
         {
-          questionId: 4,
+          questionId: 12,
           required: true,
           questionType: 'TEXT',
           content: '앞으로의 성장을 위해서 어떤 목표를 설정하면 좋을까요?',
@@ -322,7 +322,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
       header: `아직 전하지 못한 리뷰/응원을 적어보세요.`,
       questions: [
         {
-          questionId: 4,
+          questionId: 13,
           required: false,
           questionType: 'TEXT',
           content: '전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요.',
