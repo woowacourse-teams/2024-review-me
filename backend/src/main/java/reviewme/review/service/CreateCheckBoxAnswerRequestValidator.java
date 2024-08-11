@@ -13,7 +13,7 @@ import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOption
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
 import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
 import reviewme.review.service.exception.SelectedCheckBoxAnswerCountOutOfRange;
-import reviewme.template.domain.exception.OptionGroupNotFoundException;
+import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.template.repository.OptionGroupRepository;
 import reviewme.template.repository.OptionItemRepository;
 
@@ -29,7 +29,7 @@ public class CreateCheckBoxAnswerRequestValidator {
         validateNotContainingText(request);
         Question2 question = validateQuestionExists(request);
         OptionGroup optionGroup = validateOptionGroupExists(question);
-        validateQuestionRequired(request, question);
+        validateRequiredQuestion(request, question);
         validateOnlyIncludingProvidedOptionItem(request, optionGroup);
         validateCheckedOptionItemCount(request, optionGroup);
     }
@@ -47,10 +47,10 @@ public class CreateCheckBoxAnswerRequestValidator {
 
     private OptionGroup validateOptionGroupExists(Question2 question) {
         return optionGroupRepository.findByQuestionId(question.getId())
-                .orElseThrow(() -> new OptionGroupNotFoundException(question.getId()));
+                .orElseThrow(() -> new OptionGroupNotFoundByQuestionIdException(question.getId()));
     }
 
-    private void validateQuestionRequired(CreateReviewAnswerRequest request, Question2 question) {
+    private void validateRequiredQuestion(CreateReviewAnswerRequest request, Question2 question) {
         if (question.isRequired() && request.selectedOptionIds() == null) {
             throw new MissingRequiredQuestionAnswerException(question.getId());
         }

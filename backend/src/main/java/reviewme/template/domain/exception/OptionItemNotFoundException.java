@@ -7,7 +7,7 @@ import reviewme.global.exception.NotFoundException;
 public class OptionItemNotFoundException extends NotFoundException {
 
     public OptionItemNotFoundException(long id) {
-        super("옵션 아이템이 존재하지 않아요.");
+        super("선택지가 존재하지 않아요.");
         log.info("OptionItemNotFoundException is occurred - id: {}", id);
     }
 }
