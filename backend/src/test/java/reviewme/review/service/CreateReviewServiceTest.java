@@ -128,10 +128,5 @@ class CreateReviewServiceTest {
         // then
         assertThat(reviewRepository.findAll()).hasSize(1);
         assertThat(checkboxAnswerRepository.findAll()).hasSize(1);
-//      아래 코드 검증하려면 fetch = FetchType.EAGER로 설정해야함,
-//      그런데 테스트코드에서만 필요한 설정이라면?? 이 윗부분까지만의 검증으로 충분할수도 있음
-//      그런데 다른 사람이 이미 EAGER 설정을 했다면 아래 주석 해제하고 검증 바로 하면 됨
-//     assertThat(checkboxAnswerRepository.findAll().get(0).getSelectedOptionIds())
-//                .hasSize(2);
     }
 }
