@@ -122,6 +122,29 @@ class TemplateMapperTest {
     }
 
     @Test
+    void 옵션_그룹이_없는_질문의_경우_옵션_그룹을_제공하지_않는다() {
+        // given
+        Question2 question = new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1);
+        questionRepository.save(question);
+
+        Section section = new Section(VisibleType.ALWAYS, List.of(question.getId()), null, "말머리1", 1);
+        sectionRepository.save(section);
+
+        Template template = new Template(List.of(section.getId()));
+        templateRepository.save(template);
+
+        ReviewGroup reviewGroup = new ReviewGroup("리뷰이명", "프로젝트명", "reviewRequestCode", "groupAccessCode");
+        reviewGroupRepository.save(reviewGroup);
+
+        // when
+        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup, template);
+
+        // then
+        QuestionResponse questionResponse = templateResponse.sections().get(0).questions().get(0);
+        assertThat(questionResponse.optionGroup()).isNull();
+    }
+
+    @Test
     void 템플릿_매핑_시_템플릿에_제공할_섹션이_없을_경우_예외가_발생한다() {
         // given
         Template template = new Template(List.of(1L));
