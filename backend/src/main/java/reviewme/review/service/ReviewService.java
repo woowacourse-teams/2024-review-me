@@ -6,10 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.keyword.repository.KeywordRepository;
+import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question;
+import reviewme.question.repository.OptionItemRepository;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.Review2;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
+import reviewme.review.domain.exception.CategoryOptionByReviewNotFoundException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
 import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
@@ -17,13 +22,17 @@ import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.KeywordResponse;
 import reviewme.review.dto.response.QuestionSetupResponse;
+import reviewme.review.dto.response.ReceivedReviewCategoryResponse;
 import reviewme.review.dto.response.ReceivedReviewKeywordsResponse;
 import reviewme.review.dto.response.ReceivedReviewResponse;
+import reviewme.review.dto.response.ReceivedReviewResponse2;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
+import reviewme.review.dto.response.ReceivedReviewsResponse2;
 import reviewme.review.dto.response.ReviewContentResponse;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.repository.QuestionRepository;
+import reviewme.review.repository.Review2Repository;
 import reviewme.review.repository.ReviewKeywordRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -38,6 +47,8 @@ public class ReviewService {
     private final ReviewGroupRepository reviewGroupRepository;
     private final QuestionRepository questionRepository;
     private final KeywordRepository keywordRepository;
+    private final OptionItemRepository optionItemRepository;
+    private final Review2Repository review2Repository;
 
     private final ReviewCreationQuestionValidator reviewCreationQuestionValidator;
     private final ReviewCreationKeywordValidator reviewCreationKeywordValidator;
@@ -140,6 +151,45 @@ public class ReviewService {
                 reviewGroup.getReviewee(),
                 reviewContents,
                 keywords
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public ReceivedReviewsResponse2 findReceivedReviews2(String groupAccessCode) {
+        ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
+
+        List<ReceivedReviewResponse2> reviewResponses =
+                review2Repository.findReceivedReviewsByGroupId(reviewGroup.getId())
+                        .stream()
+                        .map(this::createReceivedReviewResponse2)
+                        .toList();
+
+        return new ReceivedReviewsResponse2(reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewResponses);
+    }
+
+    private ReceivedReviewResponse2 createReceivedReviewResponse2(Review2 review) {
+        CheckboxAnswer checkboxAnswer = review.getCheckboxAnswers()
+                .stream()
+                .filter(answer -> optionItemRepository.existsByOptionTypeAndId(
+                        OptionType.CATEGORY, answer.getSelectedOptionIds().get(0)
+                ))
+                .findFirst()
+                .orElseThrow(() -> new CategoryOptionByReviewNotFoundException(review.getId()));
+
+        List<ReceivedReviewCategoryResponse> categoryResponses =
+                optionItemRepository.findAllById(checkboxAnswer.getSelectedOptionIds())
+                        .stream()
+                        .map(optionItem -> new ReceivedReviewCategoryResponse(
+                                optionItem.getId(), optionItem.getContent()
+                        ))
+                        .toList();
+
+        return new ReceivedReviewResponse2(
+                review.getId(),
+                review.getCreatedAt().toLocalDate(),
+                reviewPreviewGenerator.generatePreview2(review.getTextAnswers()),
+                categoryResponses
         );
     }
 
