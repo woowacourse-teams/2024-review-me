@@ -28,6 +28,13 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/reviews")
+    public ResponseEntity<Void> createReview(
+            @Valid @RequestBody reviewme.review.dto.request.CreateReviewRequest request) {
+        long savedReviewId = reviewService.createReview(request);
+        return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
+    }
+
+    @PostMapping("/v2/reviews")
     public ResponseEntity<Void> createReview(@Valid @RequestBody CreateReviewRequest request) {
         long savedReviewId = createReviewService.createReview(request);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
