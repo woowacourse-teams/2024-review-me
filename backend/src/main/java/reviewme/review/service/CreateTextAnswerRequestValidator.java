@@ -1,14 +1,14 @@
 package reviewme.review.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question2;
 import reviewme.question.repository.Question2Repository;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
 import reviewme.review.service.exception.RequiredQuestionMustBeAnsweredException;
 import reviewme.review.service.exception.TextAnswerIncudedOptionException;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class CreateTextAnswerRequestValidator {
 

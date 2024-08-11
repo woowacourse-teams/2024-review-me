@@ -3,7 +3,7 @@ package reviewme.review.service;
 import java.util.HashSet;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question2;
@@ -17,7 +17,7 @@ import reviewme.template.domain.exception.OptionGroupNotFoundException;
 import reviewme.template.repository.OptionGroupRepository;
 import reviewme.template.repository.OptionItemRepository;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class CreateCheckBoxAnswerRequestValidator {
 
