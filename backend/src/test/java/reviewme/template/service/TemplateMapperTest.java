@@ -22,6 +22,7 @@ import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.VisibleType;
 import reviewme.template.domain.exception.SectionNotFoundException;
+import reviewme.template.dto.response.QuestionResponse;
 import reviewme.template.dto.response.TemplateResponse;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
@@ -85,6 +86,38 @@ class TemplateMapperTest {
                 () -> assertThat(templateResponse.sections().get(0).questions()).hasSize(1),
                 () -> assertThat(templateResponse.sections().get(1).header()).isEqualTo(section2.getHeader()),
                 () -> assertThat(templateResponse.sections().get(1).questions()).hasSize(1)
+        );
+    }
+
+    @Test
+    void 가이드라인이_없는_경우_가이드_라인을_제공하지_않는다() {
+        // given
+        Question2 question = new Question2(true, QuestionType.TEXT, "질문", null, 1);
+        questionRepository.save(question);
+
+        OptionGroup optionGroup = new OptionGroup(question.getId(), 1, 2);
+        optionGroupRepository.save(optionGroup);
+
+        OptionItem optionItem = new OptionItem("선택지", optionGroup.getId(), 1);
+        optionItemRepository.save(optionItem);
+
+        Section section = new Section(VisibleType.ALWAYS, List.of(question.getId()), null, "말머리1", 1);
+        sectionRepository.save(section);
+
+        Template template = new Template(List.of(section.getId()));
+        templateRepository.save(template);
+
+        ReviewGroup reviewGroup = new ReviewGroup("리뷰이명", "프로젝트명", "reviewRequestCode", "groupAccessCode");
+        reviewGroupRepository.save(reviewGroup);
+
+        // when
+        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup, template);
+
+        // then
+        QuestionResponse questionResponse = templateResponse.sections().get(0).questions().get(0);
+        assertAll(
+                () -> assertThat(questionResponse.hasGuideline()).isFalse(),
+                () -> assertThat(questionResponse.guideline()).isNull()
         );
     }
 
