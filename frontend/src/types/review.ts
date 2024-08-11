@@ -44,6 +44,7 @@ export interface DetailReviewData {
   formId: number;
   revieweeName: string;
   projectName: string;
+  createdAt: string;
   sections: DetailReviewSection[];
 }
 

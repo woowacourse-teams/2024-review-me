@@ -25,7 +25,7 @@ const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageConte
     <S.DetailedReviewPageContents>
       <ReviewDescription
         projectName={detailedReview.projectName}
-        date={new Date('2024-05-05')} // NOTE: 임시
+        date={detailedReview.createdAt}
         revieweeName={detailedReview.revieweeName}
         isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
