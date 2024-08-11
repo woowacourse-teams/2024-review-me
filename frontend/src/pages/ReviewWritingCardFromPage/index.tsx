@@ -25,7 +25,7 @@ const ReviewWritingCardFormPage = () => {
               isAbleNextStep={isAbleNextStep}
               isLastCard={questionList.length - 1 === currentCardIndex}
               handleCurrentCardIndex={handleCurrentCardIndex}
-              updatedAnswerMap={updateAnswerMap}
+              updateAnswerMap={updateAnswerMap}
             />
           </S.Slide>
         ))}

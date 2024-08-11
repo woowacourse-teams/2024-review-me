@@ -10,7 +10,7 @@ interface ReviewWritingCardProps {
   cardSection: ReviewWritingCardSection;
   isAbleNextStep: boolean;
   handleCurrentCardIndex: (direction: 'prev' | 'next') => void;
-  updatedAnswerMap: (answer: ReviewWritingAnswer) => void;
+  updateAnswerMap: (answer: ReviewWritingAnswer) => void;
 }
 
 const ReviewWritingCard = ({
@@ -19,13 +19,13 @@ const ReviewWritingCard = ({
   cardSection,
   isAbleNextStep,
   handleCurrentCardIndex,
-  updatedAnswerMap,
+  updateAnswerMap,
 }: ReviewWritingCardProps) => {
   return (
     <div>
       <p>{cardSection.header}</p>
       {cardSection.questions.map((question) => (
-        <QnABox key={question.questionId} question={question} updatedAnswerMap={updatedAnswerMap} />
+        <QnABox key={question.questionId} question={question} updateAnswerMap={updateAnswerMap} />
       ))}
       <div>
         <CardSliderController.PrevButton
