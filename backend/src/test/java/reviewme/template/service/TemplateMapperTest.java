@@ -11,7 +11,7 @@ import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question2;
 import reviewme.question.domain.QuestionType;
-import reviewme.question.domain.exception.NoOptionItemsInOptionGroupException;
+import reviewme.question.domain.exception.MissingOptionItemsInOptionGroupException;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.Question2Repository;
@@ -124,6 +124,6 @@ class TemplateMapperTest {
 
         // when, then
         assertThatThrownBy(() -> templateMapper.mapToTemplateResponse(reviewGroup, template))
-                .isInstanceOf(NoOptionItemsInOptionGroupException.class);
+                .isInstanceOf(MissingOptionItemsInOptionGroupException.class);
     }
 }

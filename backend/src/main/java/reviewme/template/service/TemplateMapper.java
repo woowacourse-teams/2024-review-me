@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question2;
-import reviewme.question.domain.exception.NoOptionItemsInOptionGroupException;
+import reviewme.question.domain.exception.MissingOptionItemsInOptionGroupException;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.Question2Repository;
@@ -79,7 +79,7 @@ public class TemplateMapper {
     private OptionGroupResponse mapToOptionGroupResponse(OptionGroup optionGroup) {
         List<OptionItem> optionItems = optionItemRepository.findAllByOptionGroupId(optionGroup.getId());
         if (optionItems.isEmpty()) {
-            throw new NoOptionItemsInOptionGroupException(optionGroup.getId());
+            throw new MissingOptionItemsInOptionGroupException(optionGroup.getId());
         }
 
         List<OptionItemResponse> optionItemResponses = optionItems.stream()
