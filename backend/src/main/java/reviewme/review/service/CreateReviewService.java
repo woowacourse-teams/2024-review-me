@@ -1,5 +1,6 @@
 package reviewme.review.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -82,7 +83,8 @@ public class CreateReviewService {
         }
 
         Review2 savedReview = review2Repository.save(
-                new Review2(reviewGroup.getTemplateId(), reviewGroup.getId(), textAnswers, checkboxAnswers)
+                new Review2(reviewGroup.getTemplateId(), reviewGroup.getId(), textAnswers, checkboxAnswers,
+                        LocalDateTime.now())
         );
         return savedReview.getId();
     }

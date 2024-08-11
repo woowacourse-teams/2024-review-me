@@ -8,9 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
+import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question2;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.domain.exception.QuestionNotFoundException;
+import reviewme.question.repository.OptionGroupRepository;
+import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.Question2Repository;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
@@ -19,8 +22,6 @@ import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
 import reviewme.review.service.exception.SelectedCheckBoxAnswerCountOutOfRange;
 import reviewme.support.ServiceTest;
 import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
-import reviewme.template.repository.OptionGroupRepository;
-import reviewme.template.repository.OptionItemRepository;
 
 @ServiceTest
 class CreateCheckBoxAnswerRequestValidatorTest {
@@ -104,7 +105,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
                 new OptionGroup(savedQuestion.getId(), 1, 3)
         );
         OptionItem savedOptionItem = optionItemRepository.save(
-                new OptionItem("옵션", savedOptionGroup.getId(), 1)
+                new OptionItem("옵션", savedOptionGroup.getId(), 1, OptionType.KEYWORD)
         );
 
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
@@ -123,7 +124,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
                 new OptionGroup(savedQuestion.getId(), 2, 3)
         );
         OptionItem savedOptionItem1 = optionItemRepository.save(
-                new OptionItem("옵션1", savedOptionGroup.getId(), 1)
+                new OptionItem("옵션1", savedOptionGroup.getId(), 1, OptionType.KEYWORD)
         );
 
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
@@ -142,10 +143,10 @@ class CreateCheckBoxAnswerRequestValidatorTest {
                 new OptionGroup(savedQuestion.getId(), 1, 1)
         );
         OptionItem savedOptionItem1 = optionItemRepository.save(
-                new OptionItem("옵션1", savedOptionGroup.getId(), 1)
+                new OptionItem("옵션1", savedOptionGroup.getId(), 1, OptionType.KEYWORD)
         );
         OptionItem savedOptionItem2 = optionItemRepository.save(
-                new OptionItem("옵션2", savedOptionGroup.getId(), 2)
+                new OptionItem("옵션2", savedOptionGroup.getId(), 2, OptionType.KEYWORD)
         );
 
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(

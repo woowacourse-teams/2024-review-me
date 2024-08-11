@@ -8,8 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
+import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question2;
 import reviewme.question.domain.QuestionType;
+import reviewme.question.repository.OptionGroupRepository;
+import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.Question2Repository;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
 import reviewme.review.dto.request.create.CreateReviewRequest;
@@ -22,8 +25,6 @@ import reviewme.support.ServiceTest;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.VisibleType;
-import reviewme.template.repository.OptionGroupRepository;
-import reviewme.template.repository.OptionItemRepository;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
@@ -109,10 +110,10 @@ class CreateReviewServiceTest {
                 new OptionGroup(savedQuestion.getId(), 2, 2)
         );
         OptionItem savedOptionItem1 = optionItemRepository.save(
-                new OptionItem("선택지1", savedOptionGroup.getId(), 1)
+                new OptionItem("선택지1", savedOptionGroup.getId(), 1, OptionType.KEYWORD)
         );
         OptionItem savedOptionItem2 = optionItemRepository.save(
-                new OptionItem("선택지2", savedOptionGroup.getId(), 2)
+                new OptionItem("선택지2", savedOptionGroup.getId(), 2, OptionType.KEYWORD)
         );
         CreateReviewAnswerRequest createReviewAnswerRequest = new CreateReviewAnswerRequest(
                 savedQuestion.getId(), List.of(savedOptionItem1.getId(), savedOptionItem2.getId()), null
