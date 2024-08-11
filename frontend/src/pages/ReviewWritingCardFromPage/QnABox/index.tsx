@@ -19,7 +19,10 @@ const QnABox = ({ question, updateAnswerMap }: QnABoxProps) => {
 
   return (
     <S.QnASection>
-      <S.QuestionTitle>{question.content}</S.QuestionTitle>
+      <S.QuestionTitle>
+        {question.content}
+        {question.required && <S.QuestionRequiredMark>*</S.QuestionRequiredMark>}
+      </S.QuestionTitle>
       {question.guideline && <S.QuestionGuideline>{question.guideline}</S.QuestionGuideline>}
       {/*객관식*/}
       {question.questionType === 'CHECKBOX' &&
