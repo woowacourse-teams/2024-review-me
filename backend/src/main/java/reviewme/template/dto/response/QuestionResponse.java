@@ -1,13 +1,15 @@
 package reviewme.template.dto.response;
 
+import jakarta.annotation.Nullable;
+
 public record QuestionResponse(
 
         long questionId,
         boolean required,
         String content,
         String questionType,
-        OptionGroupResponse optionGroup,
+        @Nullable OptionGroupResponse optionGroup,
         boolean hasGuideline,
-        String guideline
+        @Nullable String guideline
 ) {
 }
