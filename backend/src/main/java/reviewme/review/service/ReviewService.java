@@ -14,6 +14,7 @@ import reviewme.review.domain.Review;
 import reviewme.review.domain.Review2;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
+import reviewme.review.domain.exception.CategoryOptionByReviewNotFoundException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
 import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
@@ -170,7 +171,7 @@ public class ReviewService {
                 .filter(answer -> optionRepository.existsByOptionTypeAndId(OptionType.CATEGORY,
                         answer.getSelectedOptionIds().get(0)))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(() -> new CategoryOptionByReviewNotFoundException(review.getId()));
 
         List<ReceivedReviewCategoryResponse> categoryResponses = optionRepository.findAllById(
                         checkboxAnswer.getSelectedOptionIds())
