@@ -57,6 +57,7 @@ public class ReviewDetailLookupService {
                 templateId,
                 reviewGroup.getReviewee(),
                 reviewGroup.getProjectName(),
+                review.getCreatedDate(),
                 sectionResponses
         );
     }
