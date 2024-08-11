@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
+import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question2;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
@@ -61,8 +62,8 @@ class ReviewDetailLookupServiceTest {
         Question2 question2 = questionRepository.save(new Question2(true, QuestionType.CHECKBOX, "질문", null, 1));
         Question2 question3 = questionRepository.save(new Question2(true, QuestionType.TEXT, "체크 1 조건", "가이드라인", 1));
         OptionGroup optionGroup = optionGroupRepository.save(new OptionGroup(question2.getId(), 1, 3));
-        OptionItem optionItem1 = optionItemRepository.save(new OptionItem("체크 1", optionGroup.getId(), 1));
-        OptionItem optionItem2 = optionItemRepository.save(new OptionItem("체크 2", optionGroup.getId(), 1));
+        OptionItem optionItem1 = optionItemRepository.save(new OptionItem("체크 1", optionGroup.getId(), 1, OptionType.KEYWORD));
+        OptionItem optionItem2 = optionItemRepository.save(new OptionItem("체크 2", optionGroup.getId(), 1, OptionType.KEYWORD));
 
         Section section1 = sectionRepository.save(
                 new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", 1)
@@ -98,8 +99,8 @@ class ReviewDetailLookupServiceTest {
         Question2 question2 = questionRepository.save(new Question2(true, QuestionType.CHECKBOX, "질문", null, 2));
         Question2 question3 = questionRepository.save(new Question2(true, QuestionType.TEXT, "체크 1 조건", "가이드라인", 3));
         OptionGroup optionGroup = optionGroupRepository.save(new OptionGroup(question2.getId(), 1, 3));
-        OptionItem optionItem1 = optionItemRepository.save(new OptionItem("체크 1", optionGroup.getId(), 1));
-        OptionItem optionItem2 = optionItemRepository.save(new OptionItem("체크 2", optionGroup.getId(), 2));
+        OptionItem optionItem1 = optionItemRepository.save(new OptionItem("체크 1", optionGroup.getId(), 1, OptionType.KEYWORD));
+        OptionItem optionItem2 = optionItemRepository.save(new OptionItem("체크 2", optionGroup.getId(), 2, OptionType.KEYWORD));
 
         Section section1 = sectionRepository.save(
                 new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", 1)

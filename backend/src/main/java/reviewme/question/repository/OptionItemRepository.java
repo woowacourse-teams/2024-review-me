@@ -1,15 +1,24 @@
 package reviewme.question.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
+import reviewme.question.domain.exception.OptionItemNotFoundException;
 
 @Repository
 public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
+
+    Optional<OptionItem> findById(long id);
+
+    default OptionItem getOptionItemById(long id) {
+        return findById(id)
+                .orElseThrow(() -> new OptionItemNotFoundException(id));
+    }
 
     @Query(value = """
             SELECT o.id FROM option_item o

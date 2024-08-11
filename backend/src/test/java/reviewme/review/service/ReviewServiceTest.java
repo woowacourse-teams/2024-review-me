@@ -169,8 +169,8 @@ class ReviewServiceTest {
         );
         CheckboxAnswer categoryAnswer1 = new CheckboxAnswer(question1.getId(), List.of(categoryOption1.getId()));
         CheckboxAnswer categoryAnswer2 = new CheckboxAnswer(question1.getId(), List.of(categoryOption2.getId()));
-        Review2 review1 = new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer1), LocalDateTime.now());
-        Review2 review2 = new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer2), LocalDateTime.now());
+        Review2 review1 = new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer1));
+        Review2 review2 = new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer2));
         review2Repository.saveAll(List.of(review1, review2));
 
         // when
@@ -271,8 +271,7 @@ class ReviewServiceTest {
         CheckboxAnswer categoryAnswer = new CheckboxAnswer(question1.getId(), List.of(categoryOption1.getId()));
         CheckboxAnswer keywordAnswer = new CheckboxAnswer(question2.getId(), List.of(keywordOption.getId()));
         review2Repository.save(
-                new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer, keywordAnswer),
-                        LocalDateTime.now())
+                new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer, keywordAnswer))
         );
 
         // when
