@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useCurrentCardIndex, useQuestionList, useReviewerAnswer, useSlideWidthAndHeight } from '@/hooks';
 
 import ReviewWritingCard from './ReviewWritingCard';
@@ -12,7 +14,18 @@ const ReviewWritingCardFormPage = () => {
     questionList,
     updatedSelectedCategory,
   });
+  // TODO: POST API 연결
+  const handleSubmitButtonClick = () => {
+    console.log('submit answerMap', answerMap?.values());
+  };
+  // TODO: 미리보기 모달 연결
+  const handlePreviewButtonClick = () => {
+    console.log('answerMap preview', answerMap?.values());
+  };
 
+  useEffect(() => {
+    console.log('answermap', answerMap);
+  }, [answerMap]);
   return (
     <S.CardLayout>
       <S.SliderContainer ref={wrapperRef} $translateX={currentCardIndex * slideWidth} $height={slideHeight}>
@@ -25,6 +38,8 @@ const ReviewWritingCardFormPage = () => {
               isLastCard={questionList.length - 1 === currentCardIndex}
               handleCurrentCardIndex={handleCurrentCardIndex}
               updateAnswerMap={updateAnswerMap}
+              handlePreviewButtonClick={handlePreviewButtonClick}
+              handleSubmitButtonClick={handleSubmitButtonClick}
             />
           </S.Slide>
         ))}
