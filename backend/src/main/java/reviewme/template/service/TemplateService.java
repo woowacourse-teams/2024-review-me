@@ -15,7 +15,7 @@ import reviewme.template.repository.TemplateRepository;
 @RequiredArgsConstructor
 public class TemplateService {
 
-    private static final Long USE_TEMPLATE_ID = 1L;
+    private static final long USE_TEMPLATE_ID = 1L;
 
     private final ReviewGroupRepository reviewGroupRepository;
     private final TemplateRepository templateRepository;
