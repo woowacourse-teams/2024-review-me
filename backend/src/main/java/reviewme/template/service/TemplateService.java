@@ -7,13 +7,15 @@ import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeEx
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Template;
-import reviewme.template.domain.exception.NoRegisteredTemplatesException;
+import reviewme.template.domain.exception.DefaultTemplateNotFoundException;
 import reviewme.template.dto.response.TemplateResponse;
 import reviewme.template.repository.TemplateRepository;
 
 @Service
 @RequiredArgsConstructor
 public class TemplateService {
+
+    private static final Long USE_TEMPLATE_ID = 1L;
 
     private final ReviewGroupRepository reviewGroupRepository;
     private final TemplateRepository templateRepository;
@@ -24,8 +26,8 @@ public class TemplateService {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByRequestReviewCodeException(reviewRequestCode));
 
-        Template defaultTemplate = templateRepository.findTopByOrderByIdDesc()
-                .orElseThrow(NoRegisteredTemplatesException::new);
+        Template defaultTemplate = templateRepository.findById(USE_TEMPLATE_ID)
+                .orElseThrow(() -> new DefaultTemplateNotFoundException(USE_TEMPLATE_ID));
 
         return templateMapper.mapToTemplateResponse(reviewGroup, defaultTemplate);
     }

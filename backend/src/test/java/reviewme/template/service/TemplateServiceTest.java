@@ -8,7 +8,7 @@ import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeEx
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
-import reviewme.template.domain.exception.NoRegisteredTemplatesException;
+import reviewme.template.domain.exception.DefaultTemplateNotFoundException;
 
 @ServiceTest
 class TemplateServiceTest {
@@ -38,6 +38,6 @@ class TemplateServiceTest {
 
         // when, then
         assertThatThrownBy(() -> templateService.generateReviewForm(reviewGroup.getReviewRequestCode()))
-                .isInstanceOf(NoRegisteredTemplatesException.class);
+                .isInstanceOf(DefaultTemplateNotFoundException.class);
     }
 }
