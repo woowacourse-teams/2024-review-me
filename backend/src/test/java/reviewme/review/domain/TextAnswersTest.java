@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import reviewme.review.domain.exception.TextAnswerNotFoundException;
+import reviewme.review.domain.exception.MissingTextAnswerForQuestionException;
 
 class TextAnswersTest {
 
@@ -16,7 +16,7 @@ class TextAnswersTest {
 
         // when, then
         assertThatThrownBy(() -> textAnswers.getAnswerByQuestionId(2))
-                .isInstanceOf(TextAnswerNotFoundException.class);
+                .isInstanceOf(MissingTextAnswerForQuestionException.class);
     }
 
     @Test

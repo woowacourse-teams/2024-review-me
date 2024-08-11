@@ -3,7 +3,7 @@ package reviewme.question.repository;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import reviewme.question.domain.OptionGroup;
-import reviewme.question.domain.exception.OptionGroupNotFoundException;
+import reviewme.question.domain.exception.MissingOptionGroupForQuestionException;
 
 public interface OptionGroupRepository extends JpaRepository<OptionGroup, Long> {
 
@@ -11,6 +11,6 @@ public interface OptionGroupRepository extends JpaRepository<OptionGroup, Long> 
 
     default OptionGroup getByQuestionId(long questionId) {
         return findByQuestionId(questionId)
-                .orElseThrow(() -> new OptionGroupNotFoundException(questionId));
+                .orElseThrow(() -> new MissingOptionGroupForQuestionException(questionId));
     }
 }
