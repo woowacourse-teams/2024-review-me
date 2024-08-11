@@ -23,8 +23,10 @@ class TextAnswersTest {
     void 질문_ID로_서술형_답변을_반환한다() {
         // given
         TextAnswers textAnswers = new TextAnswers(List.of(new TextAnswer(1, "답변")));
+
         // when
         TextAnswer actual = textAnswers.getAnswerByQuestionId(1);
+
         // then
         assertThat(actual.getContent()).isEqualTo("답변");
     }
