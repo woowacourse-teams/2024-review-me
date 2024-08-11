@@ -49,9 +49,8 @@ class CreateCheckBoxAnswerRequestValidatorTest {
         // given
         long notSavedQuestionId = 100L;
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
-                notSavedQuestionId,
-                List.of(1L),
-                null);
+                notSavedQuestionId, List.of(1L), null
+        );
 
         // when, then
         assertThatCode(() -> createCheckBoxAnswerRequestValidator.validate(request))
@@ -62,9 +61,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     void 선택형_질문에_텍스트_응답을_하면_예외가_발생한다() {
         // given
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
-                savedQuestion.getId(),
-                List.of(1L),
-                "서술형 응답"
+                savedQuestion.getId(), List.of(1L), "서술형 응답"
         );
 
         // when, then
@@ -76,9 +73,8 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     void 저장되지_않은_옵션그룹에_대해_응답하면_예외가_발생한다() {
         // given
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
-                savedQuestion.getId(),
-                List.of(1L),
-                null);
+                savedQuestion.getId(), List.of(1L), null
+        );
 
         // when, then
         assertThatCode(() -> createCheckBoxAnswerRequestValidator.validate(request))
@@ -112,9 +108,8 @@ class CreateCheckBoxAnswerRequestValidatorTest {
         );
 
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
-                savedQuestion.getId(),
-                List.of(savedOptionItem.getId() + 1L),
-                null);
+                savedQuestion.getId(), List.of(savedOptionItem.getId() + 1L), null
+        );
 
         // when, then
         assertThatCode(() -> createCheckBoxAnswerRequestValidator.validate(request))
@@ -132,9 +127,8 @@ class CreateCheckBoxAnswerRequestValidatorTest {
         );
 
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
-                savedQuestion.getId(),
-                List.of(savedOptionItem1.getId()),
-                null);
+                savedQuestion.getId(), List.of(savedOptionItem1.getId()), null
+        );
 
         // when, then
         assertThatCode(() -> createCheckBoxAnswerRequestValidator.validate(request))
@@ -155,9 +149,8 @@ class CreateCheckBoxAnswerRequestValidatorTest {
         );
 
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
-                savedQuestion.getId(),
-                List.of(savedOptionItem1.getId(), savedOptionItem2.getId()),
-                null);
+                savedQuestion.getId(), List.of(savedOptionItem1.getId(), savedOptionItem2.getId()), null
+        );
 
         // when, then
         assertThatCode(() -> createCheckBoxAnswerRequestValidator.validate(request))
