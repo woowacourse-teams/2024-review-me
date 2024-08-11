@@ -18,11 +18,9 @@ const useQuestionList = () => {
       questionListSectionsData.filter((data) => {
         // 공통 질문 추출
         if (data.visible === 'ALWAYS') return true;
-        // 선택된 카테고리 답변이 있는 지 여부 확인
-        if (!selectedCategory) return false;
         // 선택된 카테고리 답변과 data.onSelectedOptionId를 비교
         if (!data.onSelectedOptionId) return false;
-        return selectedCategory.includes(data.onSelectedOptionId);
+        return !!selectedCategory?.includes(data.onSelectedOptionId);
       }),
     );
   };
