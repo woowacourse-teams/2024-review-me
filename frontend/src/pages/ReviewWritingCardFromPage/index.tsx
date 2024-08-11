@@ -8,14 +8,8 @@ import * as S from './styles';
 
 const ReviewWritingCardFormPage = () => {
   const [questionList, setQuestionList] = useState<ReviewWritingCardSection[]>(REVIEW_WRITING_FORM_CARD_DATA.sections);
-  const [slideWidth, setSlideWidth] = useState(0);
 
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (wrapperRef.current) setSlideWidth(wrapperRef.current.clientWidth);
-  }, [wrapperRef]);
-
+  const { wrapperRef, slideWidth } = useSlideWidth();
   const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
 
   return (
