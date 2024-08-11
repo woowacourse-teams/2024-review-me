@@ -43,8 +43,8 @@ public class Section {
     @Column(name = "position", nullable = false)
     private int position;
 
-    public Section(VisibleType visibleType, List<Long> questionIds, Long onSelectedOptionId, String header,
-                   int position) {
+    public Section(VisibleType visibleType, List<Long> questionIds, Long onSelectedOptionId,
+                   String header, int position) {
         this.visibleType = visibleType;
         this.questionIds = questionIds;
         this.onSelectedOptionId = onSelectedOptionId;
