@@ -30,9 +30,6 @@ public class CheckboxAnswer {
     @CollectionTable(name = "selected_option_ids")
     private List<Long> selectedOptionIds;
 
-    @Column(name = "review_id", insertable = false, updatable = false)
-    private long reviewId;
-
     public CheckboxAnswer(long questionId, List<Long> selectedOptionIds) {
         this.questionId = questionId;
         this.selectedOptionIds = selectedOptionIds;
