@@ -1,8 +1,9 @@
 package reviewme.review.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +16,11 @@ import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
 import reviewme.review.dto.request.create.CreateReviewRequest;
+import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.repository.Review2Repository;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.template.domain.SectionQuestion;
-import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
@@ -35,12 +35,12 @@ public class CreateReviewService {
     private final SectionRepository sectionRepository;
     private final CreateTextAnswerRequestValidator createTextAnswerRequestValidator;
     private final CreateCheckBoxAnswerRequestValidator createCheckBoxAnswerRequestValidator;
+    private final QuestionRepository2 questionRepository;
 
     @Transactional
     public long createReview(CreateReviewRequest request) {
         ReviewGroup reviewGroup = validateReviewGroupByRequestCode(request.reviewRequestCode());
-        Template template = templateRepository.getTemplateById(reviewGroup.getTemplateId());
-        validateSubmittedQuestionAndProvidedQuestionMatch(request, template);
+        validateSubmittedQuestionsContainingInTemplate(reviewGroup.getTemplateId(), request);
         return saveReview(request, reviewGroup);
     }
 
@@ -49,18 +49,13 @@ public class CreateReviewService {
                 .orElseThrow(() -> new ReviewGroupNotFoundByRequestReviewCodeException(reviewRequestCode));
     }
 
-    private void validateSubmittedQuestionAndProvidedQuestionMatch(CreateReviewRequest request, Template template) {
-        List<Long> providedQuestionIds = template.getSectionIds()
-                .stream()
-                .map(templateSection -> sectionRepository.getSectionById(templateSection.getSectionId()))
-                .flatMap(section -> section.getQuestionIds().stream().map(SectionQuestion::getQuestionId))
-                .toList();
-        List<Long> submittedQuestionIds = request.answers()
+    private void validateSubmittedQuestionsContainingInTemplate(long templateId, CreateReviewRequest request) {
+        Set<Long> providedQuestionIds = questionRepository.findAllQuestionIdByTemplateId(templateId);
+        Set<Long> submittedQuestionIds = request.answers()
                 .stream()
                 .map(CreateReviewAnswerRequest::questionId)
-                .toList();
-
-        if (!new HashSet<>(providedQuestionIds).containsAll(submittedQuestionIds)) {
+                .collect(Collectors.toSet());
+        if (!providedQuestionIds.containsAll(submittedQuestionIds)) {
             throw new SubmittedQuestionAndProvidedQuestionMismatchException(submittedQuestionIds, providedQuestionIds);
         }
     }
