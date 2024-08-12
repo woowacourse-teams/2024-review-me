@@ -15,7 +15,7 @@ import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.Question2Repository;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
-import reviewme.review.dto.request.create.CreateReviewRequest;
+import reviewme.review.dto.request.create.CreateReviewRequest2;
 import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.review.repository.Review2Repository;
 import reviewme.review.repository.TextAnswerRepository;
@@ -88,12 +88,12 @@ class CreateReviewServiceTest {
         CreateReviewAnswerRequest createReviewAnswerRequest = new CreateReviewAnswerRequest(
                 savedQuestion.getId(), null, expectedTextAnswer
         );
-        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+        CreateReviewRequest2 createReviewRequest2 = new CreateReviewRequest2(
                 reviewRequestCode, List.of(createReviewAnswerRequest)
         );
 
         // when
-        createReviewService.createReview(createReviewRequest);
+        createReviewService.createReview(createReviewRequest2);
 
         // then
         assertThat(reviewRepository.findAll()).hasSize(1);
@@ -118,12 +118,12 @@ class CreateReviewServiceTest {
         CreateReviewAnswerRequest createReviewAnswerRequest = new CreateReviewAnswerRequest(
                 savedQuestion.getId(), List.of(savedOptionItem1.getId(), savedOptionItem2.getId()), null
         );
-        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+        CreateReviewRequest2 createReviewRequest2 = new CreateReviewRequest2(
                 reviewRequestCode, List.of(createReviewAnswerRequest)
         );
 
         // when
-        createReviewService.createReview(createReviewRequest);
+        createReviewService.createReview(createReviewRequest2);
 
         // then
         assertThat(reviewRepository.findAll()).hasSize(1);

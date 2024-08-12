@@ -14,7 +14,7 @@ import reviewme.review.domain.Review2;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
-import reviewme.review.dto.request.create.CreateReviewRequest;
+import reviewme.review.dto.request.create.CreateReviewRequest2;
 import reviewme.review.repository.Review2Repository;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -37,7 +37,7 @@ public class CreateReviewService {
     private final CreateCheckBoxAnswerRequestValidator createCheckBoxAnswerRequestValidator;
 
     @Transactional
-    public long createReview(CreateReviewRequest request) {
+    public long createReview(CreateReviewRequest2 request) {
         ReviewGroup reviewGroup = validateReviewGroupByRequestCode(request.reviewRequestCode());
         Template template = templateRepository.getTemplateById(reviewGroup.getTemplateId());
         validateSubmittedQuestionAndProvidedQuestionMatch(request, template);
@@ -49,7 +49,7 @@ public class CreateReviewService {
                 .orElseThrow(() -> new ReviewGroupNotFoundByRequestReviewCodeException(reviewRequestCode));
     }
 
-    private void validateSubmittedQuestionAndProvidedQuestionMatch(CreateReviewRequest request, Template template) {
+    private void validateSubmittedQuestionAndProvidedQuestionMatch(CreateReviewRequest2 request, Template template) {
         List<Long> providedQuestionIds = template.getSectionIds()
                 .stream()
                 .map(templateSection -> sectionRepository.getSectionById(templateSection.getSectionId()))
@@ -65,7 +65,7 @@ public class CreateReviewService {
         }
     }
 
-    private Long saveReview(CreateReviewRequest request, ReviewGroup reviewGroup) {
+    private Long saveReview(CreateReviewRequest2 request, ReviewGroup reviewGroup) {
         List<TextAnswer> textAnswers = new ArrayList<>();
         List<CheckboxAnswer> checkboxAnswers = new ArrayList<>();
         for (CreateReviewAnswerRequest answerRequests : request.answers()) {

@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.global.HeaderProperty;
-import reviewme.review.dto.request.create.CreateReviewRequest;
+import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.request.create.CreateReviewRequest2;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.dto.response.ReceivedReviewsResponse2;
 import reviewme.review.dto.response.ReviewDetailResponse;
@@ -33,13 +34,13 @@ public class ReviewController implements ReviewApi {
 
     @PostMapping("/reviews")
     public ResponseEntity<Void> createReview(
-            @Valid @RequestBody reviewme.review.dto.request.CreateReviewRequest request) {
+            @Valid @RequestBody CreateReviewRequest request) {
         long savedReviewId = reviewService.createReview(request);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
     @PostMapping("/v2/reviews")
-    public ResponseEntity<Void> createReview(@Valid @RequestBody CreateReviewRequest request) {
+    public ResponseEntity<Void> createReview(@Valid @RequestBody CreateReviewRequest2 request) {
         long savedReviewId = createReviewService.createReview(request);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
