@@ -1,6 +1,12 @@
 import { ProjectImg } from '@/components';
-import { useCurrentCardIndex, useQuestionList, useReviewerAnswer, useSlideWidthAndHeight } from '@/hooks';
-import { REVIEW_WRITING_FORM_CARD_DATA } from '@/mocks/mockData/reviewWritingCardFormData';
+import {
+  useCurrentCardIndex,
+  useGetDataToWrite,
+  useQuestionList,
+  useReviewerAnswer,
+  useSearchParamAndQuery,
+  useSlideWidthAndHeight,
+} from '@/hooks';
 
 import ReviewWritingCard from '../ReviewWritingCard';
 
@@ -10,10 +16,19 @@ const PROJECT_IMAGE_SIZE = '5rem';
 const INDEX_OFFSET = 1;
 
 const CardForm = () => {
-  const { revieweeName, projectName } = REVIEW_WRITING_FORM_CARD_DATA;
+  const { param: reviewRequestCode } = useSearchParamAndQuery({
+    paramKey: 'reviewRequestCode',
+  });
+
+  const { data } = useGetDataToWrite({ reviewRequestCode });
+  const { revieweeName, projectName } = data;
+
   const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
+
   const { wrapperRef, slideWidth, slideHeight, makeId } = useSlideWidthAndHeight({ currentCardIndex });
+
   const { questionList, updatedSelectedCategory } = useQuestionList();
+
   const { answerMap, isAbleNextStep, updateAnswerMap } = useReviewerAnswer({
     currentCardIndex,
     questionList,
