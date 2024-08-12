@@ -1,6 +1,5 @@
 package reviewme.review.service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +19,7 @@ import reviewme.review.repository.Review2Repository;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.template.domain.SectionQuestion;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
@@ -52,8 +52,8 @@ public class CreateReviewService {
     private void validateSubmittedQuestionAndProvidedQuestionMatch(CreateReviewRequest request, Template template) {
         List<Long> providedQuestionIds = template.getSectionIds()
                 .stream()
-                .map(sectionRepository::getSectionById)
-                .flatMap(section -> section.getQuestionIds().stream())
+                .map(templateSection -> sectionRepository.getSectionById(templateSection.getSectionId()))
+                .flatMap(section -> section.getQuestionIds().stream().map(SectionQuestion::getQuestionId))
                 .toList();
         List<Long> submittedQuestionIds = request.answers()
                 .stream()
@@ -83,8 +83,7 @@ public class CreateReviewService {
         }
 
         Review2 savedReview = review2Repository.save(
-                new Review2(reviewGroup.getTemplateId(), reviewGroup.getId(), textAnswers, checkboxAnswers,
-                        LocalDateTime.now())
+                new Review2(reviewGroup.getTemplateId(), reviewGroup.getId(), textAnswers, checkboxAnswers)
         );
         return savedReview.getId();
     }
