@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { REVIEW_WRITING_FORM_CARD_DATA } from '@/mocks/mockData/reviewWritingCardFormData';
+import { REVIEW_WRITING_FORM_CARD_DATA } from '@/mocks/mockData';
 import { ReviewWritingCardSection } from '@/types';
 
 const useQuestionList = () => {

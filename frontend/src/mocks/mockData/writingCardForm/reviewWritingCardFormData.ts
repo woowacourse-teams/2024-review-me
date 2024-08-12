@@ -1,5 +1,7 @@
 import { ReviewWritingFrom } from '@/types';
 
+export const REVIEW_REQUEST_CODE = 'ABCD1234';
+
 export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
   formId: '1',
   revieweeName: '김리뷰',

@@ -15,7 +15,7 @@ const QnABox = ({ question, updateAnswerMap }: QnABoxProps) => {
     updateAnswerMap,
   });
 
-  const { textAnswer, handelTextAnswerChange, TEXT_ANSWER_LENGTH } = useTextAnswer({ question, updateAnswerMap });
+  const { textAnswer, handleTextAnswerChange, TEXT_ANSWER_LENGTH } = useTextAnswer({ question, updateAnswerMap });
 
   const multipleGuideline = (() => {
     const { optionGroup } = question;
@@ -60,7 +60,7 @@ const QnABox = ({ question, updateAnswerMap }: QnABoxProps) => {
           initialValue={textAnswer}
           minLength={TEXT_ANSWER_LENGTH.min}
           maxLength={TEXT_ANSWER_LENGTH.max}
-          handleTextareaChange={handelTextAnswerChange}
+          handleTextareaChange={handleTextAnswerChange}
         />
       )}
     </S.QnASection>

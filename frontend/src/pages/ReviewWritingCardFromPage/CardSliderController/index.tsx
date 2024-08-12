@@ -51,19 +51,19 @@ const SubmitButton = ({ handleSubmitButtonClick }: SubmitButtonProps) => {
     </Button>
   );
 };
-interface PreviewButton {
-  handlePreviewButtonClick: () => void;
+interface RecheckButton {
+  handleRecheckButtonClick: () => void;
 }
 
-const PreviewButton = ({ handlePreviewButtonClick }: PreviewButton) => {
+const RecheckButton = ({ handleRecheckButtonClick }: RecheckButton) => {
   return (
-    <Button styleType="secondary" type={'button'} onClick={handlePreviewButtonClick}>
-      미리보기
+    <Button styleType="secondary" type={'button'} onClick={handleRecheckButtonClick}>
+      제출 전 확인
     </Button>
   );
 };
 
-export interface CardSliderControllerProps extends PrevButtonProps, NextButtonProps, SubmitButtonProps, PreviewButton {}
+export interface CardSliderControllerProps extends PrevButtonProps, NextButtonProps, SubmitButtonProps, RecheckButton {}
 
 const CardSliderController = () => {
   return <></>;
@@ -72,6 +72,6 @@ const CardSliderController = () => {
 CardSliderController.PrevButton = PrevButton;
 CardSliderController.NextButton = NextButton;
 CardSliderController.SubmitButton = SubmitButton;
-CardSliderController.PreviewButton = PreviewButton;
+CardSliderController.RecheckButton = RecheckButton;
 
 export default CardSliderController;

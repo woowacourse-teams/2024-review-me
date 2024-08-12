@@ -6,19 +6,21 @@ import CardSliderController, { CardSliderControllerProps } from './../CardSlider
 import * as S from './style';
 
 interface ReviewWritingCardProps extends CardSliderControllerProps {
+  cardIndex: number;
   isLastCard: boolean;
   cardSection: ReviewWritingCardSection;
   updateAnswerMap: (answer: ReviewWritingAnswer) => void;
 }
 
 const ReviewWritingCard = ({
+  cardIndex,
   currentCardIndex,
   isLastCard,
   cardSection,
   isAbleNextStep,
   handleCurrentCardIndex,
   updateAnswerMap,
-  handlePreviewButtonClick,
+  handleRecheckButtonClick,
   handleSubmitButtonClick,
 }: ReviewWritingCardProps) => {
   return (
@@ -30,13 +32,15 @@ const ReviewWritingCard = ({
         ))}
 
         <S.ButtonContainer>
-          <CardSliderController.PrevButton
-            currentCardIndex={currentCardIndex}
-            handleCurrentCardIndex={handleCurrentCardIndex}
-          />
+          {!!currentCardIndex && !!cardIndex && (
+            <CardSliderController.PrevButton
+              currentCardIndex={currentCardIndex}
+              handleCurrentCardIndex={handleCurrentCardIndex}
+            />
+          )}
           {isLastCard ? (
             <>
-              <CardSliderController.PreviewButton handlePreviewButtonClick={handlePreviewButtonClick} />
+              <CardSliderController.RecheckButton handleRecheckButtonClick={handleRecheckButtonClick} />
               <CardSliderController.SubmitButton handleSubmitButtonClick={handleSubmitButtonClick} />
             </>
           ) : (

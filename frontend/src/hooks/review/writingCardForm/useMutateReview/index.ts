@@ -2,27 +2,27 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { postReviewApi } from '@/apis/review';
 import { REVIEW_QUERY_KEYS } from '@/constants';
-import { ReviewData } from '@/types';
+import { ReviewWritingFormResult } from '@/types';
 
-interface PostReviewArgs {
-  reviewData: ReviewData;
+interface UseMutateReviewProps {
+  openErrorModal: (message: string) => void;
 }
 
-const useMutateReview = () => {
+const useMutateReview = ({ openErrorModal }: UseMutateReviewProps) => {
   const queryClient = useQueryClient();
 
   const reviewMutation = useMutation({
-    mutationFn: ({ reviewData }: PostReviewArgs) => postReviewApi({ reviewData }),
+    mutationFn: (formResult: ReviewWritingFormResult) => postReviewApi(formResult),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [REVIEW_QUERY_KEYS.postReview] });
     },
     onError: () => {
-      console.error('리뷰 제출에 실패했어요.');
+      openErrorModal('리뷰 제출에 실패했어요');
     },
   });
 
-  const postReview = ({ reviewData }: PostReviewArgs) => {
-    reviewMutation.mutate({ reviewData });
+  const postReview = (formResult: ReviewWritingFormResult) => {
+    reviewMutation.mutate(formResult);
   };
 
   return { reviewMutation, postReview };
