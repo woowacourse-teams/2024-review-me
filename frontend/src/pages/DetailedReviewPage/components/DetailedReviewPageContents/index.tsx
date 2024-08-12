@@ -7,6 +7,7 @@ import * as S from './styles';
 interface DetailedReviewPageContentsProps {
   groupAccessCode: string;
 }
+
 const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageContentsProps) => {
   const { param: reviewId, queryString: memberId } = useSearchParamAndQuery({
     paramKey: 'reviewId',
@@ -30,10 +31,17 @@ const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageConte
         handleClickToggleButton={() => console.log('click toggle ')}
       />
       {/* 시연 때 숨김 <RevieweeComments comment={detailedReview.reviewerGroup.description} /> */}
-      {detailedReview.contents.map(({ id, question, answer }, index) => (
+      {/* {detailedReview.contents.map(({ id, question, answer }, index) => (
         <ReviewSection key={id} question={question} answer={answer} index={index} />
-      ))}
-      <KeywordSection keywords={detailedReview.keywords} index={detailedReview.contents.length} />
+      ))} */}
+      {detailedReview.sections.map((section) =>
+        section.questions.map((question, index) => (
+          <S.ReviewContentContainer key={index}>
+            <ReviewSection question={question.content} answer={question.answer!} />
+            {question.questionType === 'CHECKBOX' && <KeywordSection options={question.optionGroup!.options} />}
+          </S.ReviewContentContainer>
+        )),
+      )}
     </S.DetailedReviewPageContents>
   );
 };

@@ -2,7 +2,7 @@ import { ProjectImg, ReviewDate } from '@/components';
 import { ProjectImgProps } from '@/components/common/ProjectImg';
 import { ReviewDateProps } from '@/components/common/ReviewDate';
 
-import LockToggle from '../LockToggle';
+// import LockToggle from '../LockToggle';
 
 import * as S from './styles';
 
@@ -19,9 +19,9 @@ const ReviewDescription = ({
   thumbnailUrl,
   projectName,
   revieweeName,
-  isPublic,
+  // isPublic,
   date,
-  handleClickToggleButton,
+  // handleClickToggleButton,
 }: ReviewDescriptionProps) => {
   return (
     <S.Description>
