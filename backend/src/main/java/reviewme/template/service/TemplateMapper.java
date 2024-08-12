@@ -71,7 +71,7 @@ public class TemplateMapper {
                 question.getId(),
                 question.isRequired(),
                 question.getContent(),
-                question.getContent(),
+                question.getQuestionType().name(),
                 optionGroupResponse,
                 question.hasGuideline(),
                 question.getGuideline()
