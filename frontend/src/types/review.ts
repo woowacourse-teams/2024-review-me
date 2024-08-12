@@ -54,8 +54,13 @@ export interface ReviewList {
 }
 
 export interface ReviewInfo {
-  id: number;
+  reviewId: number;
   createdAt: string;
   contentPreview: string;
-  keywords: Keyword[];
+  categories: Category[];
+}
+
+export interface Category {
+  optionId: number;
+  content: string;
 }
