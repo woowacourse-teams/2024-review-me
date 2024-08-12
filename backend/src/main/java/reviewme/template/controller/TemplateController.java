@@ -10,7 +10,7 @@ import reviewme.template.service.TemplateService;
 
 @RestController
 @RequiredArgsConstructor
-public class TemplateController {
+public class TemplateController implements TemplateApi {
 
     private final TemplateService templateService;
 
