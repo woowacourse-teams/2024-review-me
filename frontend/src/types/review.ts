@@ -131,3 +131,8 @@ export interface ReviewWritingAnswer {
   selectedOptionIds: number[] | null;
   text: string | null;
 }
+
+export interface ReviewWritingFormResult {
+  reviewRequestCode: string;
+  answers: ReviewWritingAnswer[];
+}

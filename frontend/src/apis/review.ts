@@ -1,4 +1,4 @@
-import { DetailReviewData, ReviewData, ReviewList, ReviewWritingFrom } from '@/types';
+import { DetailReviewData, ReviewData, ReviewList, ReviewWritingFormResult, ReviewWritingFrom } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
@@ -16,13 +16,13 @@ export const getDataToWriteReviewApi = async (reviewRequestCode: string) => {
   return data as ReviewWritingFrom;
 };
 
-export const postReviewApi = async ({ reviewData }: { reviewData: ReviewData }) => {
+export const postReviewApi = async (formResult: ReviewWritingFormResult) => {
   const response = await fetch(endPoint.postingReview, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(reviewData),
+    body: JSON.stringify(formResult),
   });
 
   if (!response.ok) {

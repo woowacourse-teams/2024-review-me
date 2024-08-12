@@ -55,3 +55,15 @@ export const ProjectName = styled.p`
 export const RevieweeName = styled.span`
   color: ${({ theme }) => theme.colors.primary};
 `;
+
+export const SubmitErrorMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  align-items: start;
+
+  p {
+    width: max-content;
+    margin: 0;
+  }
+`;
