@@ -17,15 +17,15 @@ public enum Question2Fixture {
     private String guideLine;
     private int order;
 
-    public Question2 create() {
-        return new Question2(required, type, content, guideLine, order);
-    }
-
     Question2Fixture(boolean required, QuestionType type, String content, String guideLine, int order) {
         this.required = required;
         this.type = type;
         this.content = content;
         this.guideLine = guideLine;
         this.order = order;
+    }
+
+    public Question2 create() {
+        return new Question2(required, type, content, guideLine, order);
     }
 }
