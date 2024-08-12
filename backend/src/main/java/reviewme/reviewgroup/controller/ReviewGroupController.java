@@ -23,4 +23,12 @@ public class ReviewGroupController implements ReviewGroupApi {
         ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/v2/groups")
+    public ResponseEntity<ReviewGroupCreationResponse> createReviewGroupV2(
+            @Valid @RequestBody ReviewGroupCreationRequest request
+    ) {
+        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request);
+        return ResponseEntity.ok(response);
+    }
 }
