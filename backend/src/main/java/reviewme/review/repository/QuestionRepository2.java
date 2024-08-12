@@ -26,7 +26,7 @@ public interface QuestionRepository2 extends JpaRepository<Question2, Long> {
             ON sq.section_id = ts.section_id
             WHERE ts.template_id = :templateId
             """, nativeQuery = true)
-    Set<Long> findAllQuestionIdByTemplateId(Long templateId);
+    Set<Long> findAllQuestionIdByTemplateId(long templateId);
 
     default Question2 getQuestionById(long id) {
         return findById(id).orElseThrow(() -> new QuestionNotFoundException(id));
