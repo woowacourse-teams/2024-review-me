@@ -46,7 +46,7 @@ interface SubmitButtonProps {
 }
 const SubmitButton = ({ handleSubmitButtonClick }: SubmitButtonProps) => {
   return (
-    <Button styleType="primary" type={'button'} onClick={handleSubmitButtonClick}>
+    <Button styleType="primary" type={'submit'} onClick={handleSubmitButtonClick}>
       제출
     </Button>
   );
