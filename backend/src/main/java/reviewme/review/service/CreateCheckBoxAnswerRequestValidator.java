@@ -9,8 +9,8 @@ import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question2;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.question.repository.Question2Repository;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
+import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
 import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
@@ -21,13 +21,13 @@ import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdExcepti
 @RequiredArgsConstructor
 public class CreateCheckBoxAnswerRequestValidator {
 
-    private final Question2Repository question2Repository;
+    private final QuestionRepository2 questionRepository;
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
     public void validate(CreateReviewAnswerRequest request) {
         validateNotContainingText(request);
-        Question2 question = question2Repository.getQuestionById(request.questionId());
+        Question2 question = questionRepository.getQuestionById(request.questionId());
         OptionGroup optionGroup = optionGroupRepository.findByQuestionId(question.getId())
                 .orElseThrow(() -> new OptionGroupNotFoundByQuestionIdException(question.getId()));
         validateRequiredQuestion(request, question);

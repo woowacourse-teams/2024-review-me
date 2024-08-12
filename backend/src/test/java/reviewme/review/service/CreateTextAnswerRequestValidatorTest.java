@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.Question2;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.domain.exception.QuestionNotFoundException;
-import reviewme.question.repository.Question2Repository;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
+import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
 import reviewme.review.service.exception.TextAnswerInculdedOptionException;
 import reviewme.support.ServiceTest;
@@ -21,7 +21,7 @@ class CreateTextAnswerRequestValidatorTest {
     private CreateTextAnswerRequestValidator createTextAnswerRequestValidator;
 
     @Autowired
-    private Question2Repository question2Repository;
+    private QuestionRepository2 questionRepository;
 
     @Test
     void 저장되지_않은_질문에_대한_대답이면_예외가_발생한다() {
@@ -37,7 +37,7 @@ class CreateTextAnswerRequestValidatorTest {
     void 텍스트형_질문에_선택형_응답을_하면_예외가_발생한다() {
         // given
         Question2 savedQuestion
-                = question2Repository.save(new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1));
+                = questionRepository.save(new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1));
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(savedQuestion.getId(), List.of(1L), "응답");
 
         // when, then
@@ -49,7 +49,7 @@ class CreateTextAnswerRequestValidatorTest {
     void 필수_텍스트형_질문에_응답을_하지_않으면_예외가_발생한다() {
         // given
         Question2 savedQuestion
-                = question2Repository.save(new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1));
+                = questionRepository.save(new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1));
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(savedQuestion.getId(), null, null);
 
         // when, then

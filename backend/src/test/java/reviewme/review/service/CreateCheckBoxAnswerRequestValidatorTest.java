@@ -14,8 +14,8 @@ import reviewme.question.domain.QuestionType;
 import reviewme.question.domain.exception.QuestionNotFoundException;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.question.repository.Question2Repository;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
+import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
 import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
@@ -30,7 +30,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     private CreateCheckBoxAnswerRequestValidator createCheckBoxAnswerRequestValidator;
 
     @Autowired
-    private Question2Repository question2Repository;
+    private QuestionRepository2 questionRepository;
 
     @Autowired
     private OptionGroupRepository optionGroupRepository;
@@ -42,7 +42,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
 
     @BeforeEach
     void setUp() {
-        savedQuestion = question2Repository.save(new Question2(true, QuestionType.CHECKBOX, "질문", null, 1));
+        savedQuestion = questionRepository.save(new Question2(true, QuestionType.CHECKBOX, "질문", null, 1));
     }
 
     @Test

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.question.domain.Question2;
 import reviewme.question.domain.QuestionType;
-import reviewme.question.repository.Question2Repository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review2;
 import reviewme.review.domain.TextAnswer;
@@ -29,13 +28,12 @@ import reviewme.template.repository.TemplateRepository;
 public class CreateReviewService {
 
     private final Review2Repository review2Repository;
-    private final Question2Repository question2Repository;
+    private final QuestionRepository2 questionRepository;
     private final ReviewGroupRepository reviewGroupRepository;
     private final TemplateRepository templateRepository;
     private final SectionRepository sectionRepository;
     private final CreateTextAnswerRequestValidator createTextAnswerRequestValidator;
     private final CreateCheckBoxAnswerRequestValidator createCheckBoxAnswerRequestValidator;
-    private final QuestionRepository2 questionRepository;
 
     @Transactional
     public long createReview(CreateReviewRequest request) {
@@ -64,7 +62,7 @@ public class CreateReviewService {
         List<TextAnswer> textAnswers = new ArrayList<>();
         List<CheckboxAnswer> checkboxAnswers = new ArrayList<>();
         for (CreateReviewAnswerRequest answerRequests : request.answers()) {
-            Question2 question = question2Repository.getQuestionById(answerRequests.questionId());
+            Question2 question = questionRepository.getQuestionById(answerRequests.questionId());
             QuestionType questionType = question.getQuestionType();
             if (questionType == QuestionType.TEXT) {
                 createTextAnswerRequestValidator.validate(answerRequests);

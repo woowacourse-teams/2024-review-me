@@ -9,7 +9,7 @@ import reviewme.question.domain.Question2;
 import reviewme.question.domain.exception.MissingOptionItemsInOptionGroupException;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.question.repository.Question2Repository;
+import reviewme.review.repository.QuestionRepository2;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.SectionQuestion;
@@ -27,7 +27,7 @@ import reviewme.template.repository.SectionRepository;
 public class TemplateMapper {
 
     private final SectionRepository sectionRepository;
-    private final Question2Repository questionRepository;
+    private final QuestionRepository2 questionRepository;
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
