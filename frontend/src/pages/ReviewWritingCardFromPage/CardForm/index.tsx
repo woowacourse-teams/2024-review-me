@@ -38,7 +38,7 @@ const CardForm = () => {
 
   const { wrapperRef, slideWidth, slideHeight, makeId } = useSlideWidthAndHeight({ currentCardIndex });
 
-  const { questionList, updatedSelectedCategory } = useQuestionList();
+  const { questionList, updatedSelectedCategory } = useQuestionList({ questionListSectionsData: data.sections });
 
   const { answerMap, isAbleNextStep, updateAnswerMap } = useReviewerAnswer({
     currentCardIndex,
