@@ -8,8 +8,6 @@ public record QuestionAnswerResponse(
         boolean required,
         QuestionType questionType,
         String content,
-        boolean hasGuideline,
-        @Nullable String guideline,
         @Nullable OptionGroupAnswerResponse optionGroup,
         @Nullable String answer
 ) {
