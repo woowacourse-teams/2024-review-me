@@ -34,8 +34,8 @@ const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageConte
         <ReviewSection key={id} question={question} answer={answer} index={index} />
       ))} */}
       {detailedReview.sections.map((section) =>
-        section.questions.map((question, index) => (
-          <S.ReviewContentContainer key={index}>
+        section.questions.map((question) => (
+          <S.ReviewContentContainer key={question.questionId}>
             <ReviewSection question={question.content} answer={question.answer!} />
             {question.questionType === 'CHECKBOX' && <KeywordSection options={question.optionGroup!.options} />}
           </S.ReviewContentContainer>
