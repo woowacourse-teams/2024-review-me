@@ -19,8 +19,12 @@ import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.Question2Repository;
+import reviewme.review.domain.CheckboxAnswer;
+import reviewme.review.domain.Review2;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
 import reviewme.review.dto.request.create.CreateReviewRequest2;
+import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.review.repository.Review2Repository;
 import reviewme.review.repository.TextAnswerRepository;
@@ -79,14 +83,18 @@ class ReviewsE2ETest extends E2ETest {
         // 카테고리 선택형 질문 저장
         카테고리_질문 = questionRepository.save(new Question2(true, QuestionType.CHECKBOX, "카테고리 선택형", null, 1));
         카테고리_옵션_그룹 = optionGroupRepository.save(new OptionGroup(카테고리_질문.getId(), 1, 2));
-        카테고리_옵션_아이템1 = optionItemRepository.save(new OptionItem("카테고리 선택지1", 카테고리_옵션_그룹.getId(), 1, OptionType.CATEGORY));
-        카테고리_옵션_아이템2 = optionItemRepository.save(new OptionItem("카테고리 선택지2", 카테고리_옵션_그룹.getId(), 1, OptionType.CATEGORY));
+        카테고리_옵션_아이템1 = optionItemRepository.save(
+                new OptionItem("카테고리 선택지1", 카테고리_옵션_그룹.getId(), 1, OptionType.CATEGORY));
+        카테고리_옵션_아이템2 = optionItemRepository.save(
+                new OptionItem("카테고리 선택지2", 카테고리_옵션_그룹.getId(), 1, OptionType.CATEGORY));
 
         // 꼬리질문 선택형 질문 저장
         꼬리질문_선택형_질문 = questionRepository.save(new Question2(true, QuestionType.CHECKBOX, "꼬리질문 선택형", null, 1));
         꼬리질문_옵션_그룹 = optionGroupRepository.save(new OptionGroup(꼬리질문_선택형_질문.getId(), 1, 2));
-        꼬리질문_옵션_아이템1 = optionItemRepository.save(new OptionItem("꼬리질문 선택지1", 꼬리질문_옵션_그룹.getId(), 1, OptionType.KEYWORD));
-        꼬리질문_옵션_아이템2 = optionItemRepository.save(new OptionItem("꼬리질문 선택지2", 꼬리질문_옵션_그룹.getId(), 1, OptionType.KEYWORD));
+        꼬리질문_옵션_아이템1 = optionItemRepository.save(
+                new OptionItem("꼬리질문 선택지1", 꼬리질문_옵션_그룹.getId(), 1, OptionType.KEYWORD));
+        꼬리질문_옵션_아이템2 = optionItemRepository.save(
+                new OptionItem("꼬리질문 선택지2", 꼬리질문_옵션_그룹.getId(), 1, OptionType.KEYWORD));
 
         // 꼬리질문 서술형 질문 저장
         꼬리질문_서술형_질문 = questionRepository.save(new Question2(true, QuestionType.TEXT, "꼬리질문 서술형", null, 2));
@@ -143,5 +151,37 @@ class ReviewsE2ETest extends E2ETest {
                 .when().post("/v2/reviews")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void 내가_받은_리뷰_목록_조회_API() {
+        // given
+        ReviewGroup savedReviewGroup = reviewGroupRepository.save(리뷰그룹);
+        reviewRepository.save(
+                new Review2(
+                        1L,
+                        savedReviewGroup.getId(),
+                        List.of(new TextAnswer(꼬리질문_서술형_질문.getId(), "서술형응답")),
+                        List.of(new CheckboxAnswer(카테고리_질문.getId(), List.of(카테고리_옵션_아이템1.getId())),
+                                new CheckboxAnswer(꼬리질문_선택형_질문.getId(), List.of(꼬리질문_옵션_아이템1.getId()))
+                        )
+                )
+        );
+
+        // when
+        ReceivedReviewsResponse response = RestAssured
+                .given().log().all()
+                .header("GroupAccessCode", savedReviewGroup.getGroupAccessCode())
+                .when().get("/reviews")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(ReceivedReviewsResponse.class);
+
+        // then
+        assertAll(
+                () -> assertThat(response.projectName()).isEqualTo(savedReviewGroup.getProjectName()),
+                () -> assertThat(response.revieweeName()).isEqualTo(savedReviewGroup.getReviewee()),
+                () -> assertThat(response.reviews()).isNotNull()
+        );
     }
 }
