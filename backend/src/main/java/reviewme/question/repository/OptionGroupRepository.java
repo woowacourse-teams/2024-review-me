@@ -4,14 +4,15 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import reviewme.question.domain.OptionGroup;
-import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
+import reviewme.question.domain.exception.MissingOptionGroupForQuestionException;
 
 @Repository
 public interface OptionGroupRepository extends JpaRepository<OptionGroup, Long> {
 
-    Optional<OptionGroup> findByQuestionId(Long id);
+    Optional<OptionGroup> findByQuestionId(long questionId);
 
-    default OptionGroup getOptionGroupById(long id) {
-        return findById(id).orElseThrow(() -> new OptionGroupNotFoundByQuestionIdException(id));
+    default OptionGroup getByQuestionId(long questionId) {
+        return findByQuestionId(questionId)
+                .orElseThrow(() -> new MissingOptionGroupForQuestionException(questionId));
     }
 }

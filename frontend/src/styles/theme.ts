@@ -3,7 +3,7 @@ import { CSSProperties } from 'react';
 
 import { ThemeProperty } from '../types';
 
-export const formWidth = '65rem';
+export const formWidth = '70rem';
 export const sidebarWidth: ThemeProperty<string> = {
   desktop: '25rem',
   mobile: '100vw',

@@ -1,22 +1,19 @@
-import { Keyword } from '@/types';
+import { Options } from '@/types';
 
-import ReviewSectionHeader from '../ReviewSectionHeader';
+// import ReviewSectionHeader from '../ReviewSectionHeader';
 
 import * as S from './styles';
 
 interface KeywordSectionProps {
-  keywords: Keyword[];
-  index: number;
+  options: Options[];
 }
-const KEY_WORD_HEADER = '키워드';
 
-const KeywordSection = ({ keywords, index }: KeywordSectionProps) => {
+const KeywordSection = ({ options }: KeywordSectionProps) => {
   return (
     <S.KeywordSection>
-      <ReviewSectionHeader number={index + 1} text={KEY_WORD_HEADER} />
       <S.KeywordContainer>
-        {keywords.map(({ id, content }) => (
-          <S.KeywordBox key={id}>{content}</S.KeywordBox>
+        {options.map(({ optionId, content }) => (
+          <S.KeywordBox key={optionId}>{content}</S.KeywordBox>
         ))}
       </S.KeywordContainer>
     </S.KeywordSection>

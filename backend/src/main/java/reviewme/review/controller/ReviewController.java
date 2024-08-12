@@ -17,16 +17,19 @@ import reviewme.review.dto.response.ReceivedReviewsResponse2;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 import reviewme.review.service.CreateReviewService;
+import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewService;
+import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
 
 @RestController
 @RequiredArgsConstructor
-public class ReviewController {
+public class ReviewController implements ReviewApi {
 
     private static final String GROUP_ACCESS_CODE_HEADER = "GroupAccessCode";
 
     private final CreateReviewService createReviewService;
     private final ReviewService reviewService;
+    private final ReviewDetailLookupService reviewDetailLookupService;
 
     @PostMapping("/reviews")
     public ResponseEntity<Void> createReview(
@@ -68,6 +71,14 @@ public class ReviewController {
             @PathVariable long id,
             @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode) {
         ReviewDetailResponse response = reviewService.findReceivedReviewDetail(groupAccessCode, id);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/v2/reviews/{id}")
+    public ResponseEntity<TemplateAnswerResponse> findReceivedReviewDetailV2(
+            @PathVariable long id,
+            @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode) {
+        TemplateAnswerResponse response = reviewDetailLookupService.getReviewDetail(groupAccessCode, id);
         return ResponseEntity.ok(response);
     }
 }

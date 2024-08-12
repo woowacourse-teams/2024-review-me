@@ -1,0 +1,54 @@
+import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
+
+import QnABox from '../QnABox';
+
+import CardSliderController, { CardSliderControllerProps } from './../CardSliderController/index';
+import * as S from './style';
+
+interface ReviewWritingCardProps extends CardSliderControllerProps {
+  isLastCard: boolean;
+  cardSection: ReviewWritingCardSection;
+  updateAnswerMap: (answer: ReviewWritingAnswer) => void;
+}
+
+const ReviewWritingCard = ({
+  currentCardIndex,
+  isLastCard,
+  cardSection,
+  isAbleNextStep,
+  handleCurrentCardIndex,
+  updateAnswerMap,
+  handlePreviewButtonClick,
+  handleSubmitButtonClick,
+}: ReviewWritingCardProps) => {
+  return (
+    <S.ReviewWritingCard>
+      <S.Header>{cardSection.header}</S.Header>
+      <S.Main>
+        {cardSection.questions.map((question) => (
+          <QnABox key={question.questionId} question={question} updateAnswerMap={updateAnswerMap} />
+        ))}
+
+        <S.ButtonContainer>
+          <CardSliderController.PrevButton
+            currentCardIndex={currentCardIndex}
+            handleCurrentCardIndex={handleCurrentCardIndex}
+          />
+          {isLastCard ? (
+            <>
+              <CardSliderController.PreviewButton handlePreviewButtonClick={handlePreviewButtonClick} />
+              <CardSliderController.SubmitButton handleSubmitButtonClick={handleSubmitButtonClick} />
+            </>
+          ) : (
+            <CardSliderController.NextButton
+              isAbleNextStep={isAbleNextStep}
+              handleCurrentCardIndex={handleCurrentCardIndex}
+            />
+          )}
+        </S.ButtonContainer>
+      </S.Main>
+    </S.ReviewWritingCard>
+  );
+};
+
+export default ReviewWritingCard;

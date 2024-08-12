@@ -8,19 +8,44 @@ export interface ReviewItem {
   answer: string;
 }
 
-export interface DetailReviewContent {
-  id: number;
-  question: string;
-  answer: string;
+export interface Options {
+  optionId: number;
+  content: string;
+  isChecked: boolean;
+}
+
+export interface OptionGroup {
+  optionGroupId: number;
+  minCount: number;
+  maxCount: number;
+  options: Options[];
+}
+
+export type QuestionType = 'CHECKBOX' | 'TEXT';
+
+export interface QuestionData {
+  questionId: number;
+  required: boolean;
+  questionType: QuestionType;
+  content: string;
+  optionGroup: OptionGroup | null;
+  hasGuideline?: boolean;
+  guideline?: string | null;
+  answer?: string;
+}
+
+export interface DetailReviewSection {
+  sectionId: number;
+  header: string;
+  questions: QuestionData[];
 }
 
 export interface DetailReviewData {
-  id: number;
-  createdAt: Date;
-  projectName: string;
+  formId: number;
   revieweeName: string;
-  contents: DetailReviewContent[];
-  keywords: Keyword[];
+  projectName: string;
+  createdAt: string;
+  sections: DetailReviewSection[];
 }
 
 // api
@@ -54,8 +79,55 @@ export interface ReviewList {
 }
 
 export interface ReviewInfo {
-  id: number;
+  reviewId: number;
   createdAt: string;
   contentPreview: string;
-  keywords: Keyword[];
+  categories: Category[];
+}
+
+export interface Category {
+  optionId: number;
+  content: string;
+}
+
+// 리뷰 작성 카드 관련 타입들
+export interface ReviewWritingFrom {
+  formId: string;
+  revieweeName: string;
+  projectName: string;
+  sections: ReviewWritingCardSection[];
+}
+export interface ReviewWritingCardSection {
+  sectionId: number;
+  visible: 'ALWAYS' | 'CONDITIONAL';
+  onSelectedOptionId: number | null;
+  header: string;
+  questions: ReviewWritingCardQuestion[];
+}
+
+export interface ReviewWritingCardQuestion {
+  questionId: number;
+  required: boolean;
+  content: string; // 질문
+  questionType: 'CHECKBOX' | 'TEXT';
+  optionGroup: ReviewWritingQuestionOptionGroup | null; // 객관식이면 ReviewWritingQuestionOptionGroup, 아니면 null
+  hasGuideline: boolean;
+  guideline: string | null;
+}
+
+export interface ReviewWritingQuestionOptionGroup {
+  optionGroupId: number;
+  minCount: number; // 최소 몇개 체크해야함
+  maxCount: number; // 최대 몇개 체크해야함 (제한 없으면 options 사이즈로 드립니다)
+  options: ReviewWritingQuestionOption[];
+}
+
+export interface ReviewWritingQuestionOption {
+  optionId: number;
+  content: string;
+}
+export interface ReviewWritingAnswer {
+  questionId: number;
+  selectedOptionIds: number[] | null;
+  text: string | null;
 }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.keyword.repository.KeywordRepository;
+import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionItemRepository;
@@ -15,9 +16,9 @@ import reviewme.review.domain.Review2;
 import reviewme.review.domain.ReviewContent;
 import reviewme.review.domain.ReviewKeyword;
 import reviewme.review.domain.exception.CategoryOptionByReviewNotFoundException;
+import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
-import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.KeywordResponse;
@@ -121,7 +122,7 @@ public class ReviewService {
                 .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
 
         Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
-                .orElseThrow(() -> new ReviewIsNotInReviewGroupException(reviewId, reviewGroup.getId()));
+                .orElseThrow(() -> new InvalidReviewAccessByReviewGroupException(reviewId, reviewGroup.getId()));
 
         return createReviewDetailResponse(review, reviewGroup);
     }
@@ -172,17 +173,22 @@ public class ReviewService {
         CheckboxAnswer checkboxAnswer = review.getCheckboxAnswers()
                 .stream()
                 .filter(answer -> optionItemRepository.existsByOptionTypeAndId(
-                        OptionType.CATEGORY, answer.getSelectedOptionIds().get(0)
+                        OptionType.CATEGORY, answer.getSelectedOptionIds().get(0).getSelectedOptionId()
                 ))
                 .findFirst()
                 .orElseThrow(() -> new CategoryOptionByReviewNotFoundException(review.getId()));
 
         List<ReceivedReviewCategoryResponse> categoryResponses =
-                optionItemRepository.findAllById(checkboxAnswer.getSelectedOptionIds())
+                checkboxAnswer.getSelectedOptionIds()
                         .stream()
-                        .map(optionItem -> new ReceivedReviewCategoryResponse(
-                                optionItem.getId(), optionItem.getContent()
-                        ))
+                        .map(checkBoxAnswerSelectedOptionId -> {
+                            OptionItem optionItem = optionItemRepository.getOptionItemById(
+                                    checkBoxAnswerSelectedOptionId.getSelectedOptionId()
+                            );
+                            return new ReceivedReviewCategoryResponse(
+                                    optionItem.getId(), optionItem.getContent()
+                            );
+                        })
                         .toList();
 
         return new ReceivedReviewResponse2(

@@ -5,12 +5,17 @@ interface ReviewInfoSectionProps {
   revieweeName: string;
 }
 
+const REVIEW_MESSAGE_SUFFIX = '님에게 달린 리뷰입니다!';
+
 const ReviewInfoSection = ({ projectName, revieweeName }: ReviewInfoSectionProps) => {
   return (
-    <S.Container>
+    <S.ReviewInfoContainer>
       <S.ProjectName>{projectName}</S.ProjectName>
-      <S.RevieweeName>{revieweeName}</S.RevieweeName>
-    </S.Container>
+      <S.RevieweeInfoWrapper>
+        <S.RevieweeName>{revieweeName}</S.RevieweeName>
+        {REVIEW_MESSAGE_SUFFIX}
+      </S.RevieweeInfoWrapper>
+    </S.ReviewInfoContainer>
   );
 };
 

@@ -7,7 +7,7 @@ export const Container = styled.div`
   height: 4rem;
 
   button {
-    width: 9rem;
+    width: 8rem;
     color: ${({ theme }) => theme.colors.primary};
   }
 `;

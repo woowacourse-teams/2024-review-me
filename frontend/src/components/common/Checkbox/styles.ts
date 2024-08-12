@@ -16,6 +16,8 @@ export const CheckboxContainer = styled.div<CheckboxStyleProps>`
     width: 0;
     height: 0;
   }
+
+  ${(props) => props.$isReadonly && 'pointer-events: none;'}
   ${({ $style }) => $style && { ...$style }};
 `;
 
