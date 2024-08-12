@@ -8,7 +8,7 @@ import java.util.List;
 public record ReceivedReviewResponse2(
 
         @Schema(description = "리뷰 ID")
-        long id,
+        long reviewId,
 
         @Schema(description = "리뷰 작성일")
         LocalDate createdAt,
