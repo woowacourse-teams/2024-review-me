@@ -21,7 +21,7 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
           questionId: 1,
           required: true,
           questionType: 'CHECKBOX',
-          content: `프로젝트 기간 동안, ${revieweeName}의 강점이 드러났던 순간을 선택해주세요. (1~2개)`,
+          content: `프로젝트 기간 동안, ${revieweeName}의 강점이 드러났던 순간을 선택해주세요.`,
           optionGroup: {
             optionGroupId: 1,
             minCount: 1,
@@ -42,7 +42,7 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
           questionId: 2,
           required: true,
           questionType: 'CHECKBOX',
-          content: `${revieweeName}에서 어떤 부분이 인상 깊었는지 선택해주세요. (1개 이상)`,
+          content: `${revieweeName}에서 어떤 부분이 인상 깊었는지 선택해주세요.`,
           optionGroup: {
             optionGroupId: 1,
             minCount: 1,
