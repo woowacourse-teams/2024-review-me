@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-import { ConfirmModal, ErrorAlertModal, ProjectImg, AnswerListRecheckModal } from '@/components';
+import { ConfirmModal, ProjectImg, AnswerListRecheckModal } from '@/components';
 import {
   useCurrentCardIndex,
   useGetDataToWrite,
