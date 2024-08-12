@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-import { ConfirmModal, ErrorAlertModal, ProjectImg, AnswerListRecheckModal } from '@/components';
+import { ConfirmModal, ProjectImg, AnswerListRecheckModal } from '@/components';
 import {
   useCurrentCardIndex,
   useGetDataToWrite,
@@ -23,7 +23,6 @@ const INDEX_OFFSET = 1;
 const MODAL_KEYS = {
   confirm: 'CONFIRM',
   recheck: 'RECHECK',
-  error: 'ERROR',
 };
 
 const CardForm = () => {
@@ -38,7 +37,7 @@ const CardForm = () => {
 
   const { wrapperRef, slideWidth, slideHeight, makeId } = useSlideWidthAndHeight({ currentCardIndex });
 
-  const { questionList, updatedSelectedCategory } = useQuestionList();
+  const { questionList, updatedSelectedCategory } = useQuestionList({ questionListSectionsData: data.sections });
 
   const { answerMap, isAbleNextStep, updateAnswerMap } = useReviewerAnswer({
     currentCardIndex,
@@ -46,28 +45,28 @@ const CardForm = () => {
     updatedSelectedCategory,
   });
   const { isOpen, openModal, closeModal } = useModals();
-  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-  const openErrorModal = (message: string) => {
-    setErrorMessage(message);
-    openModal(MODAL_KEYS.error);
-  };
 
-  const { postReview } = useMutateReview({ openErrorModal });
+  const { postReview, isSuccess } = useMutateReview();
 
   const handleSubmitButtonClick = () => {
     openModal(MODAL_KEYS.confirm);
   };
 
-  const submitAnswer = () => {
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/user/review-writing-complete');
+      closeModal(MODAL_KEYS.confirm);
+    }
+  }, [isSuccess]);
+
+  const submitAnswer = async () => {
     if (!answerMap || !reviewRequestCode) return;
     const result: ReviewWritingFormResult = {
       reviewRequestCode: reviewRequestCode,
       answers: Array.from(answerMap.values()),
     };
     postReview(result);
-    navigate('/user/review-writing-complete');
-    closeModal(MODAL_KEYS.confirm);
   };
 
   const handleRecheckButtonClick = () => {
@@ -116,13 +115,6 @@ const CardForm = () => {
             <p>제출한 뒤에는 수정할 수 없어요.</p>
           </S.SubmitErrorMessage>
         </ConfirmModal>
-      )}
-      {isOpen(MODAL_KEYS.error) && (
-        <ErrorAlertModal
-          errorText={errorMessage}
-          closeButton={{ content: '닫기', type: 'primary', handleClick: () => closeModal(MODAL_KEYS.error) }}
-          handleClose={() => closeModal(MODAL_KEYS.error)}
-        />
       )}
       {isOpen(MODAL_KEYS.recheck) && questionList && answerMap && (
         <AnswerListRecheckModal
