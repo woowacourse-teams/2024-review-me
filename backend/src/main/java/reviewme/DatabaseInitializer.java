@@ -25,8 +25,8 @@ import reviewme.template.repository.TemplateRepository;
 @RequiredArgsConstructor
 public class DatabaseInitializer {
 
-    public static final String CATEGORY_HEADER = "이제, 선택한 순간들을 바탕으로 {revieweeName}에 대한 리뷰를 작성해볼게요.";
-    public static final String CATEGORY_TEXT_QUESTION = "위에서 선택한 사항에 대해 조금 더 자세히 설명해주세요.";
+    private static final String CATEGORY_HEADER = "이제, 선택한 순간들을 바탕으로 {revieweeName}에 대한 리뷰를 작성해볼게요.";
+    private static final String CATEGORY_TEXT_QUESTION = "위에서 선택한 사항에 대해 조금 더 자세히 설명해주세요.";
 
     private final QuestionRepository2 questionRepository;
     private final OptionItemRepository optionItemRepository;
