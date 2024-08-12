@@ -91,6 +91,7 @@ const CardForm = () => {
           {questionList?.map((section, index) => (
             <S.Slide id={makeId(index)} key={section.sectionId}>
               <ReviewWritingCard
+                cardIndex={index}
                 currentCardIndex={currentCardIndex}
                 cardSection={section}
                 isAbleNextStep={isAbleNextStep}
