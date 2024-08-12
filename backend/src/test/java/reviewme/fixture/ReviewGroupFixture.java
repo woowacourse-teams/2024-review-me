@@ -2,12 +2,24 @@ package reviewme.fixture;
 
 import reviewme.reviewgroup.domain.ReviewGroup;
 
-public class ReviewGroupFixture {
+public enum ReviewGroupFixture {
 
-    public static final ReviewGroup 리뷰그룹 = new ReviewGroup(
-            "reviewName",
-            "projectName",
-            "reviewRequestCode",
-            "groupAccessCode"
-    );
+    리뷰_그룹("reviewName", "projectName", "reviewRequestCode", "groupAccessCode"),
+    ;
+
+    private String reviewName;
+    private String projectName;
+    private String reviewRequestCode;
+    private String groupAccessCode;
+
+    public ReviewGroup create() {
+        return new ReviewGroup(reviewName, projectName, reviewRequestCode, groupAccessCode);
+    }
+
+    ReviewGroupFixture(String reviewName, String projectName, String reviewRequestCode, String groupAccessCode) {
+        this.reviewName = reviewName;
+        this.projectName = projectName;
+        this.reviewRequestCode = reviewRequestCode;
+        this.groupAccessCode = groupAccessCode;
+    }
 }
