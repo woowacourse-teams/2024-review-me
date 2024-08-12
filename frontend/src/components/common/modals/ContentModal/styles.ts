@@ -36,12 +36,6 @@ export const Contents = styled.div`
   white-space: pre-line;
 
   overflow-y: auto;
-
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 export const CloseButton = styled.button`
