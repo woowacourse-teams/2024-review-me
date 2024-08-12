@@ -28,7 +28,7 @@ const PageContents = ({ groupAccessCode }: PageContentsProps) => {
     <>
       <S.Layout>
         <ReviewInfoSection projectName={ReviewListData.projectName} revieweeName={ReviewListData.revieweeName} />
-        <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} />
+        {/* <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} /> */}
         <S.ReviewSection>
           {ReviewListData.reviews.map((review) => (
             // const isLastElement = pageIndex === data.pages.length - 1 && reviewIndex === page.reviews.length - 1;

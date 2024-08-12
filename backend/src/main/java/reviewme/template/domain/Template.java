@@ -26,4 +26,8 @@ public class Template {
     @ElementCollection
     @CollectionTable(name = "section_ids", joinColumns = @JoinColumn(name = "template_id"))
     List<Long> sectionIds;
+
+    public Template(List<Long> sectionIds) {
+        this.sectionIds = sectionIds;
+    }
 }
