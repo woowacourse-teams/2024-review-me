@@ -18,16 +18,17 @@ export const SliderContainer = styled.div<SlideContainerProps>`
   width: 100%;
   height: ${({ $height }) => $height};
 
-  border: 0.1rem solid ${({ theme }) => theme.colors.lightPurple};
-  border-radius: ${({ theme }) => theme.borderRadius.basic};
-
   transition: transform 0.5s ease-in-out;
 `;
 
 export const Slide = styled.div`
   flex: 0 0 100%;
+
   box-sizing: border-box;
   height: fit-content;
+
+  border: 0.1rem solid ${({ theme }) => theme.colors.lightPurple};
+  border-radius: ${({ theme }) => theme.borderRadius.basic};
 `;
 
 export const RevieweeDescription = styled.div`
