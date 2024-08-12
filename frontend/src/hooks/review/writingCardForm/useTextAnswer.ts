@@ -16,7 +16,7 @@ const useTextAnswer = ({ question, updateAnswerMap }: UseTextAnswerProps) => {
 
   // NOTE: change 시 마다 상태 변경되어서, 디바운스를 적용할 지 고민...
 
-  const handelTextAnswerChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTextAnswerChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
     const { min, max } = TEXT_ANSWER_LENGTH;
     const isValidatedText = value.length >= min && value.length <= max;
@@ -30,7 +30,7 @@ const useTextAnswer = ({ question, updateAnswerMap }: UseTextAnswerProps) => {
 
   return {
     textAnswer,
-    handelTextAnswerChange,
+    handleTextAnswerChange,
     TEXT_ANSWER_LENGTH,
   };
 };
