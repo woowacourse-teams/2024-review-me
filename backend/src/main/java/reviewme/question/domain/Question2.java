@@ -53,6 +53,6 @@ public class Question2 {
     }
 
     public boolean hasGuideline() {
-        return guideline != null;
+        return guideline != null && !guideline.isEmpty();
     }
 }

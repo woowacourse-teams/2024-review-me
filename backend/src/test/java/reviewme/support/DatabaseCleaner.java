@@ -6,6 +6,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Table;
 import jakarta.persistence.metamodel.EntityType;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,10 +23,10 @@ public class DatabaseCleaner {
     @PostConstruct
     public void afterPropertiesSet() {
         Set<EntityType<?>> entities = entityManager.getMetamodel().getEntities();
-        tableNames = entities.stream()
+        tableNames = new ArrayList<>(entities.stream()
                 .filter(entity -> entity.getJavaType().isAnnotationPresent(Table.class))
                 .map(entity -> entity.getJavaType().getAnnotation(Table.class).name())
-                .toList();
+                .toList());
     }
 
     @Transactional

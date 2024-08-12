@@ -16,6 +16,8 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
 
     List<OptionItem> findAllByOptionGroupId(long optionGroupId);
 
+    boolean existsByOptionTypeAndId(OptionType optionType, long id);
+
     @Query(value = """
             SELECT o.id FROM option_item o
             LEFT JOIN checkbox_answer ca
@@ -37,8 +39,6 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
             ORDER BY o.position ASC
             """, nativeQuery = true)
     List<OptionItem> findSelectedOptionItemsByReviewIdAndQuestionId(long reviewId, long questionId);
-
-    boolean existsByOptionTypeAndId(OptionType optionType, long id);
 
     default OptionItem getOptionItemById(long id) {
         return findById(id).orElseThrow(() -> new OptionItemNotFoundException(id));
