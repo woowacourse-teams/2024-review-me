@@ -19,31 +19,33 @@ const AnswerListPreviewModal = ({ answerList, closeModal }: AnswerListPreviewMod
       <S.AnswerListContainer>
         <S.CardLayout>
           {answerList.map((section) => (
-            <ReviewWritingCard key={section.sectionId} title={section.header}>
-              {section.questions.map((question) => (
-                <Fragment key={question.questionId}>
-                  <QuestionCard questionType="normal" question={question.content} />
-                  <S.ContentContainer>
-                    {question.questionType === 'CHECKBOX' && (
-                      <div>
-                        {question.optionGroup?.options.map((option, index) => (
-                          <CheckboxItem
-                            key={`${question.questionId}_${index}`}
-                            id={`${question.questionId}_${index}`}
-                            name={`${question.questionId}_${index}`}
-                            isChecked={option.isChecked}
-                            isDisabled={true}
-                            label={option.content}
-                            $isReadonly={true}
-                          />
-                        ))}
-                      </div>
-                    )}
-                    <div>{question.questionType === 'TEXT' && <div>{question.answer ?? ''}</div>}</div>
-                  </S.ContentContainer>
-                </Fragment>
-              ))}
-            </ReviewWritingCard>
+            <S.ReviewWritingCardWrapper key={section.sectionId}>
+              <ReviewWritingCard title={section.header}>
+                {section.questions.map((question) => (
+                  <Fragment key={question.questionId}>
+                    <QuestionCard questionType="normal" question={question.content} />
+                    <S.ContentContainer>
+                      {question.questionType === 'CHECKBOX' && (
+                        <div>
+                          {question.optionGroup?.options.map((option, index) => (
+                            <CheckboxItem
+                              key={`${question.questionId}_${index}`}
+                              id={`${question.questionId}_${index}`}
+                              name={`${question.questionId}_${index}`}
+                              isChecked={option.isChecked}
+                              isDisabled={true}
+                              label={option.content}
+                              $isReadonly={true}
+                            />
+                          ))}
+                        </div>
+                      )}
+                      <div>{question.questionType === 'TEXT' && <div>{question.answer ?? ''}</div>}</div>
+                    </S.ContentContainer>
+                  </Fragment>
+                ))}
+              </ReviewWritingCard>
+            </S.ReviewWritingCardWrapper>
           ))}
         </S.CardLayout>
       </S.AnswerListContainer>
