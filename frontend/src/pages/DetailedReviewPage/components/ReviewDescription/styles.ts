@@ -6,14 +6,20 @@ export const Description = styled.section`
   justify-content: space-between;
 
   width: 100%;
-  height: 6rem;
+  height: 9rem;
   margin: 0;
-  padding-left: 0;
+
+  padding: 1rem 3rem;
+
+  background-color: ${({ theme }) => theme.colors.lightPurple};
+  border-radius: ${({ theme }) => theme.borderRadius.basic} 0 0;
 `;
+
 export const DescriptionSide = styled.div`
   display: flex;
   width: 100%;
 `;
+
 //NOTE: 6rem :깃헙 로고 사이즈
 export const ProjectInfoContainer = styled.div`
   display: flex;
@@ -43,6 +49,7 @@ export const RevieweeNameAndDateContainer = styled.div`
 export const RevieweeNameWrapper = styled.p`
   margin-top: 0;
 `;
+
 export const RevieweeName = styled.span`
   color: ${({ theme }) => theme.colors.primary};
 `;

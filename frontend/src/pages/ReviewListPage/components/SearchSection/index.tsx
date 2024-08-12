@@ -12,7 +12,7 @@ const SearchSection = ({ handleChange, options, placeholder }: SearchSectionProp
   return (
     <S.Container>
       <S.SearchBox>
-        <SearchInput $width="48rem" $height="100%" placeholder={placeholder} />
+        <SearchInput $width="42rem" $height="100%" placeholder={placeholder} />
         <Button styleType="secondary">검색</Button>
       </S.SearchBox>
       <DropDown onChange={handleChange} options={options} />

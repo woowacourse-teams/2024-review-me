@@ -8,19 +8,44 @@ export interface ReviewItem {
   answer: string;
 }
 
-export interface DetailReviewContent {
-  id: number;
-  question: string;
-  answer: string;
+export interface Options {
+  optionId: number;
+  content: string;
+  isChecked: boolean;
+}
+
+export interface OptionGroup {
+  optionGroupId: number;
+  minCount: number;
+  maxCount: number;
+  options: Options[];
+}
+
+export type QuestionType = 'CHECKBOX' | 'TEXT';
+
+export interface QuestionData {
+  questionId: number;
+  required: boolean;
+  questionType: QuestionType;
+  content: string;
+  optionGroup: OptionGroup | null;
+  hasGuideline?: boolean;
+  guideline?: string | null;
+  answer?: string;
+}
+
+export interface DetailReviewSection {
+  sectionId: number;
+  header: string;
+  questions: QuestionData[];
 }
 
 export interface DetailReviewData {
-  id: number;
-  createdAt: Date;
-  projectName: string;
+  formId: number;
   revieweeName: string;
-  contents: DetailReviewContent[];
-  keywords: Keyword[];
+  projectName: string;
+  createdAt: string;
+  sections: DetailReviewSection[];
 }
 
 // api
