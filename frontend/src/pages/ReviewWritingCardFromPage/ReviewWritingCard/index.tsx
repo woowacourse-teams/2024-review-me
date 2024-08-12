@@ -20,7 +20,7 @@ const ReviewWritingCard = ({
   isAbleNextStep,
   handleCurrentCardIndex,
   updateAnswerMap,
-  handlePreviewButtonClick,
+  handleRecheckButtonClick,
   handleSubmitButtonClick,
 }: ReviewWritingCardProps) => {
   return (
@@ -40,7 +40,7 @@ const ReviewWritingCard = ({
           )}
           {isLastCard ? (
             <>
-              <CardSliderController.PreviewButton handlePreviewButtonClick={handlePreviewButtonClick} />
+              <CardSliderController.RecheckButton handleRecheckButtonClick={handleRecheckButtonClick} />
               <CardSliderController.SubmitButton handleSubmitButtonClick={handleSubmitButtonClick} />
             </>
           ) : (

@@ -9,13 +9,13 @@ import QuestionCard from './components/QuestionCard';
 import ReviewWritingCard from './components/ReviewWritingCard';
 import * as S from './styles';
 
-interface AnswerListPreviewModalProps {
+interface AnswerListRecheckModalProps {
   questionSectionList: ReviewWritingCardSection[];
   answerMap: Map<number, ReviewWritingAnswer>;
   closeModal: () => void;
 }
 
-const AnswerListPreviewModal = ({ questionSectionList, answerMap, closeModal }: AnswerListPreviewModalProps) => {
+const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: AnswerListRecheckModalProps) => {
   const isSelectedChoice = (questionId: number, optionId: number) => {
     const answer = answerMap.get(questionId);
     if (!answer) return false;
@@ -67,4 +67,4 @@ const AnswerListPreviewModal = ({ questionSectionList, answerMap, closeModal }: 
   );
 };
 
-export default AnswerListPreviewModal;
+export default AnswerListRecheckModal;

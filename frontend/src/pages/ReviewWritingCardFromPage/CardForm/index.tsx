@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { ConfirmModal, ErrorAlertModal, ProjectImg } from '@/components';
-import AnswerListPreviewModal from '@/components/AnswerListPreviewModal';
+import { ConfirmModal, ErrorAlertModal, ProjectImg, AnswerListRecheckModal } from '@/components';
 import {
   useCurrentCardIndex,
   useGetDataToWrite,
@@ -23,7 +22,7 @@ const PROJECT_IMAGE_SIZE = '5rem';
 const INDEX_OFFSET = 1;
 const MODAL_KEYS = {
   confirm: 'CONFIRM',
-  preview: 'PREVIEW',
+  recheck: 'RECHECK',
   error: 'ERROR',
 };
 
@@ -71,8 +70,8 @@ const CardForm = () => {
     closeModal(MODAL_KEYS.confirm);
   };
 
-  const handlePreviewButtonClick = () => {
-    openModal(MODAL_KEYS.preview);
+  const handleRecheckButtonClick = () => {
+    openModal(MODAL_KEYS.recheck);
   };
 
   return (
@@ -98,7 +97,7 @@ const CardForm = () => {
                 isLastCard={questionList.length - INDEX_OFFSET === currentCardIndex}
                 handleCurrentCardIndex={handleCurrentCardIndex}
                 updateAnswerMap={updateAnswerMap}
-                handlePreviewButtonClick={handlePreviewButtonClick}
+                handleRecheckButtonClick={handleRecheckButtonClick}
                 handleSubmitButtonClick={handleSubmitButtonClick}
               />
             </S.Slide>
@@ -125,11 +124,11 @@ const CardForm = () => {
           handleClose={() => closeModal(MODAL_KEYS.error)}
         />
       )}
-      {isOpen(MODAL_KEYS.preview) && questionList && answerMap && (
-        <AnswerListPreviewModal
+      {isOpen(MODAL_KEYS.recheck) && questionList && answerMap && (
+        <AnswerListRecheckModal
           questionSectionList={questionList}
           answerMap={answerMap}
-          closeModal={() => closeModal(MODAL_KEYS.preview)}
+          closeModal={() => closeModal(MODAL_KEYS.recheck)}
         />
       )}
     </>
