@@ -27,11 +27,11 @@ const getDetailedReview = () =>
     //요청 url에서 reviewId, memberId 추출
     const url = new URL(request.url);
     const urlReviewId = url.pathname.replace(`/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}/`, '');
-    const urlMemberId = url.searchParams.get(DETAILED_REVIEW_API_PARAMS.queryString.memberId);
+    // const urlMemberId = url.searchParams.get(DETAILED_REVIEW_API_PARAMS.queryString.memberId);
 
-    const { reviewId, memberId } = DETAILED_PAGE_MOCK_API_SETTING_VALUES;
+    const { reviewId } = DETAILED_PAGE_MOCK_API_SETTING_VALUES;
     // 유효한 reviewId, memberId일 경우에만 데이터 반환
-    if (Number(urlReviewId) == reviewId && Number(urlMemberId) === memberId) {
+    if (Number(urlReviewId) == reviewId) {
       return HttpResponse.json(DETAILED_REVIEW_MOCK_DATA);
     }
 

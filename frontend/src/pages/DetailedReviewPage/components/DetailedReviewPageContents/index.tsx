@@ -9,14 +9,13 @@ interface DetailedReviewPageContentsProps {
 }
 
 const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageContentsProps) => {
-  const { param: reviewId, queryString: memberId } = useSearchParamAndQuery({
+  const { param: reviewId } = useSearchParamAndQuery({
     paramKey: 'reviewId',
     queryStringKey: DETAILED_REVIEW_API_PARAMS.queryString.memberId,
   });
 
   const { data: detailedReview } = useGetDetailedReview({
     reviewId: Number(reviewId),
-    memberId: Number(memberId),
     groupAccessCode,
   });
 
@@ -35,8 +34,8 @@ const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageConte
         <ReviewSection key={id} question={question} answer={answer} index={index} />
       ))} */}
       {detailedReview.sections.map((section) =>
-        section.questions.map((question, index) => (
-          <S.ReviewContentContainer key={index}>
+        section.questions.map((question) => (
+          <S.ReviewContentContainer key={question.questionId}>
             <ReviewSection question={question.content} answer={question.answer!} />
             {question.questionType === 'CHECKBOX' && <KeywordSection options={question.optionGroup!.options} />}
           </S.ReviewContentContainer>
