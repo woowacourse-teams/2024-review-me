@@ -10,7 +10,7 @@ public record SectionResponse(
         @Schema(description = "섹션 ID")
         long sectionId,
 
-        @Schema(description = "노출 조건", examples = {"ALWAYS", "CONDITIONAL"})
+        @Schema(description = "노출 조건")
         String visible,
 
         @Schema(description = "선택된 옵션 ID", nullable = true)
