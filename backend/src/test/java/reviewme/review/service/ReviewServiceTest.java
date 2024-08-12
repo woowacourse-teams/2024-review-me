@@ -25,7 +25,7 @@ import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.Review2;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
-import reviewme.review.domain.exception.ReviewIsNotInReviewGroupException;
+import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
 import reviewme.review.dto.request.CreateReviewContentRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.dto.response.QuestionSetupResponse;
@@ -169,8 +169,8 @@ class ReviewServiceTest {
         );
         CheckboxAnswer categoryAnswer1 = new CheckboxAnswer(question1.getId(), List.of(categoryOption1.getId()));
         CheckboxAnswer categoryAnswer2 = new CheckboxAnswer(question1.getId(), List.of(categoryOption2.getId()));
-        Review2 review1 = new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer1), LocalDateTime.now());
-        Review2 review2 = new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer2), LocalDateTime.now());
+        Review2 review1 = new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer1));
+        Review2 review2 = new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer2));
         review2Repository.saveAll(List.of(review1, review2));
 
         // when
@@ -223,7 +223,7 @@ class ReviewServiceTest {
         // when, then
         assertThatThrownBy(
                 () -> reviewService.findReceivedReviewDetail(reviewGroup1.getGroupAccessCode(), review2.getId()))
-                .isInstanceOf(ReviewIsNotInReviewGroupException.class);
+                .isInstanceOf(InvalidReviewAccessByReviewGroupException.class);
     }
 
     @Test
@@ -271,8 +271,7 @@ class ReviewServiceTest {
         CheckboxAnswer categoryAnswer = new CheckboxAnswer(question1.getId(), List.of(categoryOption1.getId()));
         CheckboxAnswer keywordAnswer = new CheckboxAnswer(question2.getId(), List.of(keywordOption.getId()));
         review2Repository.save(
-                new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer, keywordAnswer),
-                        LocalDateTime.now())
+                new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer, keywordAnswer))
         );
 
         // when

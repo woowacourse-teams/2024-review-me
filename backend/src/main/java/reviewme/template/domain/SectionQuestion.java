@@ -1,4 +1,4 @@
-package reviewme.review.domain;
+package reviewme.template.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,29 +7,26 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "text_answer")
+@Table(name = "section_question")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = "id")
 @Getter
-public class TextAnswer {
+public class SectionQuestion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "section_id", nullable = false, insertable = false, updatable = false)
+    private long sectionId;
+
     @Column(name = "question_id", nullable = false)
     private long questionId;
 
-    @Column(name = "content", nullable = false, length = 1_000)
-    private String content;
-
-    public TextAnswer(long questionId, String content) {
+    public SectionQuestion(long questionId) {
         this.questionId = questionId;
-        this.content = content;
     }
 }

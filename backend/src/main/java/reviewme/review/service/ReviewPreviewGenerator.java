@@ -23,7 +23,7 @@ public class ReviewPreviewGenerator {
         if (reviewTextAnswers.isEmpty()) {
             return "";
         }
-        String answer = reviewTextAnswers.get(0).getText();
+        String answer = reviewTextAnswers.get(0).getContent();
         if (answer.length() > PREVIEW_LENGTH) {
             return answer.substring(0, PREVIEW_LENGTH);
         }
