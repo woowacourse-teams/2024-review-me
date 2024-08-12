@@ -4,11 +4,7 @@ import { postReviewApi } from '@/apis/review';
 import { REVIEW_QUERY_KEYS } from '@/constants';
 import { ReviewWritingFormResult } from '@/types';
 
-interface UseMutateReviewProps {
-  openErrorModal: (message: string) => void;
-}
-
-const useMutateReview = ({ openErrorModal }: UseMutateReviewProps) => {
+const useMutateReview = () => {
   const queryClient = useQueryClient();
 
   const reviewMutation = useMutation({
@@ -16,16 +12,13 @@ const useMutateReview = ({ openErrorModal }: UseMutateReviewProps) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [REVIEW_QUERY_KEYS.postReview] });
     },
-    onError: () => {
-      openErrorModal('리뷰 제출에 실패했어요');
-    },
   });
 
   const postReview = (formResult: ReviewWritingFormResult) => {
     reviewMutation.mutate(formResult);
   };
 
-  return { reviewMutation, postReview };
+  return { ...reviewMutation, postReview };
 };
 
 export default useMutateReview;
