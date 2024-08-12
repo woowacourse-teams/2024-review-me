@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import reviewme.review.dto.request.create.CreateReviewRequest;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
+import reviewme.review.dto.response.ReceivedReviewsResponse2;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
 
@@ -55,6 +56,38 @@ public interface ReviewApi {
             )
     })
     ResponseEntity<Void> createReview(@Valid @RequestBody CreateReviewRequest request);
+
+    @Operation(summary = "내가 받은 리뷰 목록 조회", description = "내가 받은 리뷰들을 조회한다.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "응답 성공 : 리뷰 목록 응답",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ReceivedReviewsResponse2.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "응답 실패 : 올바르지 않은 그룹 액세스 코드",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            examples = @ExampleObject(value = """
+                                    {
+                                      "type": "about:blank",
+                                      "title": "Bad Request",
+                                      "status": 400,
+                                      "detail": "올바르지 않은 그룹 확인 코드입니다.",
+                                      "instance": "/reviews"
+                                    }
+                                    """)
+                    )
+            )
+    })
+    ResponseEntity<ReceivedReviewsResponse2> findReceivedReviews2(
+            @Parameter(description = "리뷰 그룹 액세스 코드", required = true)
+            @RequestHeader("GroupAccessCode") String groupAccessCode
+    );
 
 
     /**
