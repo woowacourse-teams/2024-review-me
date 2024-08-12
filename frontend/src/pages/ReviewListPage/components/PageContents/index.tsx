@@ -4,13 +4,12 @@ import ReviewCard from '@/components/ReviewCard';
 import { useGetReviewList } from '@/hooks';
 
 import ReviewInfoSection from '../ReviewInfoSection';
-import SearchSection from '../SearchSection';
+// import SearchSection from '../SearchSection';
 
 import * as S from './styles';
 
-const USER_SEARCH_PLACE_HOLDER = '레포지토리명을 검색하세요.';
-const OPTIONS = ['최신순', '오래된순'];
-const MEMBER_ID = 2;
+// const USER_SEARCH_PLACE_HOLDER = '레포지토리명을 검색하세요.';
+// const OPTIONS = ['최신순', '오래된순'];
 
 interface PageContentsProps {
   groupAccessCode: string;
