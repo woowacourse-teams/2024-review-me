@@ -17,7 +17,6 @@ import {
 } from '@/pages';
 
 import { DEV_ENVIRONMENT } from './constants';
-import ReviewWritingPage from './pages/ReviewWriting';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 

@@ -6,9 +6,13 @@ import endPoint, {
   REVIEW_WRITING_API_PARAMS,
 } from '@/apis/endpoints';
 
-import { DETAILED_REVIEW_MOCK_DATA, DETAILED_PAGE_MOCK_API_SETTING_VALUES } from '../mockData/detailedReviewMockData';
-import { REVIEW_LIST } from '../mockData/reviewListMockData';
-import { REVIEW_REQUEST_CODE, REVIEW_WRITING_FORM_CARD_DATA } from '../mockData/reviewWritingCardFormData';
+import {
+  DETAILED_REVIEW_MOCK_DATA,
+  DETAILED_PAGE_MOCK_API_SETTING_VALUES,
+  REVIEW_REQUEST_CODE,
+  REVIEW_WRITING_FORM_CARD_DATA,
+  REVIEW_LIST,
+} from '../mockData';
 
 export const PAGE = {
   firstPageNumber: 1,

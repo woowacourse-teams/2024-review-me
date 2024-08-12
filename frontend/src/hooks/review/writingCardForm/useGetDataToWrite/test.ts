@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 
-import { REVIEW_REQUEST_CODE } from '@/mocks/mockData/reviewWritingCardFormData';
+import { REVIEW_REQUEST_CODE } from '@/mocks/mockData';
 import QueryClientWrapper from '@/queryTestSetup/QueryClientWrapper';
 
 import useGetReviewFormData from '.';
