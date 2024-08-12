@@ -19,12 +19,14 @@ public record QuestionResponse(
         String questionType,
 
         @Schema(description = "옵션 그룹", nullable = true)
-        @Nullable OptionGroupResponse optionGroup,
+        @Nullable
+        OptionGroupResponse optionGroup,
 
         @Schema(description = "가이드라인 제공 여부")
         boolean hasGuideline,
 
         @Schema(description = "가이드라인", nullable = true)
-        @Nullable String guideline
+        @Nullable
+        String guideline
 ) {
 }

@@ -14,7 +14,8 @@ public record SectionResponse(
         String visible,
 
         @Schema(description = "선택된 옵션 ID", nullable = true)
-        @Nullable Long onSelectedOptionId,
+        @Nullable
+        Long onSelectedOptionId,
 
         @Schema(description = "말머리")
         String header,
