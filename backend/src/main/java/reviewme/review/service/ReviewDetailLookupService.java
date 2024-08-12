@@ -89,8 +89,6 @@ public class ReviewDetailLookupService {
                 question.isRequired(),
                 question.getQuestionType(),
                 question.getContent(),
-                question.hasGuideline(),
-                question.getGuideline(),
                 null,
                 textAnswer.getContent()
         );
@@ -120,8 +118,6 @@ public class ReviewDetailLookupService {
                 question.isRequired(),
                 question.getQuestionType(),
                 question.getContent(),
-                question.hasGuideline(),
-                question.getGuideline(),
                 optionGroupAnswerResponse,
                 null
         );

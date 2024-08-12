@@ -19,13 +19,6 @@ public record QuestionAnswerResponse(
         @Schema(description = "질문")
         String content,
 
-        @Schema(description = "가이드라인 제공 여부")
-        boolean hasGuideline,
-
-        @Schema(description = "가이드라인", nullable = true)
-        @Nullable
-        String guideline,
-
         @Schema(description = "옵션 그룹", nullable = true)
         @Nullable
         OptionGroupAnswerResponse optionGroup,
