@@ -30,10 +30,7 @@ export const ContentModalHeader = styled.div`
 `;
 
 export const Contents = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  white-space: pre-line;
+  padding-right: 1.2rem;
 
   overflow-y: auto;
 `;
