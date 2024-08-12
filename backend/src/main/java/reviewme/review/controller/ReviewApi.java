@@ -11,12 +11,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import reviewme.review.dto.request.CreateReviewRequest;
+import reviewme.review.dto.request.create.CreateReviewRequest;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.dto.response.ReviewDetailResponse;
 import reviewme.review.dto.response.ReviewSetupResponse;
@@ -51,7 +52,36 @@ public interface ReviewApi {
                     )
             )
     })
-    ResponseEntity<Void> createReview(@RequestBody CreateReviewRequest request);
+    ResponseEntity<Void> createReview(@RequestBody reviewme.review.dto.request.CreateReviewRequest request);
+
+
+    @Operation(summary = "리뷰 등록", description = "리뷰 작성 정보를 받아 리뷰를 등록한다.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "응답 성공 : 리뷰 등록 완료",
+                    headers = {
+                            @Header(name = "Content-Type", description = APPLICATION_JSON_VALUE),
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "응답 실패 : 올바르지 않은 리뷰 요청 코드",
+                    content = @Content(
+                            mediaType = APPLICATION_JSON_VALUE,
+                            examples = @ExampleObject(value = """
+                                    {
+                                      "type": "about:blank",
+                                      "title": "Bad Request",
+                                      "status": 400,
+                                      "detail": "올바르지 않은 리뷰 요청 코드입니다.",
+                                      "instance": "/reviews"
+                                    }
+                                    """)
+                    )
+            )
+    })
+    ResponseEntity<Void> createReview(@Valid @RequestBody CreateReviewRequest request);
 
 
     @Operation(summary = "리뷰 작성 정보 요청", description = "리뷰 작성을 위해 필요한 정보를 요청한다.")
