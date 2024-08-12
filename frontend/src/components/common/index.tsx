@@ -8,3 +8,6 @@ export { default as RevieweeComments } from './RevieweeComments';
 export { default as MultilineTextViewer } from './MultilineTextViewer';
 export { default as TopButton } from './TopButton';
 export * from './modals';
+export { default as LongReviewItem } from './LongReviewItem';
+export { default as Checkbox } from './Checkbox';
+export { default as CheckboxItem } from './CheckboxItem';

@@ -7,12 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "text_answer")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = "id")
 @Getter
 public class TextAnswer {
 
@@ -23,6 +25,11 @@ public class TextAnswer {
     @Column(name = "question_id", nullable = false)
     private long questionId;
 
-    @Column(name = "text", nullable = false, length = 1_000)
-    private String text;
+    @Column(name = "content", nullable = false, length = 1_000)
+    private String content;
+
+    public TextAnswer(long questionId, String content) {
+        this.questionId = questionId;
+        this.content = content;
+    }
 }

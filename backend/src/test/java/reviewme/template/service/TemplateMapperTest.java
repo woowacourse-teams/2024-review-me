@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
+import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question2;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.domain.exception.MissingOptionItemsInOptionGroupException;
@@ -62,7 +63,7 @@ class TemplateMapperTest {
         OptionGroup optionGroup = new OptionGroup(question2.getId(), 1, 2);
         optionGroupRepository.save(optionGroup);
 
-        OptionItem optionItem = new OptionItem("선택지", optionGroup.getId(), 1);
+        OptionItem optionItem = new OptionItem("선택지", optionGroup.getId(), 1, OptionType.CATEGORY);
         optionItemRepository.save(optionItem);
 
         Section section1 = new Section(VisibleType.ALWAYS, List.of(question1.getId()), null, "말머리1", 1);
@@ -122,7 +123,7 @@ class TemplateMapperTest {
         OptionGroup optionGroup = new OptionGroup(question.getId(), 1, 2);
         optionGroupRepository.save(optionGroup);
 
-        OptionItem optionItem = new OptionItem("선택지", optionGroup.getId(), 1);
+        OptionItem optionItem = new OptionItem("선택지", optionGroup.getId(), 1, OptionType.CATEGORY);
         optionItemRepository.save(optionItem);
 
         Section section = new Section(VisibleType.ALWAYS, List.of(question.getId()), null, "말머리1", 1);

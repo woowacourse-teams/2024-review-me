@@ -27,8 +27,6 @@ public class DatabaseCleaner {
                 .filter(entity -> entity.getJavaType().isAnnotationPresent(Table.class))
                 .map(entity -> entity.getJavaType().getAnnotation(Table.class).name())
                 .toList());
-        tableNames.add("section_ids");
-        tableNames.add("question_ids");
     }
 
     @Transactional
@@ -37,9 +35,7 @@ public class DatabaseCleaner {
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
         for (String tableName : tableNames) {
             entityManager.createNativeQuery(TRUNCATE_FORMAT.formatted(tableName)).executeUpdate();
-            if (!tableName.equals("section_ids") && !tableName.equals("question_ids")) {
-                entityManager.createNativeQuery(ALTER_FORMAT.formatted(tableName)).executeUpdate();
-            }
+            entityManager.createNativeQuery(ALTER_FORMAT.formatted(tableName)).executeUpdate();
         }
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
     }

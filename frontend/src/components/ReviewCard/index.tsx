@@ -1,15 +1,18 @@
 import GithubLogoIcon from '@/assets/githubLogo.svg';
-import { ReviewInfo } from '@/types';
+import { Category } from '@/types';
 
 import * as S from './styles';
 
-interface ReviewCardProps extends ReviewInfo {
+interface ReviewCardProps {
   projectName: string;
+  createdAt: string;
+  contentPreview: string;
+  categories: Category[];
 }
 
-const ReviewCard = ({ id, projectName, createdAt, contentPreview, keywords }: ReviewCardProps) => {
+const ReviewCard = ({ projectName, createdAt, contentPreview, categories }: ReviewCardProps) => {
   return (
-    <S.Layout data-id={id}>
+    <S.Layout>
       <S.Header>
         <S.HeaderContent>
           <div>
@@ -28,8 +31,8 @@ const ReviewCard = ({ id, projectName, createdAt, contentPreview, keywords }: Re
       <S.Main>
         <span>{contentPreview}</span>
         <S.Keyword>
-          {keywords.map((keyword) => (
-            <div key={keyword.id}>{keyword.content}</div>
+          {categories.map((category) => (
+            <div key={category.optionId}>{category.content}</div>
           ))}
         </S.Keyword>
       </S.Main>

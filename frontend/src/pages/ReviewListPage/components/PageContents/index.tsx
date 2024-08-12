@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router';
 
 import ReviewCard from '@/components/ReviewCard';
 import { useGetReviewList } from '@/hooks';
-import LoadingPage from '@/pages/LoadingPage';
 
 import ReviewInfoSection from '../ReviewInfoSection';
 import SearchSection from '../SearchSection';
@@ -16,9 +15,10 @@ const MEMBER_ID = 2;
 interface PageContentsProps {
   groupAccessCode: string;
 }
+
 const PageContents = ({ groupAccessCode }: PageContentsProps) => {
   const navigate = useNavigate();
-  const { data, isLoading, error } = useGetReviewList(groupAccessCode);
+  const { data: ReviewListData } = useGetReviewList(groupAccessCode);
 
   const handleReviewClick = (id: number) => {
     navigate(`/user/detailed-review/${id}?memberId=${MEMBER_ID}`);
@@ -27,32 +27,21 @@ const PageContents = ({ groupAccessCode }: PageContentsProps) => {
   return (
     <>
       <S.Layout>
-        <ReviewInfoSection
-          projectName={data.projectName}
-          revieweeName={`${data.revieweeName}님에게 달린 리뷰입니다!`}
-        />
-        <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} />
+        <ReviewInfoSection projectName={ReviewListData.projectName} revieweeName={ReviewListData.revieweeName} />
+        {/* <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} /> */}
         <S.ReviewSection>
-          {isLoading && <LoadingPage />}
-          {error && <p>{error.message}</p>}
-          <S.ReviewSection>
-            {isLoading && <LoadingPage />}
-            {error && <p>{error.message}</p>}
-            {data &&
-              data.reviews.map((review) => (
-                // const isLastElement = pageIndex === data.pages.length - 1 && reviewIndex === page.reviews.length - 1;
-                <div key={review.id} onClick={() => handleReviewClick(review.id)}>
-                  <ReviewCard
-                    id={review.id}
-                    projectName={data.projectName}
-                    createdAt={review.createdAt}
-                    contentPreview={review.contentPreview}
-                    keywords={review.keywords}
-                  />
-                  {/* <div ref={isLastElement ? lastReviewElementRef : null}></div> */}
-                </div>
-              ))}
-          </S.ReviewSection>
+          {ReviewListData.reviews.map((review) => (
+            // const isLastElement = pageIndex === data.pages.length - 1 && reviewIndex === page.reviews.length - 1;
+            <div key={review.reviewId} onClick={() => handleReviewClick(review.reviewId)}>
+              <ReviewCard
+                projectName={ReviewListData.projectName}
+                createdAt={review.createdAt}
+                contentPreview={review.contentPreview}
+                categories={review.categories}
+              />
+              {/* <div ref={isLastElement ? lastReviewElementRef : null}></div> */}
+            </div>
+          ))}
         </S.ReviewSection>
       </S.Layout>
     </>

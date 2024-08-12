@@ -12,7 +12,9 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.Question2Repository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.template.domain.Section;
+import reviewme.template.domain.SectionQuestion;
 import reviewme.template.domain.Template;
+import reviewme.template.domain.TemplateSection;
 import reviewme.template.dto.response.OptionGroupResponse;
 import reviewme.template.dto.response.OptionItemResponse;
 import reviewme.template.dto.response.QuestionResponse;
@@ -43,15 +45,15 @@ public class TemplateMapper {
         );
     }
 
-    private SectionResponse mapToSectionResponse(long sectionId) {
-        Section section = sectionRepository.getSectionById(sectionId);
+    private SectionResponse mapToSectionResponse(TemplateSection templateSection) {
+        Section section = sectionRepository.getSectionById(templateSection.getSectionId());
         List<QuestionResponse> questionResponses = section.getQuestionIds()
                 .stream()
                 .map(this::mapToQuestionResponse)
                 .toList();
 
         return new SectionResponse(
-                sectionId,
+                section.getId(),
                 section.getVisibleType().name(),
                 section.getOnSelectedOptionId(),
                 section.getHeader(),
@@ -59,8 +61,8 @@ public class TemplateMapper {
         );
     }
 
-    private QuestionResponse mapToQuestionResponse(long questionId) {
-        Question2 question = questionRepository.getQuestionById(questionId);
+    private QuestionResponse mapToQuestionResponse(SectionQuestion sectionQuestion) {
+        Question2 question = questionRepository.getQuestionById(sectionQuestion.getQuestionId());
         OptionGroupResponse optionGroupResponse = optionGroupRepository.findByQuestionId(question.getId())
                 .map(this::mapToOptionGroupResponse)
                 .orElse(null);
