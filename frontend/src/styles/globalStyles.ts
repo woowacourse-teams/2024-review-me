@@ -18,8 +18,6 @@ const globalStyles = css`
     font-size: 1.6rem;
 
     padding-right: 1.2rem;
-
-    overflow-y: auto;
   }
 
   /* 스크롤바 설정 */
