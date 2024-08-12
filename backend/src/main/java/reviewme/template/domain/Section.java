@@ -1,7 +1,7 @@
 package reviewme.template.domain;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -60,5 +60,9 @@ public class Section {
 
     public boolean isVisibleBySelectedOptionIds(Collection<Long> selectedOptionIds) {
         return visibleType == VisibleType.ALWAYS || selectedOptionIds.contains(onSelectedOptionId);
+    }
+
+    public String convertHeader(String target, String replacement) {
+        return header.replace(target, replacement);
     }
 }

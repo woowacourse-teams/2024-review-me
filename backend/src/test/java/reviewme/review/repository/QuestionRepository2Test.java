@@ -3,14 +3,17 @@ package reviewme.review.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import reviewme.question.domain.Question2;
 import reviewme.question.domain.QuestionType;
 import reviewme.template.domain.Section;
+import reviewme.template.domain.Template;
 import reviewme.template.domain.VisibleType;
 import reviewme.template.repository.SectionRepository;
+import reviewme.template.repository.TemplateRepository;
 
 @DataJpaTest
 class QuestionRepository2Test {
@@ -20,6 +23,9 @@ class QuestionRepository2Test {
 
     @Autowired
     private SectionRepository sectionRepository;
+
+    @Autowired
+    private TemplateRepository templateRepository;
 
     @Test
     void 섹션_아이디로_질문_목록을_순서대로_가져온다() {
@@ -38,5 +44,27 @@ class QuestionRepository2Test {
         // then
         assertThat(actual).extracting(Question2::getId)
                 .containsExactly(question1.getId(), question2.getId(), question3.getId());
+    }
+
+    @Test
+    void 템플릿_아이디로_질문_목록을_모두_가져온다() {
+        // given
+        Question2 question1 = questionRepository.save(new Question2(true, QuestionType.TEXT, "질문1", null, 1));
+        Question2 question2 = questionRepository.save(new Question2(true, QuestionType.TEXT, "질문2", null, 2));
+        Question2 question3 = questionRepository.save(new Question2(true, QuestionType.TEXT, "질문3", null, 1));
+        Question2 question4 = questionRepository.save(new Question2(true, QuestionType.TEXT, "질문4", null, 2));
+
+        List<Long> sectionQuestion1 = List.of(question1.getId(), question2.getId());
+        List<Long> sectionQuestion2 = List.of(question3.getId(), question4.getId());
+        Section section1 = sectionRepository.save(new Section(VisibleType.ALWAYS, sectionQuestion1, null, "header", 0));
+        sectionRepository.save(new Section(VisibleType.ALWAYS, sectionQuestion2, null, "header", 0));
+        List<Long> sectionIds = List.of(section1.getId());
+        Template template = templateRepository.save(new Template(sectionIds));
+
+        // when
+        Set<Long> actual = questionRepository.findAllQuestionIdByTemplateId(template.getId());
+
+        // then
+        assertThat(actual).containsExactlyInAnyOrder(question1.getId(), question2.getId());
     }
 }

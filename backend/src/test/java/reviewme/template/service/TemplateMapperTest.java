@@ -15,7 +15,7 @@ import reviewme.question.domain.QuestionType;
 import reviewme.question.domain.exception.MissingOptionItemsInOptionGroupException;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.question.repository.Question2Repository;
+import reviewme.review.repository.QuestionRepository2;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -42,7 +42,7 @@ class TemplateMapperTest {
     SectionRepository sectionRepository;
 
     @Autowired
-    Question2Repository questionRepository;
+    QuestionRepository2 questionRepository;
 
     @Autowired
     OptionGroupRepository optionGroupRepository;

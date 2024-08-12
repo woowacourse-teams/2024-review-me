@@ -1,24 +1,38 @@
 import { Fragment } from 'react';
 
+import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
+
 import CheckboxItem from '../common/CheckboxItem';
 import ContentModal from '../common/modals/ContentModal';
 
-import { Section } from './answerList';
 import QuestionCard from './components/QuestionCard';
 import ReviewWritingCard from './components/ReviewWritingCard';
 import * as S from './styles';
 
-interface AnswerListPreviewModalProps {
-  answerList: Section[];
+interface AnswerListRecheckModalProps {
+  questionSectionList: ReviewWritingCardSection[];
+  answerMap: Map<number, ReviewWritingAnswer>;
   closeModal: () => void;
 }
 
-const AnswerListPreviewModal = ({ answerList, closeModal }: AnswerListPreviewModalProps) => {
+const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: AnswerListRecheckModalProps) => {
+  const isSelectedChoice = (questionId: number, optionId: number) => {
+    const answer = answerMap.get(questionId);
+    if (!answer) return false;
+
+    return !!answer.selectedOptionIds?.some((id) => id === optionId);
+  };
+
+  const findTextAnswer = (questionId: number) => {
+    const answer = answerMap.get(questionId);
+    return answer ? answer.text : '';
+  };
+
   return (
     <ContentModal handleClose={closeModal}>
       <S.AnswerListContainer>
         <S.CardLayout>
-          {answerList.map((section) => (
+          {questionSectionList.map((section) => (
             <S.ReviewWritingCardWrapper key={section.sectionId}>
               <ReviewWritingCard title={section.header}>
                 {section.questions.map((question) => (
@@ -32,7 +46,7 @@ const AnswerListPreviewModal = ({ answerList, closeModal }: AnswerListPreviewMod
                               key={`${question.questionId}_${index}`}
                               id={`${question.questionId}_${index}`}
                               name={`${question.questionId}_${index}`}
-                              isChecked={option.isChecked}
+                              isChecked={isSelectedChoice(question.questionId, option.optionId)}
                               isDisabled={true}
                               label={option.content}
                               $isReadonly={true}
@@ -40,7 +54,7 @@ const AnswerListPreviewModal = ({ answerList, closeModal }: AnswerListPreviewMod
                           ))}
                         </div>
                       )}
-                      <div>{question.questionType === 'TEXT' && <div>{question.answer ?? ''}</div>}</div>
+                      <div>{question.questionType === 'TEXT' && <div>{findTextAnswer(question.questionId)}</div>}</div>
                     </S.ContentContainer>
                   </Fragment>
                 ))}
@@ -53,4 +67,4 @@ const AnswerListPreviewModal = ({ answerList, closeModal }: AnswerListPreviewMod
   );
 };
 
-export default AnswerListPreviewModal;
+export default AnswerListRecheckModal;

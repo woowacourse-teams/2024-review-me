@@ -4,7 +4,6 @@ import ReviewSectionHeader from '../ReviewSectionHeader';
 
 import * as S from './styles';
 
-// const INDEX_OFFSET = 1;
 interface ReviewSectionProps {
   question: string;
   answer: string;

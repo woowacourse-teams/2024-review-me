@@ -13,10 +13,10 @@ import reviewme.question.domain.Question2;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.question.repository.Question2Repository;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
 import reviewme.review.dto.request.create.CreateReviewRequest2;
 import reviewme.review.repository.CheckboxAnswerRepository;
+import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.repository.Review2Repository;
 import reviewme.review.repository.TextAnswerRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -35,7 +35,7 @@ class CreateReviewServiceTest {
     private CreateReviewService createReviewService;
 
     @Autowired
-    private Question2Repository questionRepository;
+    private QuestionRepository2 questionRepository;
 
     @Autowired
     private OptionGroupRepository optionGroupRepository;

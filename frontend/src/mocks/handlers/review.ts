@@ -1,10 +1,19 @@
 import { http, HttpResponse } from 'msw';
 
-import endPoint, { DETAILED_REVIEW_API_PARAMS, DETAILED_REVIEW_API_URL } from '@/apis/endpoints';
+import endPoint, {
+  DETAILED_REVIEW_API_PARAMS,
+  DETAILED_REVIEW_API_URL,
+  REVIEW_WRITING_API_PARAMS,
+  VERSION2,
+} from '@/apis/endpoints';
 
-import { DETAILED_REVIEW_MOCK_DATA, DETAILED_PAGE_MOCK_API_SETTING_VALUES } from '../mockData/detailedReviewMockData';
-import { REVIEW_LIST } from '../mockData/reviewListMockData';
-import { REVIEW_WRITING_DATA } from '../mockData/reviewWritingData';
+import {
+  DETAILED_REVIEW_MOCK_DATA,
+  DETAILED_PAGE_MOCK_API_SETTING_VALUES,
+  REVIEW_REQUEST_CODE,
+  REVIEW_WRITING_FORM_CARD_DATA,
+  REVIEW_LIST,
+} from '../mockData';
 
 export const PAGE = {
   firstPageNumber: 1,
@@ -17,12 +26,12 @@ const getDetailedReview = () =>
   http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), async ({ request }) => {
     //요청 url에서 reviewId, memberId 추출
     const url = new URL(request.url);
-    const urlReviewId = url.pathname.replace(`/${DETAILED_REVIEW_API_PARAMS.resource}/`, '');
-    const urlMemberId = url.searchParams.get(DETAILED_REVIEW_API_PARAMS.queryString.memberId);
+    const urlReviewId = url.pathname.replace(`/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}/`, '');
+    // const urlMemberId = url.searchParams.get(DETAILED_REVIEW_API_PARAMS.queryString.memberId);
 
-    const { reviewId, memberId } = DETAILED_PAGE_MOCK_API_SETTING_VALUES;
+    const { reviewId } = DETAILED_PAGE_MOCK_API_SETTING_VALUES;
     // 유효한 reviewId, memberId일 경우에만 데이터 반환
-    if (Number(urlReviewId) == reviewId && Number(urlMemberId) === memberId) {
+    if (Number(urlReviewId) == reviewId) {
       return HttpResponse.json(DETAILED_REVIEW_MOCK_DATA);
     }
 
@@ -30,8 +39,15 @@ const getDetailedReview = () =>
   });
 
 const getDataToWriteReview = () =>
-  http.get(endPoint.gettingDataToWriteReview('ABCD1234'), async ({ request }) => {
-    return HttpResponse.json(REVIEW_WRITING_DATA);
+  http.get(endPoint.gettingDataToWriteReview(REVIEW_REQUEST_CODE), async ({ request }) => {
+    //요청 url에서 reviewId, memberId 추출
+    const url = new URL(request.url);
+    const urlRequestCode = url.searchParams.get(REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode);
+
+    if (REVIEW_REQUEST_CODE === urlRequestCode) {
+      return HttpResponse.json(REVIEW_WRITING_FORM_CARD_DATA);
+    }
+    return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
   });
 
 const getReviewList = () => {

@@ -1,3 +1,4 @@
+export const VERSION2 = 'v2';
 export const DETAILED_REVIEW_API_PARAMS = {
   resource: 'reviews',
   queryString: {
@@ -5,22 +6,23 @@ export const DETAILED_REVIEW_API_PARAMS = {
   },
 };
 
-export const DETAILED_REVIEW_API_URL = `${process.env.API_BASE_URL}/${DETAILED_REVIEW_API_PARAMS.resource}`;
+export const DETAILED_REVIEW_API_URL = `${process.env.API_BASE_URL}/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}`;
 
 export const REVIEW_WRITING_API_PARAMS = {
+  resource: 'reviews',
   queryString: {
+    write: 'write',
     reviewRequestCode: 'reviewRequestCode',
   },
 };
 
 const endPoint = {
-  postingReview: `${process.env.API_BASE_URL}/reviews`,
-  gettingDetailedReview: (reviewId: number, memberId: number) =>
-    `${DETAILED_REVIEW_API_URL}/${reviewId}?${DETAILED_REVIEW_API_PARAMS.queryString.memberId}=${memberId}`,
+  postingReview: `${process.env.API_BASE_URL}/${VERSION2}/reviews`,
+  gettingDetailedReview: (reviewId: number) => `${DETAILED_REVIEW_API_URL}/${reviewId}`,
   gettingDataToWriteReview: (reviewRequestCode: string) =>
-    `${process.env.API_BASE_URL}/reviews/write?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
-  gettingReviewList: `${process.env.API_BASE_URL}/reviews`,
-  postingDataForURL: `${process.env.API_BASE_URL}/groups`,
+    `${process.env.API_BASE_URL}/${VERSION2}/${REVIEW_WRITING_API_PARAMS.resource}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
+  gettingReviewList: `${process.env.API_BASE_URL}/${VERSION2}/reviews`,
+  postingDataForURL: `${process.env.API_BASE_URL}/${VERSION2}/groups`,
 };
 
 export default endPoint;

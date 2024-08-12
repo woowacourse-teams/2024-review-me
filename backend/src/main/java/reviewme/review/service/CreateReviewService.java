@@ -1,26 +1,25 @@
 package reviewme.review.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.question.domain.Question2;
 import reviewme.question.domain.QuestionType;
-import reviewme.question.repository.Question2Repository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review2;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
 import reviewme.review.dto.request.create.CreateReviewRequest2;
+import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.repository.Review2Repository;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.template.domain.SectionQuestion;
-import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
@@ -29,7 +28,7 @@ import reviewme.template.repository.TemplateRepository;
 public class CreateReviewService {
 
     private final Review2Repository review2Repository;
-    private final Question2Repository question2Repository;
+    private final QuestionRepository2 questionRepository;
     private final ReviewGroupRepository reviewGroupRepository;
     private final TemplateRepository templateRepository;
     private final SectionRepository sectionRepository;
@@ -39,8 +38,7 @@ public class CreateReviewService {
     @Transactional
     public long createReview(CreateReviewRequest2 request) {
         ReviewGroup reviewGroup = validateReviewGroupByRequestCode(request.reviewRequestCode());
-        Template template = templateRepository.getTemplateById(reviewGroup.getTemplateId());
-        validateSubmittedQuestionAndProvidedQuestionMatch(request, template);
+        validateSubmittedQuestionsContainingInTemplate(reviewGroup.getTemplateId(), request);
         return saveReview(request, reviewGroup);
     }
 
@@ -49,18 +47,13 @@ public class CreateReviewService {
                 .orElseThrow(() -> new ReviewGroupNotFoundByRequestReviewCodeException(reviewRequestCode));
     }
 
-    private void validateSubmittedQuestionAndProvidedQuestionMatch(CreateReviewRequest2 request, Template template) {
-        List<Long> providedQuestionIds = template.getSectionIds()
-                .stream()
-                .map(templateSection -> sectionRepository.getSectionById(templateSection.getSectionId()))
-                .flatMap(section -> section.getQuestionIds().stream().map(SectionQuestion::getQuestionId))
-                .toList();
-        List<Long> submittedQuestionIds = request.answers()
+    private void validateSubmittedQuestionsContainingInTemplate(long templateId, CreateReviewRequest2 request) {
+        Set<Long> providedQuestionIds = questionRepository.findAllQuestionIdByTemplateId(templateId);
+        Set<Long> submittedQuestionIds = request.answers()
                 .stream()
                 .map(CreateReviewAnswerRequest::questionId)
-                .toList();
-
-        if (!new HashSet<>(providedQuestionIds).containsAll(submittedQuestionIds)) {
+                .collect(Collectors.toSet());
+        if (!providedQuestionIds.containsAll(submittedQuestionIds)) {
             throw new SubmittedQuestionAndProvidedQuestionMismatchException(submittedQuestionIds, providedQuestionIds);
         }
     }
@@ -69,7 +62,7 @@ public class CreateReviewService {
         List<TextAnswer> textAnswers = new ArrayList<>();
         List<CheckboxAnswer> checkboxAnswers = new ArrayList<>();
         for (CreateReviewAnswerRequest answerRequests : request.answers()) {
-            Question2 question = question2Repository.getQuestionById(answerRequests.questionId());
+            Question2 question = questionRepository.getQuestionById(answerRequests.questionId());
             QuestionType questionType = question.getQuestionType();
             if (questionType == QuestionType.TEXT) {
                 createTextAnswerRequestValidator.validate(answerRequests);

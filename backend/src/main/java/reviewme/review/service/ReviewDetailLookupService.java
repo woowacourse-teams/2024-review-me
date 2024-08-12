@@ -13,8 +13,8 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.Review2;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.TextAnswers;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.repository.ReviewRepository2;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
@@ -89,8 +89,6 @@ public class ReviewDetailLookupService {
                 question.isRequired(),
                 question.getQuestionType(),
                 question.getContent(),
-                question.hasGuideline(),
-                question.getGuideline(),
                 null,
                 textAnswer.getContent()
         );
@@ -120,8 +118,6 @@ public class ReviewDetailLookupService {
                 question.isRequired(),
                 question.getQuestionType(),
                 question.getContent(),
-                question.hasGuideline(),
-                question.getGuideline(),
                 optionGroupAnswerResponse,
                 null
         );

@@ -1,9 +1,8 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react';
 
+import { REVIEW_FORM_RESULT_DATA } from '@/mocks/mockData';
 import QueryClientWrapper from '@/queryTestSetup/QueryClientWrapper';
-
-import { REVIEW_DATA } from './../../../mocks/mockData/reviewData';
 
 import useMutateReview from '.';
 
@@ -12,11 +11,11 @@ describe('리뷰 생성 요청 테스트', () => {
     const { result } = renderHook(() => useMutateReview(), { wrapper: QueryClientWrapper });
 
     act(() => {
-      result.current.postReview({ reviewData: REVIEW_DATA });
+      result.current.postReview(REVIEW_FORM_RESULT_DATA);
     });
 
-    await waitFor(() => result.current.reviewMutation.isSuccess);
+    await waitFor(() => result.current.isSuccess);
 
-    expect(result.current.reviewMutation.isSuccess).toBe(true);
+    expect(result.current.isSuccess).toBe(true);
   });
 });

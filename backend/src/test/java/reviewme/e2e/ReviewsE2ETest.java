@@ -27,13 +27,13 @@ import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question2;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.question.repository.Question2Repository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review2;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
 import reviewme.review.dto.request.create.CreateReviewRequest2;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
+import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.repository.Review2Repository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -53,7 +53,7 @@ class ReviewsE2ETest extends E2ETest {
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    private Question2Repository questionRepository;
+    private QuestionRepository2 questionRepository;
 
     @Autowired
     private SectionRepository sectionRepository;
