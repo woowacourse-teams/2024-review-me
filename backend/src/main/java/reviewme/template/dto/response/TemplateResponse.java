@@ -9,10 +9,10 @@ public record TemplateResponse(
         @Schema(description = "폼 ID")
         long formId,
 
-        @Schema(description = "리뷰이명")
+        @Schema(description = "리뷰이 이름")
         String revieweeName,
 
-        @Schema(description = "프로젝트명")
+        @Schema(description = "프로젝트 이름")
         String projectName,
 
         @Schema(description = "섹션 목록")
