@@ -18,23 +18,23 @@ interface PageContentsProps {
 
 const PageContents = ({ groupAccessCode }: PageContentsProps) => {
   const navigate = useNavigate();
-  const { data: ReviewListData } = useGetReviewList(groupAccessCode);
+  const { data: reviewListData } = useGetReviewList(groupAccessCode);
 
   const handleReviewClick = (id: number) => {
-    navigate(`/user/detailed-review/${id}?memberId=${MEMBER_ID}`);
+    navigate(`/user/detailed-review/${id}`);
   };
 
   return (
     <>
       <S.Layout>
-        <ReviewInfoSection projectName={ReviewListData.projectName} revieweeName={ReviewListData.revieweeName} />
+        <ReviewInfoSection projectName={reviewListData.projectName} revieweeName={reviewListData.revieweeName} />
         {/* <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} /> */}
         <S.ReviewSection>
-          {ReviewListData.reviews.map((review) => (
+          {reviewListData.reviews.map((review) => (
             // const isLastElement = pageIndex === data.pages.length - 1 && reviewIndex === page.reviews.length - 1;
             <div key={review.reviewId} onClick={() => handleReviewClick(review.reviewId)}>
               <ReviewCard
-                projectName={ReviewListData.projectName}
+                projectName={reviewListData.projectName}
                 createdAt={review.createdAt}
                 contentPreview={review.contentPreview}
                 categories={review.categories}

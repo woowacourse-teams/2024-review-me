@@ -6,25 +6,23 @@ import { DetailReviewData } from '@/types';
 
 interface UseGetDetailedReviewProps {
   reviewId: number;
-  memberId: number;
   groupAccessCode: string;
 }
 
 interface FetchDetailedReviewParams {
   reviewId: number;
-  memberId: number;
   groupAccessCode: string;
 }
 
-const useGetDetailedReview = ({ reviewId, memberId, groupAccessCode }: UseGetDetailedReviewProps) => {
-  const fetchDetailedReview = async ({ reviewId, memberId, groupAccessCode }: FetchDetailedReviewParams) => {
-    const result = await getDetailedReviewApi({ reviewId, memberId, groupAccessCode });
+const useGetDetailedReview = ({ reviewId, groupAccessCode }: UseGetDetailedReviewProps) => {
+  const fetchDetailedReview = async ({ reviewId, groupAccessCode }: FetchDetailedReviewParams) => {
+    const result = await getDetailedReviewApi({ reviewId, groupAccessCode });
     return result;
   };
 
   const result = useSuspenseQuery<DetailReviewData>({
-    queryKey: [REVIEW_QUERY_KEYS.detailedReview, reviewId, memberId],
-    queryFn: () => fetchDetailedReview({ reviewId, memberId, groupAccessCode }),
+    queryKey: [REVIEW_QUERY_KEYS.detailedReview, reviewId],
+    queryFn: () => fetchDetailedReview({ reviewId, groupAccessCode }),
   });
 
   return result;
