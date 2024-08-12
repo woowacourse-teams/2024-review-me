@@ -5,23 +5,23 @@ export const DETAILED_PAGE_MOCK_API_SETTING_VALUES = {
   memberId: 2,
 };
 
-const revieweeName = 'badahertz52';
+const REVIEWEENAME = 'badahertz52';
 
 export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
   formId: 1,
-  revieweeName: revieweeName,
+  revieweeName: REVIEWEENAME,
   projectName: 'review-me',
   createdAt: '2024-05-05',
   sections: [
     {
       sectionId: 1,
-      header: `💡 ${revieweeName}와 함께 한 기억을 떠올려볼게요.`,
+      header: `💡 ${REVIEWEENAME}와 함께 한 기억을 떠올려볼게요.`,
       questions: [
         {
           questionId: 1,
           required: true,
           questionType: 'CHECKBOX',
-          content: `프로젝트 기간 동안, ${revieweeName}의 강점이 드러났던 순간을 선택해주세요.`,
+          content: `프로젝트 기간 동안, ${REVIEWEENAME}의 강점이 드러났던 순간을 선택해주세요.`,
           optionGroup: {
             optionGroupId: 1,
             minCount: 1,
@@ -42,7 +42,7 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
           questionId: 2,
           required: true,
           questionType: 'CHECKBOX',
-          content: `${revieweeName}에서 어떤 부분이 인상 깊었는지 선택해주세요.`,
+          content: `${REVIEWEENAME}에서 어떤 부분이 인상 깊었는지 선택해주세요.`,
           optionGroup: {
             optionGroupId: 1,
             minCount: 1,
@@ -64,7 +64,7 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
           content: '위에서 선택한 사항에 대해 조금 더 자세히 설명해주세요.',
           optionGroup: null,
           hasGuideline: true,
-          guideline: `상황을 자세하게 기록할수록 ${revieweeName}에게 도움이 돼요. OO 덕분에 팀이 원활한 소통을 이뤘거나, 함께 일하면서 배울 점이 있었는지 떠올려 보세요.`,
+          guideline: `상황을 자세하게 기록할수록 ${REVIEWEENAME}에게 도움이 돼요. OO 덕분에 팀이 원활한 소통을 이뤘거나, 함께 일하면서 배울 점이 있었는지 떠올려 보세요.`,
           answer: '쑤쑤 쑤퍼노바 인상깊어요',
         },
       ],
@@ -77,7 +77,7 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
           questionId: 4,
           required: true,
           questionType: 'TEXT',
-          content: `앞으로의 성장을 위해서 ${revieweeName}이 어떤 목표를 설정하면 좋을까요?`,
+          content: `앞으로의 성장을 위해서 ${REVIEWEENAME}이 어떤 목표를 설정하면 좋을까요?`,
           optionGroup: null,
           hasGuideline: true,
           guideline: `어떤 점을 보완하면 좋을지와 함께 '이렇게 해보면 어떨까?'하는 간단한 솔루션을 제안해봐요.`,
@@ -93,7 +93,7 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
           questionId: 5,
           required: false,
           questionType: 'TEXT',
-          content: `${revieweeName}에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요.`,
+          content: `${REVIEWEENAME}에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요.`,
           optionGroup: null,
           hasGuideline: false,
           guideline: null,
