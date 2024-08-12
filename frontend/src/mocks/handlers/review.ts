@@ -4,6 +4,7 @@ import endPoint, {
   DETAILED_REVIEW_API_PARAMS,
   DETAILED_REVIEW_API_URL,
   REVIEW_WRITING_API_PARAMS,
+  VERSION2,
 } from '@/apis/endpoints';
 
 import {
@@ -25,7 +26,7 @@ const getDetailedReview = () =>
   http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), async ({ request }) => {
     //요청 url에서 reviewId, memberId 추출
     const url = new URL(request.url);
-    const urlReviewId = url.pathname.replace(`/${DETAILED_REVIEW_API_PARAMS.resource}/`, '');
+    const urlReviewId = url.pathname.replace(`/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}/`, '');
     const urlMemberId = url.searchParams.get(DETAILED_REVIEW_API_PARAMS.queryString.memberId);
 
     const { reviewId, memberId } = DETAILED_PAGE_MOCK_API_SETTING_VALUES;
