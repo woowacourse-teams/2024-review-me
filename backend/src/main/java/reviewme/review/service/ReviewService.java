@@ -14,10 +14,8 @@ import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeExce
 import reviewme.review.dto.response.ReceivedReviewCategoryResponse;
 import reviewme.review.dto.response.ReceivedReviewResponse2;
 import reviewme.review.dto.response.ReceivedReviewsResponse2;
-import reviewme.review.repository.QuestionRepository;
+import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.repository.Review2Repository;
-import reviewme.review.repository.ReviewKeywordRepository;
-import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -25,10 +23,8 @@ import reviewme.reviewgroup.repository.ReviewGroupRepository;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    private final ReviewRepository reviewRepository;
-    private final ReviewKeywordRepository reviewKeywordRepository;
     private final ReviewGroupRepository reviewGroupRepository;
-    private final QuestionRepository questionRepository;
+    private final QuestionRepository2 questionRepository;
     private final OptionItemRepository optionItemRepository;
     private final Review2Repository review2Repository;
 
