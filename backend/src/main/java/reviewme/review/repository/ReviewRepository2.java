@@ -2,9 +2,9 @@ package reviewme.review.repository;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import reviewme.review.domain.Review2;
+import reviewme.review.domain.Review;
 
-public interface ReviewRepository2 extends JpaRepository<Review2, Long> {
+public interface ReviewRepository2 extends JpaRepository<Review, Long> {
 
-    Optional<Review2> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
+    Optional<Review> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
 }

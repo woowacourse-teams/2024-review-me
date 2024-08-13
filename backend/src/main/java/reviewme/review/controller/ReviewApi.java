@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import reviewme.review.dto.request.CreateReviewRequest;
-import reviewme.review.dto.response.ReceivedReviewsResponse2;
+import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
 
 @Tag(name = "리뷰 관리")
@@ -62,7 +62,7 @@ public interface ReviewApi {
                     description = "응답 성공 : 리뷰 목록 응답",
                     content = @Content(
                             mediaType = APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ReceivedReviewsResponse2.class)
+                            schema = @Schema(implementation = ReceivedReviewsResponse.class)
                     )
             ),
             @ApiResponse(
@@ -82,7 +82,7 @@ public interface ReviewApi {
                     )
             )
     })
-    ResponseEntity<ReceivedReviewsResponse2> findReceivedReviews2(
+    ResponseEntity<ReceivedReviewsResponse> findReceivedReviews2(
             @Parameter(
                     description = "리뷰 그룹 액세스 코드",
                     required = true

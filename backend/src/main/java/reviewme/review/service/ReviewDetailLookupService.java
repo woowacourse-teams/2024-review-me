@@ -7,15 +7,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.question.domain.OptionGroup;
-import reviewme.question.domain.Question2;
+import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.domain.Review2;
+import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.TextAnswers;
 import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
-import reviewme.review.repository.QuestionRepository2;
+import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.ReviewRepository2;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
@@ -35,7 +35,7 @@ public class ReviewDetailLookupService {
     private final SectionRepository sectionRepository;
     private final ReviewRepository2 reviewRepository;
     private final ReviewGroupRepository reviewGroupRepository;
-    private final QuestionRepository2 questionRepository;
+    private final QuestionRepository questionRepository;
     private final OptionItemRepository optionItemRepository;
     private final OptionGroupRepository optionGroupRepository;
 
@@ -43,7 +43,7 @@ public class ReviewDetailLookupService {
         ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
 
-        Review2 review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
+        Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
                 .orElseThrow(() -> new InvalidReviewAccessByReviewGroupException(reviewId, reviewGroup.getId()));
         long templateId = review.getTemplateId();
 
@@ -63,11 +63,11 @@ public class ReviewDetailLookupService {
         );
     }
 
-    private SectionAnswerResponse getSectionAnswerResponse(Review2 review, Section section, ReviewGroup reviewGroup) {
+    private SectionAnswerResponse getSectionAnswerResponse(Review review, Section section, ReviewGroup reviewGroup) {
         TextAnswers textAnswers = new TextAnswers(review.getTextAnswers());
         ArrayList<QuestionAnswerResponse> questionResponses = new ArrayList<>();
 
-        for (Question2 question : questionRepository.findAllBySectionId(section.getId())) {
+        for (Question question : questionRepository.findAllBySectionId(section.getId())) {
             if (question.isSelectable()) {
                 questionResponses.add(getCheckboxAnswerResponse(review, question, reviewGroup));
                 continue;
@@ -82,7 +82,7 @@ public class ReviewDetailLookupService {
         );
     }
 
-    private QuestionAnswerResponse getTextAnswerResponse(TextAnswers textAnswers, Question2 question,
+    private QuestionAnswerResponse getTextAnswerResponse(TextAnswers textAnswers, Question question,
                                                          ReviewGroup reviewGroup) {
         TextAnswer textAnswer = textAnswers.getAnswerByQuestionId(question.getId());
         return new QuestionAnswerResponse(
@@ -95,7 +95,7 @@ public class ReviewDetailLookupService {
         );
     }
 
-    private QuestionAnswerResponse getCheckboxAnswerResponse(Review2 review, Question2 question,
+    private QuestionAnswerResponse getCheckboxAnswerResponse(Review review, Question question,
                                                              ReviewGroup reviewGroup) {
         OptionGroup optionGroup = optionGroupRepository.getByQuestionId(question.getId());
         Set<Long> selectedOptionItemIds = optionItemRepository.findSelectedOptionItemIdsByReviewId(review.getId());

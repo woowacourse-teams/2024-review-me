@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 @Schema(name = "내가 받은 리뷰 목록 응답")
-public record ReceivedReviewsResponse2(
+public record ReceivedReviewsResponse(
 
         @Schema(description = "리뷰이 이름")
         String revieweeName,
@@ -13,6 +13,6 @@ public record ReceivedReviewsResponse2(
         String projectName,
 
         @Schema(description = "받은 리뷰 미리보기 목록")
-        List<ReceivedReviewResponse2> reviews
+        List<ReceivedReviewResponse> reviews
 ) {
 }

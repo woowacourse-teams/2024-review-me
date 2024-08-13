@@ -9,17 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
-import reviewme.question.domain.Question2;
+import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.Review2;
+import reviewme.review.domain.Review;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.dto.response.ReceivedReviewCategoryResponse;
-import reviewme.review.dto.response.ReceivedReviewsResponse2;
+import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.repository.CheckboxAnswerRepository;
-import reviewme.review.repository.QuestionRepository2;
+import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.Review2Repository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -37,7 +37,7 @@ class ReviewServiceTest {
     ReviewService reviewService;
 
     @Autowired
-    QuestionRepository2 questionRepository;
+    QuestionRepository questionRepository;
 
     @Autowired
     ReviewGroupRepository reviewGroupRepository;
@@ -70,8 +70,8 @@ class ReviewServiceTest {
     void 확인_코드에_해당하는_그룹이_존재하면_리뷰_리스트를_반환한다() {
         // given
         String groupAccessCode = "groupAccessCode";
-        Question2 question = questionRepository.save(
-                new Question2(true, QuestionType.CHECKBOX, "프로젝트 기간 동안, 팀원의 강점이 드러났던 순간을 선택해주세요. (1~2개)", null, 1)
+        Question question = questionRepository.save(
+                new Question(true, QuestionType.CHECKBOX, "프로젝트 기간 동안, 팀원의 강점이 드러났던 순간을 선택해주세요. (1~2개)", null, 1)
         );
         OptionGroup categoryOptionGroup = optionGroupRepository.save(new OptionGroup(question.getId(), 1, 2));
         OptionItem categoryOption1 = new OptionItem("커뮤니케이션 능력 ", categoryOptionGroup.getId(), 1, OptionType.CATEGORY);
@@ -85,12 +85,12 @@ class ReviewServiceTest {
         );
         CheckboxAnswer categoryAnswer1 = new CheckboxAnswer(question.getId(), List.of(categoryOption1.getId()));
         CheckboxAnswer categoryAnswer2 = new CheckboxAnswer(question.getId(), List.of(categoryOption2.getId()));
-        Review2 review1 = new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer1));
-        Review2 review2 = new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer2));
-        review2Repository.saveAll(List.of(review1, review2));
+        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer1));
+        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer2));
+        review2Repository.saveAll(List.of(review1, review));
 
         // when
-        ReceivedReviewsResponse2 response = reviewService.findReceivedReviews(groupAccessCode);
+        ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
 
         // then
         assertThat(response.reviews()).hasSize(2);
@@ -100,11 +100,11 @@ class ReviewServiceTest {
     void 리뷰_목록을_반환할때_선택한_카테고리만_함께_반환한다() {
         // given
         String groupAccessCode = "groupAccessCode";
-        Question2 question1 = questionRepository.save(
-                new Question2(true, QuestionType.CHECKBOX, "프로젝트 기간 동안, 팀원의 강점이 드러났던 순간을 선택해주세요. (1~2개)", null, 1)
+        Question question1 = questionRepository.save(
+                new Question(true, QuestionType.CHECKBOX, "프로젝트 기간 동안, 팀원의 강점이 드러났던 순간을 선택해주세요. (1~2개)", null, 1)
         );
-        Question2 question2 = questionRepository.save(
-                new Question2(true, QuestionType.CHECKBOX, "커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요. (1개 이상)", null, 2)
+        Question question2 = questionRepository.save(
+                new Question(true, QuestionType.CHECKBOX, "커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요. (1개 이상)", null, 2)
         );
 
         OptionGroup categoryOptionGroup = optionGroupRepository.save(new OptionGroup(question1.getId(), 1, 2));
@@ -129,11 +129,11 @@ class ReviewServiceTest {
         CheckboxAnswer categoryAnswer = new CheckboxAnswer(question1.getId(), List.of(categoryOption1.getId()));
         CheckboxAnswer keywordAnswer = new CheckboxAnswer(question2.getId(), List.of(keywordOption.getId()));
         review2Repository.save(
-                new Review2(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer, keywordAnswer))
+                new Review(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer, keywordAnswer))
         );
 
         // when
-        ReceivedReviewsResponse2 response = reviewService.findReceivedReviews(groupAccessCode);
+        ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
 
         // then
         List<String> categoryContents = optionItemRepository.findAllByOptionType(OptionType.CATEGORY)

@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
-import reviewme.question.domain.Question2;
+import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.repository.CheckboxAnswerRepository;
-import reviewme.review.repository.QuestionRepository2;
+import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.Review2Repository;
 import reviewme.review.repository.TextAnswerRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -35,7 +35,7 @@ class CreateReviewServiceTest {
     private CreateReviewService createReviewService;
 
     @Autowired
-    private QuestionRepository2 questionRepository;
+    private QuestionRepository questionRepository;
 
     @Autowired
     private OptionGroupRepository optionGroupRepository;
@@ -82,8 +82,8 @@ class CreateReviewServiceTest {
     void 텍스트가_포함된_리뷰를_저장한다() {
         // given
         String expectedTextAnswer = "서술형답변";
-        Question2 savedQuestion = questionRepository.save(
-                new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1)
+        Question savedQuestion = questionRepository.save(
+                new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1)
         );
         CreateReviewAnswerRequest createReviewAnswerRequest = new CreateReviewAnswerRequest(
                 savedQuestion.getId(), null, expectedTextAnswer
@@ -103,8 +103,8 @@ class CreateReviewServiceTest {
     @Test
     void 체크박스가_포함된_리뷰를_저장한다() {
         // given
-        Question2 savedQuestion = questionRepository.save(
-                new Question2(true, QuestionType.CHECKBOX, "질문", "가이드라인", 1)
+        Question savedQuestion = questionRepository.save(
+                new Question(true, QuestionType.CHECKBOX, "질문", "가이드라인", 1)
         );
         OptionGroup savedOptionGroup = optionGroupRepository.save(
                 new OptionGroup(savedQuestion.getId(), 2, 2)

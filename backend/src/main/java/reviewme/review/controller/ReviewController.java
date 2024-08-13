@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.global.HeaderProperty;
 import reviewme.review.dto.request.CreateReviewRequest;
-import reviewme.review.dto.response.ReceivedReviewsResponse2;
+import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.service.CreateReviewService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewService;
@@ -34,10 +34,10 @@ public class ReviewController implements ReviewApi {
     }
 
     @GetMapping("/v2/reviews")
-    public ResponseEntity<ReceivedReviewsResponse2> findReceivedReviews2(
+    public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews2(
             @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode
     ) {
-        ReceivedReviewsResponse2 response = reviewService.findReceivedReviews(groupAccessCode);
+        ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
         return ResponseEntity.ok(response);
     }
 

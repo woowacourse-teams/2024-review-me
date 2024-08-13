@@ -7,15 +7,15 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.question.domain.Question2;
+import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.Review2;
+import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
 import reviewme.review.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
-import reviewme.review.repository.QuestionRepository2;
+import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.Review2Repository;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -28,7 +28,7 @@ import reviewme.template.repository.TemplateRepository;
 public class CreateReviewService {
 
     private final Review2Repository review2Repository;
-    private final QuestionRepository2 questionRepository;
+    private final QuestionRepository questionRepository;
     private final ReviewGroupRepository reviewGroupRepository;
     private final TemplateRepository templateRepository;
     private final SectionRepository sectionRepository;
@@ -62,7 +62,7 @@ public class CreateReviewService {
         List<TextAnswer> textAnswers = new ArrayList<>();
         List<CheckboxAnswer> checkboxAnswers = new ArrayList<>();
         for (CreateReviewAnswerRequest answerRequests : request.answers()) {
-            Question2 question = questionRepository.getQuestionById(answerRequests.questionId());
+            Question question = questionRepository.getQuestionById(answerRequests.questionId());
             QuestionType questionType = question.getQuestionType();
             if (questionType == QuestionType.TEXT) {
                 createTextAnswerRequestValidator.validate(answerRequests);
@@ -75,8 +75,8 @@ public class CreateReviewService {
             }
         }
 
-        Review2 savedReview = review2Repository.save(
-                new Review2(reviewGroup.getTemplateId(), reviewGroup.getId(), textAnswers, checkboxAnswers)
+        Review savedReview = review2Repository.save(
+                new Review(reviewGroup.getTemplateId(), reviewGroup.getId(), textAnswers, checkboxAnswers)
         );
         return savedReview.getId();
     }

@@ -14,11 +14,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "question2")
+@Table(name = "question")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
-public class Question2 {
+public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +40,7 @@ public class Question2 {
     @Column(name = "position", nullable = false)
     private int position;
 
-    public Question2(boolean required, QuestionType questionType, String content, String guideline, int position) {
+    public Question(boolean required, QuestionType questionType, String content, String guideline, int position) {
         this.required = required;
         this.questionType = questionType;
         this.content = content;

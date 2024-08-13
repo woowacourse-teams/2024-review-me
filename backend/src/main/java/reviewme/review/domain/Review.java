@@ -19,11 +19,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "review2")
+@Table(name = "review")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
-public class Review2 {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,8 +46,8 @@ public class Review2 {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Review2(long templateId, long reviewGroupId,
-                   List<TextAnswer> textAnswers, List<CheckboxAnswer> checkboxAnswers) {
+    public Review(long templateId, long reviewGroupId,
+                  List<TextAnswer> textAnswers, List<CheckboxAnswer> checkboxAnswers) {
         this.templateId = templateId;
         this.reviewGroupId = reviewGroupId;
         this.textAnswers = textAnswers;

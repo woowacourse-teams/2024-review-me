@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Schema(name = "리뷰 내용 응답")
-public record ReceivedReviewResponse2(
+public record ReceivedReviewResponse(
 
         @Schema(description = "리뷰 ID")
         long reviewId,

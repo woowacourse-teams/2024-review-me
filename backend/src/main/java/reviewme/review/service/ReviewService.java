@@ -8,13 +8,13 @@ import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.Review2;
+import reviewme.review.domain.Review;
 import reviewme.review.domain.exception.CategoryOptionByReviewNotFoundException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.dto.response.ReceivedReviewCategoryResponse;
-import reviewme.review.dto.response.ReceivedReviewResponse2;
-import reviewme.review.dto.response.ReceivedReviewsResponse2;
-import reviewme.review.repository.QuestionRepository2;
+import reviewme.review.dto.response.ReceivedReviewResponse;
+import reviewme.review.dto.response.ReceivedReviewsResponse;
+import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.Review2Repository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -24,7 +24,7 @@ import reviewme.reviewgroup.repository.ReviewGroupRepository;
 public class ReviewService {
 
     private final ReviewGroupRepository reviewGroupRepository;
-    private final QuestionRepository2 questionRepository;
+    private final QuestionRepository questionRepository;
     private final OptionItemRepository optionItemRepository;
     private final Review2Repository review2Repository;
 
@@ -33,20 +33,20 @@ public class ReviewService {
     private final ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
 
     @Transactional(readOnly = true)
-    public ReceivedReviewsResponse2 findReceivedReviews(String groupAccessCode) {
+    public ReceivedReviewsResponse findReceivedReviews(String groupAccessCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
 
-        List<ReceivedReviewResponse2> reviewResponses =
+        List<ReceivedReviewResponse> reviewResponses =
                 review2Repository.findReceivedReviewsByGroupId(reviewGroup.getId())
                         .stream()
                         .map(this::createReceivedReviewResponse)
                         .toList();
 
-        return new ReceivedReviewsResponse2(reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewResponses);
+        return new ReceivedReviewsResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewResponses);
     }
 
-    private ReceivedReviewResponse2 createReceivedReviewResponse(Review2 review) {
+    private ReceivedReviewResponse createReceivedReviewResponse(Review review) {
         CheckboxAnswer checkboxAnswer = review.getCheckboxAnswers()
                 .stream()
                 .filter(answer -> optionItemRepository.existsByOptionTypeAndId(
@@ -68,7 +68,7 @@ public class ReviewService {
                         })
                         .toList();
 
-        return new ReceivedReviewResponse2(
+        return new ReceivedReviewResponse(
                 review.getId(),
                 review.getCreatedAt().toLocalDate(),
                 reviewPreviewGenerator.generatePreview2(review.getTextAnswers()),
