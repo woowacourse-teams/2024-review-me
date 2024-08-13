@@ -29,8 +29,6 @@ export interface QuestionData {
   questionType: QuestionType;
   content: string;
   optionGroup: OptionGroup | null;
-  hasGuideline?: boolean;
-  guideline?: string | null;
   answer?: string;
 }
 
