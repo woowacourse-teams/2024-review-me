@@ -51,7 +51,7 @@ public class ReviewDetailLookupService {
         List<SectionAnswerResponse> sectionResponses = sectionRepository.findAllByTemplateId(templateId)
                 .stream()
                 .filter(section -> section.isVisibleBySelectedOptionIds(selectedOptionItemIds))
-                .map(section -> getSectionAnswerResponse(review, section))
+                .map(section -> getSectionAnswerResponse(review, section, reviewGroup))
                 .toList();
 
         return new TemplateAnswerResponse(
@@ -63,38 +63,40 @@ public class ReviewDetailLookupService {
         );
     }
 
-    private SectionAnswerResponse getSectionAnswerResponse(Review2 review, Section section) {
+    private SectionAnswerResponse getSectionAnswerResponse(Review2 review, Section section, ReviewGroup reviewGroup) {
         TextAnswers textAnswers = new TextAnswers(review.getTextAnswers());
         ArrayList<QuestionAnswerResponse> questionResponses = new ArrayList<>();
 
         for (Question2 question : questionRepository.findAllBySectionId(section.getId())) {
             if (question.isSelectable()) {
-                questionResponses.add(getCheckboxAnswerResponse(review, question));
+                questionResponses.add(getCheckboxAnswerResponse(review, question, reviewGroup));
                 continue;
             }
-            questionResponses.add(getTextAnswerResponse(question, textAnswers));
+            questionResponses.add(getTextAnswerResponse(textAnswers, question, reviewGroup));
         }
 
         return new SectionAnswerResponse(
                 section.getId(),
-                section.getHeader(),
+                section.convertHeader("{revieweeName}", reviewGroup.getReviewee()),
                 questionResponses
         );
     }
 
-    private QuestionAnswerResponse getTextAnswerResponse(Question2 question, TextAnswers textAnswers) {
+    private QuestionAnswerResponse getTextAnswerResponse(TextAnswers textAnswers, Question2 question,
+                                                         ReviewGroup reviewGroup) {
         TextAnswer textAnswer = textAnswers.getAnswerByQuestionId(question.getId());
         return new QuestionAnswerResponse(
                 question.getId(),
                 question.isRequired(),
                 question.getQuestionType(),
-                question.getContent(),
+                question.convertContent("{revieweeName}", reviewGroup.getReviewee()),
                 null,
                 textAnswer.getContent()
         );
     }
 
-    private QuestionAnswerResponse getCheckboxAnswerResponse(Review2 review, Question2 question) {
+    private QuestionAnswerResponse getCheckboxAnswerResponse(Review2 review, Question2 question,
+                                                             ReviewGroup reviewGroup) {
         OptionGroup optionGroup = optionGroupRepository.getByQuestionId(question.getId());
         Set<Long> selectedOptionItemIds = optionItemRepository.findSelectedOptionItemIdsByReviewId(review.getId());
         List<OptionItemAnswerResponse> optionItemResponse =
@@ -117,7 +119,7 @@ public class ReviewDetailLookupService {
                 question.getId(),
                 question.isRequired(),
                 question.getQuestionType(),
-                question.getContent(),
+                question.convertContent("{revieweeName}", reviewGroup.getReviewee()),
                 optionGroupAnswerResponse,
                 null
         );
