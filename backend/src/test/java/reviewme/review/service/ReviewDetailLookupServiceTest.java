@@ -19,7 +19,7 @@ import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.repository.ReviewRepository2;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -40,7 +40,7 @@ class ReviewDetailLookupServiceTest {
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    private ReviewRepository2 reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private SectionRepository sectionRepository;

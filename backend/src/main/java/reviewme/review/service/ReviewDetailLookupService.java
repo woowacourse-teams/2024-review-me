@@ -16,7 +16,7 @@ import reviewme.review.domain.TextAnswers;
 import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.repository.ReviewRepository2;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
@@ -33,7 +33,7 @@ import reviewme.template.repository.SectionRepository;
 public class ReviewDetailLookupService {
 
     private final SectionRepository sectionRepository;
-    private final ReviewRepository2 reviewRepository;
+    private final ReviewRepository reviewRepository;
     private final ReviewGroupRepository reviewGroupRepository;
     private final QuestionRepository questionRepository;
     private final OptionItemRepository optionItemRepository;

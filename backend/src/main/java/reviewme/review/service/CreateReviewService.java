@@ -16,7 +16,7 @@ import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeEx
 import reviewme.review.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.repository.Review2Repository;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -27,7 +27,7 @@ import reviewme.template.repository.TemplateRepository;
 @RequiredArgsConstructor
 public class CreateReviewService {
 
-    private final Review2Repository review2Repository;
+    private final ReviewRepository reviewRepository;
     private final QuestionRepository questionRepository;
     private final ReviewGroupRepository reviewGroupRepository;
     private final TemplateRepository templateRepository;
@@ -75,7 +75,7 @@ public class CreateReviewService {
             }
         }
 
-        Review savedReview = review2Repository.save(
+        Review savedReview = reviewRepository.save(
                 new Review(reviewGroup.getTemplateId(), reviewGroup.getId(), textAnswers, checkboxAnswers)
         );
         return savedReview.getId();

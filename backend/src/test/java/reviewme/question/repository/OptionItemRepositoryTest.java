@@ -13,7 +13,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
-import reviewme.review.repository.ReviewRepository2;
+import reviewme.review.repository.ReviewRepository;
 
 @DataJpaTest
 class OptionItemRepositoryTest {
@@ -22,7 +22,7 @@ class OptionItemRepositoryTest {
     private OptionItemRepository optionItemRepository;
 
     @Autowired
-    private ReviewRepository2 reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private QuestionRepository questionRepository;

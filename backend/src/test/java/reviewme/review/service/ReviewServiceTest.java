@@ -20,7 +20,7 @@ import reviewme.review.dto.response.ReceivedReviewCategoryResponse;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.repository.Review2Repository;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -58,7 +58,7 @@ class ReviewServiceTest {
     CheckboxAnswerRepository checkboxAnswerRepository;
 
     @Autowired
-    Review2Repository review2Repository;
+    ReviewRepository reviewRepository;
 
     @Test
     void 확인_코드에_해당하는_그룹이_없는_경우_예외가_발생한다() {
@@ -87,7 +87,7 @@ class ReviewServiceTest {
         CheckboxAnswer categoryAnswer2 = new CheckboxAnswer(question.getId(), List.of(categoryOption2.getId()));
         Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer1));
         Review review = new Review(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer2));
-        review2Repository.saveAll(List.of(review1, review));
+        reviewRepository.saveAll(List.of(review1, review));
 
         // when
         ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
@@ -128,7 +128,7 @@ class ReviewServiceTest {
         );
         CheckboxAnswer categoryAnswer = new CheckboxAnswer(question1.getId(), List.of(categoryOption1.getId()));
         CheckboxAnswer keywordAnswer = new CheckboxAnswer(question2.getId(), List.of(keywordOption.getId()));
-        review2Repository.save(
+        reviewRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer, keywordAnswer))
         );
 

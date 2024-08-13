@@ -15,7 +15,7 @@ import reviewme.review.dto.response.ReceivedReviewCategoryResponse;
 import reviewme.review.dto.response.ReceivedReviewResponse;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.repository.Review2Repository;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -26,7 +26,7 @@ public class ReviewService {
     private final ReviewGroupRepository reviewGroupRepository;
     private final QuestionRepository questionRepository;
     private final OptionItemRepository optionItemRepository;
-    private final Review2Repository review2Repository;
+    private final ReviewRepository reviewRepository;
 
     private final ReviewCreationQuestionValidator reviewCreationQuestionValidator;
 
@@ -38,7 +38,7 @@ public class ReviewService {
                 .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
 
         List<ReceivedReviewResponse> reviewResponses =
-                review2Repository.findReceivedReviewsByGroupId(reviewGroup.getId())
+                reviewRepository.findReceivedReviewsByGroupId(reviewGroup.getId())
                         .stream()
                         .map(this::createReceivedReviewResponse)
                         .toList();
