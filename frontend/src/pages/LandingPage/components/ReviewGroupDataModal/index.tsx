@@ -27,7 +27,7 @@ const ReviewGroupDataModal = ({ reviewRequestCode, closeModal }: URLModalProps) 
 
   return (
     <AlertModal
-      closeButton={{ content: '닫기', type: 'secondary', handleClick: handleCloseButtonClick }}
+      closeButton={{ content: '닫기', type: isChecked ? 'secondary' : 'disabled', handleClick: handleCloseButtonClick }}
       handleClose={null}
       isClosableOnBackground={false}
     >
