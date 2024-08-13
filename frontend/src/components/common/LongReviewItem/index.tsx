@@ -8,6 +8,7 @@ interface LongReviewItemProps extends TextareaHTMLAttributes<HTMLTextAreaElement
   minLength: number;
   maxLength: number;
   initialValue?: string;
+  required: boolean;
   handleTextareaChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
@@ -15,6 +16,7 @@ const LongReviewItem = ({
   minLength,
   maxLength,
   initialValue = '',
+  required,
   handleTextareaChange,
   style,
   ...rest
@@ -23,6 +25,7 @@ const LongReviewItem = ({
     minLength,
     maxLength,
     initialValue,
+    required,
   });
 
   const handleWriteTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

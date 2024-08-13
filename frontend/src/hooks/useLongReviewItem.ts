@@ -4,9 +4,10 @@ interface UseLongReviewItemProps {
   minLength: number;
   maxLength: number;
   initialValue?: string;
+  required: boolean;
 }
 
-const useLongReviewItem = ({ minLength, maxLength, initialValue }: UseLongReviewItemProps) => {
+const useLongReviewItem = ({ minLength, maxLength, initialValue, required }: UseLongReviewItemProps) => {
   const [value, setValue] = useState(initialValue);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -19,7 +20,10 @@ const useLongReviewItem = ({ minLength, maxLength, initialValue }: UseLongReview
 
   const handleBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
-    if (value.length < minLength) {
+    const errorOnRequired = required && value.length < minLength;
+    const errorOnNotRequired = !required && value.length > 0 && value.length < minLength;
+
+    if (errorOnRequired || errorOnNotRequired) {
       setIsError(true);
       setErrorMessage(`최소 ${minLength}자 이상 작성해 주세요.`);
     } else {
