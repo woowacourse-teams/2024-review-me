@@ -16,7 +16,7 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
 import reviewme.review.repository.CheckboxAnswerRepository;
-import reviewme.review.repository.QuestionRepository;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.review.repository.Review2Repository;
 import reviewme.review.repository.TextAnswerRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;

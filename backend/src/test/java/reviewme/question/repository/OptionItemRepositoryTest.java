@@ -13,7 +13,6 @@ import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
-import reviewme.review.repository.QuestionRepository;
 import reviewme.review.repository.ReviewRepository2;
 
 @DataJpaTest

@@ -15,7 +15,7 @@ import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
 import reviewme.review.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.dto.request.CreateReviewRequest;
-import reviewme.review.repository.QuestionRepository;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.review.repository.Review2Repository;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.reviewgroup.domain.ReviewGroup;

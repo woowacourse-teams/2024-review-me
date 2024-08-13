@@ -14,7 +14,7 @@ import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeExce
 import reviewme.review.dto.response.ReceivedReviewCategoryResponse;
 import reviewme.review.dto.response.ReceivedReviewResponse;
 import reviewme.review.dto.response.ReceivedReviewsResponse;
-import reviewme.review.repository.QuestionRepository;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.review.repository.Review2Repository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;

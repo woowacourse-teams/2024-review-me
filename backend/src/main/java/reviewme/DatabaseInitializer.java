@@ -13,7 +13,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.repository.QuestionRepository;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.VisibleType;

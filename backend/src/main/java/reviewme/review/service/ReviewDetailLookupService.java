@@ -15,7 +15,7 @@ import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.TextAnswers;
 import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
-import reviewme.review.repository.QuestionRepository;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.review.repository.ReviewRepository2;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;

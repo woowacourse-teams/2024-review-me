@@ -1,4 +1,4 @@
-package reviewme.review.repository;
+package reviewme.question.repository;
 
 import java.util.List;
 import java.util.Set;

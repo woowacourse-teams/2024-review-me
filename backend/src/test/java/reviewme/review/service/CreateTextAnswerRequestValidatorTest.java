@@ -9,7 +9,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.domain.exception.QuestionNotFoundException;
 import reviewme.review.dto.request.CreateReviewAnswerRequest;
-import reviewme.review.repository.QuestionRepository;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
 import reviewme.review.service.exception.TextAnswerInculdedOptionException;
 import reviewme.support.ServiceTest;
