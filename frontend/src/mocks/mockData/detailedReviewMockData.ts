@@ -2,7 +2,6 @@ import { DetailReviewData } from '@/types';
 
 export const DETAILED_PAGE_MOCK_API_SETTING_VALUES = {
   reviewId: 5,
-  memberId: 2,
 };
 
 const REVIEWEENAME = 'badahertz52';
@@ -63,8 +62,6 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
           questionType: 'TEXT',
           content: '위에서 선택한 사항에 대해 조금 더 자세히 설명해주세요.',
           optionGroup: null,
-          hasGuideline: true,
-          guideline: `상황을 자세하게 기록할수록 ${REVIEWEENAME}에게 도움이 돼요. OO 덕분에 팀이 원활한 소통을 이뤘거나, 함께 일하면서 배울 점이 있었는지 떠올려 보세요.`,
           answer: '쑤쑤 쑤퍼노바 인상깊어요',
         },
       ],
@@ -79,8 +76,6 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
           questionType: 'TEXT',
           content: `앞으로의 성장을 위해서 ${REVIEWEENAME}이 어떤 목표를 설정하면 좋을까요?`,
           optionGroup: null,
-          hasGuideline: true,
-          guideline: `어떤 점을 보완하면 좋을지와 함께 '이렇게 해보면 어떨까?'하는 간단한 솔루션을 제안해봐요.`,
           answer: '어디까지 성장할려구~?',
         },
       ],
@@ -95,8 +90,6 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
           questionType: 'TEXT',
           content: `${REVIEWEENAME}에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요.`,
           optionGroup: null,
-          hasGuideline: false,
-          guideline: null,
           answer: '응원합니다 화이팅!!',
         },
       ],
