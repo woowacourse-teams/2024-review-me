@@ -54,7 +54,7 @@ const QnABox = ({ question, updateAnswerMap, updateAnswerValidationMap }: QnABox
               isChecked={isSelectedCheckbox(option.optionId)}
               isDisabled={false}
               label={option.content}
-              handleChange={handleCheckboxChange}
+              onChange={handleCheckboxChange}
             />
           ))}
           <S.LimitGuideMessage>
