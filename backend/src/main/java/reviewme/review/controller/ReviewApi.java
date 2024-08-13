@@ -23,9 +23,6 @@ import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
 @Tag(name = "리뷰 관리")
 public interface ReviewApi {
 
-    /**
-     * v2
-     */
     @Operation(summary = "리뷰 등록", description = "리뷰 작성 정보를 받아 리뷰를 등록한다.")
     @ApiResponses(value = {
             @ApiResponse(
@@ -54,7 +51,6 @@ public interface ReviewApi {
     })
     ResponseEntity<Void> createReview(@Valid @RequestBody CreateReviewRequest request);
 
-
     @Operation(summary = "내가 받은 리뷰 목록 조회", description = "내가 받은 리뷰들을 조회한다.")
     @ApiResponses(value = {
             @ApiResponse(
@@ -82,7 +78,7 @@ public interface ReviewApi {
                     )
             )
     })
-    ResponseEntity<ReceivedReviewsResponse> findReceivedReviews2(
+    ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
             @Parameter(
                     description = "리뷰 그룹 액세스 코드",
                     required = true
@@ -116,7 +112,7 @@ public interface ReviewApi {
                     )
             )
     })
-    ResponseEntity<TemplateAnswerResponse> findReceivedReviewDetailV2(
+    ResponseEntity<TemplateAnswerResponse> findReceivedReviewDetail(
             @Parameter(
                     description = "조회할 리뷰 ID",
                     required = true,

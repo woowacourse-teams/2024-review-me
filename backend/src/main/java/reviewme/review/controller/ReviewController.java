@@ -34,7 +34,7 @@ public class ReviewController implements ReviewApi {
     }
 
     @GetMapping("/v2/reviews")
-    public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews2(
+    public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
             @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode
     ) {
         ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
@@ -42,7 +42,7 @@ public class ReviewController implements ReviewApi {
     }
 
     @GetMapping("/v2/reviews/{id}")
-    public ResponseEntity<TemplateAnswerResponse> findReceivedReviewDetailV2(
+    public ResponseEntity<TemplateAnswerResponse> findReceivedReviewDetail(
             @PathVariable long id,
             @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode) {
         TemplateAnswerResponse response = reviewDetailLookupService.getReviewDetail(groupAccessCode, id);
