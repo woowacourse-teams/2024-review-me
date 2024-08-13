@@ -10,6 +10,7 @@ interface ReviewWritingCardProps extends CardSliderControllerProps {
   isLastCard: boolean;
   cardSection: ReviewWritingCardSection;
   updateAnswerMap: (answer: ReviewWritingAnswer) => void;
+  updateAnswerValidationMap: (answer: ReviewWritingAnswer, isValidatedAnswer: boolean) => void;
 }
 
 const ReviewWritingCard = ({
@@ -20,6 +21,7 @@ const ReviewWritingCard = ({
   isAbleNextStep,
   handleCurrentCardIndex,
   updateAnswerMap,
+  updateAnswerValidationMap,
   handleRecheckButtonClick,
   handleSubmitButtonClick,
 }: ReviewWritingCardProps) => {
@@ -28,7 +30,12 @@ const ReviewWritingCard = ({
       <S.Header>{cardSection.header}</S.Header>
       <S.Main>
         {cardSection.questions.map((question) => (
-          <QnABox key={question.questionId} question={question} updateAnswerMap={updateAnswerMap} />
+          <QnABox
+            key={question.questionId}
+            question={question}
+            updateAnswerMap={updateAnswerMap}
+            updateAnswerValidationMap={updateAnswerValidationMap}
+          />
         ))}
 
         <S.ButtonContainer>
@@ -41,7 +48,10 @@ const ReviewWritingCard = ({
           {isLastCard ? (
             <>
               <CardSliderController.RecheckButton handleRecheckButtonClick={handleRecheckButtonClick} />
-              <CardSliderController.SubmitButton handleSubmitButtonClick={handleSubmitButtonClick} />
+              <CardSliderController.SubmitButton
+                isAbleNextStep={isAbleNextStep}
+                handleSubmitButtonClick={handleSubmitButtonClick}
+              />
             </>
           ) : (
             <CardSliderController.NextButton

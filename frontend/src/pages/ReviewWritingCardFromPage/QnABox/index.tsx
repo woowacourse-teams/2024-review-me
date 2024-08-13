@@ -7,15 +7,21 @@ import * as S from './style';
 interface QnABoxProps {
   question: ReviewWritingCardQuestion;
   updateAnswerMap: (answer: ReviewWritingAnswer) => void;
+  updateAnswerValidationMap: (answer: ReviewWritingAnswer, isValidatedAnswer: boolean) => void;
 }
 
-const QnABox = ({ question, updateAnswerMap }: QnABoxProps) => {
+const QnABox = ({ question, updateAnswerMap, updateAnswerValidationMap }: QnABoxProps) => {
   const { isOpenLimitGuide, handleCheckboxChange, isSelectedCheckbox } = useMultipleChoice({
     question,
     updateAnswerMap,
+    updateAnswerValidationMap,
   });
 
-  const { textAnswer, handleTextAnswerChange, TEXT_ANSWER_LENGTH } = useTextAnswer({ question, updateAnswerMap });
+  const { textAnswer, handleTextAnswerChange, TEXT_ANSWER_LENGTH } = useTextAnswer({
+    question,
+    updateAnswerMap,
+    updateAnswerValidationMap,
+  });
 
   const multipleGuideline = (() => {
     const { optionGroup } = question;

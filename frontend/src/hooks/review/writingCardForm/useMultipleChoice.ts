@@ -5,9 +5,10 @@ import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
 interface UseMultipleChoiceProps {
   question: ReviewWritingCardQuestion;
   updateAnswerMap: (answer: ReviewWritingAnswer) => void;
+  updateAnswerValidationMap: (answer: ReviewWritingAnswer, isValidatedAnswer: boolean) => void;
 }
 
-const useMultipleChoice = ({ question, updateAnswerMap }: UseMultipleChoiceProps) => {
+const useMultipleChoice = ({ question, updateAnswerMap, updateAnswerValidationMap }: UseMultipleChoiceProps) => {
   const [selectedOptionList, setSelectedOptionList] = useState<number[]>([]);
   const [isOpenLimitGuide, setIsOpenLimitGuide] = useState(false);
 
@@ -23,11 +24,15 @@ const useMultipleChoice = ({ question, updateAnswerMap }: UseMultipleChoiceProps
     const newSelectedOptionList = makeNewSelectedOptionList(event);
     setSelectedOptionList(newSelectedOptionList);
     // 유효한 선택(=객관식 문항의 최소,최대 개수를 지켰을 경우)인지에 따라 answer 변경
-    updateAnswerMap({
+    const isValidatedAnswer = isValidatedChoice(newSelectedOptionList);
+    const isNotRequiredEmptyAnswer = !question.required && newSelectedOptionList.length === 0;
+    const newAnswer: ReviewWritingAnswer = {
       questionId: question.questionId,
-      selectedOptionIds: isValidatedChoice(newSelectedOptionList) ? newSelectedOptionList : [],
+      selectedOptionIds: isValidatedAnswer ? newSelectedOptionList : [],
       text: null,
-    });
+    };
+    updateAnswerMap(newAnswer);
+    updateAnswerValidationMap(newAnswer, isValidatedAnswer || isNotRequiredEmptyAnswer);
   };
 
   /**
