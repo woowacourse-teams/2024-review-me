@@ -9,19 +9,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.service.dto.request.CreateReviewRequest;
-import reviewme.question.repository.QuestionRepository;
-import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +28,6 @@ public class CreateReviewService {
     private final ReviewRepository reviewRepository;
     private final QuestionRepository questionRepository;
     private final ReviewGroupRepository reviewGroupRepository;
-    private final TemplateRepository templateRepository;
-    private final SectionRepository sectionRepository;
     private final CreateTextAnswerRequestValidator createTextAnswerRequestValidator;
     private final CreateCheckBoxAnswerRequestValidator createCheckBoxAnswerRequestValidator;
 

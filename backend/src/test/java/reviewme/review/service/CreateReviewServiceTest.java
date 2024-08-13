@@ -61,13 +61,11 @@ class CreateReviewServiceTest {
     @Autowired
     private CheckboxAnswerRepository checkboxAnswerRepository;
 
-    private ReviewGroup savedReviewGroup;
-
-    private String reviewRequestCode = "리뷰요청코드";
+    private final String reviewRequestCode = "리뷰요청코드";
 
     @BeforeEach
     void setUp() {
-        savedReviewGroup = reviewGroupRepository.save(
+        reviewGroupRepository.save(
                 new ReviewGroup("리뷰어", "프로젝트", reviewRequestCode, "그룹접근코드")
         );
         templateRepository.save(

@@ -11,11 +11,10 @@ import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.exception.CategoryOptionByReviewNotFoundException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.question.repository.QuestionRepository;
-import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -24,11 +23,8 @@ import reviewme.reviewgroup.repository.ReviewGroupRepository;
 public class ReviewService {
 
     private final ReviewGroupRepository reviewGroupRepository;
-    private final QuestionRepository questionRepository;
     private final OptionItemRepository optionItemRepository;
     private final ReviewRepository reviewRepository;
-
-    private final ReviewCreationQuestionValidator reviewCreationQuestionValidator;
 
     private final ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
 
