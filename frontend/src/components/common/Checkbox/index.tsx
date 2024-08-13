@@ -14,7 +14,7 @@ export interface CheckboxStyleProps {
 export interface CheckboxProps extends CheckboxStyleProps {
   id: string;
   isChecked: boolean;
-  onChange?: (event: ChangeEvent<HTMLInputElement>, label?: string) => void;
+  handleChange?: (event: ChangeEvent<HTMLInputElement>, label?: string) => void;
   name?: string;
   isDisabled?: boolean;
 }
