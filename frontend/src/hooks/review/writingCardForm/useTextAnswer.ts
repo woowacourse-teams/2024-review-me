@@ -25,7 +25,7 @@ const useTextAnswer = ({ question, updateAnswerMap }: UseTextAnswerProps) => {
       setTextAnswer(value);
     }
     // 유효한 답변인지 여부에 따라 답변 변경
-    updateAnswerMap({ questionId: question.questionId, selectedOptionIds: null, text: isValidatedText ? value : null });
+    updateAnswerMap({ questionId: question.questionId, selectedOptionIds: null, text: isValidatedText ? value : '' });
   };
 
   return {
