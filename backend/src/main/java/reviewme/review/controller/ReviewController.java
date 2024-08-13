@@ -37,7 +37,7 @@ public class ReviewController implements ReviewApi {
     public ResponseEntity<ReceivedReviewsResponse2> findReceivedReviews2(
             @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode
     ) {
-        ReceivedReviewsResponse2 response = reviewService.findReceivedReviews2(groupAccessCode);
+        ReceivedReviewsResponse2 response = reviewService.findReceivedReviews(groupAccessCode);
         return ResponseEntity.ok(response);
     }
 

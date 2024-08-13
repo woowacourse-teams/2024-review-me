@@ -1,6 +1,7 @@
 package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,8 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review2;
 import reviewme.review.domain.TextAnswer;
+import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.repository.ReviewRepository2;
 import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
@@ -37,7 +40,7 @@ class ReviewDetailLookupServiceTest {
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    private ReviewRepository2 reviewRepository2;
+    private ReviewRepository2 reviewRepository;
 
     @Autowired
     private SectionRepository sectionRepository;
@@ -55,6 +58,36 @@ class ReviewDetailLookupServiceTest {
     private TemplateRepository templateRepository;
 
     @Test
+    void 잘못된_그룹_액세스_코드로_리뷰를_조회할_경우_예외를_발생한다() {
+        // given
+        ReviewGroup reviewGroup = reviewGroupRepository.save(
+                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode", "groupAccessCode"));
+
+        Review2 review = reviewRepository.save(new Review2(0, reviewGroup.getId(), List.of(), List.of()));
+
+        // when, then
+        assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail("wrongGroupAccessCode", review.getId()))
+                .isInstanceOf(ReviewGroupNotFoundByGroupAccessCodeException.class);
+    }
+
+    @Test
+    void 리뷰_그룹에_해당하지_않는_리뷰를_조회할_경우_예외를_발생한다() {
+        // given
+        ReviewGroup reviewGroup1 = reviewGroupRepository.save(
+                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode1", "groupAccessCode1"));
+        ReviewGroup reviewGroup2 = reviewGroupRepository.save(
+                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode2", "groupAccessCode2"));
+
+        Review2 review1 = reviewRepository.save(new Review2(0, reviewGroup1.getId(), List.of(), List.of()));
+        Review2 review2 = reviewRepository.save(new Review2(0, reviewGroup2.getId(), List.of(), List.of()));
+
+        // when, then
+        assertThatThrownBy(
+                () -> reviewDetailLookupService.getReviewDetail(reviewGroup1.getGroupAccessCode(), review2.getId()))
+                .isInstanceOf(InvalidReviewAccessByReviewGroupException.class);
+    }
+
+    @Test
     void 사용자가_작성한_리뷰를_확인한다() {
         // given
         ReviewGroup reviewGroup = reviewGroupRepository.save(new ReviewGroup("aru", "reviewme", "ABCD", "0000"));
@@ -62,8 +95,10 @@ class ReviewDetailLookupServiceTest {
         Question2 question2 = questionRepository.save(new Question2(true, QuestionType.CHECKBOX, "질문", null, 1));
         Question2 question3 = questionRepository.save(new Question2(true, QuestionType.TEXT, "체크 1 조건", "가이드라인", 1));
         OptionGroup optionGroup = optionGroupRepository.save(new OptionGroup(question2.getId(), 1, 3));
-        OptionItem optionItem1 = optionItemRepository.save(new OptionItem("체크 1", optionGroup.getId(), 1, OptionType.KEYWORD));
-        OptionItem optionItem2 = optionItemRepository.save(new OptionItem("체크 2", optionGroup.getId(), 1, OptionType.KEYWORD));
+        OptionItem optionItem1 = optionItemRepository.save(
+                new OptionItem("체크 1", optionGroup.getId(), 1, OptionType.KEYWORD));
+        OptionItem optionItem2 = optionItemRepository.save(
+                new OptionItem("체크 2", optionGroup.getId(), 1, OptionType.KEYWORD));
 
         Section section1 = sectionRepository.save(
                 new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", 1)
@@ -80,7 +115,7 @@ class ReviewDetailLookupServiceTest {
         List<CheckboxAnswer> checkboxAnswers = List.of(
                 new CheckboxAnswer(2, List.of(optionItem1.getId(), optionItem2.getId()))
         );
-        Review2 review = reviewRepository2.save(
+        Review2 review = reviewRepository.save(
                 new Review2(template.getId(), reviewGroup.getId(), textAnswers, checkboxAnswers)
         );
 
@@ -99,8 +134,10 @@ class ReviewDetailLookupServiceTest {
         Question2 question2 = questionRepository.save(new Question2(true, QuestionType.CHECKBOX, "질문", null, 2));
         Question2 question3 = questionRepository.save(new Question2(true, QuestionType.TEXT, "체크 1 조건", "가이드라인", 3));
         OptionGroup optionGroup = optionGroupRepository.save(new OptionGroup(question2.getId(), 1, 3));
-        OptionItem optionItem1 = optionItemRepository.save(new OptionItem("체크 1", optionGroup.getId(), 1, OptionType.KEYWORD));
-        OptionItem optionItem2 = optionItemRepository.save(new OptionItem("체크 2", optionGroup.getId(), 2, OptionType.KEYWORD));
+        OptionItem optionItem1 = optionItemRepository.save(
+                new OptionItem("체크 1", optionGroup.getId(), 1, OptionType.KEYWORD));
+        OptionItem optionItem2 = optionItemRepository.save(
+                new OptionItem("체크 2", optionGroup.getId(), 2, OptionType.KEYWORD));
 
         Section section1 = sectionRepository.save(
                 new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", 1)
@@ -113,7 +150,7 @@ class ReviewDetailLookupServiceTest {
         List<TextAnswer> textAnswers = List.of(new TextAnswer(question1.getId(), "질문 1 답변"));
         List<CheckboxAnswer> checkboxAnswers = List.of(
                 new CheckboxAnswer(question2.getId(), List.of(optionItem2.getId())));
-        Review2 review = reviewRepository2.save(
+        Review2 review = reviewRepository.save(
                 new Review2(template.getId(), reviewGroup.getId(), textAnswers, checkboxAnswers)
         );
 
