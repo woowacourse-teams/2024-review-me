@@ -29,10 +29,6 @@ const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageConte
         isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
       />
-      {/* 시연 때 숨김 <RevieweeComments comment={detailedReview.reviewerGroup.description} /> */}
-      {/* {detailedReview.contents.map(({ id, question, answer }, index) => (
-        <ReviewSection key={id} question={question} answer={answer} index={index} />
-      ))} */}
       {detailedReview.sections.map((section) =>
         section.questions.map((question) => (
           <S.ReviewContentContainer key={question.questionId}>
