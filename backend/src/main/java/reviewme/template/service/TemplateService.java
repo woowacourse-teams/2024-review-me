@@ -8,7 +8,7 @@ import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.exception.DefaultTemplateNotFoundException;
-import reviewme.template.dto.response.TemplateResponse;
+import reviewme.template.service.dto.response.TemplateResponse;
 import reviewme.template.repository.TemplateRepository;
 
 @Service

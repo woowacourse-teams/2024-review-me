@@ -12,8 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.dto.ReviewGroupCreationRequest;
-import reviewme.reviewgroup.dto.ReviewGroupCreationResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
+import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
 

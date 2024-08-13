@@ -11,8 +11,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
-import reviewme.reviewgroup.dto.ReviewGroupCreationRequest;
-import reviewme.reviewgroup.dto.ReviewGroupCreationResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
+import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 
 @Tag(name = "리뷰 그룹 관리")
 public interface ReviewGroupApi {

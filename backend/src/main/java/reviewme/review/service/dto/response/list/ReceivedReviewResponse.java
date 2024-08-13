@@ -1,4 +1,4 @@
-package reviewme.review.dto.response;
+package reviewme.review.service.dto.response.list;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;

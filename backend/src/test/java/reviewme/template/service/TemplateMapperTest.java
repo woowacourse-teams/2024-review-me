@@ -23,9 +23,9 @@ import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.VisibleType;
 import reviewme.template.domain.exception.SectionNotFoundException;
-import reviewme.template.dto.response.QuestionResponse;
-import reviewme.template.dto.response.SectionResponse;
-import reviewme.template.dto.response.TemplateResponse;
+import reviewme.template.service.dto.response.QuestionResponse;
+import reviewme.template.service.dto.response.SectionResponse;
+import reviewme.template.service.dto.response.TemplateResponse;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 

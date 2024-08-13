@@ -15,11 +15,11 @@ import reviewme.template.domain.Section;
 import reviewme.template.domain.SectionQuestion;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.TemplateSection;
-import reviewme.template.dto.response.OptionGroupResponse;
-import reviewme.template.dto.response.OptionItemResponse;
-import reviewme.template.dto.response.QuestionResponse;
-import reviewme.template.dto.response.SectionResponse;
-import reviewme.template.dto.response.TemplateResponse;
+import reviewme.template.service.dto.response.OptionGroupResponse;
+import reviewme.template.service.dto.response.OptionItemResponse;
+import reviewme.template.service.dto.response.QuestionResponse;
+import reviewme.template.service.dto.response.SectionResponse;
+import reviewme.template.service.dto.response.TemplateResponse;
 import reviewme.template.repository.SectionRepository;
 
 @Component

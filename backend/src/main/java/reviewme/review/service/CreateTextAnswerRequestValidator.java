@@ -3,7 +3,7 @@ package reviewme.review.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question;
-import reviewme.review.dto.request.CreateReviewAnswerRequest;
+import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
 import reviewme.review.service.exception.TextAnswerInculdedOptionException;

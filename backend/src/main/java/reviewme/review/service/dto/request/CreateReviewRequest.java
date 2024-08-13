@@ -1,4 +1,4 @@
-package reviewme.review.dto.request;
+package reviewme.review.service.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
