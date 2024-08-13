@@ -25,7 +25,7 @@ const useMultipleChoice = ({ question, updateAnswerMap }: UseMultipleChoiceProps
     // 유효한 선택(=객관식 문항의 최소,최대 개수를 지켰을 경우)인지에 따라 answer 변경
     updateAnswerMap({
       questionId: question.questionId,
-      selectedOptionIds: isValidatedChoice(newSelectedOptionList) ? newSelectedOptionList : null,
+      selectedOptionIds: isValidatedChoice(newSelectedOptionList) ? newSelectedOptionList : [],
       text: null,
     });
   };
