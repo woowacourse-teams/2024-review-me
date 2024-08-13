@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.Question2;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.domain.exception.QuestionNotFoundException;
-import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
+import reviewme.review.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
 import reviewme.review.service.exception.TextAnswerInculdedOptionException;

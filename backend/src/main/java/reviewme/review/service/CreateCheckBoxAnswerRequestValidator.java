@@ -9,7 +9,7 @@ import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question2;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
+import reviewme.review.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.repository.QuestionRepository2;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
