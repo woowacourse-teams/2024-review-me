@@ -42,11 +42,13 @@ const NextButton = ({ isAbleNextStep, handleCurrentCardIndex }: NextButtonProps)
 };
 
 interface SubmitButtonProps {
+  isAbleNextStep: boolean;
   handleSubmitButtonClick: () => void;
 }
-const SubmitButton = ({ handleSubmitButtonClick }: SubmitButtonProps) => {
+const SubmitButton = ({ isAbleNextStep, handleSubmitButtonClick }: SubmitButtonProps) => {
+  const styledType: ButtonStyleType = isAbleNextStep ? 'primary' : 'disabled';
   return (
-    <Button styleType="primary" type={'submit'} onClick={handleSubmitButtonClick}>
+    <Button disabled={!isAbleNextStep} styleType={styledType} type={'submit'} onClick={handleSubmitButtonClick}>
       제출
     </Button>
   );
