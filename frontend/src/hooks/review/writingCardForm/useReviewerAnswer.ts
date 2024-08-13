@@ -23,10 +23,14 @@ const useReviewerAnswer = ({ currentCardIndex, questionList, updatedSelectedCate
           selectedOptionIds: question.questionType === 'CHECKBOX' ? (answer?.selectedOptionIds ?? []) : null,
           text: question.questionType === 'TEXT' ? (answer?.text ?? '') : null,
         });
-        newAnswerValidationMap.set(question.questionId, !question.required);
+        newAnswerValidationMap.set(
+          question.questionId,
+          answerValidationMap?.get(question.questionId) ?? !question.required,
+        );
       });
     });
     setAnswerMap(newAnswerMap);
+    SetAnswerValidationMap(newAnswerValidationMap);
   }, [questionList]);
 
   const [isAbleNextStep, setIsAbleNextStep] = useState(false);
@@ -57,7 +61,7 @@ const useReviewerAnswer = ({ currentCardIndex, questionList, updatedSelectedCate
       const { questionId, required } = question;
       const answerValidation = answerValidationMap?.get(questionId);
 
-      if (!required) return true;
+      if (!required && answerValidation) return true;
       return !!answerValidation;
     });
   };
