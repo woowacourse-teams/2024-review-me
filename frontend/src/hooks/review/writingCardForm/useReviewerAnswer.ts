@@ -11,6 +11,24 @@ interface UseReviewerAnswerProps {
 const useReviewerAnswer = ({ currentCardIndex, questionList, updatedSelectedCategory }: UseReviewerAnswerProps) => {
   const [answerMap, setAnswerMap] = useState<Map<number, ReviewWritingAnswer>>();
   const [answerValidationMap, SetAnswerValidationMap] = useState<Map<number, boolean>>();
+
+  useEffect(() => {
+    const newAnswerMap: Map<number, ReviewWritingAnswer> = new Map();
+    const newAnswerValidationMap: Map<number, boolean> = new Map();
+    questionList?.forEach((section) => {
+      section.questions.forEach((question) => {
+        const answer = answerMap?.get(question.questionId);
+        newAnswerMap.set(question.questionId, {
+          questionId: question.questionId,
+          selectedOptionIds: question.questionType === 'CHECKBOX' ? (answer?.selectedOptionIds ?? []) : null,
+          text: question.questionType === 'TEXT' ? (answer?.text ?? '') : null,
+        });
+        newAnswerValidationMap.set(question.questionId, !question.required);
+      });
+    });
+    setAnswerMap(newAnswerMap);
+  }, [questionList]);
+
   const [isAbleNextStep, setIsAbleNextStep] = useState(false);
 
   const isCategoryAnswer = (answer: ReviewWritingAnswer) =>
@@ -38,9 +56,8 @@ const useReviewerAnswer = ({ currentCardIndex, questionList, updatedSelectedCate
     return questionList[currentCardIndex].questions.every((question) => {
       const { questionId, required } = question;
       const answerValidation = answerValidationMap?.get(questionId);
-      const answer = answerMap?.get(questionId);
 
-      if (!required && !answer) return true;
+      if (!required) return true;
       return !!answerValidation;
     });
   };
