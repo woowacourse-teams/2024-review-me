@@ -40,6 +40,7 @@ const QnABox = ({ question, updateAnswerMap, updateAnswerValidationMap }: QnABox
       <S.QuestionTitle>
         {question.content}
         {question.required && <S.QuestionRequiredMark>*</S.QuestionRequiredMark>}
+        {question.questionType === 'TEXT' && ` (최소 ${TEXT_ANSWER_LENGTH.min}자 이상)`}
         <S.MultipleGuideline>{multipleGuideline ?? ''}</S.MultipleGuideline>
       </S.QuestionTitle>
       {question.guideline && <S.QuestionGuideline>{question.guideline}</S.QuestionGuideline>}
