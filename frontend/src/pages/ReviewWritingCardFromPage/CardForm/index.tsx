@@ -39,7 +39,7 @@ const CardForm = () => {
 
   const { questionList, updatedSelectedCategory } = useQuestionList({ questionListSectionsData: data.sections });
 
-  const { answerMap, isAbleNextStep, updateAnswerMap } = useReviewerAnswer({
+  const { answerMap, isAbleNextStep, updateAnswerMap, updateAnswerValidationMap } = useReviewerAnswer({
     currentCardIndex,
     questionList,
     updatedSelectedCategory,
@@ -96,6 +96,7 @@ const CardForm = () => {
                 isLastCard={questionList.length - INDEX_OFFSET === currentCardIndex}
                 handleCurrentCardIndex={handleCurrentCardIndex}
                 updateAnswerMap={updateAnswerMap}
+                updateAnswerValidationMap={updateAnswerValidationMap}
                 handleRecheckButtonClick={handleRecheckButtonClick}
                 handleSubmitButtonClick={handleSubmitButtonClick}
               />

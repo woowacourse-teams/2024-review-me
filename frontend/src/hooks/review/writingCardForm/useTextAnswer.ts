@@ -10,8 +10,9 @@ const TEXT_ANSWER_LENGTH = {
 interface UseTextAnswerProps {
   question: ReviewWritingCardQuestion;
   updateAnswerMap: (answer: ReviewWritingAnswer) => void;
+  updateAnswerValidationMap: (answer: ReviewWritingAnswer, isValidatedAnswer: boolean) => void;
 }
-const useTextAnswer = ({ question, updateAnswerMap }: UseTextAnswerProps) => {
+const useTextAnswer = ({ question, updateAnswerMap, updateAnswerValidationMap }: UseTextAnswerProps) => {
   const [textAnswer, setTextAnswer] = useState('');
 
   // NOTE: change 시 마다 상태 변경되어서, 디바운스를 적용할 지 고민...
@@ -20,12 +21,15 @@ const useTextAnswer = ({ question, updateAnswerMap }: UseTextAnswerProps) => {
     const { value } = event.target;
     const { min, max } = TEXT_ANSWER_LENGTH;
     const isValidatedText = value.length >= min && value.length <= max;
-    // TODO: XSS 방어 되는 지 확인해봐야함
-    if (isValidatedText) {
-      setTextAnswer(value);
-    }
-    // 유효한 답변인지 여부에 따라 답변 변경
-    updateAnswerMap({ questionId: question.questionId, selectedOptionIds: null, text: isValidatedText ? value : null });
+    setTextAnswer(value);
+    const isNotRequiredEmptyAnswer = !question.required && value === '';
+    const newAnswer: ReviewWritingAnswer = {
+      questionId: question.questionId,
+      selectedOptionIds: null,
+      text: isValidatedText ? value : '',
+    };
+    updateAnswerMap(newAnswer);
+    updateAnswerValidationMap(newAnswer, isValidatedText || isNotRequiredEmptyAnswer);
   };
 
   return {
