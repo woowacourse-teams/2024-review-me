@@ -1,0 +1,98 @@
+name: CD using Github self-hosted runner
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+    paths:
+      - 'backend/**'
+
+env:
+  ARTIFACT_NAME: review-me-dev
+  ARTIFACT_DIRECTORY: ./backend/build/libs
+  APPLICATION_DIRECTORY: ~/review-me-app
+
+jobs:
+  build:
+    name: Build Jar file and upload artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to current repository
+        uses: actions/checkout@v4
+
+      - name: Setup JDK Corretto using cached gradle dependencies
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.8
+
+      - name: Build and test with gradle
+        run: |
+          cd ./backend
+          ./gradlew clean bootJar
+
+      - name: Rename artifact file
+        run: |
+          mv ${{ env.ARTIFACT_DIRECTORY }}/*.jar ${{ env.ARTIFACT_DIRECTORY }}/${{ env.ARTIFACT_NAME }}.jar
+
+      - name: Upload created artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_DIRECTORY }}/${{ env.ARTIFACT_NAME }}.jar
+
+  deploy:
+    name: Deploy via self-hosted runner
+    needs: build
+    runs-on: [self-hosted, dev]
+
+    steps:
+      - name: Checkout to secret repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.PRIVATE_REPOSITORY_URL }}
+          token: ${{ secrets.PRIVATE_REPOSITORY_TOKEN }}
+
+      - name: Download uploaded artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+
+      - name: Copy application related files to other directory
+        run: |
+          sudo mv * ${{ env.APPLICATION_DIRECTORY }}
+
+      - name: Find ${{ env.ARTIFACT_NAME }} process
+        run: |
+          echo "Checking processes..."
+          PID=$(pgrep -f ${{ env.ARTIFACT_NAME }}.jar -d " " || true)
+          if [ -n "$PID" ]; then
+            echo "Found processes: $PID"
+            echo "server_running=true" >> "$GITHUB_ENV"
+            echo "PID=$PID" >> "$GITHUB_ENV"
+          else
+            echo "Process not found!"
+            echo "server_running=false" >> "$GITHUB_ENV"
+          fi
+
+      - name: Stop server if available (gracefully)
+        if: env.server_running == 'true'
+        run: |
+          echo "Gracefully shutting down process ${{ env.PID }}"
+          for PID in ${{ env.PID }}; do
+            sudo kill -15 $PID | true
+            tail --pid=$PID -f /dev/null | true
+          done
+
+      - name: Start server
+        run: |
+          cd ${{ env.APPLICATION_DIRECTORY }}
+          sudo nohup java -jar ${{ env.ARTIFACT_NAME }}.jar --server.port=80 --spring.config.location=application-dev.yml &

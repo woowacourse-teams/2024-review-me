@@ -5,12 +5,11 @@ on:
   push:
     branches:
       - main
-      - develop
     paths:
       - 'backend/**'
 
 env:
-  ARTIFACT_NAME: review-me-dev
+  ARTIFACT_NAME: review-me-prod
   ARTIFACT_DIRECTORY: ./backend/build/libs
   APPLICATION_DIRECTORY: ~/review-me-app
 
@@ -53,7 +52,7 @@ jobs:
   deploy:
     name: Deploy via self-hosted runner
     needs: build
-    runs-on: self-hosted
+    runs-on: [self-hosted, prod]
 
     steps:
       - name: Checkout to secret repository
