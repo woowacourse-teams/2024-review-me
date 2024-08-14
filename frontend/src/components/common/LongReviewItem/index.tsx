@@ -41,7 +41,7 @@ const LongReviewItem = ({
         $style={style}
         onChange={handleWriteTextarea}
         onBlur={handleBlur}
-        placeholder={`최대 ${maxLength}자까지 입력 가능해요.`}
+        placeholder={`최소 ${minLength}자 이상, 최대 ${maxLength}자까지 입력 가능해요.`}
         {...rest}
       />
       <S.TextareaInfoContainer>
