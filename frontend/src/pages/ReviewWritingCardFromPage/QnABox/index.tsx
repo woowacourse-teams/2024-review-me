@@ -28,7 +28,9 @@ const QnABox = ({ question, updateAnswerMap, updateAnswerValidationMap }: QnABox
     if (!optionGroup) return;
 
     const { minCount, maxCount } = optionGroup;
-    if (!maxCount) return `(최소 ${minCount}개 이상)`;
+
+    const isAllSelectAvailable = maxCount === optionGroup.options.length;
+    if (!maxCount || isAllSelectAvailable) return `(최소 ${minCount}개 이상)`;
 
     return `(${minCount}개 ~ ${maxCount}개)`;
   })();
@@ -38,6 +40,7 @@ const QnABox = ({ question, updateAnswerMap, updateAnswerValidationMap }: QnABox
       <S.QuestionTitle>
         {question.content}
         {question.required && <S.QuestionRequiredMark>*</S.QuestionRequiredMark>}
+        {question.questionType === 'TEXT' && ` (최소 ${TEXT_ANSWER_LENGTH.min}자 이상)`}
         <S.MultipleGuideline>{multipleGuideline ?? ''}</S.MultipleGuideline>
       </S.QuestionTitle>
       {question.guideline && <S.QuestionGuideline>{question.guideline}</S.QuestionGuideline>}
@@ -67,6 +70,7 @@ const QnABox = ({ question, updateAnswerMap, updateAnswerValidationMap }: QnABox
           minLength={TEXT_ANSWER_LENGTH.min}
           maxLength={TEXT_ANSWER_LENGTH.max}
           handleTextareaChange={handleTextAnswerChange}
+          required={question.required}
         />
       )}
     </S.QnASection>

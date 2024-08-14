@@ -12,6 +12,7 @@ export const Logo = styled.div`
 `;
 
 export const LogoText = styled.div`
+  cursor: pointer;
   line-height: 8rem;
   text-align: center;
 

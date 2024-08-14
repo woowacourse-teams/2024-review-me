@@ -103,6 +103,7 @@ const reset = () => css`
 
   button {
     cursor: pointer;
+    user-select: none;
 
     box-sizing: border-box;
     margin: 0;

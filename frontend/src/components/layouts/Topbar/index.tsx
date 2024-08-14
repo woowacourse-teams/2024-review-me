@@ -14,7 +14,7 @@ const Topbar = ({ openSidebar }: TopbarProps) => {
   return (
     <S.Layout>
       <S.Container>
-        <SidebarOpenButton openSidebar={openSidebar} />
+        {/* <SidebarOpenButton openSidebar={openSidebar} /> */}
         <Logo />
       </S.Container>
       <S.Container>

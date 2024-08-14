@@ -1,4 +1,4 @@
-import React from 'react';
+import * as S from './styles';
 
 interface MultilineTextViewerProps {
   text: string;
@@ -8,10 +8,10 @@ const MultilineTextViewer = ({ text }: MultilineTextViewerProps) => {
   return (
     <>
       {text.split('\n').map((line, index) => (
-        <React.Fragment key={index}>
+        <S.MultilineText key={index}>
           {line}
           <br />
-        </React.Fragment>
+        </S.MultilineText>
       ))}
     </>
   );
