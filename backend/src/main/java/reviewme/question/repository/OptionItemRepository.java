@@ -36,7 +36,7 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
             ON c.checkbox_answer_id = ca.id
             WHERE ca.review_id = :reviewId
             AND ca.question_id = :questionId
-            ORDER BY o.position
+            ORDER BY o.position ASC
             """, nativeQuery = true)
     List<OptionItem> findSelectedOptionItemsByReviewIdAndQuestionId(long reviewId, long questionId);
 
