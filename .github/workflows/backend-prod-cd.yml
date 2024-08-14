@@ -95,4 +95,4 @@ jobs:
       - name: Start server
         run: |
           cd ${{ env.APPLICATION_DIRECTORY }}
-          sudo nohup java -jar ${{ env.ARTIFACT_NAME }}.jar --server.port=80 --spring.config.location=application-dev.yml &
+          sudo nohup java -jar ${{ env.ARTIFACT_NAME }}.jar --server.port=80 --spring.config.location=application-prod.yml &
