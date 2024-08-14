@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 
+import { MultilineTextViewer } from '@/components';
 import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
 
 import CheckboxItem from '../common/CheckboxItem';
@@ -54,7 +55,9 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
                           ))}
                         </div>
                       )}
-                      <div>{question.questionType === 'TEXT' && <div>{findTextAnswer(question.questionId)}</div>}</div>
+                      {question.questionType === 'TEXT' && (
+                        <MultilineTextViewer text={findTextAnswer(question.questionId) || ''} />
+                      )}
                     </S.ContentContainer>
                   </Fragment>
                 ))}
