@@ -30,7 +30,7 @@ describe('isWithinMaxLength', () => {
   const maxLength = 5;
   test('지정한 길이 이하의 입력인 경우 true를 반환한다.', () => {
     const inputWithLength5 = '12345';
-    expect(isWithinMaxLength(inputWithLength5, maxLength)).toBe(false);
+    expect(isWithinMaxLength(inputWithLength5, maxLength)).toBe(true);
   });
 
   test('지정한 길이를 초과하는 입력인 경우 false를 반환한다.', () => {
