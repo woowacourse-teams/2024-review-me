@@ -39,12 +39,15 @@ module.exports = (env, argv) => {
         },
       ],
     },
-    devtool: 'source-map',
+    devtool: 'hidden-source-map',
     plugins: [
       sentryWebpackPlugin({
         authToken: process.env.SENTRY_AUTH_TOKEN,
         org: 'review-me',
         project: 'woowacourse-review-me',
+        sourcemaps: {
+          filesToDeleteAfterUpload: '**/*.js.map',
+        },
       }),
       new HtmlWebpackPlugin({
         template: './public/index.html',
