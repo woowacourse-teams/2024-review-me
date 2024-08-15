@@ -9,8 +9,10 @@ import {
   useReviewerAnswer,
   useSearchParamAndQuery,
   useSlideWidthAndHeight,
+  useUpdateDefaultAnswers,
 } from '@/hooks';
 import useModals from '@/hooks/useModals';
+import { answerMapAtom } from '@/recoil';
 import { ReviewWritingFormResult } from '@/types';
 
 import ReviewWritingCard from '../ReviewWritingCard';
@@ -32,17 +34,19 @@ const CardForm = () => {
   const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
 
   const { wrapperRef, slideWidth, slideHeight, makeId } = useSlideWidthAndHeight({ currentCardIndex });
+  // 질문지 생성
   const { data } = useGetDataToWrite({ reviewRequestCode });
   const { revieweeName, projectName } = data;
   const { questionList } = useQuestionList({ questionListSectionsData: data.sections });
 
+  // 답변
+  // 생성된 질문지를 바탕으로 답변 기본값 및 답변의 유효성 기본값 설정
+  useUpdateDefaultAnswers();
+  const answerMap = useRecoilValue(answerMapAtom);
 
-  const { answerMap, isAbleNextStep, updateAnswerMap, updateAnswerValidationMap } = useReviewerAnswer({
-    currentCardIndex,
-    questionList,
-    updatedSelectedCategory,
-  });
+
   const { isOpen, openModal, closeModal } = useModals();
+
   const navigate = useNavigate();
 
   const executeAfterMutateSuccess = () => {
@@ -88,11 +92,8 @@ const CardForm = () => {
                 cardIndex={index}
                 currentCardIndex={currentCardIndex}
                 cardSection={section}
-                isAbleNextStep={isAbleNextStep}
                 isLastCard={questionList.length - INDEX_OFFSET === currentCardIndex}
                 handleCurrentCardIndex={handleCurrentCardIndex}
-                updateAnswerMap={updateAnswerMap}
-                updateAnswerValidationMap={updateAnswerValidationMap}
                 handleRecheckButtonClick={handleRecheckButtonClick}
                 handleSubmitButtonClick={handleSubmitButtonClick}
               />

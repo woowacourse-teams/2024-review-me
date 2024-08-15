@@ -1,16 +1,19 @@
 import { CheckboxItem, LongReviewItem } from '@/components';
-import { useMultipleChoice, useTextAnswer } from '@/hooks';
-import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
+import { useMultipleChoice, useTextAnswer, useUpdateReviewerAnswer } from '@/hooks';
+import { ReviewWritingCardQuestion } from '@/types';
 
 import * as S from './style';
 
 interface QnABoxProps {
   question: ReviewWritingCardQuestion;
-  updateAnswerMap: (answer: ReviewWritingAnswer) => void;
-  updateAnswerValidationMap: (answer: ReviewWritingAnswer, isValidatedAnswer: boolean) => void;
 }
+/**
+ * 하나의 질문과 그에 대한 답을 관리
+ */
 
-const QnABox = ({ question, updateAnswerMap, updateAnswerValidationMap }: QnABoxProps) => {
+const QnABox = ({ question }: QnABoxProps) => {
+  const { updateAnswerMap, updateAnswerValidationMap } = useUpdateReviewerAnswer();
+
   const { isOpenLimitGuide, multipleLGuideline, handleCheckboxChange, isSelectedCheckbox } = useMultipleChoice({
     question,
     updateAnswerMap,
