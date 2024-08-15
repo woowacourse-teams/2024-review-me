@@ -106,27 +106,27 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
             minCount: 1,
             maxCount: 3,
             options: [
-              { optionId: 6, content: '큰 문제를 작은 단위로 쪼개서 단계별로 해결해나가요.' },
-              { optionId: 7, content: '낯선 문제를 만나도 당황하지 않고 차분하게 풀어나가요.' },
-              { optionId: 8, content: '문제 해결을 위해 GPT등의 자원을 적극적으로 활용해요.' },
+              { optionId: 13, content: '큰 문제를 작은 단위로 쪼개서 단계별로 해결해나가요.' },
+              { optionId: 14, content: '낯선 문제를 만나도 당황하지 않고 차분하게 풀어나가요.' },
+              { optionId: 15, content: '문제 해결을 위해 GPT등의 자원을 적극적으로 활용해요.' },
               {
-                optionId: 9,
+                optionId: 16,
                 content: '문제를 해결한 뒤에도 재발 방지를 위한 노력을 기울여요. (예: 문서화, 테스트 케이스 추가 등)',
               },
               {
-                optionId: 10,
+                optionId: 17,
                 content: '문제의 원인을 적극적으로 탐구하고 해결해요. (예: 디버깅 툴의 적극적 활용 등)',
               },
               {
-                optionId: 11,
+                optionId: 18,
                 content: '어려운 문제를 만나도 피하지 않고 도전해요.',
               },
               {
-                optionId: 12,
+                optionId: 19,
                 content:
                   '문제를 해결하기 위해 타인과 의사소통을 할 수 있어요. (예: 팀원과 이슈 공유, 문제 상황 설명 등)',
               },
-              { optionId: 13, content: '문제 원인과 해결책에 대한 가설을 세우고 직접 실험해봐요.' },
+              { optionId: 20, content: '문제 원인과 해결책에 대한 가설을 세우고 직접 실험해봐요.' },
             ],
           },
         },
@@ -159,27 +159,27 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
             minCount: 1,
             maxCount: 3,
             options: [
-              { optionId: 6, content: '큰 문제를 작은 단위로 쪼개서 단계별로 해결해나가요.' },
-              { optionId: 7, content: '낯선 문제를 만나도 당황하지 않고 차분하게 풀어나가요.' },
+              { optionId: 21, content: '큰 문제를 작은 단위로 쪼개서 단계별로 해결해나가요.' },
+              { optionId: 22, content: '낯선 문제를 만나도 당황하지 않고 차분하게 풀어나가요.' },
               { optionId: 8, content: '문제 해결을 위해 GPT등의 자원을 적극적으로 활용해요.' },
               {
-                optionId: 9,
+                optionId: 23,
                 content: '문제를 해결한 뒤에도 재발 방지를 위한 노력을 기울여요. (예: 문서화, 테스트 케이스 추가 등)',
               },
               {
-                optionId: 10,
+                optionId: 24,
                 content: '문제의 원인을 적극적으로 탐구하고 해결해요. (예: 디버깅 툴의 적극적 활용 등)',
               },
               {
-                optionId: 11,
+                optionId: 25,
                 content: '어려운 문제를 만나도 피하지 않고 도전해요.',
               },
               {
-                optionId: 12,
+                optionId: 26,
                 content:
                   '문제를 해결하기 위해 타인과 의사소통을 할 수 있어요. (예: 팀원과 이슈 공유, 문제 상황 설명 등)',
               },
-              { optionId: 13, content: '문제 원인과 해결책에 대한 가설을 세우고 직접 실험해봐요.' },
+              { optionId: 27, content: '문제 원인과 해결책에 대한 가설을 세우고 직접 실험해봐요.' },
             ],
           },
         },
@@ -212,27 +212,27 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
             minCount: 1,
             maxCount: 3,
             options: [
-              { optionId: 6, content: '큰 문제를 작은 단위로 쪼개서 단계별로 해결해나가요.' },
-              { optionId: 7, content: '낯선 문제를 만나도 당황하지 않고 차분하게 풀어나가요.' },
-              { optionId: 8, content: '문제 해결을 위해 GPT등의 자원을 적극적으로 활용해요.' },
+              { optionId: 28, content: '큰 문제를 작은 단위로 쪼개서 단계별로 해결해나가요.' },
+              { optionId: 29, content: '낯선 문제를 만나도 당황하지 않고 차분하게 풀어나가요.' },
+              { optionId: 30, content: '문제 해결을 위해 GPT등의 자원을 적극적으로 활용해요.' },
               {
-                optionId: 9,
+                optionId: 31,
                 content: '문제를 해결한 뒤에도 재발 방지를 위한 노력을 기울여요. (예: 문서화, 테스트 케이스 추가 등)',
               },
               {
-                optionId: 10,
+                optionId: 32,
                 content: '문제의 원인을 적극적으로 탐구하고 해결해요. (예: 디버깅 툴의 적극적 활용 등)',
               },
               {
-                optionId: 11,
+                optionId: 33,
                 content: '어려운 문제를 만나도 피하지 않고 도전해요.',
               },
               {
-                optionId: 12,
+                optionId: 34,
                 content:
                   '문제를 해결하기 위해 타인과 의사소통을 할 수 있어요. (예: 팀원과 이슈 공유, 문제 상황 설명 등)',
               },
-              { optionId: 13, content: '문제 원인과 해결책에 대한 가설을 세우고 직접 실험해봐요.' },
+              { optionId: 35, content: '문제 원인과 해결책에 대한 가설을 세우고 직접 실험해봐요.' },
             ],
           },
         },
@@ -265,27 +265,27 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
             minCount: 1,
             maxCount: 3,
             options: [
-              { optionId: 6, content: '큰 문제를 작은 단위로 쪼개서 단계별로 해결해나가요.' },
-              { optionId: 7, content: '낯선 문제를 만나도 당황하지 않고 차분하게 풀어나가요.' },
-              { optionId: 8, content: '문제 해결을 위해 GPT등의 자원을 적극적으로 활용해요.' },
+              { optionId: 36, content: '큰 문제를 작은 단위로 쪼개서 단계별로 해결해나가요.' },
+              { optionId: 37, content: '낯선 문제를 만나도 당황하지 않고 차분하게 풀어나가요.' },
+              { optionId: 38, content: '문제 해결을 위해 GPT등의 자원을 적극적으로 활용해요.' },
               {
-                optionId: 9,
+                optionId: 39,
                 content: '문제를 해결한 뒤에도 재발 방지를 위한 노력을 기울여요. (예: 문서화, 테스트 케이스 추가 등)',
               },
               {
-                optionId: 10,
+                optionId: 40,
                 content: '문제의 원인을 적극적으로 탐구하고 해결해요. (예: 디버깅 툴의 적극적 활용 등)',
               },
               {
-                optionId: 11,
+                optionId: 41,
                 content: '어려운 문제를 만나도 피하지 않고 도전해요.',
               },
               {
-                optionId: 12,
+                optionId: 42,
                 content:
                   '문제를 해결하기 위해 타인과 의사소통을 할 수 있어요. (예: 팀원과 이슈 공유, 문제 상황 설명 등)',
               },
-              { optionId: 13, content: '문제 원인과 해결책에 대한 가설을 세우고 직접 실험해봐요.' },
+              { optionId: 43, content: '문제 원인과 해결책에 대한 가설을 세우고 직접 실험해봐요.' },
             ],
           },
         },
