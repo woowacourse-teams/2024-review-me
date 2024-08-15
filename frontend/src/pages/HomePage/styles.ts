@@ -2,7 +2,12 @@ import styled from '@emotion/styled';
 
 export const HomePage = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 7.7rem;
-  margin-top: 4rem;
+  height: 100vh;
+  width: 100vw;
+`;
+
+export const ReviewMeOverview = styled.section`
+  width: 65%;
+  height: 100%;
+  background-color: ${({ theme }) => theme.colors.lightPurple};
 `;

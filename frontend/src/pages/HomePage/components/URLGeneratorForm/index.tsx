@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import { DataForURL } from '@/apis/group';
 import { Button, Input } from '@/components';
-import { useGroupAccessCode } from '@/hooks';
 import useModals from '@/hooks/useModals';
 import { debounce } from '@/utils/debounce';
 
@@ -25,13 +24,14 @@ const MODAL_KEYS = {
 const URLGeneratorForm = () => {
   const [revieweeName, setRevieweeName] = useState('');
   const [projectName, setProjectName] = useState('');
-  const [reviewRequestCode, setReviewRequestCode] = useState('');
+  const [password, setPassword] = useState('');
+  const [reviewURL, setReviewURL] = useState('');
 
   const [revieweeNameErrorMessage, setRevieweeNameErrorMessage] = useState('');
   const [projectNameErrorMessage, setProjectNameErrorMessage] = useState('');
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
   const mutation = usePostDataForURL();
-  const { updateGroupAccessCode } = useGroupAccessCode();
   const { isOpen, openModal, closeModal } = useModals();
 
   const isFormValid = isValidReviewGroupDataInput(revieweeName) && isValidReviewGroupDataInput(projectName);
@@ -42,9 +42,7 @@ const URLGeneratorForm = () => {
     mutation.mutate(dataForURL, {
       onSuccess: (data) => {
         const completeURL = getCompleteURL(data.reviewRequestCode);
-
-        setReviewRequestCode(completeURL);
-        updateGroupAccessCode(data.groupAccessCode);
+        setReviewURL(completeURL);
 
         resetInputs();
       },
@@ -68,6 +66,10 @@ const URLGeneratorForm = () => {
     setProjectName(event.target.value);
   };
 
+  const handlePasswordInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
   const handleUrlCreationButtonClick = debounce((event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     postDataForURL();
@@ -87,32 +89,48 @@ const URLGeneratorForm = () => {
   }, [projectName]);
 
   return (
-    <FormLayout title="함께한 팀원으로부터 리뷰를 받아보세요!" direction="column">
-      <S.InputContainer>
-        <Input value={revieweeName} onChange={handleNameInputChange} type="text" placeholder="이름을 입력해주세요" />
-        <S.ErrorMessage>{revieweeNameErrorMessage}</S.ErrorMessage>
-      </S.InputContainer>
-      <S.InputContainer>
-        <Input
-          value={projectName}
-          onChange={handleProjectNameInputChange}
-          type="text"
-          placeholder="함께한 프로젝트 이름을 입력해주세요"
-        />
-        <S.ErrorMessage>{projectNameErrorMessage}</S.ErrorMessage>
-      </S.InputContainer>
-      <Button
-        type="button"
-        styleType={isFormValid ? 'primary' : 'disabled'}
-        onClick={handleUrlCreationButtonClick}
-        disabled={!isFormValid}
-      >
-        리뷰 요청 URL 생성하기
-      </Button>
-      {isOpen(MODAL_KEYS.confirm) && (
-        <ReviewGroupDataModal reviewRequestCode={reviewRequestCode} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
-      )}
-    </FormLayout>
+    <S.URLGeneratorForm>
+      <FormLayout title="함께한 팀원에게 리뷰를 받아보세요!" direction="column">
+        <S.InputContainer>
+          <S.Label htmlFor="reviewee-name">리뷰 받을 사람의 이름을 적어주세요</S.Label>
+          <Input
+            id="reviewee-name"
+            value={revieweeName}
+            onChange={handleNameInputChange}
+            type="text"
+            placeholder="행성이"
+          />
+          <S.ErrorMessage>{revieweeNameErrorMessage}</S.ErrorMessage>
+        </S.InputContainer>
+        <S.InputContainer>
+          <S.Label htmlFor="project-name">함께한 프로젝트 이름을 입력해주세요</S.Label>
+          <Input
+            id="project-name"
+            value={projectName}
+            onChange={handleProjectNameInputChange}
+            type="text"
+            placeholder="review-me"
+          />
+          <S.ErrorMessage>{projectNameErrorMessage}</S.ErrorMessage>
+        </S.InputContainer>
+        <S.InputContainer>
+          <S.Label htmlFor="password">리뷰 확인을 위한 비밀번호를 적어주세요</S.Label>
+          <Input id="password" value={password} onChange={handlePasswordInputChange} type="text" placeholder="abc123" />
+          <S.ErrorMessage>{projectNameErrorMessage}</S.ErrorMessage>
+        </S.InputContainer>
+        <Button
+          type="button"
+          styleType={isFormValid ? 'primary' : 'disabled'}
+          onClick={handleUrlCreationButtonClick}
+          disabled={!isFormValid}
+        >
+          리뷰 요청 URL 생성하기
+        </Button>
+        {isOpen(MODAL_KEYS.confirm) && (
+          <ReviewGroupDataModal reviewURL={reviewURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
+        )}
+      </FormLayout>
+    </S.URLGeneratorForm>
   );
 };
 
