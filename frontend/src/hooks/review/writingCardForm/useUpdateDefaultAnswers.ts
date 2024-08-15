@@ -4,6 +4,10 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { answerMapAtom, answerValidationMapAtom, questionListSelector } from '@/recoil';
 import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
 
+const DEFAULT_VALUE = {
+  checkbox: [],
+  text: '',
+};
 /**
  * questionListSelector(=리뷰 작성 페이지에서 리뷰이가 작성해야하는 질문지)가 변경되었을때, 이에 맞추어서 답변(answerMap)과 답변들의 유효성 여부(answerValidationMap)을 변경하는 훅
  */
@@ -67,8 +71,8 @@ const useUpdateDefaultAnswers = () => {
   const setInitialAnswerMap = ({ newAnswerMap, question }: UpdateAnswerMapParams) => {
     newAnswerMap.set(question.questionId, {
       questionId: question.questionId,
-      selectedOptionIds: question.questionType === 'CHECKBOX' ? [] : null,
-      text: question.questionType === 'TEXT' ? '' : null,
+      selectedOptionIds: question.questionType === 'CHECKBOX' ? DEFAULT_VALUE.checkbox : null,
+      text: question.questionType === 'TEXT' ? DEFAULT_VALUE.text : null,
     });
   };
   interface ReflectExistingAnswerInMapsParams extends UpdateAnswerMapParams {
@@ -82,7 +86,7 @@ const useUpdateDefaultAnswers = () => {
     if (question.questionType === 'CHECKBOX') {
       newAnswerMap.set(question.questionId, {
         questionId: question.questionId,
-        selectedOptionIds: answer.selectedOptionIds ?? [],
+        selectedOptionIds: answer.selectedOptionIds ?? DEFAULT_VALUE.checkbox,
         text: null,
       });
     }
@@ -91,7 +95,7 @@ const useUpdateDefaultAnswers = () => {
       newAnswerMap.set(question.questionId, {
         questionId: question.questionId,
         selectedOptionIds: null,
-        text: answer.text ?? '',
+        text: answer.text ?? DEFAULT_VALUE.text,
       });
     }
   };
