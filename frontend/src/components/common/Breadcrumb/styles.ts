@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
 
 export const BreadcrumbList = styled.ul`
-  display: flex;
-  list-style: none;
-
   position: absolute;
-  left: 2.5rem;
   top: 8rem;
+  left: 2.5rem;
+
+  display: flex;
+
+  list-style: none;
 `;
 
 export const BreadcrumbItem = styled.li`

@@ -3,13 +3,12 @@ import styled from '@emotion/styled';
 export const AnswerListContainer = styled.div``;
 
 export const CardLayout = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  gap: 1.2rem;
   position: relative;
 
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 
   width: ${({ theme }) => theme.formWidth};
 `;
