@@ -1,9 +1,13 @@
 import { CheckboxItem, LongReviewItem } from '@/components';
 import { useMultipleChoice, useTextAnswer, useUpdateReviewerAnswer } from '@/hooks';
+import useModals from '@/hooks/useModals';
 import { ReviewWritingCardQuestion } from '@/types';
 
 import * as S from './style';
 
+const MODAL_KEY = {
+  confirm: 'CONFIRM',
+};
 interface QnABoxProps {
   question: ReviewWritingCardQuestion;
 }
@@ -13,6 +17,7 @@ interface QnABoxProps {
 
 const QnABox = ({ question }: QnABoxProps) => {
   const { updateAnswerMap, updateAnswerValidationMap } = useUpdateReviewerAnswer();
+  const { isOpen, openModal, closeModal } = useModals();
 
   const handleModalOpen = (isOpen: boolean) => {
     isOpen ? openModal(MODAL_KEY.confirm) : closeModal(MODAL_KEY.confirm);
@@ -30,7 +35,14 @@ const QnABox = ({ question }: QnABoxProps) => {
     updateAnswerValidationMap,
   });
 
+  const handleModalCancelButtonClick = () => {
+    closeModal(MODAL_KEY.confirm);
+  };
 
+  const handleModalConfirmButtonClick = () => {
+    unCheckTargetOption();
+    closeModal(MODAL_KEY.confirm);
+  };
 
   return (
     <S.QnASection>
@@ -68,6 +80,12 @@ const QnABox = ({ question }: QnABoxProps) => {
           handleTextareaChange={handleTextAnswerChange}
           required={question.required}
         />
+      )}
+      {isOpen(MODAL_KEY.confirm) && (
+        <div>
+          <button onClick={handleModalConfirmButtonClick}>확인</button>
+          <button onClick={handleModalCancelButtonClick}>취소</button>
+        </div>
       )}
     </S.QnASection>
   );
