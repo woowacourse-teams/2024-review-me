@@ -39,8 +39,7 @@ const QnABox = ({ question, updateAnswerMap, updateAnswerValidationMap }: QnABox
     <S.QnASection>
       <S.QuestionTitle>
         {question.content}
-        {question.required && <S.QuestionRequiredMark>*</S.QuestionRequiredMark>}
-        {question.questionType === 'TEXT' && ` (최소 ${TEXT_ANSWER_LENGTH.min}자 이상)`}
+        {question.required ? <S.QuestionRequiredMark>*</S.QuestionRequiredMark> : <span> (선택) </span>}
         <S.MultipleGuideline>{multipleGuideline ?? ''}</S.MultipleGuideline>
       </S.QuestionTitle>
       {question.guideline && <S.QuestionGuideline>{question.guideline}</S.QuestionGuideline>}
