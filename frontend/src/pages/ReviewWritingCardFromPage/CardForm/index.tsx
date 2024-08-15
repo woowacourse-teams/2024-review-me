@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-import { ConfirmModal, ProjectImg, AnswerListRecheckModal } from '@/components';
+import { ConfirmModal, AnswerListRecheckModal } from '@/components';
 import {
   useCurrentCardIndex,
   useGetDataToWrite,
@@ -18,7 +18,7 @@ import ReviewWritingCard from '../ReviewWritingCard';
 
 import * as S from './styles';
 
-const PROJECT_IMAGE_SIZE = '5rem';
+// const PROJECT_IMAGE_SIZE = '5rem';
 const INDEX_OFFSET = 1;
 const MODAL_KEYS = {
   confirm: 'CONFIRM',
@@ -77,7 +77,7 @@ const CardForm = () => {
     <>
       <S.CardForm>
         <S.RevieweeDescription>
-          <ProjectImg projectName={projectName} $size={PROJECT_IMAGE_SIZE} />
+          {/* 현재 프로젝트가 깃헙 연동이 아니라서 주석 처리 <ProjectImg projectName={projectName} $size={PROJECT_IMAGE_SIZE} /> */}
           <S.ProjectInfoContainer>
             <S.ProjectName>{projectName}</S.ProjectName>
             <p>
