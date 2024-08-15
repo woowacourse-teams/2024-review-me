@@ -12,16 +12,10 @@ export const isWithinLengthRange = (input: string, end: number, start: number = 
   return length >= start && length <= end;
 };
 
-const MAX_VALID_REVIEW_GROUP_DATA_INPUT = 50;
+export const MAX_VALID_REVIEW_GROUP_DATA_INPUT = 50;
 
 export const isValidReviewGroupDataInput = (input: string) => {
   return isNotEmptyInput(input) && isWithinLengthRange(input, MAX_VALID_REVIEW_GROUP_DATA_INPUT);
-};
-
-const MAX_GROUP_ACCESS_CODE_INPUT = 62;
-
-export const isValidAccessCodeInput = (input: string) => {
-  return isNotEmptyInput(input) && isAlphanumeric(input) && isWithinLengthRange(input, MAX_GROUP_ACCESS_CODE_INPUT);
 };
 
 export const MIN_PASSWORD_INPUT = 4;
@@ -31,6 +25,6 @@ export const isValidPasswordInput = (input: string) => {
   return (
     isNotEmptyInput(input) &&
     isAlphanumeric(input) &&
-    isWithinLengthRange(input, MAX_GROUP_ACCESS_CODE_INPUT, MIN_PASSWORD_INPUT)
+    isWithinLengthRange(input, MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT)
   );
 };

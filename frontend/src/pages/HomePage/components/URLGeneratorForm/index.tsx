@@ -6,16 +6,25 @@ import useModals from '@/hooks/useModals';
 import { debounce } from '@/utils/debounce';
 
 import usePostDataForURL from '../../queries/usePostDataForURL';
-import { isValidReviewGroupDataInput, isWithinMaxLength } from '../../utils/validateInput';
+import {
+  isValidReviewGroupDataInput,
+  isWithinLengthRange,
+  isAlphanumeric,
+  MAX_PASSWORD_INPUT,
+  MAX_VALID_REVIEW_GROUP_DATA_INPUT,
+  MIN_PASSWORD_INPUT,
+  isValidPasswordInput,
+} from '../../utils/validateInput';
 import { FormLayout, ReviewGroupDataModal } from '../index';
 
 import * as S from './styles';
 
 // TODO: 디바운스 시간을 모든 경우에 0.3초로 고정할 것인지(전역 상수로 사용) 논의하기
 const DEBOUNCE_TIME = 300;
-const MAX_VALID_REVIEW_GROUP_DATA_INPUT = 50;
 
-const LENGTH_ERROR_MESSAGE = `${MAX_VALID_REVIEW_GROUP_DATA_INPUT}자까지 입력할 수 있습니다.`;
+const INVALID_CHAR_ERROR_MESSAGE = `영문(대/소문자) 및 숫자만 입력할 수 있습니다`;
+const GROUP_DATA_LENGTH_ERROR_MESSAGE = `최대 ${MAX_VALID_REVIEW_GROUP_DATA_INPUT}자까지 입력할 수 있습니다.`;
+const PASSWORD_LENGTH_ERROR_MESSAGE = `${MIN_PASSWORD_INPUT}자부터 ${MAX_PASSWORD_INPUT}자까지 입력할 수 있습니다.`;
 
 const MODAL_KEYS = {
   confirm: 'CONFIRM',
@@ -34,7 +43,10 @@ const URLGeneratorForm = () => {
   const mutation = usePostDataForURL();
   const { isOpen, openModal, closeModal } = useModals();
 
-  const isFormValid = isValidReviewGroupDataInput(revieweeName) && isValidReviewGroupDataInput(projectName);
+  const isFormValid =
+    isValidReviewGroupDataInput(revieweeName) &&
+    isValidReviewGroupDataInput(projectName) &&
+    isValidPasswordInput(password);
 
   const postDataForURL = () => {
     const dataForURL: DataForURL = { revieweeName, projectName };
@@ -77,16 +89,32 @@ const URLGeneratorForm = () => {
   }, DEBOUNCE_TIME);
 
   useEffect(() => {
-    isWithinMaxLength(revieweeName, MAX_VALID_REVIEW_GROUP_DATA_INPUT)
+    isWithinLengthRange(revieweeName, MAX_VALID_REVIEW_GROUP_DATA_INPUT)
       ? setRevieweeNameErrorMessage('')
-      : setRevieweeNameErrorMessage(LENGTH_ERROR_MESSAGE);
+      : setRevieweeNameErrorMessage(GROUP_DATA_LENGTH_ERROR_MESSAGE);
   }, [revieweeName]);
 
   useEffect(() => {
-    isWithinMaxLength(projectName, MAX_VALID_REVIEW_GROUP_DATA_INPUT)
+    isWithinLengthRange(projectName, MAX_VALID_REVIEW_GROUP_DATA_INPUT)
       ? setProjectNameErrorMessage('')
-      : setProjectNameErrorMessage(LENGTH_ERROR_MESSAGE);
-  }, [projectName]);
+      : setProjectNameErrorMessage(GROUP_DATA_LENGTH_ERROR_MESSAGE);
+  }, [revieweeName]);
+
+  useEffect(() => {
+    // NOTE: URL 요청 버튼 활성화 조건에서는 최소 4자 조건도 체크하지만,
+    // 여기서(비밀번호 에러 메세지 설정)는 min 값을 검사하지 않음
+    // 현재 onFocus 등의 처리가 없어 항상 에러 메세지가 뜨기 때문
+    // 추후 textarea처럼 onfocus, onblur에 대한 훅 사용 예정
+    if (!isWithinLengthRange(password, MAX_PASSWORD_INPUT)) {
+      setPasswordErrorMessage(PASSWORD_LENGTH_ERROR_MESSAGE);
+      return;
+    }
+    if (!isAlphanumeric(password)) {
+      setPasswordErrorMessage(INVALID_CHAR_ERROR_MESSAGE);
+      return;
+    }
+    setPasswordErrorMessage('');
+  }, [password]);
 
   return (
     <S.URLGeneratorForm>
@@ -115,8 +143,15 @@ const URLGeneratorForm = () => {
         </S.InputContainer>
         <S.InputContainer>
           <S.Label htmlFor="password">리뷰 확인을 위한 비밀번호를 적어주세요</S.Label>
-          <Input id="password" value={password} onChange={handlePasswordInputChange} type="text" placeholder="abc123" />
-          <S.ErrorMessage>{projectNameErrorMessage}</S.ErrorMessage>
+          <S.InputInfo>{`${MIN_PASSWORD_INPUT}~${MAX_PASSWORD_INPUT}자의 영문(대/소문자),숫자만 사용가능해요`}</S.InputInfo>
+          <Input
+            id="password"
+            value={password}
+            onChange={handlePasswordInputChange}
+            type="password"
+            placeholder="abc123"
+          />
+          <S.ErrorMessage>{passwordErrorMessage}</S.ErrorMessage>
         </S.InputContainer>
         <Button
           type="button"
