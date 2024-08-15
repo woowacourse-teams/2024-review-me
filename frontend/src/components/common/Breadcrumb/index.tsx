@@ -1,8 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 
-import rightArrow from '../../../assets/rightArrow.svg';
-
 import * as S from './styles';
 
 interface Path {
@@ -20,10 +18,9 @@ const Breadcrumb = ({ paths }: BreadcrumbProps) => {
   return (
     <S.BreadcrumbList>
       {paths.map(({ pageName, path }, index) => (
-        <React.Fragment key={index}>
-          <S.BreadcrumbItem onClick={() => navigate(path)}>{pageName}</S.BreadcrumbItem>
-          {index < paths.length - 1 && <img src={rightArrow} alt="오른쪽 화살표" />}
-        </React.Fragment>
+        <S.BreadcrumbItem key={index} onClick={() => navigate(path)}>
+          {pageName}
+        </S.BreadcrumbItem>
       ))}
     </S.BreadcrumbList>
   );
