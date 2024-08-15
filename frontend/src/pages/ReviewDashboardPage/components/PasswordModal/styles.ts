@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 export const PasswordModal = styled.div`
   display: flex;
   flex-direction: column;
+
+  height: 14rem;
 `;
 
 export const ModalTitle = styled.h3`
