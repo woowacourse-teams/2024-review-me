@@ -9,7 +9,6 @@ interface UseCancelAnsweredCategoryProps {
 const useCancelAnsweredCategory = ({ question }: UseCancelAnsweredCategoryProps) => {
   const cardSectionList = useRecoilValue(cardSectionListSelector);
   const answerMap = useRecoilValue(answerMapAtom);
-
   const isCategoryQuestion = () => {
     return question.questionId === cardSectionList[0].questions[0].questionId;
   };
@@ -27,13 +26,19 @@ const useCancelAnsweredCategory = ({ question }: UseCancelAnsweredCategoryProps)
    */
   const isSelectedCategoryAnswer = (categoryOptionId: number) => {
     if (!answerMap) return false;
-
+    // 선택한 객관식에 해당하는 카테고리의 질문들 가져오기
     const targetCategoryQuestionList = getCategoryByOptionId(categoryOptionId);
+
     if (!targetCategoryQuestionList) return false;
-
+    //카테고리에 유효한 답변이 있는 지 판단
     const questionIdList = targetCategoryQuestionList.questions.map((question) => question.questionId);
+    const questionId = questionIdList.find((id) => answerMap.has(id));
 
-    return !!questionIdList.some((id) => answerMap.get(id));
+    if (!questionId) return;
+
+    const answer = answerMap.get(questionId);
+
+    return !!answer?.selectedOptionIds || !!answer?.text;
   };
 
   /**
