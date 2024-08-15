@@ -25,21 +25,6 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     selectedOptionList,
   });
 
-  /**
-   * 객관식 문항의 최소,최대 개수에 대한 안내 문구
-   */
-  const multipleLGuideline = (() => {
-    const { optionGroup } = question;
-    if (!optionGroup) return;
-
-    const { minCount, maxCount } = optionGroup;
-
-    const isAllSelectAvailable = maxCount === optionGroup.options.length;
-    if (!maxCount || isAllSelectAvailable) return `(최소 ${minCount}개 이상)`;
-
-    return `(${minCount}개 ~ ${maxCount}개)`;
-  })();
-
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.currentTarget;
     const optionId = Number(id);
@@ -64,7 +49,6 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     isOpenLimitGuide,
     handleCheckboxChange,
     isSelectedCheckbox,
-    multipleLGuideline,
     unCheckTargetOption,
   };
 };
