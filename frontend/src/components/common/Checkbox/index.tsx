@@ -16,7 +16,7 @@ export interface CheckboxProps extends CheckboxStyleProps {
   isChecked: boolean;
   handleChange?: (event: ChangeEvent<HTMLInputElement>, label?: string) => void;
   name?: string;
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
 
 const Checkbox = ({ id, isChecked, $style, $isReadonly = false, handleChange, ...rest }: CheckboxProps) => {

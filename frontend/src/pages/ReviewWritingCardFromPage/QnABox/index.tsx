@@ -39,7 +39,7 @@ const QnABox = ({ question, updateAnswerMap, updateAnswerValidationMap }: QnABox
               key={option.optionId}
               id={option.optionId.toString()}
               isChecked={isSelectedCheckbox(option.optionId)}
-              isDisabled={false}
+              disabled={false}
               label={option.content}
               handleChange={handleCheckboxChange}
             />
