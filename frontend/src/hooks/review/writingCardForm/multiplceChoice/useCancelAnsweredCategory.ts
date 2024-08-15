@@ -38,7 +38,7 @@ const useCancelAnsweredCategory = ({ question }: UseCancelAnsweredCategoryProps)
 
     const answer = answerMap.get(questionId);
 
-    return !!answer?.selectedOptionIds || !!answer?.text;
+    return !!answer?.selectedOptionIds?.length || !!answer?.text?.length;
   };
 
   /**
