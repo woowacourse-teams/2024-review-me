@@ -1,12 +1,8 @@
 import styled from '@emotion/styled';
 
 export const BreadcrumbList = styled.ul`
-  position: absolute;
-  top: 8rem;
-  left: 2.5rem;
-
   display: flex;
-
+  padding: 2rem 0 0 2.5rem;
   list-style: none;
 `;
 
@@ -15,7 +11,7 @@ export const BreadcrumbItem = styled.li`
 
   &:not(:last-child)::after {
     content: '/';
-    margin: 0 2.5rem;
+    margin: 0 2rem;
   }
 
   &:last-child {
