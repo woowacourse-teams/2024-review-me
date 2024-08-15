@@ -15,7 +15,7 @@ import {
   MIN_PASSWORD_INPUT,
   isValidPasswordInput,
 } from '../../utils/validateInput';
-import { FormLayout, ReviewGroupDataModal } from '../index';
+import { FormLayout, ReviewURLModal } from '../index';
 
 import * as S from './styles';
 
@@ -162,7 +162,7 @@ const URLGeneratorForm = () => {
           리뷰 요청 URL 생성하기
         </Button>
         {isOpen(MODAL_KEYS.confirm) && (
-          <ReviewGroupDataModal reviewURL={reviewURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
+          <ReviewURLModal reviewURL={reviewURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
         )}
       </FormLayout>
     </S.URLGeneratorForm>

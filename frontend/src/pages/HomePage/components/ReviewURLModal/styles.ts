@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const ReviewGroupDataModal = styled.div`
+export const ReviewURLModal = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -8,19 +8,13 @@ export const ReviewGroupDataModal = styled.div`
   height: 18rem;
 `;
 
-export const ReviewGroupDataTitle = styled.h3`
+export const ModalTitle = styled.h3`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   font-size: 2rem;
   margin-bottom: 4.5rem;
 `;
 
-export const ReviewGroupDataContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2.4rem;
-`;
-
-export const ReviewGroupDataItem = styled.div`
+export const ReviewURLModalItem = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 1.8rem;
@@ -38,7 +32,7 @@ export const Data = styled.span`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-export const WarningContainer = styled.div`
+export const WarningWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.4rem;

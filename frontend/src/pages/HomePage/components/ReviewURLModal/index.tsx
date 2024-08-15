@@ -6,12 +6,12 @@ import Checkbox from '@/components/common/Checkbox';
 import { CopyTextButton } from '../index';
 
 import * as S from './styles';
-interface URLModalProps {
+interface ReviewURLModalProps {
   reviewURL: string;
   closeModal: () => void;
 }
 
-const ReviewGroupDataModal = ({ reviewURL, closeModal }: URLModalProps) => {
+const ReviewURLModal = ({ reviewURL, closeModal }: ReviewURLModalProps) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxClick = () => {
@@ -29,16 +29,14 @@ const ReviewGroupDataModal = ({ reviewURL, closeModal }: URLModalProps) => {
       handleClose={null}
       isClosableOnBackground={false}
     >
-      <S.ReviewGroupDataModal>
-        <S.ReviewGroupDataTitle>아래 요청 URL을 확인해주세요</S.ReviewGroupDataTitle>
-        <S.ReviewGroupDataContainer>
-          <S.ReviewGroupDataItem>
-            <S.DataName>리뷰 요청 URL</S.DataName>
-            <S.Data>{reviewURL}</S.Data>
-            <CopyTextButton targetText={reviewURL} alt="리뷰 URL 복사하기"></CopyTextButton>
-          </S.ReviewGroupDataItem>
-        </S.ReviewGroupDataContainer>
-        <S.WarningContainer>
+      <S.ReviewURLModal>
+        <S.ModalTitle>아래 요청 URL을 확인해주세요</S.ModalTitle>
+        <S.ReviewURLModalItem>
+          <S.DataName>리뷰 요청 URL</S.DataName>
+          <S.Data>{reviewURL}</S.Data>
+          <CopyTextButton targetText={reviewURL} alt="리뷰 URL 복사하기"></CopyTextButton>
+        </S.ReviewURLModalItem>
+        <S.WarningWrapper>
           <S.CheckContainer>
             <Checkbox
               id="is-confirmed-checkbox"
@@ -49,10 +47,10 @@ const ReviewGroupDataModal = ({ reviewURL, closeModal }: URLModalProps) => {
             <S.CheckMessage>URL을 저장해두었어요!</S.CheckMessage>
           </S.CheckContainer>
           <S.Warning>* 창이 닫히면 URL을 다시 확인할 수 없어요!</S.Warning>
-        </S.WarningContainer>
-      </S.ReviewGroupDataModal>
+        </S.WarningWrapper>
+      </S.ReviewURLModal>
     </AlertModal>
   );
 };
 
-export default ReviewGroupDataModal;
+export default ReviewURLModal;
