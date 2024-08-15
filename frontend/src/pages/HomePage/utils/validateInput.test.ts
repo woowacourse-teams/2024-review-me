@@ -1,4 +1,4 @@
-import { isNotEmptyInput, isAlphanumeric, isWithinMaxLength } from './validateInput';
+import { isNotEmptyInput, isAlphanumeric, isWithinLengthRange } from './validateInput';
 
 describe('isNotEmptyInput', () => {
   test.each(['abc', '123', '!@#', '하이'])('빈 문자열이 아닐 경우 true를 반환한다. (input: %s)', (input) => {
@@ -26,15 +26,35 @@ describe('isAlphanumeric', () => {
   );
 });
 
-describe('isWithinMaxLength', () => {
-  const maxLength = 5;
-  test('지정한 길이 이하의 입력인 경우 true를 반환한다.', () => {
-    const inputWithLength5 = '12345';
-    expect(isWithinMaxLength(inputWithLength5, maxLength)).toBe(true);
+describe('isWithinLengthRange', () => {
+  test.each([
+    ['abc', 5],
+    ['12345', 5],
+    ['a', 5],
+  ])('문자열 길이가 0 이상, %d 이하인 경우 true를 반환한다. (input: %s)', (input, end) => {
+    expect(isWithinLengthRange(input, end)).toBe(true);
+  });
+  test.each([
+    ['abc', 5, 3],
+    ['12345', 5, 3],
+  ])('문자열 길이가 %d 이상 %d 이하인 경우 true를 반환한다. (input: %s)', (input, end, start) => {
+    expect(isWithinLengthRange(input, end, start)).toBe(true);
   });
 
-  test('지정한 길이를 초과하는 입력인 경우 false를 반환한다.', () => {
-    const inputOverLength5 = '123456';
-    expect(isWithinMaxLength(inputOverLength5, maxLength)).toBe(false);
+  test.each([
+    ['abcdef', 5],
+    ['longtext', 7],
+  ])('문자열 길이가 최대값을 초과하는 경우 false를 반환한다. (input: %s)', (input, end) => {
+    expect(isWithinLengthRange(input, end)).toBe(false);
   });
+
+  test.each([
+    ['ab', 5, 3],
+    ['abcdef', 5, 2],
+  ])(
+    '문자열 길이가 최소 범위에 미치지 못하는 경우 false를 반환한다. (input: %s, start: %d, end: %d)',
+    (input, end, start) => {
+      expect(isWithinLengthRange(input, end, start)).toBe(false);
+    },
+  );
 });
