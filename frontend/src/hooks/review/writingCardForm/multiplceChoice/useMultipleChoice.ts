@@ -20,7 +20,7 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
 
   const { selectedOptionList, updateAnswerState } = useUpdateMultipleChoiceAnswer({ question });
 
-  const { isOpenLimitGuide, isSelectedCheckbox, handleAboveSelectionLimit } = useAboveSelectionLimit({
+  const { isOpenLimitGuide, isSelectedCheckbox, isAboveSelectionLimit, handleLimitGuideOpen } = useAboveSelectionLimit({
     question,
     selectedOptionList,
   });
@@ -28,8 +28,10 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.currentTarget;
     const optionId = Number(id);
-    // max 판단
-    handleAboveSelectionLimit(optionId);
+    if (isAboveSelectionLimit(optionId)) {
+      return handleLimitGuideOpen(true);
+    }
+    handleLimitGuideOpen(false);
     // 답변이 달린 카테고리를 해제하려는 경우
     const isUnCheckCategory = isAnsweredCategoryChanged(optionId);
     setUnCheckTargetOptionId(isUnCheckCategory ? optionId : null);

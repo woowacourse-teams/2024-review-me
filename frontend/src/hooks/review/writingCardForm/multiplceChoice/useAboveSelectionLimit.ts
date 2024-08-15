@@ -27,19 +27,15 @@ const useAboveSelectionLimit = ({ question, selectedOptionList }: UseAboveSelect
    * 최대 문항 수를 넘어서 선택하려는지, 그럴 경우에 대한 핸들링
    * @param id : 객관식 문항의 optionId
    */
-  const handleAboveSelectionLimit = (id: number) => {
-    // max를 넘어서는 선택하려 할 때
-    if (isAboveSelectionLimit(Number(id))) {
-      return setIsOpenLimitGuide(true);
-    }
-    // max를 넘어서는 선택을 하지 않은 경우
-    setIsOpenLimitGuide(false);
+  const handleLimitGuideOpen = (isOpen: boolean) => {
+    setIsOpenLimitGuide(isOpen);
   };
 
   return {
     isOpenLimitGuide,
     isSelectedCheckbox,
-    handleAboveSelectionLimit,
+    isAboveSelectionLimit,
+    handleLimitGuideOpen,
   };
 };
 
