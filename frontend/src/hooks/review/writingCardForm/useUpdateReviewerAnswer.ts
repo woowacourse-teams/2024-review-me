@@ -3,6 +3,9 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { answerMapAtom, answerValidationMapAtom, questionListSelector, selectedCategoryAtom } from '@/recoil';
 import { ReviewWritingAnswer } from '@/types';
 
+/**
+ * 리뷰어가 작성한 답변에 따라 answerMap ,answerValidationMap의 상태를 변경하는 핸들러는 반환하는 훅
+ */
 const useUpdateReviewerAnswer = () => {
   const questionList = useRecoilValue(questionListSelector);
   const setSelectedCategory = useSetRecoilState(selectedCategoryAtom);

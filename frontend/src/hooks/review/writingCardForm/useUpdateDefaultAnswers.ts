@@ -4,6 +4,9 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { answerMapAtom, answerValidationMapAtom, questionListSelector } from '@/recoil';
 import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
 
+/**
+ * questionListSelector(=리뷰 작성 페이지에서 리뷰이가 작성해야하는 질문지)가 변경되었을때, 이에 맞추어서 답변(answerMap)과 답변들의 유효성 여부(answerValidationMap)을 변경하는 훅
+ */
 const useUpdateDefaultAnswers = () => {
   const questionList = useRecoilValue(questionListSelector);
   // NOTE : answerMap - 질문에 대한 답변들 , number : questionId

@@ -7,8 +7,11 @@ interface UseMultipleChoiceProps {
   updateAnswerMap: (answer: ReviewWritingAnswer) => void;
   updateAnswerValidationMap: (answer: ReviewWritingAnswer, isValidatedAnswer: boolean) => void;
 }
-
+/**
+ * 하나의 객관식 질문에서 선택된 문항, 문항 선택 관리(최대를 넘는 문항 선택 시, 안내 문구 표시)등을 하는 훅
+ */
 const useMultipleChoice = ({ question, updateAnswerMap, updateAnswerValidationMap }: UseMultipleChoiceProps) => {
+  // selectedOptionList - 객관식 하나의 질문에 대해 선택된 문항들
   const [selectedOptionList, setSelectedOptionList] = useState<number[]>([]);
   const [isOpenLimitGuide, setIsOpenLimitGuide] = useState(false);
 

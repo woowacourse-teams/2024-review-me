@@ -12,6 +12,9 @@ interface UseTextAnswerProps {
   updateAnswerMap: (answer: ReviewWritingAnswer) => void;
   updateAnswerValidationMap: (answer: ReviewWritingAnswer, isValidatedAnswer: boolean) => void;
 }
+/**
+ * 하나의 주관식 질문에서 답변을 관리하는 훅
+ */
 const useTextAnswer = ({ question, updateAnswerMap, updateAnswerValidationMap }: UseTextAnswerProps) => {
   const [textAnswer, setTextAnswer] = useState('');
 
