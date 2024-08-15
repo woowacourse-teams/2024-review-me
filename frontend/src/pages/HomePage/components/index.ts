@@ -4,3 +4,5 @@ export { default as ReviewAccessForm } from './ReviewAccessForm';
 export { default as ReviewURLModal } from './ReviewURLModal';
 export { default as URLGeneratorForm } from './URLGeneratorForm';
 export { default as CopyTextButton } from './CopyTextButton';
+export { default as ReviewMeOverview } from './ReviewMeOverview';
+export { default as OverviewItem } from './OverviewItem';

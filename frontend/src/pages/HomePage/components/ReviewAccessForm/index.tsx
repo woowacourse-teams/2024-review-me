@@ -6,7 +6,6 @@ import { Input, Button } from '@/components';
 import { useGroupAccessCode } from '@/hooks';
 import { debounce } from '@/utils/debounce';
 
-import { isValidAccessCodeInput } from '../../utils/validateInput';
 import { FormLayout } from '../index';
 
 import * as S from './styles';
@@ -74,7 +73,7 @@ const ReviewAccessForm = () => {
           />
           <Button
             type="button"
-            styleType={isValidAccessCodeInput(groupAccessCode) ? 'primary' : 'disabled'}
+            // styleType={isValidAccessCodeInput(groupAccessCode) ? 'primary' : 'disabled'}
             onClick={handleAccessReviewButtonClick}
             disabled={!groupAccessCode}
           >

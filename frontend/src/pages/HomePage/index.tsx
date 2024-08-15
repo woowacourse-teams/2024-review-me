@@ -1,13 +1,13 @@
 import { ErrorSuspenseContainer } from '@/components';
 
-import URLGeneratorForm from './components/URLGeneratorForm';
+import { ReviewMeOverview, URLGeneratorForm } from './components';
 import * as S from './styles';
 
 const HomePage = () => {
   return (
     <S.HomePage>
       <ErrorSuspenseContainer>
-        <S.ReviewMeOverview></S.ReviewMeOverview>
+        <ReviewMeOverview />
         <URLGeneratorForm />
       </ErrorSuspenseContainer>
     </S.HomePage>

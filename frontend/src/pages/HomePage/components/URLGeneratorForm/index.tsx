@@ -144,13 +144,7 @@ const URLGeneratorForm = () => {
         <S.InputContainer>
           <S.Label htmlFor="password">리뷰 확인을 위한 비밀번호를 적어주세요</S.Label>
           <S.InputInfo>{`${MIN_PASSWORD_INPUT}~${MAX_PASSWORD_INPUT}자의 영문(대/소문자),숫자만 사용가능해요`}</S.InputInfo>
-          <Input
-            id="password"
-            value={password}
-            onChange={handlePasswordInputChange}
-            type="password"
-            placeholder="abc123"
-          />
+          <Input id="password" value={password} onChange={handlePasswordInputChange} type="text" placeholder="abc123" />
           <S.ErrorMessage>{passwordErrorMessage}</S.ErrorMessage>
         </S.InputContainer>
         <Button
