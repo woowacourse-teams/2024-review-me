@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ReviewWritingCardQuestion } from '@/types';
 
 import useAboveSelectionLimit from './useAboveSelectionLimit';
+import useCancelAnsweredCategory from './useCancelAnsweredCategory';
 import useUpdateMultipleChoiceAnswer from './useUpdateMultipleChoiceAnswer';
 
 interface UseMultipleChoiceProps {
@@ -13,7 +14,9 @@ interface UseMultipleChoiceProps {
  * 하나의 객관식 질문에서 선택된 문항, 문항 선택 관리(최대를 넘는 문항 선택 시, 안내 문구 표시)등을 하는 훅
  */
 const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps) => {
+  const [unCheckTargetOptionId, setUnCheckTargetOptionId] = useState<number | null>(null);
 
+  const { isAnsweredCategoryChanged } = useCancelAnsweredCategory({ question });
 
   const { selectedOptionList, updateAnswerState } = useUpdateMultipleChoiceAnswer({ question });
 
@@ -47,13 +50,22 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     setUnCheckTargetOptionId(isUnCheckCategory ? optionId : null);
     handleModalOpen(isUnCheckCategory);
 
+    if (!isUnCheckCategory) {
+      updateAnswerState({ optionId, checked });
+    }
   };
 
+  const unCheckTargetOption = () => {
+    if (unCheckTargetOptionId) {
+      updateAnswerState({ optionId: unCheckTargetOptionId, checked: false });
+    }
+  };
   return {
     isOpenLimitGuide,
     handleCheckboxChange,
     isSelectedCheckbox,
     multipleLGuideline,
+    unCheckTargetOption,
   };
 };
 export default useMultipleChoice;
