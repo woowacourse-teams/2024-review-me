@@ -1,15 +1,11 @@
-import { CheckboxItem, LongReviewItem } from '@/components';
-import { useMultipleChoice, useTextAnswer, useUpdateReviewerAnswer } from '@/hooks';
-import useModals from '@/hooks/useModals';
+import { LongReviewItem } from '@/components';
+import { useTextAnswer, useUpdateReviewerAnswer } from '@/hooks';
 import { ReviewWritingCardQuestion } from '@/types';
 
 import MultipleChoiceQuestion from '../MultipleChoiceQuestion';
 
 import * as S from './style';
 
-const MODAL_KEY = {
-  confirm: 'CONFIRM',
-};
 interface QnABoxProps {
   question: ReviewWritingCardQuestion;
 }
