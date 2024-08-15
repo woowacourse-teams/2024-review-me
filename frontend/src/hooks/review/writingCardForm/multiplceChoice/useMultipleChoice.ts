@@ -35,7 +35,7 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     // 답변이 달린 카테고리를 해제하려는 경우
     const isUnCheckCategory = isAnsweredCategoryChanged(optionId);
     setUnCheckTargetOptionId(isUnCheckCategory ? optionId : null);
-    handleModalOpen(isUnCheckCategory);
+    handleModalOpen(!!isUnCheckCategory);
 
     if (!isUnCheckCategory) {
       updateAnswerState({ optionId, checked });
