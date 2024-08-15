@@ -61,6 +61,21 @@ const useMultipleChoice = ({ question, updateAnswerMap, updateAnswerValidationMa
   };
 
   /**
+   * 객관식 문항의 최소,최대 개수에 대한 안내 문구
+   */
+  const multipleLGuideline = (() => {
+    const { optionGroup } = question;
+    if (!optionGroup) return;
+
+    const { minCount, maxCount } = optionGroup;
+
+    const isAllSelectAvailable = maxCount === optionGroup.options.length;
+    if (!maxCount || isAllSelectAvailable) return `(최소 ${minCount}개 이상)`;
+
+    return `(${minCount}개 ~ ${maxCount}개)`;
+  })();
+
+  /**
    * 선택 가능한 문항 수를 넘어서 문항을 선택하려 하는지 여부
    */
   const isAboveSelectionLimit = (optionId: number) => !!(isMaxCheckedNumber() && !isSelectedCheckbox(optionId));
@@ -73,6 +88,7 @@ const useMultipleChoice = ({ question, updateAnswerMap, updateAnswerValidationMa
     isOpenLimitGuide,
     handleCheckboxChange,
     isSelectedCheckbox,
+    multipleLGuideline,
   };
 };
 export default useMultipleChoice;

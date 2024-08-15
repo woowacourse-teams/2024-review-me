@@ -11,7 +11,7 @@ interface QnABoxProps {
 }
 
 const QnABox = ({ question, updateAnswerMap, updateAnswerValidationMap }: QnABoxProps) => {
-  const { isOpenLimitGuide, handleCheckboxChange, isSelectedCheckbox } = useMultipleChoice({
+  const { isOpenLimitGuide, multipleLGuideline, handleCheckboxChange, isSelectedCheckbox } = useMultipleChoice({
     question,
     updateAnswerMap,
     updateAnswerValidationMap,
@@ -23,24 +23,12 @@ const QnABox = ({ question, updateAnswerMap, updateAnswerValidationMap }: QnABox
     updateAnswerValidationMap,
   });
 
-  const multipleGuideline = (() => {
-    const { optionGroup } = question;
-    if (!optionGroup) return;
-
-    const { minCount, maxCount } = optionGroup;
-
-    const isAllSelectAvailable = maxCount === optionGroup.options.length;
-    if (!maxCount || isAllSelectAvailable) return `(최소 ${minCount}개 이상)`;
-
-    return `(${minCount}개 ~ ${maxCount}개)`;
-  })();
-
   return (
     <S.QnASection>
       <S.QuestionTitle>
         {question.content}
         {question.required ? <S.QuestionRequiredMark>*</S.QuestionRequiredMark> : <span> (선택) </span>}
-        <S.MultipleGuideline>{multipleGuideline ?? ''}</S.MultipleGuideline>
+        <S.MultipleGuideline>{multipleLGuideline ?? ''}</S.MultipleGuideline>
       </S.QuestionTitle>
       {question.guideline && <S.QuestionGuideline>{question.guideline}</S.QuestionGuideline>}
       {/*객관식*/}
