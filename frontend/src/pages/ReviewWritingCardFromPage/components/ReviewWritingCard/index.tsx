@@ -39,7 +39,10 @@ const ReviewWritingCard = ({
           )}
           {isLastCard ? (
             <>
-              <CardSliderController.RecheckButton handleRecheckButtonClick={handleRecheckButtonClick} />
+              <CardSliderController.RecheckButton
+                isAbleNextStep={isAbleNextStep}
+                handleRecheckButtonClick={handleRecheckButtonClick}
+              />
               <CardSliderController.SubmitButton
                 isAbleNextStep={isAbleNextStep}
                 handleSubmitButtonClick={handleSubmitButtonClick}
