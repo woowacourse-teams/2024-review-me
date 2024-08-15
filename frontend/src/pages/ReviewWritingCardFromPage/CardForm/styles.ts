@@ -4,6 +4,7 @@ export const CardForm = styled.div`
   position: relative;
   overflow: hidden;
   width: ${({ theme }) => theme.formWidth};
+  overflow-wrap: break-word;
 `;
 
 interface SlideContainerProps {
