@@ -18,3 +18,21 @@ export const selectedCategoryAtom = atom<number[]>({
   default: [],
 });
 
+/**
+ * 질문에 대한 답변들
+ * number : questionId
+ */
+
+export const answerMapAtom = atom<Map<number, ReviewWritingAnswer> | null>({
+  key: ATOM_KEY.reviewWritingForm.answerMapAtom,
+  default: null,
+});
+
+/**
+ * 질문의 단볍들의 유효성 여부
+ * number: questionId
+ */
+export const answerValidationMapAtom = atom<Map<number, boolean> | null>({
+  key: ATOM_KEY.reviewWritingForm.answerValidationMapAtom,
+  default: null,
+});

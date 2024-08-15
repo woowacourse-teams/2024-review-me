@@ -3,6 +3,8 @@ export const ATOM_KEY = {
   reviewWritingForm: {
     sectionList: 'reviewWritingFormSectionList',
     selectedCategoryAtom: 'selectedCategoryAtom',
+    answerMapAtom: 'answerMapAtom',
+    answerValidationMapAtom: 'answerValidationMapAtom',
   },
 };
 
