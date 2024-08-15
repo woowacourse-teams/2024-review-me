@@ -10,6 +10,6 @@ export const ATOM_KEY = {
 
 export const SELECTOR_KEY = {
   reviewWritingForm: {
-    questionListSelector: 'questionListSelector',
+    cardSectionListSelector: 'cardSectionListSelector',
   },
 };

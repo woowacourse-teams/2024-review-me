@@ -8,8 +8,8 @@ import { reviewWritingFormSectionListAtom, selectedCategoryAtom } from './atom';
 /**
  * 서버에서 내려준 질문지 데이터에서,  공통 질문과 카테고리 선택된 질문을 뽑아서 만든 질문지
  * */
-export const questionListSelector = selector<ReviewWritingCardSection[]>({
-  key: SELECTOR_KEY.reviewWritingForm.questionListSelector,
+export const cardSectionListSelector = selector<ReviewWritingCardSection[]>({
+  key: SELECTOR_KEY.reviewWritingForm.cardSectionListSelector,
   get: ({ get }) => {
     const sectionList = get(reviewWritingFormSectionListAtom);
     const selectedCategory = get(selectedCategoryAtom);

@@ -1,20 +1,20 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { answerMapAtom, answerValidationMapAtom, questionListSelector, selectedCategoryAtom } from '@/recoil';
+import { answerMapAtom, answerValidationMapAtom, cardSectionListSelector, selectedCategoryAtom } from '@/recoil';
 import { ReviewWritingAnswer } from '@/types';
 
 /**
  * 리뷰어가 작성한 답변에 따라 answerMap ,answerValidationMap의 상태를 변경하는 핸들러는 반환하는 훅
  */
 const useUpdateReviewerAnswer = () => {
-  const questionList = useRecoilValue(questionListSelector);
+  const cardSectionList = useRecoilValue(cardSectionListSelector);
   const setSelectedCategory = useSetRecoilState(selectedCategoryAtom);
 
   const [answerMap, setAnswerMap] = useRecoilState(answerMapAtom);
   const [answerValidationMap, setAnswerValidationMap] = useRecoilState(answerValidationMapAtom);
 
   const isCategoryAnswer = (answer: ReviewWritingAnswer) =>
-    answer.questionId === questionList?.[0].questions[0].questionId;
+    answer.questionId === cardSectionList?.[0].questions[0].questionId;
 
   /**
    * 생성,수정,삭제된 답변을 answerMap에 반영하는 함수

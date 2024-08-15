@@ -7,7 +7,7 @@ import {
   useCurrentCardIndex,
   useGetDataToWrite,
   useMutateReview,
-  useQuestionList,
+  useCardSectionList,
   useResetFormRecoil,
   useSearchParamAndQuery,
   useSlideWidthAndHeight,
@@ -39,7 +39,7 @@ const CardForm = () => {
   // 질문지 생성
   const { data } = useGetDataToWrite({ reviewRequestCode });
   const { revieweeName, projectName } = data;
-  const { questionList } = useQuestionList({ questionListSectionsData: data.sections });
+  const { cardSectionList } = useCardSectionList({ cardSectionListData: data.sections });
 
   // 답변
   // 생성된 질문지를 바탕으로 답변 기본값 및 답변의 유효성 기본값 설정
@@ -96,13 +96,13 @@ const CardForm = () => {
           </S.ProjectInfoContainer>
         </S.RevieweeDescription>
         <S.SliderContainer ref={wrapperRef} $translateX={currentCardIndex * slideWidth} $height={slideHeight}>
-          {questionList?.map((section, index) => (
+          {cardSectionList?.map((section, index) => (
             <S.Slide id={makeId(index)} key={section.sectionId}>
               <ReviewWritingCard
                 cardIndex={index}
                 currentCardIndex={currentCardIndex}
                 cardSection={section}
-                isLastCard={questionList.length - INDEX_OFFSET === currentCardIndex}
+                isLastCard={cardSectionList.length - INDEX_OFFSET === currentCardIndex}
                 handleCurrentCardIndex={handleCurrentCardIndex}
                 handleRecheckButtonClick={handleRecheckButtonClick}
                 handleSubmitButtonClick={handleSubmitButtonClick}
@@ -124,9 +124,9 @@ const CardForm = () => {
           </S.SubmitErrorMessage>
         </ConfirmModal>
       )}
-      {isOpen(MODAL_KEYS.recheck) && questionList && answerMap && (
+      {isOpen(MODAL_KEYS.recheck) && cardSectionList && answerMap && (
         <AnswerListRecheckModal
-          questionSectionList={questionList}
+          questionSectionList={cardSectionList}
           answerMap={answerMap}
           closeModal={() => closeModal(MODAL_KEYS.recheck)}
         />

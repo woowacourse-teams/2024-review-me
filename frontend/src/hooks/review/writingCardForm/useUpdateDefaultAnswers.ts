@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { answerMapAtom, answerValidationMapAtom, questionListSelector } from '@/recoil';
+import { answerMapAtom, answerValidationMapAtom, cardSectionListSelector } from '@/recoil';
 import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
 
 const DEFAULT_VALUE = {
@@ -9,10 +9,10 @@ const DEFAULT_VALUE = {
   text: '',
 };
 /**
- * questionListSelector(=리뷰 작성 페이지에서 리뷰이가 작성해야하는 질문지)가 변경되었을때, 이에 맞추어서 답변(answerMap)과 답변들의 유효성 여부(answerValidationMap)을 변경하는 훅
+ * cardSectionListSelector(=리뷰 작성 페이지에서 리뷰이가 작성해야하는 질문지)가 변경되었을때, 이에 맞추어서 답변(answerMap)과 답변들의 유효성 여부(answerValidationMap)을 변경하는 훅
  */
 const useUpdateDefaultAnswers = () => {
-  const questionList = useRecoilValue(questionListSelector);
+  const cardSectionList = useRecoilValue(cardSectionListSelector);
   // NOTE : answerMap - 질문에 대한 답변들 , number : questionId
   const [answerMap, setAnswerMap] = useRecoilState(answerMapAtom);
   // NOTE : answerValidationMap  -질문의 단볍들의 유효성 여부 ,number: questionId
@@ -27,7 +27,7 @@ const useUpdateDefaultAnswers = () => {
   const makeNewAnswerAndValidationMaps = () => {
     const newAnswerMap: Map<number, ReviewWritingAnswer> = new Map();
     const newAnswerValidationMap: Map<number, boolean> = new Map();
-    questionList?.forEach((section) => {
+    cardSectionList?.forEach((section) => {
       section.questions.forEach((question) => {
         updateNewAnswerMaps({ newAnswerMap, question });
         updateNewAnswerValidationMap({ newAnswerValidationMap, question });
@@ -104,7 +104,7 @@ const useUpdateDefaultAnswers = () => {
     const { newAnswerMap, newAnswerValidationMap } = makeNewAnswerAndValidationMaps();
     setAnswerMap(newAnswerMap);
     setAnswerValidationMap(newAnswerValidationMap);
-  }, [questionList]);
+  }, [cardSectionList]);
 };
 
 export default useUpdateDefaultAnswers;
