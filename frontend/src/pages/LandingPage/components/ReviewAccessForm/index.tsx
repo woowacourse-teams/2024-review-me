@@ -6,11 +6,14 @@ import { Input, Button } from '@/components';
 import { useGroupAccessCode } from '@/hooks';
 import { debounce } from '@/utils/debounce';
 
+import { isValidAccessCodeInput } from '../../utils/validateInput';
 import { FormLayout } from '../index';
 
 import * as S from './styles';
 
 const DEBOUNCE_TIME = 300;
+
+const ALPHANUMERIC_ERROR_MESSAGE = '알파벳 대소문자와 숫자만 입력 가능합니다.';
 
 // NOTE: groupAccessCode가 유효한지를 확인하는 API 호출은 fetch로 고정!
 // 1. 요청을 통해 단순히 true, false 정도의 데이터를 단발적으로 가져오는 API이므로
@@ -43,7 +46,7 @@ const ReviewAccessForm = () => {
 
     try {
       if (!isAlphanumeric(groupAccessCode)) {
-        setErrorMessage('알파벳 대소문자와 숫자만 입력 가능합니다.');
+        setErrorMessage(ALPHANUMERIC_ERROR_MESSAGE);
         return;
       }
 
@@ -71,7 +74,7 @@ const ReviewAccessForm = () => {
           />
           <Button
             type="button"
-            styleType={groupAccessCode ? 'primary' : 'disabled'}
+            styleType={isValidAccessCodeInput(groupAccessCode) ? 'primary' : 'disabled'}
             onClick={handleAccessReviewButtonClick}
             disabled={!groupAccessCode}
           >
