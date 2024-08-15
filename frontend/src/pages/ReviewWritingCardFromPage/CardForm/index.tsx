@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { useRecoilValue } from 'recoil';
 
 import { ConfirmModal, AnswerListRecheckModal } from '@/components';
 import {
@@ -6,7 +8,7 @@ import {
   useGetDataToWrite,
   useMutateReview,
   useQuestionList,
-  useReviewerAnswer,
+  useResetFormRecoil,
   useSearchParamAndQuery,
   useSlideWidthAndHeight,
   useUpdateDefaultAnswers,
@@ -44,6 +46,7 @@ const CardForm = () => {
   useUpdateDefaultAnswers();
   const answerMap = useRecoilValue(answerMapAtom);
 
+  const { resetFormRecoil } = useResetFormRecoil();
 
   const { isOpen, openModal, closeModal } = useModals();
 
@@ -72,6 +75,13 @@ const CardForm = () => {
   const handleRecheckButtonClick = () => {
     openModal(MODAL_KEYS.recheck);
   };
+
+  useEffect(() => {
+    return () => {
+      // 페이지 나갈때 관련 recoil 상태 초기화
+      resetFormRecoil();
+    };
+  }, []);
 
   return (
     <>
