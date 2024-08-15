@@ -5,13 +5,13 @@ export const ReviewGroupDataModal = styled.div`
   flex-direction: column;
 
   width: 52rem;
-  height: 23rem;
+  height: 18rem;
 `;
 
 export const ReviewGroupDataTitle = styled.h3`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   font-size: 2rem;
-  margin-bottom: 4rem;
+  margin-bottom: 4.5rem;
 `;
 
 export const ReviewGroupDataContainer = styled.div`
