@@ -14,17 +14,23 @@ interface QnABoxProps {
 const QnABox = ({ question }: QnABoxProps) => {
   const { updateAnswerMap, updateAnswerValidationMap } = useUpdateReviewerAnswer();
 
-  const { isOpenLimitGuide, multipleLGuideline, handleCheckboxChange, isSelectedCheckbox } = useMultipleChoice({
-    question,
-    updateAnswerMap,
-    updateAnswerValidationMap,
-  });
+  const handleModalOpen = (isOpen: boolean) => {
+    isOpen ? openModal(MODAL_KEY.confirm) : closeModal(MODAL_KEY.confirm);
+  };
+
+  const { isOpenLimitGuide, multipleLGuideline, handleCheckboxChange, isSelectedCheckbox, unCheckTargetOption } =
+    useMultipleChoice({
+      question,
+      handleModalOpen,
+    });
 
   const { textAnswer, handleTextAnswerChange, TEXT_ANSWER_LENGTH } = useTextAnswer({
     question,
     updateAnswerMap,
     updateAnswerValidationMap,
   });
+
+
 
   return (
     <S.QnASection>
