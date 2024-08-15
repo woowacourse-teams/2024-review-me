@@ -47,21 +47,19 @@ const CardForm = () => {
   const { isOpen, openModal, closeModal } = useModals();
   const navigate = useNavigate();
 
-  const { postReview, isSuccess } = useMutateReview();
+  const executeAfterMutateSuccess = () => {
+    navigate('/user/review-writing-complete');
+    closeModal(MODAL_KEYS.confirm);
+  };
+  const { postReview } = useMutateReview({ executeAfterMutateSuccess });
 
   const handleSubmitButtonClick = () => {
     openModal(MODAL_KEYS.confirm);
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      navigate('/user/review-writing-complete');
-      closeModal(MODAL_KEYS.confirm);
-    }
-  }, [isSuccess]);
-
   const submitAnswer = async () => {
     if (!answerMap || !reviewRequestCode) return;
+
     const result: ReviewWritingFormResult = {
       reviewRequestCode: reviewRequestCode,
       answers: Array.from(answerMap.values()),
