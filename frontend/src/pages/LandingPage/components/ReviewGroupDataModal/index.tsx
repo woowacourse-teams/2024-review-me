@@ -50,7 +50,7 @@ const ReviewGroupDataModal = ({ reviewRequestCode, closeModal }: URLModalProps) 
             <Checkbox
               id="is-confirmed-checkbox"
               isChecked={isChecked}
-              onChange={handleCheckboxClick}
+              handleChange={handleCheckboxClick}
               $style={{ width: '2.3rem', height: '2.3rem' }}
             />
             <S.CheckMessage>URL과 코드를 다른 곳에 저장해두었어요!</S.CheckMessage>

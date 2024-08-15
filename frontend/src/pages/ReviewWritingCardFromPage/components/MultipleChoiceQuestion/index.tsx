@@ -41,7 +41,7 @@ const MultipleChoiceQuestion = ({ question }: MultipleChoiceQuestionProps) => {
           key={option.optionId}
           id={option.optionId.toString()}
           isChecked={isSelectedCheckbox(option.optionId)}
-          disabled={isOpenLimitGuide && !isSelectedCheckbox(option.optionId)}
+          isDisabled={isOpenLimitGuide && !isSelectedCheckbox(option.optionId)}
           label={option.content}
           handleChange={handleCheckboxChange}
         />

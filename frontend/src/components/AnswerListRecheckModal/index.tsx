@@ -48,7 +48,7 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
                               id={`${question.questionId}_${index}`}
                               name={`${question.questionId}_${index}`}
                               isChecked={isSelectedChoice(question.questionId, option.optionId)}
-                              disabled={true}
+                              isDisabled={true}
                               label={option.content}
                               $isReadonly={true}
                             />
