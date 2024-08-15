@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
 
+import useUpdateReviewerAnswer from './useUpdateReviewerAnswer';
+
 const TEXT_ANSWER_LENGTH = {
   min: 20,
   max: 1000,
@@ -9,13 +11,13 @@ const TEXT_ANSWER_LENGTH = {
 
 interface UseTextAnswerProps {
   question: ReviewWritingCardQuestion;
-  updateAnswerMap: (answer: ReviewWritingAnswer) => void;
-  updateAnswerValidationMap: (answer: ReviewWritingAnswer, isValidatedAnswer: boolean) => void;
 }
 /**
  * 하나의 주관식 질문에서 답변을 관리하는 훅
  */
-const useTextAnswer = ({ question, updateAnswerMap, updateAnswerValidationMap }: UseTextAnswerProps) => {
+const useTextAnswer = ({ question }: UseTextAnswerProps) => {
+  const { updateAnswerMap, updateAnswerValidationMap } = useUpdateReviewerAnswer();
+
   const [textAnswer, setTextAnswer] = useState('');
 
   // NOTE: change 시 마다 상태 변경되어서, 디바운스를 적용할 지 고민...

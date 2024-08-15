@@ -1,5 +1,5 @@
 import { LongReviewItem } from '@/components';
-import { useTextAnswer, useUpdateReviewerAnswer } from '@/hooks';
+import { useTextAnswer } from '@/hooks';
 import { ReviewWritingCardQuestion } from '@/types';
 
 import MultipleChoiceQuestion from '../MultipleChoiceQuestion';
@@ -14,8 +14,6 @@ interface QnABoxProps {
  */
 
 const QnABox = ({ question }: QnABoxProps) => {
-  const { updateAnswerMap, updateAnswerValidationMap } = useUpdateReviewerAnswer();
-
   /**
    * 객관식 문항의 최소,최대 개수에 대한 안내 문구
    */
@@ -33,8 +31,6 @@ const QnABox = ({ question }: QnABoxProps) => {
 
   const { textAnswer, handleTextAnswerChange, TEXT_ANSWER_LENGTH } = useTextAnswer({
     question,
-    updateAnswerMap,
-    updateAnswerValidationMap,
   });
 
   return (
@@ -47,7 +43,6 @@ const QnABox = ({ question }: QnABoxProps) => {
       {question.guideline && <S.QuestionGuideline>{question.guideline}</S.QuestionGuideline>}
       {/*객관식*/}
       {question.questionType === 'CHECKBOX' && <MultipleChoiceQuestion question={question} />}
-
       {/*서술형*/}
       {question.questionType === 'TEXT' && (
         <LongReviewItem
