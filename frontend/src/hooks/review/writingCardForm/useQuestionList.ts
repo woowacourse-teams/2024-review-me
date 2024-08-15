@@ -1,37 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
+import { questionListSelector, reviewWritingFormSectionListAtom } from '@/recoil';
 import { ReviewWritingCardSection } from '@/types';
 
 interface UseQuestionListProps {
   questionListSectionsData: ReviewWritingCardSection[];
 }
-
+/**
+ * 서버에서 받아온 데이터를 바탕으로 리뷰 작성 폼에서 사용할 질문지(상태)를 변경하는 훅
+ * @param {ReviewWritingCardSection[]} questionListSectionsData  서버에서 받아온 질문 데이터
+ * @returns
+ */
 const useQuestionList = ({ questionListSectionsData }: UseQuestionListProps) => {
-  const [questionList, setQuestionList] = useState<ReviewWritingCardSection[] | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<number[] | null>(null);
+  const setReviewWritingFormSectionList = useSetRecoilState(reviewWritingFormSectionListAtom);
 
-  const updatedSelectedCategory = (newSelectedCategory: number[]) => {
-    setSelectedCategory(newSelectedCategory);
-  };
-
-  const updateQuestionList = () => {
-    const newQuestionList = questionListSectionsData.filter((data) => {
-      // 공통 질문 추출
-      if (data.visible === 'ALWAYS') return true;
-      // 선택된 카테고리 답변과 data.onSelectedOptionId를 비교
-      if (!data.onSelectedOptionId) return false;
-      return !!selectedCategory?.includes(data.onSelectedOptionId);
-    });
-    setQuestionList(newQuestionList);
-  };
+  const questionList = useRecoilValue(questionListSelector);
 
   useEffect(() => {
-    updateQuestionList();
-  }, [selectedCategory]);
+    setReviewWritingFormSectionList(questionListSectionsData);
+  }, [questionListSectionsData]);
 
   return {
     questionList,
-    updatedSelectedCategory,
   };
 };
 export default useQuestionList;

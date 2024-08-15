@@ -29,14 +29,13 @@ const CardForm = () => {
     paramKey: 'reviewRequestCode',
   });
 
-  const { data } = useGetDataToWrite({ reviewRequestCode });
-  const { revieweeName, projectName } = data;
-
   const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
 
   const { wrapperRef, slideWidth, slideHeight, makeId } = useSlideWidthAndHeight({ currentCardIndex });
+  const { data } = useGetDataToWrite({ reviewRequestCode });
+  const { revieweeName, projectName } = data;
+  const { questionList } = useQuestionList({ questionListSectionsData: data.sections });
 
-  const { questionList, updatedSelectedCategory } = useQuestionList({ questionListSectionsData: data.sections });
 
   const { answerMap, isAbleNextStep, updateAnswerMap, updateAnswerValidationMap } = useReviewerAnswer({
     currentCardIndex,
