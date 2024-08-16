@@ -155,7 +155,7 @@ const URLGeneratorForm = () => {
               onChange={handlePasswordInputChange}
               type={isOff ? 'password' : 'text'}
               placeholder="abc123"
-              $style={{ border: 'none', outline: 'none' }}
+              $style={{ width: '100%' }}
             />
             <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />
           </S.PasswordInputContainer>

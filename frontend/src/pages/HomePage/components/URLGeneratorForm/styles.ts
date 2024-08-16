@@ -19,14 +19,7 @@ export const InputContainer = styled.div`
 
 export const PasswordInputContainer = styled.div`
   display: flex;
-  border: 0.1rem solid ${({ theme }) => theme.colors.placeholder};
-  border-radius: ${({ theme }) => theme.borderRadius.basic};
-
   position: relative;
-
-  &:focus-within {
-    border: 0.2rem solid ${({ theme }) => theme.colors.primary};
-  }
 `;
 
 export const Label = styled.label`
@@ -35,7 +28,7 @@ export const Label = styled.label`
 
 export const InputInfo = styled.p`
   font-size: 1.2rem;
-  margin: 0.5rem 0.3rem 0;
+  margin: 0.5rem 0.3rem 0.4rem;
 `;
 
 export const ErrorMessage = styled.p`
