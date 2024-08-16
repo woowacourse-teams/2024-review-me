@@ -3,7 +3,7 @@ package reviewme.template.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Template;
@@ -24,7 +24,7 @@ public class TemplateService {
     @Transactional(readOnly = true)
     public TemplateResponse generateReviewForm(String reviewRequestCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByRequestReviewCodeException(reviewRequestCode));
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
         Template defaultTemplate = templateRepository.findById(USE_TEMPLATE_ID)
                 .orElseThrow(() -> new DefaultTemplateNotFoundException(USE_TEMPLATE_ID));

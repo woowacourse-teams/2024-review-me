@@ -13,7 +13,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.service.dto.request.CreateReviewRequest;
@@ -40,7 +40,7 @@ public class CreateReviewService {
 
     private ReviewGroup validateReviewGroupByRequestCode(String reviewRequestCode) {
         return reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByRequestReviewCodeException(reviewRequestCode));
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
     }
 
     private void validateSubmittedQuestionsContainingInTemplate(long templateId, CreateReviewRequest request) {
