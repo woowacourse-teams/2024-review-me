@@ -54,13 +54,15 @@ const SubmitButton = ({ isAbleNextStep, handleSubmitButtonClick }: SubmitButtonP
   );
 };
 interface RecheckButton {
+  isAbleNextStep: boolean;
   handleRecheckButtonClick: () => void;
 }
 
-const RecheckButton = ({ handleRecheckButtonClick }: RecheckButton) => {
+const RecheckButton = ({ isAbleNextStep, handleRecheckButtonClick }: RecheckButton) => {
+  const styledType: ButtonStyleType = isAbleNextStep ? 'secondary' : 'disabled';
   return (
-    <Button styleType="secondary" type={'button'} onClick={handleRecheckButtonClick}>
-      제출 전 확인
+    <Button disabled={!isAbleNextStep} styleType={styledType} type={'button'} onClick={handleRecheckButtonClick}>
+      작성 내용 확인
     </Button>
   );
 };

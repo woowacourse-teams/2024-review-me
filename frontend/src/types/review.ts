@@ -90,7 +90,7 @@ export interface Category {
 
 // 리뷰 작성 카드 관련 타입들
 export interface ReviewWritingFrom {
-  formId: string;
+  formId: number;
   revieweeName: string;
   projectName: string;
   sections: ReviewWritingCardSection[];

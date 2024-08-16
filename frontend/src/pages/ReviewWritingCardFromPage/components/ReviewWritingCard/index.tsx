@@ -1,16 +1,15 @@
-import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
+import { useCheckNextStepAvailability } from '@/hooks';
+import { ReviewWritingCardSection } from '@/types';
 
 import QnABox from '../QnABox';
 
 import CardSliderController, { CardSliderControllerProps } from './../CardSliderController/index';
 import * as S from './style';
 
-interface ReviewWritingCardProps extends CardSliderControllerProps {
+interface ReviewWritingCardProps extends Omit<CardSliderControllerProps, 'isAbleNextStep'> {
   cardIndex: number;
   isLastCard: boolean;
   cardSection: ReviewWritingCardSection;
-  updateAnswerMap: (answer: ReviewWritingAnswer) => void;
-  updateAnswerValidationMap: (answer: ReviewWritingAnswer, isValidatedAnswer: boolean) => void;
 }
 
 const ReviewWritingCard = ({
@@ -18,24 +17,17 @@ const ReviewWritingCard = ({
   currentCardIndex,
   isLastCard,
   cardSection,
-  isAbleNextStep,
   handleCurrentCardIndex,
-  updateAnswerMap,
-  updateAnswerValidationMap,
   handleRecheckButtonClick,
   handleSubmitButtonClick,
 }: ReviewWritingCardProps) => {
+  const { isAbleNextStep } = useCheckNextStepAvailability({ currentCardIndex });
   return (
     <S.ReviewWritingCard>
       <S.Header>{cardSection.header}</S.Header>
       <S.Main>
         {cardSection.questions.map((question) => (
-          <QnABox
-            key={question.questionId}
-            question={question}
-            updateAnswerMap={updateAnswerMap}
-            updateAnswerValidationMap={updateAnswerValidationMap}
-          />
+          <QnABox key={question.questionId} question={question} />
         ))}
 
         <S.ButtonContainer>
@@ -47,7 +39,10 @@ const ReviewWritingCard = ({
           )}
           {isLastCard ? (
             <>
-              <CardSliderController.RecheckButton handleRecheckButtonClick={handleRecheckButtonClick} />
+              <CardSliderController.RecheckButton
+                isAbleNextStep={isAbleNextStep}
+                handleRecheckButtonClick={handleRecheckButtonClick}
+              />
               <CardSliderController.SubmitButton
                 isAbleNextStep={isAbleNextStep}
                 handleSubmitButtonClick={handleSubmitButtonClick}

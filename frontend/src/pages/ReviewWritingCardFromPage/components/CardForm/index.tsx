@@ -1,24 +1,27 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { useRecoilValue } from 'recoil';
 
-import { ConfirmModal, ProjectImg, AnswerListRecheckModal } from '@/components';
+import { ConfirmModal, AnswerListRecheckModal } from '@/components';
 import {
   useCurrentCardIndex,
   useGetDataToWrite,
   useMutateReview,
-  useQuestionList,
-  useReviewerAnswer,
+  useCardSectionList,
+  useResetFormRecoil,
   useSearchParamAndQuery,
   useSlideWidthAndHeight,
+  useUpdateDefaultAnswers,
 } from '@/hooks';
 import useModals from '@/hooks/useModals';
+import { answerMapAtom } from '@/recoil';
 import { ReviewWritingFormResult } from '@/types';
 
 import ReviewWritingCard from '../ReviewWritingCard';
 
 import * as S from './styles';
 
-const PROJECT_IMAGE_SIZE = '5rem';
+// const PROJECT_IMAGE_SIZE = '5rem';
 const INDEX_OFFSET = 1;
 const MODAL_KEYS = {
   confirm: 'CONFIRM',
@@ -30,38 +33,38 @@ const CardForm = () => {
     paramKey: 'reviewRequestCode',
   });
 
-  const { data } = useGetDataToWrite({ reviewRequestCode });
-  const { revieweeName, projectName } = data;
-
   const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
 
   const { wrapperRef, slideWidth, slideHeight, makeId } = useSlideWidthAndHeight({ currentCardIndex });
+  // 질문지 생성
+  const { data } = useGetDataToWrite({ reviewRequestCode });
+  const { revieweeName, projectName } = data;
+  const { cardSectionList } = useCardSectionList({ cardSectionListData: data.sections });
 
-  const { questionList, updatedSelectedCategory } = useQuestionList({ questionListSectionsData: data.sections });
+  // 답변
+  // 생성된 질문지를 바탕으로 답변 기본값 및 답변의 유효성 기본값 설정
+  useUpdateDefaultAnswers();
+  const answerMap = useRecoilValue(answerMapAtom);
 
-  const { answerMap, isAbleNextStep, updateAnswerMap, updateAnswerValidationMap } = useReviewerAnswer({
-    currentCardIndex,
-    questionList,
-    updatedSelectedCategory,
-  });
+  const { resetFormRecoil } = useResetFormRecoil();
+
   const { isOpen, openModal, closeModal } = useModals();
+
   const navigate = useNavigate();
 
-  const { postReview, isSuccess } = useMutateReview();
+  const executeAfterMutateSuccess = () => {
+    navigate('/user/review-writing-complete');
+    closeModal(MODAL_KEYS.confirm);
+  };
+  const { postReview } = useMutateReview({ executeAfterMutateSuccess });
 
   const handleSubmitButtonClick = () => {
     openModal(MODAL_KEYS.confirm);
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      navigate('/user/review-writing-complete');
-      closeModal(MODAL_KEYS.confirm);
-    }
-  }, [isSuccess]);
-
   const submitAnswer = async () => {
     if (!answerMap || !reviewRequestCode) return;
+
     const result: ReviewWritingFormResult = {
       reviewRequestCode: reviewRequestCode,
       answers: Array.from(answerMap.values()),
@@ -73,11 +76,18 @@ const CardForm = () => {
     openModal(MODAL_KEYS.recheck);
   };
 
+  useEffect(() => {
+    return () => {
+      // 페이지 나갈때 관련 recoil 상태 초기화
+      resetFormRecoil();
+    };
+  }, []);
+
   return (
     <>
       <S.CardForm>
         <S.RevieweeDescription>
-          <ProjectImg projectName={projectName} $size={PROJECT_IMAGE_SIZE} />
+          {/* 현재 프로젝트가 깃헙 연동이 아니라서 주석 처리 <ProjectImg projectName={projectName} $size={PROJECT_IMAGE_SIZE} /> */}
           <S.ProjectInfoContainer>
             <S.ProjectName>{projectName}</S.ProjectName>
             <p>
@@ -86,17 +96,14 @@ const CardForm = () => {
           </S.ProjectInfoContainer>
         </S.RevieweeDescription>
         <S.SliderContainer ref={wrapperRef} $translateX={currentCardIndex * slideWidth} $height={slideHeight}>
-          {questionList?.map((section, index) => (
+          {cardSectionList?.map((section, index) => (
             <S.Slide id={makeId(index)} key={section.sectionId}>
               <ReviewWritingCard
                 cardIndex={index}
                 currentCardIndex={currentCardIndex}
                 cardSection={section}
-                isAbleNextStep={isAbleNextStep}
-                isLastCard={questionList.length - INDEX_OFFSET === currentCardIndex}
+                isLastCard={cardSectionList.length - INDEX_OFFSET === currentCardIndex}
                 handleCurrentCardIndex={handleCurrentCardIndex}
-                updateAnswerMap={updateAnswerMap}
-                updateAnswerValidationMap={updateAnswerValidationMap}
                 handleRecheckButtonClick={handleRecheckButtonClick}
                 handleSubmitButtonClick={handleSubmitButtonClick}
               />
@@ -117,9 +124,9 @@ const CardForm = () => {
           </S.SubmitErrorMessage>
         </ConfirmModal>
       )}
-      {isOpen(MODAL_KEYS.recheck) && questionList && answerMap && (
+      {isOpen(MODAL_KEYS.recheck) && cardSectionList && answerMap && (
         <AnswerListRecheckModal
-          questionSectionList={questionList}
+          questionSectionList={cardSectionList}
           answerMap={answerMap}
           closeModal={() => closeModal(MODAL_KEYS.recheck)}
         />
