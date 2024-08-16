@@ -38,7 +38,7 @@ const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
           <S.Contents>{children}</S.Contents>
           <S.ButtonContainer>
             {buttonList.map(({ styleType, type, text, handleClick }) => (
-              <Button key={text} styleType={styleType} type={type || 'button'} onClick={handleClick}>
+              <Button key={text} styleType={styleType} type={type} onClick={handleClick}>
                 {text}
               </Button>
             ))}
