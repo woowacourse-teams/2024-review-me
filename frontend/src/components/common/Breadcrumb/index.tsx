@@ -11,10 +11,10 @@ export interface Path {
 }
 
 interface BreadcrumbProps {
-  paths: Path[];
+  pathList: Path[];
 }
 
-const Breadcrumb = ({ paths }: BreadcrumbProps) => {
+const Breadcrumb = ({ pathList }: BreadcrumbProps) => {
   const navigate = useNavigate();
 
   const handleNavigation = (path: PathType) => {
@@ -27,7 +27,7 @@ const Breadcrumb = ({ paths }: BreadcrumbProps) => {
 
   return (
     <S.BreadcrumbList>
-      {paths.map(({ pageName, path }, index) => (
+      {pathList.map(({ pageName, path }, index) => (
         <S.BreadcrumbItem key={index} onClick={() => handleNavigation(path)}>
           {pageName}
         </S.BreadcrumbItem>
