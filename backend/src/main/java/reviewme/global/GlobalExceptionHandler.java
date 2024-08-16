@@ -21,9 +21,9 @@ import org.springframework.web.server.MissingRequestValueException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import reviewme.global.exception.BadRequestException;
+import reviewme.global.exception.DataConsistencyException;
 import reviewme.global.exception.FieldErrorResponse;
 import reviewme.global.exception.NotFoundException;
-import reviewme.global.exception.ReviewMeException;
 import reviewme.global.exception.UnAuthorizedException;
 
 @Slf4j
@@ -32,25 +32,27 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ProblemDetail handleNotFoundException(NotFoundException ex) {
-        logReviewMeException(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getErrorMessage());
     }
 
     @ExceptionHandler(BadRequestException.class)
     public ProblemDetail handleBadRequestException(BadRequestException ex) {
-        logReviewMeException(ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getErrorMessage());
     }
 
     @ExceptionHandler(UnAuthorizedException.class)
     public ProblemDetail handleUnAuthorizedException(UnAuthorizedException ex) {
-        logReviewMeException(ex);
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getErrorMessage());
+    }
+
+    @ExceptionHandler(DataConsistencyException.class)
+    public ProblemDetail handleDataConsistencyException(DataConsistencyException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getErrorMessage());
     }
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleException(Exception ex) {
-        logInitialServerError(ex);
+        log.error("Initial server error is occurred", ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러가 발생했습니다.");
     }
 
@@ -112,18 +114,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> properties = Map.of("fieldErrors", fieldErrors);
         problemDetail.setProperties(properties);
         return problemDetail;
-    }
-
-    private void logReviewMeException(ReviewMeException ex) {
-        log.info("{} is occurred - {}",
-                ex.getClass().getSuperclass().getSimpleName(),
-                ex.getClass().getSimpleName(),
-                ex
-        );
-    }
-
-    private void logInitialServerError(Exception ex) {
-        log.error("Initial server error is occurred", ex);
     }
 
     private void logSpringException(Exception ex) {
