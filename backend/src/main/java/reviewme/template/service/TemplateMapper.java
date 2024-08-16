@@ -5,21 +5,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
-import reviewme.question.domain.Question2;
+import reviewme.question.domain.Question;
 import reviewme.question.domain.exception.MissingOptionItemsInOptionGroupException;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.repository.QuestionRepository2;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.SectionQuestion;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.TemplateSection;
-import reviewme.template.dto.response.OptionGroupResponse;
-import reviewme.template.dto.response.OptionItemResponse;
-import reviewme.template.dto.response.QuestionResponse;
-import reviewme.template.dto.response.SectionResponse;
-import reviewme.template.dto.response.TemplateResponse;
+import reviewme.template.service.dto.response.OptionGroupResponse;
+import reviewme.template.service.dto.response.OptionItemResponse;
+import reviewme.template.service.dto.response.QuestionResponse;
+import reviewme.template.service.dto.response.SectionResponse;
+import reviewme.template.service.dto.response.TemplateResponse;
 import reviewme.template.repository.SectionRepository;
 
 @Component
@@ -27,7 +27,7 @@ import reviewme.template.repository.SectionRepository;
 public class TemplateMapper {
 
     private final SectionRepository sectionRepository;
-    private final QuestionRepository2 questionRepository;
+    private final QuestionRepository questionRepository;
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
@@ -62,7 +62,7 @@ public class TemplateMapper {
     }
 
     private QuestionResponse mapToQuestionResponse(SectionQuestion sectionQuestion, ReviewGroup reviewGroup) {
-        Question2 question = questionRepository.getQuestionById(sectionQuestion.getQuestionId());
+        Question question = questionRepository.getQuestionById(sectionQuestion.getQuestionId());
         OptionGroupResponse optionGroupResponse = optionGroupRepository.findByQuestionId(question.getId())
                 .map(this::mapToOptionGroupResponse)
                 .orElse(null);
