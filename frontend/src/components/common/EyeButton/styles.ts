@@ -4,7 +4,7 @@ export const EyeButton = styled.button`
   display: inline-block;
 
   position: absolute;
-  top: 76%;
+  top: 73%;
   right: 1rem;
   transform: translateY(-50%);
 
