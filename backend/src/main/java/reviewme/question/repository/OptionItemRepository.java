@@ -7,16 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
-import reviewme.question.domain.exception.OptionItemNotFoundException;
 
 @Repository
 public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
 
-    List<OptionItem> findAllByOptionType(OptionType optionType);
-
     List<OptionItem> findAllByOptionGroupId(long optionGroupId);
-
-    boolean existsByOptionTypeAndId(OptionType optionType, long id);
 
     @Query(value = """
             SELECT o.id FROM option_item o
@@ -40,7 +35,14 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
             """, nativeQuery = true)
     List<OptionItem> findSelectedOptionItemsByReviewIdAndQuestionId(long reviewId, long questionId);
 
-    default OptionItem getOptionItemById(long id) {
-        return findById(id).orElseThrow(() -> new OptionItemNotFoundException(id));
-    }
+    @Query(value = """
+            SELECT o.* FROM option_item o
+            LEFT JOIN checkbox_answer_selected_option cao
+            ON cao.selected_option_id = o.id
+            LEFT JOIN checkbox_answer ca
+            ON cao.checkbox_answer_id = ca.id
+            WHERE ca.review_id = :reviewId
+            AND o.option_type = :#{#optionType.name()}
+            """, nativeQuery = true)
+    List<OptionItem> findByReviewIdAndOptionType(long reviewId, OptionType optionType);
 }
