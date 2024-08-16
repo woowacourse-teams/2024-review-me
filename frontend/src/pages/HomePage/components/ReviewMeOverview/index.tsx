@@ -28,7 +28,7 @@ const ReviewMeOverview = () => {
       </S.RowSectionContainer>
 
       <S.RowSectionContainer>
-        <img src={ArrowIcon} alt="화살표 아이콘" />
+        <S.ArrowWrapper src={ArrowIcon} alt="화살표 아이콘" />
       </S.RowSectionContainer>
 
       <S.RowSectionContainer>

@@ -20,6 +20,10 @@ export const ColumnSectionContainer = styled.div`
   flex-direction: column;
 `;
 
+export const ArrowWrapper = styled.img`
+  margin-top: 0.8rem;
+`;
+
 export const OverviewTitleContainer = styled.div`
   display: flex;
   justify-content: center;
