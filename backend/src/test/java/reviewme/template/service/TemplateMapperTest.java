@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
-import reviewme.question.domain.Question2;
+import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.domain.exception.MissingOptionItemsInOptionGroupException;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.repository.QuestionRepository2;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -23,9 +23,9 @@ import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.VisibleType;
 import reviewme.template.domain.exception.SectionNotFoundException;
-import reviewme.template.dto.response.QuestionResponse;
-import reviewme.template.dto.response.SectionResponse;
-import reviewme.template.dto.response.TemplateResponse;
+import reviewme.template.service.dto.response.QuestionResponse;
+import reviewme.template.service.dto.response.SectionResponse;
+import reviewme.template.service.dto.response.TemplateResponse;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
@@ -42,7 +42,7 @@ class TemplateMapperTest {
     SectionRepository sectionRepository;
 
     @Autowired
-    QuestionRepository2 questionRepository;
+    QuestionRepository questionRepository;
 
     @Autowired
     OptionGroupRepository optionGroupRepository;
@@ -56,8 +56,8 @@ class TemplateMapperTest {
     @Test
     void 리뷰_그룹과_템플릿으로_템플릿_응답을_매핑한다() {
         // given
-        Question2 question1 = new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1);
-        Question2 question2 = new Question2(true, QuestionType.CHECKBOX, "질문", "가이드라인", 1);
+        Question question1 = new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1);
+        Question question2 = new Question(true, QuestionType.CHECKBOX, "질문", "가이드라인", 1);
         questionRepository.saveAll(List.of(question1, question2));
 
         OptionGroup optionGroup = new OptionGroup(question2.getId(), 1, 2);
@@ -94,7 +94,7 @@ class TemplateMapperTest {
     @Test
     void 섹션의_선택된_옵션이_필요없는_경우_제공하지_않는다() {
         // given
-        Question2 question = new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1);
+        Question question = new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1);
         questionRepository.save(question);
 
         Section section = new Section(VisibleType.ALWAYS, List.of(question.getId()), null, "말머리1", 1);
@@ -117,7 +117,7 @@ class TemplateMapperTest {
     @Test
     void 가이드라인이_없는_경우_가이드_라인을_제공하지_않는다() {
         // given
-        Question2 question = new Question2(true, QuestionType.TEXT, "질문", null, 1);
+        Question question = new Question(true, QuestionType.TEXT, "질문", null, 1);
         questionRepository.save(question);
 
         OptionGroup optionGroup = new OptionGroup(question.getId(), 1, 2);
@@ -149,7 +149,7 @@ class TemplateMapperTest {
     @Test
     void 옵션_그룹이_없는_질문의_경우_옵션_그룹을_제공하지_않는다() {
         // given
-        Question2 question = new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1);
+        Question question = new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1);
         questionRepository.save(question);
 
         Section section = new Section(VisibleType.ALWAYS, List.of(question.getId()), null, "말머리1", 1);
@@ -186,8 +186,8 @@ class TemplateMapperTest {
     @Test
     void 템플릿_매핑_시_옵션_그룹에_해당하는_옵션_아이템이_없을_경우_예외가_발생한다() {
         // given
-        Question2 question1 = new Question2(true, QuestionType.TEXT, "질문", "가이드라인", 1);
-        Question2 question2 = new Question2(true, QuestionType.CHECKBOX, "질문", "가이드라인", 1);
+        Question question1 = new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1);
+        Question question2 = new Question(true, QuestionType.CHECKBOX, "질문", "가이드라인", 1);
         questionRepository.saveAll(List.of(question1, question2));
 
         OptionGroup optionGroup = new OptionGroup(question2.getId(), 1, 2);

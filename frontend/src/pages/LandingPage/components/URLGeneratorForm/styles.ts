@@ -7,8 +7,8 @@ export const InputContainer = styled.div`
 `;
 
 export const ErrorMessage = styled.p`
-  font-size: 1.3rem;
-  color: ${({ theme }) => theme.colors.red};
   height: 1.3rem;
   padding-left: 0.7rem;
+  font-size: 1.3rem;
+  color: ${({ theme }) => theme.colors.red};
 `;

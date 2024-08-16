@@ -10,7 +10,7 @@ const globalStyles = css`
   }
 
   body {
-    font-family: 'Pretendard-Regular', 'NanumGothic', 'Noto Sans', sans-serif;
+    font-family: 'Pretendard', 'Noto Sans', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;

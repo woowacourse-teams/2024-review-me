@@ -20,6 +20,7 @@ export const Textarea = styled.textarea<TextareaProps>`
   padding: 1.6rem;
 
   font-weight: ${({ theme }) => theme.fontWeight.medium};
+  overflow-wrap: break-word;
 
   border: 0.1rem solid ${({ $isError, theme }) => ($isError ? theme.colors.red : theme.colors.black)};
   border-radius: 0.8rem;

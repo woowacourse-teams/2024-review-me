@@ -6,11 +6,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
-import reviewme.question.domain.Question2;
+import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
-import reviewme.review.repository.QuestionRepository2;
+import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
 import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
@@ -21,13 +21,13 @@ import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdExcepti
 @RequiredArgsConstructor
 public class CreateCheckBoxAnswerRequestValidator {
 
-    private final QuestionRepository2 questionRepository;
+    private final QuestionRepository questionRepository;
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
     public void validate(CreateReviewAnswerRequest request) {
         validateNotContainingText(request);
-        Question2 question = questionRepository.getQuestionById(request.questionId());
+        Question question = questionRepository.getQuestionById(request.questionId());
         OptionGroup optionGroup = optionGroupRepository.findByQuestionId(question.getId())
                 .orElseThrow(() -> new OptionGroupNotFoundByQuestionIdException(question.getId()));
         validateRequiredQuestion(request, question);
@@ -41,7 +41,7 @@ public class CreateCheckBoxAnswerRequestValidator {
         }
     }
 
-    private void validateRequiredQuestion(CreateReviewAnswerRequest request, Question2 question) {
+    private void validateRequiredQuestion(CreateReviewAnswerRequest request, Question question) {
         if (question.isRequired() && request.selectedOptionIds() == null) {
             throw new MissingRequiredQuestionAnswerException(question.getId());
         }

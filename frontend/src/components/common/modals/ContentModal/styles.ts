@@ -6,6 +6,7 @@ export const ContentModalContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
 
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -18,8 +19,6 @@ export const ContentModalContainer = styled.div`
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
-
-  overflow: hidden;
 `;
 
 export const ContentModalHeader = styled.div`
@@ -30,9 +29,8 @@ export const ContentModalHeader = styled.div`
 `;
 
 export const Contents = styled.div`
-  padding-right: 1.2rem;
-
   overflow-y: auto;
+  padding-right: 1.2rem;
 `;
 
 export const CloseButton = styled.button`
