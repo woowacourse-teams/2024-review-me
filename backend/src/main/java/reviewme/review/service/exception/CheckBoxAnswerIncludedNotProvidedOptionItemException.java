@@ -11,7 +11,8 @@ public class CheckBoxAnswerIncludedNotProvidedOptionItemException extends BadReq
                                                                 List<Long> providedOptionIds,
                                                                 List<Long> submittedOptionIds) {
         super("제공되는 선택지에 없는 선택지를 응답했어요.");
-        log.warn("UnexpectedRequestException occurred. Answer included not provided options - questionId:{}, providedOptionIds: {}, submittedOptionIds: {}",
+        log.warn("UnexpectedRequestException occurred while creating review. "
+                        + "Answer included not provided options - questionId:{}, providedOptionIds: {}, submittedOptionIds: {}",
                 questionId, providedOptionIds, submittedOptionIds);
     }
 }

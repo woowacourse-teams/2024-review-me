@@ -8,6 +8,7 @@ public class InvalidReviewAccessByReviewGroupException extends BadRequestExcepti
 
     public InvalidReviewAccessByReviewGroupException(long reviewId, long reviewGroupId) {
         super("리뷰가 존재하지 않아요.");
-        log.warn("UnexpectedRequestException occurred. Review is not in review group - reviewId: {}, reviewGroupId: {}", reviewId, reviewGroupId);
+        log.warn("UnexpectedRequestException occurred while looking up review detail. "
+                + "Review is not in review group - reviewId: {}, reviewGroupId: {}", reviewId, reviewGroupId);
     }
 }
