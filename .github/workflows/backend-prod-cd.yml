@@ -1,4 +1,4 @@
-name: [RELEASE] CD using Github self-hosted runner
+name: "[RELEASE] CD using Github self-hosted runner"
 
 on:
   workflow_dispatch:
