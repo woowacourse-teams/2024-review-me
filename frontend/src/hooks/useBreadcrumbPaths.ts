@@ -10,21 +10,21 @@ const useBreadcrumbPaths = () => {
     { pageName: '연결 페이지', path: ROUTES.home }, // TODO: 연결 페이지 경로 결정되면 수정 필요
   ];
 
-  if (pathname === `/${ROUTES.review_list}`) {
+  if (pathname === `/${ROUTES.reviewList}`) {
     breadcrumbPathList.push({ pageName: '목록 페이지', path: pathname });
   }
 
-  if (pathname.includes(`/${ROUTES.review_writing}/`)) {
+  if (pathname.includes(`/${ROUTES.reviewWriting}/`)) {
     breadcrumbPathList.push({ pageName: '작성 페이지', path: pathname });
   }
 
-  if (pathname === `/${ROUTES.review_writing_complete}`) {
+  if (pathname === `/${ROUTES.reviewWritingComplete}`) {
     breadcrumbPathList.push({ pageName: '작성 페이지', path: -1 }, { pageName: '작성 완료 페이지', path: pathname });
   }
 
-  if (pathname.includes(ROUTES.detailed_review)) {
+  if (pathname.includes(ROUTES.detailedReview)) {
     breadcrumbPathList.push(
-      { pageName: '목록 페이지', path: ROUTES.review_list },
+      { pageName: '목록 페이지', path: ROUTES.reviewList },
       { pageName: '상세 페이지', path: pathname },
     );
   }

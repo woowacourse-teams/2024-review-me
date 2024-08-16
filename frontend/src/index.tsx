@@ -59,14 +59,14 @@ const router = createBrowserRouter([
         path: 'user',
         element: <div>user</div>,
       },
-      { path: `${ROUTES.review_writing}/:reviewRequestCode`, element: <ReviewWritingCardFormPage /> },
-      { path: ROUTES.review_writing_complete, element: <ReviewWritingCompletePage /> },
+      { path: `${ROUTES.reviewWriting}/:reviewRequestCode`, element: <ReviewWritingCardFormPage /> },
+      { path: ROUTES.reviewWritingComplete, element: <ReviewWritingCompletePage /> },
       {
-        path: ROUTES.review_list,
+        path: ROUTES.reviewList,
         element: <ReviewListPage />,
       },
       {
-        path: `${ROUTES.detailed_review}/:reviewId`,
+        path: `${ROUTES.detailedReview}/:reviewId`,
         element: <DetailedReviewPage />,
       },
     ],
