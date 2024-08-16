@@ -17,6 +17,7 @@ import {
 } from '@/pages';
 
 import { DEV_ENVIRONMENT } from './constants';
+import { ROUTES } from './constants/routes';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
@@ -46,7 +47,7 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: ROUTES.home,
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
@@ -58,14 +59,14 @@ const router = createBrowserRouter([
         path: 'user',
         element: <div>user</div>,
       },
-      { path: 'user/review-writing/:reviewRequestCode', element: <ReviewWritingCardFormPage /> },
-      { path: 'user/review-writing-complete', element: <ReviewWritingCompletePage /> },
+      { path: `${ROUTES.review_writing}/:reviewRequestCode`, element: <ReviewWritingCardFormPage /> },
+      { path: ROUTES.review_writing_complete, element: <ReviewWritingCompletePage /> },
       {
-        path: 'user/review-list',
+        path: ROUTES.review_list,
         element: <ReviewListPage />,
       },
       {
-        path: 'user/detailed-review/:reviewId',
+        path: `${ROUTES.detailed_review}/:reviewId`,
         element: <DetailedReviewPage />,
       },
     ],
