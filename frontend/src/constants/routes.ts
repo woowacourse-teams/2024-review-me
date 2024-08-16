@@ -1,7 +1,7 @@
 export const ROUTES = {
-  HOME: '/',
-  REVIEW_LIST: '/user/review-list',
-  REVIEW_WRITING: '/user/review-writing',
-  REVIEW_WRITING_COMPLETE: '/user/review-writing-complete',
-  DETAILED_REVIEW: '/user/detailed-review',
+  home: '/',
+  review_list: 'user/review-list',
+  review_writing: 'user/review-writing',
+  review_writing_complete: 'user/review-writing-complete',
+  detailed_review: 'user/detailed-review',
 };
