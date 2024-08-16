@@ -8,7 +8,6 @@ export const Description = styled.section`
   width: 100%;
   height: 9rem;
   margin: 0;
-
   padding: 1rem 3rem;
 
   background-color: ${({ theme }) => theme.colors.lightPurple};

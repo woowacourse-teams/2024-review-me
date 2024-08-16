@@ -17,6 +17,7 @@ interface PageContentsProps {
 
 const PageContents = ({ groupAccessCode }: PageContentsProps) => {
   const navigate = useNavigate();
+
   const { data: reviewListData } = useGetReviewList(groupAccessCode);
 
   const handleReviewClick = (id: number) => {
@@ -24,26 +25,24 @@ const PageContents = ({ groupAccessCode }: PageContentsProps) => {
   };
 
   return (
-    <>
-      <S.Layout>
-        <ReviewInfoSection projectName={reviewListData.projectName} revieweeName={reviewListData.revieweeName} />
-        {/* <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} /> */}
-        <S.ReviewSection>
-          {reviewListData.reviews.map((review) => (
-            // const isLastElement = pageIndex === data.pages.length - 1 && reviewIndex === page.reviews.length - 1;
-            <div key={review.reviewId} onClick={() => handleReviewClick(review.reviewId)}>
-              <ReviewCard
-                projectName={reviewListData.projectName}
-                createdAt={review.createdAt}
-                contentPreview={review.contentPreview}
-                categories={review.categories}
-              />
-              {/* <div ref={isLastElement ? lastReviewElementRef : null}></div> */}
-            </div>
-          ))}
-        </S.ReviewSection>
-      </S.Layout>
-    </>
+    <S.Layout>
+      <ReviewInfoSection projectName={reviewListData.projectName} revieweeName={reviewListData.revieweeName} />
+      {/* <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} /> */}
+      <S.ReviewSection>
+        {reviewListData.reviews.map((review) => (
+          // const isLastElement = pageIndex === data.pages.length - 1 && reviewIndex === page.reviews.length - 1;
+          <div key={review.reviewId} onClick={() => handleReviewClick(review.reviewId)}>
+            <ReviewCard
+              projectName={reviewListData.projectName}
+              createdAt={review.createdAt}
+              contentPreview={review.contentPreview}
+              categories={review.categories}
+            />
+            {/* <div ref={isLastElement ? lastReviewElementRef : null}></div> */}
+          </div>
+        ))}
+      </S.ReviewSection>
+    </S.Layout>
   );
 };
 
