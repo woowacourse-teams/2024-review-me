@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import EyeIcon from '@/assets/eye.svg';
 import EyeOffIcon from '@/assets/eyeOff.svg';
 
