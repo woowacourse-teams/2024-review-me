@@ -2,6 +2,7 @@ package reviewme.review.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -29,5 +30,21 @@ class TextAnswersTest {
 
         // then
         assertThat(actual.getContent()).isEqualTo("답변");
+    }
+
+    @Test
+    void 질문_ID에_해당하는_답변이_있는지_확인한다() {
+        // given
+        TextAnswers textAnswers = new TextAnswers(List.of(new TextAnswer(1, "답변")));
+
+        // when
+        boolean actual1 = textAnswers.hasAnswerByQuestionId(1);
+        boolean actual2 = textAnswers.hasAnswerByQuestionId(2);
+
+        // then
+        assertAll(
+                () -> assertThat(actual1).isTrue(),
+                () -> assertThat(actual2).isFalse()
+        );
     }
 }
