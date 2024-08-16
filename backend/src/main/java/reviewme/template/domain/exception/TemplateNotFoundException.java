@@ -8,6 +8,6 @@ public class TemplateNotFoundException extends NotFoundException {
 
     public TemplateNotFoundException(long id) {
         super("템플릿이 존재하지 않아요.");
-        log.info("TemplateNotFoundException is occurred - id: {}", id);
+        log.warn("TemplateNotFoundException is occurred - id: {}", id);
     }
 }
