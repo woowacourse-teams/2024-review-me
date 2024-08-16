@@ -18,8 +18,8 @@ import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
-import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
-import reviewme.review.service.exception.SelectedCheckBoxAnswerCountOutOfRange;
+import reviewme.review.service.exception.MissingRequiredAnswerException;
+import reviewme.review.service.exception.CheckBoxAnswerOutOfRangeException;
 import reviewme.support.ServiceTest;
 import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
 
@@ -95,7 +95,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createCheckBoxAnswerRequestValidator.validate(request))
-                .isInstanceOf(MissingRequiredQuestionAnswerException.class);
+                .isInstanceOf(MissingRequiredAnswerException.class);
     }
 
     @Test
@@ -133,7 +133,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createCheckBoxAnswerRequestValidator.validate(request))
-                .isInstanceOf(SelectedCheckBoxAnswerCountOutOfRange.class);
+                .isInstanceOf(CheckBoxAnswerOutOfRangeException.class);
     }
 
     @Test
@@ -155,6 +155,6 @@ class CreateCheckBoxAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createCheckBoxAnswerRequestValidator.validate(request))
-                .isInstanceOf(SelectedCheckBoxAnswerCountOutOfRange.class);
+                .isInstanceOf(CheckBoxAnswerOutOfRangeException.class);
     }
 }

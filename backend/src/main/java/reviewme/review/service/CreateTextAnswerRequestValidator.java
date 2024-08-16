@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question;
 import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
-import reviewme.review.service.exception.TextAnswerInculdedOptionException;
+import reviewme.review.service.exception.MissingRequiredAnswerException;
+import reviewme.review.service.exception.TextAnswerInculdedOptionItemException;
 
 @Component
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class CreateTextAnswerRequestValidator {
 
     private void validateNotIncludingOptions(CreateReviewAnswerRequest request) {
         if (request.selectedOptionIds() != null) {
-            throw new TextAnswerInculdedOptionException();
+            throw new TextAnswerInculdedOptionItemException();
         }
     }
 
@@ -33,7 +33,7 @@ public class CreateTextAnswerRequestValidator {
 
     private void validateQuestionRequired(Question question, CreateReviewAnswerRequest request) {
         if (question.isRequired() && request.text() == null) {
-            throw new MissingRequiredQuestionAnswerException(question.getId());
+            throw new MissingRequiredAnswerException(question.getId());
         }
     }
 }
