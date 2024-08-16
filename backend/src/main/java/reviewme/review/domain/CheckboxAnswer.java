@@ -27,9 +27,6 @@ public class CheckboxAnswer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "review_id", nullable = false, insertable = false, updatable = false)
-    private long reviewId;
-
     @Column(name = "question_id", nullable = false)
     private long questionId;
 
