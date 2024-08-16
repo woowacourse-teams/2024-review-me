@@ -20,9 +20,11 @@ export const OverviewItem = styled.div<OverviewItemStyleProps>`
     direction === 'row'
       ? `
        width: 68rem;
+       height: 23rem;
       `
       : `
           width: 30rem;
+          height: 45rem;
       `}
 `;
 
@@ -31,8 +33,19 @@ export const OverviewItemTitle = styled.p`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
-export const OverviewItemImg = styled.img`
+export const OverviewItemImg = styled.img<OverviewItemStyleProps>`
   object-fit: contain;
+
+  ${({ direction }) =>
+    direction === 'row'
+      ? `
+        width: 30rem;
+        height: 22rem;
+      `
+      : `
+          width: 15rem;
+          height: 20rem;
+      `}
 `;
 
 export const OverviewItemContent = styled.div`

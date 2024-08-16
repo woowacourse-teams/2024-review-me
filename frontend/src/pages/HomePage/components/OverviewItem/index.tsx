@@ -15,7 +15,7 @@ interface OverviewItemProps extends OverviewItemStyleProps {
 const OverviewItem: React.FC<OverviewItemProps> = ({ direction, imageSrc, title, description }) => {
   return (
     <S.OverviewItem direction={direction}>
-      <S.OverviewItemImg src={imageSrc} alt={title} />
+      <S.OverviewItemImg src={imageSrc} alt={title} direction={direction} />
       <S.OverviewItemContent>
         <S.OverviewItemTitle>{title}</S.OverviewItemTitle>
         <S.OverviewItemDescription>
