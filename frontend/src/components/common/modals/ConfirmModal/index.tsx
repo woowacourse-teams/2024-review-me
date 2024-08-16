@@ -9,7 +9,8 @@ import ModalPortal from '../ModalPortal';
 import * as S from './styles';
 
 interface ConfirmModalButton {
-  type: ButtonStyleType;
+  styleType: ButtonStyleType;
+  type?: 'button' | 'submit' | 'reset';
   text: string;
   handleClick: (e: React.MouseEvent) => void;
 }
@@ -36,8 +37,8 @@ const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
         <S.ConfirmModalContainer>
           <S.Contents>{children}</S.Contents>
           <S.ButtonContainer>
-            {buttonList.map(({ type, text, handleClick }) => (
-              <Button key={text} styleType={type} onClick={handleClick}>
+            {buttonList.map(({ styleType, type, text, handleClick }) => (
+              <Button key={text} styleType={styleType} type={type} onClick={handleClick}>
                 {text}
               </Button>
             ))}

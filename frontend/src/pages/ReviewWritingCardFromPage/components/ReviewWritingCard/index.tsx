@@ -19,7 +19,7 @@ const ReviewWritingCard = ({
   cardSection,
   handleCurrentCardIndex,
   handleRecheckButtonClick,
-  handleSubmitButtonClick,
+  handleConfirmModalOpenButtonClick,
 }: ReviewWritingCardProps) => {
   const { isAbleNextStep } = useCheckNextStepAvailability({ currentCardIndex });
   return (
@@ -43,9 +43,9 @@ const ReviewWritingCard = ({
                 isAbleNextStep={isAbleNextStep}
                 handleRecheckButtonClick={handleRecheckButtonClick}
               />
-              <CardSliderController.SubmitButton
+              <CardSliderController.ConfirmModalOpenButton
                 isAbleNextStep={isAbleNextStep}
-                handleSubmitButtonClick={handleSubmitButtonClick}
+                handleConfirmModalOpenButtonClick={handleConfirmModalOpenButtonClick}
               />
             </>
           ) : (

@@ -41,14 +41,19 @@ const NextButton = ({ isAbleNextStep, handleCurrentCardIndex }: NextButtonProps)
   );
 };
 
-interface SubmitButtonProps {
+interface ConfirmModalOpenButtonProps {
   isAbleNextStep: boolean;
-  handleSubmitButtonClick: () => void;
+  handleConfirmModalOpenButtonClick: () => void;
 }
-const SubmitButton = ({ isAbleNextStep, handleSubmitButtonClick }: SubmitButtonProps) => {
-  const styledType: ButtonStyleType = isAbleNextStep ? 'primary' : 'disabled';
+const ConfirmModalOpenButton = ({ isAbleNextStep, handleConfirmModalOpenButtonClick }: ConfirmModalOpenButtonProps) => {
+  const styleType: ButtonStyleType = isAbleNextStep ? 'primary' : 'disabled';
   return (
-    <Button disabled={!isAbleNextStep} styleType={styledType} type={'submit'} onClick={handleSubmitButtonClick}>
+    <Button
+      disabled={!isAbleNextStep}
+      styleType={styleType}
+      type={'button'}
+      onClick={handleConfirmModalOpenButtonClick}
+    >
       제출
     </Button>
   );
@@ -67,7 +72,11 @@ const RecheckButton = ({ isAbleNextStep, handleRecheckButtonClick }: RecheckButt
   );
 };
 
-export interface CardSliderControllerProps extends PrevButtonProps, NextButtonProps, SubmitButtonProps, RecheckButton {}
+export interface CardSliderControllerProps
+  extends PrevButtonProps,
+    NextButtonProps,
+    ConfirmModalOpenButtonProps,
+    RecheckButton {}
 
 const CardSliderController = () => {
   return <></>;
@@ -75,7 +84,7 @@ const CardSliderController = () => {
 
 CardSliderController.PrevButton = PrevButton;
 CardSliderController.NextButton = NextButton;
-CardSliderController.SubmitButton = SubmitButton;
+CardSliderController.ConfirmModalOpenButton = ConfirmModalOpenButton;
 CardSliderController.RecheckButton = RecheckButton;
 
 export default CardSliderController;

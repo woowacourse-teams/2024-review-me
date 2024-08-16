@@ -58,11 +58,13 @@ const CardForm = () => {
   };
   const { postReview } = useMutateReview({ executeAfterMutateSuccess });
 
-  const handleSubmitButtonClick = () => {
+  const handleConfirmModalOpenButtonClick = () => {
     openModal(MODAL_KEYS.confirm);
   };
 
-  const submitAnswer = async () => {
+  const submitAnswer = async (event: React.MouseEvent) => {
+    event.preventDefault();
+
     if (!answerMap || !reviewRequestCode) return;
 
     const result: ReviewWritingFormResult = {
@@ -105,7 +107,7 @@ const CardForm = () => {
                 isLastCard={cardSectionList.length - INDEX_OFFSET === currentCardIndex}
                 handleCurrentCardIndex={handleCurrentCardIndex}
                 handleRecheckButtonClick={handleRecheckButtonClick}
-                handleSubmitButtonClick={handleSubmitButtonClick}
+                handleConfirmModalOpenButtonClick={handleConfirmModalOpenButtonClick}
               />
             </S.Slide>
           ))}
@@ -113,8 +115,8 @@ const CardForm = () => {
       </S.CardForm>
       {isOpen(MODAL_KEYS.confirm) && (
         <ConfirmModal
-          confirmButton={{ type: 'primary', text: '제출', handleClick: submitAnswer }}
-          cancelButton={{ type: 'secondary', text: '취소', handleClick: () => closeModal(MODAL_KEYS.confirm) }}
+          confirmButton={{ styleType: 'primary', type: 'submit', text: '제출', handleClick: submitAnswer }}
+          cancelButton={{ styleType: 'secondary', text: '취소', handleClick: () => closeModal(MODAL_KEYS.confirm) }}
           handleClose={() => closeModal(MODAL_KEYS.confirm)}
           isClosableOnBackground={true}
         >
