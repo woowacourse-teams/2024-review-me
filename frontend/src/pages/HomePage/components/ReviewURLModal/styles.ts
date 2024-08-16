@@ -7,7 +7,7 @@ export const ReviewURLModal = styled.div`
   height: 18rem;
 `;
 
-export const ModalTitle = styled.h3`
+export const ModalTitle = styled.p`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   font-size: 2rem;
   margin-bottom: 4.5rem;
