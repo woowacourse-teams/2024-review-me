@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
-
 import { ConfirmModal, ProjectImg, AnswerListRecheckModal } from '@/components';
 import {
   useCurrentCardIndex,
@@ -45,23 +42,18 @@ const CardForm = () => {
     updatedSelectedCategory,
   });
   const { isOpen, openModal, closeModal } = useModals();
-  const navigate = useNavigate();
 
-  const { postReview, isSuccess } = useMutateReview();
+  const { postReview } = useMutateReview();
 
-  const handleSubmitButtonClick = () => {
+  const handleConfirmModalOpenButtonClick = () => {
     openModal(MODAL_KEYS.confirm);
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      navigate('/user/review-writing-complete');
-      closeModal(MODAL_KEYS.confirm);
-    }
-  }, [isSuccess]);
+  const submitAnswer = async (event: React.MouseEvent) => {
+    event.preventDefault();
 
-  const submitAnswer = async () => {
     if (!answerMap || !reviewRequestCode) return;
+
     const result: ReviewWritingFormResult = {
       reviewRequestCode: reviewRequestCode,
       answers: Array.from(answerMap.values()),
@@ -98,7 +90,7 @@ const CardForm = () => {
                 updateAnswerMap={updateAnswerMap}
                 updateAnswerValidationMap={updateAnswerValidationMap}
                 handleRecheckButtonClick={handleRecheckButtonClick}
-                handleSubmitButtonClick={handleSubmitButtonClick}
+                handleConfirmModalOpenButtonClick={handleConfirmModalOpenButtonClick}
               />
             </S.Slide>
           ))}
@@ -106,8 +98,8 @@ const CardForm = () => {
       </S.CardForm>
       {isOpen(MODAL_KEYS.confirm) && (
         <ConfirmModal
-          confirmButton={{ type: 'primary', text: '제출', handleClick: submitAnswer }}
-          cancelButton={{ type: 'secondary', text: '취소', handleClick: () => closeModal(MODAL_KEYS.confirm) }}
+          confirmButton={{ styleType: 'primary', type: 'submit', text: '제출', handleClick: submitAnswer }}
+          cancelButton={{ styleType: 'secondary', text: '취소', handleClick: () => closeModal(MODAL_KEYS.confirm) }}
           handleClose={() => closeModal(MODAL_KEYS.confirm)}
           isClosableOnBackground={true}
         >

@@ -23,7 +23,7 @@ const ReviewWritingCard = ({
   updateAnswerMap,
   updateAnswerValidationMap,
   handleRecheckButtonClick,
-  handleSubmitButtonClick,
+  handleConfirmModalOpenButtonClick,
 }: ReviewWritingCardProps) => {
   return (
     <S.ReviewWritingCard>
@@ -47,10 +47,13 @@ const ReviewWritingCard = ({
           )}
           {isLastCard ? (
             <>
-              <CardSliderController.RecheckButton handleRecheckButtonClick={handleRecheckButtonClick} />
-              <CardSliderController.SubmitButton
+              <CardSliderController.RecheckButton
                 isAbleNextStep={isAbleNextStep}
-                handleSubmitButtonClick={handleSubmitButtonClick}
+                handleRecheckButtonClick={handleRecheckButtonClick}
+              />
+              <CardSliderController.ConfirmModalOpenButton
+                isAbleNextStep={isAbleNextStep}
+                handleConfirmModalOpenButtonClick={handleConfirmModalOpenButtonClick}
               />
             </>
           ) : (

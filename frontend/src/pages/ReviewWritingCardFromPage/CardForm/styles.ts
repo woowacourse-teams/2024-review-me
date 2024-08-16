@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const CardForm = styled.div`
+export const CardForm = styled.form`
   position: relative;
   overflow: hidden;
   width: ${({ theme }) => theme.formWidth};
