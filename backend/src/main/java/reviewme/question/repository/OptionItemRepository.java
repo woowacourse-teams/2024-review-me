@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
-import reviewme.question.domain.exception.OptionItemNotFoundException;
 
 @Repository
 public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
@@ -39,8 +38,4 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
             ORDER BY o.position ASC
             """, nativeQuery = true)
     List<OptionItem> findSelectedOptionItemsByReviewIdAndQuestionId(long reviewId, long questionId);
-
-    default OptionItem getOptionItemById(long id) {
-        return findById(id).orElseThrow(() -> new OptionItemNotFoundException(id));
-    }
 }
