@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
-import reviewme.template.dto.response.TemplateResponse;
+import reviewme.template.service.dto.response.TemplateResponse;
 
 @Tag(name = "리뷰 폼 관리")
 public interface TemplateApi {

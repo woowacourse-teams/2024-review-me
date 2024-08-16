@@ -9,12 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
-import reviewme.question.domain.Question2;
+import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.Review2;
-import reviewme.review.repository.QuestionRepository2;
-import reviewme.review.repository.ReviewRepository2;
+import reviewme.review.domain.Review;
+import reviewme.review.repository.ReviewRepository;
 
 @DataJpaTest
 class OptionItemRepositoryTest {
@@ -23,10 +22,10 @@ class OptionItemRepositoryTest {
     private OptionItemRepository optionItemRepository;
 
     @Autowired
-    private ReviewRepository2 reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
-    private QuestionRepository2 questionRepository;
+    private QuestionRepository questionRepository;
 
     @Test
     void 리뷰_아이디로_선택한_옵션_아이템_아이디를_불러온다() {
@@ -41,7 +40,7 @@ class OptionItemRepositoryTest {
                 new CheckboxAnswer(1, List.of(optionId1, optionId2)),
                 new CheckboxAnswer(2, List.of(optionId3, optionId4))
         );
-        Review2 review = reviewRepository.save(new Review2(0, 0, List.of(), checkboxAnswers));
+        Review review = reviewRepository.save(new Review(0, 0, List.of(), checkboxAnswers));
 
         // when
         Set<Long> actual = optionItemRepository.findSelectedOptionItemIdsByReviewId(review.getId());
@@ -63,10 +62,10 @@ class OptionItemRepositoryTest {
                 new CheckboxAnswer(1, List.of(optionId1, optionId3)),
                 new CheckboxAnswer(2, List.of(optionId4))
         );
-        Question2 question1 = questionRepository.save(new Question2(true, QuestionType.CHECKBOX, "질문", null, 1));
-        questionRepository.save(new Question2(true, QuestionType.CHECKBOX, "질문", null, 1));
+        Question question1 = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "질문", null, 1));
+        questionRepository.save(new Question(true, QuestionType.CHECKBOX, "질문", null, 1));
 
-        Review2 review = reviewRepository.save(new Review2(0, 0, List.of(), checkboxAnswers));
+        Review review = reviewRepository.save(new Review(0, 0, List.of(), checkboxAnswers));
 
         // when
         List<OptionItem> actual = optionItemRepository.findSelectedOptionItemsByReviewIdAndQuestionId(
