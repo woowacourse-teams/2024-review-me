@@ -22,6 +22,8 @@ export const PasswordInputContainer = styled.div`
   border: 0.1rem solid ${({ theme }) => theme.colors.placeholder};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
+  position: relative;
+
   &:focus-within {
     border: 0.2rem solid ${({ theme }) => theme.colors.primary};
   }
