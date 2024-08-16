@@ -20,6 +20,7 @@ import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupExceptio
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.repository.ReviewRepository;
+import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
 import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -127,17 +128,18 @@ class ReviewDetailLookupServiceTest {
     }
 
     @Test
-    void 섹션을_보이게_하는_옵션을_선택하지_않은_경우_해당_섹션을_제외하고_보여준다() {
+    void 답변이_있는_리뷰만_보여준다() {
         // given
         ReviewGroup reviewGroup = reviewGroupRepository.save(new ReviewGroup("aru", "reviewme", "ABCD", "0000"));
         Question question1 = questionRepository.save(new Question(true, QuestionType.TEXT, "질문", null, 1));
-        Question question2 = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "질문", null, 2));
-        Question question3 = questionRepository.save(new Question(true, QuestionType.TEXT, "체크 1 조건", "가이드라인", 3));
+        Question question2 = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "질문", null, 1));
+        Question question3 = questionRepository.save(new Question(true, QuestionType.TEXT, "체크 1 조건", "가이드라인", 1));
+        Question question4 = questionRepository.save(new Question(false, QuestionType.TEXT, "선택 질문", "가이드라인", 1));
         OptionGroup optionGroup = optionGroupRepository.save(new OptionGroup(question2.getId(), 1, 3));
         OptionItem optionItem1 = optionItemRepository.save(
                 new OptionItem("체크 1", optionGroup.getId(), 1, OptionType.KEYWORD));
         OptionItem optionItem2 = optionItemRepository.save(
-                new OptionItem("체크 2", optionGroup.getId(), 2, OptionType.KEYWORD));
+                new OptionItem("체크 2", optionGroup.getId(), 1, OptionType.KEYWORD));
 
         Section section1 = sectionRepository.save(
                 new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", 1)
@@ -145,11 +147,19 @@ class ReviewDetailLookupServiceTest {
         Section section2 = sectionRepository.save(
                 new Section(VisibleType.CONDITIONAL, List.of(question3.getId()), optionItem1.getId(), "2번 섹션", 2)
         );
-        Template template = templateRepository.save(new Template(List.of(section1.getId(), section2.getId())));
+        Section section3 = sectionRepository.save(
+                new Section(VisibleType.ALWAYS, List.of(question4.getId()), null, "3번 섹션", 3)
+        );
 
-        List<TextAnswer> textAnswers = List.of(new TextAnswer(question1.getId(), "질문 1 답변"));
+        Template template = templateRepository.save(new Template(List.of(section1.getId(), section2.getId(), section3.getId())));
+
+        List<TextAnswer> textAnswers = List.of(
+                new TextAnswer(1, "질문 1 답변"),
+                new TextAnswer(3, "질문 3 답변")
+        );
         List<CheckboxAnswer> checkboxAnswers = List.of(
-                new CheckboxAnswer(question2.getId(), List.of(optionItem2.getId())));
+                new CheckboxAnswer(2, List.of(optionItem1.getId(), optionItem2.getId()))
+        );
         Review review = reviewRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), textAnswers, checkboxAnswers)
         );
@@ -158,6 +168,9 @@ class ReviewDetailLookupServiceTest {
         TemplateAnswerResponse reviewDetail = reviewDetailLookupService.getReviewDetail("0000", review.getId());
 
         // then
-        assertThat(reviewDetail.sections()).hasSize(1);
+        List<SectionAnswerResponse> sections = reviewDetail.sections();
+        assertThat(sections).extracting(SectionAnswerResponse::sectionId)
+                .isNotEmpty()
+                .doesNotContain(section3.getId());
     }
 }
