@@ -8,6 +8,6 @@ public class TextAnswerInculdedOptionItemException extends BadRequestException {
 
     public TextAnswerInculdedOptionItemException() {
         super("텍스트형 응답은 옵션 항목을 포함할 수 없어요.");
-        log.info("Text type answer cannot have option items");
+        log.warn("Text type answer cannot have option items");
     }
 }

@@ -8,6 +8,6 @@ public class MissingRequiredAnswerException extends BadRequestException {
 
     public MissingRequiredAnswerException(long questionId) {
         super("필수 질문은 반드시 응답해야 해요.");
-        log.info("Required question must be answered - questionId: {}", questionId);
+        log.warn("Required question must be answered - questionId: {}", questionId);
     }
 }
