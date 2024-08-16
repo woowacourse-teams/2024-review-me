@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router';
 
 import * as S from './styles';
 
-interface Path {
+type PathType = string | number;
+
+export interface Path {
   pageName: string;
-  path: string;
+  path: PathType;
 }
 
 interface BreadcrumbProps {
@@ -15,10 +17,18 @@ interface BreadcrumbProps {
 const Breadcrumb = ({ paths }: BreadcrumbProps) => {
   const navigate = useNavigate();
 
+  const handleNavigation = (path: PathType) => {
+    if (typeof path === 'number') {
+      navigate(path);
+    } else {
+      navigate(path);
+    }
+  };
+
   return (
     <S.BreadcrumbList>
       {paths.map(({ pageName, path }, index) => (
-        <S.BreadcrumbItem key={index} onClick={() => navigate(path)}>
+        <S.BreadcrumbItem key={index} onClick={() => handleNavigation(path)}>
           {pageName}
         </S.BreadcrumbItem>
       ))}

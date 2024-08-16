@@ -18,7 +18,7 @@ const App = () => {
         </SideModal>
       )} */}
       <Topbar openSidebar={openSidebar} />
-      <Breadcrumb paths={breadcrumbPaths} />
+      {breadcrumbPaths.length > 1 && <Breadcrumb paths={breadcrumbPaths} />}
       <Main>
         <Outlet />
       </Main>
