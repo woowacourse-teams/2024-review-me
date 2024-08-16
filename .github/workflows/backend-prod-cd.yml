@@ -1,16 +1,15 @@
-name: CD using Github self-hosted runner
+name: "[RELEASE] CD using Github self-hosted runner"
 
 on:
   workflow_dispatch:
   push:
     branches:
-      - main
-      - develop
+      - release
     paths:
       - 'backend/**'
 
 env:
-  ARTIFACT_NAME: review-me-dev
+  ARTIFACT_NAME: review-me-prod
   ARTIFACT_DIRECTORY: ./backend/build/libs
   APPLICATION_DIRECTORY: ~/review-me-app
 
@@ -53,7 +52,7 @@ jobs:
   deploy:
     name: Deploy via self-hosted runner
     needs: build
-    runs-on: self-hosted
+    runs-on: [self-hosted, prod]
 
     steps:
       - name: Checkout to secret repository
@@ -96,4 +95,4 @@ jobs:
       - name: Start server
         run: |
           cd ${{ env.APPLICATION_DIRECTORY }}
-          sudo nohup java -jar ${{ env.ARTIFACT_NAME }}.jar --server.port=80 --spring.config.location=application-dev.yml &
+          sudo nohup java -jar ${{ env.ARTIFACT_NAME }}.jar --server.port=80 --spring.config.location=application-prod.yml &

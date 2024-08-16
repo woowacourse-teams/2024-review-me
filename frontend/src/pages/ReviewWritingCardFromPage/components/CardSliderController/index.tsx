@@ -41,31 +41,42 @@ const NextButton = ({ isAbleNextStep, handleCurrentCardIndex }: NextButtonProps)
   );
 };
 
-interface SubmitButtonProps {
+interface ConfirmModalOpenButtonProps {
   isAbleNextStep: boolean;
-  handleSubmitButtonClick: () => void;
+  handleConfirmModalOpenButtonClick: () => void;
 }
-const SubmitButton = ({ isAbleNextStep, handleSubmitButtonClick }: SubmitButtonProps) => {
-  const styledType: ButtonStyleType = isAbleNextStep ? 'primary' : 'disabled';
+const ConfirmModalOpenButton = ({ isAbleNextStep, handleConfirmModalOpenButtonClick }: ConfirmModalOpenButtonProps) => {
+  const styleType: ButtonStyleType = isAbleNextStep ? 'primary' : 'disabled';
   return (
-    <Button disabled={!isAbleNextStep} styleType={styledType} type={'submit'} onClick={handleSubmitButtonClick}>
+    <Button
+      disabled={!isAbleNextStep}
+      styleType={styleType}
+      type={'button'}
+      onClick={handleConfirmModalOpenButtonClick}
+    >
       제출
     </Button>
   );
 };
 interface RecheckButton {
+  isAbleNextStep: boolean;
   handleRecheckButtonClick: () => void;
 }
 
-const RecheckButton = ({ handleRecheckButtonClick }: RecheckButton) => {
+const RecheckButton = ({ isAbleNextStep, handleRecheckButtonClick }: RecheckButton) => {
+  const styledType: ButtonStyleType = isAbleNextStep ? 'secondary' : 'disabled';
   return (
-    <Button styleType="secondary" type={'button'} onClick={handleRecheckButtonClick}>
-      제출 전 확인
+    <Button disabled={!isAbleNextStep} styleType={styledType} type={'button'} onClick={handleRecheckButtonClick}>
+      작성 내용 확인
     </Button>
   );
 };
 
-export interface CardSliderControllerProps extends PrevButtonProps, NextButtonProps, SubmitButtonProps, RecheckButton {}
+export interface CardSliderControllerProps
+  extends PrevButtonProps,
+    NextButtonProps,
+    ConfirmModalOpenButtonProps,
+    RecheckButton {}
 
 const CardSliderController = () => {
   return <></>;
@@ -73,7 +84,7 @@ const CardSliderController = () => {
 
 CardSliderController.PrevButton = PrevButton;
 CardSliderController.NextButton = NextButton;
-CardSliderController.SubmitButton = SubmitButton;
+CardSliderController.ConfirmModalOpenButton = ConfirmModalOpenButton;
 CardSliderController.RecheckButton = RecheckButton;
 
 export default CardSliderController;

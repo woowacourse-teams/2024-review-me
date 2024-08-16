@@ -3,16 +3,6 @@ import styled from '@emotion/styled';
 export const QnASection = styled.section`
   margin-bottom: 2rem;
 `;
-export const LimitGuideMessage = styled.div`
-  width: fit-content;
-  height: 2.4rem;
-  margin-top: 2.5rem;
-  p {
-    font-weight: ${({ theme }) => theme.fontWeight.semibold};
-    color: ${({ theme }) => theme.colors.primary};
-    border-radius: ${({ theme }) => theme.borderRadius.basic};
-  }
-`;
 
 export const QuestionGuideline = styled.p`
   margin-bottom: 2rem;
