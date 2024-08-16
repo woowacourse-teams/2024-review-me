@@ -25,6 +25,7 @@ import reviewme.global.exception.DataConsistencyException;
 import reviewme.global.exception.FieldErrorResponse;
 import reviewme.global.exception.NotFoundException;
 import reviewme.global.exception.UnAuthorizedException;
+import reviewme.global.exception.UnexpectedRequestException;
 
 @Slf4j
 @RestControllerAdvice
@@ -45,9 +46,14 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getErrorMessage());
     }
 
+    @ExceptionHandler(UnexpectedRequestException.class)
+    public ProblemDetail handleUnexpectedRequestException(UnexpectedRequestException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getErrorMessage());
+    }
+
     @ExceptionHandler(DataConsistencyException.class)
     public ProblemDetail handleDataConsistencyException(DataConsistencyException ex) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getErrorMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getErrorMessage());
     }
 
     @ExceptionHandler(Exception.class)
