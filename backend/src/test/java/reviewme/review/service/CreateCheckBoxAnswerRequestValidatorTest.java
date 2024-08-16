@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
-import reviewme.question.domain.Question2;
+import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.domain.exception.QuestionNotFoundException;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.dto.request.create.CreateReviewAnswerRequest;
-import reviewme.review.repository.QuestionRepository2;
+import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
 import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
@@ -30,7 +30,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     private CreateCheckBoxAnswerRequestValidator createCheckBoxAnswerRequestValidator;
 
     @Autowired
-    private QuestionRepository2 questionRepository;
+    private QuestionRepository questionRepository;
 
     @Autowired
     private OptionGroupRepository optionGroupRepository;
@@ -38,11 +38,11 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     @Autowired
     private OptionItemRepository optionItemRepository;
 
-    private Question2 savedQuestion;
+    private Question savedQuestion;
 
     @BeforeEach
     void setUp() {
-        savedQuestion = questionRepository.save(new Question2(true, QuestionType.CHECKBOX, "질문", null, 1));
+        savedQuestion = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "질문", null, 1));
     }
 
     @Test

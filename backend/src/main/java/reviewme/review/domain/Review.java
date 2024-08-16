@@ -14,12 +14,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "review")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = "id")
 @Getter
 public class Review {
 
@@ -27,20 +29,30 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "template_id", nullable = false)
+    private long templateId;
+
     @Column(name = "review_group_id", nullable = false)
     private long reviewGroupId;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "review_id", nullable = false, updatable = false)
-    private List<ReviewContent> reviewContents;
+    private List<TextAnswer> textAnswers;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "review_id", nullable = false, updatable = false)
+    private List<CheckboxAnswer> checkboxAnswers;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Review(long reviewGroupId, List<ReviewContent> reviewContents, LocalDateTime createdAt) {
+    public Review(long templateId, long reviewGroupId,
+                  List<TextAnswer> textAnswers, List<CheckboxAnswer> checkboxAnswers) {
+        this.templateId = templateId;
         this.reviewGroupId = reviewGroupId;
-        this.reviewContents = reviewContents;
-        this.createdAt = createdAt;
+        this.textAnswers = textAnswers;
+        this.checkboxAnswers = checkboxAnswers;
+        this.createdAt = LocalDateTime.now();
     }
 
     public LocalDate getCreatedDate() {
