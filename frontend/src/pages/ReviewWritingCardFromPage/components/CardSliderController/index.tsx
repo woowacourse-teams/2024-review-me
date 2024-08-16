@@ -64,10 +64,10 @@ interface RecheckButton {
 }
 
 const RecheckButton = ({ isAbleNextStep, handleRecheckButtonClick }: RecheckButton) => {
-  const styleType: ButtonStyleType = isAbleNextStep ? 'secondary' : 'disabled';
+  const styledType: ButtonStyleType = isAbleNextStep ? 'secondary' : 'disabled';
   return (
-    <Button styleType={styleType} type={'button'} onClick={handleRecheckButtonClick}>
-      제출 전 확인
+    <Button disabled={!isAbleNextStep} styleType={styledType} type={'button'} onClick={handleRecheckButtonClick}>
+      작성 내용 확인
     </Button>
   );
 };
