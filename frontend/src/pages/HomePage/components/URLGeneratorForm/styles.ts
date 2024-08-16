@@ -17,6 +17,16 @@ export const InputContainer = styled.div`
   position: relative;
 `;
 
+export const PasswordInputContainer = styled.div`
+  display: flex;
+  border: 0.1rem solid ${({ theme }) => theme.colors.placeholder};
+  border-radius: ${({ theme }) => theme.borderRadius.basic};
+
+  &:focus-within {
+    border: 0.2rem solid ${({ theme }) => theme.colors.primary};
+  }
+`;
+
 export const Label = styled.label`
   margin-bottom: 1.2rem;
 `;
