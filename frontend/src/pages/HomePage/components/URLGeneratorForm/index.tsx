@@ -120,7 +120,7 @@ const URLGeneratorForm = () => {
     <S.URLGeneratorForm>
       <FormLayout title="함께한 팀원에게 리뷰를 받아보세요!" direction="column">
         <S.InputContainer>
-          <S.Label htmlFor="reviewee-name">리뷰 받을 사람의 이름을 적어주세요</S.Label>
+          <S.Label htmlFor="reviewee-name">본인의 이름을 적어주세요</S.Label>
           <Input
             id="reviewee-name"
             value={revieweeName}
@@ -142,7 +142,7 @@ const URLGeneratorForm = () => {
           <S.ErrorMessage>{projectNameErrorMessage}</S.ErrorMessage>
         </S.InputContainer>
         <S.InputContainer>
-          <S.Label htmlFor="password">리뷰 확인을 위한 비밀번호를 적어주세요</S.Label>
+          <S.Label htmlFor="password">리뷰 확인에 사용할 비밀번호를 적어주세요</S.Label>
           <S.InputInfo>{`${MIN_PASSWORD_INPUT}~${MAX_PASSWORD_INPUT}자의 영문(대/소문자),숫자만 사용가능해요`}</S.InputInfo>
           <Input id="password" value={password} onChange={handlePasswordInputChange} type="text" placeholder="abc123" />
           <S.ErrorMessage>{passwordErrorMessage}</S.ErrorMessage>
@@ -153,7 +153,7 @@ const URLGeneratorForm = () => {
           onClick={handleUrlCreationButtonClick}
           disabled={!isFormValid}
         >
-          리뷰 요청 URL 생성하기
+          리뷰 링크 생성하기
         </Button>
         {isOpen(MODAL_KEYS.confirm) && (
           <ReviewURLModal reviewURL={reviewURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />

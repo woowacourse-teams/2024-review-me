@@ -21,8 +21,8 @@ const ReviewMeOverview = () => {
           <OverviewItem
             direction="row"
             imageSrc={OverviewImg1}
-            title="리뷰이"
-            description={['리뷰 요청 URL을 만들어요', '리뷰어에게 리뷰 요청 URL을 보내요']}
+            title="리뷰 받는 사람 (You)"
+            description={['나의 리뷰 링크를 만들어요', '리뷰어에게 리뷰 링크를 보내요']}
           />
         </S.ColumnSectionContainer>
       </S.RowSectionContainer>
@@ -35,19 +35,15 @@ const ReviewMeOverview = () => {
         <OverviewItem
           direction="column"
           imageSrc={OverviewImg2}
-          title="리뷰어"
-          description={['리뷰 요청 URL에 접속해요', '리뷰 작성하기 버튼을 클릭해서 리뷰를 작성해요']}
+          title="리뷰 쓰는 사람"
+          description={['리뷰 링크에 접속해요', '리뷰 작성하기를 통해 리뷰를 작성해요']}
         />
 
         <OverviewItem
           direction="column"
           imageSrc={OverviewImg3}
-          title="리뷰이"
-          description={[
-            '리뷰 요청 URL에 접속해요',
-            '리뷰 확인하기 버튼을 클릭하고 비밀번호를 입력해요',
-            '받은 리뷰를 확인해요',
-          ]}
+          title="리뷰 받는 사람 (You)"
+          description={['리뷰 링크에 접속해요', '리뷰 확인을 위한 비밀번호를 입력해요', '받은 리뷰를 확인해요']}
         />
       </S.RowSectionContainer>
     </S.ReviewMeOverview>
