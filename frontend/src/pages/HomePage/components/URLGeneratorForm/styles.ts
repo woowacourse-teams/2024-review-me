@@ -13,6 +13,8 @@ export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+
+  position: relative;
 `;
 
 export const Label = styled.label`

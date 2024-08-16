@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import { DataForURL } from '@/apis/group';
-import { Button, Input } from '@/components';
+import { Button, Input, EyeButton } from '@/components';
+import { useEyeButton } from '@/hooks';
 import useModals from '@/hooks/useModals';
 import { debounce } from '@/utils/debounce';
 
@@ -41,6 +42,7 @@ const URLGeneratorForm = () => {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
   const mutation = usePostDataForURL();
+  const { isOff, handleEyeButtonToggle } = useEyeButton();
   const { isOpen, openModal, closeModal } = useModals();
 
   const isFormValid =
@@ -64,6 +66,7 @@ const URLGeneratorForm = () => {
   const resetInputs = () => {
     setRevieweeName('');
     setProjectName('');
+    setPassword('');
   };
 
   const getCompleteURL = (reviewRequestCode: string) => {
@@ -113,6 +116,7 @@ const URLGeneratorForm = () => {
       setPasswordErrorMessage(INVALID_CHAR_ERROR_MESSAGE);
       return;
     }
+
     setPasswordErrorMessage('');
   }, [password]);
 
@@ -126,7 +130,7 @@ const URLGeneratorForm = () => {
             value={revieweeName}
             onChange={handleNameInputChange}
             type="text"
-            placeholder="행성이"
+            placeholder="이름"
           />
           <S.ErrorMessage>{revieweeNameErrorMessage}</S.ErrorMessage>
         </S.InputContainer>
@@ -144,7 +148,14 @@ const URLGeneratorForm = () => {
         <S.InputContainer>
           <S.Label htmlFor="password">리뷰 확인에 사용할 비밀번호를 적어주세요</S.Label>
           <S.InputInfo>{`${MIN_PASSWORD_INPUT}~${MAX_PASSWORD_INPUT}자의 영문(대/소문자),숫자만 사용가능해요`}</S.InputInfo>
-          <Input id="password" value={password} onChange={handlePasswordInputChange} type="text" placeholder="abc123" />
+          <Input
+            id="password"
+            value={password}
+            onChange={handlePasswordInputChange}
+            type={isOff ? 'password' : 'text'}
+            placeholder="abc123"
+          />
+          <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />
           <S.ErrorMessage>{passwordErrorMessage}</S.ErrorMessage>
         </S.InputContainer>
         <Button
