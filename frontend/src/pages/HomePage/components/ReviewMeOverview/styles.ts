@@ -33,7 +33,7 @@ export const OverviewTitleContainer = styled.div`
   margin-bottom: 3rem;
 `;
 
-export const OverviewTitle = styled.h2`
+export const OverviewTitle = styled.p`
   font-size: 3.8rem;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 
