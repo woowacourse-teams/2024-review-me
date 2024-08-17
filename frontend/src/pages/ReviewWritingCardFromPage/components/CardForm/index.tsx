@@ -96,7 +96,6 @@ const CardForm = () => {
     }
   };
 
-  const submitAnswer = async () => {
   const submitAnswer = async (event: React.MouseEvent) => {
     event.preventDefault();
 
