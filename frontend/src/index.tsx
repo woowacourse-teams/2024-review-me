@@ -14,6 +14,7 @@ import {
   ReviewListPage,
   ReviewWritingCompletePage,
   ReviewWritingCardFormPage,
+  ReviewDashboardPage,
 } from '@/pages';
 
 import { DEV_ENVIRONMENT } from './constants';
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: `${ROUTES.detailedReview}/:reviewId`,
         element: <DetailedReviewPage />,
+      },
+      {
+        path: `/reviewDashboard`, // NOTE: 임시 경로
+        element: <ReviewDashboardPage />,
       },
     ],
   },
