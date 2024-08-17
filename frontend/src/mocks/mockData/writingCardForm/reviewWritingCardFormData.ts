@@ -9,6 +9,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
   sections: [
     {
       sectionId: 1,
+      sectionName: '카테고리 선택',
       visible: 'ALWAYS',
       onSelectedOptionId: null,
       header: 'bada와 함께 한 기억을 떠올려볼게요.',
@@ -44,6 +45,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
     },
     {
       sectionId: 2,
+      sectionName: '커뮤니케이션, 협업 능력',
       visible: 'CONDITIONAL',
       onSelectedOptionId: 1,
       header: '이제, 선택한 순간들을 바탕으로 bada에 대한 리뷰를 작성해볼게요.',
@@ -84,6 +86,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
     },
     {
       sectionId: 3,
+      sectionName: '문제해결 능력',
       visible: 'CONDITIONAL',
       onSelectedOptionId: 2,
       header: '이제, 선택한 순간들을 바탕으로 bada에 대한 리뷰를 작성해볼게요.',
@@ -132,6 +135,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
     },
     {
       sectionId: 4,
+      sectionName: '시간 관리 능력',
       visible: 'CONDITIONAL',
       onSelectedOptionId: 3,
       header: '이제, 선택한 순간들을 바탕으로 bada에 대한 리뷰를 작성해볼게요.',
@@ -173,6 +177,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
     },
     {
       sectionId: 5,
+      sectionName: '기술 역량, 전문 지식',
       visible: 'CONDITIONAL',
       onSelectedOptionId: 4,
       header: '이제, 선택한 순간들을 바탕으로 bada에 대한 리뷰를 작성해볼게요.',
@@ -218,6 +223,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
     },
     {
       sectionId: 6,
+      sectionName: '성장 마인드셋',
       visible: 'CONDITIONAL',
       onSelectedOptionId: 5,
       header: '이제, 선택한 순간들을 바탕으로 bada에 대한 리뷰를 작성해볼게요.',
@@ -261,6 +267,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
     },
     {
       sectionId: 7,
+      sectionName: '단점 피드백',
       visible: 'ALWAYS',
       onSelectedOptionId: null,
       header: 'bada의 성장을 도와주세요!',
@@ -278,6 +285,7 @@ export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
     },
     {
       sectionId: 8,
+      sectionName: '추가 리뷰 및 응원',
       visible: 'ALWAYS',
       onSelectedOptionId: null,
       header: '리뷰를 더 하고 싶은 리뷰어를 위한 추가 리뷰!',
