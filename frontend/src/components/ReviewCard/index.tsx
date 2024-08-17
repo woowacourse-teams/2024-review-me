@@ -15,9 +15,10 @@ const ReviewCard = ({ projectName, createdAt, contentPreview, categories }: Revi
     <S.Layout>
       <S.Header>
         <S.HeaderContent>
-          <div>
+          {/* NOTE: 추후에 깃허브 로고를 다른 이미지로 대체할 수 있어서 일단 주석 처리 */}
+          {/* <div>
             <img src={GithubLogoIcon} alt="깃허브 로고" />
-          </div>
+          </div> */}
           <div>
             <S.Title>{projectName}</S.Title>
             <S.SubTitle>{createdAt}</S.SubTitle>
