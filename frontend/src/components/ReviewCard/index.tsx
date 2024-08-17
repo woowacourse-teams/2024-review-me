@@ -1,4 +1,3 @@
-import GithubLogoIcon from '@/assets/githubLogo.svg';
 import { Category } from '@/types';
 
 import * as S from './styles';
