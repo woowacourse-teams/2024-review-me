@@ -9,7 +9,7 @@ export const OverviewItem = styled.div<OverviewItemStyleProps>`
   justify-content: center;
   gap: 2rem;
 
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.white};
 
   /* NOTE: 투명도가 반영된 색이라 그런지 피그마에서의 색과 다름 */
   /* background-color: ${({ theme }) => theme.colors.sidebarBackground}; */
