@@ -20,7 +20,6 @@ const ReviewURLModal = ({ reviewURL, closeModal }: ReviewURLModalProps) => {
 
   const handleCloseButtonClick = () => {
     if (isChecked) closeModal();
-    return;
   };
 
   return (
