@@ -7,17 +7,12 @@ export const Container = styled.div`
 `;
 
 export const NullText = styled.span`
-  transform: rotate(-20deg);
-
   font-size: 25rem;
   font-weight: ${({ theme }) => theme.fontWeight.bolder};
-  color: #3f393b;
-  text-shadow: 2rem 2rem 0.7rem rgba(0, 0, 0, 0.2);
+  color: #e0e1e3;
 `;
 
 export const EmptyReviewsText = styled.span`
-  margin-top: 3rem;
   font-size: ${({ theme }) => theme.fontSize.medium};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  color: ${({ theme }) => theme.colors.disabledText};
 `;
