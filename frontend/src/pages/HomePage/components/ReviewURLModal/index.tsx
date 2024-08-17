@@ -35,18 +35,16 @@ const ReviewURLModal = ({ reviewURL, closeModal }: ReviewURLModalProps) => {
           <S.Data>{reviewURL}</S.Data>
           <CopyTextButton targetText={reviewURL} alt="리뷰 URL 복사하기"></CopyTextButton>
         </S.ReviewURLModalItem>
-        <S.WarningWrapper>
-          <S.CheckContainer>
-            <Checkbox
-              id="is-confirmed-checkbox"
-              isChecked={isChecked}
-              handleChange={handleCheckboxClick}
-              $style={{ width: '2.3rem', height: '2.3rem' }}
-            />
-            <S.CheckMessage>URL을 저장해두었어요!</S.CheckMessage>
-          </S.CheckContainer>
-          <S.Warning>* 창이 닫히면 URL을 다시 확인할 수 없어요!</S.Warning>
-        </S.WarningWrapper>
+        <S.CheckContainer>
+          <Checkbox
+            id="is-confirmed-checkbox"
+            isChecked={isChecked}
+            handleChange={handleCheckboxClick}
+            $style={{ width: '2.3rem', height: '2.3rem' }}
+          />
+          <S.CheckMessage>URL을 저장해두었어요!</S.CheckMessage>
+        </S.CheckContainer>
+        <S.WarningMessage>* 창이 닫히면 URL을 다시 확인할 수 없어요!</S.WarningMessage>
       </S.ReviewURLModal>
     </AlertModal>
   );
