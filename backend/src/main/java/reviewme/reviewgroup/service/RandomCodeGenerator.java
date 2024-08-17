@@ -1,12 +1,13 @@
 package reviewme.reviewgroup.service;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RandomCodeGenerator {
 
-    private static final Random random = new Random();
+    private static final Random random = ThreadLocalRandom.current();
     private static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
     private static final String NUMBERS = "0123456789";
