@@ -1,10 +1,12 @@
 package reviewme.reviewgroup.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
@@ -37,5 +39,12 @@ class ReviewGroupLookupServiceTest {
                 () -> assertThat(response.revieweeName()).isEqualTo(reviewGroup.getReviewee()),
                 () -> assertThat(response.projectName()).isEqualTo(reviewGroup.getProjectName())
         );
+    }
+
+    @Test
+    void 리뷰_요청_코드에_대한_리뷰_그룹이_존재하지_않을_경우_예외가_발생한다() {
+        // given, when, then
+        assertThatThrownBy(() -> reviewGroupLookupService.findReviewGroup("reviewRequestCode"))
+                .isInstanceOf(ReviewGroupNotFoundByRequestReviewCodeException.class);
     }
 }
