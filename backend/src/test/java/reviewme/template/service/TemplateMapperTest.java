@@ -33,25 +33,25 @@ import reviewme.template.repository.TemplateRepository;
 class TemplateMapperTest {
 
     @Autowired
-    TemplateMapper templateMapper;
+    private TemplateMapper templateMapper;
 
     @Autowired
-    TemplateRepository templateRepository;
+    private TemplateRepository templateRepository;
 
     @Autowired
-    SectionRepository sectionRepository;
+    private SectionRepository sectionRepository;
 
     @Autowired
-    QuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
 
     @Autowired
-    OptionGroupRepository optionGroupRepository;
+    private OptionGroupRepository optionGroupRepository;
 
     @Autowired
-    OptionItemRepository optionItemRepository;
+    private OptionItemRepository optionItemRepository;
 
     @Autowired
-    ReviewGroupRepository reviewGroupRepository;
+    private ReviewGroupRepository reviewGroupRepository;
 
     @Test
     void 리뷰_그룹과_템플릿으로_템플릿_응답을_매핑한다() {
