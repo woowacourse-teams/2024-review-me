@@ -62,6 +62,7 @@ public abstract class ApiTest {
                 .host("api.review-me.page")
                 .removePort();
         HeadersModifyingOperationPreprocessor requestHeaderModifier = modifyHeaders()
+                .set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .remove(HttpHeaders.CONTENT_LENGTH);
         HeadersModifyingOperationPreprocessor responseHeaderModifier = modifyHeaders()
                 .remove(HttpHeaders.CONTENT_LENGTH)
@@ -80,11 +81,10 @@ public abstract class ApiTest {
                 .build();
 
         spec = RestAssuredMockMvc.given()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .mockMvc(mockMvc);
     }
 
     protected MockMvcRequestSpecification givenWithSpec() {
-        return spec;
+        return spec.contentType(MediaType.APPLICATION_JSON_VALUE);
     }
 }

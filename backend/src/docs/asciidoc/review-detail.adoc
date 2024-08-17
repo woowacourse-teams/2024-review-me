@@ -1,0 +1,7 @@
+==== 리뷰 단건 조회
+
+operation::review-detail[snippets="curl-request,request-headers,path-parameters,http-response,response-fields"]
+
+==== 접근 코드가 올바르지 않은 경우
+
+operation::review-detail-invalid-group-access-code[snippets="http-response"]
