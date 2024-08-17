@@ -11,10 +11,10 @@ import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
-class ReviewGroupFindServiceTest {
+class ReviewGroupLookupServiceTest {
 
     @Autowired
-    ReviewGroupFindService reviewGroupFindService;
+    ReviewGroupLookupService reviewGroupLookupService;
 
     @Autowired
     ReviewGroupRepository reviewGroupRepository;
@@ -30,7 +30,7 @@ class ReviewGroupFindServiceTest {
         ));
 
         // when
-        ReviewGroupResponse response = reviewGroupFindService.findReviewGroup(reviewGroup.getReviewRequestCode());
+        ReviewGroupResponse response = reviewGroupLookupService.findReviewGroup(reviewGroup.getReviewRequestCode());
 
         // then
         assertAll(

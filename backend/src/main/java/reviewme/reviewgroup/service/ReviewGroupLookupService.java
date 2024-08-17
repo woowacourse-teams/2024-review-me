@@ -9,7 +9,7 @@ import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
 
 @Service
 @RequiredArgsConstructor
-public class ReviewGroupFindService {
+public class ReviewGroupLookupService {
 
     private final ReviewGroupRepository reviewGroupRepository;
 

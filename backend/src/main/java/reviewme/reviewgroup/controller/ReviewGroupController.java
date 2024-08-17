@@ -12,14 +12,14 @@ import reviewme.reviewgroup.service.ReviewGroupService;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
-import reviewme.reviewgroup.service.ReviewGroupFindService;
+import reviewme.reviewgroup.service.ReviewGroupLookupService;
 
 @RestController
 @RequiredArgsConstructor
 public class ReviewGroupController implements ReviewGroupApi {
 
     private final ReviewGroupService reviewGroupService;
-    private final ReviewGroupFindService findService;
+    private final ReviewGroupLookupService reviewGroupLookupService;
 
     @PostMapping("/v2/groups")
     public ResponseEntity<ReviewGroupCreationResponse> createReviewGroup(
@@ -31,7 +31,7 @@ public class ReviewGroupController implements ReviewGroupApi {
 
     @GetMapping("/v2/groups")
     public ResponseEntity<ReviewGroupResponse> findReviewGroup(@RequestParam String reviewRequestCode) {
-        ReviewGroupResponse response = findService.findReviewGroup(reviewRequestCode);
+        ReviewGroupResponse response = reviewGroupLookupService.findReviewGroup(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 }
