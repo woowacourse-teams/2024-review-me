@@ -6,8 +6,8 @@ export const KeywordSection = styled.section`
 `;
 
 export const KeywordList = styled.ul`
-  list-style-type: disc;
   padding-left: 2rem;
+  list-style-type: disc;
 `;
 
 export const KeywordItem = styled.li`
