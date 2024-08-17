@@ -1,0 +1,3 @@
+==== 리뷰 그룹 생성
+
+operation::review-group-create[snippets="http-request,request-fields,http-response,response-fields"]
