@@ -1,30 +1,37 @@
 package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static reviewme.fixture.OptionItemFixture.꼬리_질문_선택지;
+import static reviewme.fixture.QuestionFixture.꼬리_질문_서술형;
+import static reviewme.fixture.QuestionFixture.꼬리_질문_선택형;
+import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.SectionFixture.꼬리_질문_섹션;
 
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
-import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question;
-import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
-import reviewme.review.service.dto.request.CreateReviewRequest;
-import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.question.repository.QuestionRepository;
+import reviewme.review.domain.CheckBoxAnswerSelectedOption;
+import reviewme.review.domain.CheckboxAnswer;
+import reviewme.review.domain.Review;
+import reviewme.review.domain.TextAnswer;
+import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.repository.TextAnswerRepository;
+import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
+import reviewme.review.service.dto.request.CreateReviewRequest;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
-import reviewme.template.domain.VisibleType;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
@@ -61,70 +68,75 @@ class CreateReviewServiceTest {
     @Autowired
     private CheckboxAnswerRepository checkboxAnswerRepository;
 
-    private final String reviewRequestCode = "리뷰요청코드";
-
-    @BeforeEach
-    void setUp() {
-        reviewGroupRepository.save(
-                new ReviewGroup("리뷰어", "프로젝트", reviewRequestCode, "그룹접근코드")
-        );
-        templateRepository.save(
-                new Template(List.of(1L))
-        );
-        sectionRepository.save(
-                new Section(VisibleType.ALWAYS, List.of(1L), 1L, "섹션", 1)
-        );
-    }
-
     @Test
     void 텍스트가_포함된_리뷰를_저장한다() {
         // given
-        String expectedTextAnswer = "서술형답변";
-        Question savedQuestion = questionRepository.save(
-                new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1)
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹.create());
+        Question question1 = questionRepository.save(꼬리_질문_서술형.create());
+        Question question2 = questionRepository.save(꼬리_질문_서술형.create());
+        Section section = sectionRepository.save(
+                꼬리_질문_섹션.createWithQuestionIds(List.of(question1.getId(), question2.getId()))
         );
-        CreateReviewAnswerRequest createReviewAnswerRequest = new CreateReviewAnswerRequest(
-                savedQuestion.getId(), null, expectedTextAnswer
-        );
+        Template template = templateRepository.save(new Template(List.of(section.getId())));
+
+        String content1 = "답변1";
+        String content2 = "답변2";
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(
-                reviewRequestCode, List.of(createReviewAnswerRequest)
+                reviewGroup.getReviewRequestCode(),
+                List.of(new CreateReviewAnswerRequest(question1.getId(), null, content1),
+                        new CreateReviewAnswerRequest(question2.getId(), null, content2))
         );
 
         // when
         createReviewService.createReview(createReviewRequest);
 
         // then
-        assertThat(reviewRepository.findAll()).hasSize(1);
-        assertThat(textAnswerRepository.findAll()).hasSize(1);
+        assertAll(
+                () -> assertThat(reviewRepository.findAll())
+                        .extracting(Review::getReviewGroupId, Review::getTemplateId)
+                        .containsExactlyInAnyOrder(
+                                tuple(reviewGroup.getId(), template.getId())
+                        ),
+                () -> assertThat(textAnswerRepository.findAll())
+                        .extracting(TextAnswer::getQuestionId, TextAnswer::getContent)
+                        .containsExactlyInAnyOrder(
+                                tuple(question1.getId(), content1),
+                                tuple(question2.getId(), content2)
+                        )
+        );
     }
 
     @Test
     void 체크박스가_포함된_리뷰를_저장한다() {
         // given
-        Question savedQuestion = questionRepository.save(
-                new Question(true, QuestionType.CHECKBOX, "질문", "가이드라인", 1)
-        );
-        OptionGroup savedOptionGroup = optionGroupRepository.save(
-                new OptionGroup(savedQuestion.getId(), 2, 2)
-        );
-        OptionItem savedOptionItem1 = optionItemRepository.save(
-                new OptionItem("선택지1", savedOptionGroup.getId(), 1, OptionType.KEYWORD)
-        );
-        OptionItem savedOptionItem2 = optionItemRepository.save(
-                new OptionItem("선택지2", savedOptionGroup.getId(), 2, OptionType.KEYWORD)
-        );
-        CreateReviewAnswerRequest createReviewAnswerRequest = new CreateReviewAnswerRequest(
-                savedQuestion.getId(), List.of(savedOptionItem1.getId(), savedOptionItem2.getId()), null
-        );
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹.create());
+        Question question = questionRepository.save(꼬리_질문_선택형.create());
+        OptionGroup optionGroup = optionGroupRepository.save(new OptionGroup(question.getId(), 2, 2));
+        OptionItem optionItem1 = optionItemRepository.save(꼬리_질문_선택지.createWithOptionGroupId(optionGroup.getId()));
+        OptionItem optionItem2 = optionItemRepository.save(꼬리_질문_선택지.createWithOptionGroupId(optionGroup.getId()));
+        Section savedSection = sectionRepository.save(꼬리_질문_섹션.createWithQuestionIds(List.of(question.getId())));
+        Template savedTemplate = templateRepository.save(new Template(List.of(savedSection.getId())));
+
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(
-                reviewRequestCode, List.of(createReviewAnswerRequest)
+                reviewGroup.getReviewRequestCode(),
+                List.of(new CreateReviewAnswerRequest(
+                        question.getId(), List.of(optionItem1.getId(), optionItem2.getId()), null))
         );
 
         // when
         createReviewService.createReview(createReviewRequest);
 
         // then
-        assertThat(reviewRepository.findAll()).hasSize(1);
-        assertThat(checkboxAnswerRepository.findAll()).hasSize(1);
+        assertAll(
+                () -> assertThat(reviewRepository.findAll())
+                        .extracting(Review::getReviewGroupId, Review::getTemplateId)
+                        .containsExactlyInAnyOrder(
+                                tuple(reviewGroup.getId(), savedTemplate.getId())
+                        ),
+                () -> assertThat(checkboxAnswerRepository.findAll())
+                        .flatExtracting(CheckboxAnswer::getSelectedOptionIds)
+                        .extracting(CheckBoxAnswerSelectedOption::getSelectedOptionId)
+                        .containsExactlyInAnyOrder(optionItem1.getId(), optionItem2.getId())
+        );
     }
 }
