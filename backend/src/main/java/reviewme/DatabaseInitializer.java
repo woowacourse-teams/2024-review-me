@@ -37,6 +37,11 @@ public class DatabaseInitializer {
     @PostConstruct
     @Transactional
     void setup() {
+        // 템플릿이 이미 존재하면 종료
+        if (templateRepository.existsById(1L)) {
+            return;
+        }
+
         // 카테고리 선택 섹션
         long categoryQuestionId = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "프로젝트 기간 동안, {revieweeName}의 강점이 드러났던 순간을 선택해주세요.", null, 1)).getId();
         long categorySectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(categoryQuestionId), null, "{revieweeName}와 함께 한 기억을 떠올려볼게요.", 1)).getId();
