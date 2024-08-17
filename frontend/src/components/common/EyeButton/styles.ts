@@ -1,14 +1,16 @@
 import styled from '@emotion/styled';
 
+const EYE_BUTTON_SIZE = '1.6rem';
+
 export const EyeButton = styled.button`
   display: inline-block;
 
   position: absolute;
-  top: calc((100% - 1.6rem) / 2);
+  top: calc((100% - ${EYE_BUTTON_SIZE}) / 2);
   right: 1rem;
 
-  width: 1.6rem;
-  height: 1.6rem;
+  width: ${EYE_BUTTON_SIZE};
+  height: ${EYE_BUTTON_SIZE};
 
   cursor: pointer;
 `;
