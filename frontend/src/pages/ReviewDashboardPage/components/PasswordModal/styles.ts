@@ -26,6 +26,11 @@ export const Label = styled.label`
   margin-bottom: 0.5rem;
 `;
 
+export const PasswordInputContainer = styled.div`
+  display: flex;
+  position: relative;
+`;
+
 export const ErrorMessage = styled.p`
   font-size: 1.2rem;
   color: ${({ theme }) => theme.colors.red};
