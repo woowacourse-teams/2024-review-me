@@ -13,6 +13,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.restdocs.headers.HeaderDescriptor;
@@ -21,6 +23,9 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
 import reviewme.review.service.dto.request.CreateReviewRequest;
+import reviewme.review.service.dto.response.list.ReceivedReviewCategoryResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 
 class ReviewApiTest extends ApiTest {
 
@@ -145,7 +150,7 @@ class ReviewApiTest extends ApiTest {
     }
 
     @Test
-    void 접근_코드가_올바르지_않은_경우_예외를_발생한다() {
+    void 리뷰_단건_조회시_접근_코드가_올바르지_않은_경우_예외를_발생한다() {
         BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyString(), anyLong()))
                 .willThrow(new ReviewGroupNotFoundByRequestReviewCodeException(eq(anyString())));
 
@@ -167,6 +172,68 @@ class ReviewApiTest extends ApiTest {
                 .pathParam("id", "1")
                 .header("groupAccessCode", "00001234")
                 .when().get("/v2/reviews/{id}")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(404);
+    }
+
+    @Test
+    void 자신이_받은_리뷰_목록을_조회한다() {
+        List<ReceivedReviewResponse> receivedReviews = List.of(
+                new ReceivedReviewResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
+                        List.of(new ReceivedReviewCategoryResponse(1L, "카테고리 1"))),
+                new ReceivedReviewResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
+                        List.of(new ReceivedReviewCategoryResponse(2L, "카테고리 2")))
+        );
+        ReceivedReviewsResponse response = new ReceivedReviewsResponse("아루", "리뷰미", receivedReviews);
+        BDDMockito.given(reviewService.findReceivedReviews(anyString()))
+                .willReturn(response);
+
+        HeaderDescriptor[] requestHeaderDescriptors = {
+                headerWithName("groupAccessCode").description("그룹 접근 코드")
+        };
+
+        FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("revieweeName").description("리뷰이 이름"),
+                fieldWithPath("projectName").description("프로젝트 이름"),
+                fieldWithPath("reviews[].reviewId").description("리뷰 ID"),
+                fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
+                fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
+                fieldWithPath("reviews[].categories[].optionId").description("카테고리 ID"),
+                fieldWithPath("reviews[].categories[].content").description("카테고리 내용")
+        };
+
+        RestDocumentationResultHandler handler = document(
+                "received-reviews",
+                requestHeaders(requestHeaderDescriptors),
+                responseFields(responseFieldDescriptors)
+        );
+
+        givenWithSpec().log().all()
+                .header("groupAccessCode", "00001234")
+                .when().get("/v2/reviews")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(200);
+    }
+
+    @Test
+    void 자신이_받은_리뷰_조회시_접근_코드가_올바르지_않은_경우_예외를_발생한다() {
+        BDDMockito.given(reviewService.findReceivedReviews(anyString()))
+                .willThrow(new ReviewGroupNotFoundByRequestReviewCodeException(anyString()));
+
+        HeaderDescriptor[] requestHeaderDescriptors = {
+                headerWithName("groupAccessCode").description("그룹 접근 코드")
+        };
+
+        RestDocumentationResultHandler handler = document(
+                "received-reviews-invalid-group-access-code",
+                requestHeaders(requestHeaderDescriptors)
+        );
+
+        givenWithSpec().log().all()
+                .header("groupAccessCode", "00001234")
+                .when().get("/v2/reviews")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(404);
