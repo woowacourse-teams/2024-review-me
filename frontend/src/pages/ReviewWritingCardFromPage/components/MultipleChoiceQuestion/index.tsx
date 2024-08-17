@@ -20,7 +20,14 @@ const MultipleChoiceQuestion = ({ question }: MultipleChoiceQuestionProps) => {
     isOpen ? openModal(MODAL_KEY.confirm) : closeModal(MODAL_KEY.confirm);
   };
 
-  const { isOpenLimitGuide, handleCheckboxChange, isSelectedCheckbox, unCheckTargetOption } = useMultipleChoice({
+  const {
+    isOpenLimitGuide,
+    handleCheckboxChange,
+    isSelectedCheckbox,
+    unCheckTargetOption,
+    updateVisitedCardList,
+    unCheckTargetOptionId,
+  } = useMultipleChoice({
     question,
     handleModalOpen,
   });
@@ -31,6 +38,7 @@ const MultipleChoiceQuestion = ({ question }: MultipleChoiceQuestionProps) => {
 
   const handleModalConfirmButtonClick = () => {
     unCheckTargetOption();
+    updateVisitedCardList(unCheckTargetOptionId!);
     closeModal(MODAL_KEY.confirm);
   };
 

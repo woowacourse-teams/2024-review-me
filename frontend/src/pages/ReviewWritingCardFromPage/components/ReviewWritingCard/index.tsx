@@ -10,6 +10,7 @@ interface ReviewWritingCardProps extends Omit<CardSliderControllerProps, 'isAble
   cardIndex: number;
   isLastCard: boolean;
   cardSection: ReviewWritingCardSection;
+  handleNextClick: () => void;
 }
 
 const ReviewWritingCard = ({
@@ -17,11 +18,13 @@ const ReviewWritingCard = ({
   currentCardIndex,
   isLastCard,
   cardSection,
+  handleNextClick,
   handleCurrentCardIndex,
   handleRecheckButtonClick,
   handleSubmitButtonClick,
 }: ReviewWritingCardProps) => {
   const { isAbleNextStep } = useCheckNextStepAvailability({ currentCardIndex });
+
   return (
     <S.ReviewWritingCard>
       <S.Header>{cardSection.header}</S.Header>
@@ -49,10 +52,7 @@ const ReviewWritingCard = ({
               />
             </>
           ) : (
-            <CardSliderController.NextButton
-              isAbleNextStep={isAbleNextStep}
-              handleCurrentCardIndex={handleCurrentCardIndex}
-            />
+            <CardSliderController.NextButton isAbleNextStep={isAbleNextStep} handleCurrentCardIndex={handleNextClick} />
           )}
         </S.ButtonContainer>
       </S.Main>
