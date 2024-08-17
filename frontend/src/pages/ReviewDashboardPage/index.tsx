@@ -1,5 +1,10 @@
+import { useNavigate } from 'react-router';
+
 import DashboardIcon from '@/assets/dashboard.svg';
 import { Button } from '@/components';
+
+// TODO: 상수명 단수로 고치기
+import { ROUTES } from '@/constants/routes';
 import useModals from '@/hooks/useModals';
 
 import PasswordModal from './components/PasswordModal';
@@ -16,12 +21,16 @@ const MODAL_KEYS = {
 
 const ReviewDashboardPage = ({ revieweeName, projectName }: ReviewDashboardPageProps) => {
   const { isOpen, openModal, closeModal } = useModals();
+  const navigate = useNavigate();
 
-  const handleReviewWritingButtonClick = () => {};
+  const handleReviewWritingButtonClick = () => {
+    navigate(`/${ROUTES.reviewWriting}/ABCD1234`);
+  };
+
   const handleReviewListButtonClick = () => {
     openModal(MODAL_KEYS.content);
-    //openModal();
   };
+
   return (
     <S.ReviewDashboardPage>
       <S.DashboardMainImg src={DashboardIcon} alt="" />
