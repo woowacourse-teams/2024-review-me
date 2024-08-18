@@ -51,5 +51,4 @@ class ReviewGroupApiTest extends ApiTest {
                 .apply(handler)
                 .statusCode(200);
     }
-
 }
