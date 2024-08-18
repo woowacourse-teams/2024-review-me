@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 
 export const Layout = styled.div`
   width: 100%;
-  background-color: ${({ theme }) => theme.colors.sidebarBackground};
 `;
 
 export const Wrapper = styled.div`
@@ -13,6 +12,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
 
   width: 100%;
+  min-height: 100vh;
 
   background-color: ${({ theme }) => theme.colors.white};
 `;
