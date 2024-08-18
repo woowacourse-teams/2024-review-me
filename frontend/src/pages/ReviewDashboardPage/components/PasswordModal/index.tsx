@@ -22,12 +22,9 @@ const PasswordModal = ({ closeModal }: PasswordModalProps) => {
   //const { isOff, handleEyeButtonToggle } = useEyeButton();
 
   const handleConfirmButtonClick = () => {
-    console.log('비밀번호 제출');
-
     // NOTE: 추후 이곳에 API 호출 함수 추가
-
     //closeModal();
-    // navigate(`/${ROUTES.reviewWriting}/5`); // NOTE: 유효하지 않은 경로
+    // navigate(`/${ROUTES.reviewList}/${}`); // NOTE: 추후 뒤에 groupAccessCode 추가하기
   };
 
   const handlePasswordInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
