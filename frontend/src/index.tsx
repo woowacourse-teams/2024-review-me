@@ -16,7 +16,8 @@ import {
   ReviewWritingCardFormPage,
 } from '@/pages';
 
-import { DEV_ENVIRONMENT } from './constants';
+import { ErrorSuspenseContainer } from './components';
+import { DEV_ENVIRONMENT, ROUTE_PARAM } from './constants';
 import { ROUTES } from './constants/routes';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
@@ -59,14 +60,14 @@ const router = createBrowserRouter([
         path: 'user',
         element: <div>user</div>,
       },
-      { path: `${ROUTES.reviewWriting}/:reviewRequestCode`, element: <ReviewWritingCardFormPage /> },
+      { path: `${ROUTES.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewWritingCardFormPage /> },
       { path: ROUTES.reviewWritingComplete, element: <ReviewWritingCompletePage /> },
       {
         path: ROUTES.reviewList,
         element: <ReviewListPage />,
       },
       {
-        path: `${ROUTES.detailedReview}/:reviewId`,
+        path: `${ROUTES.detailedReview}/:${ROUTE_PARAM.reviewId}`,
         element: <DetailedReviewPage />,
       },
     ],
