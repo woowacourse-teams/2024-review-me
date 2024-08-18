@@ -71,9 +71,9 @@ public class ReviewDetailLookupService {
         for (Question question : questionRepository.findAllBySectionId(section.getId())) {
             if (question.isSelectable()) {
                 addCheckboxQuestionResponse(review, reviewGroup, question, questionResponses);
-                continue;
+            } else {
+                addTextQuestionResponse(review, reviewGroup, question, questionResponses);
             }
-            addTextQuestionResponse(review, reviewGroup, question, questionResponses);
         }
 
         if (!questionResponses.isEmpty()) {
