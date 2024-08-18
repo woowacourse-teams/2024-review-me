@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 
 import endPoint, { REVIEW_PASSWORD_API_PARAMS, REVIEW_PASSWORD_API_URL } from '@/apis/endpoints';
-import { API_ERROR_MESSAGE, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
+import { API_ERROR_MESSAGE } from '@/constants';
 import { PasswordResponse } from '@/types';
 
 import { CREATED_GROUP_DATA, VALIDATED_PASSWORD } from '../mockData/group';
