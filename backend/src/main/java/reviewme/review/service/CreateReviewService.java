@@ -60,7 +60,7 @@ public class CreateReviewService {
         for (CreateReviewAnswerRequest answerRequests : request.answers()) {
             Question question = questionRepository.getQuestionById(answerRequests.questionId());
             QuestionType questionType = question.getQuestionType();
-            if (questionType == QuestionType.TEXT) {
+            if (questionType == QuestionType.TEXT && !answerRequests.text().isBlank()) {
                 createTextAnswerRequestValidator.validate(answerRequests);
                 textAnswers.add(new TextAnswer(question.getId(), answerRequests.text()));
                 continue;
