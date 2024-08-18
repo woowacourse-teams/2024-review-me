@@ -111,7 +111,7 @@ class ReviewApiTest extends ApiTest {
         FieldDescriptor[] responseFieldDescriptors = {
                 fieldWithPath("createdAt").description("리뷰 생성 날짜"),
                 fieldWithPath("formId").description("폼 ID"),
-                fieldWithPath("revieweeName").description("리뷰어 이름"),
+                fieldWithPath("revieweeName").description("리뷰이 이름"),
                 fieldWithPath("projectName").description("프로젝트 이름"),
 
                 fieldWithPath("sections[].sectionId").description("섹션 ID"),

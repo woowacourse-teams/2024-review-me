@@ -29,7 +29,7 @@ class ReviewGroupApiTest extends ApiTest {
                 """;
 
         FieldDescriptor[] requestFieldDescriptors = {
-                fieldWithPath("revieweeName").description("리뷰어 이름"),
+                fieldWithPath("revieweeName").description("리뷰이 이름"),
                 fieldWithPath("projectName").description("프로젝트 이름")
         };
 

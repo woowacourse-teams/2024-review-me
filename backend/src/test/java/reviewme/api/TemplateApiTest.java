@@ -27,7 +27,7 @@ class TemplateApiTest extends ApiTest {
 
         FieldDescriptor[] responseFieldDescriptors = {
                 fieldWithPath("formId").description("폼 ID"),
-                fieldWithPath("revieweeName").description("리뷰어 이름"),
+                fieldWithPath("revieweeName").description("리뷰이 이름"),
                 fieldWithPath("projectName").description("프로젝트 이름"),
 
                 fieldWithPath("sections[].sectionId").description("섹션 ID"),
