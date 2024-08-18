@@ -2,7 +2,9 @@ package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,14 @@ import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
-import reviewme.question.repository.QuestionRepository;
 import reviewme.review.repository.ReviewRepository;
+import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
 import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -132,7 +135,7 @@ class ReviewDetailLookupServiceTest {
         // given
         ReviewGroup reviewGroup = reviewGroupRepository.save(new ReviewGroup("aru", "reviewme", "ABCD", "0000"));
         Question question1 = questionRepository.save(new Question(true, QuestionType.TEXT, "질문", null, 1));
-        Question question2 = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "질문", null, 1));
+        Question question2 = questionRepository.save(new Question(false, QuestionType.CHECKBOX, "질문", null, 1));
         Question question3 = questionRepository.save(new Question(true, QuestionType.TEXT, "체크 1 조건", "가이드라인", 1));
         Question question4 = questionRepository.save(new Question(false, QuestionType.TEXT, "선택 질문", "가이드라인", 1));
         OptionGroup optionGroup = optionGroupRepository.save(new OptionGroup(question2.getId(), 1, 3));
@@ -157,9 +160,7 @@ class ReviewDetailLookupServiceTest {
                 new TextAnswer(1, "질문 1 답변"),
                 new TextAnswer(3, "질문 3 답변")
         );
-        List<CheckboxAnswer> checkboxAnswers = List.of(
-                new CheckboxAnswer(2, List.of(optionItem1.getId(), optionItem2.getId()))
-        );
+        List<CheckboxAnswer> checkboxAnswers = new ArrayList<>();
         Review review = reviewRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), textAnswers, checkboxAnswers)
         );
@@ -169,8 +170,14 @@ class ReviewDetailLookupServiceTest {
 
         // then
         List<SectionAnswerResponse> sections = reviewDetail.sections();
-        assertThat(sections).extracting(SectionAnswerResponse::sectionId)
-                .isNotEmpty()
-                .doesNotContain(section3.getId());
+
+        assertAll(
+                () -> assertThat(sections).extracting(SectionAnswerResponse::sectionId)
+                        .containsExactly(section1.getId(), section2.getId()),
+                () -> assertThat(sections.get(0).questions())
+                        .extracting(QuestionAnswerResponse::questionId).containsExactly(question1.getId()),
+                () -> assertThat(sections.get(1).questions())
+                        .extracting(QuestionAnswerResponse::questionId).containsExactly(question3.getId())
+        );
     }
 }
