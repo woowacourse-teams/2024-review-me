@@ -109,8 +109,8 @@ class ReviewDetailLookupServiceTest {
         Template template = templateRepository.save(new Template(List.of(section1.getId(), section2.getId())));
 
         List<TextAnswer> textAnswers = List.of(
-                new TextAnswer(1, "질문 1 답변"),
-                new TextAnswer(3, "질문 3 답변")
+                new TextAnswer(1, "질문 1 답변 (20자 이상 입력 적용)"),
+                new TextAnswer(3, "질문 3 답변 (20자 이상 입력 적용)")
         );
         List<CheckboxAnswer> checkboxAnswers = List.of(
                 new CheckboxAnswer(2, List.of(optionItem1.getId(), optionItem2.getId()))
@@ -147,7 +147,7 @@ class ReviewDetailLookupServiceTest {
         );
         Template template = templateRepository.save(new Template(List.of(section1.getId(), section2.getId())));
 
-        List<TextAnswer> textAnswers = List.of(new TextAnswer(question1.getId(), "질문 1 답변"));
+        List<TextAnswer> textAnswers = List.of(new TextAnswer(question1.getId(), "질문 1 답변 (20자 이상 입력 적용)"));
         List<CheckboxAnswer> checkboxAnswers = List.of(
                 new CheckboxAnswer(question2.getId(), List.of(optionItem2.getId())));
         Review review = reviewRepository.save(

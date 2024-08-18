@@ -79,7 +79,7 @@ class CreateReviewServiceTest {
     @Test
     void 텍스트가_포함된_리뷰를_저장한다() {
         // given
-        String expectedTextAnswer = "서술형답변";
+        String expectedTextAnswer = "답".repeat(20);
         Question savedQuestion = questionRepository.save(
                 new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1)
         );
