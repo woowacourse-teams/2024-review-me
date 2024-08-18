@@ -12,7 +12,7 @@ interface OverviewItemProps extends OverviewItemStyleProps {
   description: string[];
 }
 
-const OverviewItem: React.FC<OverviewItemProps> = ({ direction, imageSrc, title, description }) => {
+const OverviewItem = ({ direction, imageSrc, title, description }: OverviewItemProps) => {
   return (
     <S.OverviewItem direction={direction}>
       <S.OverviewItemImg src={imageSrc} alt={title} direction={direction} />

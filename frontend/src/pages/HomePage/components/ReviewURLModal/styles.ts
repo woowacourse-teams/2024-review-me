@@ -32,18 +32,14 @@ export const Data = styled.span`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-export const WarningWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-top: 3.7rem;
-`;
-
 export const CheckContainer = styled.div`
+  font-size: 1.5rem;
+
   display: flex;
   gap: 0.6rem;
   align-items: center;
-  font-size: 1.5rem;
+
+  margin-top: 2.5rem;
 `;
 
 export const Checkbox = styled.input`
@@ -57,7 +53,9 @@ export const CheckMessage = styled.p`
   font-size: 1.3rem;
 `;
 
-export const Warning = styled.p`
+export const WarningMessage = styled.p`
   font-size: smaller;
   color: ${({ theme }) => theme.colors.red};
+
+  margin-top: 1rem;
 `;
