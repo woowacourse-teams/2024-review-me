@@ -21,7 +21,7 @@ class CheckboxAnswersTest {
     }
 
     @Test
-    void 질문_ID로_서술형_답변을_반환한다() {
+    void 질문_ID로_선택형_답변을_반환한다() {
         // given
         CheckboxAnswers checkboxAnswers = new CheckboxAnswers(List.of(new CheckboxAnswer(1, List.of(1L))));
 
