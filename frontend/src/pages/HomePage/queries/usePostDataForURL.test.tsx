@@ -2,7 +2,7 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 
 import QueryClientWrapper from '@/queryTestSetup/QueryClientWrapper';
 
-import { CREATED_GROUP_DATA } from './../../../mocks/mockData/group';
+import { CREATED_GROUP_DATA } from '../../../mocks/mockData/group';
 import usePostDataForURL from './usePostDataForURL';
 
 describe('usePostDataForURL', () => {

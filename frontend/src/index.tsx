@@ -10,7 +10,7 @@ import App from '@/App';
 import {
   DetailedReviewPage,
   ErrorPage,
-  LandingPage,
+  HomePage,
   ReviewListPage,
   ReviewWritingCompletePage,
   ReviewWritingCardFormPage,
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <LandingPage />,
+        element: <HomePage />,
       },
       {
         path: 'user',
