@@ -18,6 +18,7 @@ import {
 
 import { DEV_ENVIRONMENT } from './constants';
 import { ROUTES } from './constants/routes';
+import PasswordTestPage from './pages/PasswordTestPage';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: `${ROUTES.detailedReview}/:reviewId`,
         element: <DetailedReviewPage />,
+      },
+      {
+        path: 'password-check/:reviewRequestCode',
+        element: <PasswordTestPage />,
       },
     ],
   },
