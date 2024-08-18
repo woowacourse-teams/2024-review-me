@@ -54,7 +54,7 @@ class ReviewApiTest extends ApiTest {
                 fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
                 fieldWithPath("answers[].questionId").description("질문 ID"),
                 fieldWithPath("answers[].selectedOptionIds").description("선택한 옵션 ID 목록").optional(),
-                fieldWithPath("answers[].text").description("텍스트 답변").optional()
+                fieldWithPath("answers[].text").description("서술 답변").optional()
         };
 
         RestDocumentationResultHandler handler = document(
@@ -79,7 +79,7 @@ class ReviewApiTest extends ApiTest {
                 fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
                 fieldWithPath("answers[].questionId").description("질문 ID"),
                 fieldWithPath("answers[].selectedOptionIds").description("선택한 옵션 ID 목록").optional(),
-                fieldWithPath("answers[].text").description("텍스트 답변").optional()
+                fieldWithPath("answers[].text").description("서술형 답변").optional()
         };
 
         RestDocumentationResultHandler handler = document(
