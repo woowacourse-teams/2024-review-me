@@ -15,8 +15,8 @@ public class CreateTextAnswerRequestValidator {
     private final QuestionRepository questionRepository;
 
     public void validate(CreateReviewAnswerRequest request) {
+        Question question = questionRepository.getQuestionById(request.questionId());
         validateNotIncludingOptions(request);
-        Question question = validateQuestionExists(request);
         validateQuestionRequired(question, request);
     }
 
@@ -24,11 +24,6 @@ public class CreateTextAnswerRequestValidator {
         if (request.selectedOptionIds() != null) {
             throw new TextAnswerInculdedOptionException();
         }
-    }
-
-    private Question validateQuestionExists(CreateReviewAnswerRequest request) {
-        long questionId = request.questionId();
-        return questionRepository.getQuestionById(questionId);
     }
 
     private void validateQuestionRequired(Question question, CreateReviewAnswerRequest request) {
