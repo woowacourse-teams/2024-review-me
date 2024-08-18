@@ -52,6 +52,8 @@ class ReviewApiTest extends ApiTest {
 
         FieldDescriptor[] requestFieldDescriptors = {
                 fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
+
+                fieldWithPath("answers[]").description("답변 목록"),
                 fieldWithPath("answers[].questionId").description("질문 ID"),
                 fieldWithPath("answers[].selectedOptionIds").description("선택한 옵션 ID 목록").optional(),
                 fieldWithPath("answers[].text").description("서술 답변").optional()
@@ -201,9 +203,13 @@ class ReviewApiTest extends ApiTest {
         FieldDescriptor[] responseFieldDescriptors = {
                 fieldWithPath("revieweeName").description("리뷰이 이름"),
                 fieldWithPath("projectName").description("프로젝트 이름"),
+
+                fieldWithPath("reviews[]").description("리뷰 목록"),
                 fieldWithPath("reviews[].reviewId").description("리뷰 ID"),
                 fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
                 fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
+
+                fieldWithPath("reviews[].categories[]").description("카테고리 목록"),
                 fieldWithPath("reviews[].categories[].optionId").description("카테고리 ID"),
                 fieldWithPath("reviews[].categories[].content").description("카테고리 내용")
         };
