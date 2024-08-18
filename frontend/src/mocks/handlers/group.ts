@@ -47,11 +47,15 @@ const getIsValidGroupAccessCode = () => {
  */
 // 예시 출력
 const getReviewGroupData = () => {
-  return http.get(new RegExp(`^${REVIEW_GROUP_DATA_API_URL}`), async ({ request }) => {
-    //요청 url에서 requestCode 추출
+  return http.get(new RegExp(`^${REVIEW_GROUP_DATA_API_URL}?`), async ({ request }) => {
     const url = new URL(request.url);
     const params = new URLSearchParams(url.search);
-    const reviewRequestCode = params.get(REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode);
+    const { queryString } = REVIEW_GROUP_DATA_API_PARAMS;
+    // 리뷰 그룹 정보에 대한 요청인지 확인
+    if (!params.has(queryString.reviewRequestCode)) return;
+
+    //요청 url에서 reviewRequestCode 추출
+    const reviewRequestCode = params.get(queryString.reviewRequestCode);
 
     if (reviewRequestCode === VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE) {
       return HttpResponse.json(REVIEW_GROUP_DATA);
