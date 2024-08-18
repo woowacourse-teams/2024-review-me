@@ -3,23 +3,18 @@ import { useNavigate } from 'react-router';
 import DashboardIcon from '@/assets/dashboard.svg';
 import { Button } from '@/components';
 
-// TODO: 상수명 단수로 고치기
+// TODO: ROUTES 상수명을 단수로 고치기
 import { ROUTES } from '@/constants/routes';
 import useModals from '@/hooks/useModals';
 
 import PasswordModal from './components/PasswordModal';
 import * as S from './styles';
 
-interface ReviewDashboardPageProps {
-  revieweeName: string;
-  projectName: string;
-}
-
 const MODAL_KEYS = {
   content: 'CONTENT_MODAL',
 };
 
-const ReviewDashboardPage = ({ revieweeName, projectName }: ReviewDashboardPageProps) => {
+const ReviewDashboardPage = () => {
   const { isOpen, openModal, closeModal } = useModals();
   const navigate = useNavigate();
 
@@ -35,8 +30,9 @@ const ReviewDashboardPage = ({ revieweeName, projectName }: ReviewDashboardPageP
     <S.ReviewDashboardPage>
       <S.DashboardMainImg src={DashboardIcon} alt="" />
       <S.ReviewGuideContainer>
-        <S.ReviewGuide>{`${projectName}를 함께한`}</S.ReviewGuide>
-        <S.ReviewGuide>{`${revieweeName}의 리뷰 공간이에요`}</S.ReviewGuide>
+        {/* NOTE: 추후 API 연동되면 서버에서 받아온 이름들을 출력하도록 수정해야 함 */}
+        <S.ReviewGuide>{`${'임시 프로젝트 이름'}를 함께한`}</S.ReviewGuide>
+        <S.ReviewGuide>{`${'임시 리뷰이 이름'}의 리뷰 공간이에요`}</S.ReviewGuide>
       </S.ReviewGuideContainer>
       <S.ButtonContainer>
         <Button
