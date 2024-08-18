@@ -13,7 +13,7 @@ public class ReviewGroupLookupService {
 
     private final ReviewGroupRepository reviewGroupRepository;
 
-    public ReviewGroupResponse findReviewGroup(String reviewRequestCode) {
+    public ReviewGroupResponse findReviewGroupByRequestCode(String reviewRequestCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByRequestReviewCodeException(reviewRequestCode));
 

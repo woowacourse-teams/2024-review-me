@@ -31,7 +31,7 @@ public class ReviewGroupController implements ReviewGroupApi {
 
     @GetMapping("/v2/groups")
     public ResponseEntity<ReviewGroupResponse> findReviewGroup(@RequestParam String reviewRequestCode) {
-        ReviewGroupResponse response = reviewGroupLookupService.findReviewGroup(reviewRequestCode);
+        ReviewGroupResponse response = reviewGroupLookupService.findReviewGroupByRequestCode(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 }
