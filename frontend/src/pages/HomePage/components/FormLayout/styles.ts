@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 export const FormLayout = styled.form`
   display: flex;
   flex-direction: column;
-
   justify-content: center;
 `;
 
