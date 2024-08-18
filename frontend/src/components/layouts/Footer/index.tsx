@@ -5,7 +5,7 @@ const Footer = () => {
     <S.Footer>
       <div>
         <S.Link href="https://github.com/woowacourse-teams/2024-review-me" aria-label="리뷰미 깃헙 저장소">
-          © review-me
+          © 20204-review-me
         </S.Link>
       </div>
       <div>
