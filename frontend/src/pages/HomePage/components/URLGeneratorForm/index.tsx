@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import { DataForURL } from '@/apis/group';
+import { DataForReviewRequestCode } from '@/apis/group';
 import { Button, Input, EyeButton } from '@/components';
+import { ROUTES } from '@/constants/routes';
 import { useEyeButton } from '@/hooks';
 import useModals from '@/hooks/useModals';
 import { debounce } from '@/utils/debounce';
 
-import usePostDataForURL from '../../queries/usePostDataForURL';
+import usePostDataForReviewRequestCode from '../../queries/usePostDataForReviewRequestCode';
 import {
   isValidReviewGroupDataInput,
   isWithinLengthRange,
@@ -16,7 +17,7 @@ import {
   MIN_PASSWORD_INPUT,
   isValidPasswordInput,
 } from '../../utils/validateInput';
-import { FormLayout, ReviewURLModal } from '../index';
+import { FormLayout, ReviewDashboardURLModal } from '../index';
 
 import * as S from './styles';
 
@@ -34,14 +35,17 @@ const MODAL_KEYS = {
 const URLGeneratorForm = () => {
   const [revieweeName, setRevieweeName] = useState('');
   const [projectName, setProjectName] = useState('');
+  // NOTE: 이 password는 groupAccessCode로 사용됨.
+  // groupAccessCode로 통일하기로 했지만 이미 이 페이지에서는 pwd로 작업한 게 많아서 놔두고
+  // API 요청 함수와 리액트 쿼리 코드에서는 groupAccessCode: password로 전달합니다
   const [password, setPassword] = useState('');
-  const [reviewURL, setReviewURL] = useState('');
+  const [reviewDashboardURL, setReviewDashboardURL] = useState(''); // 얘 상태로 들고있어야됨? ㅇㅇ
 
   const [revieweeNameErrorMessage, setRevieweeNameErrorMessage] = useState('');
   const [projectNameErrorMessage, setProjectNameErrorMessage] = useState('');
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
-  const mutation = usePostDataForURL();
+  const mutation = usePostDataForReviewRequestCode();
   const { isOff, handleEyeButtonToggle } = useEyeButton();
   const { isOpen, openModal, closeModal } = useModals();
 
@@ -51,12 +55,12 @@ const URLGeneratorForm = () => {
     isValidPasswordInput(password);
 
   const postDataForURL = () => {
-    const dataForURL: DataForURL = { revieweeName, projectName };
+    const dataForReviewRequestCode: DataForReviewRequestCode = { revieweeName, projectName, groupAccessCode: password };
 
-    mutation.mutate(dataForURL, {
+    mutation.mutate(dataForReviewRequestCode, {
       onSuccess: (data) => {
-        const completeURL = getCompleteURL(data.reviewRequestCode);
-        setReviewURL(completeURL);
+        const completeReviewDashboardURL = getCompleteReviewDashboardURL(data.reviewRequestCode);
+        setReviewDashboardURL(completeReviewDashboardURL);
 
         resetInputs();
       },
@@ -69,8 +73,8 @@ const URLGeneratorForm = () => {
     setPassword('');
   };
 
-  const getCompleteURL = (reviewRequestCode: string) => {
-    return `${window.location.origin}/user/review-writing/${reviewRequestCode}`;
+  const getCompleteReviewDashboardURL = (reviewRequestCode: string) => {
+    return `${window.location.origin}/${ROUTES.reviewDashboard}/${reviewRequestCode}`;
   };
 
   const handleNameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -170,7 +174,10 @@ const URLGeneratorForm = () => {
           리뷰 링크 생성하기
         </Button>
         {isOpen(MODAL_KEYS.confirm) && (
-          <ReviewURLModal reviewURL={reviewURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
+          <ReviewDashboardURLModal
+            reviewDashboardURL={reviewDashboardURL}
+            closeModal={() => closeModal(MODAL_KEYS.confirm)}
+          />
         )}
       </FormLayout>
     </S.URLGeneratorForm>

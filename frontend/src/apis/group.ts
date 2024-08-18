@@ -7,7 +7,7 @@ export interface DataForReviewRequestCode {
   groupAccessCode: string;
 }
 
-export const postDataForURLApi = async (dataForReviewRequestCode: DataForReviewRequestCode) => {
+export const postDataForReviewRequestCodeApi = async (dataForReviewRequestCode: DataForReviewRequestCode) => {
   const response = await fetch(endPoint.postingDataForReviewRequestCode, {
     method: 'POST',
     headers: {
