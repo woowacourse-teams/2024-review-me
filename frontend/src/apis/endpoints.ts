@@ -22,7 +22,7 @@ const endPoint = {
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${process.env.API_BASE_URL}/${VERSION2}/${REVIEW_WRITING_API_PARAMS.resource}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingReviewList: `${process.env.API_BASE_URL}/${VERSION2}/reviews`,
-  postingDataForURL: `${process.env.API_BASE_URL}/${VERSION2}/groups`,
+  postingDataForReviewRequestCode: `${process.env.API_BASE_URL}/${VERSION2}/groups`,
 };
 
 export default endPoint;
