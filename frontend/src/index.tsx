@@ -19,6 +19,7 @@ import {
 import { ErrorSuspenseContainer } from './components';
 import { DEV_ENVIRONMENT, ROUTE_PARAM } from './constants';
 import { ROUTES } from './constants/routes';
+import ReviewGroupTestPage from './pages/ReviewGroupTestPage';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
@@ -69,6 +70,15 @@ const router = createBrowserRouter([
       {
         path: `${ROUTES.detailedReview}/:${ROUTE_PARAM.reviewId}`,
         element: <DetailedReviewPage />,
+      },
+      {
+        // 삭제 예정
+        path: `review-group-test/:${ROUTE_PARAM.reviewRequestCode}`,
+        element: (
+          <ErrorSuspenseContainer>
+            <ReviewGroupTestPage />
+          </ErrorSuspenseContainer>
+        ),
       },
     ],
   },
