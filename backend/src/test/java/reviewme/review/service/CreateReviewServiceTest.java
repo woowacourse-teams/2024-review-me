@@ -13,12 +13,12 @@ import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
-import reviewme.review.service.dto.request.CreateReviewRequest;
-import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.question.repository.QuestionRepository;
+import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.repository.TextAnswerRepository;
+import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
+import reviewme.review.service.dto.request.CreateReviewRequest;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -88,6 +88,30 @@ class CreateReviewServiceTest {
         );
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(
                 reviewRequestCode, List.of(createReviewAnswerRequest)
+        );
+
+        // when
+        createReviewService.createReview(createReviewRequest);
+
+        // then
+        assertThat(reviewRepository.findAll()).hasSize(1);
+        assertThat(textAnswerRepository.findAll()).hasSize(1);
+    }
+
+    @Test
+    void 필수가_아닌_텍스트형_응답에_빈문자열이_들어오면_저장하지_않는다() {
+        // given
+        Question savedQuestion = questionRepository.save(
+                new Question(false, QuestionType.TEXT, "질문", "가이드라인", 1)
+        );
+        CreateReviewAnswerRequest emptyTextReviewRequest = new CreateReviewAnswerRequest(
+                savedQuestion.getId(), null, ""
+        );
+        CreateReviewAnswerRequest validTextReviewRequest = new CreateReviewAnswerRequest(
+                savedQuestion.getId(), null, "질문 1 답변 (20자 이상 입력 적용)"
+        );
+        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+                reviewRequestCode, List.of(emptyTextReviewRequest, validTextReviewRequest)
         );
 
         // when
