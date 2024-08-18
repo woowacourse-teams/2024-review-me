@@ -31,7 +31,7 @@ class TemplateApiTest extends ApiTest {
                 fieldWithPath("projectName").description("프로젝트 이름"),
 
                 fieldWithPath("sections[].sectionId").description("섹션 ID"),
-                fieldWithPath("sections[].visible").description("섹션 표시 여부"),
+                fieldWithPath("sections[].visible").description("섹션 표시 여부 (반드시 보이거나, 조건부이거나)"),
                 fieldWithPath("sections[].onSelectedOptionId").description("섹션이 보이기 위한 선택 항목 ID").optional(),
                 fieldWithPath("sections[].header").description("섹션 제목"),
 
