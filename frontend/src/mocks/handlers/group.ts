@@ -31,9 +31,7 @@ const getPassWordValidation = () => {
       isValidAccess: password === VALIDATED_PASSWORD,
     };
 
-    return response.isValidAccess
-      ? HttpResponse.json(response, { status: 200 })
-      : HttpResponse.json({ error: INVALID_REVIEW_PASSWORD_MESSAGE }, { status: 401 });
+    return HttpResponse.json(response, { status: 200 });
   });
 };
 
