@@ -37,10 +37,12 @@ export const REVIEW_GROUP_DATA_API_URL = `${process.env.API_BASE_URL}/${VERSION2
 
 const endPoint = {
   postingReview: `${process.env.API_BASE_URL}/${VERSION2}/reviews`,
-  gettingDetailedReview: (reviewId: number) => `${DETAILED_REVIEW_API_URL}/${reviewId}`,
+  gettingDetailedReview: (reviewId: number, reviewRequestCode: string) =>
+    `${DETAILED_REVIEW_API_URL}/${reviewId}?${reviewRequestCode}`,
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
-  gettingReviewList: `${process.env.API_BASE_URL}/${VERSION2}/reviews`,
+  gettingReviewList: (reviewRequestCode: string) =>
+    `${process.env.API_BASE_URL}/${VERSION2}/reviews?${reviewRequestCode}`,
   postingDataForReviewRequestCode: `${process.env.API_BASE_URL}/${VERSION2}/groups`,
   checkingPassword: `${process.env.API_BASE_URL}/${VERSION2}/${REVIEW_PASSWORD_API_PARAMS.resource}/${REVIEW_PASSWORD_API_PARAMS.queryString.check}`,
   gettingReviewGroupData: (reviewRequestCode: string) =>

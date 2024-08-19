@@ -36,11 +36,13 @@ export const postReviewApi = async (formResult: ReviewWritingFormResult) => {
 export const getDetailedReviewApi = async ({
   reviewId,
   groupAccessCode,
+  reviewRequestCode,
 }: {
   reviewId: number;
   groupAccessCode: string;
+  reviewRequestCode: string;
 }) => {
-  const response = await fetch(endPoint.gettingDetailedReview(reviewId), {
+  const response = await fetch(endPoint.gettingDetailedReview(reviewId, reviewRequestCode), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -56,8 +58,8 @@ export const getDetailedReviewApi = async ({
   return data as DetailReviewData;
 };
 
-export const getReviewListApi = async (groupAccessCode: string) => {
-  const response = await fetch(endPoint.gettingReviewList, {
+export const getReviewListApi = async (groupAccessCode: string, reviewRequestCode: string) => {
+  const response = await fetch(endPoint.gettingReviewList(reviewRequestCode), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
