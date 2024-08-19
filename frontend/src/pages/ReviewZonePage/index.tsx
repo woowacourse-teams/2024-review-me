@@ -4,6 +4,7 @@ import ReviewZoneIcon from '@/assets/reviewZone.svg';
 import { Button } from '@/components';
 // TODO: ROUTES 상수명을 단수로 고치기
 import { ROUTES } from '@/constants/routes';
+import { useGetReviewGroupData, useSearchParamAndQuery } from '@/hooks';
 import useModals from '@/hooks/useModals';
 
 import PasswordModal from './components/PasswordModal';
@@ -15,7 +16,16 @@ const MODAL_KEYS = {
 
 const ReviewZonePage = () => {
   const { isOpen, openModal, closeModal } = useModals();
+
   const navigate = useNavigate();
+
+  const { param: reviewRequestCode } = useSearchParamAndQuery({
+    paramKey: 'reviewRequestCode',
+  });
+
+  if (!reviewRequestCode) throw new Error('유효하지 않은 리뷰 요청 코드입니다.');
+
+  const { data: reviewGroupData } = useGetReviewGroupData({ reviewRequestCode });
 
   const handleReviewWritingButtonClick = () => {
     navigate(`/${ROUTES.reviewWriting}/ABCD1234`);
@@ -30,8 +40,8 @@ const ReviewZonePage = () => {
       <S.ReviewZoneMainImg src={ReviewZoneIcon} alt="" />
       <S.ReviewGuideContainer>
         {/* NOTE: 추후 API 연동되면 서버에서 받아온 이름들을 출력하도록 수정해야 함 */}
-        <S.ReviewGuide>{`${'임시 프로젝트 이름'}를 함께한`}</S.ReviewGuide>
-        <S.ReviewGuide>{`${'임시 리뷰이 이름'}의 리뷰 공간이에요`}</S.ReviewGuide>
+        <S.ReviewGuide>{`${reviewGroupData.projectName}를 함께한`}</S.ReviewGuide>
+        <S.ReviewGuide>{`${reviewGroupData.revieweeName}의 리뷰 공간이에요`}</S.ReviewGuide>
       </S.ReviewGuideContainer>
       <S.ButtonContainer>
         <Button
