@@ -15,7 +15,6 @@ import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 public class ReviewGroupService {
 
     private static final int REVIEW_REQUEST_CODE_LENGTH = 8;
-    private static final int GROUP_ACCESS_CODE_LENGTH = 8;
 
     private final ReviewGroupRepository reviewGroupRepository;
     private final RandomCodeGenerator randomCodeGenerator;
