@@ -27,6 +27,7 @@ const ProgressBar = ({ stepList }: ProgressBarProps) => {
               $isMovingAvailable={step.isMovingAvailable}
               $isCurrentStep={step.isCurrentStep}
               onClick={step.handleClick}
+              type="button"
             >
               {step.sectionName}
             </S.StepButton>
