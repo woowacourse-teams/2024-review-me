@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
-import reviewme.question.domain.exception.QuestionNotFoundException;
-import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.question.repository.QuestionRepository;
+import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.service.exception.MissingRequiredAnswerException;
+import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 import reviewme.support.ServiceTest;
 
@@ -30,7 +30,7 @@ class CreateTextAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createTextAnswerRequestValidator.validate(request))
-                .isInstanceOf(QuestionNotFoundException.class);
+                .isInstanceOf(SubmittedQuestionNotFoundException.class);
     }
 
     @Test

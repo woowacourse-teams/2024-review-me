@@ -11,15 +11,15 @@ import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
-import reviewme.question.domain.exception.QuestionNotFoundException;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.question.repository.QuestionRepository;
+import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
 import reviewme.review.service.exception.MissingRequiredAnswerException;
 import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
+import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.support.ServiceTest;
 import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
 
@@ -55,7 +55,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createCheckBoxAnswerRequestValidator.validate(request))
-                .isInstanceOf(QuestionNotFoundException.class);
+                .isInstanceOf(SubmittedQuestionNotFoundException.class);
     }
 
     @Test
