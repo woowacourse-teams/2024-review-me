@@ -16,10 +16,10 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
+import reviewme.review.service.exception.ReviewGroupNotFoundByCodesException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -58,14 +58,15 @@ class ReviewServiceTest {
     ReviewRepository reviewRepository;
 
     @Test
-    void 확인_코드에_해당하는_그룹이_없는_경우_예외가_발생한다() {
-        assertThatThrownBy(() -> reviewService.findReceivedReviews("abc"))
-                .isInstanceOf(ReviewGroupNotFoundByGroupAccessCodeException.class);
+    void 리뷰_요청_코드와_확인_코드에_해당하는_그룹이_없는_경우_예외가_발생한다() {
+        assertThatThrownBy(() -> reviewService.findReceivedReviews("abc", "groupAccessCode"))
+                .isInstanceOf(ReviewGroupNotFoundByCodesException.class);
     }
 
     @Test
     void 확인_코드에_해당하는_그룹이_존재하면_리뷰_리스트를_반환한다() {
         // given
+        String reviewRequestCode = "reviewRequestCode";
         String groupAccessCode = "groupAccessCode";
         Question question = questionRepository.save(
                 new Question(true, QuestionType.CHECKBOX, "프로젝트 기간 동안, 팀원의 강점이 드러났던 순간을 선택해주세요. (1~2개)", null, 1)
@@ -78,7 +79,7 @@ class ReviewServiceTest {
         Template template = templateRepository.save(new Template(List.of()));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(
-                new ReviewGroup("커비", "리뷰미", "reviewRequestCode", groupAccessCode)
+                new ReviewGroup("커비", "리뷰미", reviewRequestCode, groupAccessCode)
         );
         CheckboxAnswer categoryAnswer1 = new CheckboxAnswer(question.getId(), List.of(categoryOption1.getId()));
         CheckboxAnswer categoryAnswer2 = new CheckboxAnswer(question.getId(), List.of(categoryOption2.getId()));
@@ -87,7 +88,7 @@ class ReviewServiceTest {
         reviewRepository.saveAll(List.of(review1, review));
 
         // when
-        ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
+        ReceivedReviewsResponse response = reviewService.findReceivedReviews(reviewRequestCode, groupAccessCode);
 
         // then
         assertThat(response.reviews()).hasSize(2);

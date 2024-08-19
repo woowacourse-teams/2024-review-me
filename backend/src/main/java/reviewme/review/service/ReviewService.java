@@ -8,7 +8,6 @@ import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewResponse;
@@ -29,11 +28,9 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReceivedReviewsResponse findReceivedReviews(String reviewRequestCode, String groupAccessCode) {
-        reviewGroupRepository.findByReviewRequestCodeAndGroupAccessCode(reviewRequestCode, groupAccessCode)
+        ReviewGroup reviewGroup = reviewGroupRepository
+                .findByReviewRequestCodeAndGroupAccessCode(reviewRequestCode, groupAccessCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
-
-        ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
 
         List<ReceivedReviewResponse> reviewResponses =
                 reviewRepository.findReceivedReviewsByGroupId(reviewGroup.getId())
