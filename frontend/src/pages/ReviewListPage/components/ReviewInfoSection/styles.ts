@@ -6,12 +6,12 @@ export const ReviewInfoContainer = styled.div`
 `;
 
 export const ProjectName = styled.span`
-  font-size: ${({ theme }) => theme.fontSize.medium};
+  font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
 `;
 
 export const RevieweeInfoWrapper = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.basic};
+  font-size: ${({ theme }) => theme.fontSize.mediumSmall};
 `;
 
 export const RevieweeName = styled.span`
