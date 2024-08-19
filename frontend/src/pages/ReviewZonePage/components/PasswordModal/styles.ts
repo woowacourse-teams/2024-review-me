@@ -13,7 +13,7 @@ export const ModalTitle = styled.h3`
   margin-bottom: 2rem;
 `;
 
-export const InputContainer = styled.div`
+export const InputContainer = styled.form`
   display: flex;
   gap: 1rem;
 

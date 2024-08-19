@@ -44,7 +44,7 @@ const PasswordModal = ({ closeModal }: PasswordModalProps) => {
             />
             <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />
           </S.PasswordInputContainer>
-          <Button styleType="primary" type="button" onClick={handleConfirmButtonClick}>
+          <Button styleType="primary" type="submit" onClick={handleConfirmButtonClick}>
             확인
           </Button>
         </S.InputContainer>
