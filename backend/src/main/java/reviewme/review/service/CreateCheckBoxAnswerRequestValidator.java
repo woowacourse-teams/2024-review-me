@@ -9,12 +9,13 @@ import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.question.repository.QuestionRepository;
+import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
-import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
-import reviewme.review.service.exception.SelectedCheckBoxAnswerCountOutOfRange;
+import reviewme.review.service.exception.MissingRequiredAnswerException;
+import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
+import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
 
 @Component
@@ -27,7 +28,8 @@ public class CreateCheckBoxAnswerRequestValidator {
 
     public void validate(CreateReviewAnswerRequest request) {
         validateNotContainingText(request);
-        Question question = questionRepository.getQuestionById(request.questionId());
+        Question question = questionRepository.findById(request.questionId())
+                .orElseThrow(() -> new SubmittedQuestionNotFoundException(request.questionId()));
         OptionGroup optionGroup = optionGroupRepository.findByQuestionId(question.getId())
                 .orElseThrow(() -> new OptionGroupNotFoundByQuestionIdException(question.getId()));
         validateRequiredQuestion(request, question);
@@ -43,7 +45,7 @@ public class CreateCheckBoxAnswerRequestValidator {
 
     private void validateRequiredQuestion(CreateReviewAnswerRequest request, Question question) {
         if (question.isRequired() && request.selectedOptionIds() == null) {
-            throw new MissingRequiredQuestionAnswerException(question.getId());
+            throw new MissingRequiredAnswerException(question.getId());
         }
     }
 
@@ -64,7 +66,7 @@ public class CreateCheckBoxAnswerRequestValidator {
     private void validateCheckedOptionItemCount(CreateReviewAnswerRequest request, OptionGroup optionGroup) {
         if (request.selectedOptionIds().size() < optionGroup.getMinSelectionCount()
                 || request.selectedOptionIds().size() > optionGroup.getMaxSelectionCount()) {
-            throw new SelectedCheckBoxAnswerCountOutOfRange(
+            throw new SelectedOptionItemCountOutOfRangeException(
                     request.questionId(),
                     request.selectedOptionIds().size(),
                     optionGroup.getMinSelectionCount(),

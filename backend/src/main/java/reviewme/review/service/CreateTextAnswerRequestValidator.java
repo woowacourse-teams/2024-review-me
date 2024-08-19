@@ -6,8 +6,9 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.exception.InvalidTextAnswerLengthException;
 import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
-import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
-import reviewme.review.service.exception.TextAnswerInculdedOptionException;
+import reviewme.review.service.exception.MissingRequiredAnswerException;
+import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
+import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 
 @Component
 @RequiredArgsConstructor
@@ -19,7 +20,8 @@ public class CreateTextAnswerRequestValidator {
     private final QuestionRepository questionRepository;
 
     public void validate(CreateReviewAnswerRequest request) {
-        Question question = questionRepository.getQuestionById(request.questionId());
+        Question question = questionRepository.findById(request.questionId())
+                .orElseThrow(() -> new SubmittedQuestionNotFoundException(request.questionId()));
         validateNotIncludingOptions(request);
         validateQuestionRequired(question, request);
         validateLength(request);
@@ -27,13 +29,13 @@ public class CreateTextAnswerRequestValidator {
 
     private void validateNotIncludingOptions(CreateReviewAnswerRequest request) {
         if (request.selectedOptionIds() != null) {
-            throw new TextAnswerInculdedOptionException();
+            throw new TextAnswerIncludedOptionItemException();
         }
     }
 
     private void validateQuestionRequired(Question question, CreateReviewAnswerRequest request) {
         if (question.isRequired() && request.text() == null) {
-            throw new MissingRequiredQuestionAnswerException(question.getId());
+            throw new MissingRequiredAnswerException(question.getId());
         }
     }
 
