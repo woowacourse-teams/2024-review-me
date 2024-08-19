@@ -55,7 +55,7 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
                           ))}
                         </div>
                       )}
-                      {question.questionType === 'TEXT' && (
+                      {<S.TextAnswerWrapper>{question.questionType === 'TEXT'}</S.TextAnswerWrapper> && (
                         <MultilineTextViewer text={findTextAnswer(question.questionId) || ''} />
                       )}
                     </S.ContentContainer>
