@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { getPasswordValidationApi, GetPasswordValidationApiParams } from '@/apis/group';
+import { postPasswordValidationApi, GetPasswordValidationApiParams } from '@/apis/group';
 import { GROUP_QUERY_KEY, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
 import { PasswordResponse } from '@/types';
 
@@ -22,15 +22,13 @@ const useCheckPasswordValidation = ({
   onError,
 }: UseCheckPasswordValidationProps) => {
   const fetchPasswordValidation = async (params: GetPasswordValidationApiParams) => {
-    const result = await getPasswordValidationApi(params);
-
+    const result = await postPasswordValidationApi(params);
     return result;
   };
 
   const result = useQuery<PasswordResponse | Error>({
     queryKey: [GROUP_QUERY_KEY.password, groupAccessCode, reviewRequestCode],
     queryFn: () => fetchPasswordValidation({ groupAccessCode, reviewRequestCode }),
-    staleTime: 1000 * 60 * 5,
     enabled: !!groupAccessCode && !!reviewRequestCode,
   });
 

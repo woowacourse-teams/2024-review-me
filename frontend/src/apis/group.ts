@@ -1,3 +1,5 @@
+import { json } from 'react-router';
+
 import { INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
 import { PasswordResponse, ReviewGroupData } from '@/types';
 
@@ -35,16 +37,16 @@ export interface GetPasswordValidationApiParams {
 /**
  * @param groupAccessCode L 비밀번호
  */
-export const getPasswordValidationApi = async ({
+export const postPasswordValidationApi = async ({
   groupAccessCode,
   reviewRequestCode,
 }: GetPasswordValidationApiParams) => {
-  const response = await fetch(endPoint.gettingPasswordValidation(reviewRequestCode), {
-    method: 'GET',
+  const response = await fetch(endPoint.passwordChecking, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      GroupAccessCode: groupAccessCode,
     },
+    body: JSON.stringify({ reviewRequestCode, groupAccessCode }),
   });
   //요청 실패
   if (response.status === 401) return new Error(INVALID_REVIEW_PASSWORD_MESSAGE);

@@ -1,11 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
-import endPoint, {
-  REVIEW_GROUP_DATA_API_PARAMS,
-  REVIEW_GROUP_DATA_API_URL,
-  REVIEW_PASSWORD_API_PARAMS,
-  REVIEW_PASSWORD_API_URL,
-} from '@/apis/endpoints';
+import endPoint, { REVIEW_GROUP_DATA_API_PARAMS, REVIEW_GROUP_DATA_API_URL } from '@/apis/endpoints';
 import { API_ERROR_MESSAGE } from '@/constants';
 import { PasswordResponse } from '@/types';
 
@@ -30,22 +25,25 @@ const postDataForReviewRequestCode = () => {
 //   });
 // };
 
-const getPassWordValidation = () => {
-  return http.get(new RegExp(`^${REVIEW_PASSWORD_API_URL}`), async ({ request }) => {
-    const url = new URL(request.url);
-    const params = new URLSearchParams(url.search);
-    const { queryString } = REVIEW_PASSWORD_API_PARAMS;
-    // 가로채는 요청 url이 맞는 지 확인(reviewRequestCode 쿼리 키가 있어야함)
-    if (!params.has(queryString.reviewRequestCode)) return;
-    // password가 유효한 패스워드인지 확인
-    const password = request.headers.get('GroupAccessCode');
-
-    //password가 없을 경우
-    if (!password) return HttpResponse.json({ error: API_ERROR_MESSAGE[400] }, { status: 400 });
-
+const postPassWordValidation = () => {
+  return http.post(endPoint.passwordChecking, async ({ request }) => {
     // password가 있는 경우
+    if (!request.body) return HttpResponse.json({ error: API_ERROR_MESSAGE[400] }, { status: 400 });
+
+    const rawBody = await request.body.getReader().read();
+    const textDecoder = new TextDecoder();
+    const bodyText = textDecoder.decode(rawBody.value);
+
+    // password가 유효한 패스워드인지 확인
+    const { reviewRequestCode, groupAccessCode: password } = JSON.parse(bodyText);
+
+    // reviewRequestCode가 없는 경우
+    //password가 없을 경우
+    if (!password || !reviewRequestCode) return HttpResponse.json({ error: API_ERROR_MESSAGE[400] }, { status: 400 });
+    // password가 있는 경우
+
     const response: PasswordResponse = {
-      isValidAccess: password === VALIDATED_PASSWORD,
+      hasAccess: password === VALIDATED_PASSWORD,
     };
 
     return HttpResponse.json(response, { status: 200 });
@@ -74,6 +72,6 @@ const getReviewGroupData = () => {
     return HttpResponse.json({ error: '잘못된 리뷰 그룹 데이터 요청' }, { status: 404 });
   });
 };
-const groupHandler = [postDataForReviewRequestCode(), getReviewGroupData(), getPassWordValidation()];
+const groupHandler = [postDataForReviewRequestCode(), getReviewGroupData(), postPassWordValidation()];
 
 export default groupHandler;
