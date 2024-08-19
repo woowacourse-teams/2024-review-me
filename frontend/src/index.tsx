@@ -20,8 +20,6 @@ import {
 import { ErrorSuspenseContainer } from './components';
 import { DEV_ENVIRONMENT, ROUTE_PARAM } from './constants';
 import { ROUTES } from './constants/routes';
-import PasswordTestPage from './pages/PasswordTestPage';
-import ReviewGroupTestPage from './pages/ReviewGroupTestPage';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
@@ -72,10 +70,6 @@ const router = createBrowserRouter([
       {
         path: `${ROUTES.detailedReview}/:${ROUTE_PARAM.reviewId}`,
         element: <DetailedReviewPage />,
-      },
-      {
-        path: 'password-check/:reviewRequestCode',
-        element: <PasswordTestPage />,
       },
       {
         path: `${ROUTES.reviewZone}/:${ROUTE_PARAM.reviewRequestCode}`, // NOTE: 임시 경로, 추후 논의 및 상수화 필요
