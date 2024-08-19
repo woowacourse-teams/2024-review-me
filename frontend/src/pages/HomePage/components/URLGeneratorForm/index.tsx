@@ -11,22 +11,19 @@ import usePostDataForReviewRequestCode from '../../queries/usePostDataForReviewR
 import {
   isValidReviewGroupDataInput,
   isWithinLengthRange,
-  isAlphanumeric,
   MAX_PASSWORD_INPUT,
   MAX_VALID_REVIEW_GROUP_DATA_INPUT,
   MIN_PASSWORD_INPUT,
-  isValidPasswordInput,
 } from '../../utils/validateInput';
 import { FormLayout, ReviewZoneURLModal } from '../index';
 
+import { usePasswordValidation } from './../../../../hooks/usePasswordValidation';
 import * as S from './styles';
 
 // TODO: 디바운스 시간을 모든 경우에 0.3초로 고정할 것인지(전역 상수로 사용) 논의하기
 const DEBOUNCE_TIME = 300;
 
-const INVALID_CHAR_ERROR_MESSAGE = `영문(대/소문자) 및 숫자만 입력할 수 있습니다`;
 const GROUP_DATA_LENGTH_ERROR_MESSAGE = `최대 ${MAX_VALID_REVIEW_GROUP_DATA_INPUT}자까지 입력할 수 있습니다`;
-const PASSWORD_LENGTH_ERROR_MESSAGE = `${MIN_PASSWORD_INPUT}자부터 ${MAX_PASSWORD_INPUT}자까지 입력할 수 있습니다`;
 
 const MODAL_KEYS = {
   confirm: 'CONFIRM',
@@ -43,16 +40,17 @@ const URLGeneratorForm = () => {
 
   const [revieweeNameErrorMessage, setRevieweeNameErrorMessage] = useState('');
   const [projectNameErrorMessage, setProjectNameErrorMessage] = useState('');
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+  //const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
   const mutation = usePostDataForReviewRequestCode();
   const { isOff, handleEyeButtonToggle } = useEyeButton();
   const { isOpen, openModal, closeModal } = useModals();
+  const { passwordErrorMessage, handlePasswordBlur } = usePasswordValidation(password);
 
   const isFormValid =
     isValidReviewGroupDataInput(revieweeName) &&
     isValidReviewGroupDataInput(projectName) &&
-    isValidPasswordInput(password);
+    passwordErrorMessage === '';
 
   const postDataForURL = () => {
     const dataForReviewRequestCode: DataForReviewRequestCode = { revieweeName, projectName, groupAccessCode: password };
@@ -95,14 +93,6 @@ const URLGeneratorForm = () => {
     openModal(MODAL_KEYS.confirm);
   }, DEBOUNCE_TIME);
 
-  const handlePasswordBlur = () => {
-    if (!isWithinLengthRange(password, MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT)) {
-      setPasswordErrorMessage(PASSWORD_LENGTH_ERROR_MESSAGE);
-    } else {
-      setPasswordErrorMessage('');
-    }
-  };
-
   useEffect(() => {
     isWithinLengthRange(revieweeName, MAX_VALID_REVIEW_GROUP_DATA_INPUT)
       ? setRevieweeNameErrorMessage('')
@@ -114,19 +104,6 @@ const URLGeneratorForm = () => {
       ? setProjectNameErrorMessage('')
       : setProjectNameErrorMessage(GROUP_DATA_LENGTH_ERROR_MESSAGE);
   }, [projectName]);
-
-  useEffect(() => {
-    if (!isWithinLengthRange(password, MAX_PASSWORD_INPUT)) {
-      setPasswordErrorMessage(PASSWORD_LENGTH_ERROR_MESSAGE);
-      return;
-    }
-
-    if (!isAlphanumeric(password)) {
-      setPasswordErrorMessage(INVALID_CHAR_ERROR_MESSAGE);
-      return;
-    }
-    setPasswordErrorMessage('');
-  }, [password]);
 
   return (
     <S.URLGeneratorForm>
