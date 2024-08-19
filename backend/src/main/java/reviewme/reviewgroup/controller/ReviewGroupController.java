@@ -3,7 +3,6 @@ package reviewme.reviewgroup.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +27,7 @@ public class ReviewGroupController implements ReviewGroupApi {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/groups/code")
+    @PostMapping("/v2/groups/code")
     public ResponseEntity<CheckGroupAccessCodeResponse> checkGroupAccessCode(
             @RequestParam("reviewRequestCode") String reviewRequestCode,
             @HeaderProperty("GroupAccessCode") String groupAccessCode
