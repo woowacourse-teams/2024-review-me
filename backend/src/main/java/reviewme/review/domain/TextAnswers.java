@@ -23,4 +23,8 @@ public class TextAnswers {
         }
         return textAnswers.get(questionId);
     }
+
+    public boolean hasAnswerByQuestionId(long questionId) {
+        return textAnswers.containsKey(questionId);
+    }
 }

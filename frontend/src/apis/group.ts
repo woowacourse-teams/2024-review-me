@@ -4,19 +4,19 @@ import { PasswordResponse, ReviewGroupData } from '@/types';
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
-//리뷰 그룹 생성
-export interface DataForURL {
+export interface DataForReviewRequestCode {
   revieweeName: string;
   projectName: string;
+  groupAccessCode: string;
 }
 
-export const postDataForURLApi = async (dataForURL: DataForURL) => {
-  const response = await fetch(endPoint.postingDataForURL, {
+export const postDataForReviewRequestCodeApi = async (dataForReviewRequestCode: DataForReviewRequestCode) => {
+  const response = await fetch(endPoint.postingDataForReviewRequestCode, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(dataForURL),
+    body: JSON.stringify(dataForReviewRequestCode),
   });
 
   if (!response.ok) {
