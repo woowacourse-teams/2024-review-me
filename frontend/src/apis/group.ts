@@ -1,9 +1,10 @@
 import { INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
-import { PasswordResponse } from '@/types';
+import { PasswordResponse, ReviewGroupData } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
+//리뷰 그룹 생성
 export interface DataForURL {
   revieweeName: string;
   projectName: string;
@@ -54,4 +55,20 @@ export const getPasswordValidationApi = async ({
   const data = await response.json();
 
   return data as PasswordResponse;
+};
+
+//리뷰 그룹 정보
+export const getReviewGroupDataApi = async (reviewRequestCode: string) => {
+  const response = await fetch(endPoint.gettingReviewGroupData(reviewRequestCode), {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) throw new Error(createApiErrorMessage(response.status));
+
+  const data = await response.json();
+
+  return data as ReviewGroupData;
 };
