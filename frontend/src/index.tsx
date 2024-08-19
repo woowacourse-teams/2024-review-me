@@ -19,7 +19,7 @@ import {
 
 import { ErrorSuspenseContainer } from './components';
 import { DEV_ENVIRONMENT, ROUTE_PARAM } from './constants';
-import { ROUTES } from './constants/routes';
+import { ROUTE } from './constants/route';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
@@ -49,7 +49,7 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter([
   {
-    path: ROUTES.home,
+    path: ROUTE.home,
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
@@ -61,18 +61,18 @@ const router = createBrowserRouter([
         path: 'user',
         element: <div>user</div>,
       },
-      { path: `${ROUTES.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewWritingCardFormPage /> },
-      { path: ROUTES.reviewWritingComplete, element: <ReviewWritingCompletePage /> },
+      { path: `${ROUTE.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewWritingCardFormPage /> },
+      { path: ROUTE.reviewWritingComplete, element: <ReviewWritingCompletePage /> },
       {
-        path: ROUTES.reviewList,
+        path: ROUTE.reviewList,
         element: <ReviewListPage />,
       },
       {
-        path: `${ROUTES.detailedReview}/:${ROUTE_PARAM.reviewId}`,
+        path: `${ROUTE.detailedReview}/:${ROUTE_PARAM.reviewId}`,
         element: <DetailedReviewPage />,
       },
       {
-        path: `${ROUTES.reviewZone}/:${ROUTE_PARAM.reviewRequestCode}`, // NOTE: 임시 경로, 추후 논의 및 상수화 필요
+        path: `${ROUTE.reviewZone}/:${ROUTE_PARAM.reviewRequestCode}`,
         element: (
           <ErrorSuspenseContainer>
             <ReviewZonePage />
