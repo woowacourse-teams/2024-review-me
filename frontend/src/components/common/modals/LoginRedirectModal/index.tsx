@@ -10,13 +10,13 @@ const LoginRedirectModal = () => {
 
   return (
     <AlertModal
-      closeButton={{ type: 'primary', handleClick: handleClickCloseButton, content: '로그인 하러가기' }}
+      closeButton={{ type: 'primary', handleClick: handleClickCloseButton, content: '홈페이지로 이동' }}
       isClosableOnBackground={false}
       handleClose={null}
     >
       <div>
-        <p>유효하지 않은 접근이에요.</p>
-        <p>로그인 후 사용해주세요.</p>
+        <p>유효하지 않은 접근이에요</p>
+        <p>생성한 리뷰 링크를 통해 접속해주세요</p>
       </div>
     </AlertModal>
   );
