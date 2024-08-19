@@ -15,22 +15,20 @@ export const ReviewZoneMainImg = styled.img`
 export const ReviewGuideContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   width: 28rem;
-
   padding-left: 0.2rem;
 `;
 
 export const ReviewGuide = styled.p`
   font-size: 2.2rem;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+  overflow-wrap: break-word;
 `;
 
 export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
-
   margin-top: 1.5rem;
 `;
 
