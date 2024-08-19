@@ -12,6 +12,6 @@ public class SelectedOptionItemCountOutOfRangeException extends BadRequestExcept
                 selectedCount, minSelectionCount, maxSelectionCount));
         log.warn("CheckBox answer count out of range - "
                         + "questionId:{}, selectedCount: {}, minSelectionCount: {}, maxSelectionCount: {}",
-                questionId, selectedCount, minSelectionCount, maxSelectionCount);
+                questionId, selectedCount, minSelectionCount, maxSelectionCount, this);
     }
 }

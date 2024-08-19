@@ -11,7 +11,7 @@ import reviewme.question.domain.exception.QuestionNotFoundException;
 import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.service.exception.MissingRequiredAnswerException;
-import reviewme.review.service.exception.TextAnswerInculdedOptionItemException;
+import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
@@ -42,7 +42,7 @@ class CreateTextAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createTextAnswerRequestValidator.validate(request))
-                .isInstanceOf(TextAnswerInculdedOptionItemException.class);
+                .isInstanceOf(TextAnswerIncludedOptionItemException.class);
     }
 
     @Test

@@ -7,7 +7,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.service.exception.MissingRequiredAnswerException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
-import reviewme.review.service.exception.TextAnswerInculdedOptionItemException;
+import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 
 @Component
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class CreateTextAnswerRequestValidator {
 
     private void validateNotIncludingOptions(CreateReviewAnswerRequest request) {
         if (request.selectedOptionIds() != null) {
-            throw new TextAnswerInculdedOptionItemException();
+            throw new TextAnswerIncludedOptionItemException();
         }
     }
 
