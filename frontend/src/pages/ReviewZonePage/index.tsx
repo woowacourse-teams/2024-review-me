@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { useRecoilState } from 'recoil';
 
 import ReviewZoneIcon from '@/assets/reviewZone.svg';
 import { Button } from '@/components';
@@ -6,6 +8,7 @@ import { Button } from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useGetReviewGroupData, useSearchParamAndQuery } from '@/hooks';
 import useModals from '@/hooks/useModals';
+import { reviewRequestCodeAtom } from '@/recoil';
 
 import PasswordModal from './components/PasswordModal';
 import * as S from './styles';
@@ -16,6 +19,7 @@ const MODAL_KEYS = {
 
 const ReviewZonePage = () => {
   const { isOpen, openModal, closeModal } = useModals();
+  const [storedReviewRequestCode, setStoredReviewRequestCode] = useRecoilState(reviewRequestCodeAtom);
 
   const navigate = useNavigate();
 
@@ -24,6 +28,14 @@ const ReviewZonePage = () => {
   });
 
   if (!reviewRequestCode) throw new Error('유효하지 않은 리뷰 요청 코드입니다.');
+
+  useEffect(() => {
+    if (!storedReviewRequestCode && reviewRequestCode) {
+      setStoredReviewRequestCode(reviewRequestCode);
+    }
+  }, []);
+
+  console.log('zone: ', storedReviewRequestCode);
 
   const { data: reviewGroupData } = useGetReviewGroupData({ reviewRequestCode });
 
