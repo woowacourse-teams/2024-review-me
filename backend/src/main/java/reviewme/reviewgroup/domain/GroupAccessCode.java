@@ -17,11 +17,11 @@ public class GroupAccessCode {
     private static final Pattern PATTERN = Pattern.compile("^[a-zA-Z0-9]{4,20}$");
 
     @Column(name = "group_access_code", nullable = false)
-    private String groupAccessCode;
+    private String code;
 
-    public GroupAccessCode(String groupAccessCode) {
-        validateGroupAccessCode(groupAccessCode);
-        this.groupAccessCode = groupAccessCode;
+    public GroupAccessCode(String code) {
+        validateGroupAccessCode(code);
+        this.code = code;
     }
 
     private void validateGroupAccessCode(String groupAccessCode) {

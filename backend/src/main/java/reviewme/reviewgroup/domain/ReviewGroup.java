@@ -67,6 +67,6 @@ public class ReviewGroup {
     }
 
     public String getGroupAccessCode() {
-        return groupAccessCode.getGroupAccessCode();
+        return groupAccessCode.getCode();
     }
 }
