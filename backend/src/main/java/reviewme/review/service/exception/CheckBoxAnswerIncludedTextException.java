@@ -7,7 +7,7 @@ import reviewme.global.exception.BadRequestException;
 public class CheckBoxAnswerIncludedTextException extends BadRequestException {
 
     public CheckBoxAnswerIncludedTextException() {
-        super("텍스트형 응답은 옵션 항목을 포함할 수 없어요.");
-        log.warn("Text type answer cannot have option items", this);
+        super("체크박스형 응답은 텍스트를 포함할 수 없어요.");
+        log.warn("CheckBox type answer cannot have option items");
     }
 }

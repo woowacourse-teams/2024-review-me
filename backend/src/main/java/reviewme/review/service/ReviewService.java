@@ -7,9 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.exception.CategoryOptionByReviewNotFoundException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewCategoryResponse;
@@ -44,26 +42,12 @@ public class ReviewService {
     }
 
     private ReceivedReviewResponse createReceivedReviewResponse(Review review) {
-        CheckboxAnswer checkboxAnswer = review.getCheckboxAnswers()
-                .stream()
-                .filter(answer -> optionItemRepository.existsByOptionTypeAndId(
-                        OptionType.CATEGORY, answer.getSelectedOptionIds().get(0).getSelectedOptionId()
-                ))
-                .findFirst()
-                .orElseThrow(() -> new CategoryOptionByReviewNotFoundException(review.getId()));
+        List<OptionItem> categoryOptionItems = optionItemRepository.findByReviewIdAndOptionType(review.getId(),
+                OptionType.CATEGORY);
 
-        List<ReceivedReviewCategoryResponse> categoryResponses =
-                checkboxAnswer.getSelectedOptionIds()
-                        .stream()
-                        .map(checkBoxAnswerSelectedOptionId -> {
-                            long selectedOptionId = checkBoxAnswerSelectedOptionId.getSelectedOptionId();
-                            OptionItem optionItem = optionItemRepository.findById(selectedOptionId)
-                                    .orElseThrow(() -> new OptionItemNotFoundBySelectedOptionId(selectedOptionId));
-                            return new ReceivedReviewCategoryResponse(
-                                    optionItem.getId(), optionItem.getContent()
-                            );
-                        })
-                        .toList();
+        List<ReceivedReviewCategoryResponse> categoryResponses = categoryOptionItems.stream()
+                .map(optionItem -> new ReceivedReviewCategoryResponse(optionItem.getId(), optionItem.getContent()))
+                .toList();
 
         return new ReceivedReviewResponse(
                 review.getId(),

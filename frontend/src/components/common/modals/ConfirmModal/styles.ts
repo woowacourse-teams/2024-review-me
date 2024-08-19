@@ -12,7 +12,6 @@ export const ConfirmModalContainer = styled.div`
   justify-content: space-between;
 
   width: fit-content;
-  max-width: 40vh;
   max-height: 80vh;
   padding: 3.2rem;
 

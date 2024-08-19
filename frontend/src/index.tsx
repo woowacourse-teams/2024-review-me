@@ -10,13 +10,18 @@ import App from '@/App';
 import {
   DetailedReviewPage,
   ErrorPage,
-  LandingPage,
+  HomePage,
   ReviewListPage,
   ReviewWritingCompletePage,
   ReviewWritingCardFormPage,
+  ReviewDashboardPage,
 } from '@/pages';
 
-import { DEV_ENVIRONMENT } from './constants';
+import { ErrorSuspenseContainer } from './components';
+import { DEV_ENVIRONMENT, ROUTE_PARAM } from './constants';
+import { ROUTES } from './constants/routes';
+import PasswordTestPage from './pages/PasswordTestPage';
+import ReviewGroupTestPage from './pages/ReviewGroupTestPage';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
@@ -46,27 +51,48 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: ROUTES.home,
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
       {
         path: '',
-        element: <LandingPage />,
+        element: <HomePage />,
       },
       {
         path: 'user',
         element: <div>user</div>,
       },
-      { path: 'user/review-writing/:reviewRequestCode', element: <ReviewWritingCardFormPage /> },
-      { path: 'user/review-writing-complete', element: <ReviewWritingCompletePage /> },
+      { path: `${ROUTES.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewWritingCardFormPage /> },
+      { path: ROUTES.reviewWritingComplete, element: <ReviewWritingCompletePage /> },
       {
-        path: 'user/review-list',
+        path: ROUTES.reviewList,
         element: <ReviewListPage />,
       },
       {
-        path: 'user/detailed-review/:reviewId',
+        path: `${ROUTES.detailedReview}/:${ROUTE_PARAM.reviewId}`,
         element: <DetailedReviewPage />,
+      },
+      {
+        path: 'password-check/:reviewRequestCode',
+        element: <PasswordTestPage />,
+      },
+      {
+        // 삭제 예정
+        path: `review-group-test/:${ROUTE_PARAM.reviewRequestCode}`,
+        element: (
+          <ErrorSuspenseContainer>
+            <ReviewGroupTestPage />
+          </ErrorSuspenseContainer>
+        ),
+      },
+      {
+        path: `user/reviewDashboard/:${ROUTE_PARAM.reviewRequestCode}`, // NOTE: 임시 경로, 추후 논의 및 상수화 필요
+        element: (
+          <ErrorSuspenseContainer>
+            <ReviewDashboardPage />
+          </ErrorSuspenseContainer>
+        ),
       },
     ],
   },

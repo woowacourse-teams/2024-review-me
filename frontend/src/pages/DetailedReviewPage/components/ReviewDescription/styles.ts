@@ -8,7 +8,6 @@ export const Description = styled.section`
   width: 100%;
   height: 9rem;
   margin: 0;
-
   padding: 1rem 3rem;
 
   background-color: ${({ theme }) => theme.colors.lightPurple};
@@ -26,8 +25,9 @@ export const ProjectInfoContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
 
-  width: calc(100% - 6rem);
-  margin-left: 1rem;
+  /* width: calc(100% - 6rem); */
+  width: 100%;
+  margin: 0 1rem;
 `;
 
 export const ProjectName = styled.p`

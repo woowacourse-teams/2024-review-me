@@ -1,6 +1,6 @@
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { answerMapAtom, cardSectionListSelector } from '@/recoil';
+import { answerMapAtom, cardSectionListSelector, visitedCardListAtom } from '@/recoil';
 import { ReviewWritingCardQuestion } from '@/types';
 
 interface UseCancelAnsweredCategoryProps {
@@ -9,6 +9,8 @@ interface UseCancelAnsweredCategoryProps {
 const useCancelAnsweredCategory = ({ question }: UseCancelAnsweredCategoryProps) => {
   const cardSectionList = useRecoilValue(cardSectionListSelector);
   const answerMap = useRecoilValue(answerMapAtom);
+  const setVisitedCardList = useSetRecoilState(visitedCardListAtom);
+
   const isCategoryQuestion = () => {
     return question.questionId === cardSectionList[0].questions[0].questionId;
   };
@@ -41,6 +43,16 @@ const useCancelAnsweredCategory = ({ question }: UseCancelAnsweredCategoryProps)
     return !!answer?.selectedOptionIds?.length || !!answer?.text?.length;
   };
 
+  const updateVisitedCardList = (optionId: number) => {
+    if (!isCategoryQuestion) return false;
+
+    const targetSectionId = getCategoryByOptionId(optionId).sectionId;
+    setVisitedCardList((prev) => {
+      const newVisitedCardList = [...prev];
+      return newVisitedCardList.filter((card) => card !== targetSectionId);
+    });
+  };
+
   /**
    * 해제하기 위해 카테고리 문항을 선택한 경우, 이미 이에 대해 답변을 했는 지 여부
    * @param optionId : 문항의 optionId
@@ -52,6 +64,7 @@ const useCancelAnsweredCategory = ({ question }: UseCancelAnsweredCategoryProps)
 
   return {
     isAnsweredCategoryChanged,
+    updateVisitedCardList,
   };
 };
 

@@ -7,6 +7,7 @@ export const Input = styled.input<InputStyleProps>`
 
   border: 0.1rem solid ${({ theme }) => theme.colors.placeholder};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
+  outline-color: ${({ theme }) => theme.colors.primary};
 
   padding: 1.2rem 1.6rem;
 
@@ -14,10 +15,6 @@ export const Input = styled.input<InputStyleProps>`
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.placeholder};
-  }
-
-  &:focus {
-    border-color: ${({ theme }) => theme.colors.primaryHover};
   }
 
   ${({ $style }) => $style && { ...$style }}

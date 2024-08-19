@@ -62,7 +62,7 @@ public class CreateReviewService {
             Question question = questionRepository.findById(answerRequests.questionId())
                     .orElseThrow(() -> new SubmittedQuestionNotFoundException(answerRequests.questionId()));
             QuestionType questionType = question.getQuestionType();
-            if (questionType == QuestionType.TEXT) {
+            if (questionType == QuestionType.TEXT && answerRequests.isNotBlank()) {
                 createTextAnswerRequestValidator.validate(answerRequests);
                 textAnswers.add(new TextAnswer(question.getId(), answerRequests.text()));
                 continue;

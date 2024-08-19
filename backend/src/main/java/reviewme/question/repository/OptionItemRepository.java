@@ -11,11 +11,7 @@ import reviewme.question.domain.OptionType;
 @Repository
 public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
 
-    List<OptionItem> findAllByOptionType(OptionType optionType);
-
     List<OptionItem> findAllByOptionGroupId(long optionGroupId);
-
-    boolean existsByOptionTypeAndId(OptionType optionType, long id);
 
     @Query(value = """
             SELECT o.id FROM option_item o
@@ -38,4 +34,15 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
             ORDER BY o.position ASC
             """, nativeQuery = true)
     List<OptionItem> findSelectedOptionItemsByReviewIdAndQuestionId(long reviewId, long questionId);
+
+    @Query(value = """
+            SELECT o.* FROM option_item o
+            INNER JOIN checkbox_answer_selected_option cao
+            ON cao.selected_option_id = o.id
+            INNER JOIN checkbox_answer ca
+            ON cao.checkbox_answer_id = ca.id
+            WHERE ca.review_id = :reviewId
+            AND o.option_type = :#{#optionType.name()}
+            """, nativeQuery = true)
+    List<OptionItem> findByReviewIdAndOptionType(long reviewId, OptionType optionType);
 }
