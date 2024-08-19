@@ -24,7 +24,6 @@ import reviewme.global.exception.BadRequestException;
 import reviewme.global.exception.DataInconsistencyException;
 import reviewme.global.exception.FieldErrorResponse;
 import reviewme.global.exception.NotFoundException;
-import reviewme.global.exception.UnAuthorizedException;
 import reviewme.global.exception.UnexpectedRequestException;
 
 @Slf4j
@@ -39,11 +38,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ProblemDetail handleBadRequestException(BadRequestException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getErrorMessage());
-    }
-
-    @ExceptionHandler(UnAuthorizedException.class)
-    public ProblemDetail handleUnAuthorizedException(UnAuthorizedException ex) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getErrorMessage());
     }
 
     @ExceptionHandler(UnexpectedRequestException.class)
