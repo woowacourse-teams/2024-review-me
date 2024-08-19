@@ -21,7 +21,7 @@ import org.springframework.web.server.MissingRequestValueException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import reviewme.global.exception.BadRequestException;
-import reviewme.global.exception.DataConsistencyException;
+import reviewme.global.exception.DataInconsistencyException;
 import reviewme.global.exception.FieldErrorResponse;
 import reviewme.global.exception.NotFoundException;
 import reviewme.global.exception.UnAuthorizedException;
@@ -51,8 +51,8 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getErrorMessage());
     }
 
-    @ExceptionHandler(DataConsistencyException.class)
-    public ProblemDetail handleDataConsistencyException(DataConsistencyException ex) {
+    @ExceptionHandler(DataInconsistencyException.class)
+    public ProblemDetail handleDataConsistencyException(DataInconsistencyException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getErrorMessage());
     }
 

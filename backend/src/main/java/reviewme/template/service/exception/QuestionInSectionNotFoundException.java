@@ -1,10 +1,10 @@
 package reviewme.template.service.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import reviewme.global.exception.DataConsistencyException;
+import reviewme.global.exception.DataInconsistencyException;
 
 @Slf4j
-public class QuestionInSectionNotFoundException extends DataConsistencyException {
+public class QuestionInSectionNotFoundException extends DataInconsistencyException {
 
     public QuestionInSectionNotFoundException(long sectionId, long questionId) {
         super("섹션에 질문이 존재하지 않아요.");
