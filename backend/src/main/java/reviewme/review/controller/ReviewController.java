@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.global.HeaderProperty;
 import reviewme.review.service.CreateReviewService;
@@ -35,17 +36,22 @@ public class ReviewController {
 
     @GetMapping("/v2/reviews")
     public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
+            @RequestParam String reviewRequestCode,
             @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode
     ) {
-        ReceivedReviewsResponse response = reviewService.findReceivedReviews(groupAccessCode);
+        ReceivedReviewsResponse response = reviewService.findReceivedReviews(reviewRequestCode, groupAccessCode);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/v2/reviews/{id}")
     public ResponseEntity<TemplateAnswerResponse> findReceivedReviewDetail(
             @PathVariable long id,
-            @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode) {
-        TemplateAnswerResponse response = reviewDetailLookupService.getReviewDetail(groupAccessCode, id);
+            @RequestParam String reviewRequestCode,
+            @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode
+    ) {
+        TemplateAnswerResponse response = reviewDetailLookupService.getReviewDetail(
+                id, reviewRequestCode, groupAccessCode
+        );
         return ResponseEntity.ok(response);
     }
 }
