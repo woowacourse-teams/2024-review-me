@@ -9,7 +9,7 @@ import java.util.List;
 public record CreateReviewAnswerRequest(
 
         @Schema(description = "질문 ID")
-        @NotNull
+        @NotNull(message = "질문 ID를 입력해주세요.")
         Long questionId,
 
         @Schema(description = "선택된 옵션 ID 목록", nullable = true)
