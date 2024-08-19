@@ -113,7 +113,7 @@ const URLGeneratorForm = () => {
     isWithinLengthRange(projectName, MAX_VALID_REVIEW_GROUP_DATA_INPUT)
       ? setProjectNameErrorMessage('')
       : setProjectNameErrorMessage(GROUP_DATA_LENGTH_ERROR_MESSAGE);
-  }, [revieweeName]);
+  }, [projectName]);
 
   useEffect(() => {
     if (!isWithinLengthRange(password, MAX_PASSWORD_INPUT)) {
