@@ -18,6 +18,7 @@ import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.service.dto.request.CreateReviewRequest;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
+import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -58,7 +59,8 @@ public class CreateReviewService {
         List<TextAnswer> textAnswers = new ArrayList<>();
         List<CheckboxAnswer> checkboxAnswers = new ArrayList<>();
         for (CreateReviewAnswerRequest answerRequests : request.answers()) {
-            Question question = questionRepository.getQuestionById(answerRequests.questionId());
+            Question question = questionRepository.findById(answerRequests.questionId())
+                    .orElseThrow(() -> new SubmittedQuestionNotFoundException(answerRequests.questionId()));
             QuestionType questionType = question.getQuestionType();
             if (questionType == QuestionType.TEXT) {
                 createTextAnswerRequestValidator.validate(answerRequests);
