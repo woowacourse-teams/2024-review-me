@@ -5,6 +5,8 @@ export const CREATED_GROUP_DATA = {
   groupAccessCode: 'mocked-groupAccessCode',
 };
 
+export const VALIDATED_PASSWORD = '1234';
+
 export const INVALID_GROUP_ACCESS_CODE = {
   type: 'about:blank',
   title: 'Bad Request',

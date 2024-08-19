@@ -17,6 +17,14 @@ export const REVIEW_WRITING_API_PARAMS = {
   },
 };
 
+export const REVIEW_PASSWORD_API_PARAMS = {
+  resource: 'groups',
+  queryString: {
+    code: 'code',
+    reviewRequestCode: 'reviewRequestCode',
+  },
+};
+
 export const REVIEW_WRITING_API_URL = `${process.env.API_BASE_URL}/${VERSION2}/${REVIEW_WRITING_API_PARAMS.resource}`;
 
 export const REVIEW_GROUP_DATA_API_PARAMS = {
@@ -26,6 +34,7 @@ export const REVIEW_GROUP_DATA_API_PARAMS = {
   },
 };
 
+export const REVIEW_PASSWORD_API_URL = `${process.env.API_BASE_URL}/${VERSION2}/${REVIEW_PASSWORD_API_PARAMS.resource}/${REVIEW_PASSWORD_API_PARAMS.queryString.code}`;
 export const REVIEW_GROUP_DATA_API_URL = `${process.env.API_BASE_URL}/${VERSION2}/${REVIEW_GROUP_DATA_API_PARAMS.resource}`;
 
 const endPoint = {
@@ -35,6 +44,8 @@ const endPoint = {
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingReviewList: `${process.env.API_BASE_URL}/${VERSION2}/reviews`,
   postingDataForURL: `${process.env.API_BASE_URL}/${VERSION2}/groups`,
+  gettingPasswordValidation: (reviewRequestCode: string) =>
+    `${REVIEW_PASSWORD_API_URL}?${REVIEW_PASSWORD_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingReviewGroupData: (reviewRequestCode: string) =>
     `${REVIEW_GROUP_DATA_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
 };
