@@ -5,7 +5,6 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import reviewme.question.domain.Question;
-import reviewme.question.domain.exception.QuestionNotFoundException;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
@@ -27,8 +26,4 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             WHERE ts.template_id = :templateId
             """, nativeQuery = true)
     Set<Long> findAllQuestionIdByTemplateId(long templateId);
-
-    default Question getQuestionById(long id) {
-        return findById(id).orElseThrow(() -> new QuestionNotFoundException(id));
-    }
 }
