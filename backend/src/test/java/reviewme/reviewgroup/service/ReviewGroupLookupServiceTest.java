@@ -32,7 +32,7 @@ class ReviewGroupLookupServiceTest {
         ));
 
         // when
-        ReviewGroupResponse response = reviewGroupLookupService.findReviewGroupByRequestCode(reviewGroup.getReviewRequestCode());
+        ReviewGroupResponse response = reviewGroupLookupService.getReviewGroupSummary(reviewGroup.getReviewRequestCode());
 
         // then
         assertAll(
@@ -44,7 +44,7 @@ class ReviewGroupLookupServiceTest {
     @Test
     void 리뷰_요청_코드에_대한_리뷰_그룹이_존재하지_않을_경우_예외가_발생한다() {
         // given, when, then
-        assertThatThrownBy(() -> reviewGroupLookupService.findReviewGroupByRequestCode("reviewRequestCode"))
+        assertThatThrownBy(() -> reviewGroupLookupService.getReviewGroupSummary("reviewRequestCode"))
                 .isInstanceOf(ReviewGroupNotFoundByRequestReviewCodeException.class);
     }
 }
