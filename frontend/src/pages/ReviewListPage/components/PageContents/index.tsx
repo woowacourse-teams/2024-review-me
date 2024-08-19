@@ -14,12 +14,13 @@ import * as S from './styles';
 
 interface PageContentsProps {
   groupAccessCode: string;
+  reviewRequestCode: string;
 }
 
-const PageContents = ({ groupAccessCode }: PageContentsProps) => {
+const PageContents = ({ groupAccessCode, reviewRequestCode }: PageContentsProps) => {
   const navigate = useNavigate();
 
-  const { data: reviewListData } = useGetReviewList(groupAccessCode);
+  const { data: reviewListData } = useGetReviewList(groupAccessCode, reviewRequestCode);
 
   const handleReviewClick = (id: number) => {
     navigate(`/user/detailed-review/${id}`);
