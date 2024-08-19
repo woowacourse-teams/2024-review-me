@@ -15,12 +15,13 @@ import reviewme.template.domain.Section;
 import reviewme.template.domain.SectionQuestion;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.TemplateSection;
+import reviewme.template.repository.SectionRepository;
 import reviewme.template.service.dto.response.OptionGroupResponse;
 import reviewme.template.service.dto.response.OptionItemResponse;
 import reviewme.template.service.dto.response.QuestionResponse;
 import reviewme.template.service.dto.response.SectionResponse;
 import reviewme.template.service.dto.response.TemplateResponse;
-import reviewme.template.repository.SectionRepository;
+import reviewme.template.service.exception.QuestionInSectionNotFoundException;
 
 @Component
 @RequiredArgsConstructor
@@ -62,7 +63,10 @@ public class TemplateMapper {
     }
 
     private QuestionResponse mapToQuestionResponse(SectionQuestion sectionQuestion, ReviewGroup reviewGroup) {
-        Question question = questionRepository.getQuestionById(sectionQuestion.getQuestionId());
+        Question question = questionRepository.findById(sectionQuestion.getQuestionId())
+                .orElseThrow(() -> new QuestionInSectionNotFoundException(
+                        sectionQuestion.getSectionId(), sectionQuestion.getQuestionId())
+                );
         OptionGroupResponse optionGroupResponse = optionGroupRepository.findByQuestionId(question.getId())
                 .map(this::mapToOptionGroupResponse)
                 .orElse(null);
