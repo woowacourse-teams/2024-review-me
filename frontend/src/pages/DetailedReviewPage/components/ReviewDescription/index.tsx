@@ -1,4 +1,4 @@
-import { ProjectImg, ReviewDate } from '@/components';
+import { ReviewDate } from '@/components';
 import { ProjectImgProps } from '@/components/common/ProjectImg';
 import { ReviewDateProps } from '@/components/common/ReviewDate';
 
@@ -6,7 +6,7 @@ import { ReviewDateProps } from '@/components/common/ReviewDate';
 
 import * as S from './styles';
 
-const PROJECT_IMAGE_SIZE = '6rem';
+// const PROJECT_IMAGE_SIZE = '6rem';
 const DATE_TITLE = '리뷰 작성일';
 
 interface ReviewDescriptionProps extends Omit<ProjectImgProps, '$size'>, Omit<ReviewDateProps, 'dateTitle'> {
@@ -16,7 +16,7 @@ interface ReviewDescriptionProps extends Omit<ProjectImgProps, '$size'>, Omit<Re
 }
 
 const ReviewDescription = ({
-  thumbnailUrl,
+  // thumbnailUrl,
   projectName,
   revieweeName,
   // isPublic,
@@ -26,7 +26,8 @@ const ReviewDescription = ({
   return (
     <S.Description>
       <S.DescriptionSide>
-        <ProjectImg thumbnailUrl={thumbnailUrl} projectName={projectName} $size={PROJECT_IMAGE_SIZE} />
+        {/* NOTE: 추후에 깃허브 로고 대신 다른 이미지로 대체될 수 있어서 일단 주석 처리 */}
+        {/* <ProjectImg thumbnailUrl={thumbnailUrl} projectName={projectName} $size={PROJECT_IMAGE_SIZE} /> */}
         <S.ProjectInfoContainer>
           <S.ProjectName>{projectName}</S.ProjectName>
           <S.RevieweeNameAndDateContainer>

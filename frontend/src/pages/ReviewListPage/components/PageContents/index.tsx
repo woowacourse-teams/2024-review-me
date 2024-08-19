@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import ReviewCard from '@/components/ReviewCard';
 import { useGetReviewList } from '@/hooks';
 
+import ReviewEmptySection from '../ReviewEmptySection';
 import ReviewInfoSection from '../ReviewInfoSection';
 // import SearchSection from '../SearchSection';
 
@@ -27,6 +28,7 @@ const PageContents = ({ groupAccessCode }: PageContentsProps) => {
   return (
     <S.Layout>
       <ReviewInfoSection projectName={reviewListData.projectName} revieweeName={reviewListData.revieweeName} />
+      {reviewListData.reviews.length === 0 && <ReviewEmptySection />}
       {/* <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} /> */}
       <S.ReviewSection>
         {reviewListData.reviews.map((review) => (

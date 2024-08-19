@@ -8,8 +8,12 @@ const STEP = {
 const useCurrentCardIndex = () => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
-  const handleCurrentCardIndex = (direction: 'prev' | 'next') => {
-    setCurrentCardIndex((prev) => prev + STEP[direction]);
+  const handleCurrentCardIndex = (direction: 'prev' | 'next' | number) => {
+    if (typeof direction === 'number') {
+      setCurrentCardIndex(direction);
+    } else {
+      setCurrentCardIndex((prev) => prev + STEP[direction]);
+    }
   };
 
   return {

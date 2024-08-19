@@ -12,9 +12,8 @@ export const CheckboxContainer = styled.div<CheckboxStyleProps>`
 
   input {
     position: absolute;
-    display: hidden;
-    width: 0;
-    height: 0;
+    clip: rect(1px 1px 1px 1px);
+    clip-path: inset(1px);
   }
 
   ${(props) => props.$isReadonly && 'pointer-events: none;'}

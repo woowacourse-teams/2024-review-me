@@ -20,6 +20,7 @@ type ThemeType = {
   sidebarWidth: sidebarWidth;
   borderRadius: borderRadius;
   formWidth: string;
+  footerHeight: string;
 };
 
 declare module '@emotion/react' {

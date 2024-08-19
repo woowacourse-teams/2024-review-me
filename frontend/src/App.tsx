@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
 
-import { Main, PageLayout, Sidebar, Topbar, SideModal } from './components';
+import { PageLayout, Sidebar, Topbar, SideModal, Footer, Main } from './components';
 import Breadcrumb from './components/common/Breadcrumb';
 import { useSidebar } from './hooks';
 import useBreadcrumbPaths from './hooks/useBreadcrumbPaths';
@@ -22,6 +22,7 @@ const App = () => {
       <Main>
         <Outlet />
       </Main>
+      <Footer />
     </PageLayout>
   );
 };

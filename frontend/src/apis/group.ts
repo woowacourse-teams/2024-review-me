@@ -1,8 +1,10 @@
-import { INVALID_GROUP_ACCESS_CODE_MESSAGE } from '@/constants';
+import { INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
+import { PasswordResponse, ReviewGroupData } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
+//리뷰 그룹 생성
 export interface DataForURL {
   revieweeName: string;
   projectName: string;
@@ -25,20 +27,48 @@ export const postDataForURLApi = async (dataForURL: DataForURL) => {
   return data;
 };
 
-// NOTE: 리뷰 목록 엔드포인트(gettingReviewList)에 요청을 보내고 있지만,
-// 요청 성격이 목록을 얻어오는 것이 아닌 유효한 groupAccessCode인지 확인하는 것이므로 group 파일에 작성함
-// 단, 해당 엔드포인트에 대한 정상 요청 핸들러가 동작한다면 아래 에러 핸들러는 동작하지 않음
-export const getIsValidGroupAccessCodeApi = async (groupAccessCode: string) => {
-  const response = await fetch(endPoint.gettingReviewList, {
+//리뷰 비밀번호
+export interface GetPasswordValidationApiParams {
+  groupAccessCode: string;
+  reviewRequestCode: string;
+}
+/**
+ * @param groupAccessCode L 비밀번호
+ */
+export const getPasswordValidationApi = async ({
+  groupAccessCode,
+  reviewRequestCode,
+}: GetPasswordValidationApiParams) => {
+  const response = await fetch(endPoint.gettingPasswordValidation(reviewRequestCode), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       GroupAccessCode: groupAccessCode,
     },
   });
+  //요청 실패
+  if (response.status === 401) return new Error(INVALID_REVIEW_PASSWORD_MESSAGE);
 
-  if (response.status === 400) throw new Error(INVALID_GROUP_ACCESS_CODE_MESSAGE);
+  if (!response.ok) return new Error(createApiErrorMessage(response.status));
+
+  //요청성공
+  const data = await response.json();
+
+  return data as PasswordResponse;
+};
+
+//리뷰 그룹 정보
+export const getReviewGroupDataApi = async (reviewRequestCode: string) => {
+  const response = await fetch(endPoint.gettingReviewGroupData(reviewRequestCode), {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
   if (!response.ok) throw new Error(createApiErrorMessage(response.status));
 
-  return response.ok;
+  const data = await response.json();
+
+  return data as ReviewGroupData;
 };
