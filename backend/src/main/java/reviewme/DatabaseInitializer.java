@@ -40,7 +40,7 @@ public class DatabaseInitializer {
     @Transactional
     void setup() {
         // 템플릿이 이미 존재하면 종료
-        if (templateRepository.existsById(1L)) {
+        if (!templateRepository.findAll().isEmpty()) {
             return;
         }
 
