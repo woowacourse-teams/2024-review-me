@@ -17,7 +17,7 @@ import {
   MIN_PASSWORD_INPUT,
   isValidPasswordInput,
 } from '../../utils/validateInput';
-import { FormLayout, ReviewDashboardURLModal } from '../index';
+import { FormLayout, ReviewZoneURLModal } from '../index';
 
 import * as S from './styles';
 
@@ -39,7 +39,7 @@ const URLGeneratorForm = () => {
   // groupAccessCode로 통일하기로 했지만 이미 이 페이지에서는 pwd로 작업한 게 많아서 놔두고
   // API 요청 함수와 리액트 쿼리 코드에서는 groupAccessCode: password로 전달합니다
   const [password, setPassword] = useState('');
-  const [reviewDashboardURL, setReviewDashboardURL] = useState('');
+  const [reviewZoneURL, setReviewZoneURL] = useState('');
 
   const [revieweeNameErrorMessage, setRevieweeNameErrorMessage] = useState('');
   const [projectNameErrorMessage, setProjectNameErrorMessage] = useState('');
@@ -59,8 +59,8 @@ const URLGeneratorForm = () => {
 
     mutation.mutate(dataForReviewRequestCode, {
       onSuccess: (data) => {
-        const completeReviewDashboardURL = getCompleteReviewDashboardURL(data.reviewRequestCode);
-        setReviewDashboardURL(completeReviewDashboardURL);
+        const completeReviewZoneURL = getCompleteReviewZoneURL(data.reviewRequestCode);
+        setReviewZoneURL(completeReviewZoneURL);
 
         resetInputs();
       },
@@ -73,8 +73,8 @@ const URLGeneratorForm = () => {
     setPassword('');
   };
 
-  const getCompleteReviewDashboardURL = (reviewRequestCode: string) => {
-    return `${window.location.origin}/${ROUTES.reviewDashboard}/${reviewRequestCode}`;
+  const getCompleteReviewZoneURL = (reviewRequestCode: string) => {
+    return `${window.location.origin}/${ROUTES.reviewZone}/${reviewRequestCode}`;
   };
 
   const handleNameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,7 +159,7 @@ const URLGeneratorForm = () => {
               onChange={handlePasswordInputChange}
               type={isOff ? 'password' : 'text'}
               placeholder="abc123"
-              $style={{ width: '100%' }}
+              $style={{ width: '100%', paddingRight: '3rem' }}
             />
             <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />
           </S.PasswordInputContainer>
@@ -174,10 +174,7 @@ const URLGeneratorForm = () => {
           리뷰 링크 생성하기
         </Button>
         {isOpen(MODAL_KEYS.confirm) && (
-          <ReviewDashboardURLModal
-            reviewDashboardURL={reviewDashboardURL}
-            closeModal={() => closeModal(MODAL_KEYS.confirm)}
-          />
+          <ReviewZoneURLModal reviewZoneURL={reviewZoneURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
         )}
       </FormLayout>
     </S.URLGeneratorForm>

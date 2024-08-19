@@ -15,8 +15,9 @@ export const ModalTitle = styled.h3`
 
 export const InputContainer = styled.div`
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
 
+  justify-content: space-between;
   width: 100%;
 `;
 

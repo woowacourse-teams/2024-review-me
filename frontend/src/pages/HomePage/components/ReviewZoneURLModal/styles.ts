@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const ReviewDashboardURLModal = styled.div`
+export const ReviewZoneURLModal = styled.div`
   display: flex;
   flex-direction: column;
   width: 52rem;
@@ -13,7 +13,7 @@ export const ModalTitle = styled.p`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
-export const ReviewDashboardURLModalItem = styled.div`
+export const ReviewZoneURLModalItem = styled.div`
   display: flex;
   gap: 1.8rem;
   align-items: center;

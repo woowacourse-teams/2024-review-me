@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router';
 
-import DashboardIcon from '@/assets/dashboard.svg';
+import ReviewZoneIcon from '@/assets/reviewZone.svg';
 import { Button } from '@/components';
-
 // TODO: ROUTES 상수명을 단수로 고치기
 import { ROUTES } from '@/constants/routes';
 import useModals from '@/hooks/useModals';
@@ -14,7 +13,7 @@ const MODAL_KEYS = {
   content: 'CONTENT_MODAL',
 };
 
-const ReviewDashboardPage = () => {
+const ReviewZonePage = () => {
   const { isOpen, openModal, closeModal } = useModals();
   const navigate = useNavigate();
 
@@ -27,8 +26,8 @@ const ReviewDashboardPage = () => {
   };
 
   return (
-    <S.ReviewDashboardPage>
-      <S.DashboardMainImg src={DashboardIcon} alt="" />
+    <S.ReviewZonePage>
+      <S.ReviewZoneMainImg src={ReviewZoneIcon} alt="" />
       <S.ReviewGuideContainer>
         {/* NOTE: 추후 API 연동되면 서버에서 받아온 이름들을 출력하도록 수정해야 함 */}
         <S.ReviewGuide>{`${'임시 프로젝트 이름'}를 함께한`}</S.ReviewGuide>
@@ -59,8 +58,8 @@ const ReviewDashboardPage = () => {
         </Button>
       </S.ButtonContainer>
       {isOpen(MODAL_KEYS.content) && <PasswordModal closeModal={() => closeModal(MODAL_KEYS.content)} />}
-    </S.ReviewDashboardPage>
+    </S.ReviewZonePage>
   );
 };
 
-export default ReviewDashboardPage;
+export default ReviewZonePage;
