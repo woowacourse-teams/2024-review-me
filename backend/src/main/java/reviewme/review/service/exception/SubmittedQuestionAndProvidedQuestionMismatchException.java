@@ -11,7 +11,7 @@ public class SubmittedQuestionAndProvidedQuestionMismatchException extends Unexp
                                                                  Collection<Long> providedQuestionIds) {
         super("제출된 응답이 제공된 질문과 매칭되지 않아요.");
         log.warn("Submitted questions and provided questions mismatch. submittedQuestionIds: {}, providedQuestionIds: {}",
-                submittedQuestionIds, providedQuestionIds
+                submittedQuestionIds, providedQuestionIds, this
         );
     }
 }
