@@ -18,8 +18,9 @@ import {
 } from '@/pages';
 
 import { ErrorSuspenseContainer } from './components';
-import { DEV_ENVIRONMENT } from './constants';
+import { DEV_ENVIRONMENT, ROUTE_PARAM } from './constants';
 import { ROUTES } from './constants/routes';
+import ReviewGroupTestPage from './pages/ReviewGroupTestPage';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
@@ -61,18 +62,27 @@ const router = createBrowserRouter([
         path: 'user',
         element: <div>user</div>,
       },
-      { path: `${ROUTES.reviewWriting}/:reviewRequestCode`, element: <ReviewWritingCardFormPage /> },
+      { path: `${ROUTES.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewWritingCardFormPage /> },
       { path: ROUTES.reviewWritingComplete, element: <ReviewWritingCompletePage /> },
       {
         path: ROUTES.reviewList,
         element: <ReviewListPage />,
       },
       {
-        path: `${ROUTES.detailedReview}/:reviewId`,
+        path: `${ROUTES.detailedReview}/:${ROUTE_PARAM.reviewId}`,
         element: <DetailedReviewPage />,
       },
       {
-        path: `/reviewDashboard`, // NOTE: 임시 경로, 추후 논의 및 상수화 필요
+        // 삭제 예정
+        path: `review-group-test/:${ROUTE_PARAM.reviewRequestCode}`,
+        element: (
+          <ErrorSuspenseContainer>
+            <ReviewGroupTestPage />
+          </ErrorSuspenseContainer>
+        ),
+      },
+      {
+        path: `user/reviewDashboard/:${ROUTE_PARAM.reviewRequestCode}`, // NOTE: 임시 경로, 추후 논의 및 상수화 필요
         element: (
           <ErrorSuspenseContainer>
             <ReviewDashboardPage />
