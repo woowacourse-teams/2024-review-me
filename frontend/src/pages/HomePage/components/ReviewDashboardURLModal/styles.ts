@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const ReviewURLModal = styled.div`
+export const ReviewDashboardURLModal = styled.div`
   display: flex;
   flex-direction: column;
   width: 52rem;
@@ -8,12 +8,12 @@ export const ReviewURLModal = styled.div`
 `;
 
 export const ModalTitle = styled.p`
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-  font-size: 2rem;
   margin-bottom: 4.5rem;
+  font-size: 2rem;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
-export const ReviewURLModalItem = styled.div`
+export const ReviewDashboardURLModalItem = styled.div`
   display: flex;
   gap: 1.8rem;
   align-items: center;
@@ -33,13 +33,13 @@ export const Data = styled.span`
 `;
 
 export const CheckContainer = styled.div`
-  font-size: 1.5rem;
-
   display: flex;
   gap: 0.6rem;
   align-items: center;
 
   margin-top: 2.5rem;
+
+  font-size: 1.5rem;
 `;
 
 export const Checkbox = styled.input`
@@ -54,8 +54,7 @@ export const CheckMessage = styled.p`
 `;
 
 export const WarningMessage = styled.p`
+  margin-top: 1rem;
   font-size: smaller;
   color: ${({ theme }) => theme.colors.red};
-
-  margin-top: 1rem;
 `;

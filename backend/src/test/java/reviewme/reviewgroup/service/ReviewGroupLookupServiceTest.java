@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
@@ -45,6 +45,6 @@ class ReviewGroupLookupServiceTest {
     void 리뷰_요청_코드에_대한_리뷰_그룹이_존재하지_않을_경우_예외가_발생한다() {
         // given, when, then
         assertThatThrownBy(() -> reviewGroupLookupService.getReviewGroupSummary("reviewRequestCode"))
-                .isInstanceOf(ReviewGroupNotFoundByRequestReviewCodeException.class);
+                .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 }

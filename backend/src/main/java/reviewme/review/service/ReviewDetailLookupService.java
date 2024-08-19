@@ -26,6 +26,7 @@ import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Section;
+import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.template.repository.SectionRepository;
 
 @Service
@@ -106,7 +107,8 @@ public class ReviewDetailLookupService {
 
     private QuestionAnswerResponse getCheckboxAnswerResponse(Review review, Question question,
                                                              ReviewGroup reviewGroup) {
-        OptionGroup optionGroup = optionGroupRepository.getByQuestionId(question.getId());
+        OptionGroup optionGroup = optionGroupRepository.findByQuestionId(question.getId())
+                .orElseThrow(() -> new OptionGroupNotFoundByQuestionIdException(question.getId()));
         Set<Long> selectedOptionItemIds = optionItemRepository.findSelectedOptionItemIdsByReviewId(review.getId());
         List<OptionItemAnswerResponse> optionItemResponse =
                 optionItemRepository.findSelectedOptionItemsByReviewIdAndQuestionId(review.getId(), question.getId())

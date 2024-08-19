@@ -22,7 +22,7 @@ import reviewme.support.ServiceTest;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.VisibleType;
-import reviewme.template.domain.exception.SectionNotFoundException;
+import reviewme.template.domain.exception.SectionInTemplateNotFoundException;
 import reviewme.template.service.dto.response.QuestionResponse;
 import reviewme.template.service.dto.response.SectionResponse;
 import reviewme.template.service.dto.response.TemplateResponse;
@@ -180,7 +180,7 @@ class TemplateMapperTest {
 
         // when, then
         assertThatThrownBy(() -> templateMapper.mapToTemplateResponse(reviewGroup, template))
-                .isInstanceOf(SectionNotFoundException.class);
+                .isInstanceOf(SectionInTemplateNotFoundException.class);
     }
 
     @Test

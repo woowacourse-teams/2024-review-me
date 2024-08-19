@@ -13,4 +13,7 @@ public record CreateReviewAnswerRequest(
 
         String text
 ) {
+    public boolean isNotBlank() {
+        return !text.isBlank();
+    }
 }
