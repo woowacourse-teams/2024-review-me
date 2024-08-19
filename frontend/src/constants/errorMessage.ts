@@ -1,9 +1,9 @@
-interface ApiErrorMessages {
+interface ApiErrorMessage {
   [key: number]: string;
   serverError: string;
 }
 
-export const API_ERROR_MESSAGE: ApiErrorMessages = {
+export const API_ERROR_MESSAGE: ApiErrorMessage = {
   400: '잘못된 요청이에요.',
   401: '인증을 실패했어요.',
   403: '요청권한이 없어요.',

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 
 import { Input, Button, EyeButton } from '@/components';
 import ContentModal from '@/components/common/modals/ContentModal';
-import { ROUTES } from '@/constants/routes';
+import { ROUTE } from '@/constants/route';
 import { useCheckPasswordValidation, useEyeButton, useGroupAccessCode } from '@/hooks';
 
 import * as S from './styles';
@@ -26,7 +26,7 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
   const handleValidatedPassword = () => {
     updateGroupAccessCode(password);
     setErrorMessage('');
-    navigate(`/${ROUTES.reviewList}`);
+    navigate(`/${ROUTE.reviewList}`);
   };
 
   const handleInvalidatedPassword = (error: Error) => {

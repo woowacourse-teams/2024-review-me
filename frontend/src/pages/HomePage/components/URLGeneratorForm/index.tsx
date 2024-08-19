@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { DataForReviewRequestCode } from '@/apis/group';
 import { Button, Input, EyeButton } from '@/components';
-import { ROUTES } from '@/constants/routes';
+import { ROUTE } from '@/constants/route';
 import { useEyeButton } from '@/hooks';
 import useModals from '@/hooks/useModals';
 import { debounce } from '@/utils/debounce';
@@ -74,7 +74,7 @@ const URLGeneratorForm = () => {
   };
 
   const getCompleteReviewZoneURL = (reviewRequestCode: string) => {
-    return `${window.location.origin}/${ROUTES.reviewZone}/${reviewRequestCode}`;
+    return `${window.location.origin}/${ROUTE.reviewZone}/${reviewRequestCode}`;
   };
 
   const handleNameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

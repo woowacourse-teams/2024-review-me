@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { postReviewApi } from '@/apis/review';
-import { REVIEW_QUERY_KEYS } from '@/constants';
+import { REVIEW_QUERY_KEY } from '@/constants';
 import { ReviewWritingFormResult } from '@/types';
 
 interface UseMutateReviewProps {
@@ -13,7 +13,7 @@ const useMutateReview = ({ executeAfterMutateSuccess }: UseMutateReviewProps) =>
   const reviewMutation = useMutation({
     mutationFn: (formResult: ReviewWritingFormResult) => postReviewApi(formResult),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [REVIEW_QUERY_KEYS.postReview] });
+      queryClient.invalidateQueries({ queryKey: [REVIEW_QUERY_KEY.postReview] });
       executeAfterMutateSuccess();
     },
   });

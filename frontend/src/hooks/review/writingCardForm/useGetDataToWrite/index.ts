@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { getDataToWriteReviewApi } from '@/apis/review';
-import { REVIEW_QUERY_KEYS } from '@/constants';
+import { REVIEW_QUERY_KEY } from '@/constants';
 import { ReviewWritingFrom } from '@/types';
 
 interface UseGetDataToWriteProps {
@@ -16,7 +16,7 @@ const useGetDataToWrite = ({ reviewRequestCode }: UseGetDataToWriteProps) => {
   };
 
   const result = useSuspenseQuery<ReviewWritingFrom>({
-    queryKey: [REVIEW_QUERY_KEYS.writingReviewInfo, reviewRequestCode],
+    queryKey: [REVIEW_QUERY_KEY.writingReviewInfo, reviewRequestCode],
     queryFn: () => fetchReviewFormData(reviewRequestCode),
   });
 
