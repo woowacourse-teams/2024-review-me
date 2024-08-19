@@ -20,4 +20,7 @@ public record CreateReviewAnswerRequest(
         @Nullable
         String text
 ) {
+    public boolean isNotBlank() {
+        return !text.isBlank();
+    }
 }
