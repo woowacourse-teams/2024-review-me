@@ -30,6 +30,7 @@ const useCheckPasswordValidation = ({
     queryKey: [GROUP_QUERY_KEY.password, groupAccessCode, reviewRequestCode],
     queryFn: () => fetchPasswordValidation({ groupAccessCode, reviewRequestCode }),
     enabled: !!groupAccessCode && !!reviewRequestCode,
+    staleTime: 1000 * 60 * 5,
   });
 
   /**
