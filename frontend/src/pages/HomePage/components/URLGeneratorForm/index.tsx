@@ -25,8 +25,8 @@ import * as S from './styles';
 const DEBOUNCE_TIME = 300;
 
 const INVALID_CHAR_ERROR_MESSAGE = `영문(대/소문자) 및 숫자만 입력할 수 있습니다`;
-const GROUP_DATA_LENGTH_ERROR_MESSAGE = `최대 ${MAX_VALID_REVIEW_GROUP_DATA_INPUT}자까지 입력할 수 있습니다.`;
-const PASSWORD_LENGTH_ERROR_MESSAGE = `${MIN_PASSWORD_INPUT}자부터 ${MAX_PASSWORD_INPUT}자까지 입력할 수 있습니다.`;
+const GROUP_DATA_LENGTH_ERROR_MESSAGE = `최대 ${MAX_VALID_REVIEW_GROUP_DATA_INPUT}자까지 입력할 수 있습니다`;
+const PASSWORD_LENGTH_ERROR_MESSAGE = `${MIN_PASSWORD_INPUT}자부터 ${MAX_PASSWORD_INPUT}자까지 입력할 수 있습니다`;
 
 const MODAL_KEYS = {
   confirm: 'CONFIRM',
@@ -95,6 +95,14 @@ const URLGeneratorForm = () => {
     openModal(MODAL_KEYS.confirm);
   }, DEBOUNCE_TIME);
 
+  const handlePasswordBlur = () => {
+    if (!isWithinLengthRange(password, MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT)) {
+      setPasswordErrorMessage(PASSWORD_LENGTH_ERROR_MESSAGE);
+    } else {
+      setPasswordErrorMessage('');
+    }
+  };
+
   useEffect(() => {
     isWithinLengthRange(revieweeName, MAX_VALID_REVIEW_GROUP_DATA_INPUT)
       ? setRevieweeNameErrorMessage('')
@@ -108,19 +116,15 @@ const URLGeneratorForm = () => {
   }, [revieweeName]);
 
   useEffect(() => {
-    // NOTE: URL 요청 버튼 활성화 조건에서는 최소 4자 조건도 체크하지만,
-    // 여기서(비밀번호 에러 메세지 설정)는 min 값을 검사하지 않음
-    // 현재 onFocus 등의 처리가 없어 항상 에러 메세지가 뜨기 때문
-    // 추후 textarea처럼 onfocus, onblur에 대한 훅 사용 예정
     if (!isWithinLengthRange(password, MAX_PASSWORD_INPUT)) {
       setPasswordErrorMessage(PASSWORD_LENGTH_ERROR_MESSAGE);
       return;
     }
+
     if (!isAlphanumeric(password)) {
       setPasswordErrorMessage(INVALID_CHAR_ERROR_MESSAGE);
       return;
     }
-
     setPasswordErrorMessage('');
   }, [password]);
 
@@ -157,6 +161,7 @@ const URLGeneratorForm = () => {
               id="password"
               value={password}
               onChange={handlePasswordInputChange}
+              onBlur={handlePasswordBlur}
               type={isOff ? 'password' : 'text'}
               placeholder="abc123"
               $style={{ width: '100%', paddingRight: '3rem' }}
