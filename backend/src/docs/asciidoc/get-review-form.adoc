@@ -1,0 +1,7 @@
+==== 리뷰 작성을 위한 폼 가져오기
+
+operation::get-review-form[snippets="curl-request,http-response,response-fields"]
+
+==== 그룹 코드가 올바르지 않은 경우
+
+operation::get-review-form-not-found[snippets="http-response"]

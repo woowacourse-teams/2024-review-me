@@ -19,7 +19,7 @@ import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
 
 @RestController
 @RequiredArgsConstructor
-public class ReviewGroupController implements ReviewGroupApi {
+public class ReviewGroupController {
 
     private final ReviewGroupService reviewGroupService;
     private final ReviewGroupLookupService reviewGroupLookupService;

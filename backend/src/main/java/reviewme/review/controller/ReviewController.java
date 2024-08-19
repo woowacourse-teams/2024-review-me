@@ -19,7 +19,7 @@ import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 
 @RestController
 @RequiredArgsConstructor
-public class ReviewController implements ReviewApi {
+public class ReviewController {
 
     private static final String GROUP_ACCESS_CODE_HEADER = "GroupAccessCode";
 

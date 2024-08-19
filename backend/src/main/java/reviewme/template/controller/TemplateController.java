@@ -10,7 +10,7 @@ import reviewme.template.service.dto.response.TemplateResponse;
 
 @RestController
 @RequiredArgsConstructor
-public class TemplateController implements TemplateApi {
+public class TemplateController {
 
     private final TemplateService templateService;
 
