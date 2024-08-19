@@ -58,7 +58,7 @@ describe('비밀번호 조회 테스트', () => {
     expect(result.current.data instanceof Error).toBeFalsy();
 
     if (!(result.current.data instanceof Error)) {
-      expect(result.current.data?.isValidAccess).toBeTruthy();
+      expect(result.current.data?.isValidAccess).toBeFalsy();
     }
   });
 });
