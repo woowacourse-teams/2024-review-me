@@ -42,7 +42,7 @@ const endPoint = {
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingReviewList: `${process.env.API_BASE_URL}/${VERSION2}/reviews`,
   postingDataForReviewRequestCode: `${process.env.API_BASE_URL}/${VERSION2}/groups`,
-  passwordChecking: `${process.env.API_BASE_URL}/${VERSION2}/${REVIEW_PASSWORD_API_PARAMS.resource}/${REVIEW_PASSWORD_API_PARAMS.queryString.check}`,
+  checkingPassword: `${process.env.API_BASE_URL}/${VERSION2}/${REVIEW_PASSWORD_API_PARAMS.resource}/${REVIEW_PASSWORD_API_PARAMS.queryString.check}`,
   gettingReviewGroupData: (reviewRequestCode: string) =>
     `${REVIEW_GROUP_DATA_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
 };

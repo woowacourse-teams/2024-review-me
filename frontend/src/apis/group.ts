@@ -41,7 +41,7 @@ export const postPasswordValidationApi = async ({
   groupAccessCode,
   reviewRequestCode,
 }: GetPasswordValidationApiParams) => {
-  const response = await fetch(endPoint.passwordChecking, {
+  const response = await fetch(endPoint.checkingPassword, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

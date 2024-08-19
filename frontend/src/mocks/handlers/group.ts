@@ -26,7 +26,7 @@ const postDataForReviewRequestCode = () => {
 // };
 
 const postPassWordValidation = () => {
-  return http.post(endPoint.passwordChecking, async ({ request }) => {
+  return http.post(endPoint.checkingPassword, async ({ request }) => {
     // password가 있는 경우
     if (!request.body) return HttpResponse.json({ error: API_ERROR_MESSAGE[400] }, { status: 400 });
 
