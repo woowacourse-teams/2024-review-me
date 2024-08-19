@@ -16,7 +16,9 @@ const MODAL_KEYS = {
 
 const ReviewZonePage = () => {
   const { isOpen, openModal, closeModal } = useModals();
+
   const navigate = useNavigate();
+
   const { param: reviewRequestCode } = useSearchParamAndQuery({
     paramKey: 'reviewRequestCode',
   });
