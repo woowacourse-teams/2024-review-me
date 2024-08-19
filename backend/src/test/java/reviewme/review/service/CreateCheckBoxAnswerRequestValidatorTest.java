@@ -19,7 +19,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
 import reviewme.review.service.exception.MissingRequiredAnswerException;
-import reviewme.review.service.exception.CheckBoxAnswerOutOfRangeException;
+import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
 import reviewme.support.ServiceTest;
 import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
 
@@ -133,7 +133,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createCheckBoxAnswerRequestValidator.validate(request))
-                .isInstanceOf(CheckBoxAnswerOutOfRangeException.class);
+                .isInstanceOf(SelectedOptionItemCountOutOfRangeException.class);
     }
 
     @Test
@@ -155,6 +155,6 @@ class CreateCheckBoxAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createCheckBoxAnswerRequestValidator.validate(request))
-                .isInstanceOf(CheckBoxAnswerOutOfRangeException.class);
+                .isInstanceOf(SelectedOptionItemCountOutOfRangeException.class);
     }
 }

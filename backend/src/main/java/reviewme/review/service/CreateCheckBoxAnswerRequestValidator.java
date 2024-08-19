@@ -14,7 +14,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
 import reviewme.review.service.exception.MissingRequiredAnswerException;
-import reviewme.review.service.exception.CheckBoxAnswerOutOfRangeException;
+import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
 import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
 
 @Component
@@ -64,7 +64,7 @@ public class CreateCheckBoxAnswerRequestValidator {
     private void validateCheckedOptionItemCount(CreateReviewAnswerRequest request, OptionGroup optionGroup) {
         if (request.selectedOptionIds().size() < optionGroup.getMinSelectionCount()
                 || request.selectedOptionIds().size() > optionGroup.getMaxSelectionCount()) {
-            throw new CheckBoxAnswerOutOfRangeException(
+            throw new SelectedOptionItemCountOutOfRangeException(
                     request.questionId(),
                     request.selectedOptionIds().size(),
                     optionGroup.getMinSelectionCount(),
