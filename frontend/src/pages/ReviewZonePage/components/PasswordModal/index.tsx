@@ -4,24 +4,47 @@ import { useNavigate } from 'react-router';
 import { Input, Button, EyeButton } from '@/components';
 import ContentModal from '@/components/common/modals/ContentModal';
 import { ROUTES } from '@/constants/routes';
-import { useEyeButton } from '@/hooks';
+import { useCheckPasswordValidation, useEyeButton, useGroupAccessCode } from '@/hooks';
 
 import * as S from './styles';
 interface PasswordModalProps {
   closeModal: () => void;
+  reviewRequestCode: string;
 }
 
-const PasswordModal = ({ closeModal }: PasswordModalProps) => {
+const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) => {
   const [password, setPassword] = useState('');
+  const [validatedPassword, setValidatedPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
+
   const { isOff, handleEyeButtonToggle } = useEyeButton();
 
-  const handleConfirmButtonClick = () => {
-    // NOTE: 추후 이곳에 API 호출 함수 추가
-    //closeModal();
-    // navigate(`/${ROUTES.reviewList}/${}`); // NOTE: 추후 뒤에 groupAccessCode 추가하기
+  const { updateGroupAccessCode } = useGroupAccessCode();
+
+  const handleValidatedPassword = () => {
+    updateGroupAccessCode(password);
+    setErrorMessage('');
+    navigate(`/${ROUTES.reviewList}`);
+  };
+
+  const handleInvalidatedPassword = (error: Error) => {
+    setErrorMessage(error.message);
+  };
+
+  useCheckPasswordValidation({
+    groupAccessCode: validatedPassword,
+    reviewRequestCode,
+    onSuccess: handleValidatedPassword,
+    onError: handleInvalidatedPassword,
+  });
+
+  const handleConfirmButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (!password) return;
+
+    setValidatedPassword(password);
   };
 
   const handlePasswordInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

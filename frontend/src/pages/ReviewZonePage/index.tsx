@@ -4,6 +4,7 @@ import ReviewZoneIcon from '@/assets/reviewZone.svg';
 import { Button } from '@/components';
 // TODO: ROUTES 상수명을 단수로 고치기
 import { ROUTES } from '@/constants/routes';
+import { useSearchParamAndQuery } from '@/hooks';
 import useModals from '@/hooks/useModals';
 
 import PasswordModal from './components/PasswordModal';
@@ -15,7 +16,14 @@ const MODAL_KEYS = {
 
 const ReviewZonePage = () => {
   const { isOpen, openModal, closeModal } = useModals();
+
   const navigate = useNavigate();
+
+  const { param: reviewRequestCode } = useSearchParamAndQuery({
+    paramKey: 'reviewRequestCode',
+  });
+
+  if (!reviewRequestCode) throw new Error('유효하지 않은 리뷰 요청 코드입니다.');
 
   const handleReviewWritingButtonClick = () => {
     navigate(`/${ROUTES.reviewWriting}/ABCD1234`);
@@ -57,7 +65,9 @@ const ReviewZonePage = () => {
           </S.ButtonTextContainer>
         </Button>
       </S.ButtonContainer>
-      {isOpen(MODAL_KEYS.content) && <PasswordModal closeModal={() => closeModal(MODAL_KEYS.content)} />}
+      {isOpen(MODAL_KEYS.content) && (
+        <PasswordModal reviewRequestCode={reviewRequestCode} closeModal={() => closeModal(MODAL_KEYS.content)} />
+      )}
     </S.ReviewZonePage>
   );
 };
