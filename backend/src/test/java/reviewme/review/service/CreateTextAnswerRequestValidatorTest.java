@@ -10,8 +10,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
-import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.question.repository.QuestionRepository;
+import reviewme.review.domain.exception.InvalidTextAnswerLengthException;
 import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.service.exception.MissingRequiredAnswerException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
@@ -74,5 +74,4 @@ class CreateTextAnswerRequestValidatorTest {
         assertThatThrownBy(() -> createTextAnswerRequestValidator.validate(request))
                 .isInstanceOf(InvalidTextAnswerLengthException.class);
     }
-
 }

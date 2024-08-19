@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import reviewme.review.service.dto.request.CreateReviewRequest;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 
 @Tag(name = "리뷰 관리")
 public interface ReviewApi {

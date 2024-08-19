@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reviewme.template.service.dto.response.TemplateResponse;
 import reviewme.template.service.TemplateService;
+import reviewme.template.service.dto.response.TemplateResponse;
 
 @RestController
 @RequiredArgsConstructor

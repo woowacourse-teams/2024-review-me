@@ -10,8 +10,6 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import reviewme.review.domain.exception.InvalidTextAnswerLengthException;
-import reviewme.review.service.CreateTextAnswerRequestValidator;
 
 @Entity
 @Table(name = "text_answer")
