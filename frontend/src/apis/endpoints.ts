@@ -43,7 +43,7 @@ const endPoint = {
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingReviewList: `${process.env.API_BASE_URL}/${VERSION2}/reviews`,
-  postingDataForURL: `${process.env.API_BASE_URL}/${VERSION2}/groups`,
+  postingDataForReviewRequestCode: `${process.env.API_BASE_URL}/${VERSION2}/groups`,
   gettingPasswordValidation: (reviewRequestCode: string) =>
     `${REVIEW_PASSWORD_API_URL}?${REVIEW_PASSWORD_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingReviewGroupData: (reviewRequestCode: string) =>

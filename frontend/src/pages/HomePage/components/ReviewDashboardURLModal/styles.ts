@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const ReviewURLModal = styled.div`
+export const ReviewDashboardURLModal = styled.div`
   display: flex;
   flex-direction: column;
   width: 52rem;
@@ -13,7 +13,7 @@ export const ModalTitle = styled.p`
   margin-bottom: 4.5rem;
 `;
 
-export const ReviewURLModalItem = styled.div`
+export const ReviewDashboardURLModalItem = styled.div`
   display: flex;
   gap: 1.8rem;
   align-items: center;

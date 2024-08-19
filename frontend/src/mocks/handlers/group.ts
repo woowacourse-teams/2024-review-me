@@ -10,18 +10,25 @@ import { API_ERROR_MESSAGE } from '@/constants';
 import { PasswordResponse } from '@/types';
 
 import {
-  CREATED_GROUP_DATA,
+  CREATED_REVIEW_REQUEST_CODE,
   REVIEW_GROUP_DATA,
   VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
   VALIDATED_PASSWORD,
 } from '../mockData/group';
 
-// NOTE: URL 생성 정상 응답
-const postDataForUrl = () => {
-  return http.post(endPoint.postingDataForURL, async () => {
-    return HttpResponse.json(CREATED_GROUP_DATA, { status: 200 });
+// NOTE: reviewRequestCode 생성 정상 응답
+const postDataForReviewRequestCode = () => {
+  return http.post(endPoint.postingDataForReviewRequestCode, async () => {
+    return HttpResponse.json(CREATED_REVIEW_REQUEST_CODE, { status: 200 });
   });
 };
+
+// NOTE: reviewRequestCode 생성 에러 응답
+// const postDataForReviewRequestCode = () => {
+//   return http.post(endPoint.postingDataForReviewRequestCode, async () => {
+//     return HttpResponse.json({ error: '서버 에러 테스트' }, { status: 500 });
+//   });
+// };
 
 const getPassWordValidation = () => {
   return http.get(new RegExp(`^${REVIEW_PASSWORD_API_URL}`), async ({ request }) => {
@@ -67,6 +74,6 @@ const getReviewGroupData = () => {
     return HttpResponse.json({ error: '잘못된 리뷰 그룹 데이터 요청' }, { status: 404 });
   });
 };
-const groupHandler = [postDataForUrl(), getReviewGroupData(), getPassWordValidation()];
+const groupHandler = [postDataForReviewRequestCode(), getReviewGroupData(), getPassWordValidation()];
 
 export default groupHandler;
