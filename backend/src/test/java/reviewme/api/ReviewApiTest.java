@@ -21,7 +21,7 @@ import org.springframework.restdocs.headers.HeaderDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.request.CreateReviewRequest;
 import reviewme.review.service.dto.response.list.ReceivedReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewResponse;
@@ -75,7 +75,7 @@ class ReviewApiTest extends ApiTest {
     @Test
     void 리뷰_그룹_코드가_올바르지_않은_경우_예외가_발생한다() {
         BDDMockito.given(createReviewService.createReview(any(CreateReviewRequest.class)))
-                .willThrow(new ReviewGroupNotFoundByRequestReviewCodeException(anyString()));
+                .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException(anyString()));
 
         FieldDescriptor[] requestFieldDescriptors = {
                 fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
@@ -159,7 +159,7 @@ class ReviewApiTest extends ApiTest {
     @Test
     void 리뷰_단건_조회시_접근_코드가_올바르지_않은_경우_예외를_발생한다() {
         BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyString(), anyLong()))
-                .willThrow(new ReviewGroupNotFoundByRequestReviewCodeException(eq(anyString())));
+                .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException(eq(anyString())));
 
         HeaderDescriptor[] requestHeaderDescriptors = {
                 headerWithName("groupAccessCode").description("그룹 접근 코드")
@@ -231,7 +231,7 @@ class ReviewApiTest extends ApiTest {
     @Test
     void 자신이_받은_리뷰_조회시_접근_코드가_올바르지_않은_경우_예외를_발생한다() {
         BDDMockito.given(reviewService.findReceivedReviews(anyString()))
-                .willThrow(new ReviewGroupNotFoundByRequestReviewCodeException(anyString()));
+                .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException(anyString()));
 
         HeaderDescriptor[] requestHeaderDescriptors = {
                 headerWithName("groupAccessCode").description("그룹 접근 코드")

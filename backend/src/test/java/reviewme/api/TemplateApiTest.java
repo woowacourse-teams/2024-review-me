@@ -12,7 +12,7 @@ import org.mockito.BDDMockito;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 
 class TemplateApiTest extends ApiTest {
 
@@ -71,7 +71,7 @@ class TemplateApiTest extends ApiTest {
     @Test
     void 리뷰_그룹이_존재하지_않는_경우_예외를_반환한다() {
         BDDMockito.given(templateService.generateReviewForm(anyString()))
-                .willThrow(new ReviewGroupNotFoundByRequestReviewCodeException(anyString()));
+                .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException(anyString()));
 
         ParameterDescriptor[] requestParameterDescriptors = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드")
