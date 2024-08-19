@@ -15,6 +15,7 @@ import reviewme.template.domain.Section;
 import reviewme.template.domain.SectionQuestion;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.TemplateSection;
+import reviewme.template.domain.exception.SectionInTemplateNotFoundException;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.service.dto.response.OptionGroupResponse;
 import reviewme.template.service.dto.response.OptionItemResponse;
@@ -47,7 +48,10 @@ public class TemplateMapper {
     }
 
     private SectionResponse mapToSectionResponse(TemplateSection templateSection, ReviewGroup reviewGroup) {
-        Section section = sectionRepository.getSectionById(templateSection.getSectionId());
+        Section section = sectionRepository.findById(templateSection.getSectionId())
+                .orElseThrow(() -> new SectionInTemplateNotFoundException(
+                        templateSection.getTemplateId(), templateSection.getSectionId())
+                );
         List<QuestionResponse> questionResponses = section.getQuestionIds()
                 .stream()
                 .map(sectionQuestion -> mapToQuestionResponse(sectionQuestion, reviewGroup))
