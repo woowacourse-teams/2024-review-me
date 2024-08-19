@@ -36,7 +36,7 @@ public class ReviewGroupService {
 
     @Transactional(readOnly = true)
     public CheckValidAccessResponse checkGroupAccessCode(CheckValidAccessRequest request) {
-        boolean hasAccess = reviewGroupRepository.existsByReviewRequestCodeAndGroupAccessCode(
+        boolean hasAccess = reviewGroupRepository.existsByReviewRequestCodeAndGroupAccessCode_Code(
                 request.reviewRequestCode(), request.groupAccessCode()
         );
         return new CheckValidAccessResponse(hasAccess);
