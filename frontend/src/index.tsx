@@ -14,7 +14,7 @@ import {
   ReviewListPage,
   ReviewWritingCompletePage,
   ReviewWritingCardFormPage,
-  ReviewDashboardPage,
+  ReviewZonePage,
 } from '@/pages';
 
 import { ErrorSuspenseContainer } from './components';
@@ -87,10 +87,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: `user/reviewDashboard/:${ROUTE_PARAM.reviewRequestCode}`, // NOTE: 임시 경로, 추후 논의 및 상수화 필요
+        path: `${ROUTES.reviewZone}/:${ROUTE_PARAM.reviewRequestCode}`, // NOTE: 임시 경로, 추후 논의 및 상수화 필요
         element: (
           <ErrorSuspenseContainer>
-            <ReviewDashboardPage />
+            <ReviewZonePage />
           </ErrorSuspenseContainer>
         ),
       },

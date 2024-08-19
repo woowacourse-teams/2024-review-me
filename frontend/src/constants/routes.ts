@@ -5,5 +5,5 @@ export const ROUTES = {
   reviewWriting: 'user/review-writing',
   reviewWritingComplete: 'user/review-writing-complete',
   detailedReview: 'user/detailed-review',
-  reviewDashboard: 'user/reviewDashboard',
+  reviewZone: 'user/review-zone',
 };
