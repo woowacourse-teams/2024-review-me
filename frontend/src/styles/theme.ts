@@ -4,10 +4,13 @@ import { CSSProperties } from 'react';
 import { ThemeProperty } from '../types';
 
 export const formWidth = '70rem';
+
 export const sidebarWidth: ThemeProperty<string> = {
   desktop: '25rem',
   mobile: '100vw',
 };
+export const footerHeight = '4rem';
+
 export const breakpoints: ThemeProperty<string> = {
   desktop: '102.4rem',
   tablet: '72rem',
@@ -39,6 +42,7 @@ export const colors: ThemeProperty<CSSProperties['color']> = {
   primary: '#7361DF',
   primaryHover: '#9082E6',
   lightPurple: '#E6E3F6',
+  palePurple: '#F5F4FF',
   black: '#1E2022',
   white: '#FFFFFF',
   lightGray: '#F1F2F4',
@@ -63,6 +67,7 @@ const theme: Theme = {
   sidebarWidth,
   borderRadius,
   formWidth,
+  footerHeight,
 };
 
 export default theme;
