@@ -8,6 +8,6 @@ public class CheckBoxAnswerIncludedTextException extends BadRequestException {
 
     public CheckBoxAnswerIncludedTextException() {
         super("체크박스형 응답은 텍스트를 포함할 수 없어요.");
-        log.info("Text type answer cannot have option items");
+        log.info("CheckBox type answer cannot have option items");
     }
 }
