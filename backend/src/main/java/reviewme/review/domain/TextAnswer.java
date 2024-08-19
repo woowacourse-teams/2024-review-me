@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import reviewme.review.domain.exception.InvalidTextAnswerLengthException;
+import reviewme.review.service.CreateTextAnswerRequestValidator;
 
 @Entity
 @Table(name = "text_answer")
@@ -19,9 +20,6 @@ import reviewme.review.domain.exception.InvalidTextAnswerLengthException;
 @Getter
 public class TextAnswer {
 
-    public static final int MIN_LENGTH = 20;
-    public static final int MAX_LENGTH = 1_000;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,18 +27,11 @@ public class TextAnswer {
     @Column(name = "question_id", nullable = false)
     private long questionId;
 
-    @Column(name = "content", nullable = false, length = MAX_LENGTH)
+    @Column(name = "content", nullable = false)
     private String content;
 
     public TextAnswer(long questionId, String content) {
-        validateLength(content);
         this.questionId = questionId;
         this.content = content;
-    }
-
-    private void validateLength(String content) {
-        if (content.length() < MIN_LENGTH || content.length() > MAX_LENGTH) {
-            throw new InvalidTextAnswerLengthException(content.length(), MIN_LENGTH, MAX_LENGTH);
-        }
     }
 }
