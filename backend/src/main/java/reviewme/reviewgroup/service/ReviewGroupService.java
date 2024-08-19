@@ -7,6 +7,7 @@ import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.reviewgroup.service.dto.CheckValidAccessResponse;
+import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 

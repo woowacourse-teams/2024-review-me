@@ -1,4 +1,4 @@
-import { DETAILED_REVIEW_API_PARAMS } from '@/apis/endpoints';
+import { ROUTE_PARAM } from '@/constants';
 import { useGetDetailedReview, useSearchParamAndQuery } from '@/hooks';
 import { ReviewDescription, ReviewSection, KeywordSection } from '@/pages/DetailedReviewPage/components';
 
@@ -10,8 +10,7 @@ interface DetailedReviewPageContentsProps {
 
 const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageContentsProps) => {
   const { param: reviewId } = useSearchParamAndQuery({
-    paramKey: 'reviewId',
-    queryStringKey: DETAILED_REVIEW_API_PARAMS.queryString.memberId,
+    paramKey: ROUTE_PARAM.reviewId,
   });
 
   const { data: detailedReview } = useGetDetailedReview({

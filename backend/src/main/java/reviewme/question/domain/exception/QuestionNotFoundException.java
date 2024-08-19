@@ -8,6 +8,6 @@ public class QuestionNotFoundException extends NotFoundException {
 
     public QuestionNotFoundException(long questionId) {
         super("질문이 존재하지 않아요.");
-        log.info("Question not found - questionId: {}", questionId);
+        log.warn("Question not found - questionId: {}", questionId, this);
     }
 }

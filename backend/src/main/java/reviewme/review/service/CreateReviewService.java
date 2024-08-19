@@ -13,11 +13,12 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByRequestReviewCodeException;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.service.dto.request.CreateReviewRequest;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
+import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -40,7 +41,7 @@ public class CreateReviewService {
 
     private ReviewGroup validateReviewGroupByRequestCode(String reviewRequestCode) {
         return reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByRequestReviewCodeException(reviewRequestCode));
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
     }
 
     private void validateSubmittedQuestionsContainingInTemplate(long templateId, CreateReviewRequest request) {
@@ -58,9 +59,10 @@ public class CreateReviewService {
         List<TextAnswer> textAnswers = new ArrayList<>();
         List<CheckboxAnswer> checkboxAnswers = new ArrayList<>();
         for (CreateReviewAnswerRequest answerRequests : request.answers()) {
-            Question question = questionRepository.getQuestionById(answerRequests.questionId());
+            Question question = questionRepository.findById(answerRequests.questionId())
+                    .orElseThrow(() -> new SubmittedQuestionNotFoundException(answerRequests.questionId()));
             QuestionType questionType = question.getQuestionType();
-            if (questionType == QuestionType.TEXT) {
+            if (questionType == QuestionType.TEXT && answerRequests.isNotBlank()) {
                 createTextAnswerRequestValidator.validate(answerRequests);
                 textAnswers.add(new TextAnswer(question.getId(), answerRequests.text()));
                 continue;

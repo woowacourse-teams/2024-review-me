@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.global.HeaderProperty;
-import reviewme.review.service.dto.request.CreateReviewRequest;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.CreateReviewService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewService;
+import reviewme.review.service.dto.request.CreateReviewRequest;
 import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 
 @RestController
 @RequiredArgsConstructor

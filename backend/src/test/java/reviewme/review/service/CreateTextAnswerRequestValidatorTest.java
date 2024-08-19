@@ -1,17 +1,21 @@
 package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
-import reviewme.question.domain.exception.QuestionNotFoundException;
-import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.service.exception.MissingRequiredQuestionAnswerException;
-import reviewme.review.service.exception.TextAnswerInculdedOptionException;
+import reviewme.review.domain.exception.InvalidTextAnswerLengthException;
+import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
+import reviewme.review.service.exception.MissingRequiredAnswerException;
+import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
+import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
@@ -30,7 +34,7 @@ class CreateTextAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createTextAnswerRequestValidator.validate(request))
-                .isInstanceOf(QuestionNotFoundException.class);
+                .isInstanceOf(SubmittedQuestionNotFoundException.class);
     }
 
     @Test
@@ -42,7 +46,7 @@ class CreateTextAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createTextAnswerRequestValidator.validate(request))
-                .isInstanceOf(TextAnswerInculdedOptionException.class);
+                .isInstanceOf(TextAnswerIncludedOptionItemException.class);
     }
 
     @Test
@@ -54,6 +58,20 @@ class CreateTextAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createTextAnswerRequestValidator.validate(request))
-                .isInstanceOf(MissingRequiredQuestionAnswerException.class);
+                .isInstanceOf(MissingRequiredAnswerException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {19, 10001})
+    void 답변_길이가_유효하지_않으면_예외가_발생한다(int length) {
+        // given
+        String textAnswer = "답".repeat(length);
+        Question savedQuestion
+                = questionRepository.save(new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1));
+        CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(savedQuestion.getId(), null, textAnswer);
+
+        // when, then
+        assertThatThrownBy(() -> createTextAnswerRequestValidator.validate(request))
+                .isInstanceOf(InvalidTextAnswerLengthException.class);
     }
 }
