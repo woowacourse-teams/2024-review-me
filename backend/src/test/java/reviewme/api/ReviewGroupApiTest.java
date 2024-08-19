@@ -15,6 +15,8 @@ import org.mockito.BDDMockito;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
+import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
+import reviewme.reviewgroup.service.dto.CheckValidAccessResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
@@ -80,6 +82,41 @@ class ReviewGroupApiTest extends ApiTest {
         givenWithSpec().log().all()
                 .queryParam("reviewRequestCode", "ABCD1234")
                 .when().get("/v2/groups")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(200);
+    }
+
+    @Test
+    void 리뷰_그룹_코드와_액세스_코드로_일치_여부를_판단한다() {
+        BDDMockito.given(reviewGroupService.checkGroupAccessCode(any(CheckValidAccessRequest.class)))
+                .willReturn(new CheckValidAccessResponse(true));
+
+        String request = """
+                {
+                    "reviewRequestCode": "ABCD1234",
+                    "groupAccessCode": "00001234"
+                }
+                """;
+
+        FieldDescriptor[] requestFieldDescriptors = {
+                fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
+                fieldWithPath("groupAccessCode").description("그룹 접근 코드 (비밀번호)")
+        };
+
+        FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("hasAccess").description("코드 일치 여부 (비밀번호 일치)")
+        };
+
+        RestDocumentationResultHandler handler = document(
+                "review-group-check-access",
+                requestFields(requestFieldDescriptors),
+                responseFields(responseFieldDescriptors)
+        );
+
+        givenWithSpec().log().all()
+                .body(request)
+                .when().post("/v2/groups/check")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);

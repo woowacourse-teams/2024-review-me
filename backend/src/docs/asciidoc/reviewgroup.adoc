@@ -1,3 +1,11 @@
 ==== 리뷰 그룹 생성
 
 operation::review-group-create[snippets="curl-request,request-fields,http-response,response-fields"]
+
+==== 리뷰 그룹 간단 정보 조회
+
+operation::review-group-summary[snippets="curl-request,request-headers,http-response,response-fields"]
+
+==== 리뷰 요청 코드, 확인 코드 일치 여부
+
+operation::review-group-check-access[snippets="curl-request,request-fields,http-response,response-fields"]
