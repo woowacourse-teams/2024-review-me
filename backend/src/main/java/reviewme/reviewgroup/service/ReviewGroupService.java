@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.reviewgroup.service.dto.CheckGroupAccessCodeResponse;
+import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
+import reviewme.reviewgroup.service.dto.CheckValidAccessResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 
@@ -37,9 +38,10 @@ public class ReviewGroupService {
     }
 
     @Transactional(readOnly = true)
-    public CheckGroupAccessCodeResponse checkGroupAccessCode(String reviewRequestCode, String groupAccessCode) {
-        return new CheckGroupAccessCodeResponse(
-                reviewGroupRepository.existsByReviewRequestCodeAndGroupAccessCode(reviewRequestCode, groupAccessCode)
+    public CheckValidAccessResponse checkGroupAccessCode(CheckValidAccessRequest request) {
+        boolean hasAccess = reviewGroupRepository.existsByReviewRequestCodeAndGroupAccessCode(
+                request.reviewRequestCode(), request.groupAccessCode()
         );
+        return new CheckValidAccessResponse(hasAccess);
     }
 }

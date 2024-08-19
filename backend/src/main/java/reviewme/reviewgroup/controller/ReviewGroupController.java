@@ -5,11 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reviewme.global.HeaderProperty;
 import reviewme.reviewgroup.service.ReviewGroupService;
-import reviewme.reviewgroup.service.dto.CheckGroupAccessCodeResponse;
+import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
+import reviewme.reviewgroup.service.dto.CheckValidAccessResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 
@@ -27,13 +26,11 @@ public class ReviewGroupController implements ReviewGroupApi {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/v2/groups/code")
-    public ResponseEntity<CheckGroupAccessCodeResponse> checkGroupAccessCode(
-            @RequestParam("reviewRequestCode") String reviewRequestCode,
-            @HeaderProperty("GroupAccessCode") String groupAccessCode
+    @PostMapping("/v2/groups/check")
+    public ResponseEntity<CheckValidAccessResponse> checkGroupAccessCode(
+            @RequestBody @Valid CheckValidAccessRequest request
     ) {
-        CheckGroupAccessCodeResponse response
-                = reviewGroupService.checkGroupAccessCode(reviewRequestCode, groupAccessCode);
+        CheckValidAccessResponse response = reviewGroupService.checkGroupAccessCode(request);
         return ResponseEntity.ok(response);
     }
 }

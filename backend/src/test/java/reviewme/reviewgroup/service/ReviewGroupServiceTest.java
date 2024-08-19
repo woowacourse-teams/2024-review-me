@@ -14,7 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.reviewgroup.service.dto.CheckGroupAccessCodeResponse;
+import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
+import reviewme.reviewgroup.service.dto.CheckValidAccessResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.support.ServiceTest;
@@ -58,18 +59,21 @@ class ReviewGroupServiceTest {
                 new ReviewGroup("reviewee", "project", "reviewRequestCode", "groupAccessCode")
         );
 
-        // when
-        CheckGroupAccessCodeResponse expected1 = reviewGroupService.checkGroupAccessCode(
+        CheckValidAccessRequest request = new CheckValidAccessRequest(
                 reviewGroup.getReviewRequestCode(), reviewGroup.getGroupAccessCode()
         );
-        CheckGroupAccessCodeResponse expected2 = reviewGroupService.checkGroupAccessCode(
+        CheckValidAccessRequest wrongRequest = new CheckValidAccessRequest(
                 reviewGroup.getReviewRequestCode(), "wrong" + reviewGroup.getGroupAccessCode()
         );
 
+        // when
+        CheckValidAccessResponse expected1 = reviewGroupService.checkGroupAccessCode(request);
+        CheckValidAccessResponse expected2 = reviewGroupService.checkGroupAccessCode(wrongRequest);
+
         // then
         assertAll(
-                () -> assertThat(expected1.isValidAccess()).isTrue(),
-                () -> assertThat(expected2.isValidAccess()).isFalse()
+                () -> assertThat(expected1.hasAccess()).isTrue(),
+                () -> assertThat(expected2.hasAccess()).isFalse()
         );
     }
 }
