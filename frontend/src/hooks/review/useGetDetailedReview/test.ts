@@ -10,12 +10,11 @@ describe('리뷰 상세페이지 데이터 요청 테스트', () => {
   const GROUND_ACCESS_CODE = '1234';
 
   it('유효힌 id,memberId 사용해야 라뷰 상세 페이지 데이터를 불러온다.', async () => {
-    const { reviewId, memberId } = DETAILED_PAGE_MOCK_API_SETTING_VALUES;
+    const { reviewId } = DETAILED_PAGE_MOCK_API_SETTING_VALUES;
 
-    const { result } = renderHook(
-      () => useGetDetailedReview({ reviewId, memberId, groupAccessCode: GROUND_ACCESS_CODE }),
-      { wrapper: QueryClientWrapper },
-    );
+    const { result } = renderHook(() => useGetDetailedReview({ reviewId, groupAccessCode: GROUND_ACCESS_CODE }), {
+      wrapper: QueryClientWrapper,
+    });
 
     await waitFor(() => {
       expect(result.current.status).toBe('success');

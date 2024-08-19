@@ -69,6 +69,10 @@ export const Main = styled.div`
   padding: 2rem 3rem;
 
   font-size: 1.6rem;
+
+  span {
+    overflow-wrap: break-word;
+  }
 `;
 
 export const Keyword = styled.div`

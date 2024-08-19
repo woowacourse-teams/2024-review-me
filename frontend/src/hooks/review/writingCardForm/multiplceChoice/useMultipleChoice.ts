@@ -16,7 +16,7 @@ interface UseMultipleChoiceProps {
 const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps) => {
   const [unCheckTargetOptionId, setUnCheckTargetOptionId] = useState<number | null>(null);
 
-  const { isAnsweredCategoryChanged } = useCancelAnsweredCategory({ question });
+  const { isAnsweredCategoryChanged, updateVisitedCardList } = useCancelAnsweredCategory({ question });
 
   const { selectedOptionList, updateAnswerState } = useUpdateMultipleChoiceAnswer({ question });
 
@@ -28,6 +28,7 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.currentTarget;
     const optionId = Number(id);
+
     if (isAboveSelectionLimit(optionId)) {
       return handleLimitGuideOpen(true);
     }
@@ -52,6 +53,8 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     handleCheckboxChange,
     isSelectedCheckbox,
     unCheckTargetOption,
+    updateVisitedCardList,
+    unCheckTargetOptionId,
   };
 };
 export default useMultipleChoice;
