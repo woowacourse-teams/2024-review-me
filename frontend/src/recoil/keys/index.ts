@@ -5,6 +5,7 @@ export const ATOM_KEY = {
     selectedCategoryAtom: 'selectedCategoryAtom',
     answerMapAtom: 'answerMapAtom',
     answerValidationMapAtom: 'answerValidationMapAtom',
+    visitedCardList: 'visitedCardList',
   },
 };
 

@@ -10,12 +10,13 @@ import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
+import reviewme.question.repository.QuestionRepository;
+import reviewme.review.domain.CheckboxAnswers;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.TextAnswers;
 import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
-import reviewme.question.repository.QuestionRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
@@ -47,12 +48,12 @@ public class ReviewDetailLookupService {
                 .orElseThrow(() -> new InvalidReviewAccessByReviewGroupException(reviewId, reviewGroup.getId()));
         long templateId = review.getTemplateId();
 
-        Set<Long> selectedOptionItemIds = optionItemRepository.findSelectedOptionItemIdsByReviewId(reviewId);
-        List<SectionAnswerResponse> sectionResponses = sectionRepository.findAllByTemplateId(templateId)
-                .stream()
-                .filter(section -> section.isVisibleBySelectedOptionIds(selectedOptionItemIds))
-                .map(section -> getSectionAnswerResponse(review, section, reviewGroup))
-                .toList();
+        List<Section> sections = sectionRepository.findAllByTemplateId(templateId);
+        List<SectionAnswerResponse> sectionResponses = new ArrayList<>();
+
+        for (Section section : sections) {
+            addSectionResponse(review, reviewGroup, section, sectionResponses);
+        }
 
         return new TemplateAnswerResponse(
                 templateId,
@@ -63,36 +64,44 @@ public class ReviewDetailLookupService {
         );
     }
 
-    private SectionAnswerResponse getSectionAnswerResponse(Review review, Section section, ReviewGroup reviewGroup) {
-        TextAnswers textAnswers = new TextAnswers(review.getTextAnswers());
+    private void addSectionResponse(Review review, ReviewGroup reviewGroup,
+                                    Section section, List<SectionAnswerResponse> sectionResponses) {
         ArrayList<QuestionAnswerResponse> questionResponses = new ArrayList<>();
 
         for (Question question : questionRepository.findAllBySectionId(section.getId())) {
             if (question.isSelectable()) {
-                questionResponses.add(getCheckboxAnswerResponse(review, question, reviewGroup));
-                continue;
+                addCheckboxQuestionResponse(review, reviewGroup, question, questionResponses);
+            } else {
+                addTextQuestionResponse(review, reviewGroup, question, questionResponses);
             }
-            questionResponses.add(getTextAnswerResponse(textAnswers, question, reviewGroup));
         }
 
-        return new SectionAnswerResponse(
-                section.getId(),
-                section.convertHeader("{revieweeName}", reviewGroup.getReviewee()),
-                questionResponses
-        );
+        if (!questionResponses.isEmpty()) {
+            sectionResponses.add(new SectionAnswerResponse(
+                    section.getId(),
+                    section.getHeader(),
+                    questionResponses
+            ));
+        }
     }
 
-    private QuestionAnswerResponse getTextAnswerResponse(TextAnswers textAnswers, Question question,
-                                                         ReviewGroup reviewGroup) {
-        TextAnswer textAnswer = textAnswers.getAnswerByQuestionId(question.getId());
-        return new QuestionAnswerResponse(
-                question.getId(),
-                question.isRequired(),
-                question.getQuestionType(),
-                question.convertContent("{revieweeName}", reviewGroup.getReviewee()),
-                null,
-                textAnswer.getContent()
-        );
+    private void addCheckboxQuestionResponse(Review review, ReviewGroup reviewGroup,
+                                             Question question, ArrayList<QuestionAnswerResponse> questionResponses) {
+        CheckboxAnswers checkboxAnswers = new CheckboxAnswers(review.getCheckboxAnswers());
+
+        if (checkboxAnswers.hasAnswerByQuestionId(question.getId())) {
+            questionResponses.add(getCheckboxAnswerResponse(review, question, reviewGroup));
+        }
+
+    }
+
+    private void addTextQuestionResponse(Review review, ReviewGroup reviewGroup,
+                                         Question question, ArrayList<QuestionAnswerResponse> questionResponses) {
+        TextAnswers textAnswers = new TextAnswers(review.getTextAnswers());
+
+        if (textAnswers.hasAnswerByQuestionId(question.getId())) {
+            questionResponses.add(getTextAnswerResponse(textAnswers, question, reviewGroup));
+        }
     }
 
     private QuestionAnswerResponse getCheckboxAnswerResponse(Review review, Question question,
@@ -122,6 +131,19 @@ public class ReviewDetailLookupService {
                 question.convertContent("{revieweeName}", reviewGroup.getReviewee()),
                 optionGroupAnswerResponse,
                 null
+        );
+    }
+
+    private QuestionAnswerResponse getTextAnswerResponse(TextAnswers textAnswers, Question question,
+                                                         ReviewGroup reviewGroup) {
+        TextAnswer textAnswer = textAnswers.getAnswerByQuestionId(question.getId());
+        return new QuestionAnswerResponse(
+                question.getId(),
+                question.isRequired(),
+                question.getQuestionType(),
+                question.convertContent("{revieweeName}", reviewGroup.getReviewee()),
+                null,
+                textAnswer.getContent()
         );
     }
 }

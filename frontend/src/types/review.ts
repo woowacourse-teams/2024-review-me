@@ -97,6 +97,7 @@ export interface ReviewWritingFrom {
 }
 export interface ReviewWritingCardSection {
   sectionId: number;
+  sectionName: string;
   visible: 'ALWAYS' | 'CONDITIONAL';
   onSelectedOptionId: number | null;
   header: string;

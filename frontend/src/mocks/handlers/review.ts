@@ -4,6 +4,7 @@ import endPoint, {
   DETAILED_REVIEW_API_PARAMS,
   DETAILED_REVIEW_API_URL,
   REVIEW_WRITING_API_PARAMS,
+  REVIEW_WRITING_API_URL,
   VERSION2,
 } from '@/apis/endpoints';
 
@@ -39,7 +40,7 @@ const getDetailedReview = () =>
   });
 
 const getDataToWriteReview = () =>
-  http.get(endPoint.gettingDataToWriteReview(REVIEW_REQUEST_CODE), async ({ request }) => {
+  http.get(new RegExp(`^${REVIEW_WRITING_API_URL}`), async ({ request }) => {
     //요청 url에서 reviewId, memberId 추출
     const url = new URL(request.url);
     const urlRequestCode = url.searchParams.get(REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode);

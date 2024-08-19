@@ -3,3 +3,4 @@ export * from './theme';
 export * from './emotion';
 export * from './styles';
 export * from './essentialPropsWithChildren';
+export * from './reviewGroup';
