@@ -14,8 +14,10 @@ import {
   ReviewListPage,
   ReviewWritingCompletePage,
   ReviewWritingCardFormPage,
+  ReviewDashboardPage,
 } from '@/pages';
 
+import { ErrorSuspenseContainer } from './components';
 import { DEV_ENVIRONMENT } from './constants';
 import { ROUTES } from './constants/routes';
 import globalStyles from './styles/globalStyles';
@@ -68,6 +70,14 @@ const router = createBrowserRouter([
       {
         path: `${ROUTES.detailedReview}/:reviewId`,
         element: <DetailedReviewPage />,
+      },
+      {
+        path: `/reviewDashboard`, // NOTE: 임시 경로, 추후 논의 및 상수화 필요
+        element: (
+          <ErrorSuspenseContainer>
+            <ReviewDashboardPage />
+          </ErrorSuspenseContainer>
+        ),
       },
     ],
   },
