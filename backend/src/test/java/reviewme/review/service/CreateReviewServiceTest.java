@@ -66,7 +66,7 @@ class CreateReviewServiceTest {
     @BeforeEach
     void setUp() {
         reviewGroupRepository.save(
-                new ReviewGroup("리뷰어", "프로젝트", reviewRequestCode, "그룹접근코드")
+                new ReviewGroup("리뷰어", "프로젝트", reviewRequestCode, "12341234")
         );
         templateRepository.save(
                 new Template(List.of(1L))
