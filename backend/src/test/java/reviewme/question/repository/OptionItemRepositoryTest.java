@@ -1,7 +1,6 @@
 package reviewme.question.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import java.util.Set;
@@ -16,10 +15,6 @@ import reviewme.question.domain.QuestionType;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.repository.ReviewRepository;
-import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.template.domain.Template;
-import reviewme.template.repository.TemplateRepository;
 
 @DataJpaTest
 class OptionItemRepositoryTest {
