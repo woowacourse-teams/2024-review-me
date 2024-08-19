@@ -1,23 +1,21 @@
 import styled from '@emotion/styled';
 
 export const ReviewMeOverview = styled.section`
+  position: relative;
+
+  overflow: hidden;
+
   width: 65%;
   height: 100%;
 
   background-color: ${({ theme }) => theme.colors.lightPurple};
-
-  padding: 5rem 10rem;
-`;
-
-export const RowSectionContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 5rem;
 `;
 
 export const ColumnSectionContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  height: 100%;
 `;
 
 export const ArrowWrapper = styled.img`
@@ -26,16 +24,15 @@ export const ArrowWrapper = styled.img`
 
 export const OverviewTitleContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 1.3rem;
+  align-items: center;
+  justify-content: center;
 
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 `;
 
 export const OverviewTitle = styled.p`
-  font-size: 3.8rem;
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-
   margin-top: 1.3rem;
+  font-size: ${({ theme }) => theme.fontSize.large};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
