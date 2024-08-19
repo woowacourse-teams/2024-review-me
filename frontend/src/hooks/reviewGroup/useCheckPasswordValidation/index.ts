@@ -49,7 +49,7 @@ const useCheckPasswordValidation = ({
     // case2 요청 성공
     //  data 속 비밀번호 유효성 여부에 따른 액션
     // 2-1 유효하지 않은 비밀번호
-    if (!data?.isValidAccess) {
+    if (!data?.hasAccess) {
       return onError(new Error(INVALID_REVIEW_PASSWORD_MESSAGE));
     }
     // 2-2 유효한 비밀번호
