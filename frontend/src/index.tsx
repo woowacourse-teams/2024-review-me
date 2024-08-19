@@ -10,10 +10,11 @@ import App from '@/App';
 import {
   DetailedReviewPage,
   ErrorPage,
-  LandingPage,
+  HomePage,
   ReviewListPage,
   ReviewWritingCompletePage,
   ReviewWritingCardFormPage,
+  ReviewDashboardPage,
 } from '@/pages';
 
 import { ErrorSuspenseContainer } from './components';
@@ -55,7 +56,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <LandingPage />,
+        element: <HomePage />,
       },
       {
         path: 'user',
@@ -77,6 +78,14 @@ const router = createBrowserRouter([
         element: (
           <ErrorSuspenseContainer>
             <ReviewGroupTestPage />
+          </ErrorSuspenseContainer>
+        ),
+      },
+      {
+        path: `user/reviewDashboard/:${ROUTE_PARAM.reviewRequestCode}`, // NOTE: 임시 경로, 추후 논의 및 상수화 필요
+        element: (
+          <ErrorSuspenseContainer>
+            <ReviewDashboardPage />
           </ErrorSuspenseContainer>
         ),
       },
