@@ -15,4 +15,7 @@ public record CreateReviewAnswerRequest(
         @Schema(description = "답변 내용", nullable = true)
         String text
 ) {
+    public boolean isNotBlank() {
+        return !text.isBlank();
+    }
 }
