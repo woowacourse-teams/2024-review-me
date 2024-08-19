@@ -39,7 +39,7 @@ const URLGeneratorForm = () => {
   // groupAccessCode로 통일하기로 했지만 이미 이 페이지에서는 pwd로 작업한 게 많아서 놔두고
   // API 요청 함수와 리액트 쿼리 코드에서는 groupAccessCode: password로 전달합니다
   const [password, setPassword] = useState('');
-  const [reviewDashboardURL, setReviewDashboardURL] = useState(''); // 얘 상태로 들고있어야됨? ㅇㅇ
+  const [reviewDashboardURL, setReviewDashboardURL] = useState('');
 
   const [revieweeNameErrorMessage, setRevieweeNameErrorMessage] = useState('');
   const [projectNameErrorMessage, setProjectNameErrorMessage] = useState('');
