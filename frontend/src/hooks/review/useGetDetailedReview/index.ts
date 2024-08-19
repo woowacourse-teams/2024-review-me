@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { getDetailedReviewApi } from '@/apis/review';
-import { REVIEW_QUERY_KEYS } from '@/constants';
+import { REVIEW_QUERY_KEY } from '@/constants';
 import { DetailReviewData } from '@/types';
 
 interface UseGetDetailedReviewProps {
@@ -21,7 +21,7 @@ const useGetDetailedReview = ({ reviewId, groupAccessCode }: UseGetDetailedRevie
   };
 
   const result = useSuspenseQuery<DetailReviewData>({
-    queryKey: [REVIEW_QUERY_KEYS.detailedReview, reviewId],
+    queryKey: [REVIEW_QUERY_KEY.detailedReview, reviewId],
     queryFn: () => fetchDetailedReview({ reviewId, groupAccessCode }),
   });
 

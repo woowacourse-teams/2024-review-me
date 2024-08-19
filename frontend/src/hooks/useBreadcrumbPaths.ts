@@ -1,30 +1,30 @@
 import { useLocation } from 'react-router-dom';
 
 import { Path } from '@/components/common/Breadcrumb';
-import { ROUTES } from '@/constants/routes';
+import { ROUTE } from '@/constants/route';
 
 const useBreadcrumbPaths = () => {
   const { pathname } = useLocation();
 
   const breadcrumbPathList: Path[] = [
-    { pageName: '연결 페이지', path: ROUTES.home }, // TODO: 연결 페이지 경로 결정되면 수정 필요
+    { pageName: '연결 페이지', path: ROUTE.home }, // TODO: 연결 페이지 경로 결정되면 수정 필요
   ];
 
-  if (pathname === `/${ROUTES.reviewList}`) {
+  if (pathname === `/${ROUTE.reviewList}`) {
     breadcrumbPathList.push({ pageName: '목록 페이지', path: pathname });
   }
 
-  if (pathname.includes(`/${ROUTES.reviewWriting}/`)) {
+  if (pathname.includes(`/${ROUTE.reviewWriting}/`)) {
     breadcrumbPathList.push({ pageName: '작성 페이지', path: pathname });
   }
 
-  if (pathname === `/${ROUTES.reviewWritingComplete}`) {
+  if (pathname === `/${ROUTE.reviewWritingComplete}`) {
     breadcrumbPathList.push({ pageName: '작성 페이지', path: -1 }, { pageName: '작성 완료 페이지', path: pathname });
   }
 
-  if (pathname.includes(ROUTES.detailedReview)) {
+  if (pathname.includes(ROUTE.detailedReview)) {
     breadcrumbPathList.push(
-      { pageName: '목록 페이지', path: ROUTES.reviewList },
+      { pageName: '목록 페이지', path: ROUTE.reviewList },
       { pageName: '상세 페이지', path: pathname },
     );
   }

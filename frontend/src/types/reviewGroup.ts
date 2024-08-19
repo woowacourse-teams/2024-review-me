@@ -1,5 +1,5 @@
 export interface PasswordResponse {
-  isValidAccess: boolean;
+  hasAccess: boolean;
 }
 export interface ReviewGroupData {
   revieweeName: string;

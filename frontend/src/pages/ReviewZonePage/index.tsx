@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router';
 
 import ReviewZoneIcon from '@/assets/reviewZone.svg';
 import { Button } from '@/components';
-// TODO: ROUTES 상수명을 단수로 고치기
-import { ROUTES } from '@/constants/routes';
+// TODO: ROUTE 상수명을 단수로 고치기
+import { ROUTE } from '@/constants/route';
 import { useGetReviewGroupData, useSearchParamAndQuery } from '@/hooks';
 import useModals from '@/hooks/useModals';
 
@@ -28,7 +28,7 @@ const ReviewZonePage = () => {
   const { data: reviewGroupData } = useGetReviewGroupData({ reviewRequestCode });
 
   const handleReviewWritingButtonClick = () => {
-    navigate(`/${ROUTES.reviewWriting}/ABCD1234`);
+    navigate(`/${ROUTE.reviewWriting}/ABCD1234`);
   };
 
   const handleReviewListButtonClick = () => {
@@ -67,7 +67,9 @@ const ReviewZonePage = () => {
           </S.ButtonTextContainer>
         </Button>
       </S.ButtonContainer>
-      {isOpen(MODAL_KEYS.content) && <PasswordModal closeModal={() => closeModal(MODAL_KEYS.content)} />}
+      {isOpen(MODAL_KEYS.content) && (
+        <PasswordModal reviewRequestCode={reviewRequestCode} closeModal={() => closeModal(MODAL_KEYS.content)} />
+      )}
     </S.ReviewZonePage>
   );
 };
