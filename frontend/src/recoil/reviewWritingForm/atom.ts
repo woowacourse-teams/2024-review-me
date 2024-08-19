@@ -45,3 +45,11 @@ export const visitedCardListAtom = atom<number[]>({
   key: ATOM_KEY.reviewWritingForm.visitedCardList,
   default: [1],
 });
+
+/**
+ * 리뷰 URL 뒷부분의 난수에 해당하는 reviewRequestCode
+ */
+export const reviewRequestCodeAtom = atom<string>({
+  key: ATOM_KEY.reviewWritingForm.reviewRequestCodeAtom,
+  default: '',
+});
