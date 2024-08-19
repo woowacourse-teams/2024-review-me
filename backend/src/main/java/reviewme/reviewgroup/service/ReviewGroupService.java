@@ -1,9 +1,12 @@
 package reviewme.reviewgroup.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reviewme.reviewgroup.domain.ReviewGroup;
+import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
+import reviewme.reviewgroup.service.dto.CheckValidAccessResponse;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
@@ -33,5 +36,13 @@ public class ReviewGroupService {
                 new ReviewGroup(request.revieweeName(), request.projectName(), reviewRequestCode, groupAccessCode)
         );
         return new ReviewGroupCreationResponse(reviewGroup.getReviewRequestCode(), reviewGroup.getGroupAccessCode());
+    }
+
+    @Transactional(readOnly = true)
+    public CheckValidAccessResponse checkGroupAccessCode(CheckValidAccessRequest request) {
+        boolean hasAccess = reviewGroupRepository.existsByReviewRequestCodeAndGroupAccessCode(
+                request.reviewRequestCode(), request.groupAccessCode()
+        );
+        return new CheckValidAccessResponse(hasAccess);
     }
 }
