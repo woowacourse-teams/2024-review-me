@@ -5,8 +5,6 @@ export const ReviewZonePage = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  height: 85vh;
 `;
 
 export const ReviewZoneMainImg = styled.img`
