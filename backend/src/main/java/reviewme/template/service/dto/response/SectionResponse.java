@@ -5,6 +5,7 @@ import java.util.List;
 
 public record SectionResponse(
         long sectionId,
+        String sectionName,
         String visible,
         @Nullable Long onSelectedOptionId,
         String header,

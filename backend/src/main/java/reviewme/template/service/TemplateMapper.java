@@ -59,6 +59,7 @@ public class TemplateMapper {
 
         return new SectionResponse(
                 section.getId(),
+                section.getSectionName(),
                 section.getVisibleType().name(),
                 section.getOnSelectedOptionId(),
                 section.convertHeader("{revieweeName}", reviewGroup.getReviewee()),
