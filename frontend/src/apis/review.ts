@@ -32,16 +32,13 @@ export const postReviewApi = async (formResult: ReviewWritingFormResult) => {
   return;
 };
 
-// 상세 리뷰
-export const getDetailedReviewApi = async ({
-  reviewId,
-  groupAccessCode,
-  reviewRequestCode,
-}: {
+interface GetDetailedReviewApi {
   reviewId: number;
   groupAccessCode: string;
   reviewRequestCode: string;
-}) => {
+}
+// 상세 리뷰
+export const getDetailedReviewApi = async ({ reviewId, groupAccessCode, reviewRequestCode }: GetDetailedReviewApi) => {
   const response = await fetch(endPoint.gettingDetailedReview(reviewId, reviewRequestCode), {
     method: 'GET',
     headers: {
