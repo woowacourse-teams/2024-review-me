@@ -62,7 +62,6 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
               value={password}
               onChange={handlePasswordInputChange}
               type={isOff ? 'password' : 'text'}
-              placeholder="abc123"
               $style={{ width: '100%', paddingRight: '3rem' }}
             />
             <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />
