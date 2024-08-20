@@ -40,23 +40,21 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
                   <S.QuestionCardContainer key={question.questionId} $index={index}>
                     <QuestionCard questionType="normal" question={question.content} />
                     <S.ContentContainer>
-                      <div>
-                        {question.questionType === 'CHECKBOX' && (
-                          <div>
-                            {question.optionGroup?.options.map((option, index) => (
-                              <CheckboxItem
-                                key={`${question.questionId}_${index}`}
-                                id={`${question.questionId}_${index}`}
-                                name={`${question.questionId}_${index}`}
-                                isChecked={isSelectedChoice(question.questionId, option.optionId)}
-                                isDisabled={true}
-                                label={option.content}
-                                $isReadonly={true}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </div>
+                      {question.questionType === 'CHECKBOX' && (
+                        <div>
+                          {question.optionGroup?.options.map((option, index) => (
+                            <CheckboxItem
+                              key={`${question.questionId}_${index}`}
+                              id={`${question.questionId}_${index}`}
+                              name={`${question.questionId}_${index}`}
+                              isChecked={isSelectedChoice(question.questionId, option.optionId)}
+                              isDisabled={true}
+                              label={option.content}
+                              $isReadonly={true}
+                            />
+                          ))}
+                        </div>
+                      )}
 
                       {question.questionType === 'TEXT' && (
                         <div>
