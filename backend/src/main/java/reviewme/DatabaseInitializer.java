@@ -46,7 +46,7 @@ public class DatabaseInitializer {
 
         // 카테고리 선택 섹션
         long categoryQuestionId = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "프로젝트 기간 동안, {revieweeName}의 강점이 드러났던 순간을 선택해주세요.", null, 1)).getId();
-        long categorySectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(categoryQuestionId), null, "카테고리 선택", "{revieweeName}와 함께 한 기억을 떠올려볼게요.", 1)).getId();
+        long categorySectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(categoryQuestionId), null, "강점 발견", "{revieweeName}와 함께 한 기억을 떠올려볼게요.", 1)).getId();
         long categoryOptionGroupId = optionGroupRepository.save(new OptionGroup(categoryQuestionId, KEYWORD_CHECKBOX_MIN_COUNT, KEYWORD_CHECKBOX_MAX_COUNT)).getId();
         long communicationOptionId = optionItemRepository.save(new OptionItem("🗣️커뮤니케이션, 협업 능력  (ex: 팀원간의 원활한 정보 공유, 명확한 의사소통)", categoryOptionGroupId, 1, OptionType.CATEGORY)).getId();
         long problemSolvingOptionId = optionItemRepository.save(new OptionItem("💡문제 해결 능력  (ex: 프로젝트 중 만난 버그/오류를 분석하고 이를 해결하는 능력)",categoryOptionGroupId,2, OptionType.CATEGORY )).getId();
@@ -128,7 +128,7 @@ public class DatabaseInitializer {
 
         // 성장 목표 설정 섹션
         long textGrowthGoalQuestionId = questionRepository.save(new Question(true, QuestionType.TEXT, "앞으로의 성장을 위해서 {revieweeName}이/가 어떤 목표를 설정하면 좋을까요?", "어떤 점을 보완하면 좋을지와 함께 '이렇게 해보면 어떨까?'하는 간단한 솔루션을 제안해봐요.", 1)).getId();
-        long textGrowthGoalSectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(textGrowthGoalQuestionId), null, "단점 피드백", "{revieweeName}의 성장을 도와주세요!", 7)).getId();
+        long textGrowthGoalSectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(textGrowthGoalQuestionId), null, "보완할 점", "{revieweeName}의 성장을 도와주세요!", 7)).getId();
 
         // 응원의 말 섹션
         long textCheerUpQuestionId = questionRepository.save(new Question(false, QuestionType.TEXT, "{revieweeName}에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요.", null, 1)).getId();
