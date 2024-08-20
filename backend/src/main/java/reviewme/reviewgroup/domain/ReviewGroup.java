@@ -9,8 +9,8 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import reviewme.review.domain.exception.InvalidProjectNameLengthException;
-import reviewme.review.domain.exception.InvalidRevieweeNameLengthException;
+import reviewme.reviewgroup.domain.exception.InvalidProjectNameLengthException;
+import reviewme.reviewgroup.domain.exception.InvalidRevieweeNameLengthException;
 
 @Entity
 @Table(name = "review_group")

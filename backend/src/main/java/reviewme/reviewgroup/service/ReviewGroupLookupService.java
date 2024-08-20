@@ -2,7 +2,7 @@ package reviewme.reviewgroup.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.ReviewGroupResponse;

@@ -1,4 +1,4 @@
-package reviewme.review.domain.exception;
+package reviewme.reviewgroup.domain.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import reviewme.global.exception.NotFoundException;

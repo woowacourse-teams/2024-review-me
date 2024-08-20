@@ -3,8 +3,8 @@ package reviewme.reviewgroup.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
-import reviewme.review.service.exception.ReviewGroupUnAuthorizedException;
+import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.reviewgroup.domain.exception.ReviewGroupUnAuthorizedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
