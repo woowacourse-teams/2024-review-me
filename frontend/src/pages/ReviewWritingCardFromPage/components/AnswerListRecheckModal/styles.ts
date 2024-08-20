@@ -18,7 +18,7 @@ export const ContentContainer = styled.div`
   flex-direction: column;
 `;
 
-export const ReviewWritingCardWrapper = styled.div`
+export const ReviewCardWrapper = styled.div`
   overflow: hidden;
   border: 0.2rem solid ${({ theme }) => theme.colors.lightPurple};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
@@ -27,3 +27,4 @@ export const ReviewWritingCardWrapper = styled.div`
 export const TextAnswerWrapper = styled.div`
   margin-top: 1rem;
 `;
+
