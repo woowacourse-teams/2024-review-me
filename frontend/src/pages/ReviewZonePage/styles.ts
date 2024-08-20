@@ -20,7 +20,9 @@ export const ReviewZoneMainImg = styled.img`
 export const ReviewGuideContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 28rem;
+  align-items: center;
+  justify-content: center;
+
   padding-left: 0.2rem;
 `;
 
