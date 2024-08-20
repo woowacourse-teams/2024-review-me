@@ -25,7 +25,7 @@ import reviewme.review.service.dto.request.CreateReviewRequest;
 import reviewme.review.service.dto.response.list.ReceivedReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByCodesException;
+import reviewme.review.service.exception.ReviewGroupUnAuthorizedException;
 
 class ReviewApiTest extends ApiTest {
 
@@ -163,7 +163,7 @@ class ReviewApiTest extends ApiTest {
         String reviewRequestCode = "00001234";
         String groupAccessCode = "43214321";
         BDDMockito.given(reviewDetailLookupService.getReviewDetail(reviewId, reviewRequestCode, groupAccessCode))
-                .willThrow(new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
+                .willThrow(new ReviewGroupUnAuthorizedException(reviewRequestCode));
 
         HeaderDescriptor[] requestHeaderDescriptors = {
                 headerWithName("groupAccessCode").description("그룹 접근 코드")
@@ -239,7 +239,7 @@ class ReviewApiTest extends ApiTest {
         String reviewRequestCode = "43214321";
         String groupAccessCode = "00001234";
         BDDMockito.given(reviewService.findReceivedReviews(reviewRequestCode, groupAccessCode))
-                .willThrow(new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
+                .willThrow(new ReviewGroupUnAuthorizedException(reviewRequestCode));
 
         HeaderDescriptor[] requestHeaderDescriptors = {
                 headerWithName("groupAccessCode").description("그룹 접근 코드")

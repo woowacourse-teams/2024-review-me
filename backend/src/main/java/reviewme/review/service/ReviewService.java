@@ -12,26 +12,21 @@ import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByCodesException;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.reviewgroup.service.ReviewGroupFinder;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
 
-    private final ReviewGroupRepository reviewGroupRepository;
     private final OptionItemRepository optionItemRepository;
     private final ReviewRepository reviewRepository;
-
+    private final ReviewGroupFinder reviewGroupFinder;
     private final ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
 
     @Transactional(readOnly = true)
     public ReceivedReviewsResponse findReceivedReviews(String reviewRequestCode, String groupAccessCode) {
-        ReviewGroup reviewGroup = reviewGroupRepository
-                .findByReviewRequestCodeAndGroupAccessCode(reviewRequestCode, groupAccessCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
-
+        ReviewGroup reviewGroup = reviewGroupFinder.getByCodes(reviewRequestCode, groupAccessCode);
         List<ReceivedReviewResponse> reviewResponses =
                 reviewRepository.findReceivedReviewsByGroupId(reviewGroup.getId())
                         .stream()

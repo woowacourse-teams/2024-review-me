@@ -19,7 +19,7 @@ import reviewme.review.domain.Review;
 import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByCodesException;
+import reviewme.review.service.exception.ReviewGroupUnAuthorizedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -60,7 +60,7 @@ class ReviewServiceTest {
     @Test
     void 리뷰_요청_코드와_확인_코드에_해당하는_그룹이_없는_경우_예외가_발생한다() {
         assertThatThrownBy(() -> reviewService.findReceivedReviews("abc", "groupAccessCode"))
-                .isInstanceOf(ReviewGroupNotFoundByCodesException.class);
+                .isInstanceOf(ReviewGroupUnAuthorizedException.class);
     }
 
     @Test
