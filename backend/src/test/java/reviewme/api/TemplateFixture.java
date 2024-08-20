@@ -36,7 +36,7 @@ class TemplateFixture {
                 )
         );
         SectionResponse firstSection = new SectionResponse(
-                1, VisibleType.ALWAYS.name(), null, "아루와 함께 한 기억을 떠올려볼게요.", firstSectionQuestions
+                1, "카테고리 선택", VisibleType.ALWAYS.name(), null, "아루와 함께 한 기억을 떠올려볼게요.", firstSectionQuestions
         );
 
         // Section 2
@@ -66,7 +66,7 @@ class TemplateFixture {
                 )
         );
         SectionResponse secondSection = new SectionResponse(
-                2, VisibleType.ALWAYS.name(), 1L, "아루의 커뮤니케이션, 협업 능력을 평가해주세요.", secondSectionQuestions
+                2, "커뮤니케이션 능력", VisibleType.ALWAYS.name(), 1L, "아루의 커뮤니케이션, 협업 능력을 평가해주세요.", secondSectionQuestions
         );
 
         return new TemplateResponse(1, "아루", "리뷰미", List.of(firstSection, secondSection));

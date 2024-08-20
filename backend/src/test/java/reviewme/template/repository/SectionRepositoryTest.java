@@ -21,10 +21,10 @@ class SectionRepositoryTest {
     @Test
     void 템플릿_아이디로_섹션을_불러온다() {
         // given
-        Section section1 = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(), null, "1", 1));
-        Section section2 = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(), null, "2", 1));
-        Section section3 = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(), null, "3", 1));
-        sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(), null, "4", 1));
+        Section section1 = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(), null, "1","말머리", 1));
+        Section section2 = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(), null, "2","말머리", 1));
+        Section section3 = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(), null, "3","말머리", 1));
+        sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(), null, "4","말머리", 1));
         Template template = templateRepository.save(
                 new Template(List.of(section1.getId(), section2.getId(), section3.getId()))
         );

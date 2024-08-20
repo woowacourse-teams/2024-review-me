@@ -46,7 +46,7 @@ public class DatabaseInitializer {
 
         // 카테고리 선택 섹션
         long categoryQuestionId = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "프로젝트 기간 동안, {revieweeName}의 강점이 드러났던 순간을 선택해주세요.", null, 1)).getId();
-        long categorySectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(categoryQuestionId), null, "{revieweeName}와 함께 한 기억을 떠올려볼게요.", 1)).getId();
+        long categorySectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(categoryQuestionId), null, "강점 발견", "{revieweeName}와 함께 한 기억을 떠올려볼게요.", 1)).getId();
         long categoryOptionGroupId = optionGroupRepository.save(new OptionGroup(categoryQuestionId, KEYWORD_CHECKBOX_MIN_COUNT, KEYWORD_CHECKBOX_MAX_COUNT)).getId();
         long communicationOptionId = optionItemRepository.save(new OptionItem("🗣️커뮤니케이션, 협업 능력  (ex: 팀원간의 원활한 정보 공유, 명확한 의사소통)", categoryOptionGroupId, 1, OptionType.CATEGORY)).getId();
         long problemSolvingOptionId = optionItemRepository.save(new OptionItem("💡문제 해결 능력  (ex: 프로젝트 중 만난 버그/오류를 분석하고 이를 해결하는 능력)",categoryOptionGroupId,2, OptionType.CATEGORY )).getId();
@@ -57,7 +57,7 @@ public class DatabaseInitializer {
         // 커뮤니케이션 능력 섹션
         long checkBoxCommunicationQuestionId = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요.", null, 1)).getId();
         long textCommunicationQuestionId = questionRepository.save(new Question(true, QuestionType.TEXT, CATEGORY_TEXT_QUESTION, "상황을 자세하게 기록할수록 {revieweeName}에게 도움이 돼요. {revieweeName} 덕분에 팀이 원활한 소통을 이뤘거나, 함께 일하면서 배울 점이 있었는지 떠올려 보세요.", 2)).getId();
-        long communicationSectionId = sectionRepository.save(new Section(VisibleType.CONDITIONAL, List.of(checkBoxCommunicationQuestionId, textCommunicationQuestionId), communicationOptionId, CATEGORY_HEADER, 2)).getId();
+        long communicationSectionId = sectionRepository.save(new Section(VisibleType.CONDITIONAL, List.of(checkBoxCommunicationQuestionId, textCommunicationQuestionId), communicationOptionId, "커뮤니케이션 능력", CATEGORY_HEADER, 2)).getId();
         long communicationOptionGroupId = optionGroupRepository.save(new OptionGroup(checkBoxCommunicationQuestionId, KEYWORD_CHECKBOX_MIN_COUNT, KEYWORD_CHECKBOX_MAX_COUNT)).getId();
         optionItemRepository.save(new OptionItem("반대 의견을 내더라도 듣는 사람이 기분 나쁘지 않게 이야기해요.",communicationOptionGroupId,1, OptionType.KEYWORD ));
         optionItemRepository.save(new OptionItem("팀원들의 의견을 잘 모아서 회의가 매끄럽게 진행되도록 해요.",communicationOptionGroupId,2, OptionType.KEYWORD ));
@@ -70,7 +70,7 @@ public class DatabaseInitializer {
         // 문제해결 능력 섹션
         long checkBoxProblemSolvingQuestionId = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "문제해결 능력에서 어느 부분이 인상 깊었는지 선택해주세요.", null, 1)).getId();
         long textProblemSolvingQuestionId = questionRepository.save(new Question(true, QuestionType.TEXT, CATEGORY_TEXT_QUESTION, "상황을 자세하게 기록할수록 {revieweeName}에게 도움이 돼요.  어떤 문제 상황이 발생했고, {revieweeName}이/가 어떻게 해결했는지 그 과정을 떠올려 보세요.", 2)).getId();
-        long problemSolvingSectionId = sectionRepository.save(new Section(VisibleType.CONDITIONAL, List.of(checkBoxProblemSolvingQuestionId, textProblemSolvingQuestionId), problemSolvingOptionId, CATEGORY_HEADER, 3)).getId();
+        long problemSolvingSectionId = sectionRepository.save(new Section(VisibleType.CONDITIONAL, List.of(checkBoxProblemSolvingQuestionId, textProblemSolvingQuestionId), problemSolvingOptionId, "문제해결 능력", CATEGORY_HEADER, 3)).getId();
         long problemSolvingOptionGroupId = optionGroupRepository.save(new OptionGroup(checkBoxProblemSolvingQuestionId, KEYWORD_CHECKBOX_MIN_COUNT, KEYWORD_CHECKBOX_MAX_COUNT)).getId();
         optionItemRepository.save(new OptionItem("큰 문제를 작은 단위로 쪼개서 단계별로 해결해나가요.",problemSolvingOptionGroupId,1, OptionType.KEYWORD ));
         optionItemRepository.save(new OptionItem("낯선 문제를 만나도 당황하지 않고 차분하게 풀어나가요.",problemSolvingOptionGroupId,2, OptionType.KEYWORD ));
@@ -84,7 +84,7 @@ public class DatabaseInitializer {
         // 시간 관리 능력 섹션
         long checkBoxTimeManagingQuestionId = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "시간 관리 능력에서 어느 부분이 인상 깊었는지 선택해주세요.", null, 1)).getId();
         long textTimeManagingQuestionId = questionRepository.save(new Question(true, QuestionType.TEXT, CATEGORY_TEXT_QUESTION, "상황을 자세하게 기록할수록 {revieweeName}에게 도움이 돼요. {revieweeName} 덕분에 팀이 효율적으로 시간관리를 할 수 있었는지 떠올려 보세요.", 2)).getId();
-        long timeManagingSectionId = sectionRepository.save(new Section(VisibleType.CONDITIONAL, List.of(checkBoxTimeManagingQuestionId, textTimeManagingQuestionId), timeManagingOptionId, CATEGORY_HEADER, 4)).getId();
+        long timeManagingSectionId = sectionRepository.save(new Section(VisibleType.CONDITIONAL, List.of(checkBoxTimeManagingQuestionId, textTimeManagingQuestionId), timeManagingOptionId, "시간관리 능력", CATEGORY_HEADER, 4)).getId();
         long timeManagingOptionGroupId = optionGroupRepository.save(new OptionGroup(checkBoxTimeManagingQuestionId, KEYWORD_CHECKBOX_MIN_COUNT, KEYWORD_CHECKBOX_MAX_COUNT)).getId();
         optionItemRepository.save(new OptionItem("프로젝트의 일정과 주요 마일스톤을 설정하여 체계적으로 일정을 관리해요.",timeManagingOptionGroupId,1, OptionType.KEYWORD ));
         optionItemRepository.save(new OptionItem("일정에 따라 마감 기한을 잘 지켜요.",timeManagingOptionGroupId,2, OptionType.KEYWORD ));
@@ -95,7 +95,7 @@ public class DatabaseInitializer {
         // 기술 역량 섹션
         long checkBoxTechnicalQuestionId = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "기술 역량, 전문 지식에서 어떤 부분이 인상 깊었는지 선택해주세요.", null, 1)).getId();
         long textTechnicalQuestionId = questionRepository.save(new Question(true, QuestionType.TEXT, CATEGORY_TEXT_QUESTION, "상황을 자세하게 기록할수록 {revieweeName}에게 도움이 돼요. {revieweeName} 덕분에 기술적 역량, 전문 지식적으로 도움을 받은 경험을 떠올려 보세요.", 2)).getId();
-        long technicalSectionId = sectionRepository.save(new Section(VisibleType.CONDITIONAL, List.of(checkBoxTechnicalQuestionId, textTechnicalQuestionId), technicalOptionId, CATEGORY_HEADER, 5)).getId();
+        long technicalSectionId = sectionRepository.save(new Section(VisibleType.CONDITIONAL, List.of(checkBoxTechnicalQuestionId, textTechnicalQuestionId), technicalOptionId, "기술 역량", CATEGORY_HEADER, 5)).getId();
         long technicalOptionGroupId = optionGroupRepository.save(new OptionGroup(checkBoxTechnicalQuestionId, KEYWORD_CHECKBOX_MIN_COUNT, KEYWORD_CHECKBOX_MAX_COUNT)).getId();
         optionItemRepository.save(new OptionItem("관련 언어 / 라이브러리 / 프레임워크 지식이 풍부해요.",technicalOptionGroupId,1, OptionType.KEYWORD ));
         optionItemRepository.save(new OptionItem("인프라 지식이 풍부해요.",technicalOptionGroupId,2, OptionType.KEYWORD ));
@@ -113,7 +113,7 @@ public class DatabaseInitializer {
         // 성장 마인드셋 섹션
         long checkBoxGrowthQuestionId = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "성장 마인드셋에서 어떤 부분이 인상 깊었는지 선택해주세요.", null, 1)).getId();
         long textGrowthQuestionId = questionRepository.save(new Question(true, QuestionType.TEXT, CATEGORY_TEXT_QUESTION, "상황을 자세하게 기록할수록 {revieweeName}에게 도움이 돼요. 인상깊었던 {revieweeName}의 성장 마인드셋을 떠올려 보세요.", 2)).getId();
-        long growthSectionId = sectionRepository.save(new Section(VisibleType.CONDITIONAL, List.of(checkBoxGrowthQuestionId, textGrowthQuestionId), growthOptionId, CATEGORY_HEADER, 6)).getId();
+        long growthSectionId = sectionRepository.save(new Section(VisibleType.CONDITIONAL, List.of(checkBoxGrowthQuestionId, textGrowthQuestionId), growthOptionId, "성장 마인드셋", CATEGORY_HEADER, 6)).getId();
         long growthOptionGroupId = optionGroupRepository.save(new OptionGroup(checkBoxGrowthQuestionId, KEYWORD_CHECKBOX_MIN_COUNT, KEYWORD_CHECKBOX_MAX_COUNT)).getId();
         optionItemRepository.save(new OptionItem("어떤 상황에도 긍정적인 태도로 임해요.",growthOptionGroupId,1, OptionType.KEYWORD ));
         optionItemRepository.save(new OptionItem("주변 사람들한테 질문하는 것을 부끄러워하지 않아요.",growthOptionGroupId,2, OptionType.KEYWORD ));
@@ -128,11 +128,11 @@ public class DatabaseInitializer {
 
         // 성장 목표 설정 섹션
         long textGrowthGoalQuestionId = questionRepository.save(new Question(true, QuestionType.TEXT, "앞으로의 성장을 위해서 {revieweeName}이/가 어떤 목표를 설정하면 좋을까요?", "어떤 점을 보완하면 좋을지와 함께 '이렇게 해보면 어떨까?'하는 간단한 솔루션을 제안해봐요.", 1)).getId();
-        long textGrowthGoalSectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(textGrowthGoalQuestionId), null, "{revieweeName}의 성장을 도와주세요!", 7)).getId();
+        long textGrowthGoalSectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(textGrowthGoalQuestionId), null, "보완할 점", "{revieweeName}의 성장을 도와주세요!", 7)).getId();
 
         // 응원의 말 섹션
         long textCheerUpQuestionId = questionRepository.save(new Question(false, QuestionType.TEXT, "{revieweeName}에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요.", null, 1)).getId();
-        long cheerUpSectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(textCheerUpQuestionId), null, "리뷰를 더 하고 싶은 리뷰어를 위한 추가 리뷰!", 8)).getId();
+        long cheerUpSectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(textCheerUpQuestionId), null, "추가 리뷰/응원", "리뷰를 더 하고 싶은 리뷰어를 위한 추가 리뷰!", 8)).getId();
 
         templateRepository.save(new Template(List.of(
                 categorySectionId,

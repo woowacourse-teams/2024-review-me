@@ -123,10 +123,10 @@ class ReviewDetailLookupServiceTest {
                 new OptionItem("체크 2", optionGroup.getId(), 1, OptionType.KEYWORD));
 
         Section section1 = sectionRepository.save(
-                new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", 1)
+                new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", "말머리", 1)
         );
         Section section2 = sectionRepository.save(
-                new Section(VisibleType.CONDITIONAL, List.of(question3.getId()), optionItem1.getId(), "2번 섹션", 2)
+                new Section(VisibleType.CONDITIONAL, List.of(question3.getId()), optionItem1.getId(), "2번 섹션", "말머리", 2)
         );
         Template template = templateRepository.save(new Template(List.of(section1.getId(), section2.getId())));
 
@@ -165,13 +165,13 @@ class ReviewDetailLookupServiceTest {
                 new OptionItem("체크 2", optionGroup.getId(), 1, OptionType.KEYWORD));
 
         Section section1 = sectionRepository.save(
-                new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", 1)
+                new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", "말머리", 1)
         );
         Section section2 = sectionRepository.save(
-                new Section(VisibleType.CONDITIONAL, List.of(question3.getId()), optionItem1.getId(), "2번 섹션", 2)
+                new Section(VisibleType.CONDITIONAL, List.of(question3.getId()), optionItem1.getId(), "2번 섹션", "말머리", 2)
         );
         Section section3 = sectionRepository.save(
-                new Section(VisibleType.ALWAYS, List.of(question4.getId()), null, "3번 섹션", 3)
+                new Section(VisibleType.ALWAYS, List.of(question4.getId()), null, "3번 섹션", "말머리", 3)
         );
 
         Template template = templateRepository.save(
