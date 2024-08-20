@@ -28,7 +28,7 @@ const ReviewZonePage = () => {
   const { data: reviewGroupData } = useGetReviewGroupData({ reviewRequestCode });
 
   const handleReviewWritingButtonClick = () => {
-    navigate(`/${ROUTE.reviewWriting}/ABCD1234`);
+    navigate(`/${ROUTE.reviewWriting}/${reviewRequestCode}`);
   };
 
   const handleReviewListButtonClick = () => {
