@@ -3,10 +3,10 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { getReviewListApi } from '@/apis/review';
 import { REVIEW_QUERY_KEY } from '@/constants';
 
-const useGetReviewList = (groupAccessCode: string) => {
+const useGetReviewList = (groupAccessCode: string, reviewRequestCode: string) => {
   const { data, isLoading, error, isSuccess } = useSuspenseQuery({
     queryKey: [REVIEW_QUERY_KEY.reviews],
-    queryFn: () => getReviewListApi(groupAccessCode),
+    queryFn: () => getReviewListApi(groupAccessCode, reviewRequestCode),
   });
 
   // NOTE: 무한스크롤 관련 코드 일단 주석 처리

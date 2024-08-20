@@ -1,6 +1,9 @@
+import { useRecoilValue } from 'recoil';
+
 import { ROUTE_PARAM } from '@/constants';
 import { useGetDetailedReview, useSearchParamAndQuery } from '@/hooks';
 import { ReviewDescription, ReviewSection, KeywordSection } from '@/pages/DetailedReviewPage/components';
+import { reviewRequestCodeAtom } from '@/recoil';
 
 import * as S from './styles';
 
@@ -9,6 +12,7 @@ interface DetailedReviewPageContentsProps {
 }
 
 const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageContentsProps) => {
+  const storedReviewRequestCode = useRecoilValue(reviewRequestCodeAtom);
   const { param: reviewId } = useSearchParamAndQuery({
     paramKey: ROUTE_PARAM.reviewId,
   });
@@ -16,6 +20,7 @@ const DetailedReviewPageContents = ({ groupAccessCode }: DetailedReviewPageConte
   const { data: detailedReview } = useGetDetailedReview({
     reviewId: Number(reviewId),
     groupAccessCode,
+    reviewRequestCode: storedReviewRequestCode,
   });
 
   // TODO: 리뷰 공개/비공개 토글 버튼 기능

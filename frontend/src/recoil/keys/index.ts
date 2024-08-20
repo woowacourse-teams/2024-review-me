@@ -6,6 +6,7 @@ export const ATOM_KEY = {
     answerMapAtom: 'answerMapAtom',
     answerValidationMapAtom: 'answerValidationMapAtom',
     visitedCardList: 'visitedCardList',
+    reviewRequestCodeAtom: 'reviewRequestCode',
   },
 };
 
