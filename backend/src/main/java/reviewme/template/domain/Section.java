@@ -41,6 +41,9 @@ public class Section {
     @Column(name = "on_selected_option_id", nullable = true)
     private Long onSelectedOptionId;
 
+    @Column(name = "section_name", nullable = false)
+    private String sectionName;
+
     @Column(name = "header", nullable = false, length = 1_000)
     private String header;
 
@@ -48,12 +51,13 @@ public class Section {
     private int position;
 
     public Section(VisibleType visibleType, List<Long> questionIds,
-                   Long onSelectedOptionId, String header, int position) {
+                   Long onSelectedOptionId, String sectionName, String header, int position) {
         this.visibleType = visibleType;
         this.questionIds = questionIds.stream()
                 .map(SectionQuestion::new)
                 .toList();
         this.onSelectedOptionId = onSelectedOptionId;
+        this.sectionName = sectionName;
         this.header = header;
         this.position = position;
     }
