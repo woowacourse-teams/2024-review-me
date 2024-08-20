@@ -23,7 +23,7 @@ import * as S from './styles';
 // TODO: 디바운스 시간을 모든 경우에 0.3초로 고정할 것인지(전역 상수로 사용) 논의하기
 const DEBOUNCE_TIME = 300;
 
-const GROUP_DATA_LENGTH_ERROR_MESSAGE = `최대 ${MAX_VALID_REVIEW_GROUP_DATA_INPUT}자까지 입력할 수 있습니다`;
+const GROUP_DATA_LENGTH_ERROR_MESSAGE = `최대 ${MAX_VALID_REVIEW_GROUP_DATA_INPUT}자까지 입력할 수 있어요`;
 
 const MODAL_KEYS = {
   confirm: 'CONFIRM',
