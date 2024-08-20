@@ -40,7 +40,10 @@ const ReviewZoneURLModal = ({ reviewZoneURL, closeModal }: ReviewZoneURLModalPro
             id="is-confirmed-checkbox"
             isChecked={isChecked}
             handleChange={handleCheckboxClick}
-            $style={{ width: '2.3rem', height: '2.3rem' }}
+            $style={{
+              width: '2.7rem',
+              height: '2.7rem',
+            }}
           />
           <S.CheckMessage>링크를 저장해두었어요!</S.CheckMessage>
         </S.CheckContainer>
