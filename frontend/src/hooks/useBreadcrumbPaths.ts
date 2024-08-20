@@ -10,7 +10,7 @@ const useBreadcrumbPaths = () => {
   const storedReviewRequestCode = useRecoilValue(reviewRequestCodeAtom);
 
   const breadcrumbPathList: Path[] = [
-    { pageName: '연결 페이지', path: `${ROUTE.reviewZone}/${storedReviewRequestCode}` }, // TODO: 연결 페이지 경로 결정되면 수정 필요
+    { pageName: '연결 페이지', path: `${ROUTE.reviewZone}/${storedReviewRequestCode}` },
   ];
 
   if (pathname === `/${ROUTE.reviewList}`) {
