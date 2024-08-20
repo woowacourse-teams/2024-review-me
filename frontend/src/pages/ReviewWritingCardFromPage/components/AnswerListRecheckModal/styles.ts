@@ -28,3 +28,7 @@ export const TextAnswerWrapper = styled.div`
   margin-top: 1rem;
 `;
 
+export const EmptyTextAnswer = styled.p`
+  width: 100%;
+  color: ${({ theme }) => theme.colors.gray};
+`;

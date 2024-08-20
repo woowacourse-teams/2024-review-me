@@ -53,6 +53,13 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
                           ))}
                         </div>
                       )}
+                      {question.questionType === 'TEXT' && (
+                        <S.TextAnswerWrapper>
+                          {findTextAnswer(question.questionId) ? (
+                            <MultilineTextViewer text={findTextAnswer(question.questionId) as string} />
+                          ) : (
+                            <S.EmptyTextAnswer>작성한 답변이 없어요</S.EmptyTextAnswer>
+                          )}
                         </S.TextAnswerWrapper>
                       )}
                     </S.ContentContainer>
