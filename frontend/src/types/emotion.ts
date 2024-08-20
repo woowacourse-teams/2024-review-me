@@ -8,6 +8,7 @@ import {
   breakpoints,
   sidebarWidth,
   borderRadius,
+  componentHeight,
 } from '../styles/theme';
 
 // TODO: export 해서 사용하지 않다면 리팩토링
@@ -18,6 +19,7 @@ export type FontWeight = typeof fontWeight;
 export type Breakpoints = typeof breakpoints;
 export type SidebarWidthStyle = typeof sidebarWidth;
 export type BorderRadius = typeof borderRadius;
+export type ComponentHeight = typeof componentHeight;
 
 type ThemeType = {
   fontSize: FontSize;
@@ -28,7 +30,7 @@ type ThemeType = {
   sidebarWidth: SidebarWidthStyle;
   borderRadius: BorderRadius;
   formWidth: string;
-  footerHeight: string;
+  componentHeight: ComponentHeight;
 };
 
 declare module '@emotion/react' {
