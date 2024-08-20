@@ -42,8 +42,9 @@ export const StepButton = styled.button<StepButtonStyleProps>`
 
   width: 12rem;
   height: 3rem;
+  padding: 0 1rem;
 
-  font-size: ${({ theme }) => theme.fontSize.small};
+  font-size: 1.3rem;
   font-weight: ${({ $isCurrentStep, theme }) => $isCurrentStep && theme.fontWeight.bold};
   text-overflow: ellipsis;
   white-space: nowrap;
