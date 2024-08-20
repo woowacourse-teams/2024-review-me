@@ -28,7 +28,6 @@ export const SlideItem = styled.div`
   justify-content: center;
 
   min-width: 100%;
-  height: 100%;
 `;
 
 export const SlideContent = styled.div`
@@ -46,12 +45,6 @@ export const SlideContent = styled.div`
     width: 80%;
     height: 100%;
   }
-`;
-
-export const Component = styled.div`
-  position: absolute;
-  top: 10rem;
-  right: 5rem;
 `;
 
 export const PrevButton = styled.button`
@@ -82,4 +75,28 @@ export const NextButton = styled.button`
 
   background: none;
   border: none;
+`;
+
+export const IndicatorWrapper = styled.div`
+  position: absolute;
+  bottom: 5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+`;
+
+export const Indicator = styled.div<{ focused: boolean }>`
+  cursor: pointer;
+
+  width: 1rem;
+  height: 1rem;
+  margin: 0 0.5rem;
+
+  background-color: ${({ focused, theme }) => (focused ? theme.colors.black : theme.colors.placeholder)};
+  border-radius: 50%;
+
+  transition: background-color 0.3s ease;
 `;

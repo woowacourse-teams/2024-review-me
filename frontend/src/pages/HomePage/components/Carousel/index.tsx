@@ -52,6 +52,15 @@ const Carousel = ({ slides }: CarouselProps) => {
           </S.SlideItem>
         ))}
       </S.SlideList>
+      <S.IndicatorWrapper>
+        {slides.map((_, index) => (
+          <S.Indicator
+            key={`indicator_${index}`}
+            focused={index === currentSlide}
+            onClick={() => scrollToSlide(index)}
+          />
+        ))}
+      </S.IndicatorWrapper>
       <S.PrevButton onClick={prevSlide}>{'<'}</S.PrevButton>
       <S.NextButton onClick={nextSlide}>{'>'}</S.NextButton>
     </S.CarouselContainer>
