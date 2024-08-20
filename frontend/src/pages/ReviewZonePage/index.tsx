@@ -35,8 +35,6 @@ const ReviewZonePage = () => {
     }
   }, []);
 
-  console.log('zone: ', storedReviewRequestCode);
-
   const { data: reviewGroupData } = useGetReviewGroupData({ reviewRequestCode });
 
   const handleReviewWritingButtonClick = () => {
