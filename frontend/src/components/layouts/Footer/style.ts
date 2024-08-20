@@ -5,10 +5,13 @@ export const Footer = styled.footer`
   gap: 3.2rem;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 
   width: 100%;
   height: ${({ theme }) => theme.footerHeight};
-  padding: 1rem;
+  padding: 2rem 1rem;
 
   font-size: ${({ theme }) => theme.fontSize.small};
   color: ${({ theme }) => theme.colors.gray};
