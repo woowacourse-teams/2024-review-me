@@ -1,10 +1,6 @@
 import styled from '@emotion/styled';
 
 export const Footer = styled.footer`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-
   display: flex;
   gap: 3.2rem;
   align-items: center;
