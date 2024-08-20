@@ -39,17 +39,16 @@ class ReviewGroupServiceTest {
         reviewGroupRepository.save(new ReviewGroup("reviewee", "project", "0000", "1111"));
         given(randomCodeGenerator.generate(anyInt()))
                 .willReturn("0000") // ReviewRequestCode
-                .willReturn("AAAA")
-                .willReturn("1111") // GroupAccessCode
-                .willReturn("BBBB");
-        ReviewGroupCreationRequest request = new ReviewGroupCreationRequest("sancho", "reviewme");
+                .willReturn("AAAA");
+
+        ReviewGroupCreationRequest request = new ReviewGroupCreationRequest("sancho", "reviewme", "groupAccessCode");
 
         // when
         ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request);
 
         // then
-        assertThat(response).isEqualTo(new ReviewGroupCreationResponse("AAAA", "BBBB"));
-        then(randomCodeGenerator).should(times(4)).generate(anyInt());
+        assertThat(response).isEqualTo(new ReviewGroupCreationResponse("AAAA"));
+        then(randomCodeGenerator).should(times(2)).generate(anyInt());
     }
 
     @Test

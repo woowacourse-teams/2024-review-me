@@ -15,14 +15,14 @@ import reviewme.review.domain.CheckboxAnswers;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.TextAnswers;
-import reviewme.review.domain.exception.InvalidReviewAccessByReviewGroupException;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByGroupAccessCodeException;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
 import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewException;
+import reviewme.review.service.exception.ReviewNotFoundByIdAndCodesException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Section;
@@ -41,12 +41,13 @@ public class ReviewDetailLookupService {
     private final OptionItemRepository optionItemRepository;
     private final OptionGroupRepository optionGroupRepository;
 
-    public TemplateAnswerResponse getReviewDetail(String groupAccessCode, long reviewId) {
-        ReviewGroup reviewGroup = reviewGroupRepository.findByGroupAccessCode(groupAccessCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByGroupAccessCodeException(groupAccessCode));
+    public TemplateAnswerResponse getReviewDetail(long reviewId, String reviewRequestCode, String groupAccessCode) {
+        Review review = reviewRepository.findByIdAndCodes(reviewId, reviewRequestCode, groupAccessCode)
+                .orElseThrow(() -> new ReviewNotFoundByIdAndCodesException(reviewId, reviewRequestCode, groupAccessCode));
 
-        Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
-                .orElseThrow(() -> new InvalidReviewAccessByReviewGroupException(reviewId, reviewGroup.getId()));
+        ReviewGroup reviewGroup = reviewGroupRepository.findById(review.getReviewGroupId())
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewException(review.getId(), review.getReviewGroupId()));
+
         long templateId = review.getTemplateId();
 
         List<Section> sections = sectionRepository.findAllByTemplateId(templateId);

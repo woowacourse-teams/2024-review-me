@@ -10,11 +10,9 @@ public interface ReviewGroupRepository extends JpaRepository<ReviewGroup, Long> 
 
     Optional<ReviewGroup> findByReviewRequestCode(String reviewRequestCode);
 
-    Optional<ReviewGroup> findByGroupAccessCode(String groupAccessCode);
+    Optional<ReviewGroup> findByReviewRequestCodeAndGroupAccessCode_Code(String reviewRequestCode, String groupAccessCode);
 
     boolean existsByReviewRequestCode(String reviewRequestCode);
 
-    boolean existsByGroupAccessCode(String groupAccessCode);
-
-    boolean existsByReviewRequestCodeAndGroupAccessCode(String reviewRequestCode, String groupAccessCode);
+    boolean existsByReviewRequestCodeAndGroupAccessCode_Code(String reviewRequestCode, String groupAccessCode);
 }

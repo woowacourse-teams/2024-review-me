@@ -26,23 +26,24 @@ class ReviewGroupApiTest extends ApiTest {
     @Test
     void 리뷰_그룹을_생성한다() {
         BDDMockito.given(reviewGroupService.createReviewGroup(any(ReviewGroupCreationRequest.class)))
-                .willReturn(new ReviewGroupCreationResponse("ABCD1234", "00001234"));
+                .willReturn(new ReviewGroupCreationResponse("ABCD1234"));
 
         String request = """
                 {
                     "revieweeName": "아루",
-                    "projectName": "리뷰미"
+                    "projectName": "리뷰미",
+                    "groupAccessCode": "12341234"
                 }
                 """;
 
         FieldDescriptor[] requestFieldDescriptors = {
                 fieldWithPath("revieweeName").description("리뷰이 이름"),
-                fieldWithPath("projectName").description("프로젝트 이름")
+                fieldWithPath("projectName").description("프로젝트 이름"),
+                fieldWithPath("groupAccessCode").description("리뷰 확인 코드(비밀번호)")
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
-                fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
-                fieldWithPath("groupAccessCode").description("그룹 접근 코드")
+                fieldWithPath("reviewRequestCode").description("리뷰 요청 코드")
         };
 
         RestDocumentationResultHandler handler = document(

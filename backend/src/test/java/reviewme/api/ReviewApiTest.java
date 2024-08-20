@@ -3,7 +3,6 @@ package reviewme.api;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -26,6 +25,7 @@ import reviewme.review.service.dto.request.CreateReviewRequest;
 import reviewme.review.service.dto.response.list.ReceivedReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
+import reviewme.review.service.exception.ReviewGroupNotFoundByCodesException;
 
 class ReviewApiTest extends ApiTest {
 
@@ -101,7 +101,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 자신이_받은_리뷰_한_개를_조회한다() {
-        BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyString(), anyLong()))
+        BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyLong(), anyString(), anyString()))
                 .willReturn(TemplateFixture.templateAnswerResponse());
 
         HeaderDescriptor[] requestHeaderDescriptors = {
@@ -149,7 +149,8 @@ class ReviewApiTest extends ApiTest {
 
         givenWithSpec().log().all()
                 .pathParam("id", "1")
-                .header("groupAccessCode", "00001234")
+                .queryParam("reviewRequestCode", "00001234")
+                .header("groupAccessCode", "abc12344")
                 .when().get("/v2/reviews/{id}")
                 .then().log().all()
                 .apply(handler)
@@ -158,8 +159,11 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 리뷰_단건_조회시_접근_코드가_올바르지_않은_경우_예외를_발생한다() {
-        BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyString(), anyLong()))
-                .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException(eq(anyString())));
+        long reviewId = 1L;
+        String reviewRequestCode = "00001234";
+        String groupAccessCode = "43214321";
+        BDDMockito.given(reviewDetailLookupService.getReviewDetail(reviewId, reviewRequestCode, groupAccessCode))
+                .willThrow(new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
 
         HeaderDescriptor[] requestHeaderDescriptors = {
                 headerWithName("groupAccessCode").description("그룹 접근 코드")
@@ -176,12 +180,13 @@ class ReviewApiTest extends ApiTest {
         );
 
         givenWithSpec().log().all()
-                .pathParam("id", "1")
-                .header("groupAccessCode", "00001234")
+                .pathParam("id", reviewId)
+                .queryParam("reviewRequestCode", reviewRequestCode)
+                .header("groupAccessCode", groupAccessCode)
                 .when().get("/v2/reviews/{id}")
                 .then().log().all()
                 .apply(handler)
-                .statusCode(404);
+                .statusCode(400);
     }
 
     @Test
@@ -193,7 +198,7 @@ class ReviewApiTest extends ApiTest {
                         List.of(new ReceivedReviewCategoryResponse(2L, "카테고리 2")))
         );
         ReceivedReviewsResponse response = new ReceivedReviewsResponse("아루", "리뷰미", receivedReviews);
-        BDDMockito.given(reviewService.findReceivedReviews(anyString()))
+        BDDMockito.given(reviewService.findReceivedReviews(anyString(), anyString()))
                 .willReturn(response);
 
         HeaderDescriptor[] requestHeaderDescriptors = {
@@ -221,7 +226,8 @@ class ReviewApiTest extends ApiTest {
         );
 
         givenWithSpec().log().all()
-                .header("groupAccessCode", "00001234")
+                .queryParam("reviewRequestCode", "asdfasdf")
+                .header("groupAccessCode", "qwerqwer")
                 .when().get("/v2/reviews")
                 .then().log().all()
                 .apply(handler)
@@ -230,8 +236,10 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 자신이_받은_리뷰_조회시_접근_코드가_올바르지_않은_경우_예외를_발생한다() {
-        BDDMockito.given(reviewService.findReceivedReviews(anyString()))
-                .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException(anyString()));
+        String reviewRequestCode = "43214321";
+        String groupAccessCode = "00001234";
+        BDDMockito.given(reviewService.findReceivedReviews(reviewRequestCode, groupAccessCode))
+                .willThrow(new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
 
         HeaderDescriptor[] requestHeaderDescriptors = {
                 headerWithName("groupAccessCode").description("그룹 접근 코드")
@@ -243,10 +251,11 @@ class ReviewApiTest extends ApiTest {
         );
 
         givenWithSpec().log().all()
-                .header("groupAccessCode", "00001234")
+                .header("groupAccessCode", groupAccessCode)
+                .queryParam("reviewRequestCode", reviewRequestCode)
                 .when().get("/v2/reviews")
                 .then().log().all()
                 .apply(handler)
-                .statusCode(404);
+                .statusCode(400);
     }
 }
