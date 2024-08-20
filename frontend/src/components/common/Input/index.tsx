@@ -6,13 +6,14 @@ export interface InputStyleProps {
 interface InputProps extends InputStyleProps {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: () => void;
   type: string;
   id?: string;
   name?: string;
   placeholder?: string;
 }
 
-const Input = ({ id, value, name, onChange, type, placeholder, $style }: InputProps) => {
+const Input = ({ id, value, name, onChange, onBlur, type, placeholder, $style }: InputProps) => {
   return (
     <S.Input
       id={id}
@@ -20,6 +21,7 @@ const Input = ({ id, value, name, onChange, type, placeholder, $style }: InputPr
       type={type}
       name={name}
       onChange={onChange}
+      onBlur={onBlur}
       placeholder={placeholder}
       style={$style}
     />
