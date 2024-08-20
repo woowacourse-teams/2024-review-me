@@ -19,15 +19,10 @@ export const Textarea = styled.textarea<TextareaProps>`
   height: 15rem;
   padding: 1.6rem;
 
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
   overflow-wrap: break-word;
 
   border: 0.1rem solid ${({ $isError, theme }) => ($isError ? theme.colors.red : theme.colors.black)};
   border-radius: 0.8rem;
-
-  &::placeholder {
-    font-weight: ${({ theme }) => theme.fontWeight.medium};
-  }
 
   ${({ $style }) => $style && { ...$style }};
 `;
