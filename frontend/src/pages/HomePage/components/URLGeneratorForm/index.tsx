@@ -32,15 +32,14 @@ const MODAL_KEYS = {
 const URLGeneratorForm = () => {
   const [revieweeName, setRevieweeName] = useState('');
   const [projectName, setProjectName] = useState('');
-  // NOTE: 이 password는 groupAccessCode로 사용됨.
+  // NOTE: 이 password는 groupAccessCode로 사용됩니다.
   // groupAccessCode로 통일하기로 했지만 이미 이 페이지에서는 pwd로 작업한 게 많아서 놔두고
-  // API 요청 함수와 리액트 쿼리 코드에서는 groupAccessCode: password로 전달합니다
+  // API 요청 함수와 리액트 쿼리 코드에서는 groupAccessCode: password로 전달합니다.
   const [password, setPassword] = useState('');
   const [reviewZoneURL, setReviewZoneURL] = useState('');
 
   const [revieweeNameErrorMessage, setRevieweeNameErrorMessage] = useState('');
   const [projectNameErrorMessage, setProjectNameErrorMessage] = useState('');
-  //const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
   const mutation = usePostDataForReviewRequestCode();
   const { isOff, handleEyeButtonToggle } = useEyeButton();
