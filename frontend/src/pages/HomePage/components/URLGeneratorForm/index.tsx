@@ -51,8 +51,8 @@ const URLGeneratorForm = () => {
     isValidReviewGroupDataInput(revieweeName) &&
     isValidReviewGroupDataInput(projectName) &&
     !isNotEmptyInput(passwordErrorMessage); // NOTE: 에러 메세지가 빈 문자열이라면 비밀번호는 유효하다.
-    // TODO: 현재 비밀번호만 다른 방식으로 유효성 검증을 하고 있으므로
-    // 코드의 통일성을 위해 revieweeName, projectName에 대한 검증도 비밀번호와 비슷한 형식으로 리팩토링하기
+  // TODO: 현재 비밀번호만 다른 방식으로 유효성 검증을 하고 있으므로
+  // 코드의 통일성을 위해 revieweeName, projectName에 대한 검증도 비밀번호와 비슷한 형식으로 리팩토링하기
 
   const postDataForURL = () => {
     const dataForReviewRequestCode: DataForReviewRequestCode = { revieweeName, projectName, groupAccessCode: password };
@@ -109,7 +109,7 @@ const URLGeneratorForm = () => {
 
   return (
     <S.URLGeneratorForm>
-      <FormLayout title="함께한 팀원에게 리뷰를 받아보세요!" direction="column">
+      <FormLayout title="함께한 팀원으로부터 리뷰를 받아보세요!" direction="column">
         <S.InputContainer>
           <S.Label htmlFor="reviewee-name">본인의 이름을 적어주세요</S.Label>
           <Input
