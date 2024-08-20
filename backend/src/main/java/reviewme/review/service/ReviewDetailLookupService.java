@@ -21,7 +21,7 @@ import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
 import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewException;
+import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewException;
 import reviewme.review.service.exception.ReviewNotFoundByIdAndCodesException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
