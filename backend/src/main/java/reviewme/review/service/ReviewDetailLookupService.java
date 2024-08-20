@@ -81,7 +81,7 @@ public class ReviewDetailLookupService {
         if (!questionResponses.isEmpty()) {
             sectionResponses.add(new SectionAnswerResponse(
                     section.getId(),
-                    section.getHeader(),
+                    section.convertHeader("{revieweeName}", reviewGroup.getReviewee()),
                     questionResponses
             ));
         }
