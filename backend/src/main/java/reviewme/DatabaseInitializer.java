@@ -28,7 +28,7 @@ public class DatabaseInitializer {
     private static final String CATEGORY_HEADER = "이제, 선택한 순간들을 바탕으로 {revieweeName}에 대한 리뷰를 작성해볼게요.";
     private static final String CATEGORY_TEXT_QUESTION = "위에서 선택한 사항과 관련된 경험을 구체적으로 적어 주세요.";
     private static final int KEYWORD_CHECKBOX_MIN_COUNT = 1;
-    private static final int KEYWORD_CHECKBOX_MAX_COUNT = 3;
+    private static final int KEYWORD_CHECKBOX_MAX_COUNT = 2;
 
     private final QuestionRepository questionRepository;
     private final OptionItemRepository optionItemRepository;
