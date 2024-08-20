@@ -33,9 +33,8 @@ const completedStyle = (theme: Theme) => css`
 
 const getStepButtonStyle = ($isDone: boolean, $isMovingAvailable: boolean, theme: Theme) => {
   if (!$isMovingAvailable) return disabledStyle(theme);
-  else if ($isDone && $isMovingAvailable) return completedStyle(theme);
-  else if (!$isDone && $isMovingAvailable) return defaultStyle(theme);
-  else return '';
+  if ($isDone) return completedStyle(theme);
+  return defaultStyle(theme);
 };
 
 export const StepButton = styled.button<StepButtonStyleProps>`
