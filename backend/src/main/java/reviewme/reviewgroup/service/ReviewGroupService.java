@@ -18,24 +18,26 @@ public class ReviewGroupService {
 
     private final ReviewGroupRepository reviewGroupRepository;
     private final RandomCodeGenerator randomCodeGenerator;
+    private final GroupAccessCodeEncoder groupAccessCodeEncoder;
 
     @Transactional
     public ReviewGroupCreationResponse createReviewGroup(ReviewGroupCreationRequest request) {
+        String encodedGroupAccessCode = groupAccessCodeEncoder.encode(request.groupAccessCode());
         String reviewRequestCode;
         do {
             reviewRequestCode = randomCodeGenerator.generate(REVIEW_REQUEST_CODE_LENGTH);
         } while (reviewGroupRepository.existsByReviewRequestCode(reviewRequestCode));
 
-
-        ReviewGroup reviewGroup = reviewGroupRepository.save(
-                new ReviewGroup(request.revieweeName(), request.projectName(), reviewRequestCode, request.groupAccessCode())
+        ReviewGroup reviewGroup = new ReviewGroup(
+                request.revieweeName(), request.projectName(), reviewRequestCode, encodedGroupAccessCode
         );
-        return new ReviewGroupCreationResponse(reviewGroup.getReviewRequestCode());
+        ReviewGroup savedReviewGroup = reviewGroupRepository.save(reviewGroup);
+        return new ReviewGroupCreationResponse(savedReviewGroup.getReviewRequestCode());
     }
 
     @Transactional(readOnly = true)
     public CheckValidAccessResponse checkGroupAccessCode(CheckValidAccessRequest request) {
-        boolean hasAccess = reviewGroupRepository.existsByReviewRequestCodeAndGroupAccessCode_Code(
+        boolean hasAccess = reviewGroupRepository.existsByReviewRequestCodeAndGroupAccessCode(
                 request.reviewRequestCode(), request.groupAccessCode()
         );
         return new CheckValidAccessResponse(hasAccess);

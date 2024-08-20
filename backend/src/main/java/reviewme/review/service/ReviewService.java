@@ -29,7 +29,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReceivedReviewsResponse findReceivedReviews(String reviewRequestCode, String groupAccessCode) {
         ReviewGroup reviewGroup = reviewGroupRepository
-                .findByReviewRequestCodeAndGroupAccessCode_Code(reviewRequestCode, groupAccessCode)
+                .findByReviewRequestCodeAndGroupAccessCode(reviewRequestCode, groupAccessCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
 
         List<ReceivedReviewResponse> reviewResponses =

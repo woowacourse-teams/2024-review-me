@@ -1,7 +1,6 @@
 package reviewme.reviewgroup.domain;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,8 +36,8 @@ public class ReviewGroup {
     @Column(name = "review_request_code", nullable = false)
     private String reviewRequestCode;
 
-    @Embedded
-    private GroupAccessCode groupAccessCode;
+    @Column(name = "group_access_code", nullable = false)
+    private String groupAccessCode;
 
     @Column(name = "template_id", nullable = false)
     private long templateId = 1L;
@@ -49,7 +48,7 @@ public class ReviewGroup {
         this.reviewee = reviewee;
         this.projectName = projectName;
         this.reviewRequestCode = reviewRequestCode;
-        this.groupAccessCode = new GroupAccessCode(groupAccessCode);
+        this.groupAccessCode = groupAccessCode;
     }
 
     private void validateRevieweeLength(String reviewee) {
@@ -64,9 +63,5 @@ public class ReviewGroup {
                     projectName.length(), MIN_PROJECT_NAME_LENGTH, MAX_PROJECT_NAME_LENGTH
             );
         }
-    }
-
-    public String getGroupAccessCode() {
-        return groupAccessCode.getCode();
     }
 }
