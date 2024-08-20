@@ -23,7 +23,7 @@ const ReviewZonePage = () => {
     paramKey: 'reviewRequestCode',
   });
 
-  if (!reviewRequestCode) throw new Error('유효하지 않은 리뷰 요청 코드입니다.');
+  if (!reviewRequestCode) throw new Error('유효하지 않은 리뷰 요청 코드에요');
 
   const { data: reviewGroupData } = useGetReviewGroupData({ reviewRequestCode });
 

@@ -14,13 +14,13 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
   sections: [
     {
       sectionId: 1,
-      header: `💡 ${REVIEWEENAME}와 함께 한 기억을 떠올려볼게요.`,
+      header: `💡 ${REVIEWEENAME}와 함께 한 기억을 떠올려볼게요`,
       questions: [
         {
           questionId: 1,
           required: true,
           questionType: 'CHECKBOX',
-          content: `프로젝트 기간 동안, ${REVIEWEENAME}의 강점이 드러났던 순간을 선택해주세요.`,
+          content: `프로젝트 기간 동안, ${REVIEWEENAME}의 강점이 드러났던 순간을 선택해주세요`,
           optionGroup: {
             optionGroupId: 1,
             minCount: 1,
@@ -41,7 +41,7 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
           questionId: 2,
           required: true,
           questionType: 'CHECKBOX',
-          content: `${REVIEWEENAME}에서 어떤 부분이 인상 깊었는지 선택해주세요.`,
+          content: `${REVIEWEENAME}에서 어떤 부분이 인상 깊었는지 선택해주세요`,
           optionGroup: {
             optionGroupId: 1,
             minCount: 1,
@@ -49,10 +49,10 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
             options: [
               {
                 optionId: 4,
-                content: '반대 의견을 내더라도 듣는 사람이 기분 나쁘지 않게 이야기해요.',
+                content: '반대 의견을 내더라도 듣는 사람이 기분 나쁘지 않게 이야기해요',
                 isChecked: true,
               },
-              { optionId: 5, content: '팀원들의 의견을 잘 모아서 회의가 매끄럽게 진행되도록 해요.', isChecked: true },
+              { optionId: 5, content: '팀원들의 의견을 잘 모아서 회의가 매끄럽게 진행되도록 해요', isChecked: true },
             ],
           },
         },
@@ -60,7 +60,7 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
           questionId: 3,
           required: true,
           questionType: 'TEXT',
-          content: '위에서 선택한 사항에 대해 조금 더 자세히 설명해주세요.',
+          content: '위에서 선택한 사항에 대해 조금 더 자세히 설명해주세요',
           optionGroup: null,
           answer: '쑤쑤 쑤퍼노바 인상깊어요',
         },
@@ -88,7 +88,7 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
           questionId: 5,
           required: false,
           questionType: 'TEXT',
-          content: `${REVIEWEENAME}에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요.`,
+          content: `${REVIEWEENAME}에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요`,
           optionGroup: null,
           answer: '응원합니다 화이팅!!',
         },

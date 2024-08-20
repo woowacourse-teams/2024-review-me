@@ -27,7 +27,7 @@ const useReviewForm = ({ dataToWrite }: UseReviewFormProps) => {
 
   const handleKeywordButtonClick = (keyword: Keyword) => {
     if (selectedKeywords.length === REVIEW.keywordMaxCount && !selectedKeywords.includes(keyword.id)) {
-      setErrorMessage('키워드는 최대 5개까지 선택할 수 있어요.');
+      setErrorMessage('키워드는 최대 5개까지 선택할 수 있어요');
     }
 
     setSelectedKeywords((prev) =>

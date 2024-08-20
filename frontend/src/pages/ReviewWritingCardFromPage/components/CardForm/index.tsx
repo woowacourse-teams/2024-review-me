@@ -188,7 +188,7 @@ const CardForm = () => {
         >
           <S.SubmitErrorMessage>
             <p>리뷰를 제출할까요?</p>
-            <p>제출한 뒤에는 수정할 수 없어요.</p>
+            <p>제출한 뒤에는 수정할 수 없어요</p>
           </S.SubmitErrorMessage>
         </ConfirmModal>
       )}

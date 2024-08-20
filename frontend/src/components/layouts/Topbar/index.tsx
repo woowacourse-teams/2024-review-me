@@ -5,7 +5,7 @@ import Logo from './components/Logo';
 import SidebarOpenButton from './components/SidebarOpenButton';
 import * as S from './styles';
 
-// const USER_SEARCH_PLACE_HOLDER = '사용자를 입력해주세요.';
+// const USER_SEARCH_PLACE_HOLDER = '사용자를 입력해주세요';
 
 interface TopbarProps {
   openSidebar: () => void;
