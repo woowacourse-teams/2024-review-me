@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 
 import { DataForReviewRequestCode } from '@/apis/group';
 import { Button, Input, EyeButton } from '@/components';
@@ -46,6 +46,14 @@ const URLGeneratorForm = () => {
   const { isOff, handleEyeButtonToggle } = useEyeButton();
   const { isOpen, openModal, closeModal } = useModals();
   const { passwordErrorMessage, handlePasswordBlur } = usePasswordValidation(password);
+
+  const useInputId = useId();
+
+  const INPUT_ID = {
+    reviewName: `review-name-${useInputId}`,
+    projectName: `project-name-${useInputId}`,
+    password: `password-${useInputId}`,
+  };
 
   const isFormValid =
     isValidReviewGroupDataInput(revieweeName) &&
@@ -109,38 +117,25 @@ const URLGeneratorForm = () => {
     <S.URLGeneratorForm>
       <FormLayout title="함께한 팀원으로부터 리뷰를 받아보세요!" direction="column">
         <S.InputContainer>
-          <S.Label htmlFor="reviewee-name">본인의 이름을 적어주세요</S.Label>
-          <Input
-            id="reviewee-name"
-            value={revieweeName}
-            onChange={handleNameInputChange}
-            type="text"
-            placeholder="이름"
-          />
+          <S.Label htmlFor={INPUT_ID.reviewName}>본인의 이름을 적어주세요</S.Label>
+          <Input id={INPUT_ID.reviewName} value={revieweeName} onChange={handleNameInputChange} type="text" />
           <S.ErrorMessage>{revieweeNameErrorMessage}</S.ErrorMessage>
         </S.InputContainer>
         <S.InputContainer>
-          <S.Label htmlFor="project-name">함께한 프로젝트 이름을 입력해주세요</S.Label>
-          <Input
-            id="project-name"
-            value={projectName}
-            onChange={handleProjectNameInputChange}
-            type="text"
-            placeholder="review-me"
-          />
+          <S.Label htmlFor={INPUT_ID.projectName}>함께한 프로젝트 이름을 입력해주세요</S.Label>
+          <Input id={INPUT_ID.projectName} value={projectName} onChange={handleProjectNameInputChange} type="text" />
           <S.ErrorMessage>{projectNameErrorMessage}</S.ErrorMessage>
         </S.InputContainer>
         <S.InputContainer>
-          <S.Label htmlFor="password">리뷰 확인에 사용할 비밀번호를 적어주세요</S.Label>
+          <S.Label htmlFor={INPUT_ID.password}>리뷰 확인에 사용할 비밀번호를 적어주세요</S.Label>
           <S.InputInfo>{`${MIN_PASSWORD_INPUT}~${MAX_PASSWORD_INPUT}자의 영문(대/소문자),숫자만 사용가능해요`}</S.InputInfo>
           <S.PasswordInputContainer>
             <Input
-              id="password"
+              id={INPUT_ID.password}
               value={password}
               onChange={handlePasswordInputChange}
               onBlur={handlePasswordBlur}
               type={isOff ? 'password' : 'text'}
-              placeholder="abc123"
               $style={{ width: '100%', paddingRight: '3rem' }}
             />
             <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />
