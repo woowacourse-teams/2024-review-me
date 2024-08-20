@@ -2,42 +2,45 @@ import styled from '@emotion/styled';
 
 export const CarouselContainer = styled.div`
   position: relative;
-  width: 100%;
-  height: 55vh;
 
   overflow: hidden;
+
+  width: 100%;
   max-width: 80rem;
+  height: 55vh;
 `;
 
 export const SlideList = styled.div`
   display: flex;
   align-items: center;
-  transition: transform 0.5s ease-in-out;
+
   width: 100%;
   height: 100%;
+
+  transition: transform 0.5s ease-in-out;
 `;
 
 export const SlideItem = styled.div`
-  min-width: 100%;
-  height: 100%;
+  position: relative;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  position: relative;
+  min-width: 100%;
+  height: 100%;
 `;
 
 export const SlideContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-
-  width: 100%;
-
   position: absolute;
   left: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
 
   img {
     width: 80%;
@@ -47,30 +50,36 @@ export const SlideContent = styled.div`
 
 export const Component = styled.div`
   position: absolute;
-  right: 5rem;
   top: 10rem;
+  right: 5rem;
 `;
 
 export const PrevButton = styled.button`
+  cursor: pointer;
+
   position: absolute;
+  z-index: 1;
   top: 50%;
   left: 1rem;
   transform: translateY(-50%);
+
+  font-size: 2rem;
+
   background: none;
   border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  z-index: 1;
 `;
 
 export const NextButton = styled.button`
+  cursor: pointer;
+
   position: absolute;
+  z-index: 1;
   top: 50%;
   right: 1rem;
   transform: translateY(-50%);
+
+  font-size: 2rem;
+
   background: none;
   border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  z-index: 1;
 `;
