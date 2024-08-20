@@ -25,7 +25,7 @@ public class TextAnswer {
     @Column(name = "question_id", nullable = false)
     private long questionId;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, length = 5000)
     private String content;
 
     public TextAnswer(long questionId, String content) {
