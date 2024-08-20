@@ -41,7 +41,7 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
                     <QuestionCard questionType="normal" question={question.content} />
                     <S.ContentContainer>
                       {question.questionType === 'CHECKBOX' && (
-                        <div>
+                        <>
                           {question.optionGroup?.options.map((option, index) => (
                             <CheckboxItem
                               key={`${question.questionId}_${index}`}
@@ -53,17 +53,17 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
                               $isReadonly={true}
                             />
                           ))}
-                        </div>
+                        </>
                       )}
 
                       {question.questionType === 'TEXT' && (
-                        <div>
+                        <>
                           {findTextAnswer(question.questionId) ? (
                             <MultilineTextViewer text={findTextAnswer(question.questionId) as string} />
                           ) : (
                             <S.EmptyTextAnswer>작성한 답변이 없어요</S.EmptyTextAnswer>
                           )}
-                        </div>
+                        </>
                       )}
                     </S.ContentContainer>
                   </S.QuestionCardContainer>
