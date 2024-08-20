@@ -4,4 +4,4 @@ export { default as ReviewZoneURLModal } from './ReviewZoneURLModal';
 export { default as URLGeneratorForm } from './URLGeneratorForm';
 export { default as CopyTextButton } from './CopyTextButton';
 export { default as ReviewMeOverview } from './ReviewMeOverview';
-export { default as OverviewItem } from './OverviewItem';
+export { default as Carousel } from './Carousel';
