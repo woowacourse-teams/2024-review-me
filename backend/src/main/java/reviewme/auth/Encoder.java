@@ -15,9 +15,17 @@ public class Encoder {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
             byte[] digest = messageDigest.digest(code.getBytes(UTF_8));
-            return new String(digest, UTF_8);
+            return formatHexadecimal(digest);
         } catch (NoSuchAlgorithmException e) {
             throw new EncoderAlgorithmInitializationException(algorithm);
         }
+    }
+
+    private String formatHexadecimal(byte[] bytes) {
+        StringBuilder builder = new StringBuilder();
+        for (byte b : bytes) {
+            builder.append("%02x".formatted(b));
+        }
+        return builder.toString();
     }
 }
