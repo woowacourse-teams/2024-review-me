@@ -9,7 +9,7 @@ export const sidebarWidth: ThemeProperty<string> = {
   desktop: '25rem',
   mobile: '100vw',
 };
-export const footerHeight = '4rem';
+export const footerHeight = '6rem';
 
 export const breakpoints: ThemeProperty<string> = {
   desktop: '102.4rem',
