@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.reviewgroup.domain.ReviewGroup;
+import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.reviewgroup.service.dto.CheckValidAccessResponse;
@@ -37,9 +38,10 @@ public class ReviewGroupService {
 
     @Transactional(readOnly = true)
     public CheckValidAccessResponse checkGroupAccessCode(CheckValidAccessRequest request) {
-        boolean hasAccess = reviewGroupRepository.existsByReviewRequestCodeAndGroupAccessCode(
-                request.reviewRequestCode(), request.groupAccessCode()
-        );
-        return new CheckValidAccessResponse(hasAccess);
+        String encodedGroupAccessCode = groupAccessCodeEncoder.encode(request.groupAccessCode());
+        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(request.reviewRequestCode())
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(request.reviewRequestCode()));
+
+        return new CheckValidAccessResponse(reviewGroup.hasAccessCodeOf(encodedGroupAccessCode));
     }
 }

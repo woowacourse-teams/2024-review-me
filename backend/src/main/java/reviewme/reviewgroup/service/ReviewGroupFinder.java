@@ -23,7 +23,8 @@ public class ReviewGroupFinder {
 
     public ReviewGroup getByCodes(String reviewRequestCode, String groupAccessCode) {
         ReviewGroup reviewGroup = getByReviewRequestCode(reviewRequestCode);
-        if (!reviewGroup.getGroupAccessCode().equals(groupAccessCode)) {
+        String encodedGroupAccessCode = groupAccessCodeEncoder.encode(groupAccessCode);
+        if (!reviewGroup.hasAccessCodeOf(encodedGroupAccessCode)) {
             throw new ReviewGroupUnAuthorizedException(reviewRequestCode);
         }
         return reviewGroup;

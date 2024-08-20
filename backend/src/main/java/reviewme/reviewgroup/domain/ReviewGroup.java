@@ -64,4 +64,8 @@ public class ReviewGroup {
             );
         }
     }
+
+    public boolean hasAccessCodeOf(String groupAccessCode) {
+        return groupAccessCode.equals(groupAccessCode);
+    }
 }
