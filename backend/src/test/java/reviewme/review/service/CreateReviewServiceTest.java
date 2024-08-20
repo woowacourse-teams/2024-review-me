@@ -151,4 +151,26 @@ class CreateReviewServiceTest {
         assertThat(reviewRepository.findAll()).hasSize(1);
         assertThat(checkboxAnswerRepository.findAll()).hasSize(1);
     }
+
+    @Test
+    void 적정_글자수인_텍스트_응답인_경우_정상_저장된다() {
+        // given
+        String expectedTextAnswer = "답".repeat(1000);
+        Question savedQuestion = questionRepository.save(
+                new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1)
+        );
+        CreateReviewAnswerRequest createReviewAnswerRequest = new CreateReviewAnswerRequest(
+                savedQuestion.getId(), null, expectedTextAnswer
+        );
+        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+                reviewRequestCode, List.of(createReviewAnswerRequest)
+        );
+
+        // when
+        createReviewService.createReview(createReviewRequest);
+
+        // then
+        assertThat(reviewRepository.findAll()).hasSize(1);
+        assertThat(textAnswerRepository.findAll()).hasSize(1);
+    }
 }
