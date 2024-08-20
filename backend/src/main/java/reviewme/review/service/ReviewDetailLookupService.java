@@ -43,7 +43,9 @@ public class ReviewDetailLookupService {
 
     public TemplateAnswerResponse getReviewDetail(long reviewId, String reviewRequestCode, String groupAccessCode) {
         Review review = reviewRepository.findByIdAndCodes(reviewId, reviewRequestCode, groupAccessCode)
-                .orElseThrow(() -> new ReviewNotFoundByIdAndCodesException(reviewId, reviewRequestCode, groupAccessCode));
+                .orElseThrow(
+                        () -> new ReviewNotFoundByIdAndCodesException(reviewId, reviewRequestCode, groupAccessCode)
+                );
 
         ReviewGroup reviewGroup = reviewGroupRepository.findById(review.getReviewGroupId())
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewException(review.getId(), review.getReviewGroupId()));

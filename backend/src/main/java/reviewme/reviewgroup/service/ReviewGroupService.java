@@ -26,9 +26,10 @@ public class ReviewGroupService {
             reviewRequestCode = randomCodeGenerator.generate(REVIEW_REQUEST_CODE_LENGTH);
         } while (reviewGroupRepository.existsByReviewRequestCode(reviewRequestCode));
 
-
         ReviewGroup reviewGroup = reviewGroupRepository.save(
-                new ReviewGroup(request.revieweeName(), request.projectName(), reviewRequestCode, request.groupAccessCode())
+                new ReviewGroup(
+                        request.revieweeName(), request.projectName(), reviewRequestCode, request.groupAccessCode()
+                )
         );
         return new ReviewGroupCreationResponse(reviewGroup.getReviewRequestCode());
     }

@@ -32,7 +32,9 @@ class ReviewGroupLookupServiceTest {
         ));
 
         // when
-        ReviewGroupResponse response = reviewGroupLookupService.getReviewGroupSummary(reviewGroup.getReviewRequestCode());
+        ReviewGroupResponse response = reviewGroupLookupService.getReviewGroupSummary(
+                reviewGroup.getReviewRequestCode()
+        );
 
         // then
         assertAll(
