@@ -12,7 +12,7 @@ const PASSWORD_LENGTH_ERROR_MESSAGE = `${MIN_PASSWORD_INPUT}자부터 ${MAX_PASS
 
 export const usePasswordValidation = (password: string) => {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
-  const [hasBlurred, setHasBlurred] = useState(false);
+  const [isBlurredOnce, setIsBlurredOnce] = useState(false);
 
   const validatePassword = () => {
     if (!isWithinLengthRange(password, MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT)) {
@@ -25,13 +25,13 @@ export const usePasswordValidation = (password: string) => {
   };
 
   const handlePasswordBlur = () => {
-    setHasBlurred(true);
+    setIsBlurredOnce(true);
     validatePassword();
   };
 
   useEffect(() => {
-    if (hasBlurred) validatePassword();
-  }, [password, hasBlurred]);
+    if (isBlurredOnce) validatePassword();
+  }, [password, isBlurredOnce]);
 
   return {
     passwordErrorMessage,
