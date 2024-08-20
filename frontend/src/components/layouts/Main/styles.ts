@@ -5,8 +5,10 @@ export const MainContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  min-height: (100vh - 43rem);
-  margin-bottom: calc(${({ theme }) => theme.footerHeight});
+  min-height: calc(
+    100vh - ${({ theme }) => theme.componentHeight.topbar} - ${({ theme }) => theme.componentHeight.footer}
+  );
+  margin-bottom: ${({ theme }) => theme.componentHeight.footer};
 `;
 
 export const Contents = styled.div`
@@ -19,6 +21,7 @@ export const Contents = styled.div`
   width: 100%;
   max-width: ${({ theme }) => theme.breakpoints.desktop};
   height: 100%;
+  min-height: inherit;
 
   border-radius: 0.5rem;
 `;
