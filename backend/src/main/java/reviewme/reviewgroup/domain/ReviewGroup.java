@@ -65,7 +65,7 @@ public class ReviewGroup {
         }
     }
 
-    public boolean hasAccessCodeOf(String groupAccessCode) {
-        return groupAccessCode.equals(groupAccessCode);
+    public boolean hasAccessCodeOf(String code) {
+        return groupAccessCode.equals(code);
     }
 }
