@@ -1,13 +1,11 @@
 import { Fragment } from 'react';
 
-import { MultilineTextViewer } from '@/components';
+import { CheckboxItem, MultilineTextViewer } from '@/components';
+import ContentModal from '@/components/common/modals/ContentModal';
 import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
 
-import CheckboxItem from '../common/CheckboxItem';
-import ContentModal from '../common/modals/ContentModal';
-
 import QuestionCard from './components/QuestionCard';
-import ReviewWritingCard from './components/ReviewWritingCard';
+import ReviewCard from './components/ReviewCard';
 import * as S from './styles';
 
 interface AnswerListRecheckModalProps {
@@ -34,8 +32,8 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
       <S.AnswerListContainer>
         <S.CardLayout>
           {questionSectionList.map((section) => (
-            <S.ReviewWritingCardWrapper key={section.sectionId}>
-              <ReviewWritingCard title={section.header}>
+            <S.ReviewCardWrapper key={section.sectionId}>
+              <ReviewCard title={section.header}>
                 {section.questions.map((question) => (
                   <Fragment key={question.questionId}>
                     <QuestionCard questionType="normal" question={question.content} />
@@ -55,14 +53,20 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
                           ))}
                         </div>
                       )}
-                      {<S.TextAnswerWrapper>{question.questionType === 'TEXT'}</S.TextAnswerWrapper> && (
-                        <MultilineTextViewer text={findTextAnswer(question.questionId) || ''} />
+                      {question.questionType === 'TEXT' && (
+                        <S.TextAnswerWrapper>
+                          {findTextAnswer(question.questionId) ? (
+                            <MultilineTextViewer text={findTextAnswer(question.questionId) as string} />
+                          ) : (
+                            <S.EmptyTextAnswer>작성한 답변이 없어요</S.EmptyTextAnswer>
+                          )}
+                        </S.TextAnswerWrapper>
                       )}
                     </S.ContentContainer>
                   </Fragment>
                 ))}
-              </ReviewWritingCard>
-            </S.ReviewWritingCardWrapper>
+              </ReviewCard>
+            </S.ReviewCardWrapper>
           ))}
         </S.CardLayout>
       </S.AnswerListContainer>

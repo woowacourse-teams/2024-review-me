@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { ConfirmModal, AnswerListRecheckModal } from '@/components';
+import { ConfirmModal } from '@/components';
 import {
   useCurrentCardIndex,
   useGetDataToWrite,
@@ -14,11 +14,9 @@ import {
   useUpdateDefaultAnswers,
 } from '@/hooks';
 import useModals from '@/hooks/useModals';
+import { AnswerListRecheckModal, ProgressBar, ReviewWritingCard } from '@/pages/ReviewWritingCardFromPage/components';
 import { answerMapAtom, answerValidationMapAtom, visitedCardListAtom } from '@/recoil';
 import { ReviewWritingFormResult } from '@/types';
-
-import ProgressBar from '../ProgressBar';
-import ReviewWritingCard from '../ReviewWritingCard';
 
 import * as S from './styles';
 
