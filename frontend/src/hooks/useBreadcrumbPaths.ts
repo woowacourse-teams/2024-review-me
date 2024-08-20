@@ -1,13 +1,16 @@
 import { useLocation } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import { Path } from '@/components/common/Breadcrumb';
 import { ROUTE } from '@/constants/route';
+import { reviewRequestCodeAtom } from '@/recoil';
 
 const useBreadcrumbPaths = () => {
   const { pathname } = useLocation();
+  const storedReviewRequestCode = useRecoilValue(reviewRequestCodeAtom);
 
   const breadcrumbPathList: Path[] = [
-    { pageName: '연결 페이지', path: ROUTE.home }, // TODO: 연결 페이지 경로 결정되면 수정 필요
+    { pageName: '연결 페이지', path: `${ROUTE.reviewZone}/${storedReviewRequestCode}` }, // TODO: 연결 페이지 경로 결정되면 수정 필요
   ];
 
   if (pathname === `/${ROUTE.reviewList}`) {
