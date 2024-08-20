@@ -16,11 +16,14 @@ export const CardLayout = styled.div`
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3rem;
 `;
 
 export const ReviewWritingCardWrapper = styled.div`
   overflow: hidden;
   border: 0.2rem solid ${({ theme }) => theme.colors.lightPurple};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
+`;
+
+export const TextAnswerWrapper = styled.div`
+  margin-top: 1rem;
 `;
