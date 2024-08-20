@@ -150,7 +150,7 @@ class ReviewApiTest extends ApiTest {
         givenWithSpec().log().all()
                 .pathParam("id", "1")
                 .queryParam("reviewRequestCode", "00001234")
-                .header("groupAccessCode", "00001234")
+                .header("groupAccessCode", "abc12344")
                 .when().get("/v2/reviews/{id}")
                 .then().log().all()
                 .apply(handler)
