@@ -12,7 +12,7 @@ import org.mockito.BDDMockito;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 
 class TemplateApiTest extends ApiTest {
 
