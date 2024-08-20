@@ -34,11 +34,11 @@ const Carousel = ({ slides }: CarouselProps) => {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const timeout = setTimeout(() => {
       nextSlide();
     }, 10000); // 자동 슬라이드 이동 간격 (10초)
 
-    return () => clearInterval(interval);
+    return () => clearTimeout(timeout);
   }, [currentSlide]);
 
   return (
