@@ -16,6 +16,9 @@ export const LogoText = styled.div`
   line-height: 8rem;
   text-align: center;
 
+  display: flex;
+  align-items: center;
+
   span {
     font-size: 3rem;
     font-weight: ${({ theme }) => theme.fontWeight.bolder};

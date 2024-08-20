@@ -4,6 +4,9 @@ export const MainContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  min-height: (100vh - 43rem);
+  margin-bottom: calc(${({ theme }) => theme.footerHeight});
 `;
 
 export const Contents = styled.div`

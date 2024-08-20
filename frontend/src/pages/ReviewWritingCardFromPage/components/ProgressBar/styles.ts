@@ -5,7 +5,7 @@ export const ProgressBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 1.7rem;
 `;
 
 interface StepButtonStyleProps {

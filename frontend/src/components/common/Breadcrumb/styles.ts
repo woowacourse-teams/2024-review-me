@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 
 export const BreadcrumbList = styled.ul`
+  font-size: 1.5rem;
+
   display: flex;
   padding: 2rem 0 0 2.5rem;
   list-style: none;

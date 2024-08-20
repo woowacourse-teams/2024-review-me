@@ -20,6 +20,8 @@ export const SliderContainer = styled.div<SlideContainerProps>`
   height: ${({ $height }) => $height};
 
   transition: transform 0.5s ease-in-out;
+
+  margin-bottom: 2rem;
 `;
 
 export const Slide = styled.div`
