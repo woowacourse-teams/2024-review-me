@@ -10,7 +10,7 @@ class SectionTest {
     @Test
     void 조건_옵션을_선택하면_섹션이_보인다() {
         // given
-        Section section = new Section(VisibleType.CONDITIONAL, List.of(), 1L, "1", 1);
+        Section section = new Section(VisibleType.CONDITIONAL, List.of(), 1L, "섹션명", "말머리", 1);
 
         // when
         boolean actual = section.isVisibleBySelectedOptionIds(List.of(1L, 2L, 3L));
@@ -22,7 +22,7 @@ class SectionTest {
     @Test
     void 조건_옵션을_선택하지_않으면_섹션이_보이지_않는다() {
         // given
-        Section section = new Section(VisibleType.CONDITIONAL, List.of(), 1L, "1", 1);
+        Section section = new Section(VisibleType.CONDITIONAL, List.of(), 1L, "섹션명", "말머리", 1);
 
         // when
         boolean actual = section.isVisibleBySelectedOptionIds(List.of(4L, 5L, 6L));
@@ -34,7 +34,7 @@ class SectionTest {
     @Test
     void 타입이_ALWAYS라면_조건과_상관없이_모두_보인다() {
         // given
-        Section section = new Section(VisibleType.ALWAYS, List.of(), null, "1", 1);
+        Section section = new Section(VisibleType.ALWAYS, List.of(), null, "섹션명", "말머리", 1);
 
         // when
         boolean actual = section.isVisibleBySelectedOptionIds(List.of());

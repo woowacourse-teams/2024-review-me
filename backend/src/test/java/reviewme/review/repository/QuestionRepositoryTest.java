@@ -37,7 +37,7 @@ class QuestionRepositoryTest {
         questionRepository.save(new Question(true, QuestionType.TEXT, "질문4", null, 1));
 
         List<Long> questionIds = List.of(question3.getId(), question1.getId(), question2.getId());
-        Section section = sectionRepository.save(new Section(VisibleType.ALWAYS, questionIds, null, "header", 0));
+        Section section = sectionRepository.save(new Section(VisibleType.ALWAYS, questionIds, null, "sectionName", "header", 0));
 
         // when
         List<Question> actual = questionRepository.findAllBySectionId(section.getId());
@@ -57,8 +57,8 @@ class QuestionRepositoryTest {
 
         List<Long> sectionQuestion1 = List.of(question1.getId(), question2.getId());
         List<Long> sectionQuestion2 = List.of(question3.getId(), question4.getId());
-        Section section1 = sectionRepository.save(new Section(VisibleType.ALWAYS, sectionQuestion1, null, "header", 0));
-        sectionRepository.save(new Section(VisibleType.ALWAYS, sectionQuestion2, null, "header", 0));
+        Section section1 = sectionRepository.save(new Section(VisibleType.ALWAYS, sectionQuestion1, null, "sectionName", "header", 0));
+        sectionRepository.save(new Section(VisibleType.ALWAYS, sectionQuestion2, null, "sectionName", "header", 0));
         List<Long> sectionIds = List.of(section1.getId());
         Template template = templateRepository.save(new Template(sectionIds));
 

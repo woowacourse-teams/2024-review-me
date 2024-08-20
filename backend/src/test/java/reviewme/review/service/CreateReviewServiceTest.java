@@ -72,7 +72,7 @@ class CreateReviewServiceTest {
                 new Template(List.of(1L))
         );
         sectionRepository.save(
-                new Section(VisibleType.ALWAYS, List.of(1L), 1L, "섹션", 1)
+                new Section(VisibleType.ALWAYS, List.of(1L), 1L, "섹션명", "말머리", 1)
         );
     }
 
