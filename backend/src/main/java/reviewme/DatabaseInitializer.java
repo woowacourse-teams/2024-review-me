@@ -64,7 +64,7 @@ public class DatabaseInitializer {
         optionItemRepository.save(new OptionItem("팀의 분위기를 주도해요.",communicationOptionGroupId,3, OptionType.KEYWORD ));
         optionItemRepository.save(new OptionItem("주장을 이야기할 때에는 합당한 근거가 뒤따라요.",communicationOptionGroupId,4, OptionType.KEYWORD ));
         optionItemRepository.save(new OptionItem("팀에게 필요한 것과 그렇지 않은 것을 잘 구분해요.",communicationOptionGroupId,5, OptionType.KEYWORD ));
-        optionItemRepository.save(new OptionItem("팀 내 주어진 요구사항에 우선순위를 잘 매겨요. (커뮤니케이션 능력을 특화하자)",communicationOptionGroupId,6, OptionType.KEYWORD ));
+        optionItemRepository.save(new OptionItem("팀 내 주어진 요구사항에 우선순위를 잘 매겨요.",communicationOptionGroupId,6, OptionType.KEYWORD ));
         optionItemRepository.save(new OptionItem("서로 다른 분야간의 소통도 중요하게 생각해요.",communicationOptionGroupId,7, OptionType.KEYWORD ));
 
         // 문제해결 능력 섹션
