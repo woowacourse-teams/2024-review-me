@@ -1,9 +1,17 @@
 export const VERSION2 = 'v2';
 
+export const REVIEW_LIST_API_PARAMS = {
+  resource: 'reviews',
+  queryString: {
+    reviewRequestCode: 'reviewRequestCode',
+  },
+};
+
 export const DETAILED_REVIEW_API_PARAMS = {
   resource: 'reviews',
   queryString: {
     memberId: 'memberId',
+    reviewRequestCode: 'reviewRequestCode',
   },
 };
 
@@ -38,11 +46,11 @@ export const REVIEW_GROUP_DATA_API_URL = `${process.env.API_BASE_URL}/${VERSION2
 const endPoint = {
   postingReview: `${process.env.API_BASE_URL}/${VERSION2}/reviews`,
   gettingDetailedReview: (reviewId: number, reviewRequestCode: string) =>
-    `${DETAILED_REVIEW_API_URL}/${reviewId}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
+    `${DETAILED_REVIEW_API_URL}/${reviewId}?${DETAILED_REVIEW_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingReviewList: (reviewRequestCode: string) =>
-    `${process.env.API_BASE_URL}/${VERSION2}/reviews?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
+    `${process.env.API_BASE_URL}/${VERSION2}/${REVIEW_LIST_API_PARAMS.resource}?${REVIEW_LIST_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   postingDataForReviewRequestCode: `${process.env.API_BASE_URL}/${VERSION2}/groups`,
   checkingPassword: `${process.env.API_BASE_URL}/${VERSION2}/${REVIEW_PASSWORD_API_PARAMS.resource}/${REVIEW_PASSWORD_API_PARAMS.queryString.check}`,
   gettingReviewGroupData: (reviewRequestCode: string) =>
