@@ -16,8 +16,6 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.restdocs.headers.HeaderDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -31,7 +29,6 @@ import reviewme.review.service.exception.ReviewGroupNotFoundByCodesException;
 
 class ReviewApiTest extends ApiTest {
 
-    private static final Logger log = LoggerFactory.getLogger(ReviewApiTest.class);
     private final String request = """
             {
                 "reviewRequestCode": "ABCD1234",
