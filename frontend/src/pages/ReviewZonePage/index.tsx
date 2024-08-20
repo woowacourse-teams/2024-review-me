@@ -50,7 +50,7 @@ const ReviewZonePage = () => {
       <S.ReviewZoneMainImg src={ReviewZoneIcon} alt="" />
       <S.ReviewGuideContainer>
         {/* NOTE: 추후 API 연동되면 서버에서 받아온 이름들을 출력하도록 수정해야 함 */}
-        <S.ReviewGuide>{`${reviewGroupData.projectName}를 함께한`}</S.ReviewGuide>
+        <S.ReviewGuide>{`${reviewGroupData.projectName}을(를) 함께한`}</S.ReviewGuide>
         <S.ReviewGuide>{`${reviewGroupData.revieweeName}의 리뷰 공간이에요`}</S.ReviewGuide>
       </S.ReviewGuideContainer>
       <S.ButtonContainer>
@@ -73,7 +73,7 @@ const ReviewZonePage = () => {
         >
           <S.ButtonTextContainer>
             <S.ButtonText>리뷰 확인하기</S.ButtonText>
-            <S.ButtonDescription>리뷰 링크가 있다면 비밀번호로 확인할 수 있어요</S.ButtonDescription>
+            <S.ButtonDescription>비밀번호로 내가 받은 리뷰를 확인할 수 있어요</S.ButtonDescription>
           </S.ButtonTextContainer>
         </Button>
       </S.ButtonContainer>
