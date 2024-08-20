@@ -10,9 +10,9 @@ permissions:
   contents: read
   pages: write
   id-token: write
-concurrency: # NOTE: action 도중 새 PR이 올라오면 기존 action 취소
+concurrency: 
   group: "ci-group"
-  cancel-in-progress: true
+  cancel-in-progress: false # NOTE: 기존 CI가 돌고 있는 상황에서 새 작업이 추가돼도 기존 작업 계속 수행
 jobs:
   build:
     runs-on: ubuntu-latest
