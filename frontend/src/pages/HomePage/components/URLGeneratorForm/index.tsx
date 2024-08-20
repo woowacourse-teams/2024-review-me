@@ -112,24 +112,12 @@ const URLGeneratorForm = () => {
       <FormLayout title="함께한 팀원으로부터 리뷰를 받아보세요!" direction="column">
         <S.InputContainer>
           <S.Label htmlFor="reviewee-name">본인의 이름을 적어주세요</S.Label>
-          <Input
-            id="reviewee-name"
-            value={revieweeName}
-            onChange={handleNameInputChange}
-            type="text"
-            placeholder="이름"
-          />
+          <Input id="reviewee-name" value={revieweeName} onChange={handleNameInputChange} type="text" />
           <S.ErrorMessage>{revieweeNameErrorMessage}</S.ErrorMessage>
         </S.InputContainer>
         <S.InputContainer>
           <S.Label htmlFor="project-name">함께한 프로젝트 이름을 입력해주세요</S.Label>
-          <Input
-            id="project-name"
-            value={projectName}
-            onChange={handleProjectNameInputChange}
-            type="text"
-            placeholder="review-me"
-          />
+          <Input id="project-name" value={projectName} onChange={handleProjectNameInputChange} type="text" />
           <S.ErrorMessage>{projectNameErrorMessage}</S.ErrorMessage>
         </S.InputContainer>
         <S.InputContainer>
@@ -142,7 +130,6 @@ const URLGeneratorForm = () => {
               onChange={handlePasswordInputChange}
               onBlur={handlePasswordBlur}
               type={isOff ? 'password' : 'text'}
-              placeholder="abc123"
               $style={{ width: '100%', paddingRight: '3rem' }}
             />
             <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />
