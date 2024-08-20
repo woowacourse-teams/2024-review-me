@@ -33,6 +33,9 @@ class ReviewGroupServiceTest {
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
 
+    @Autowired
+    private GroupAccessCodeEncoder groupAccessCodeEncoder;
+
     @Test
     void 코드가_중복되는_경우_다시_생성한다() {
         // given
@@ -54,15 +57,17 @@ class ReviewGroupServiceTest {
     @Test
     void 리뷰_요청_코드와_리뷰_확인_코드가_일치하는지_확인한다() {
         // given
+        String groupAccessCode = "groupAccessCode";
+        String encodedGroupAccessCode = groupAccessCodeEncoder.encode(groupAccessCode);
         ReviewGroup reviewGroup = reviewGroupRepository.save(
-                new ReviewGroup("reviewee", "project", "reviewRequestCode", "groupAccessCode")
+                new ReviewGroup("reviewee", "project", "reviewRequestCode", encodedGroupAccessCode)
         );
 
         CheckValidAccessRequest request = new CheckValidAccessRequest(
-                reviewGroup.getReviewRequestCode(), reviewGroup.getGroupAccessCode()
+                reviewGroup.getReviewRequestCode(), groupAccessCode
         );
         CheckValidAccessRequest wrongRequest = new CheckValidAccessRequest(
-                reviewGroup.getReviewRequestCode(), "wrong" + reviewGroup.getGroupAccessCode()
+                reviewGroup.getReviewRequestCode(), "wrong" + groupAccessCode
         );
 
         // when

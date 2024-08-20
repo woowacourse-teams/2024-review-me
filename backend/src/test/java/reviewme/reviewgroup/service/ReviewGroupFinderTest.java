@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
+import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.exception.ReviewGroupUnAuthorizedException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -19,6 +19,9 @@ class ReviewGroupFinderTest {
 
     @Autowired
     private ReviewGroupFinder reviewGroupFinder;
+
+    @Autowired
+    private GroupAccessCodeEncoder groupAccessCodeEncoder;
 
     @Test
     void 리뷰_요청_코드로_리뷰_그룹을_조회한다() {
@@ -41,7 +44,8 @@ class ReviewGroupFinderTest {
         // given
         String reviewRequestCode = "1234";
         String groupAccessCode = "5678";
-        reviewGroupRepository.save(new ReviewGroup("아루", "리뷰미", reviewRequestCode, groupAccessCode));
+        String encodedGroupAccessCode = groupAccessCodeEncoder.encode(groupAccessCode);
+        reviewGroupRepository.save(new ReviewGroup("아루", "리뷰미", reviewRequestCode, encodedGroupAccessCode));
 
         // when, then
         assertDoesNotThrow(() -> reviewGroupFinder.getByCodes(reviewRequestCode, groupAccessCode));

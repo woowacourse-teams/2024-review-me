@@ -1,7 +1,6 @@
 package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -19,9 +18,9 @@ import reviewme.review.domain.Review;
 import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.reviewgroup.domain.exception.ReviewGroupUnAuthorizedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.reviewgroup.service.GroupAccessCodeEncoder;
 import reviewme.support.ServiceTest;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
@@ -31,43 +30,41 @@ import reviewme.template.repository.TemplateRepository;
 class ReviewServiceTest {
 
     @Autowired
-    ReviewService reviewService;
+    private ReviewService reviewService;
 
     @Autowired
-    QuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
 
     @Autowired
-    ReviewGroupRepository reviewGroupRepository;
+    private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    OptionItemRepository optionItemRepository;
+    private OptionItemRepository optionItemRepository;
 
     @Autowired
-    OptionGroupRepository optionGroupRepository;
+    private OptionGroupRepository optionGroupRepository;
 
     @Autowired
-    SectionRepository sectionRepository;
+    private SectionRepository sectionRepository;
 
     @Autowired
-    TemplateRepository templateRepository;
+    private TemplateRepository templateRepository;
 
     @Autowired
-    CheckboxAnswerRepository checkboxAnswerRepository;
+    private CheckboxAnswerRepository checkboxAnswerRepository;
 
     @Autowired
-    ReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
 
-    @Test
-    void 리뷰_요청_코드와_확인_코드에_해당하는_그룹이_없는_경우_예외가_발생한다() {
-        assertThatThrownBy(() -> reviewService.findReceivedReviews("abc", "groupAccessCode"))
-                .isInstanceOf(ReviewGroupUnAuthorizedException.class);
-    }
+    @Autowired
+    private GroupAccessCodeEncoder groupAccessCodeEncoder;
 
     @Test
     void 확인_코드에_해당하는_그룹이_존재하면_리뷰_리스트를_반환한다() {
         // given
         String reviewRequestCode = "reviewRequestCode";
         String groupAccessCode = "groupAccessCode";
+        String encodedGroupAccessCode = groupAccessCodeEncoder.encode(groupAccessCode);
         Question question = questionRepository.save(
                 new Question(true, QuestionType.CHECKBOX, "프로젝트 기간 동안, 팀원의 강점이 드러났던 순간을 선택해주세요. (1~2개)", null, 1)
         );
@@ -79,7 +76,7 @@ class ReviewServiceTest {
         Template template = templateRepository.save(new Template(List.of()));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(
-                new ReviewGroup("커비", "리뷰미", reviewRequestCode, groupAccessCode)
+                new ReviewGroup("커비", "리뷰미", reviewRequestCode, encodedGroupAccessCode)
         );
         CheckboxAnswer categoryAnswer1 = new CheckboxAnswer(question.getId(), List.of(categoryOption1.getId()));
         CheckboxAnswer categoryAnswer2 = new CheckboxAnswer(question.getId(), List.of(categoryOption2.getId()));

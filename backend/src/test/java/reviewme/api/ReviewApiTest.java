@@ -186,7 +186,7 @@ class ReviewApiTest extends ApiTest {
                 .when().get("/v2/reviews/{id}")
                 .then().log().all()
                 .apply(handler)
-                .statusCode(400);
+                .statusCode(403);
     }
 
     @Test
@@ -256,6 +256,6 @@ class ReviewApiTest extends ApiTest {
                 .when().get("/v2/reviews")
                 .then().log().all()
                 .apply(handler)
-                .statusCode(400);
+                .statusCode(403);
     }
 }
