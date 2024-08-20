@@ -9,7 +9,7 @@ interface UseGetDataToWriteProps {
 }
 const useGetDataToWrite = ({ reviewRequestCode }: UseGetDataToWriteProps) => {
   const fetchReviewFormData = async (reviewRequestCode: string | undefined) => {
-    if (!reviewRequestCode) throw new Error('reviewRequestCode가 undefined에요.');
+    if (!reviewRequestCode) throw new Error('reviewRequestCode가 undefined에요');
 
     const result = await getDataToWriteReviewApi(reviewRequestCode);
     return result;

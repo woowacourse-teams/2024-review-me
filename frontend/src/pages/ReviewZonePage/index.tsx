@@ -27,7 +27,7 @@ const ReviewZonePage = () => {
     paramKey: 'reviewRequestCode',
   });
 
-  if (!reviewRequestCode) throw new Error('유효하지 않은 리뷰 요청 코드입니다.');
+  if (!reviewRequestCode) throw new Error('유효하지 않은 리뷰 요청 코드예요');
 
   useEffect(() => {
     if (!storedReviewRequestCode && reviewRequestCode) {
@@ -38,7 +38,7 @@ const ReviewZonePage = () => {
   const { data: reviewGroupData } = useGetReviewGroupData({ reviewRequestCode });
 
   const handleReviewWritingButtonClick = () => {
-    navigate(`/${ROUTE.reviewWriting}/ABCD1234`);
+    navigate(`/${ROUTE.reviewWriting}/${reviewRequestCode}`);
   };
 
   const handleReviewListButtonClick = () => {

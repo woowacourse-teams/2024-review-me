@@ -5,6 +5,7 @@ import { Button, Input, EyeButton } from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useEyeButton } from '@/hooks';
 import useModals from '@/hooks/useModals';
+import { usePasswordValidation } from '@/hooks/usePasswordValidation';
 import { debounce } from '@/utils/debounce';
 
 import usePostDataForReviewRequestCode from '../../queries/usePostDataForReviewRequestCode';
@@ -18,7 +19,6 @@ import {
 } from '../../utils/validateInput';
 import { FormLayout, ReviewZoneURLModal } from '../index';
 
-import { usePasswordValidation } from './../../../../hooks/usePasswordValidation';
 import * as S from './styles';
 
 // TODO: 디바운스 시간을 모든 경우에 0.3초로 고정할 것인지(전역 상수로 사용) 논의하기
