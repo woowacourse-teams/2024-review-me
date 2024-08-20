@@ -19,7 +19,7 @@ const App = () => {
       )} */}
       <Topbar openSidebar={openSidebar} />
       {breadcrumbPathList.length > 1 && <Breadcrumb pathList={breadcrumbPathList} />}
-      <Main>
+      <Main isBreadCrumb={!!(breadcrumbPathList.length > 1)}>
         <Outlet />
       </Main>
       <Footer />

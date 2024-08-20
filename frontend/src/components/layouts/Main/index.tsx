@@ -1,10 +1,14 @@
-import { PropsWithChildren } from 'react';
+import { EssentialPropsWithChildren } from '@/types';
 
 import * as S from './styles';
 
-const Main = ({ children }: PropsWithChildren) => {
+interface MainProps {
+  isBreadCrumb: boolean;
+}
+
+const Main = ({ children, isBreadCrumb }: EssentialPropsWithChildren<MainProps>) => {
   return (
-    <S.MainContainer>
+    <S.MainContainer $isBreadCrumb={isBreadCrumb}>
       <S.Contents>{children}</S.Contents>
     </S.MainContainer>
   );
