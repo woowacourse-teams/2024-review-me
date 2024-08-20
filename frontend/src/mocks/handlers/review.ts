@@ -83,17 +83,6 @@ const postReview = () =>
     return HttpResponse.json({ message: 'post 성공' }, { status: 201 });
   });
 
-const postHasAccess = () =>
-  http.post(endPoint.checkingPassword, async () => {
-    return HttpResponse.json({ hasAccess: true });
-  });
-
-const reviewHandler = [
-  getDetailedReview(),
-  getReviewList('ABCD1234'),
-  getDataToWriteReview(),
-  postReview(),
-  postHasAccess(),
-];
+const reviewHandler = [getDetailedReview(), getReviewList('ABCD1234'), getDataToWriteReview(), postReview()];
 
 export default reviewHandler;
