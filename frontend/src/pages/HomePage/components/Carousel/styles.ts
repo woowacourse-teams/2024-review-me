@@ -79,7 +79,7 @@ export const NextButton = styled.button`
 
 export const IndicatorWrapper = styled.div`
   position: absolute;
-  bottom: 5rem;
+  bottom: 0rem;
 
   display: flex;
   align-items: center;
