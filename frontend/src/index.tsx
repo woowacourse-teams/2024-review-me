@@ -18,7 +18,7 @@ import {
 } from '@/pages';
 
 import { ErrorSuspenseContainer } from './components';
-import { DEV_ENVIRONMENT, ROUTE_PARAM } from './constants';
+import { API_ERROR_MESSAGE, DEV_ENVIRONMENT, ROUTE_PARAM } from './constants';
 import { ROUTE } from './constants/route';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
@@ -36,13 +36,26 @@ Sentry.init({
   tracePropagationTargets: [baseUrlPattern],
 });
 
+export function retryFunction(failureCount: number, error: Error): boolean {
+  const { message } = error;
+  const isServerError = message === API_ERROR_MESSAGE.serverError;
+
+  // Fetch API로 인해 발생한 오류인지 확인
+  if (isServerError) {
+    return failureCount < 1; // 500번대 에러이면 한 번 더 재시도
+  }
+  return false; // 그 외의 경우 재시도하지 않음
+}
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       throwOnError: true,
+      retry: retryFunction,
     },
     mutations: {
       throwOnError: true,
+      retry: retryFunction,
     },
   },
 });
