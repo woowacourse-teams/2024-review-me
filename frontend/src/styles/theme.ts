@@ -9,8 +9,12 @@ export const sidebarWidth: ThemeProperty<string> = {
   desktop: '25rem',
   mobile: '100vw',
 };
-export const footerHeight = '4rem';
 
+export const componentHeight = {
+  footer: '6rem',
+  topbar: '7rem',
+  breadCrumb: '43rem',
+};
 export const breakpoints: ThemeProperty<string> = {
   desktop: '102.4rem',
   tablet: '72rem',
@@ -67,7 +71,7 @@ const theme: Theme = {
   sidebarWidth,
   borderRadius,
   formWidth,
-  footerHeight,
+  componentHeight,
 };
 
 export default theme;

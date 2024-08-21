@@ -30,7 +30,7 @@ const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
   isClosableOnBackground,
   handleClose,
 }) => {
-  const buttonList = [confirmButton, cancelButton];
+  const buttonList = [cancelButton, confirmButton];
   return (
     <ModalPortal>
       <ModalBackground closeModal={isClosableOnBackground ? handleClose : null}>

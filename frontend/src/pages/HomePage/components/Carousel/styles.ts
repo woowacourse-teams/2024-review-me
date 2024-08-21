@@ -1,71 +1,91 @@
 import styled from '@emotion/styled';
 
-export const Layout = styled.section`
+export const CarouselContainer = styled.div`
+  position: relative;
+
+  overflow: hidden;
+
   width: 100%;
-  padding-left: 3rem;
+  max-width: 80rem;
+  height: 60vh;
 `;
 
-export const ScrollContainer = styled.div<{ gap: number; offset: number }>`
-  overflow-x: auto;
+export const SlideList = styled.div`
   display: flex;
-  gap: ${({ gap }) => `${gap}rem`};
+  align-items: center;
 
+  width: 100%;
   height: 100%;
-  padding: ${({ offset }) => `0 ${offset}rem`};
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  transition: transform 0.5s ease-in-out;
 `;
 
-export const Page = styled.div<{ width: number; height: number }>`
-  flex-shrink: 0;
-  width: ${({ width }) => `${width}rem`};
-  height: ${({ height }) => `${height}rem`};
+export const SlideItem = styled.div`
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 100%;
 `;
 
-export const PageItem = styled.div`
-  cursor: pointer;
+export const SlideContent = styled.div`
+  position: absolute;
+  left: 0;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 
-  height: 100%;
-
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: 0.8rem;
-  border-radius: ${({ theme }) => theme.borderRadius.basic};
-  box-shadow: 0.8rem 1rem 1.6rem hsl(0deg 0% 0% / 0.25);
+  width: 100%;
 
   img {
-    width: 100%;
-    height: 25rem;
-    background-color: ${({ theme }) => theme.colors.palePurple};
-    border-radius: ${({ theme }) => theme.borderRadius.basic} ${({ theme }) => theme.borderRadius.basic} 0 0;
+    width: 80%;
+    height: 100%;
   }
 `;
 
-export const PageTitle = styled.p`
-  margin: 1rem 0;
-  font-size: ${({ theme }) => theme.fontSize.mediumSmall};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+export const PrevButton = styled.button`
+  cursor: pointer;
+
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+
+  font-size: 2rem;
+
+  background: none;
+  border: none;
 `;
 
-export const PageDescription = styled.div`
-  width: 100%;
-  padding-left: 3rem;
-`;
+export const NextButton = styled.button`
+  cursor: pointer;
 
-export const DescriptionItem = styled.p`
-  margin: 0.5rem 0;
-  font-size: ${({ theme }) => theme.fontSize.basic};
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+
+  font-size: 2rem;
+
+  background: none;
+  border: none;
 `;
 
 export const IndicatorWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin-top: 1.6rem;
+
+  width: 100%;
 `;
 
 export const Indicator = styled.div<{ focused: boolean }>`

@@ -11,8 +11,8 @@ export const Footer = styled.footer`
   justify-content: center;
 
   width: 100%;
-  height: ${({ theme }) => theme.footerHeight};
-  padding: 1rem;
+  height: ${({ theme }) => theme.componentHeight.footer};
+  padding: 2rem 1rem;
 
   font-size: ${({ theme }) => theme.fontSize.small};
   color: ${({ theme }) => theme.colors.gray};

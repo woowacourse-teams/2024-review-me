@@ -19,11 +19,13 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
 import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
-import reviewme.review.service.exception.ReviewNotFoundByIdAndCodesException;
+import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
+import reviewme.review.service.exception.ReviewNotFoundByIdAndGroupException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -61,7 +63,7 @@ class ReviewDetailLookupServiceTest {
     private TemplateRepository templateRepository;
 
     @Test
-    void 잘못된_리뷰_확인_코드로_리뷰를_조회할_경우_예외를_발생한다() {
+    void 잘못된_리뷰_요청_코드로_리뷰를_조회할_경우_예외를_발생한다() {
         // given
         String reviewRequestCode = "reviewRequestCode";
         String groupAccessCode = "groupAccessCode";
@@ -73,7 +75,7 @@ class ReviewDetailLookupServiceTest {
         // when, then
         assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(
                 review.getId(), "wrong" + reviewRequestCode, groupAccessCode
-        )).isInstanceOf(ReviewNotFoundByIdAndCodesException.class);
+        )).isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 
     @Test
@@ -89,30 +91,34 @@ class ReviewDetailLookupServiceTest {
         // when, then
         assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(
                 review.getId(), reviewRequestCode, "wrong" + groupAccessCode
-        )).isInstanceOf(ReviewNotFoundByIdAndCodesException.class);
+        )).isInstanceOf(ReviewGroupUnauthorizedException.class);
     }
 
     @Test
     void 리뷰_그룹에_해당하지_않는_리뷰를_조회할_경우_예외를_발생한다() {
         // given
+        String reviewRequestCode1 = "reviewRequestCode1";
+        String groupAccessCode1 = "groupAccessCode1";
         ReviewGroup reviewGroup1 = reviewGroupRepository.save(
-                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode1", "groupAccessCode1"));
+                new ReviewGroup("테드", "리뷰미 프로젝트", reviewRequestCode1, groupAccessCode1));
         ReviewGroup reviewGroup2 = reviewGroupRepository.save(
-                new ReviewGroup("테드", "리뷰미 프로젝트", "reviewRequestCode2", "groupAccessCode2"));
+                new ReviewGroup("테드", "리뷰미 프로젝트", "ABCD", "1234"));
 
         Review review1 = reviewRepository.save(new Review(0, reviewGroup1.getId(), List.of(), List.of()));
-        Review review = reviewRepository.save(new Review(0, reviewGroup2.getId(), List.of(), List.of()));
+        Review review2 = reviewRepository.save(new Review(0, reviewGroup2.getId(), List.of(), List.of()));
 
         // when, then
         assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(
-                review.getId(), reviewGroup1.getReviewRequestCode(), reviewGroup1.getGroupAccessCode()))
-                .isInstanceOf(ReviewNotFoundByIdAndCodesException.class);
+                review2.getId(), reviewRequestCode1, groupAccessCode1))
+                .isInstanceOf(ReviewNotFoundByIdAndGroupException.class);
     }
 
     @Test
     void 사용자가_작성한_리뷰를_확인한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(new ReviewGroup("aru", "reviewme", "ABCD", "0000"));
+        String reviewRequestCode = "ABCD";
+        String groupAccessCode = "0000";
+        ReviewGroup reviewGroup = reviewGroupRepository.save(new ReviewGroup("aru", "reviewme", reviewRequestCode, groupAccessCode));
         Question question1 = questionRepository.save(new Question(true, QuestionType.TEXT, "질문", null, 1));
         Question question2 = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "질문", null, 1));
         Question question3 = questionRepository.save(new Question(true, QuestionType.TEXT, "체크 1 조건", "가이드라인", 1));
@@ -123,10 +129,10 @@ class ReviewDetailLookupServiceTest {
                 new OptionItem("체크 2", optionGroup.getId(), 1, OptionType.KEYWORD));
 
         Section section1 = sectionRepository.save(
-                new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", 1)
+                new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", "말머리", 1)
         );
         Section section2 = sectionRepository.save(
-                new Section(VisibleType.CONDITIONAL, List.of(question3.getId()), optionItem1.getId(), "2번 섹션", 2)
+                new Section(VisibleType.CONDITIONAL, List.of(question3.getId()), optionItem1.getId(), "2번 섹션", "말머리", 2)
         );
         Template template = templateRepository.save(new Template(List.of(section1.getId(), section2.getId())));
 
@@ -143,7 +149,7 @@ class ReviewDetailLookupServiceTest {
 
         // when
         TemplateAnswerResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
-                review.getId(), reviewGroup.getReviewRequestCode(), reviewGroup.getGroupAccessCode()
+                review.getId(), reviewRequestCode, groupAccessCode
         );
 
         // then
@@ -153,7 +159,9 @@ class ReviewDetailLookupServiceTest {
     @Test
     void 답변이_있는_리뷰만_보여준다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(new ReviewGroup("aru", "reviewme", "ABCD", "0000"));
+        String reviewRequestCode = "ABCD";
+        String groupAccessCode = "0000";
+        ReviewGroup reviewGroup = reviewGroupRepository.save(new ReviewGroup("aru", "reviewme", reviewRequestCode, groupAccessCode));
         Question question1 = questionRepository.save(new Question(true, QuestionType.TEXT, "질문", null, 1));
         Question question2 = questionRepository.save(new Question(false, QuestionType.CHECKBOX, "질문", null, 1));
         Question question3 = questionRepository.save(new Question(true, QuestionType.TEXT, "체크 1 조건", "가이드라인", 1));
@@ -165,13 +173,13 @@ class ReviewDetailLookupServiceTest {
                 new OptionItem("체크 2", optionGroup.getId(), 1, OptionType.KEYWORD));
 
         Section section1 = sectionRepository.save(
-                new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", 1)
+                new Section(VisibleType.ALWAYS, List.of(question1.getId(), question2.getId()), null, "1번 섹션", "말머리", 1)
         );
         Section section2 = sectionRepository.save(
-                new Section(VisibleType.CONDITIONAL, List.of(question3.getId()), optionItem1.getId(), "2번 섹션", 2)
+                new Section(VisibleType.CONDITIONAL, List.of(question3.getId()), optionItem1.getId(), "2번 섹션", "말머리", 2)
         );
         Section section3 = sectionRepository.save(
-                new Section(VisibleType.ALWAYS, List.of(question4.getId()), null, "3번 섹션", 3)
+                new Section(VisibleType.ALWAYS, List.of(question4.getId()), null, "3번 섹션", "말머리", 3)
         );
 
         Template template = templateRepository.save(
@@ -188,7 +196,7 @@ class ReviewDetailLookupServiceTest {
 
         // when
         TemplateAnswerResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
-                review.getId(), reviewGroup.getReviewRequestCode(), reviewGroup.getGroupAccessCode()
+                review.getId(), reviewRequestCode, groupAccessCode
         );
 
         // then

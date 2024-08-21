@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import reviewme.reviewgroup.domain.exception.InvalidGroupAccessCodeFormatException;
+import reviewme.util.Encoder;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,7 +22,7 @@ public class GroupAccessCode {
 
     public GroupAccessCode(String code) {
         validateGroupAccessCode(code);
-        this.code = code;
+        this.code = Encoder.encode(code);
     }
 
     private void validateGroupAccessCode(String groupAccessCode) {
@@ -30,5 +31,8 @@ public class GroupAccessCode {
             throw new InvalidGroupAccessCodeFormatException(groupAccessCode);
         }
     }
-}
 
+    public boolean matches(String groupAccessCode) {
+        return code.equals(Encoder.encode(groupAccessCode));
+    }
+}

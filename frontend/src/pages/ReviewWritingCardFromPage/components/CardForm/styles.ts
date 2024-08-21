@@ -18,6 +18,7 @@ export const SliderContainer = styled.div<SlideContainerProps>`
 
   width: 100%;
   height: ${({ $height }) => $height};
+  margin-bottom: 2rem;
 
   transition: transform 0.5s ease-in-out;
 `;
@@ -57,7 +58,7 @@ export const RevieweeName = styled.span`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-export const SubmitErrorMessage = styled.div`
+export const ConfirmModalMessage = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;

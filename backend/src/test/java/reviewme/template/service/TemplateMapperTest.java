@@ -66,8 +66,8 @@ class TemplateMapperTest {
         OptionItem optionItem = new OptionItem("선택지", optionGroup.getId(), 1, OptionType.CATEGORY);
         optionItemRepository.save(optionItem);
 
-        Section section1 = new Section(VisibleType.ALWAYS, List.of(question1.getId()), null, "말머리1", 1);
-        Section section2 = new Section(VisibleType.ALWAYS, List.of(question2.getId()), null, "말머리2", 2);
+        Section section1 = new Section(VisibleType.ALWAYS, List.of(question1.getId()), null, "섹션명", "말머리1", 1);
+        Section section2 = new Section(VisibleType.ALWAYS, List.of(question2.getId()), null, "섹션명", "말머리2", 2);
         sectionRepository.saveAll(List.of(section1, section2));
 
         Template template = new Template(List.of(section1.getId(), section2.getId()));
@@ -97,7 +97,7 @@ class TemplateMapperTest {
         Question question = new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1);
         questionRepository.save(question);
 
-        Section section = new Section(VisibleType.ALWAYS, List.of(question.getId()), null, "말머리1", 1);
+        Section section = new Section(VisibleType.ALWAYS, List.of(question.getId()), null, "섹션명", "말머리", 1);
         sectionRepository.save(section);
 
         Template template = new Template(List.of(section.getId()));
@@ -126,7 +126,7 @@ class TemplateMapperTest {
         OptionItem optionItem = new OptionItem("선택지", optionGroup.getId(), 1, OptionType.CATEGORY);
         optionItemRepository.save(optionItem);
 
-        Section section = new Section(VisibleType.ALWAYS, List.of(question.getId()), null, "말머리1", 1);
+        Section section = new Section(VisibleType.ALWAYS, List.of(question.getId()), null, "섹션명", "말머리", 1);
         sectionRepository.save(section);
 
         Template template = new Template(List.of(section.getId()));
@@ -152,7 +152,7 @@ class TemplateMapperTest {
         Question question = new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1);
         questionRepository.save(question);
 
-        Section section = new Section(VisibleType.ALWAYS, List.of(question.getId()), null, "말머리1", 1);
+        Section section = new Section(VisibleType.ALWAYS, List.of(question.getId()), null, "섹션명", "말머리", 1);
         sectionRepository.save(section);
 
         Template template = new Template(List.of(section.getId()));
@@ -193,8 +193,8 @@ class TemplateMapperTest {
         OptionGroup optionGroup = new OptionGroup(question2.getId(), 1, 2);
         optionGroupRepository.save(optionGroup);
 
-        Section section1 = new Section(VisibleType.ALWAYS, List.of(question1.getId()), null, "말머리1", 1);
-        Section section2 = new Section(VisibleType.ALWAYS, List.of(question2.getId()), null, "말머리2", 2);
+        Section section1 = new Section(VisibleType.ALWAYS, List.of(question1.getId()), null, "섹션명", "말머리", 1);
+        Section section2 = new Section(VisibleType.ALWAYS, List.of(question2.getId()), null, "섹션명", "말머리", 2);
         sectionRepository.saveAll(List.of(section1, section2));
 
         Template template = new Template(List.of(section1.getId(), section2.getId()));

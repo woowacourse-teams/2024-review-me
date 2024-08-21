@@ -32,7 +32,7 @@ const ReviewDescription = ({
           <S.ProjectName>{projectName}</S.ProjectName>
           <S.RevieweeNameAndDateContainer>
             <S.RevieweeNameWrapper>
-              <S.RevieweeName>{revieweeName}</S.RevieweeName>에 대한 리뷰입니다!
+              <S.RevieweeName>{revieweeName}</S.RevieweeName>에 대한 리뷰예요
             </S.RevieweeNameWrapper>
             <ReviewDate date={date} dateTitle={DATE_TITLE} />
           </S.RevieweeNameAndDateContainer>

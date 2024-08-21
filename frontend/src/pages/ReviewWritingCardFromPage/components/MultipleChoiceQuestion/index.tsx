@@ -55,7 +55,7 @@ const MultipleChoiceQuestion = ({ question }: MultipleChoiceQuestionProps) => {
         />
       ))}
       <S.LimitGuideMessage>
-        {isOpenLimitGuide && <p>😅 최대 {question.optionGroup?.maxCount}개까지 선택가능해요.</p>}
+        {isOpenLimitGuide && <p>😅 최대 {question.optionGroup?.maxCount}개까지 선택가능해요</p>}
       </S.LimitGuideMessage>
       {isOpen(MODAL_KEY.confirm) && (
         <ConfirmModal
@@ -76,7 +76,7 @@ const MultipleChoiceQuestion = ({ question }: MultipleChoiceQuestionProps) => {
         >
           <S.ConfirmModalContainer>
             <S.ConfirmModalTitle>잠깐만요!</S.ConfirmModalTitle>
-            <p>선택을 해제하시면 앞서 작성한 답변이 모두 사라져요.</p>
+            <p>선택을 해제하시면 앞서 작성한 답변이 모두 사라져요</p>
             <p>변경하시겠어요?</p>
           </S.ConfirmModalContainer>
         </ConfirmModal>

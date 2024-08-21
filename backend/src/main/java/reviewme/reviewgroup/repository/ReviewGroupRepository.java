@@ -15,6 +15,4 @@ public interface ReviewGroupRepository extends JpaRepository<ReviewGroup, Long> 
     );
 
     boolean existsByReviewRequestCode(String reviewRequestCode);
-
-    boolean existsByReviewRequestCodeAndGroupAccessCode_Code(String reviewRequestCode, String groupAccessCode);
 }

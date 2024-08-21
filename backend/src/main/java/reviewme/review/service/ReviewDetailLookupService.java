@@ -15,14 +15,15 @@ import reviewme.review.domain.CheckboxAnswers;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.TextAnswers;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
 import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewException;
-import reviewme.review.service.exception.ReviewNotFoundByIdAndCodesException;
+import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
+import reviewme.review.service.exception.ReviewNotFoundByIdAndGroupException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Section;
@@ -42,13 +43,13 @@ public class ReviewDetailLookupService {
     private final OptionGroupRepository optionGroupRepository;
 
     public TemplateAnswerResponse getReviewDetail(long reviewId, String reviewRequestCode, String groupAccessCode) {
-        Review review = reviewRepository.findByIdAndCodes(reviewId, reviewRequestCode, groupAccessCode)
-                .orElseThrow(
-                        () -> new ReviewNotFoundByIdAndCodesException(reviewId, reviewRequestCode, groupAccessCode)
-                );
-
-        ReviewGroup reviewGroup = reviewGroupRepository.findById(review.getReviewGroupId())
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewException(review.getId(), review.getReviewGroupId()));
+        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
+        if (!reviewGroup.matchesGroupAccessCode(groupAccessCode)) {
+            throw new ReviewGroupUnauthorizedException(reviewGroup.getId());
+        }
+        Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
+                .orElseThrow(() -> new ReviewNotFoundByIdAndGroupException(reviewId, reviewGroup.getId()));
 
         long templateId = review.getTemplateId();
 

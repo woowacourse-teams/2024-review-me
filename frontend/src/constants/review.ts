@@ -6,5 +6,5 @@ export const REVIEW = {
 };
 
 export const REVIEW_MESSAGE = {
-  answerMaxLength: `최대 ${REVIEW.answerMaxLength}자까지 입력 가능해요.`,
+  answerMaxLength: `최대 ${REVIEW.answerMaxLength}자까지 입력 가능해요`,
 };

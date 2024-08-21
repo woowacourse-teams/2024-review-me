@@ -25,7 +25,7 @@ const useLongReviewItem = ({ minLength, maxLength, initialValue, required }: Use
 
     if (errorOnRequired || errorOnNotRequired) {
       setIsError(true);
-      setErrorMessage(`최소 ${minLength}자 이상 작성해 주세요.`);
+      setErrorMessage(`최소 ${minLength}자 이상 작성해 주세요`);
     } else {
       setIsError(false);
       setErrorMessage('');

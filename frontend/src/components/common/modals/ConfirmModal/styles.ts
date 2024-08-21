@@ -27,12 +27,11 @@ export const Contents = styled.div`
 
 export const ButtonContainer = styled.div`
   display: flex;
-  gap: 10%;
   align-items: center;
   justify-content: space-between;
 
   button {
-    width: 40%;
+    width: 46%;
     max-width: 20rem;
   }
 `;

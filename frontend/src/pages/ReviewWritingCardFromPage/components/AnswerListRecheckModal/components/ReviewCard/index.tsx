@@ -2,11 +2,11 @@ import { EssentialPropsWithChildren } from '@/types';
 
 import * as S from './styles';
 
-interface ReviewWritingCardProps {
+interface ReviewCardProps {
   title: string;
 }
 
-const ReviewWritingCard = ({ title, children }: EssentialPropsWithChildren<ReviewWritingCardProps>) => {
+const ReviewCard = ({ title, children }: EssentialPropsWithChildren<ReviewCardProps>) => {
   return (
     <S.Container>
       <S.Header>
@@ -17,4 +17,4 @@ const ReviewWritingCard = ({ title, children }: EssentialPropsWithChildren<Revie
   );
 };
 
-export default ReviewWritingCard;
+export default ReviewCard;

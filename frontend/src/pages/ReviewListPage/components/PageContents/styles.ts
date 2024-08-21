@@ -10,5 +10,5 @@ export const Layout = styled.div`
 export const ReviewSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 7rem;
+  gap: 4rem;
 `;

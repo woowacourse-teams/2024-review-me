@@ -1,6 +1,11 @@
 import styled from '@emotion/styled';
 
 export const ReviewZonePage = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,7 +20,9 @@ export const ReviewZoneMainImg = styled.img`
 export const ReviewGuideContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 28rem;
+  align-items: center;
+  justify-content: center;
+
   padding-left: 0.2rem;
 `;
 
@@ -44,5 +51,5 @@ export const ButtonText = styled.p`
 `;
 
 export const ButtonDescription = styled.p`
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 `;

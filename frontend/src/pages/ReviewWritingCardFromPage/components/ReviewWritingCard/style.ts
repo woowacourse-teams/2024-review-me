@@ -24,7 +24,7 @@ export const ButtonContainer = styled.div`
   display: flex;
   gap: 2rem;
   justify-content: flex-end;
-  padding: 2.5rem;
+  padding-right: 2.5rem;
 
   button {
     width: auto;

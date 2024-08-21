@@ -8,11 +8,12 @@ import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByCodesException;
+import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -28,9 +29,12 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReceivedReviewsResponse findReceivedReviews(String reviewRequestCode, String groupAccessCode) {
-        ReviewGroup reviewGroup = reviewGroupRepository
-                .findByReviewRequestCodeAndGroupAccessCode_Code(reviewRequestCode, groupAccessCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
+        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
+
+        if (!reviewGroup.matchesGroupAccessCode(groupAccessCode)) {
+            throw new ReviewGroupUnauthorizedException(reviewGroup.getId());
+        }
 
         List<ReceivedReviewResponse> reviewResponses =
                 reviewRepository.findReceivedReviewsByGroupId(reviewGroup.getId())
@@ -52,7 +56,7 @@ public class ReviewService {
         return new ReceivedReviewResponse(
                 review.getId(),
                 review.getCreatedAt().toLocalDate(),
-                reviewPreviewGenerator.generatePreview2(review.getTextAnswers()),
+                reviewPreviewGenerator.generatePreview(review.getTextAnswers()),
                 categoryResponses
         );
     }

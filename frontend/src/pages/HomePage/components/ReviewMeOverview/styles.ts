@@ -2,20 +2,19 @@ import styled from '@emotion/styled';
 
 export const ReviewMeOverview = styled.section`
   position: relative;
-
   overflow: hidden;
-
   width: 65%;
-  height: 100%;
-
   background-color: ${({ theme }) => theme.colors.lightPurple};
 `;
 
 export const ColumnSectionContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+
   height: 100%;
+  padding: 3rem;
 `;
 
 export const ArrowWrapper = styled.img`
@@ -28,7 +27,12 @@ export const OverviewTitleContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
+
+  img {
+    width: 7rem;
+    height: 7rem;
+  }
 `;
 
 export const OverviewTitle = styled.p`

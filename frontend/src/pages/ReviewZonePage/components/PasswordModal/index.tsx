@@ -54,7 +54,7 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
   return (
     <ContentModal handleClose={closeModal}>
       <S.PasswordModal>
-        <S.ModalTitle>리뷰 확인을 위해 설정한 비밀 번호를 입력해주세요</S.ModalTitle>
+        <S.ModalTitle>리뷰 확인을 위해 설정한 비밀번호를 입력해주세요</S.ModalTitle>
         <S.InputContainer>
           <S.PasswordInputContainer>
             <Input
@@ -62,7 +62,6 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
               value={password}
               onChange={handlePasswordInputChange}
               type={isOff ? 'password' : 'text'}
-              placeholder="abc123"
               $style={{ width: '100%', paddingRight: '3rem' }}
             />
             <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />

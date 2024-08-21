@@ -16,10 +16,11 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByCodesException;
+import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -58,9 +59,21 @@ class ReviewServiceTest {
     ReviewRepository reviewRepository;
 
     @Test
-    void 리뷰_요청_코드와_확인_코드에_해당하는_그룹이_없는_경우_예외가_발생한다() {
+    void 리뷰_요청_코드가_존재하지_않는_경우_예외가_발생한다() {
         assertThatThrownBy(() -> reviewService.findReceivedReviews("abc", "groupAccessCode"))
-                .isInstanceOf(ReviewGroupNotFoundByCodesException.class);
+                .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
+    }
+
+    @Test
+    void 그룹_액세스_코드가_일치하지_않는_경우_예외가_발생한다() {
+        // given
+        String reviewRequestCode = "code";
+        String groupAccessCode = "1234";
+        reviewGroupRepository.save(new ReviewGroup("커비", "리뷰미", reviewRequestCode, groupAccessCode));
+
+        // when, then
+        assertThatThrownBy(() -> reviewService.findReceivedReviews(reviewRequestCode, "5678"))
+                .isInstanceOf(ReviewGroupUnauthorizedException.class);
     }
 
     @Test

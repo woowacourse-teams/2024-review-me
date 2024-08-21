@@ -7,7 +7,7 @@ public class ReviewPreviewGenerator {
 
     private static final int PREVIEW_LENGTH = 150;
 
-    public String generatePreview2(List<TextAnswer> reviewTextAnswers) {
+    public String generatePreview(List<TextAnswer> reviewTextAnswers) {
         if (reviewTextAnswers.isEmpty()) {
             return "";
         }
