@@ -1,0 +1,13 @@
+{
+  "extends": ["stylelint-config-clean-order"],
+  "plugins": ["stylelint-order"],
+  "customSyntax": "@stylelint/postcss-css-in-js",
+  "rules": {
+    "declaration-empty-line-before": [
+      "never",
+      {
+        "ignore": ["after-declaration"]
+      }
+    ]
+  }
+}
