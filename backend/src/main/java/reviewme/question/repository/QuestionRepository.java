@@ -18,7 +18,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findAllBySectionId(long sectionId);
 
     @Query(value = """
-            SELECT q.* FROM question q
+            SELECT q.id FROM question q
             LEFT JOIN section_question sq
             ON sq.question_id = q.id
             LEFT JOIN template_section ts
