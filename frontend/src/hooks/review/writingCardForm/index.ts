@@ -9,3 +9,4 @@ export { default as useUpdateReviewerAnswer } from './useUpdateReviewerAnswer';
 export { default as useSlideWidthAndHeight } from './useSlideWidthAndHeight';
 export { default as useTextAnswer } from './useTextAnswer';
 export { default as useUpdateDefaultAnswers } from './useUpdateDefaultAnswers';
+export { default as useNavigateBlocker } from './useNavigateBlocker';
