@@ -58,6 +58,7 @@ module.exports = (env, argv) => {
             }
           : false,
         hash: true,
+        favicon: './src/favicons/favicon.ico',
       }),
       new CleanWebpackPlugin(),
       new Dotenv({
