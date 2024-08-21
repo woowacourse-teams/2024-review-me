@@ -7,15 +7,13 @@ import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeEx
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Template;
-import reviewme.template.domain.exception.DefaultTemplateNotFoundException;
+import reviewme.template.domain.exception.TemplateNotFoundByReviewGroupException;
 import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.dto.response.TemplateResponse;
 
 @Service
 @RequiredArgsConstructor
 public class TemplateService {
-
-    private static final long USE_TEMPLATE_ID = 1L;
 
     private final ReviewGroupRepository reviewGroupRepository;
     private final TemplateRepository templateRepository;
@@ -26,9 +24,11 @@ public class TemplateService {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
-        Template defaultTemplate = templateRepository.findById(USE_TEMPLATE_ID)
-                .orElseThrow(() -> new DefaultTemplateNotFoundException(USE_TEMPLATE_ID));
+        Template template = templateRepository.findById(reviewGroup.getTemplateId())
+                .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(
+                        reviewGroup.getId(), reviewGroup.getTemplateId()
+                ));
 
-        return templateMapper.mapToTemplateResponse(reviewGroup, defaultTemplate);
+        return templateMapper.mapToTemplateResponse(reviewGroup, template);
     }
 }

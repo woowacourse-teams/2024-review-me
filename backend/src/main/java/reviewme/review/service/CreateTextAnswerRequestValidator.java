@@ -6,7 +6,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.exception.InvalidTextAnswerLengthException;
 import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
-import reviewme.review.service.exception.MissingRequiredAnswerException;
+import reviewme.review.service.exception.RequiredQuestionNotAnsweredException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 
@@ -35,7 +35,7 @@ public class CreateTextAnswerRequestValidator {
 
     private void validateQuestionRequired(Question question, CreateReviewAnswerRequest request) {
         if (question.isRequired() && request.text() == null) {
-            throw new MissingRequiredAnswerException(question.getId());
+            throw new RequiredQuestionNotAnsweredException(question.getId());
         }
     }
 
