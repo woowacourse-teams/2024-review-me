@@ -124,9 +124,7 @@ const CardForm = () => {
       isDone: section.questions.every((question) => answerValidateMap?.get(question.questionId)),
       isCurrentStep: index === currentCardIndex,
       handleClick: () => {
-        if (isMovingAvailable) {
-          handleCurrentCardIndex(index);
-        }
+        if (isMovingAvailable) handleCurrentCardIndex(index);
       },
     });
 
