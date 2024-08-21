@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { ConfirmModal } from '@/components';
 import { ROUTE } from '@/constants/route';
 import {
   useCurrentCardIndex,
@@ -16,7 +15,13 @@ import {
   useNavigateBlocker,
 } from '@/hooks';
 import useModals from '@/hooks/useModals';
-import { AnswerListRecheckModal, ProgressBar, ReviewWritingCard } from '@/pages/ReviewWritingCardFromPage/components';
+import {
+  AnswerListRecheckModal,
+  NavigateBlockerModal,
+  ProgressBar,
+  ReviewWritingCard,
+  SubmitCheckModal,
+} from '@/pages/ReviewWritingCardFromPage/components';
 import { answerMapAtom, answerValidationMapAtom, visitedCardListAtom } from '@/recoil';
 import { ReviewWritingFormResult } from '@/types';
 
@@ -196,21 +201,11 @@ const CardForm = () => {
         </S.SliderContainer>
       </S.CardForm>
       {isOpen(MODAL_KEYS.submitConfirm) && (
-        <ConfirmModal
-          confirmButton={{ styleType: 'primary', type: 'submit', text: '제출', handleClick: submitAnswer }}
-          cancelButton={{
-            styleType: 'secondary',
-            text: '취소',
-            handleClick: () => closeModal(MODAL_KEYS.submitConfirm),
-          }}
-          handleClose={() => closeModal(MODAL_KEYS.submitConfirm)}
-          isClosableOnBackground={true}
-        >
-          <S.ConfirmModalMessage>
-            <p>리뷰를 제출할까요?</p>
-            <p>제출한 뒤에는 수정할 수 없어요</p>
-          </S.ConfirmModalMessage>
-        </ConfirmModal>
+        <SubmitCheckModal
+          handleSubmitButtonClick={submitAnswer}
+          handleCancelButtonClick={() => closeModal(MODAL_KEYS.submitConfirm)}
+          handleCloseModal={() => closeModal(MODAL_KEYS.submitConfirm)}
+        />
       )}
       {isOpen(MODAL_KEYS.recheck) && cardSectionList && answerMap && (
         <AnswerListRecheckModal
@@ -219,27 +214,13 @@ const CardForm = () => {
           closeModal={() => closeModal(MODAL_KEYS.recheck)}
         />
       )}
+
       {isOpen(MODAL_KEYS.navigateConfirm) && (
-        <ConfirmModal
-          confirmButton={{
-            styleType: 'primary',
-            type: 'submit',
-            text: '이동',
-            handleClick: handleNavigateConfirmButtonClick,
-          }}
-          cancelButton={{
-            styleType: 'secondary',
-            text: '취소',
-            handleClick: () => closeModal(MODAL_KEYS.navigateConfirm),
-          }}
-          handleClose={() => closeModal(MODAL_KEYS.navigateConfirm)}
-          isClosableOnBackground={true}
-        >
-          <S.ConfirmModalMessage>
-            <p>페이지를 이동하면 작성한 답변이 삭제돼요</p>
-            <p>페이지 이동을 진행할까요?</p>
-          </S.ConfirmModalMessage>
-        </ConfirmModal>
+        <NavigateBlockerModal
+          handleNavigateConfirmButtonClick={handleNavigateConfirmButtonClick}
+          handleCancelButtonClick={() => closeModal(MODAL_KEYS.navigateConfirm)}
+          handleCloseModal={() => closeModal(MODAL_KEYS.navigateConfirm)}
+        />
       )}
     </>
   );
