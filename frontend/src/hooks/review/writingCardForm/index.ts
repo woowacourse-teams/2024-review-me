@@ -2,7 +2,7 @@ export { default as useCheckNextStepAvailability } from './useCheckNextStepAvail
 export { default as useCurrentCardIndex } from './useCurrentCardIndex';
 export { default as useGetDataToWrite } from './useGetDataToWrite';
 export { default as useMutateReview } from './useMutateReview';
-export { default as useMultipleChoice } from './multiplceChoice/useMultipleChoice';
+export { default as useMultipleChoice } from './multipleChoice/useMultipleChoice';
 export { default as useCardSectionList } from './useCardSectionList';
 export { default as useResetFormRecoil } from './useResetFormRecoil';
 export { default as useUpdateReviewerAnswer } from './useUpdateReviewerAnswer';
