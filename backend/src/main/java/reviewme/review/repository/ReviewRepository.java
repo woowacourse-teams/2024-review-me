@@ -10,7 +10,11 @@ import reviewme.review.domain.Review;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    @Query("SELECT r FROM Review r WHERE r.reviewGroupId=:reviewGroupId ORDER BY r.createdAt DESC")
+    @Query("""
+            SELECT r FROM Review r
+            WHERE r.reviewGroupId = :reviewGroupId
+            ORDER BY r.createdAt DESC
+            """)
     List<Review> findReceivedReviewsByGroupId(long reviewGroupId);
 
     Optional<Review> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
