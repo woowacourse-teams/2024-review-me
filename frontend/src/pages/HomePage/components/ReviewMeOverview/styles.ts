@@ -4,7 +4,6 @@ export const ReviewMeOverview = styled.section`
   position: relative;
   overflow: hidden;
   width: 65%;
-  height: 100%;
   background-color: ${({ theme }) => theme.colors.lightPurple};
 `;
 

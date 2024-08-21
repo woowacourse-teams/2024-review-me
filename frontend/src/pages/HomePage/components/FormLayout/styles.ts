@@ -9,4 +9,5 @@ export const FormLayout = styled.form`
 export const Title = styled.h2`
   margin-bottom: 6.5rem;
   font-size: 2.5rem;
+  white-space: nowrap;
 `;
