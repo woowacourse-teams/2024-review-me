@@ -13,7 +13,7 @@ import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.exception.InvalidTextAnswerLengthException;
 import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
-import reviewme.review.service.exception.MissingRequiredAnswerException;
+import reviewme.review.service.exception.RequiredQuestionNotAnsweredException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 import reviewme.support.ServiceTest;
@@ -58,7 +58,7 @@ class CreateTextAnswerRequestValidatorTest {
 
         // when, then
         assertThatCode(() -> createTextAnswerRequestValidator.validate(request))
-                .isInstanceOf(MissingRequiredAnswerException.class);
+                .isInstanceOf(RequiredQuestionNotAnsweredException.class);
     }
 
     @ParameterizedTest
