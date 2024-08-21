@@ -4,7 +4,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
@@ -20,7 +19,6 @@ import reviewme.template.domain.VisibleType;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
-@Profile({"local", "dev"})
 @Component
 @RequiredArgsConstructor
 public class DatabaseInitializer {
