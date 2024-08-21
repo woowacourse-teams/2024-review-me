@@ -21,12 +21,12 @@ import reviewme.review.service.dto.request.CreateReviewRequest;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
-import reviewme.review.service.exception.SubmittedReviewTemplateNotFoundException;
 import reviewme.review.service.exception.UnnecessaryQuestionIncludedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.SectionQuestion;
 import reviewme.template.domain.Template;
+import reviewme.template.domain.exception.TemplateNotFoundByReviewGroupException;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
@@ -46,7 +46,8 @@ public class CreateReviewService {
     public long createReview(CreateReviewRequest request) {
         ReviewGroup reviewGroup = validateReviewGroupByRequestCode(request.reviewRequestCode());
         Template template = templateRepository.findById(reviewGroup.getTemplateId())
-                .orElseThrow(() -> new SubmittedReviewTemplateNotFoundException(reviewGroup.getTemplateId()));
+                .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(
+                        reviewGroup.getId(), reviewGroup.getTemplateId()));
         validateSubmittedQuestionsContainedInTemplate(reviewGroup.getTemplateId(), request);
         validateOnlyRequiredQuestionsSubmitted(template, request);
 
@@ -99,7 +100,7 @@ public class CreateReviewService {
 
         // 제출된 리뷰의 질문 중에서 제출해야 할 질문이 모두 포함되었는지 검사
         Set<Long> submittedQuestionIds2 = new HashSet<>(submittedQuestionIds);
-        if(!submittedQuestionIds2.containsAll(requiredQuestionIds)) {
+        if (!submittedQuestionIds2.containsAll(requiredQuestionIds)) {
             List<Long> missingRequiredQuestionIds = new ArrayList<>(requiredQuestionIds);
             missingRequiredQuestionIds.removeAll(submittedQuestionIds2);
             throw new MissingRequiredQuestionException(missingRequiredQuestionIds);
@@ -112,7 +113,7 @@ public class CreateReviewService {
                 .filter(Question::isRequired)
                 .map(Question::getId)
                 .toList();
-        if(!unnecessaryQuestionIds.isEmpty()) {
+        if (!unnecessaryQuestionIds.isEmpty()) {
             throw new UnnecessaryQuestionIncludedException(unnecessaryQuestionIds);
         }
     }
