@@ -47,25 +47,26 @@ const Carousel = ({ slideList }: CarouselProps) => {
 
   // NOTE: 맨 처음/맨 끝 슬라이드 전환용 useEffect
   useEffect(() => {
-    if (isTransitioning) {
-      if (currentSlideIndex === slideLength + 1) {
-        // 마지막 슬라이드 처리
-        setTimeout(() => {
-          setIsTransitioning(false);
-          slideRef.current!.style.transition = 'none';
-          slideRef.current!.style.transform = `translateX(-${slideRef.current!.clientWidth * 0.1}rem)`;
-          setCurrentSlideIndex(REAL_START_INDEX);
-        }, TRANSITION_DURATION); // NOTE: 애니메이션 트랜지션 시간과 동일하게 설정 (0.5초)
-      }
-      if (currentSlideIndex === 0) {
-        // 첫 번째 슬라이드 처리
-        setTimeout(() => {
-          setIsTransitioning(false);
-          slideRef.current!.style.transition = 'none';
-          slideRef.current!.style.transform = `translateX(-${slideRef.current!.clientWidth * slideLength * 0.1}rem)`;
-          setCurrentSlideIndex(slideLength);
-        }, TRANSITION_DURATION);
-      }
+    if (!isTransitioning) return;
+
+    if (currentSlideIndex === slideLength + 1) {
+      // 마지막 슬라이드 처리
+      setTimeout(() => {
+        setIsTransitioning(false);
+        slideRef.current!.style.transition = 'none';
+        slideRef.current!.style.transform = `translateX(-${slideRef.current!.clientWidth * 0.1}rem)`;
+        setCurrentSlideIndex(REAL_START_INDEX);
+      }, TRANSITION_DURATION); // NOTE: 애니메이션 트랜지션 시간과 동일하게 설정 (0.5초)
+    }
+
+    if (currentSlideIndex === 0) {
+      // 첫 번째 슬라이드 처리
+      setTimeout(() => {
+        setIsTransitioning(false);
+        slideRef.current!.style.transition = 'none';
+        slideRef.current!.style.transform = `translateX(-${slideRef.current!.clientWidth * slideLength * 0.1}rem)`;
+        setCurrentSlideIndex(slideLength);
+      }, TRANSITION_DURATION);
     }
   }, [currentSlideIndex, slideLength]);
 
