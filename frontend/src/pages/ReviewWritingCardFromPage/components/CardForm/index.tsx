@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { ConfirmModal } from '@/components';
+import { ROUTE } from '@/constants/route';
 import {
   useCurrentCardIndex,
   useGetDataToWrite,
@@ -12,6 +13,7 @@ import {
   useSearchParamAndQuery,
   useSlideWidthAndHeight,
   useUpdateDefaultAnswers,
+  useNavigateBlocker,
 } from '@/hooks';
 import useModals from '@/hooks/useModals';
 import { AnswerListRecheckModal, ProgressBar, ReviewWritingCard } from '@/pages/ReviewWritingCardFromPage/components';
@@ -22,8 +24,10 @@ import * as S from './styles';
 
 // const PROJECT_IMAGE_SIZE = '5rem';
 const INDEX_OFFSET = 1;
+
 const MODAL_KEYS = {
   submitConfirm: 'SUBMIT_CONFIRM',
+  navigateConfirm: 'NAVIGATE_CONFIRM',
   recheck: 'RECHECK',
 };
 
@@ -61,9 +65,23 @@ const CardForm = () => {
   const answerMap = useRecoilValue(answerMapAtom);
   const answerValidateMap = useRecoilValue(answerValidationMapAtom);
 
+  const handleNavigateConfirmButtonClick = () => {
+    closeModal(MODAL_KEYS.navigateConfirm);
+
+    if (blocker.proceed) {
+      blocker.proceed();
+    }
+  };
+
   const { resetFormRecoil } = useResetFormRecoil();
 
   const { isOpen, openModal, closeModal } = useModals();
+  // 작성 중인 답변이 있는 경우 페이지 이동을 막는 기능
+  const { blocker } = useNavigateBlocker({
+    isOpenModal: isOpen(MODAL_KEYS.navigateConfirm) || isOpen(MODAL_KEYS.submitConfirm),
+    openModal,
+    modalKey: MODAL_KEYS.navigateConfirm,
+  });
 
   const navigate = useNavigate();
 
@@ -200,6 +218,28 @@ const CardForm = () => {
           answerMap={answerMap}
           closeModal={() => closeModal(MODAL_KEYS.recheck)}
         />
+      )}
+      {isOpen(MODAL_KEYS.navigateConfirm) && (
+        <ConfirmModal
+          confirmButton={{
+            styleType: 'primary',
+            type: 'submit',
+            text: '이동',
+            handleClick: handleNavigateConfirmButtonClick,
+          }}
+          cancelButton={{
+            styleType: 'secondary',
+            text: '취소',
+            handleClick: () => closeModal(MODAL_KEYS.navigateConfirm),
+          }}
+          handleClose={() => closeModal(MODAL_KEYS.navigateConfirm)}
+          isClosableOnBackground={true}
+        >
+          <S.ConfirmModalMessage>
+            <p>페이지를 이동하면 작성한 답변이 삭제돼요</p>
+            <p>페이지 이동을 진행할까요?</p>
+          </S.ConfirmModalMessage>
+        </ConfirmModal>
       )}
     </>
   );
