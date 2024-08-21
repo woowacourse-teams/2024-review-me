@@ -46,7 +46,8 @@ public class CreateReviewService {
     @Transactional
     public long createReview(CreateReviewRequest request) {
         ReviewGroup reviewGroup = validateReviewGroupByRequestCode(request.reviewRequestCode());
-        Template template = validateTemplateExist(reviewGroup.getTemplateId());
+        Template template = templateRepository.findById(reviewGroup.getTemplateId())
+                .orElseThrow(() -> new SubmittedReviewTemplateNotFoundException(reviewGroup.getTemplateId()));
         validateSubmittedQuestionsContainedInTemplate(reviewGroup.getTemplateId(), request);
         validateOnlyRequiredQuestionsSubmitted(template, request);
 
@@ -56,11 +57,6 @@ public class CreateReviewService {
     private ReviewGroup validateReviewGroupByRequestCode(String reviewRequestCode) {
         return reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
-    }
-
-    private Template validateTemplateExist(long templateId) {
-        return templateRepository.findById(templateId)
-                .orElseThrow(() -> new SubmittedReviewTemplateNotFoundException(templateId));
     }
 
     private void validateSubmittedQuestionsContainedInTemplate(long templateId, CreateReviewRequest request) {
