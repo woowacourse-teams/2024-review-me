@@ -32,7 +32,7 @@ const ReviewMeOverview = () => {
           <img src={WritingIcon} alt={OVERVIEW_TITLE} />
           <S.OverviewTitle>{OVERVIEW_TITLE}</S.OverviewTitle>
         </S.OverviewTitleContainer>
-        <Carousel slides={OVERVIEW_SLIDES_LIST} />
+        <Carousel slideList={OVERVIEW_SLIDES_LIST} />
       </S.ColumnSectionContainer>
     </S.ReviewMeOverview>
   );
