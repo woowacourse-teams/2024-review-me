@@ -22,12 +22,12 @@ import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.review.service.exception.SubmittedReviewTemplateNotFoundException;
-import reviewme.review.service.exception.UnnecasseryQuestionIncludedException;
+import reviewme.review.service.exception.UnnecessaryQuestionIncludedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.template.domain.Section;
 import reviewme.template.domain.SectionQuestion;
 import reviewme.template.domain.Template;
-import reviewme.template.domain.TemplateSection;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
@@ -89,9 +89,13 @@ public class CreateReviewService {
                 .toList();
 
         // 템플릿의 섹션 ID 목록
-        List<Long> sectionIds = template.getSectionIds()
+/*        List<Long> sectionIds = template.getSectionIds()
                 .stream()
                 .map(TemplateSection::getSectionId)
+                .toList();*/
+        List<Long> sectionIds = sectionRepository.findAllByTemplateId(template.getId())
+                .stream()
+                .map(Section::getId)
                 .toList();
 
         // 섹션에서 답해야 할 질문 ID 목록
@@ -124,7 +128,7 @@ public class CreateReviewService {
                 .map(Question::getId)
                 .toList();
         if(!unnecessaryQuestionIds.isEmpty()) {
-            throw new UnnecasseryQuestionIncludedException(unnecessaryQuestionIds);
+            throw new UnnecessaryQuestionIncludedException(unnecessaryQuestionIds);
         }
     }
 

@@ -20,7 +20,7 @@ import reviewme.review.repository.TextAnswerRepository;
 import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.service.dto.request.CreateReviewRequest;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
-import reviewme.review.service.exception.UnnecasseryQuestionIncludedException;
+import reviewme.review.service.exception.UnnecessaryQuestionIncludedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -161,7 +161,7 @@ class CreateReviewServiceTest {
         assertThatCode(() -> createReviewService.createReview(selectedOptionIdQuestionMissingRequest3))
                 .isInstanceOf(MissingRequiredQuestionException.class);
         assertThatCode(() -> createReviewService.createReview(unnecessaryQuestionIncludedRequest))
-                .isInstanceOf(UnnecasseryQuestionIncludedException.class);
+                .isInstanceOf(UnnecessaryQuestionIncludedException.class);
     }
 
     @Test
