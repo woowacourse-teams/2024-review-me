@@ -27,20 +27,14 @@ const MODAL_KEYS = {
   recheck: 'RECHECK',
 };
 
-type QuestionContent = {
-  [key: number]: string;
-};
-
-const QUESTION_CONTENTS: QuestionContent = {
-  1: '카테고리 선택',
-  2: '커뮤니케이션/협업',
-  3: '문제 해결',
-  4: '시간 관리',
-  5: '기술 역량/전문 지식',
-  6: '성장 마인드셋',
-  7: '단점 피드백',
-  8: '추가 리뷰/응원',
-};
+interface StepList {
+  sectionId: number;
+  sectionName: string;
+  isMovingAvailable: boolean;
+  isDone: boolean;
+  isCurrentStep: boolean;
+  handleClick: () => void;
+}
 
 const CardForm = () => {
   const { param: reviewRequestCode } = useSearchParamAndQuery({
@@ -117,35 +111,23 @@ const CardForm = () => {
     };
   }, []);
 
-  const STEP_LIST = cardSectionList?.reduce(
-    (acc, section, index) => {
-      const isPreviousDone = index === 0 || acc.every((step) => step.isDone);
-      const isMovingAvailable = isPreviousDone && visitedCardList.includes(section.sectionId);
+  const stepList = cardSectionList?.reduce((acc, section, index) => {
+    const isPreviousDone = index === 0 || acc.every((step) => step.isDone);
+    const isMovingAvailable = isPreviousDone && visitedCardList.includes(section.sectionId);
 
-      acc.push({
-        sectionId: section.sectionId,
-        sectionName: section.sectionName ?? QUESTION_CONTENTS[section.sectionId],
-        isMovingAvailable,
-        isDone: section.questions.every((question) => answerValidateMap?.get(question.questionId)),
-        isCurrentStep: index === currentCardIndex,
-        handleClick: () => {
-          if (isMovingAvailable) {
-            handleCurrentCardIndex(index);
-          }
-        },
-      });
+    acc.push({
+      sectionId: section.sectionId,
+      sectionName: section.sectionName,
+      isMovingAvailable,
+      isDone: section.questions.every((question) => answerValidateMap?.get(question.questionId)),
+      isCurrentStep: index === currentCardIndex,
+      handleClick: () => {
+        if (isMovingAvailable) handleCurrentCardIndex(index);
+      },
+    });
 
-      return acc;
-    },
-    [] as Array<{
-      sectionId: number;
-      sectionName: string;
-      isMovingAvailable: boolean;
-      isDone: boolean;
-      isCurrentStep: boolean;
-      handleClick: () => void;
-    }>,
-  );
+    return acc;
+  }, [] as Array<StepList>);
 
   return (
     <>
@@ -159,7 +141,7 @@ const CardForm = () => {
             </p>
           </S.ProjectInfoContainer>
         </S.RevieweeDescription>
-        <ProgressBar stepList={STEP_LIST} />
+        <ProgressBar stepList={stepList} />
         <S.SliderContainer ref={wrapperRef} $translateX={currentCardIndex * slideWidth} $height={slideHeight}>
           {cardSectionList?.map((section, index) => (
             <S.Slide id={makeId(index)} key={section.sectionId}>

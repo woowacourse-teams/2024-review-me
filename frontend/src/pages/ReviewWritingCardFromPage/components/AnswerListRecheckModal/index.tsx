@@ -1,5 +1,3 @@
-import { Fragment } from 'react';
-
 import { CheckboxItem, MultilineTextViewer } from '@/components';
 import ContentModal from '@/components/common/modals/ContentModal';
 import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
@@ -7,6 +5,10 @@ import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
 import QuestionCard from './components/QuestionCard';
 import ReviewCard from './components/ReviewCard';
 import * as S from './styles';
+
+export interface QuestionCardContainerStyleProps {
+  $index: number;
+}
 
 interface AnswerListRecheckModalProps {
   questionSectionList: ReviewWritingCardSection[];
@@ -34,12 +36,12 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
           {questionSectionList.map((section) => (
             <S.ReviewCardWrapper key={section.sectionId}>
               <ReviewCard title={section.header}>
-                {section.questions.map((question) => (
-                  <Fragment key={question.questionId}>
+                {section.questions.map((question, index) => (
+                  <S.QuestionCardContainer key={question.questionId} $index={index}>
                     <QuestionCard questionType="normal" question={question.content} />
                     <S.ContentContainer>
                       {question.questionType === 'CHECKBOX' && (
-                        <div>
+                        <>
                           {question.optionGroup?.options.map((option, index) => (
                             <CheckboxItem
                               key={`${question.questionId}_${index}`}
@@ -51,19 +53,20 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
                               $isReadonly={true}
                             />
                           ))}
-                        </div>
+                        </>
                       )}
+
                       {question.questionType === 'TEXT' && (
-                        <S.TextAnswerWrapper>
+                        <>
                           {findTextAnswer(question.questionId) ? (
                             <MultilineTextViewer text={findTextAnswer(question.questionId) as string} />
                           ) : (
                             <S.EmptyTextAnswer>작성한 답변이 없어요</S.EmptyTextAnswer>
                           )}
-                        </S.TextAnswerWrapper>
+                        </>
                       )}
                     </S.ContentContainer>
-                  </Fragment>
+                  </S.QuestionCardContainer>
                 ))}
               </ReviewCard>
             </S.ReviewCardWrapper>

@@ -33,9 +33,8 @@ const completedStyle = (theme: Theme) => css`
 
 const getStepButtonStyle = ($isDone: boolean, $isMovingAvailable: boolean, theme: Theme) => {
   if (!$isMovingAvailable) return disabledStyle(theme);
-  else if ($isDone && $isMovingAvailable) return completedStyle(theme);
-  else if (!$isDone && $isMovingAvailable) return defaultStyle(theme);
-  else return '';
+  if ($isDone) return completedStyle(theme);
+  return defaultStyle(theme);
 };
 
 export const StepButton = styled.button<StepButtonStyleProps>`
@@ -43,8 +42,9 @@ export const StepButton = styled.button<StepButtonStyleProps>`
 
   width: 12rem;
   height: 3rem;
+  padding: 0 1rem;
 
-  font-size: ${({ theme }) => theme.fontSize.small};
+  font-size: 1.3rem;
   font-weight: ${({ $isCurrentStep, theme }) => $isCurrentStep && theme.fontWeight.bold};
   text-overflow: ellipsis;
   white-space: nowrap;

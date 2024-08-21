@@ -3,6 +3,8 @@ import { atom } from 'recoil';
 import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
 
 import { ATOM_KEY } from '../keys';
+const FIRST_CARD_ID = 1;
+
 /**
  * 서버에서 내려준 리뷰 작성 폼 데이터 중, sections
  */
@@ -43,5 +45,5 @@ export const answerValidationMapAtom = atom<Map<number, boolean> | null>({
  */
 export const visitedCardListAtom = atom<number[]>({
   key: ATOM_KEY.reviewWritingForm.visitedCardList,
-  default: [1],
+  default: [FIRST_CARD_ID],
 });
