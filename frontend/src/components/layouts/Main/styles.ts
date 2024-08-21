@@ -2,7 +2,7 @@ import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 interface MainContainerProps {
-  $isBreadCrumb: boolean;
+  $isBreadCrumb?: boolean;
 }
 const calculateMinHeight = ({ $isBreadCrumb, ...theme }: MainContainerProps & Theme) => {
   const topbarHeight = theme.componentHeight.topbar;

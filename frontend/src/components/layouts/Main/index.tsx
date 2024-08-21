@@ -3,7 +3,7 @@ import { EssentialPropsWithChildren } from '@/types';
 import * as S from './styles';
 
 interface MainProps {
-  isBreadCrumb: boolean;
+  isBreadCrumb?: boolean;
 }
 
 const Main = ({ children, isBreadCrumb }: EssentialPropsWithChildren<MainProps>) => {
