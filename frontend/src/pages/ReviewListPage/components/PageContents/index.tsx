@@ -20,32 +20,36 @@ interface PageContentsProps {
 const PageContents = ({ groupAccessCode, reviewRequestCode }: PageContentsProps) => {
   const navigate = useNavigate();
 
-  const { data: reviewListData } = useGetReviewList(groupAccessCode, reviewRequestCode);
+  const { data: reviewListData, isSuccess } = useGetReviewList(groupAccessCode, reviewRequestCode);
 
   const handleReviewClick = (id: number) => {
     navigate(`/user/detailed-review/${id}`);
   };
 
   return (
-    <S.Layout>
-      <ReviewInfoSection projectName={reviewListData.projectName} revieweeName={reviewListData.revieweeName} />
-      {reviewListData.reviews.length === 0 && <ReviewEmptySection />}
-      {/* <SearchSection handleChange={() => {}} options={OPTIONS} placeholder={USER_SEARCH_PLACE_HOLDER} /> */}
-      <S.ReviewSection>
-        {reviewListData.reviews.map((review) => (
-          // const isLastElement = pageIndex === data.pages.length - 1 && reviewIndex === page.reviews.length - 1;
-          <div key={review.reviewId} onClick={() => handleReviewClick(review.reviewId)}>
-            <ReviewCard
-              projectName={reviewListData.projectName}
-              createdAt={review.createdAt}
-              contentPreview={review.contentPreview}
-              categories={review.categories}
-            />
-            {/* <div ref={isLastElement ? lastReviewElementRef : null}></div> */}
-          </div>
-        ))}
-      </S.ReviewSection>
-    </S.Layout>
+    <>
+      {isSuccess && (
+        <S.Layout>
+          <ReviewInfoSection projectName={reviewListData.projectName} revieweeName={reviewListData.revieweeName} />
+          {reviewListData.reviews.length === 0 ? (
+            <ReviewEmptySection />
+          ) : (
+            <S.ReviewSection>
+              {reviewListData.reviews.map((review) => (
+                <div key={review.reviewId} onClick={() => handleReviewClick(review.reviewId)}>
+                  <ReviewCard
+                    projectName={reviewListData.projectName}
+                    createdAt={review.createdAt}
+                    contentPreview={review.contentPreview}
+                    categories={review.categories}
+                  />
+                </div>
+              ))}
+            </S.ReviewSection>
+          )}
+        </S.Layout>
+      )}
+    </>
   );
 };
 
