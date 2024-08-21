@@ -52,7 +52,7 @@ public class ReviewService {
         return new ReceivedReviewResponse(
                 review.getId(),
                 review.getCreatedAt().toLocalDate(),
-                reviewPreviewGenerator.generatePreview2(review.getTextAnswers()),
+                reviewPreviewGenerator.generatePreview(review.getTextAnswers()),
                 categoryResponses
         );
     }
