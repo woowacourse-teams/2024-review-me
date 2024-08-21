@@ -109,9 +109,9 @@ public class CreateReviewService {
                 .toList();
 
         // 제출된 리뷰의 질문 중에서 제출해야 할 질문이 모두 포함되었는지 검사
-        HashSet<Long> submittedQuestionIds2 = new HashSet<>(submittedQuestionIds);
+        Set<Long> submittedQuestionIds2 = new HashSet<>(submittedQuestionIds);
         if(!submittedQuestionIds2.containsAll(requiredQuestionIds)) {
-            ArrayList<Long> missingRequiredQuestionIds = new ArrayList<>(requiredQuestionIds);
+            List<Long> missingRequiredQuestionIds = new ArrayList<>(requiredQuestionIds);
             missingRequiredQuestionIds.removeAll(submittedQuestionIds2);
             throw new MissingRequiredQuestionException(missingRequiredQuestionIds);
         }
