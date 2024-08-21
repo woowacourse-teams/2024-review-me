@@ -68,8 +68,8 @@ const CardForm = () => {
   const navigate = useNavigate();
 
   const executeAfterMutateSuccess = () => {
-    navigate('/user/review-writing-complete');
     closeModal(MODAL_KEYS.confirm);
+    navigate(`/${ROUTE.reviewWritingComplete}`);
   };
   const { postReview } = useMutateReview({ executeAfterMutateSuccess });
   const [visitedCardList, setVisitedCardList] = useRecoilState(visitedCardListAtom);
