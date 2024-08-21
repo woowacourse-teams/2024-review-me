@@ -3,6 +3,7 @@ package reviewme.reviewgroup.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
@@ -26,7 +27,6 @@ public class ReviewGroupService {
             reviewRequestCode = randomCodeGenerator.generate(REVIEW_REQUEST_CODE_LENGTH);
         } while (reviewGroupRepository.existsByReviewRequestCode(reviewRequestCode));
 
-
         ReviewGroup reviewGroup = reviewGroupRepository.save(
                 new ReviewGroup(request.revieweeName(), request.projectName(), reviewRequestCode, request.groupAccessCode())
         );
@@ -35,9 +35,10 @@ public class ReviewGroupService {
 
     @Transactional(readOnly = true)
     public CheckValidAccessResponse checkGroupAccessCode(CheckValidAccessRequest request) {
-        boolean hasAccess = reviewGroupRepository.existsByReviewRequestCodeAndGroupAccessCode_Code(
-                request.reviewRequestCode(), request.groupAccessCode()
-        );
+        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(request.reviewRequestCode())
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(request.reviewRequestCode()));
+
+        boolean hasAccess = reviewGroup.matchesGroupAccessCode(request.groupAccessCode());
         return new CheckValidAccessResponse(hasAccess);
     }
 }

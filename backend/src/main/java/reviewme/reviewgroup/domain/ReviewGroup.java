@@ -66,6 +66,10 @@ public class ReviewGroup {
         }
     }
 
+    public boolean matchesGroupAccessCode(String code) {
+        return groupAccessCode.matches(code);
+    }
+
     public String getGroupAccessCode() {
         return groupAccessCode.getCode();
     }

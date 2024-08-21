@@ -14,14 +14,4 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findReceivedReviewsByGroupId(long reviewGroupId);
 
     Optional<Review> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
-
-    @Query(value = """
-            SELECT r.* FROM review r
-            INNER JOIN review_group rg
-            ON rg.id = r.review_group_id
-            WHERE r.id = :reviewId
-            AND rg.review_request_code = :reviewRequestCode
-            AND rg.group_access_code = :groupAccessCode
-            """, nativeQuery = true)
-    Optional<Review> findByIdAndCodes(long reviewId, String reviewRequestCode, String groupAccessCode);
 }
