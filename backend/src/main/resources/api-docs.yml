@@ -1,0 +1,11 @@
+docs:
+  info:
+    title: "리뷰미 API"
+    description: "이 문서는 리뷰미 API 구현 방법을 소개합니다."
+    version: "0.0.1"
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
+    operations-sorter: alpha
+    tags-sorter: alpha
