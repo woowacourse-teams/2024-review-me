@@ -65,7 +65,7 @@ public class CreateCheckBoxAnswerRequestValidator {
 
     private void validateCheckedOptionItemCount(CreateReviewAnswerRequest request, OptionGroup optionGroup) {
         if (request.selectedOptionIds().size() < optionGroup.getMinSelectionCount()
-                || request.selectedOptionIds().size() > optionGroup.getMaxSelectionCount()) {
+            || request.selectedOptionIds().size() > optionGroup.getMaxSelectionCount()) {
             throw new SelectedOptionItemCountOutOfRangeException(
                     request.questionId(),
                     request.selectedOptionIds().size(),
