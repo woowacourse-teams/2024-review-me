@@ -6,7 +6,7 @@ export const ReviewMeOverview = styled.section`
   overflow: hidden;
 
   width: 65%;
-  height: calc(100% - 4rem); // NOTE: 4rem은 footer 높이
+  height: 100%;
 
   background-color: ${({ theme }) => theme.colors.lightPurple};
 `;

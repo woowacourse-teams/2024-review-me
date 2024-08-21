@@ -7,7 +7,7 @@ export const CarouselContainer = styled.div`
 
   width: 100%;
   max-width: 80rem;
-  height: 55vh;
+  height: 60vh;
 `;
 
 export const SlideList = styled.div`
