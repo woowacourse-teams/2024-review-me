@@ -18,7 +18,7 @@ class ReviewPreviewGeneratorTest {
         TextAnswer textAnswer = new TextAnswer(1, answer);
 
         // when
-        String actual = reviewPreviewGenerator.generatePreview2(List.of(textAnswer));
+        String actual = reviewPreviewGenerator.generatePreview(List.of(textAnswer));
 
         // then
         assertThat(actual).hasSize(150);
@@ -33,7 +33,7 @@ class ReviewPreviewGeneratorTest {
         TextAnswer textAnswer = new TextAnswer(1, answer);
 
         // when
-        String actual = reviewPreviewGenerator.generatePreview2(List.of(textAnswer));
+        String actual = reviewPreviewGenerator.generatePreview(List.of(textAnswer));
 
         // then
         assertThat(actual).hasSize(length);
