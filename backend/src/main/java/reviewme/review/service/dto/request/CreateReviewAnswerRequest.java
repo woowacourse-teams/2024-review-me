@@ -11,6 +11,7 @@ public record CreateReviewAnswerRequest(
         @Nullable
         List<Long> selectedOptionIds,
 
+        @Nullable
         String text
 ) {
     public boolean isNotBlank() {
