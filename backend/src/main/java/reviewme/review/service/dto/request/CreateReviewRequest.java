@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 public record CreateReviewRequest(
+
         @NotBlank(message = "리뷰 요청 코드를 입력해주세요.")
         String reviewRequestCode,
 
