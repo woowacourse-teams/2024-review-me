@@ -25,7 +25,6 @@ import reviewme.review.service.exception.SubmittedReviewTemplateNotFoundExceptio
 import reviewme.review.service.exception.UnnecessaryQuestionIncludedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.template.domain.Section;
 import reviewme.template.domain.SectionQuestion;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
@@ -84,18 +83,8 @@ public class CreateReviewService {
                 .map(CreateReviewAnswerRequest::questionId)
                 .toList();
 
-        // 템플릿의 섹션 ID 목록
-/*        List<Long> sectionIds = template.getSectionIds()
-                .stream()
-                .map(TemplateSection::getSectionId)
-                .toList();*/
-        List<Long> sectionIds = sectionRepository.findAllByTemplateId(template.getId())
-                .stream()
-                .map(Section::getId)
-                .toList();
-
         // 섹션에서 답해야 할 질문 ID 목록
-        List<Long> requiredQuestionIdsCandidates = sectionRepository.findAllById(sectionIds)
+        List<Long> requiredQuestionIdsCandidates = sectionRepository.findAllByTemplateId(template.getId())
                 .stream()
                 // 선택된 optionItem 에 따라 required 를 다르게 책정해서 필터링
                 .filter(section -> section.isVisibleBySelectedOptionIds(selectedOptionItemIds))
