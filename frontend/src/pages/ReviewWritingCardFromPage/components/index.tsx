@@ -5,3 +5,5 @@ export { default as MultipleChoiceQuestion } from './MultipleChoiceQuestion';
 export { default as ProgressBar } from './ProgressBar';
 export { default as QnABox } from './QnABox';
 export { default as ReviewWritingCard } from './ReviewWritingCard';
+export { default as SubmitCheckModal } from './SubmitCheckModal';
+export { default as NavigateBlockerModal } from './NavigateBlockerModal';

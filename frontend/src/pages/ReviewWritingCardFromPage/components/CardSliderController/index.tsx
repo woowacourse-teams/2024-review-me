@@ -43,16 +43,19 @@ const NextButton = ({ isAbleNextStep, handleCurrentCardIndex }: NextButtonProps)
 
 interface ConfirmModalOpenButtonProps {
   isAbleNextStep: boolean;
-  handleConfirmModalOpenButtonClick: () => void;
+  handleSubmitConfirmModalOpenButtonClick: () => void;
 }
-const ConfirmModalOpenButton = ({ isAbleNextStep, handleConfirmModalOpenButtonClick }: ConfirmModalOpenButtonProps) => {
+const ConfirmModalOpenButton = ({
+  isAbleNextStep,
+  handleSubmitConfirmModalOpenButtonClick,
+}: ConfirmModalOpenButtonProps) => {
   const styleType: ButtonStyleType = isAbleNextStep ? 'primary' : 'disabled';
   return (
     <Button
       disabled={!isAbleNextStep}
       styleType={styleType}
       type={'button'}
-      onClick={handleConfirmModalOpenButtonClick}
+      onClick={handleSubmitConfirmModalOpenButtonClick}
     >
       제출
     </Button>

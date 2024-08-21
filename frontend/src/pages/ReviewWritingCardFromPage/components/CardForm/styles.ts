@@ -58,7 +58,7 @@ export const RevieweeName = styled.span`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-export const SubmitErrorMessage = styled.div`
+export const ConfirmModalMessage = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
