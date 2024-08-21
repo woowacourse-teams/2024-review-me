@@ -23,7 +23,7 @@ import * as S from './styles';
 // const PROJECT_IMAGE_SIZE = '5rem';
 const INDEX_OFFSET = 1;
 const MODAL_KEYS = {
-  confirm: 'CONFIRM',
+  submitConfirm: 'SUBMIT_CONFIRM',
   recheck: 'RECHECK',
 };
 
@@ -68,14 +68,14 @@ const CardForm = () => {
   const navigate = useNavigate();
 
   const executeAfterMutateSuccess = () => {
-    closeModal(MODAL_KEYS.confirm);
     navigate(`/${ROUTE.reviewWritingComplete}`);
+    closeModal(MODAL_KEYS.submitConfirm);
   };
   const { postReview } = useMutateReview({ executeAfterMutateSuccess });
   const [visitedCardList, setVisitedCardList] = useRecoilState(visitedCardListAtom);
 
-  const handleConfirmModalOpenButtonClick = () => {
-    openModal(MODAL_KEYS.confirm);
+  const handleSubmitConfirmModalOpenButtonClick = () => {
+    openModal(MODAL_KEYS.submitConfirm);
   };
 
   const handleNextClick = () => {
@@ -171,17 +171,21 @@ const CardForm = () => {
                 handleNextClick={handleNextClick}
                 handleCurrentCardIndex={handleCurrentCardIndex}
                 handleRecheckButtonClick={handleRecheckButtonClick}
-                handleConfirmModalOpenButtonClick={handleConfirmModalOpenButtonClick}
+                handleSubmitConfirmModalOpenButtonClick={handleSubmitConfirmModalOpenButtonClick}
               />
             </S.Slide>
           ))}
         </S.SliderContainer>
       </S.CardForm>
-      {isOpen(MODAL_KEYS.confirm) && (
+      {isOpen(MODAL_KEYS.submitConfirm) && (
         <ConfirmModal
           confirmButton={{ styleType: 'primary', type: 'submit', text: '제출', handleClick: submitAnswer }}
-          cancelButton={{ styleType: 'secondary', text: '취소', handleClick: () => closeModal(MODAL_KEYS.confirm) }}
-          handleClose={() => closeModal(MODAL_KEYS.confirm)}
+          cancelButton={{
+            styleType: 'secondary',
+            text: '취소',
+            handleClick: () => closeModal(MODAL_KEYS.submitConfirm),
+          }}
+          handleClose={() => closeModal(MODAL_KEYS.submitConfirm)}
           isClosableOnBackground={true}
         >
           <S.SubmitErrorMessage>
