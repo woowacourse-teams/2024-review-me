@@ -9,7 +9,7 @@ const Footer = () => {
         </S.Link>
       </div>
       <div>
-        {'Icons By '}
+        {'Icons by '}
         <S.Link href="https://icons8.com/" aria-label="Icons8 홈페이지">
           Icons8
         </S.Link>
