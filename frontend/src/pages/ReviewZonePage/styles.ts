@@ -51,5 +51,5 @@ export const ButtonText = styled.p`
 `;
 
 export const ButtonDescription = styled.p`
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 `;
