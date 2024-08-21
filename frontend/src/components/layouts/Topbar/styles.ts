@@ -6,7 +6,7 @@ export const Layout = styled.section`
 
   box-sizing: border-box;
   width: 100%;
-  height: 7rem;
+  height: ${({ theme }) => theme.componentHeight.topbar};
   padding: 2rem 2.5rem;
 
   border-bottom: 0.1rem solid ${({ theme }) => theme.colors.lightGray};

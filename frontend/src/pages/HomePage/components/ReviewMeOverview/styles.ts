@@ -2,23 +2,18 @@ import styled from '@emotion/styled';
 
 export const ReviewMeOverview = styled.section`
   position: relative;
-
   overflow: hidden;
-
   width: 65%;
-  height: calc(100% - 4rem); // NOTE: 4rem은 footer 높이
-
   background-color: ${({ theme }) => theme.colors.lightPurple};
 `;
 
 export const ColumnSectionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
   height: 100%;
-
   padding: 3rem;
 `;
 
