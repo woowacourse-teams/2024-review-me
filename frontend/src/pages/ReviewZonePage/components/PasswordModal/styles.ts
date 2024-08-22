@@ -3,12 +3,7 @@ import styled from '@emotion/styled';
 export const PasswordModal = styled.div`
   display: flex;
   flex-direction: column;
-  height: 14rem;
-`;
-
-export const ModalTitle = styled.h3`
-  margin-bottom: 2rem;
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  margin-top: 2rem;
 `;
 
 export const InputContainer = styled.form`
@@ -27,6 +22,8 @@ export const Label = styled.label`
 export const PasswordInputContainer = styled.div`
   position: relative;
   display: flex;
+  gap: 30rem;
+  width: 70%;
 `;
 
 export const ErrorMessage = styled.p`

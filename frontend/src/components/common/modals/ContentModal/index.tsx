@@ -7,15 +7,17 @@ import ModalPortal from '../ModalPortal';
 import * as S from './styles';
 
 interface ContentModalProps {
+  title?: string;
   handleClose: () => void;
 }
 
-const ContentModal = ({ handleClose, children }: EssentialPropsWithChildren<ContentModalProps>) => {
+const ContentModal = ({ title, handleClose, children }: EssentialPropsWithChildren<ContentModalProps>) => {
   return (
     <ModalPortal>
       <ModalBackground closeModal={handleClose}>
         <S.ContentModalContainer>
           <S.ContentModalHeader>
+            <S.Title>{title}</S.Title>
             <S.CloseButton onClick={handleClose}>
               <img src={CloseIcon} alt="모달 닫기" />
             </S.CloseButton>
