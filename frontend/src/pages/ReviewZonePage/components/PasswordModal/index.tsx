@@ -7,6 +7,9 @@ import { ROUTE } from '@/constants/route';
 import { useCheckPasswordValidation, useEyeButton, useGroupAccessCode } from '@/hooks';
 
 import * as S from './styles';
+
+const REVIEW_PASSWORD_INPUT_MESSAGE = '리뷰 확인을 위해 설정한 비밀번호를 입력해주세요';
+
 interface PasswordModalProps {
   closeModal: () => void;
   reviewRequestCode: string;
@@ -52,9 +55,8 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
   };
 
   return (
-    <ContentModal handleClose={closeModal}>
+    <ContentModal title={REVIEW_PASSWORD_INPUT_MESSAGE} handleClose={closeModal}>
       <S.PasswordModal>
-        <S.ModalTitle>리뷰 확인을 위해 설정한 비밀번호를 입력해주세요</S.ModalTitle>
         <S.InputContainer>
           <S.PasswordInputContainer>
             <Input
