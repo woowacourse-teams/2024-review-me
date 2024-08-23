@@ -9,12 +9,18 @@ import * as S from './styles';
 interface ContentModalProps {
   title?: string;
   handleClose: () => void;
+  isClosableOnBackground?: boolean;
 }
 
-const ContentModal = ({ title, handleClose, children }: EssentialPropsWithChildren<ContentModalProps>) => {
+const ContentModal = ({
+  title,
+  handleClose,
+  children,
+  isClosableOnBackground = true,
+}: EssentialPropsWithChildren<ContentModalProps>) => {
   return (
     <ModalPortal>
-      <ModalBackground closeModal={handleClose}>
+      <ModalBackground closeModal={isClosableOnBackground ? handleClose : null}>
         <S.ContentModalContainer>
           <S.ContentModalHeader>
             <S.Title>{title}</S.Title>
