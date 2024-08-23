@@ -55,7 +55,7 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
   };
 
   return (
-    <ContentModal title={REVIEW_PASSWORD_INPUT_MESSAGE} handleClose={closeModal}>
+    <ContentModal title={REVIEW_PASSWORD_INPUT_MESSAGE} handleClose={closeModal} isClosableOnBackground={false}>
       <S.PasswordModal>
         <S.InputContainer>
           <S.PasswordInputContainer>
