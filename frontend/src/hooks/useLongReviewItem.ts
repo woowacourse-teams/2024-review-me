@@ -16,6 +16,10 @@ const useLongReviewItem = ({ minLength, maxLength, initialValue, required }: Use
     const value = e.target.value;
     if (value.length <= maxLength) setValue(value);
     if (value.length >= minLength) setIsError(false);
+    if (value.length > maxLength) {
+      setIsError(true);
+      setErrorMessage(`최대 ${maxLength}자까지만 입력 가능해요`);
+    }
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {

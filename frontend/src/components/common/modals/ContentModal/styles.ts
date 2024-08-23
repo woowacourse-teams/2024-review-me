@@ -23,14 +23,22 @@ export const ContentModalContainer = styled.div`
 
 export const ContentModalHeader = styled.div`
   display: flex;
-  justify-content: flex-end;
+  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
+
   width: 100%;
   height: 3rem;
 `;
 
+export const Title = styled.span`
+  font-size: 1.8rem;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+`;
+
 export const Contents = styled.div`
   overflow-y: auto;
-  padding-right: 1.2rem;
+  width: 100%;
 `;
 
 export const CloseButton = styled.button`

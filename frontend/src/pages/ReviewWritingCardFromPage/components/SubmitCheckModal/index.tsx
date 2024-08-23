@@ -19,7 +19,7 @@ const SubmitCheckModal = ({
       cancelButton={{
         styleType: 'secondary',
         text: '취소',
-        handleClick: () => handleCancelButtonClick,
+        handleClick: handleCancelButtonClick,
       }}
       handleClose={handleCloseModal}
       isClosableOnBackground={true}

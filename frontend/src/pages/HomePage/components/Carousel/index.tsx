@@ -26,12 +26,12 @@ const Carousel = ({ slideList }: CarouselProps) => {
   // NOTE: 첫 슬라이드와 마지막 슬라이드의 복제본을 각각 맨 뒤, 맨 처음에 추가
   const clonedSlideList = [slideList[slideLength - 1], ...slideList, slideList[0]];
 
-  const scrollToSlide = (index: number) => {
+  const scrollToSlide = (index: number, withTransition = true) => {
     if (slideRef.current) {
       setIsTransitioning(true);
 
       const slideWidth = slideRef.current.clientWidth;
-      slideRef.current.style.transition = 'transform 0.5s ease-in-out';
+      slideRef.current.style.transition = withTransition ? `transform ${TRANSITION_DURATION}ms ease-in-out` : 'none';
       slideRef.current.style.transform = `translateX(-${slideWidth * index * 0.1}rem)`;
     }
     setCurrentSlideIndex(index);
@@ -45,6 +45,11 @@ const Carousel = ({ slideList }: CarouselProps) => {
     scrollToSlide(currentSlideIndex - 1);
   };
 
+  // NOTE: // 초기 슬라이드 위치 설정
+  useEffect(() => {
+    scrollToSlide(REAL_START_INDEX, false);
+  }, []);
+
   // NOTE: 맨 처음/맨 끝 슬라이드 전환용 useEffect
   useEffect(() => {
     if (isTransitioning) {
@@ -52,22 +57,17 @@ const Carousel = ({ slideList }: CarouselProps) => {
         // 마지막 슬라이드 처리
         setTimeout(() => {
           setIsTransitioning(false);
-          slideRef.current!.style.transition = 'none';
-          slideRef.current!.style.transform = `translateX(-${slideRef.current!.clientWidth * 0.1}rem)`;
-          setCurrentSlideIndex(REAL_START_INDEX);
+          scrollToSlide(REAL_START_INDEX, false);
         }, TRANSITION_DURATION); // NOTE: 애니메이션 트랜지션 시간과 동일하게 설정 (0.5초)
-      }
-      if (currentSlideIndex === 0) {
+      } else if (currentSlideIndex === 0) {
         // 첫 번째 슬라이드 처리
         setTimeout(() => {
           setIsTransitioning(false);
-          slideRef.current!.style.transition = 'none';
-          slideRef.current!.style.transform = `translateX(-${slideRef.current!.clientWidth * slideLength * 0.1}rem)`;
-          setCurrentSlideIndex(slideLength);
+          scrollToSlide(slideLength, false);
         }, TRANSITION_DURATION);
       }
     }
-  }, [currentSlideIndex, slideLength]);
+  }, [currentSlideIndex, slideLength, isTransitioning]);
 
   // NOTE: 슬라이드 자동 이동용
   useEffect(() => {
