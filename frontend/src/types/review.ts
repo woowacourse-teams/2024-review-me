@@ -95,10 +95,16 @@ export interface ReviewWritingFormData {
   projectName: string;
   sections: ReviewWritingCardSection[];
 }
+/**
+ * 서버에서 보내주는 질문지 데이터 형식
+ */
 export interface ReviewWritingCardSection {
   sectionId: number;
   sectionName: string;
   visible: 'ALWAYS' | 'CONDITIONAL';
+  /**
+   * 강점 테고리별 questionId , 그렇지 않으면 null
+   */
   onSelectedOptionId: number | null;
   header: string;
   questions: ReviewWritingCardQuestion[];
@@ -126,8 +132,21 @@ export interface ReviewWritingQuestionOption {
   content: string;
 }
 export interface ReviewWritingAnswer {
+  /**
+   * 해당 답변을 작성한 질문(ReviewWritingCardQuestion)의 questionId
+   */
   questionId: number;
+  /**
+   * number[] (빈배열이 아닌 배열) : 객관식 질문에서 선택된 답변이 있는 경우
+   * [] : 객관식 질문에서 선택된 답변이 없는 경우
+   * null : 서술형 질문
+   */
   selectedOptionIds: number[] | null;
+  /**
+   * string (빈문자열이 아닌 문자열): 서술형 질문에서 작성한 답변이 있는 경우
+   * ""(빈문자열) : 서술형 질문에서 작성한 답변이 없는 경우
+   * null: 객관식 질문
+   */
   text: string | null;
 }
 
