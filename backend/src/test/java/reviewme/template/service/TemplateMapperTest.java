@@ -28,6 +28,7 @@ import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.dto.response.QuestionResponse;
 import reviewme.template.service.dto.response.SectionResponse;
 import reviewme.template.service.dto.response.TemplateResponse;
+import reviewme.template.service.module.TemplateMapper;
 
 @ServiceTest
 class TemplateMapperTest {
