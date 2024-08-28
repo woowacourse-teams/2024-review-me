@@ -21,9 +21,9 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
-import reviewme.review.service.dto.request.CreateReviewRequest;
-import reviewme.review.service.dto.response.list.ReceivedReviewCategoryResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewResponse;
+import reviewme.review.service.dto.request.ReviewRegisterRequest;
+import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
+import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.exception.ReviewGroupNotFoundByCodesException;
 
@@ -47,7 +47,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 리뷰를_등록한다() {
-        BDDMockito.given(createReviewService.createReview(any(CreateReviewRequest.class)))
+        BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
                 .willReturn(1L);
 
         FieldDescriptor[] requestFieldDescriptors = {
@@ -74,7 +74,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 리뷰_그룹_코드가_올바르지_않은_경우_예외가_발생한다() {
-        BDDMockito.given(createReviewService.createReview(any(CreateReviewRequest.class)))
+        BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
                 .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException(anyString()));
 
         FieldDescriptor[] requestFieldDescriptors = {
@@ -191,14 +191,14 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 자신이_받은_리뷰_목록을_조회한다() {
-        List<ReceivedReviewResponse> receivedReviews = List.of(
-                new ReceivedReviewResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
-                        List.of(new ReceivedReviewCategoryResponse(1L, "카테고리 1"))),
-                new ReceivedReviewResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
-                        List.of(new ReceivedReviewCategoryResponse(2L, "카테고리 2")))
+        List<ReviewListElementResponse> receivedReviews = List.of(
+                new ReviewListElementResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
+                        List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
+                new ReviewListElementResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
+                        List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
         );
         ReceivedReviewsResponse response = new ReceivedReviewsResponse("아루", "리뷰미", receivedReviews);
-        BDDMockito.given(reviewService.findReceivedReviews(anyString(), anyString()))
+        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyString(), anyString()))
                 .willReturn(response);
 
         HeaderDescriptor[] requestHeaderDescriptors = {
@@ -238,7 +238,7 @@ class ReviewApiTest extends ApiTest {
     void 자신이_받은_리뷰_조회시_접근_코드가_올바르지_않은_경우_예외를_발생한다() {
         String reviewRequestCode = "43214321";
         String groupAccessCode = "00001234";
-        BDDMockito.given(reviewService.findReceivedReviews(reviewRequestCode, groupAccessCode))
+        BDDMockito.given(reviewListLookupService.getReceivedReviews(reviewRequestCode, groupAccessCode))
                 .willThrow(new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
 
         HeaderDescriptor[] requestHeaderDescriptors = {

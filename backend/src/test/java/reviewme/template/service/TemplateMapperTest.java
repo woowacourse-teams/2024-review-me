@@ -78,7 +78,7 @@ class TemplateMapperTest {
         reviewGroupRepository.save(reviewGroup);
 
         // when
-        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup, template);
+        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup);
 
         // then
         assertAll(
@@ -108,7 +108,7 @@ class TemplateMapperTest {
         reviewGroupRepository.save(reviewGroup);
 
         // when
-        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup, template);
+        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup);
 
         // then
         SectionResponse sectionResponse = templateResponse.sections().get(0);
@@ -137,7 +137,7 @@ class TemplateMapperTest {
         reviewGroupRepository.save(reviewGroup);
 
         // when
-        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup, template);
+        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup);
 
         // then
         QuestionResponse questionResponse = templateResponse.sections().get(0).questions().get(0);
@@ -163,7 +163,7 @@ class TemplateMapperTest {
         reviewGroupRepository.save(reviewGroup);
 
         // when
-        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup, template);
+        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup);
 
         // then
         QuestionResponse questionResponse = templateResponse.sections().get(0).questions().get(0);
@@ -180,7 +180,7 @@ class TemplateMapperTest {
         reviewGroupRepository.save(reviewGroup);
 
         // when, then
-        assertThatThrownBy(() -> templateMapper.mapToTemplateResponse(reviewGroup, template))
+        assertThatThrownBy(() -> templateMapper.mapToTemplateResponse(reviewGroup))
                 .isInstanceOf(SectionInTemplateNotFoundException.class);
     }
 
@@ -205,7 +205,7 @@ class TemplateMapperTest {
         reviewGroupRepository.save(reviewGroup);
 
         // when, then
-        assertThatThrownBy(() -> templateMapper.mapToTemplateResponse(reviewGroup, template))
+        assertThatThrownBy(() -> templateMapper.mapToTemplateResponse(reviewGroup))
                 .isInstanceOf(MissingOptionItemsInOptionGroupException.class);
     }
 }
