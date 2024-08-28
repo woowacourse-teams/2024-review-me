@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.domain.Review;
 import reviewme.review.repository.ReviewRepository;
-import reviewme.review.service.dto.request.CreateReviewRequest;
+import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.module.CheckBoxAnswerValidator;
 import reviewme.review.service.module.ReviewMapper;
 import reviewme.review.service.module.ReviewValidator;
@@ -23,7 +23,7 @@ public class ReviewRegisterService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public long registerReview(CreateReviewRequest request) {
+    public long registerReview(ReviewRegisterRequest request) {
         Review review = reviewMapper.mapToReview(request, textAnswerValidator, checkBoxAnswerValidator);
         reviewValidator.validate(review);
         Review registeredReview = reviewRepository.save(review);
