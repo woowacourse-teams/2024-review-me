@@ -1,4 +1,4 @@
-package reviewme.review.service;
+package reviewme.review.service.module;
 
 import java.util.List;
 import reviewme.review.domain.TextAnswer;
