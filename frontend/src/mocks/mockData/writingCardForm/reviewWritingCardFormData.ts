@@ -1,8 +1,8 @@
-import { ReviewWritingFrom } from '@/types';
+import { ReviewWritingFormData } from '@/types';
 
 export const REVIEW_REQUEST_CODE = 'ABCD1234';
 
-export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFrom = {
+export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFormData = {
   formId: 1,
   revieweeName: 'bada',
   projectName: 'bada',
