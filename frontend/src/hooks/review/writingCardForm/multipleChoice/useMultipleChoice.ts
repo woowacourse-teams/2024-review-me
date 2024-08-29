@@ -4,6 +4,8 @@ import { ReviewWritingCardQuestion } from '@/types';
 
 import useAboveSelectionLimit from './useAboveSelectionLimit';
 import useCheckTailQuestionAnswer from './useCheckTailQuestionAnswer';
+import useOptionSelection from './useOptionSelection';
+import useUnCheckCategoryOption from './useUnCheckCategoryOption';
 import useUpdateMultipleChoiceAnswer from './useUpdateMultipleChoiceAnswer';
 
 interface UseMultipleChoiceProps {
@@ -14,15 +16,16 @@ interface UseMultipleChoiceProps {
  * 하나의 객관식 질문에서 선택된 문항, 문항 선택 관리(최대를 넘는 문항 선택 시, 안내 문구 표시)등을 하는 훅
  */
 const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps) => {
-  const [unCheckTargetCategoryOptionId, setUnCheckTargetCategoryOptionId] = useState<number | null>(null);
-
   const { isAnsweredTailQuestion, updateVisitedCardList } = useCheckTailQuestionAnswer({ question });
 
-  const { selectedOptionList, updateAnswerState } = useUpdateMultipleChoiceAnswer({ question });
+  const { selectedOptionList, isSelectedCheckbox, updateSelectedOptionList } = useOptionSelection();
 
-  const { isOpenLimitGuide, isSelectedCheckbox, isAboveSelectionLimit, handleLimitGuideOpen } = useAboveSelectionLimit({
+  const { updateAnswerState } = useUpdateMultipleChoiceAnswer({ question });
+
+  const { isOpenLimitGuide, handleLimitGuideOpen } = useAboveSelectionLimit({
     question,
     selectedOptionList,
+    isSelectedCheckbox,
   });
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
