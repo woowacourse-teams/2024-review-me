@@ -3,7 +3,6 @@ import { atom } from 'recoil';
 import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
 
 import { ATOM_KEY } from '../keys';
-const FIRST_CARD_ID = 1;
 
 /**
  * 서버에서 내려준 리뷰 작성 폼 데이터 중, sections

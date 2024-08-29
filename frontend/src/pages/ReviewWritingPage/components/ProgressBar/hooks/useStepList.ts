@@ -19,7 +19,8 @@ const useStepList = ({ currentCardIndex, cardSectionList }: UseStepListProps) =>
     isCurrentStep: boolean;
   }
   const [stepList, setStepList] = useState<Step[]>([]);
-  const [visitedCardList, setVisitedCardList] = useState<number[]>([]);
+
+  const [visitedCardIdList, setVisitedCardIdList] = useState<number[]>([]);
 
   const updateStepList = () => {
     const newStepList = makeNewStepList();
@@ -32,7 +33,7 @@ const useStepList = ({ currentCardIndex, cardSectionList }: UseStepListProps) =>
 
     cardSectionList?.forEach((section, index) => {
       const isPreviousDone = index === 0 || newStepList.every((step) => step.isDone);
-      const isMovingAvailable = isPreviousDone && visitedCardList.includes(section.sectionId);
+      const isMovingAvailable = isPreviousDone && visitedCardIdList.includes(section.sectionId);
       const isCurrentStep = index === currentCardIndex;
 
       newStepList.push({
@@ -47,8 +48,8 @@ const useStepList = ({ currentCardIndex, cardSectionList }: UseStepListProps) =>
     return newStepList;
   };
 
-  const updateVisitedCardList = () => {
-    setVisitedCardList((prev) => {
+  const updateVisitedCardIdList = () => {
+    setVisitedCardIdList((prev) => {
       const currentCard = cardSectionList[currentCardIndex];
       if (!currentCard) return [];
       // 첫 렌더링 시
@@ -65,12 +66,12 @@ const useStepList = ({ currentCardIndex, cardSectionList }: UseStepListProps) =>
   };
 
   useEffect(() => {
-    updateVisitedCardList();
+    updateVisitedCardIdList();
   }, [cardSectionList, currentCardIndex]);
 
   useEffect(() => {
     updateStepList();
-  }, [visitedCardList, answerValidationMap]);
+  }, [visitedCardIdList, answerValidationMap]);
 
   return {
     stepList,
