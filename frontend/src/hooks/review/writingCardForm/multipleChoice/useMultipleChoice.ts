@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { ReviewWritingCardQuestion } from '@/types';
 
 import useAboveSelectionLimit from './useAboveSelectionLimit';
@@ -27,6 +25,14 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     selectedOptionList,
     isSelectedCheckbox,
   });
+
+  const { unCheckCategoryOptionId, handleCategoryUncheckModal, unCheckTargetCategoryOption } = useUnCheckCategoryOption(
+    {
+      handleModalOpen,
+      updateSelectedOptionList,
+      updateAnswerState,
+    },
+  );
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.currentTarget;
@@ -57,7 +63,7 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     isSelectedCheckbox,
     unCheckTargetCategoryOption,
     updateVisitedCardList,
-    unCheckTargetCategoryOptionId,
+    unCheckCategoryOptionId,
   };
 };
 export default useMultipleChoice;

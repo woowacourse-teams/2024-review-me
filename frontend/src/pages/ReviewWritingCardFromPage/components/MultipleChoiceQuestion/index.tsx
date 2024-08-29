@@ -26,7 +26,7 @@ const MultipleChoiceQuestion = ({ question }: MultipleChoiceQuestionProps) => {
     isSelectedCheckbox,
     unCheckTargetCategoryOption,
     updateVisitedCardList,
-    unCheckTargetCategoryOptionId,
+    unCheckCategoryOptionId,
   } = useMultipleChoice({
     question,
     handleModalOpen,
@@ -39,8 +39,8 @@ const MultipleChoiceQuestion = ({ question }: MultipleChoiceQuestionProps) => {
   const handleModalConfirmButtonClick = () => {
     unCheckTargetCategoryOption();
 
-    if (unCheckTargetCategoryOptionId) {
-      updateVisitedCardList(unCheckTargetCategoryOptionId);
+    if (unCheckCategoryOptionId) {
+      updateVisitedCardList(unCheckCategoryOptionId);
     }
 
     closeModal(MODAL_KEY.confirm);
