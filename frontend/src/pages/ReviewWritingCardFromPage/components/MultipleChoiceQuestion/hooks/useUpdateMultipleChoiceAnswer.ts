@@ -1,6 +1,5 @@
+import { useUpdateReviewerAnswer } from '@/hooks';
 import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
-
-import useUpdateReviewerAnswer from '../useUpdateReviewerAnswer';
 
 interface UseUpdateMultipleChoiceAnswerProps {
   question: ReviewWritingCardQuestion;

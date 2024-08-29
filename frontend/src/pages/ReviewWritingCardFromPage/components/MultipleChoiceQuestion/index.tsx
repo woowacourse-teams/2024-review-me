@@ -1,8 +1,8 @@
 import { CheckboxItem, ConfirmModal } from '@/components';
-import { useMultipleChoice } from '@/hooks';
-import useModals from '@/hooks/useModals';
+import { useModals } from '@/hooks';
 import { ReviewWritingCardQuestion } from '@/types';
 
+import useMultipleChoice from './hooks/useMultipleChoice';
 import * as S from './style';
 
 interface MultipleChoiceQuestionProps {
