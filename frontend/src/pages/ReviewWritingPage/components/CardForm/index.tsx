@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import { ROUTE } from '@/constants/route';
 import {
@@ -22,7 +22,7 @@ import {
   ReviewWritingCard,
   SubmitCheckModal,
 } from '@/pages/ReviewWritingPage/components';
-import { answerMapAtom, answerValidationMapAtom, visitedCardListAtom } from '@/recoil';
+import { answerMapAtom } from '@/recoil';
 import { ReviewWritingFormResult } from '@/types';
 
 import * as S from './styles';
@@ -35,15 +35,6 @@ const MODAL_KEYS = {
   navigateConfirm: 'NAVIGATE_CONFIRM',
   recheck: 'RECHECK',
 };
-
-interface StepList {
-  sectionId: number;
-  sectionName: string;
-  isMovingAvailable: boolean;
-  isDone: boolean;
-  isCurrentStep: boolean;
-  handleClick: () => void;
-}
 
 const CardForm = () => {
   const { param: reviewRequestCode } = useSearchParamAndQuery({
@@ -62,7 +53,6 @@ const CardForm = () => {
   // 생성된 질문지를 바탕으로 답변 기본값 및 답변의 유효성 기본값 설정
   useUpdateDefaultAnswers();
   const answerMap = useRecoilValue(answerMapAtom);
-  const answerValidateMap = useRecoilValue(answerValidationMapAtom);
 
   const handleNavigateConfirmButtonClick = () => {
     closeModal(MODAL_KEYS.navigateConfirm);
@@ -89,7 +79,6 @@ const CardForm = () => {
     closeModal(MODAL_KEYS.submitConfirm);
   };
   const { postReview } = useMutateReview({ executeAfterMutateSuccess });
-  const [visitedCardList, setVisitedCardList] = useRecoilState(visitedCardListAtom);
 
   const handleSubmitConfirmModalOpenButtonClick = () => {
     openModal(MODAL_KEYS.submitConfirm);
@@ -98,15 +87,6 @@ const CardForm = () => {
   const handleNextClick = () => {
     const nextIndex = currentCardIndex + 1;
     if (nextIndex < cardSectionList.length) {
-      const nextSectionId = cardSectionList[nextIndex].sectionId;
-      setVisitedCardList((prev) => {
-        const newVisitedCardList = [...prev];
-        if (!newVisitedCardList.includes(nextSectionId)) {
-          newVisitedCardList.push(nextSectionId);
-        }
-        return newVisitedCardList;
-      });
-
       handleCurrentCardIndex('next');
     }
   };
@@ -134,24 +114,6 @@ const CardForm = () => {
     };
   }, []);
 
-  const stepList = cardSectionList?.reduce((acc, section, index) => {
-    const isPreviousDone = index === 0 || acc.every((step) => step.isDone);
-    const isMovingAvailable = isPreviousDone && visitedCardList.includes(section.sectionId);
-
-    acc.push({
-      sectionId: section.sectionId,
-      sectionName: section.sectionName,
-      isMovingAvailable,
-      isDone: section.questions.every((question) => answerValidateMap?.get(question.questionId)),
-      isCurrentStep: index === currentCardIndex,
-      handleClick: () => {
-        if (isMovingAvailable) handleCurrentCardIndex(index);
-      },
-    });
-
-    return acc;
-  }, [] as Array<StepList>);
-
   return (
     <>
       <S.CardForm>
@@ -164,7 +126,11 @@ const CardForm = () => {
             </p>
           </S.ProjectInfoContainer>
         </S.RevieweeDescription>
-        <ProgressBar stepList={stepList} />
+        <ProgressBar
+          currentCardIndex={currentCardIndex}
+          cardSectionList={cardSectionList}
+          handleCurrentCardIndex={handleCurrentCardIndex}
+        />
         <S.SliderContainer ref={wrapperRef} $translateX={currentCardIndex * slideWidth} $height={slideHeight}>
           {cardSectionList?.map((section, index) => (
             <S.Slide id={makeId(index)} key={section.sectionId}>

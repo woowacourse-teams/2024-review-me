@@ -38,12 +38,3 @@ export const answerValidationMapAtom = atom<Map<number, boolean> | null>({
   key: ATOM_KEY.reviewWritingForm.answerValidationMapAtom,
   default: null,
 });
-
-/**
- * 이미 방문한 카드의 section ID
- * number: sectionId
- */
-export const visitedCardListAtom = atom<number[]>({
-  key: ATOM_KEY.reviewWritingForm.visitedCardList,
-  default: [FIRST_CARD_ID],
-});

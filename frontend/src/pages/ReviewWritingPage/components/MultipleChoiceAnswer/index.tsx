@@ -20,17 +20,12 @@ const MultipleChoiceAnswer = ({ question }: MultipleChoiceAnswerProps) => {
     isOpen ? openModal(MODAL_KEY.confirm) : closeModal(MODAL_KEY.confirm);
   };
 
-  const {
-    isOpenLimitGuide,
-    handleCheckboxChange,
-    isSelectedCheckbox,
-    unCheckTargetCategoryOption,
-    updateVisitedCardList,
-    unCheckCategoryOptionId,
-  } = useMultipleChoice({
-    question,
-    handleModalOpen,
-  });
+  const { isOpenLimitGuide, handleCheckboxChange, isSelectedCheckbox, unCheckTargetCategoryOption } = useMultipleChoice(
+    {
+      question,
+      handleModalOpen,
+    },
+  );
 
   const handleModalCancelButtonClick = () => {
     closeModal(MODAL_KEY.confirm);
@@ -38,11 +33,6 @@ const MultipleChoiceAnswer = ({ question }: MultipleChoiceAnswerProps) => {
 
   const handleModalConfirmButtonClick = () => {
     unCheckTargetCategoryOption();
-
-    if (unCheckCategoryOptionId) {
-      updateVisitedCardList(unCheckCategoryOptionId);
-    }
-
     closeModal(MODAL_KEY.confirm);
   };
 

@@ -1,6 +1,6 @@
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
-import { answerMapAtom, cardSectionListSelector, visitedCardListAtom } from '@/recoil';
+import { answerMapAtom, cardSectionListSelector } from '@/recoil';
 import { ReviewWritingCardQuestion } from '@/types';
 
 interface UseCancelAnsweredCategoryProps {
@@ -13,7 +13,6 @@ interface UseCancelAnsweredCategoryProps {
 const useCheckTailQuestionAnswer = ({ question }: UseCancelAnsweredCategoryProps) => {
   const cardSectionList = useRecoilValue(cardSectionListSelector);
   const answerMap = useRecoilValue(answerMapAtom);
-  const setVisitedCardList = useSetRecoilState(visitedCardListAtom);
 
   const isCategoryQuestion = question.questionId === cardSectionList[0].questions[0].questionId;
   // 이미 답변을 작성한 카테고리를 해제하는 경우
@@ -44,17 +43,6 @@ const useCheckTailQuestionAnswer = ({ question }: UseCancelAnsweredCategoryProps
 
     return !!answer?.selectedOptionIds?.length || !!answer?.text?.length;
   };
-  //TODO : visitedCardList ...answerValidationMap 상태, 현재 카드 section 숫자로 판단안되나?
-  const updateVisitedCardList = (optionId: number) => {
-    if (!isCategoryQuestion) return false;
-
-    const targetSectionId = getCategoryByOptionId(optionId).sectionId;
-
-    setVisitedCardList((prev) => {
-      const newVisitedCardList = [...prev];
-      return newVisitedCardList.filter((card) => card !== targetSectionId);
-    });
-  };
 
   /**
    * 강점 카테고리 객관식 문항에서 선택을 해제하려는 강점에 대한 꼬리 질문에 이미 작성된 답변이 있는 지 여부
@@ -69,7 +57,6 @@ const useCheckTailQuestionAnswer = ({ question }: UseCancelAnsweredCategoryProps
 
   return {
     isAnsweredTailQuestion,
-    updateVisitedCardList,
   };
 };
 

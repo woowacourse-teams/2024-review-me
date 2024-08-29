@@ -14,7 +14,7 @@ interface UseMultipleChoiceProps {
  * 하나의 객관식 질문에서 선택된 문항, 문항 선택 관리(최대를 넘는 문항 선택 시, 안내 문구 표시)등을 하는 훅
  */
 const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps) => {
-  const { isAnsweredTailQuestion, updateVisitedCardList } = useCheckTailQuestionAnswer({ question });
+  const { isAnsweredTailQuestion } = useCheckTailQuestionAnswer({ question });
 
   const { selectedOptionList, isSelectedCheckbox, updateSelectedOptionList } = useOptionSelection();
 
@@ -85,7 +85,6 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     handleCheckboxChange,
     isSelectedCheckbox,
     unCheckTargetCategoryOption,
-    updateVisitedCardList,
     unCheckCategoryOptionId,
   };
 };

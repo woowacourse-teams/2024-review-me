@@ -1,32 +1,35 @@
 import NavigateNextIcon from '@/assets/navigateNext.svg';
+import { Direction } from '@/hooks/review/writingCardForm/useCurrentCardIndex';
+import { ReviewWritingCardSection } from '@/types';
 
+import useStepList from './hooks/useStepList';
 import * as S from './styles';
 
-interface Step {
-  sectionId: number;
-  sectionName: string;
-  isDone: boolean;
-  isMovingAvailable: boolean;
-  isCurrentStep: boolean;
-  handleClick: () => void;
-}
-
 interface ProgressBarProps {
-  stepList: Step[];
+  currentCardIndex: number;
+  cardSectionList: ReviewWritingCardSection[];
+  handleCurrentCardIndex: (direction: Direction) => void;
 }
 
-const ProgressBar = ({ stepList }: ProgressBarProps) => {
+const ProgressBar = ({ currentCardIndex, cardSectionList, handleCurrentCardIndex }: ProgressBarProps) => {
+  const { stepList } = useStepList({ currentCardIndex, cardSectionList });
+
+  const handleClick = (index: number) => {
+    const { isMovingAvailable } = stepList[index];
+    if (isMovingAvailable) handleCurrentCardIndex(index);
+  };
+
   return (
     <S.ProgressBar>
       {stepList.map((step, index) => {
         return (
           <>
             <S.StepButton
-              key={index}
+              key={step.sectionId}
               $isDone={step.isDone}
               $isMovingAvailable={step.isMovingAvailable}
               $isCurrentStep={step.isCurrentStep}
-              onClick={step.handleClick}
+              onClick={() => handleClick(index)}
               type="button"
             >
               {step.sectionName}
