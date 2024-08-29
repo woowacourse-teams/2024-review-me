@@ -13,6 +13,7 @@ import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
+import reviewme.review.service.exception.QuestionNotAnsweredException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -25,8 +26,8 @@ import reviewme.template.repository.TemplateRepository;
 public class ReviewMapper {
 
     private final ReviewGroupRepository reviewGroupRepository;
-    private final TemplateRepository templateRepository;
     private final QuestionRepository questionRepository;
+    private final TemplateRepository templateRepository;
 
     public Review mapToReview(ReviewRegisterRequest request,
                               TextAnswerValidator textAnswerValidator,
@@ -70,10 +71,18 @@ public class ReviewMapper {
     }
 
     private TextAnswer mapToTextAnswer(ReviewAnswerRequest answerRequest) {
+        if (answerRequest.text() == null) {
+            throw new QuestionNotAnsweredException(answerRequest.questionId());
+        }
+
         return new TextAnswer(answerRequest.questionId(), answerRequest.text());
     }
 
     private CheckboxAnswer mapToCheckboxAnswer(ReviewAnswerRequest answerRequest) {
+        if (answerRequest.selectedOptionIds() == null) {
+            throw new QuestionNotAnsweredException(answerRequest.questionId());
+        }
+
         return new CheckboxAnswer(answerRequest.questionId(), answerRequest.selectedOptionIds());
     }
 }
