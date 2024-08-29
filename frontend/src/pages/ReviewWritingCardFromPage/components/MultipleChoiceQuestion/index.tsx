@@ -24,9 +24,9 @@ const MultipleChoiceQuestion = ({ question }: MultipleChoiceQuestionProps) => {
     isOpenLimitGuide,
     handleCheckboxChange,
     isSelectedCheckbox,
-    unCheckTargetOption,
+    unCheckTargetCategoryOption,
     updateVisitedCardList,
-    unCheckTargetOptionId,
+    unCheckTargetCategoryOptionId,
   } = useMultipleChoice({
     question,
     handleModalOpen,
@@ -37,8 +37,12 @@ const MultipleChoiceQuestion = ({ question }: MultipleChoiceQuestionProps) => {
   };
 
   const handleModalConfirmButtonClick = () => {
-    unCheckTargetOption();
-    updateVisitedCardList(unCheckTargetOptionId!);
+    unCheckTargetCategoryOption();
+
+    if (unCheckTargetCategoryOptionId) {
+      updateVisitedCardList(unCheckTargetCategoryOptionId);
+    }
+
     closeModal(MODAL_KEY.confirm);
   };
 

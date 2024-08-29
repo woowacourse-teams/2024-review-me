@@ -14,7 +14,7 @@ interface UseMultipleChoiceProps {
  * 하나의 객관식 질문에서 선택된 문항, 문항 선택 관리(최대를 넘는 문항 선택 시, 안내 문구 표시)등을 하는 훅
  */
 const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps) => {
-  const [unCheckTargetOptionId, setUnCheckTargetOptionId] = useState<number | null>(null);
+  const [unCheckTargetCategoryOptionId, setUnCheckTargetCategoryOptionId] = useState<number | null>(null);
 
   const { isAnsweredCategoryChanged, updateVisitedCardList } = useCancelAnsweredCategory({ question });
 
@@ -35,7 +35,7 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     handleLimitGuideOpen(false);
     // 답변이 달린 카테고리를 해제하려는 경우
     const isUnCheckCategory = isAnsweredCategoryChanged(optionId);
-    setUnCheckTargetOptionId(isUnCheckCategory ? optionId : null);
+    setUnCheckTargetCategoryOptionId(isUnCheckCategory ? optionId : null);
     handleModalOpen(!!isUnCheckCategory);
 
     if (!isUnCheckCategory) {
@@ -43,18 +43,18 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     }
   };
 
-  const unCheckTargetOption = () => {
-    if (unCheckTargetOptionId) {
-      updateAnswerState({ optionId: unCheckTargetOptionId, checked: false });
+  const unCheckTargetCategoryOption = () => {
+    if (unCheckTargetCategoryOptionId) {
+      updateAnswerState({ optionId: unCheckTargetCategoryOptionId, checked: false });
     }
   };
   return {
     isOpenLimitGuide,
     handleCheckboxChange,
     isSelectedCheckbox,
-    unCheckTargetOption,
+    unCheckTargetCategoryOption,
     updateVisitedCardList,
-    unCheckTargetOptionId,
+    unCheckTargetCategoryOptionId,
   };
 };
 export default useMultipleChoice;
