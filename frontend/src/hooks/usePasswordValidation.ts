@@ -10,7 +10,7 @@ import {
 const INVALID_CHAR_ERROR_MESSAGE = `영문(대/소문자) 및 숫자만 입력해주세요`;
 const PASSWORD_LENGTH_ERROR_MESSAGE = `${MIN_PASSWORD_INPUT}자부터 ${MAX_PASSWORD_INPUT}자까지 입력할 수 있어요`;
 
-export const usePasswordValidation = (password: string) => {
+const usePasswordValidation = (password: string) => {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [isBlurredOnce, setIsBlurredOnce] = useState(false);
 
@@ -38,3 +38,5 @@ export const usePasswordValidation = (password: string) => {
     handlePasswordBlur,
   };
 };
+
+export default usePasswordValidation;
