@@ -20,27 +20,13 @@ interface UseTextAnswerProps {
   question: ReviewWritingCardQuestion;
 }
 /**
- * 하나의 주관식 질문에서 답변을 관리하는 훅
+ * 하나의 주관식 질문에 대한 답변을 관리하는 훅
  */
 const useTextAnswer = ({ question }: UseTextAnswerProps) => {
   const { updateAnswerMap, updateAnswerValidationMap } = useUpdateReviewerAnswer();
 
   const [text, setText] = useState('');
   const [errorMessage, setErrorMessage] = useState(TEXT_ANSWER_ERROR_MESSAGE.empty);
-
-  type TextAnswerErrorMessage = keyof typeof TEXT_ANSWER_ERROR_MESSAGE;
-
-  const validateTextLength = (text: string): TextAnswerErrorMessage => {
-    const { min, max } = TEXT_ANSWER_LENGTH;
-
-    const isOverMax = text.length > max;
-    const isUnderMin = text.length < min;
-
-    if (isOverMax) return 'max';
-    if (isUnderMin) return 'min';
-
-    return 'empty';
-  };
 
   const handleTextAnswerChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
@@ -56,6 +42,20 @@ const useTextAnswer = ({ question }: UseTextAnswerProps) => {
     const { max, extra } = TEXT_ANSWER_LENGTH;
 
     setText(value.slice(0, max + extra));
+  };
+
+  type TextAnswerErrorMessage = keyof typeof TEXT_ANSWER_ERROR_MESSAGE;
+
+  const validateTextLength = (text: string): TextAnswerErrorMessage => {
+    const { min, max } = TEXT_ANSWER_LENGTH;
+
+    const isOverMax = text.length > max;
+    const isUnderMin = text.length < min;
+
+    if (isOverMax) return 'max';
+    if (isUnderMin) return 'min';
+
+    return 'empty';
   };
 
   /**
