@@ -1,8 +1,7 @@
-import { LongReviewItem } from '@/components';
-import { useTextAnswer } from '@/hooks';
 import { ReviewWritingCardQuestion } from '@/types';
 
 import MultipleChoiceAnswer from '../MultipleChoiceAnswer';
+import TextAnswer from '../TextAnswer';
 
 import * as S from './style';
 
@@ -29,10 +28,6 @@ const QnABox = ({ question }: QnABoxProps) => {
     return `(${minCount}개 ~ ${maxCount}개)`;
   })();
 
-  const { textAnswer, handleTextAnswerChange, TEXT_ANSWER_LENGTH } = useTextAnswer({
-    question,
-  });
-
   return (
     <S.QnASection>
       <S.QuestionTitle>
@@ -44,15 +39,7 @@ const QnABox = ({ question }: QnABoxProps) => {
       {/*객관식*/}
       {question.questionType === 'CHECKBOX' && <MultipleChoiceAnswer question={question} />}
       {/*서술형*/}
-      {question.questionType === 'TEXT' && (
-        <LongReviewItem
-          initialValue={textAnswer}
-          minLength={TEXT_ANSWER_LENGTH.min}
-          maxLength={TEXT_ANSWER_LENGTH.max}
-          handleTextareaChange={handleTextAnswerChange}
-          required={question.required}
-        />
-      )}
+      {question.questionType === 'TEXT' && <TextAnswer question={question} />}
     </S.QnASection>
   );
 };
