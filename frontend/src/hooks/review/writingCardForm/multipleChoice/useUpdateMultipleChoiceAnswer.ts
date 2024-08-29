@@ -7,20 +7,22 @@ import useUpdateReviewerAnswer from '../useUpdateReviewerAnswer';
 interface UseUpdateMultipleChoiceAnswerProps {
   question: ReviewWritingCardQuestion;
 }
-
+/**
+ * 객관식 문항에서 선택된 문항들의 id를 관리하고 선택된 문항들의 유효성 여부에 따라 answerMap, answerValidationMap의 상태를 업데이트하는 훅
+ */
 const useUpdateMultipleChoiceAnswer = ({ question }: UseUpdateMultipleChoiceAnswerProps) => {
   const [selectedOptionList, setSelectedOptionList] = useState<number[]>([]);
 
   const { updateAnswerMap, updateAnswerValidationMap } = useUpdateReviewerAnswer();
 
-  interface MakeNewSelectedOptionList {
+  interface MakeNewSelectedOptionListParams {
     optionId: number;
     checked: boolean;
   }
   /**
    * checkbox의 change 이벤트에 따라 새로운 selectedOptionList를 반환하는 함수
    */
-  const makeNewSelectedOptionList = ({ optionId, checked }: MakeNewSelectedOptionList) => {
+  const makeNewSelectedOptionList = ({ optionId, checked }: MakeNewSelectedOptionListParams) => {
     if (checked) {
       return selectedOptionList.concat(optionId);
     }
@@ -37,7 +39,7 @@ const useUpdateMultipleChoiceAnswer = ({ question }: UseUpdateMultipleChoiceAnsw
     return length >= minCount && length <= maxCount;
   };
 
-  const updateAnswerState = ({ optionId, checked }: MakeNewSelectedOptionList) => {
+  const updateAnswerState = ({ optionId, checked }: MakeNewSelectedOptionListParams) => {
     const newSelectedOptionList = makeNewSelectedOptionList({ optionId, checked });
     setSelectedOptionList(newSelectedOptionList);
 
