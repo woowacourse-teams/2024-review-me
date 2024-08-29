@@ -3,9 +3,7 @@ import { useEffect, useId, useState } from 'react';
 import { DataForReviewRequestCode } from '@/apis/group';
 import { Button, Input, EyeButton } from '@/components';
 import { ROUTE } from '@/constants/route';
-import { useEyeButton } from '@/hooks';
-import useModals from '@/hooks/useModals';
-import { usePasswordValidation } from '@/hooks/usePasswordValidation';
+import { useEyeButton, usePasswordValidation, useModals } from '@/hooks';
 import { debounce } from '@/utils/debounce';
 
 import usePostDataForReviewRequestCode from '../../queries/usePostDataForReviewRequestCode';

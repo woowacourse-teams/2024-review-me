@@ -13,8 +13,8 @@ import {
   useSlideWidthAndHeight,
   useUpdateDefaultAnswers,
   useNavigateBlocker,
+  useModals,
 } from '@/hooks';
-import useModals from '@/hooks/useModals';
 import {
   AnswerListRecheckModal,
   NavigateBlockerModal,

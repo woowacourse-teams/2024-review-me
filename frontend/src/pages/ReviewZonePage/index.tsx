@@ -6,8 +6,7 @@ import ReviewZoneIcon from '@/assets/reviewZone.svg';
 import { Button } from '@/components';
 // TODO: ROUTE 상수명을 단수로 고치기
 import { ROUTE } from '@/constants/route';
-import { useGetReviewGroupData, useSearchParamAndQuery } from '@/hooks';
-import useModals from '@/hooks/useModals';
+import { useGetReviewGroupData, useSearchParamAndQuery, useModals } from '@/hooks';
 import { reviewRequestCodeAtom } from '@/recoil';
 
 import PasswordModal from './components/PasswordModal';
