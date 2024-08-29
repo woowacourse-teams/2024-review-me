@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { ReviewWritingCardQuestion } from '@/types';
 
 import useAboveSelectionLimit from './useAboveSelectionLimit';
-import useCancelAnsweredCategory from './useCancelAnsweredCategory';
+import useCheckTailQuestionAnswer from './useCheckTailQuestionAnswer';
 import useUpdateMultipleChoiceAnswer from './useUpdateMultipleChoiceAnswer';
 
 interface UseMultipleChoiceProps {
@@ -16,7 +16,7 @@ interface UseMultipleChoiceProps {
 const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps) => {
   const [unCheckTargetCategoryOptionId, setUnCheckTargetCategoryOptionId] = useState<number | null>(null);
 
-  const { isAnsweredCategoryChanged, updateVisitedCardList } = useCancelAnsweredCategory({ question });
+  const { isAnsweredTailQuestion, updateVisitedCardList } = useCheckTailQuestionAnswer({ question });
 
   const { selectedOptionList, updateAnswerState } = useUpdateMultipleChoiceAnswer({ question });
 

@@ -6,14 +6,16 @@ import { ReviewWritingCardQuestion } from '@/types';
 interface UseCancelAnsweredCategoryProps {
   question: ReviewWritingCardQuestion;
 }
-const useCancelAnsweredCategory = ({ question }: UseCancelAnsweredCategoryProps) => {
+/**
+ * 선택을 해제하려는 꼬리 질문에 이미 작성한 답변이 있는 지 여부를 확인하는 훅
+ * @param question
+ */
+const useCheckTailQuestionAnswer = ({ question }: UseCancelAnsweredCategoryProps) => {
   const cardSectionList = useRecoilValue(cardSectionListSelector);
   const answerMap = useRecoilValue(answerMapAtom);
   const setVisitedCardList = useSetRecoilState(visitedCardListAtom);
 
-  const isCategoryQuestion = () => {
-    return question.questionId === cardSectionList[0].questions[0].questionId;
-  };
+  const isCategoryQuestion = question.questionId === cardSectionList[0].questions[0].questionId;
   // 이미 답변을 작성한 카테고리를 해제하는 경우
   /**
    * 카테고리 항목 선택일때,  optionId에 해당하는 카테고리 찾기
@@ -42,11 +44,12 @@ const useCancelAnsweredCategory = ({ question }: UseCancelAnsweredCategoryProps)
 
     return !!answer?.selectedOptionIds?.length || !!answer?.text?.length;
   };
-
+  //TODO : visitedCardList ...answerValidationMap 상태, 현재 카드 section 숫자로 판단안되나?
   const updateVisitedCardList = (optionId: number) => {
     if (!isCategoryQuestion) return false;
 
     const targetSectionId = getCategoryByOptionId(optionId).sectionId;
+
     setVisitedCardList((prev) => {
       const newVisitedCardList = [...prev];
       return newVisitedCardList.filter((card) => card !== targetSectionId);
@@ -54,18 +57,20 @@ const useCancelAnsweredCategory = ({ question }: UseCancelAnsweredCategoryProps)
   };
 
   /**
-   * 해제하기 위해 카테고리 문항을 선택한 경우, 이미 이에 대해 답변을 했는 지 여부
-   * @param optionId : 문항의 optionId
+   * 강점 카테고리 객관식 문항에서 선택을 해제하려는 강점에 대한 꼬리 질문에 이미 작성된 답변이 있는 지 여부
+   * @param optionId : 강점 카테고리 객관식 문항에서 선택을 해제하려는 문항의 optionId
    */
-  const isAnsweredCategoryChanged = (optionId: number) => {
+  const isAnsweredTailQuestion = (optionId: number) => {
+    //1. 강점 카테고리 문항이 아닌 경우
     if (!isCategoryQuestion) return false;
+    //2. 강점 카테고리 문항일 때, 선택을 해제하려는 강점에 대한 꼬리 질문에 이미 작성된 답변이 있는 지 여부
     return isSelectedCategoryAnswer(optionId);
   };
 
   return {
-    isAnsweredCategoryChanged,
+    isAnsweredTailQuestion,
     updateVisitedCardList,
   };
 };
 
-export default useCancelAnsweredCategory;
+export default useCheckTailQuestionAnswer;
