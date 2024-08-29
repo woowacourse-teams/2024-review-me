@@ -6,25 +6,32 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
+import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
+import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckBoxAnswerSelectedOption;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.QuestionNotAnsweredException;
 import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
+import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
 
 @Component
 @RequiredArgsConstructor
 public class CheckBoxAnswerValidator {
 
+    private final QuestionRepository questionRepository;
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
     public void validate(CheckboxAnswer checkboxAnswer) {
-        OptionGroup optionGroup = optionGroupRepository.findByQuestionId(checkboxAnswer.getQuestionId())
-                .orElseThrow(() -> new OptionGroupNotFoundByQuestionIdException(checkboxAnswer.getQuestionId()));
+        Question question = questionRepository.findById(checkboxAnswer.getQuestionId())
+                .orElseThrow(() -> new SubmittedQuestionNotFoundException(checkboxAnswer.getQuestionId()));
+
+        OptionGroup optionGroup = optionGroupRepository.findByQuestionId(question.getId())
+                .orElseThrow(() -> new OptionGroupNotFoundByQuestionIdException(question.getId()));
 
         validateAnswerExist(checkboxAnswer);
         validateOnlyIncludingProvidedOptionItem(checkboxAnswer, optionGroup);
@@ -32,7 +39,7 @@ public class CheckBoxAnswerValidator {
     }
 
     private void validateAnswerExist(CheckboxAnswer checkboxAnswer) {
-        if (checkboxAnswer.getSelectedOptionIds() == null || checkboxAnswer.getSelectedOptionIds().isEmpty()) {
+        if (checkboxAnswer.getSelectedOptionIds().isEmpty()) {
             throw new QuestionNotAnsweredException(checkboxAnswer.getId());
         }
     }
