@@ -22,8 +22,8 @@ import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
+import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
-import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
 import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.review.service.exception.ReviewNotFoundByIdAndGroupException;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -148,7 +148,7 @@ class ReviewDetailLookupServiceTest {
         );
 
         // when
-        TemplateAnswerResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
+        ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
                 review.getId(), reviewRequestCode, groupAccessCode
         );
 
@@ -195,7 +195,7 @@ class ReviewDetailLookupServiceTest {
         );
 
         // when
-        TemplateAnswerResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
+        ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
                 review.getId(), reviewRequestCode, groupAccessCode
         );
 
