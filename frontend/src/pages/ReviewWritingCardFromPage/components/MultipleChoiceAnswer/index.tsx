@@ -5,7 +5,7 @@ import { ReviewWritingCardQuestion } from '@/types';
 import useMultipleChoice from './hooks/useMultipleChoice';
 import * as S from './style';
 
-interface MultipleChoiceQuestionProps {
+interface MultipleChoiceAnswerProps {
   question: ReviewWritingCardQuestion;
 }
 
@@ -13,7 +13,7 @@ const MODAL_KEY = {
   confirm: 'CONFIRM',
 };
 
-const MultipleChoiceQuestion = ({ question }: MultipleChoiceQuestionProps) => {
+const MultipleChoiceAnswer = ({ question }: MultipleChoiceAnswerProps) => {
   const { isOpen, openModal, closeModal } = useModals();
 
   const handleModalOpen = (isOpen: boolean) => {
@@ -89,4 +89,4 @@ const MultipleChoiceQuestion = ({ question }: MultipleChoiceQuestionProps) => {
   );
 };
 
-export default MultipleChoiceQuestion;
+export default MultipleChoiceAnswer;

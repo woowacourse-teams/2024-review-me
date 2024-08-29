@@ -2,7 +2,7 @@ import { LongReviewItem } from '@/components';
 import { useTextAnswer } from '@/hooks';
 import { ReviewWritingCardQuestion } from '@/types';
 
-import MultipleChoiceQuestion from '../MultipleChoiceQuestion';
+import MultipleChoiceAnswer from '../MultipleChoiceAnswer';
 
 import * as S from './style';
 
@@ -42,7 +42,7 @@ const QnABox = ({ question }: QnABoxProps) => {
       </S.QuestionTitle>
       {question.guideline && <S.QuestionGuideline>{question.guideline}</S.QuestionGuideline>}
       {/*객관식*/}
-      {question.questionType === 'CHECKBOX' && <MultipleChoiceQuestion question={question} />}
+      {question.questionType === 'CHECKBOX' && <MultipleChoiceAnswer question={question} />}
       {/*서술형*/}
       {question.questionType === 'TEXT' && (
         <LongReviewItem
