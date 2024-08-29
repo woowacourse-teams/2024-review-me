@@ -21,7 +21,7 @@ import {
   ProgressBar,
   ReviewWritingCard,
   SubmitCheckModal,
-} from '@/pages/ReviewWritingCardFromPage/components';
+} from '@/pages/ReviewWritingPage/components';
 import { answerMapAtom, answerValidationMapAtom, visitedCardListAtom } from '@/recoil';
 import { ReviewWritingFormResult } from '@/types';
 

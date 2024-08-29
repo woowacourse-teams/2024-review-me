@@ -2,11 +2,11 @@ import { ErrorSuspenseContainer } from '@/components';
 
 import CardForm from './components/CardForm';
 
-const ReviewWritingCardFormPage = () => {
+const ReviewWritingPage = () => {
   return (
     <ErrorSuspenseContainer>
       <CardForm />
     </ErrorSuspenseContainer>
   );
 };
-export default ReviewWritingCardFormPage;
+export default ReviewWritingPage;
