@@ -63,24 +63,10 @@ const CardForm = () => {
   });
 
   // 답변 제출
-  const navigate = useNavigate();
-  const executeAfterMutateSuccess = () => {
-    navigate(`/${ROUTE.reviewWritingComplete}`);
-    closeModal(CARD_FORM_MODAL_KEY.submitConfirm);
-  };
-  const { postReview } = useMutateReview({ executeAfterMutateSuccess });
-
-  const submitAnswer = async (event: React.MouseEvent) => {
-    event.preventDefault();
-
-    if (!answerMap || !reviewRequestCode) return;
-
-    const result: ReviewWritingFormResult = {
-      reviewRequestCode: reviewRequestCode,
-      answers: Array.from(answerMap.values()),
-    };
-    postReview(result);
-  };
+  const { submitAnswer } = useSubmitAnswer({
+    reviewRequestCode,
+    closeModal,
+  });
 
   const { resetFormRecoil } = useResetFormRecoil();
 
