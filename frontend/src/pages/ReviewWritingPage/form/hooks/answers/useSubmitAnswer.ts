@@ -12,6 +12,9 @@ interface UseSubmitAnswerProps {
   reviewRequestCode: string | undefined;
   closeModal: (key: string) => void;
 }
+/**
+ * 리뷰 제출 모달에서 제출 버튼 클릭 시 실행되는 서버에 리뷰 답변 제출 및 기타 액션을 관리하는 훅
+ */
 const useSubmitAnswer = ({ reviewRequestCode, closeModal }: UseSubmitAnswerProps) => {
   const answerMap = useRecoilValue(answerMapAtom);
   const navigate = useNavigate();

@@ -9,13 +9,12 @@ import {
   useResetFormRecoil,
   useUpdateDefaultAnswers,
   useNavigateBlocker,
+  useSubmitAnswer,
 } from '@/pages/ReviewWritingPage/form/hooks';
 import { CardFormModalContainer } from '@/pages/ReviewWritingPage/modals/components';
 import useCardFormModal from '@/pages/ReviewWritingPage/modals/hooks/useCardFormModal';
 import ProgressBar from '@/pages/ReviewWritingPage/progressBar/components/ProgressBar';
 import { CardSlider } from '@/pages/ReviewWritingPage/slider/components';
-
-import useSubmitAnswer from '../../hooks/answers/useSubmitAnswer';
 
 import * as S from './styles';
 
