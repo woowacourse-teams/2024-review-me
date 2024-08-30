@@ -60,7 +60,7 @@ const useStepList = ({ currentCardIndex, cardSectionList }: UseStepListProps) =>
       if (!prev.includes(currentCard.sectionId)) {
         return prev.concat(currentCard.sectionId);
       }
-      // cardList가 변경될 때
+      // cardList가 변경될 때(currentCardIndex가 변경되었을때에도 새로운 visitedCardList를 만들어서, stepList가 변경됨)
       return prev.filter((id) => cardSectionList.some((section) => section.sectionId === id));
     });
   };
