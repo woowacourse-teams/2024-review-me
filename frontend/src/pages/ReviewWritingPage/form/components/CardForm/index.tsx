@@ -4,11 +4,10 @@ import { useSearchParamAndQuery } from '@/hooks';
 import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
 import {
   useCurrentCardIndex,
-  useGetDataToWrite,
-  useCardSectionList,
   useResetFormRecoil,
   useUpdateDefaultAnswers,
   useNavigateBlocker,
+  useLoadAndPrepareReview,
   useSubmitAnswer,
 } from '@/pages/ReviewWritingPage/form/hooks';
 import { CardFormModalContainer } from '@/pages/ReviewWritingPage/modals/components';
@@ -27,11 +26,8 @@ const CardForm = () => {
 
   const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
 
-  // 질문지 생성
-  const { data } = useGetDataToWrite({ reviewRequestCode });
-  const { revieweeName, projectName } = data;
-  const { cardSectionList } = useCardSectionList({ cardSectionListData: data.sections });
-
+  // 리뷰에 필요한 질문지,프로젝트 정보 가져오기
+  const { revieweeName, projectName, cardSectionList } = useLoadAndPrepareReview({ reviewRequestCode });
   // 답변
   // 생성된 질문지를 바탕으로 답변 기본값 및 답변의 유효성 기본값 설정
   useUpdateDefaultAnswers();
