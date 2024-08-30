@@ -38,7 +38,7 @@ const CardForm = () => {
   useUpdateDefaultAnswers();
 
   // 모달
-  const { handleOpenModal, closeModal, isOpenModalDisablingBlocker } = useCardFormModal();
+  const { handleOpenModal, closeModal, isOpen, isOpenModalDisablingBlocker } = useCardFormModal();
 
   const handleNavigateConfirmButtonClick = () => {
     closeModal(CARD_FORM_MODAL_KEY.navigateConfirm);
