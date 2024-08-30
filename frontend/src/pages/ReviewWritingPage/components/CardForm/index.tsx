@@ -14,15 +14,11 @@ import {
   useNavigateBlocker,
   useModals,
 } from '@/hooks';
-import {
-  AnswerListRecheckModal,
-  NavigateBlockerModal,
-  ProgressBar,
-  SubmitCheckModal,
-} from '@/pages/ReviewWritingPage/components';
+import { ProgressBar } from '@/pages/ReviewWritingPage/components';
 import { answerMapAtom } from '@/recoil';
 import { ReviewWritingFormResult } from '@/types';
 
+import CardFormModalContainer from '../CardFormModalContainer';
 import CardSlider from '../CardSlider';
 
 import * as S from './styles';
@@ -57,6 +53,7 @@ const CardForm = () => {
   const handleOpenModal = (key: keyof typeof CARD_FORM_MODAL_KEY) => {
     openModal(CARD_FORM_MODAL_KEY[key]);
   };
+
   const handleNavigateConfirmButtonClick = () => {
     closeModal(CARD_FORM_MODAL_KEY.navigateConfirm);
 
@@ -125,28 +122,12 @@ const CardForm = () => {
           handleOpenModal={handleOpenModal}
         />
       </S.CardForm>
-      {isOpen(CARD_FORM_MODAL_KEY.submitConfirm) && (
-        <SubmitCheckModal
-          handleSubmitButtonClick={submitAnswer}
-          handleCancelButtonClick={() => closeModal(CARD_FORM_MODAL_KEY.submitConfirm)}
-          handleCloseModal={() => closeModal(CARD_FORM_MODAL_KEY.submitConfirm)}
-        />
-      )}
-      {isOpen(CARD_FORM_MODAL_KEY.recheck) && cardSectionList && answerMap && (
-        <AnswerListRecheckModal
-          questionSectionList={cardSectionList}
-          answerMap={answerMap}
-          closeModal={() => closeModal(CARD_FORM_MODAL_KEY.recheck)}
-        />
-      )}
-
-      {isOpen(CARD_FORM_MODAL_KEY.navigateConfirm) && (
-        <NavigateBlockerModal
-          handleNavigateConfirmButtonClick={handleNavigateConfirmButtonClick}
-          handleCancelButtonClick={() => closeModal(CARD_FORM_MODAL_KEY.navigateConfirm)}
-          handleCloseModal={() => closeModal(CARD_FORM_MODAL_KEY.navigateConfirm)}
-        />
-      )}
+      <CardFormModalContainer
+        isOpen={isOpen}
+        closeModal={closeModal}
+        handleNavigateConfirmButtonClick={handleNavigateConfirmButtonClick}
+        submitAnswer={submitAnswer}
+      />
     </>
   );
 };
