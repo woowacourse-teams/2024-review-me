@@ -1,4 +1,4 @@
-import { useUpdateReviewerAnswer } from '@/hooks';
+import { useUpdateReviewerAnswer } from '@/pages/ReviewWritingPage/form/hooks';
 import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
 
 interface UseUpdateMultipleChoiceAnswerProps {

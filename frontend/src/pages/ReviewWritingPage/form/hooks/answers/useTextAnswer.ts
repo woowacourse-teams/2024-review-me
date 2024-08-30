@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
 
-import useUpdateReviewerAnswer from '../../../../../hooks/review/writingCardForm/useUpdateReviewerAnswer';
+import useUpdateReviewerAnswer from './useUpdateReviewerAnswer';
 
 const TEXT_ANSWER_LENGTH = {
   min: 20,

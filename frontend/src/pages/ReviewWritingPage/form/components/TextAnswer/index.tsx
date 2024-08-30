@@ -1,6 +1,6 @@
+import { useTextAnswer } from '@/pages/ReviewWritingPage/form/hooks';
 import { ReviewWritingCardQuestion } from '@/types';
 
-import useTextAnswer from './hooks/useTextAnswer';
 import * as S from './styles';
 
 interface TextAnswerProps {

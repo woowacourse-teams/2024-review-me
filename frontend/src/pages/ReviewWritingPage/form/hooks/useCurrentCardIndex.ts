@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export type Direction = 'prev' | 'next' | number;
+import { Direction } from '../../types';
 
 const STEP = {
   next: 1,

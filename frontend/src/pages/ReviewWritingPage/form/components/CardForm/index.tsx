@@ -3,33 +3,26 @@ import { useNavigate } from 'react-router';
 import { useRecoilValue } from 'recoil';
 
 import { ROUTE } from '@/constants/route';
+import { useSearchParamAndQuery, useModals } from '@/hooks';
+import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
 import {
   useCurrentCardIndex,
   useGetDataToWrite,
   useMutateReview,
   useCardSectionList,
   useResetFormRecoil,
-  useSearchParamAndQuery,
   useUpdateDefaultAnswers,
   useNavigateBlocker,
-  useModals,
-} from '@/hooks';
-import { ProgressBar } from '@/pages/ReviewWritingPage/components';
+} from '@/pages/ReviewWritingPage/form/hooks';
+import { CardFormModalContainer } from '@/pages/ReviewWritingPage/modals/components';
+import ProgressBar from '@/pages/ReviewWritingPage/progressBar/components/ProgressBar';
+import { CardSlider } from '@/pages/ReviewWritingPage/slider/components';
 import { answerMapAtom } from '@/recoil';
 import { ReviewWritingFormResult } from '@/types';
-
-import CardFormModalContainer from '../CardFormModalContainer';
-import CardSlider from '../CardSlider';
 
 import * as S from './styles';
 
 // const PROJECT_IMAGE_SIZE = '5rem';
-
-export const CARD_FORM_MODAL_KEY = {
-  submitConfirm: 'SUBMIT_CONFIRM',
-  navigateConfirm: 'NAVIGATE_CONFIRM',
-  recheck: 'RECHECK',
-};
 
 const CardForm = () => {
   const answerMap = useRecoilValue(answerMapAtom);

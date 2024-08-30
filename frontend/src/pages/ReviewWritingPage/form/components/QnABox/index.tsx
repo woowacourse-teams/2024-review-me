@@ -1,7 +1,5 @@
+import { MultipleChoiceAnswer, TextAnswer } from '@/pages/ReviewWritingPage/form/components';
 import { ReviewWritingCardQuestion } from '@/types';
-
-import MultipleChoiceAnswer from '../MultipleChoiceAnswer';
-import TextAnswer from '../TextAnswer';
 
 import * as S from './style';
 

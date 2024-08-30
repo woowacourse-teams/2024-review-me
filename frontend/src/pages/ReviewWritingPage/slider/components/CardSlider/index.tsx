@@ -1,15 +1,14 @@
 import { useRecoilValue } from 'recoil';
 
 import { Carousel } from '@/components';
-import { Direction } from '@/hooks/review/writingCardForm/useCurrentCardIndex';
+import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
+import { ReviewWritingCard } from '@/pages/ReviewWritingPage/form/components';
+import { CardSliderController } from '@/pages/ReviewWritingPage/slider/components';
+import { useMovingStepAvailability, useSlideWidthAndHeight } from '@/pages/ReviewWritingPage/slider/hooks';
+import { Direction } from '@/pages/ReviewWritingPage/types';
 import { cardSectionListSelector } from '@/recoil';
 import { ReviewWritingCardSection } from '@/types';
 
-import { CARD_FORM_MODAL_KEY } from '../CardForm';
-import CardSliderController from '../CardSliderController';
-import ReviewWritingCard from '../ReviewWritingCard';
-
-import { useMovingStepAvailability, useSlideWidthAndHeight } from './hooks';
 import * as S from './style';
 
 interface CardSliderProps {

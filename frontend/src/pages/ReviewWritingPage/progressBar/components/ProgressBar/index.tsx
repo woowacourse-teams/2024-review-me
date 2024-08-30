@@ -1,8 +1,8 @@
 import NavigateNextIcon from '@/assets/navigateNext.svg';
-import { Direction } from '@/hooks/review/writingCardForm/useCurrentCardIndex';
+import useStepList from '@/pages/ReviewWritingPage/progressBar/hooks/useStepList';
+import { Direction } from '@/pages/ReviewWritingPage/types';
 import { ReviewWritingCardSection } from '@/types';
 
-import useStepList from './hooks/useStepList';
 import * as S from './styles';
 
 interface ProgressBarProps {

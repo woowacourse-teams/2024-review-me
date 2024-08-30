@@ -1,10 +1,12 @@
 import { useRecoilValue } from 'recoil';
 
+import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
+import {
+  AnswerListRecheckModal,
+  NavigateBlockerModal,
+  SubmitCheckModal,
+} from '@/pages/ReviewWritingPage/modals/components';
 import { answerMapAtom, cardSectionListSelector } from '@/recoil';
-
-import { CARD_FORM_MODAL_KEY } from '../CardForm';
-
-import { AnswerListRecheckModal, NavigateBlockerModal, SubmitCheckModal } from './components';
 
 interface CardFormModalContainerProps {
   isOpen: (key: string) => boolean;

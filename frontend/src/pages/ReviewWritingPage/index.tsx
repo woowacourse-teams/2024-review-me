@@ -1,6 +1,6 @@
 import { ErrorSuspenseContainer } from '@/components';
 
-import CardForm from './components/CardForm';
+import { CardForm } from './form/components';
 
 const ReviewWritingPage = () => {
   return (
