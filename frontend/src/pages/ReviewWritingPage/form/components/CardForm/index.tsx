@@ -1,31 +1,27 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import { useRecoilValue } from 'recoil';
 
-import { ROUTE } from '@/constants/route';
-import { useSearchParamAndQuery, useModals } from '@/hooks';
+import { useSearchParamAndQuery } from '@/hooks';
 import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
 import {
   useCurrentCardIndex,
   useGetDataToWrite,
-  useMutateReview,
   useCardSectionList,
   useResetFormRecoil,
   useUpdateDefaultAnswers,
   useNavigateBlocker,
 } from '@/pages/ReviewWritingPage/form/hooks';
 import { CardFormModalContainer } from '@/pages/ReviewWritingPage/modals/components';
+import useCardFormModal from '@/pages/ReviewWritingPage/modals/hooks/useCardFormModal';
 import ProgressBar from '@/pages/ReviewWritingPage/progressBar/components/ProgressBar';
 import { CardSlider } from '@/pages/ReviewWritingPage/slider/components';
-import { answerMapAtom } from '@/recoil';
-import { ReviewWritingFormResult } from '@/types';
+
+import useSubmitAnswer from '../../hooks/answers/useSubmitAnswer';
 
 import * as S from './styles';
 
 // const PROJECT_IMAGE_SIZE = '5rem';
 
 const CardForm = () => {
-  const answerMap = useRecoilValue(answerMapAtom);
   const { param: reviewRequestCode } = useSearchParamAndQuery({
     paramKey: 'reviewRequestCode',
   });
@@ -42,10 +38,7 @@ const CardForm = () => {
   useUpdateDefaultAnswers();
 
   // 모달
-  const { isOpen, openModal, closeModal } = useModals();
-  const handleOpenModal = (key: keyof typeof CARD_FORM_MODAL_KEY) => {
-    openModal(CARD_FORM_MODAL_KEY[key]);
-  };
+  const { handleOpenModal, closeModal, isOpenModalDisablingBlocker } = useCardFormModal();
 
   const handleNavigateConfirmButtonClick = () => {
     closeModal(CARD_FORM_MODAL_KEY.navigateConfirm);
@@ -57,9 +50,8 @@ const CardForm = () => {
 
   // 작성 중인 답변이 있는 경우 페이지 이동을 막는 기능
   const { blocker } = useNavigateBlocker({
-    isOpenModal: isOpen(CARD_FORM_MODAL_KEY.navigateConfirm) || isOpen(CARD_FORM_MODAL_KEY.submitConfirm),
-    openModal,
-    modalKey: CARD_FORM_MODAL_KEY.navigateConfirm,
+    isOpenModalDisablingBlocker,
+    openNavigateConfirmModal: () => handleOpenModal('navigateConfirm'),
   });
 
   // 답변 제출
