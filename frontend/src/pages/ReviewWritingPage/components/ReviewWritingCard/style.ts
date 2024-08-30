@@ -17,18 +17,5 @@ export const Header = styled.div`
 `;
 
 export const Main = styled.div`
-  padding: 2rem;
-`;
-
-export const ButtonContainer = styled.div`
-  display: flex;
-  gap: 2rem;
-  justify-content: flex-end;
-  padding-right: 2.5rem;
-
-  button {
-    width: auto;
-    min-width: 8rem;
-    height: 3.5rem;
-  }
+  padding: 2rem 2rem 1rem 2rem;
 `;

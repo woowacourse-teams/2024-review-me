@@ -7,32 +7,6 @@ export const CardForm = styled.form`
   overflow-wrap: break-word;
 `;
 
-interface SlideContainerProps {
-  $translateX: number;
-  $height: string;
-}
-export const SliderContainer = styled.div<SlideContainerProps>`
-  transform: ${({ $translateX }) => `translateX(-${$translateX}px)`};
-
-  display: flex;
-
-  width: 100%;
-  height: ${({ $height }) => $height};
-  margin-bottom: 2rem;
-
-  transition: transform 0.5s ease-in-out;
-`;
-
-export const Slide = styled.div`
-  flex: 0 0 100%;
-
-  box-sizing: border-box;
-  height: fit-content;
-
-  border: 0.1rem solid ${({ theme }) => theme.colors.lightPurple};
-  border-radius: ${({ theme }) => theme.borderRadius.basic};
-`;
-
 export const RevieweeDescription = styled.div`
   display: flex;
   align-items: center;

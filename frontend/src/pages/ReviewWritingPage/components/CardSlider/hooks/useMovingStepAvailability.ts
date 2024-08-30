@@ -3,15 +3,21 @@ import { useRecoilValue } from 'recoil';
 
 import { cardSectionListSelector, answerValidationMapAtom, answerMapAtom } from '@/recoil';
 
-interface UseCheckNextStepAvailability {
+const INDEX_OFFSET = 1;
+
+interface UseMovingStepAvailability {
   currentCardIndex: number;
 }
-const useCheckNextStepAvailability = ({ currentCardIndex }: UseCheckNextStepAvailability) => {
+const useMovingStepAvailability = ({ currentCardIndex }: UseMovingStepAvailability) => {
   const cardSectionList = useRecoilValue(cardSectionListSelector);
   const answerValidationMap = useRecoilValue(answerValidationMapAtom);
   const answerMap = useRecoilValue(answerMapAtom);
 
   const [isAbleNextStep, setIsAbleNextStep] = useState(false);
+
+  const isLastCard = () => cardSectionList.length - INDEX_OFFSET === currentCardIndex;
+
+  const isAblePrevStep = (cardIndex: number) => !!currentCardIndex && !!cardIndex;
 
   const isValidateAnswerList = () => {
     if (!cardSectionList.length) return false;
@@ -31,8 +37,10 @@ const useCheckNextStepAvailability = ({ currentCardIndex }: UseCheckNextStepAvai
   }, [answerMap, currentCardIndex]);
 
   return {
+    isAblePrevStep,
     isAbleNextStep,
+    isLastCard,
   };
 };
 
-export default useCheckNextStepAvailability;
+export default useMovingStepAvailability;
