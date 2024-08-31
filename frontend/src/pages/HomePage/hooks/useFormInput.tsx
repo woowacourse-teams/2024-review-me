@@ -1,4 +1,4 @@
-import { URLGeneratorFormField } from '@/recoil/urlGeneratorForm';
+import { URLGeneratorFormField } from '@/types';
 
 import { isValidReviewGroupDataInput, isValidPasswordInput } from '../utils/validateInput';
 
