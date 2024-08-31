@@ -3,7 +3,7 @@ import { fireEvent, render, renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react';
 import { RecoilRoot, RecoilState } from 'recoil';
 
-import { EXTRA_REVIEW_SECTION, FEEDBACK_SECTION, REVIEW_QUESTION_DATA } from '@/mocks/mockData';
+import { EXTRA_REVIEW_SECTION, FEEDBACK_SECTION, REVIEW_QUESTION_DATA, STRENGTH_SECTION_LIST } from '@/mocks/mockData';
 import { TEXT_ANSWER_LENGTH } from '@/pages/ReviewWritingPage/form/hooks/answers/useTextAnswer';
 import useCombinedAnswerState from '@/queryTestSetup/useCombinedAnswerState';
 import { reviewWritingFormSectionListAtom } from '@/recoil';
@@ -445,5 +445,38 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
         ).toBeFalsy();
       },
     );
+  });
+});
+
+describe('강점 선택에 따른 질문지 변경 테스트', () => {
+  it('강점 선택 카테고리에서 선택한 강점에 대한 꼬리 질문이 질문지에 추가된다.', async () => {
+    const renderResult = renderWithProviders({});
+    const targetSectionName = STRENGTH_SECTION_LIST[0].sectionName;
+
+    const { result } = renderHook(() => useCombinedAnswerState(), {
+      wrapper: RecoilRoot,
+    });
+
+    // recoil 초기값 설정
+    act(() => {
+      result.current.setReviewWritingFormSectionList(REVIEW_QUESTION_DATA.sections);
+    });
+
+    await waitFor(() => {
+      expect(result.current.reviewWritingFormSectionList).toEqual(REVIEW_QUESTION_DATA.sections);
+    });
+
+    // 첫번째 강점에 대한 꼬리 질문 없음
+    expect(renderResult.queryByTestId(targetSectionName)).not.toBeInTheDocument();
+
+    // 첫번째 강점 선택
+    const targetSectionCheckbox = renderResult.queryByTestId(`checkbox-${STRENGTH_SECTION_LIST[0].onSelectedOptionId}`);
+
+    expect(targetSectionCheckbox).toBeInTheDocument();
+
+    fireEvent.click(targetSectionCheckbox as HTMLInputElement);
+
+    // 첫번째 강점에 대한 꼬리 질문 있음
+    expect(renderResult.queryByTestId(targetSectionName)).toBeInTheDocument();
   });
 });
