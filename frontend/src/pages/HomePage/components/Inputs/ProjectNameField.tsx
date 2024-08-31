@@ -13,23 +13,23 @@ interface ProjectNameFieldProps {
 }
 
 const ProjectNameField = ({ id }: ProjectNameFieldProps) => {
-  const [value, setValue] = useFormInput(URLGeneratorFormField.projectName);
+  const [projectName, setProjectName] = useFormInput(URLGeneratorFormField.projectName);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    isWithinLengthRange(value, MAX_VALID_REVIEW_GROUP_DATA_INPUT)
+    isWithinLengthRange(projectName, MAX_VALID_REVIEW_GROUP_DATA_INPUT)
       ? setErrorMessage('')
       : setErrorMessage(`최대 ${MAX_VALID_REVIEW_GROUP_DATA_INPUT}자까지 입력할 수 있어요`);
-  }, [value]);
+  }, [projectName]);
 
   return (
     <InputField id={id} labelText="함께한 프로젝트 이름을 입력해주세요" errorMessage={errorMessage}>
       <Input
         id={id}
-        value={value}
+        value={projectName}
         type="text"
         onChange={(event) => {
-          setValue(event.target.value);
+          setProjectName(event.target.value);
         }}
       />
     </InputField>

@@ -13,23 +13,23 @@ interface ReviweeNameFieldProps {
 }
 
 const RevieweeNameField = ({ id }: ReviweeNameFieldProps) => {
-  const [value, setValue] = useFormInput(URLGeneratorFormField.revieweeName);
+  const [revieweeName, setRevieweeName] = useFormInput(URLGeneratorFormField.revieweeName);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    isWithinLengthRange(value, MAX_VALID_REVIEW_GROUP_DATA_INPUT)
+    isWithinLengthRange(revieweeName, MAX_VALID_REVIEW_GROUP_DATA_INPUT)
       ? setErrorMessage('')
       : setErrorMessage(`최대 ${MAX_VALID_REVIEW_GROUP_DATA_INPUT}자까지 입력할 수 있어요`);
-  }, [value]);
+  }, [revieweeName]);
 
   return (
     <InputField id={id} labelText="본인의 이름을 적어주세요" errorMessage={errorMessage}>
       <Input
         id={id}
-        value={value}
+        value={revieweeName}
         type="text"
         onChange={(event) => {
-          setValue(event.target.value);
+          setRevieweeName(event.target.value);
         }}
       />
     </InputField>

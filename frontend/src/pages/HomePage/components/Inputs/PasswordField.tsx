@@ -16,10 +16,10 @@ interface PasswordFieldProps {
 }
 
 const PasswordField = ({ id }: PasswordFieldProps) => {
-  const [value, setValue] = useFormInput(URLGeneratorFormField.password);
+  const [password, setPassword] = useFormInput(URLGeneratorFormField.password);
 
   const { isOff, handleEyeButtonToggle } = useEyeButton();
-  const { passwordErrorMessage, handlePasswordBlur, initializeIsBlurredOnce } = usePasswordValidation(value);
+  const { passwordErrorMessage, handlePasswordBlur, initializeIsBlurredOnce } = usePasswordValidation(password);
 
   useEffect(() => {
     initializeIsBlurredOnce();
@@ -35,12 +35,12 @@ const PasswordField = ({ id }: PasswordFieldProps) => {
       <S.PasswordInputContainer>
         <Input
           id={id}
-          value={value}
+          value={password}
           onBlur={handlePasswordBlur}
           type={isOff ? 'password' : 'text'}
           $style={{ width: '100%', paddingRight: '3rem' }}
           onChange={(event) => {
-            setValue(event.target.value);
+            setPassword(event.target.value);
           }}
         />
         <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />
