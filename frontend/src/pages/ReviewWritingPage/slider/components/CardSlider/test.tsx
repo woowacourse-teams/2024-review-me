@@ -45,7 +45,24 @@ const renderWithProviders = ({
 };
 
 describe('질문 순서별, 버튼 유형 테스트', () => {
-  it('첫번째 질문이면 이전 버튼이 없다', () => {});
+  const CARD = REVIEW_QUESTION_DATA.sections[0];
+  it('첫번째 질문이면 이전 버튼이 없고 다음 버튼이 있다.', () => {
+    const renderResult = renderWithProviders({});
+
+    expect(renderResult.queryByTestId(`${CARD.sectionId}-prevButton`)).not.toBeInTheDocument();
+    expect(renderResult.queryByTestId(`${CARD.sectionId}-nextButton`)).toBeInTheDocument();
+  });
+
+  it.only('마지막 질문이면, 다음 버튼이 없고 제출 전 확인 버튼과 제출 버튼이 있다', () => {
+    const renderResult = renderWithProviders({
+      reviewWritingFormSectionListData: [REVIEW_QUESTION_DATA.sections[0]],
+      currentCardIndex: 0,
+    });
+
+    expect(renderResult.queryByTestId(`${CARD.sectionId}-nextButton`)).not.toBeInTheDocument();
+    expect(renderResult.queryByTestId(`${CARD.sectionId}-recheckButton`)).toBeInTheDocument();
+    expect(renderResult.queryByTestId(`${CARD.sectionId}-submitButton`)).toBeInTheDocument();
+  });
 });
 
 describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따른 다음 버튼 활성화 테스트', () => {
