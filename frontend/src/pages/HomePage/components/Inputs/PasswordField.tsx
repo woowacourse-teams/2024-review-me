@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { EyeButton, Input } from '@/components';
 import { useEyeButton } from '@/hooks';
