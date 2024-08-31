@@ -49,7 +49,9 @@ const MultipleChoiceAnswer = ({ question }: MultipleChoiceAnswerProps) => {
         />
       ))}
       <S.LimitGuideMessage>
-        {isOpenLimitGuide && <p>😅 최대 {question.optionGroup?.maxCount}개까지 선택가능해요</p>}
+        {isOpenLimitGuide && (
+          <p data-testid="limitGuideMessage">😅 최대 {question.optionGroup?.maxCount}개까지 선택가능해요</p>
+        )}
       </S.LimitGuideMessage>
       {isOpen(MODAL_KEY.confirm) && (
         <ConfirmModal
