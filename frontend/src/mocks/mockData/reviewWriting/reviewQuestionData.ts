@@ -1,6 +1,44 @@
-import { ReviewWritingFormData } from '@/types';
+import { ReviewWritingCardSection, ReviewWritingFormData } from '@/types';
 
 export const REVIEW_REQUEST_CODE = 'ABCD1234';
+
+export const FEEDBACK_SECTION: ReviewWritingCardSection = {
+  sectionId: 7,
+  sectionName: '단점 피드백',
+  visible: 'ALWAYS',
+  onSelectedOptionId: null,
+  header: 'bada의 성장을 도와주세요!',
+  questions: [
+    {
+      questionId: 12,
+      required: true,
+      content: '앞으로의 성장을 위해서 bada이/가 어떤 목표를 설정하면 좋을까요?',
+      questionType: 'TEXT',
+      optionGroup: null,
+      hasGuideline: true,
+      guideline: "어떤 점을 보완하면 좋을지와 함께 '이렇게 해보면 어떨까?'하는 간단한 솔루션을 제안해봐요",
+    },
+  ],
+};
+
+export const EXTRA_REVIEW_SECTION: ReviewWritingCardSection = {
+  sectionId: 8,
+  sectionName: '추가 리뷰 및 응원',
+  visible: 'ALWAYS',
+  onSelectedOptionId: null,
+  header: '리뷰를 더 하고 싶은 리뷰어를 위한 추가 리뷰!',
+  questions: [
+    {
+      questionId: 13,
+      required: false,
+      content: 'bada에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요',
+      questionType: 'TEXT',
+      optionGroup: null,
+      hasGuideline: false,
+      guideline: null,
+    },
+  ],
+};
 
 export const REVIEW_QUESTION_DATA: ReviewWritingFormData = {
   formId: 1,
@@ -264,41 +302,7 @@ export const REVIEW_QUESTION_DATA: ReviewWritingFormData = {
         },
       ],
     },
-    {
-      sectionId: 7,
-      sectionName: '단점 피드백',
-      visible: 'ALWAYS',
-      onSelectedOptionId: null,
-      header: 'bada의 성장을 도와주세요!',
-      questions: [
-        {
-          questionId: 12,
-          required: true,
-          content: '앞으로의 성장을 위해서 bada이/가 어떤 목표를 설정하면 좋을까요?',
-          questionType: 'TEXT',
-          optionGroup: null,
-          hasGuideline: true,
-          guideline: "어떤 점을 보완하면 좋을지와 함께 '이렇게 해보면 어떨까?'하는 간단한 솔루션을 제안해봐요",
-        },
-      ],
-    },
-    {
-      sectionId: 8,
-      sectionName: '추가 리뷰 및 응원',
-      visible: 'ALWAYS',
-      onSelectedOptionId: null,
-      header: '리뷰를 더 하고 싶은 리뷰어를 위한 추가 리뷰!',
-      questions: [
-        {
-          questionId: 13,
-          required: false,
-          content: 'bada에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요',
-          questionType: 'TEXT',
-          optionGroup: null,
-          hasGuideline: false,
-          guideline: null,
-        },
-      ],
-    },
+    FEEDBACK_SECTION,
+    EXTRA_REVIEW_SECTION,
   ],
 };
