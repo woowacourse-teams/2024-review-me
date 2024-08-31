@@ -45,6 +45,7 @@ const CardSlider = ({ currentCardIndex, handleCurrentCardIndex, handleOpenModal 
           <S.ButtonContainer>
             {isAblePrevStep(index) && (
               <CardSliderController.PrevButton
+                data-testid={`${section.sectionId}-prevButton`}
                 currentCardIndex={currentCardIndex}
                 handleCurrentCardIndex={handleCurrentCardIndex}
               />
@@ -52,16 +53,19 @@ const CardSlider = ({ currentCardIndex, handleCurrentCardIndex, handleOpenModal 
             {isLastCard() ? (
               <>
                 <CardSliderController.RecheckButton
+                  data-testid={`${section.sectionId}-recheckButton`}
                   isAbleNextStep={isAbleNextStep}
                   handleRecheckButtonClick={handleRecheckButtonClick}
                 />
                 <CardSliderController.ConfirmModalOpenButton
+                  data-testid={`${section.sectionId}-submitButton`}
                   isAbleNextStep={isAbleNextStep}
                   handleSubmitConfirmModalOpenButtonClick={handleSubmitConfirmModalOpenButtonClick}
                 />
               </>
             ) : (
               <CardSliderController.NextButton
+                data-testid={`${section.sectionId}-nextButton`}
                 isAbleNextStep={isAbleNextStep}
                 handleCurrentCardIndex={handleNextClick}
               />
