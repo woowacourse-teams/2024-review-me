@@ -17,6 +17,7 @@ const TextAnswer = ({ question }: TextAnswerProps) => {
   return (
     <S.TextareaContainer>
       <S.Textarea
+        data-testid={`${question.questionId}-textArea`}
         value={text}
         $isError={errorMessage !== ''}
         onChange={handleTextAnswerChange}

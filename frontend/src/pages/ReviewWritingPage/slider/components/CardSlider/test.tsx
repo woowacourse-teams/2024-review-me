@@ -3,7 +3,8 @@ import { fireEvent, render, renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react';
 import { RecoilRoot, RecoilState } from 'recoil';
 
-import { REVIEW_QUESTION_DATA } from '@/mocks/mockData';
+import { EXTRA_REVIEW_SECTION, FEEDBACK_SECTION, REVIEW_QUESTION_DATA } from '@/mocks/mockData';
+import { TEXT_ANSWER_LENGTH } from '@/pages/ReviewWritingPage/form/hooks/answers/useTextAnswer';
 import useCombinedAnswerState from '@/queryTestSetup/useCombinedAnswerState';
 import { reviewWritingFormSectionListAtom } from '@/recoil';
 import theme from '@/styles/theme';
@@ -53,7 +54,7 @@ describe('질문 순서별, 버튼 유형 테스트', () => {
     expect(renderResult.queryByTestId(`${CARD.sectionId}-nextButton`)).toBeInTheDocument();
   });
 
-  it.only('마지막 질문이면, 다음 버튼이 없고 제출 전 확인 버튼과 제출 버튼이 있다', () => {
+  it('마지막 질문이면, 다음 버튼이 없고 제출 전 확인 버튼과 제출 버튼이 있다', () => {
     const renderResult = renderWithProviders({
       reviewWritingFormSectionListData: [REVIEW_QUESTION_DATA.sections[0]],
       currentCardIndex: 0,
@@ -66,7 +67,7 @@ describe('질문 순서별, 버튼 유형 테스트', () => {
 });
 
 describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따른 다음 버튼 활성화 테스트', () => {
-  describe('객관식', () => {
+  describe('필수 질문인 객관식 테스트', () => {
     it('필수 질문인 객관식의 경우, 답변이 유효하지 않으면(=최소 선택과 최대 선택 조건을 충족하지 않는다) 다음 단계로 이동할 수 없다.', async () => {
       const CARD = REVIEW_QUESTION_DATA.sections[0];
       const QUESTION = CARD.questions[0];
@@ -103,7 +104,7 @@ describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따�
       const testCase = [minCount, maxCount];
 
       testCase.forEach((count) => {
-        it('최소 개수 이상 최대 개수 이하로 선택하면 다음 단계로 이동할 수 있다.', async () => {
+        it('최소 개수 이상 최대 개수 이하로 선택하면 다음 단계로 이동할 수 있다. (선택된 문항 개수: %s)', async () => {
           const { result } = renderHook(() => useCombinedAnswerState(), {
             wrapper: RecoilRoot,
           });
@@ -140,10 +141,101 @@ describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따�
       });
     });
   });
+
+  describe('필수 질문인 서술형 테스트', () => {
+    const { min, max } = TEXT_ANSWER_LENGTH;
+    const MOCK_TEXT = Array.from({ length: max + 10 }, () => 'A'.repeat(length)).join('');
+    const INVALID_TEXT_LIST = [MOCK_TEXT.slice(0, min - 1), MOCK_TEXT.slice(0, max + 5)];
+    const VALID_TEXT_LIST = [MOCK_TEXT.slice(0, min), MOCK_TEXT.slice(0, max)];
+    const SECTION_LIST = [FEEDBACK_SECTION, EXTRA_REVIEW_SECTION];
+
+    it.each(INVALID_TEXT_LIST)(
+      '필수 질문인 서술형에서 답변이 유효하지 않으면(=글자수를 충족하지 못하면) 다음 버튼이 활성화되지 않는다. (글자수: %s.length)',
+      async (text) => {
+        const { result } = renderHook(() => useCombinedAnswerState(), {
+          wrapper: RecoilRoot,
+        });
+        // recoil 초기값 설정
+        act(() => {
+          result.current.setReviewWritingFormSectionList(SECTION_LIST);
+        });
+
+        await waitFor(() => {
+          expect(result.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
+
+          expect(result.current.answerValidationMap?.get(FEEDBACK_SECTION.questions[0].questionId)).toBeFalsy();
+        });
+
+        //컴포넌트 렌더링
+        const renderResult = renderWithProviders({ reviewWritingFormSectionListData: SECTION_LIST });
+
+        // 다음 버튼 초기 비활성화
+        expect(
+          (renderResult.queryByTestId(`${FEEDBACK_SECTION.sectionId}-nextButton`) as HTMLButtonElement | null)
+            ?.disabled,
+        ).toBeTruthy();
+
+        //서술형 작성
+        const textArea = renderResult.queryByTestId(`${FEEDBACK_SECTION.questions[0].questionId}-textArea`);
+
+        expect(textArea).toBeInTheDocument();
+
+        fireEvent.change(textArea as HTMLTextAreaElement, { target: { value: text } });
+
+        // 다음 버튼 비활성화 유지
+        expect(
+          (renderResult.queryByTestId(`${FEEDBACK_SECTION.sectionId}-nextButton`) as HTMLButtonElement | null)
+            ?.disabled,
+        ).toBeTruthy();
+      },
+    );
+
+    it.each(VALID_TEXT_LIST)(
+      '필수 질문인 서술형에서 답변이 유효하면(=글자수를 충족하지 못하면) 다음 버튼이 활성화된다.(글자수: %s.length)',
+      async (text) => {
+        const { result } = renderHook(() => useCombinedAnswerState(), {
+          wrapper: RecoilRoot,
+        });
+        // recoil 초기값 설정
+        act(() => {
+          result.current.setReviewWritingFormSectionList(SECTION_LIST);
+        });
+
+        await waitFor(() => {
+          expect(result.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
+
+          expect(result.current.answerValidationMap?.get(FEEDBACK_SECTION.questions[0].questionId)).toBeFalsy();
+        });
+
+        //컴포넌트 렌더링
+        const renderResult = renderWithProviders({ reviewWritingFormSectionListData: SECTION_LIST });
+
+        // 다음 버튼 초기 비활성화
+        expect(
+          (renderResult.queryByTestId(`${FEEDBACK_SECTION.sectionId}-nextButton`) as HTMLButtonElement | null)
+            ?.disabled,
+        ).toBeTruthy();
+
+        //서술형 작성
+        const textArea = renderResult.queryByTestId(`${FEEDBACK_SECTION.questions[0].questionId}-textArea`);
+
+        expect(textArea).toBeInTheDocument();
+
+        fireEvent.change(textArea as HTMLTextAreaElement, { target: { value: text } });
+
+        // 다음 버튼 활성화
+        expect(
+          (
+            renderResult.queryByTestId(`${FEEDBACK_SECTION.sectionId}-nextButton`) as HTMLButtonElement | null
+          )?.getAttribute('disabled'),
+        ).toBeFalsy();
+      },
+    );
+  });
 });
 
 describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따른 다음 버튼 활성화 테스트', () => {
-  describe('객관식', () => {
+  describe('선택 질문인 객관식 테스트', () => {
     const NOT_REQUIRED_QUESTION: ReviewWritingCardQuestion = {
       ...QUESTION,
       required: false,
@@ -236,5 +328,122 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
 
       expect(nextButton.disabled).toBeTruthy();
     });
+  });
+
+  describe('선택 질문인 서술형 테스트', () => {
+    const { min, max } = TEXT_ANSWER_LENGTH;
+    const MOCK_TEXT = Array.from({ length: max + 10 }, () => 'A'.repeat(length)).join('');
+    const INVALID_TEXT_LIST = [MOCK_TEXT.slice(0, min - 1), MOCK_TEXT.slice(0, max + 5)];
+    const VALID_TEXT_LIST = [MOCK_TEXT.slice(0, min), MOCK_TEXT.slice(0, max)];
+    const SECTION_LIST = [EXTRA_REVIEW_SECTION, FEEDBACK_SECTION];
+
+    it('선택 질문인 서술형은 작성한 답변이 없다면 다음 버튼이 활성화된다', async () => {
+      const { result } = renderHook(() => useCombinedAnswerState(), {
+        wrapper: RecoilRoot,
+      });
+      // recoil 초기값 설정
+      act(() => {
+        result.current.setReviewWritingFormSectionList(SECTION_LIST);
+      });
+
+      await waitFor(() => {
+        expect(result.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
+
+        expect(result.current.answerValidationMap?.get(EXTRA_REVIEW_SECTION.questions[0].questionId)).toBeTruthy();
+      });
+
+      //컴포넌트 렌더링
+      const renderResult = renderWithProviders({ reviewWritingFormSectionListData: SECTION_LIST });
+
+      // 다음 버튼 초기 비활성화
+      expect(
+        (
+          renderResult.queryByTestId(`${EXTRA_REVIEW_SECTION.sectionId}-nextButton`) as HTMLButtonElement | null
+        )?.getAttribute('disabled'),
+      ).toBeFalsy();
+    });
+
+    it.each(INVALID_TEXT_LIST)(
+      '선택 질문인 서술형이더라도 작성 중인 답변이 유효하지 않으면 다음 버튼이 활성화되지 않는다.(글자수: %s.length)',
+      async (text) => {
+        const { result } = renderHook(() => useCombinedAnswerState(), {
+          wrapper: RecoilRoot,
+        });
+        // recoil 초기값 설정
+        act(() => {
+          result.current.setReviewWritingFormSectionList(SECTION_LIST);
+        });
+
+        await waitFor(() => {
+          expect(result.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
+
+          expect(result.current.answerValidationMap?.get(EXTRA_REVIEW_SECTION.questions[0].questionId)).toBeTruthy();
+        });
+
+        //컴포넌트 렌더링
+        const renderResult = renderWithProviders({ reviewWritingFormSectionListData: SECTION_LIST });
+
+        // 다음 버튼 초기 비활성화여부 확인
+        expect(
+          (renderResult.queryByTestId(`${EXTRA_REVIEW_SECTION.sectionId}-nextButton`) as HTMLButtonElement | null)
+            ?.disabled,
+        ).toBeTruthy();
+
+        //서술형 작성
+        const textArea = renderResult.queryByTestId(`${EXTRA_REVIEW_SECTION.questions[0].questionId}-textArea`);
+
+        expect(textArea).toBeInTheDocument();
+
+        fireEvent.change(textArea as HTMLTextAreaElement, { target: { value: text } });
+
+        // 다음 버튼 비활성화 유지
+        expect(
+          (renderResult.queryByTestId(`${EXTRA_REVIEW_SECTION.sectionId}-nextButton`) as HTMLButtonElement | null)
+            ?.disabled,
+        ).toBeTruthy();
+      },
+    );
+
+    it.each(VALID_TEXT_LIST)(
+      '선택 질문인 서술형이라도, 작성한 답변이 있는 경우 답변이 유효해야 다음 버튼이 활성화된다. (글자수: %s.length)',
+      async (text) => {
+        const { result } = renderHook(() => useCombinedAnswerState(), {
+          wrapper: RecoilRoot,
+        });
+        // recoil 초기값 설정
+        act(() => {
+          result.current.setReviewWritingFormSectionList(SECTION_LIST);
+        });
+
+        await waitFor(() => {
+          expect(result.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
+
+          expect(result.current.answerValidationMap?.get(EXTRA_REVIEW_SECTION.questions[0].questionId)).toBeTruthy();
+        });
+
+        //컴포넌트 렌더링
+        const renderResult = renderWithProviders({ reviewWritingFormSectionListData: SECTION_LIST });
+
+        // 다음 버튼 초기 비활성화
+        expect(
+          (renderResult.queryByTestId(`${EXTRA_REVIEW_SECTION.sectionId}-nextButton`) as HTMLButtonElement | null)
+            ?.disabled,
+        ).toBeTruthy();
+
+        //서술형 작성
+        const textArea = renderResult.queryByTestId(`${EXTRA_REVIEW_SECTION.questions[0].questionId}-textArea`);
+
+        expect(textArea).toBeInTheDocument();
+
+        fireEvent.change(textArea as HTMLTextAreaElement, { target: { value: text } });
+
+        // 다음 버튼 활성화
+        expect(
+          (
+            renderResult.queryByTestId(`${EXTRA_REVIEW_SECTION.sectionId}-nextButton`) as HTMLButtonElement | null
+          )?.getAttribute('disabled'),
+        ).toBeFalsy();
+      },
+    );
   });
 });
