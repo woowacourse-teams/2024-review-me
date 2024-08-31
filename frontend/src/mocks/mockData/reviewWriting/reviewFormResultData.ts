@@ -1,6 +1,6 @@
 import { ReviewWritingFormResult } from '@/types';
 
-import { REVIEW_REQUEST_CODE } from './reviewWritingCardFormData';
+import { REVIEW_REQUEST_CODE } from './reviewQuestionData';
 
 export const REVIEW_FORM_RESULT_DATA: ReviewWritingFormResult = {
   reviewRequestCode: REVIEW_REQUEST_CODE,

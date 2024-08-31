@@ -12,7 +12,7 @@ import {
   DETAILED_REVIEW_MOCK_DATA,
   DETAILED_PAGE_MOCK_API_SETTING_VALUES,
   REVIEW_REQUEST_CODE,
-  REVIEW_WRITING_FORM_CARD_DATA,
+  REVIEW_QUESTION_DATA,
   REVIEW_LIST,
 } from '../mockData';
 
@@ -28,7 +28,6 @@ const getDetailedReview = () =>
     //요청 url에서 reviewId, memberId 추출
     const url = new URL(request.url);
     const urlReviewId = url.pathname.replace(`/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}/`, '');
-    // const urlMemberId = url.searchParams.get(DETAILED_REVIEW_API_PARAMS.queryString.memberId);
 
     const { reviewId } = DETAILED_PAGE_MOCK_API_SETTING_VALUES;
     // 유효한 reviewId, memberId일 경우에만 데이터 반환
@@ -46,7 +45,7 @@ const getDataToWriteReview = () =>
     const urlRequestCode = url.searchParams.get(REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode);
 
     if (REVIEW_REQUEST_CODE === urlRequestCode) {
-      return HttpResponse.json(REVIEW_WRITING_FORM_CARD_DATA);
+      return HttpResponse.json(REVIEW_QUESTION_DATA);
     }
     return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
   });

@@ -2,7 +2,7 @@ import { ReviewWritingFormData } from '@/types';
 
 export const REVIEW_REQUEST_CODE = 'ABCD1234';
 
-export const REVIEW_WRITING_FORM_CARD_DATA: ReviewWritingFormData = {
+export const REVIEW_QUESTION_DATA: ReviewWritingFormData = {
   formId: 1,
   revieweeName: 'bada',
   projectName: 'bada',
