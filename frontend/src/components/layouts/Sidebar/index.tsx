@@ -12,7 +12,7 @@ const PATH = {
   myPage: '/user/mypage',
   // reviewWriting: `/user/review-writing`,
   reviewList: '/user/review-list',
-  detailedReview: `/user/detailed-review/${DETAILED_PAGE_MOCK_API_SETTING_VALUES.reviewId}?memberId=${DETAILED_PAGE_MOCK_API_SETTING_VALUES.memberId}`,
+  detailedReview: `/user/detailed-review/${DETAILED_PAGE_MOCK_API_SETTING_VALUES.reviewId}`,
   reviewGroupManagement: '/user/review-group-management',
 };
 
