@@ -7,20 +7,17 @@ import { CardSliderController } from '@/pages/ReviewWritingPage/slider/component
 import { useMovingStepAvailability, useSlideWidthAndHeight } from '@/pages/ReviewWritingPage/slider/hooks';
 import { Direction } from '@/pages/ReviewWritingPage/types';
 import { cardSectionListSelector } from '@/recoil';
-import { ReviewWritingCardSection } from '@/types';
 
 import * as S from './style';
 
 interface CardSliderProps {
   currentCardIndex: number;
-  cardSectionList: ReviewWritingCardSection[];
   handleCurrentCardIndex: (direction: Direction) => void;
   handleOpenModal: (key: keyof typeof CARD_FORM_MODAL_KEY) => void;
 }
 
 const CardSlider = ({ currentCardIndex, handleCurrentCardIndex, handleOpenModal }: CardSliderProps) => {
   const cardSectionList = useRecoilValue(cardSectionListSelector);
-
   const { wrapperRef, slideHeight, slideWidth, makeId } = useSlideWidthAndHeight({ currentCardIndex });
 
   const { isAblePrevStep, isAbleNextStep, isLastCard } = useMovingStepAvailability({ currentCardIndex });

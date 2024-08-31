@@ -83,7 +83,6 @@ const CardForm = () => {
         />
         <CardSlider
           currentCardIndex={currentCardIndex}
-          cardSectionList={cardSectionList}
           handleCurrentCardIndex={handleCurrentCardIndex}
           handleOpenModal={handleOpenModal}
         />
