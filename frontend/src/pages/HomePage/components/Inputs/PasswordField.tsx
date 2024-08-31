@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { EyeButton, Input } from '@/components';
 import { useEyeButton } from '@/hooks';
 import { usePasswordValidation } from '@/hooks/usePasswordValidation';
-import { URLGeneratorFormField } from '@/recoil/urlGeneratorForm';
+import { URLGeneratorFormField } from '@/types';
 
 import { useFormInput } from '../../hooks';
 import { MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT } from '../../utils/validateInput';

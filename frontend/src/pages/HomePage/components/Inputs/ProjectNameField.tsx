@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Input } from '@/components';
-import { URLGeneratorFormField } from '@/recoil/urlGeneratorForm';
+import { URLGeneratorFormField } from '@/types';
 
 import { useFormInput } from '../../hooks';
 import { isWithinLengthRange, MAX_VALID_REVIEW_GROUP_DATA_INPUT } from '../../utils/validateInput';
