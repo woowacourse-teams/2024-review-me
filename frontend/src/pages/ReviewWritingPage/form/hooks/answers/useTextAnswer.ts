@@ -4,7 +4,7 @@ import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
 
 import useUpdateReviewerAnswer from './useUpdateReviewerAnswer';
 
-const TEXT_ANSWER_LENGTH = {
+export const TEXT_ANSWER_LENGTH = {
   min: 20,
   max: 1000,
   extra: 10,
