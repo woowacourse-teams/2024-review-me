@@ -32,7 +32,7 @@ const useUpdateMultipleChoiceAnswer = ({ question }: UseUpdateMultipleChoiceAnsw
     // 필수, 선택 질문 여부 상관없이 선택된 문항이 있다면 선택된 문항 개수가 유효할 경우에만 선택이 반영되고 그렇지 않으면 빈배열
     const newAnswer: ReviewWritingAnswer = {
       questionId: question.questionId,
-      selectedOptionIds: isValidatedAnswer ? newSelectedOptionList : [],
+      selectedOptionIds: isNotRequiredEmptyAnswer ? [] : isValidatedAnswer ? newSelectedOptionList : [],
       text: null,
     };
 

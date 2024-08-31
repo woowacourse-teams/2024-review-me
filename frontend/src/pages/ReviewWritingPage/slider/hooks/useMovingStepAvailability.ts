@@ -23,10 +23,9 @@ const useMovingStepAvailability = ({ currentCardIndex }: UseMovingStepAvailabili
     if (!cardSectionList.length) return false;
 
     return cardSectionList[currentCardIndex].questions.every((question) => {
-      const { questionId, required } = question;
+      const { questionId } = question;
       const answerValidation = answerValidationMap?.get(questionId);
 
-      if (!required && answerValidation) return true;
       return !!answerValidation;
     });
   };
