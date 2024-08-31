@@ -8,14 +8,14 @@ import { ReviewWritingFormResult } from '@/types';
 
 import useMutateReview from '../useMutateReview';
 
-interface UseSubmitAnswerProps {
+interface UseSubmitAnswersProps {
   reviewRequestCode: string | undefined;
   closeModal: (key: string) => void;
 }
 /**
  * 리뷰 제출 모달에서 제출 버튼 클릭 시 실행되는 서버에 리뷰 답변 제출 및 기타 액션을 관리하는 훅
  */
-const useSubmitAnswer = ({ reviewRequestCode, closeModal }: UseSubmitAnswerProps) => {
+const useSubmitAnswers = ({ reviewRequestCode, closeModal }: UseSubmitAnswersProps) => {
   const answerMap = useRecoilValue(answerMapAtom);
   const navigate = useNavigate();
   const executeAfterMutateSuccess = () => {
@@ -24,7 +24,7 @@ const useSubmitAnswer = ({ reviewRequestCode, closeModal }: UseSubmitAnswerProps
   };
   const { postReview } = useMutateReview({ executeAfterMutateSuccess });
 
-  const submitAnswer = async (event: React.MouseEvent) => {
+  const submitAnswers = async (event: React.MouseEvent) => {
     event.preventDefault();
 
     if (!answerMap || !reviewRequestCode) return;
@@ -33,11 +33,12 @@ const useSubmitAnswer = ({ reviewRequestCode, closeModal }: UseSubmitAnswerProps
       reviewRequestCode: reviewRequestCode,
       answers: Array.from(answerMap.values()),
     };
+
     postReview(result);
   };
 
   return {
-    submitAnswer,
+    submitAnswers,
   };
 };
-export default useSubmitAnswer;
+export default useSubmitAnswers;

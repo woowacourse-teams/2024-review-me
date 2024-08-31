@@ -8,7 +8,7 @@ import {
   useUpdateDefaultAnswers,
   useNavigateBlocker,
   useLoadAndPrepareReview,
-  useSubmitAnswer,
+  useSubmitAnswers,
 } from '@/pages/ReviewWritingPage/form/hooks';
 import { CardFormModalContainer } from '@/pages/ReviewWritingPage/modals/components';
 import useCardFormModal from '@/pages/ReviewWritingPage/modals/hooks/useCardFormModal';
@@ -50,7 +50,7 @@ const CardForm = () => {
   });
 
   // 답변 제출
-  const { submitAnswer } = useSubmitAnswer({
+  const { submitAnswers } = useSubmitAnswers({
     reviewRequestCode,
     closeModal,
   });
@@ -92,7 +92,7 @@ const CardForm = () => {
         isOpen={isOpen}
         closeModal={closeModal}
         handleNavigateConfirmButtonClick={handleNavigateConfirmButtonClick}
-        submitAnswer={submitAnswer}
+        submitAnswers={submitAnswers}
       />
     </>
   );

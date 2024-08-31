@@ -12,14 +12,14 @@ interface CardFormModalContainerProps {
   isOpen: (key: string) => boolean;
   closeModal: (key: string) => void;
   handleNavigateConfirmButtonClick: () => void;
-  submitAnswer: (event: React.MouseEvent) => Promise<void>;
+  submitAnswers: (event: React.MouseEvent) => Promise<void>;
 }
 
 const CardFormModalContainer = ({
   isOpen,
   closeModal,
   handleNavigateConfirmButtonClick,
-  submitAnswer,
+  submitAnswers,
 }: CardFormModalContainerProps) => {
   const answerMap = useRecoilValue(answerMapAtom);
   const cardSectionList = useRecoilValue(cardSectionListSelector);
@@ -28,7 +28,7 @@ const CardFormModalContainer = ({
     <>
       {isOpen(CARD_FORM_MODAL_KEY.submitConfirm) && (
         <SubmitCheckModal
-          handleSubmitButtonClick={submitAnswer}
+          handleSubmitButtonClick={submitAnswers}
           handleCancelButtonClick={() => closeModal(CARD_FORM_MODAL_KEY.submitConfirm)}
           handleCloseModal={() => closeModal(CARD_FORM_MODAL_KEY.submitConfirm)}
         />
