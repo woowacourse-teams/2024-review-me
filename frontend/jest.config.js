@@ -10,4 +10,10 @@ module.exports = {
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
+  preset: 'ts-jest',
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.js$': 'babel-jest',
+  },
+  transformIgnorePatterns: ['<rootDir>/node_modules/'],
 };
