@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
 
-import useUpdateReviewerAnswer from './useUpdateReviewerAnswer';
+import useUpdateReviewerAnswer from '../useUpdateReviewerAnswer';
 
 export const TEXT_ANSWER_LENGTH = {
   min: 20,
@@ -10,7 +10,7 @@ export const TEXT_ANSWER_LENGTH = {
   extra: 10,
 };
 
-const TEXT_ANSWER_ERROR_MESSAGE = {
+export const TEXT_ANSWER_ERROR_MESSAGE = {
   min: `최소 ${TEXT_ANSWER_LENGTH.min}자 이상 작성해 주세요`,
   max: `최대 ${TEXT_ANSWER_LENGTH.max}자까지만 입력 가능해요`,
   empty: '',
