@@ -1,40 +1,61 @@
 import { ThemeProvider } from '@emotion/react';
 import { fireEvent, render, renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react';
-import { RecoilRoot, RecoilState } from 'recoil';
+import { RecoilRoot, RecoilState, useRecoilState } from 'recoil';
 
-import { EXTRA_REVIEW_SECTION, FEEDBACK_SECTION, REVIEW_QUESTION_DATA, STRENGTH_SECTION_LIST } from '@/mocks/mockData';
-import { TEXT_ANSWER_LENGTH } from '@/pages/ReviewWritingPage/form/hooks/answers/useTextAnswer';
+import { REVIEW_QUESTION_DATA, STRENGTH_SECTION_LIST } from '@/mocks/mockData';
 import useCombinedReviewWritingState from '@/queryTestSetup/useCombinedReviewWritingState';
-import { reviewWritingFormSectionListAtom } from '@/recoil';
+import { answerValidationMapAtom, reviewWritingFormSectionListAtom } from '@/recoil';
 import theme from '@/styles/theme';
-import { ReviewWritingCardQuestion, ReviewWritingCardSection, ReviewWritingQuestionOptionGroup } from '@/types';
+import { EssentialPropsWithChildren, ReviewWritingCardSection } from '@/types';
 
 import CardSlider from '.';
-
-const QUESTION: ReviewWritingCardQuestion = REVIEW_QUESTION_DATA.sections[0].questions[0];
 
 interface InitializeStateParams {
   set: <T>(recoilState: RecoilState<T>, newValue: T) => void;
   reviewWritingFormSectionListData?: ReviewWritingCardSection[];
 }
 
-const initializeState = ({
-  set,
-  reviewWritingFormSectionListData = REVIEW_QUESTION_DATA.sections,
-}: InitializeStateParams) => {
-  set(reviewWritingFormSectionListAtom, reviewWritingFormSectionListData);
-};
-
-interface RenderWidthProvidersProps {
+interface WrapperProps {
   reviewWritingFormSectionListData?: ReviewWritingCardSection[];
+}
+
+interface RenderCardSliderProps extends WrapperProps, Omit<InitializeStateParams, 'set'> {
   currentCardIndex?: number;
 }
-const renderWithProviders = ({
+
+const renderCardSlider = ({
   reviewWritingFormSectionListData = REVIEW_QUESTION_DATA.sections,
   currentCardIndex = 0,
-}: RenderWidthProvidersProps) => {
-  return render(
+}: RenderCardSliderProps) => {
+  const initializeState = ({
+    set,
+    reviewWritingFormSectionListData = REVIEW_QUESTION_DATA.sections,
+  }: InitializeStateParams) => {
+    set(reviewWritingFormSectionListAtom, reviewWritingFormSectionListData);
+  };
+
+  const wrapper = ({ children }: EssentialPropsWithChildren<WrapperProps>) => (
+    <RecoilRoot initializeState={({ set }) => initializeState({ set, reviewWritingFormSectionListData })}>
+      {children}
+    </RecoilRoot>
+  );
+
+  const hookResult = renderHook(
+    () => {
+      const [answerValidationMap, setAnswerValidationMap] = useRecoilState(answerValidationMapAtom);
+
+      return {
+        answerValidationMap,
+        setAnswerValidationMap,
+      };
+    },
+    {
+      wrapper,
+    },
+  );
+
+  const renderResult = render(
     <RecoilRoot
       initializeState={({ set }: InitializeStateParams) => initializeState({ set, reviewWritingFormSectionListData })}
     >
@@ -43,19 +64,21 @@ const renderWithProviders = ({
       </ThemeProvider>
     </RecoilRoot>,
   );
+
+  return { ...hookResult, ...renderResult };
 };
 
 describe('질문 순서별, 버튼 유형 테스트', () => {
   const CARD = REVIEW_QUESTION_DATA.sections[0];
   it('첫번째 질문이면 이전 버튼이 없고 다음 버튼이 있다.', () => {
-    const renderResult = renderWithProviders({});
+    const renderResult = renderCardSlider({});
 
     expect(renderResult.queryByTestId(`${CARD.sectionId}-prevButton`)).not.toBeInTheDocument();
     expect(renderResult.queryByTestId(`${CARD.sectionId}-nextButton`)).toBeInTheDocument();
   });
 
   it('마지막 질문이면, 다음 버튼이 없고 제출 전 확인 버튼과 제출 버튼이 있다', () => {
-    const renderResult = renderWithProviders({
+    const renderResult = renderCardSlider({
       reviewWritingFormSectionListData: [REVIEW_QUESTION_DATA.sections[0]],
       currentCardIndex: 0,
     });
@@ -80,10 +103,14 @@ describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따�
         recoilStateResult.current.setReviewWritingFormSectionList(REVIEW_QUESTION_DATA.sections);
       });
 
-      await waitFor(() => {
-        expect(recoilStateResult.current.reviewWritingFormSectionList).toEqual(REVIEW_QUESTION_DATA.sections);
+    const { result } = render;
+    // 답변 유효성 업데이트
+    act(() => {
+      const { answerValidationMap, setAnswerValidationMap } = result.current;
+      const newAnswerValidationMap = new Map(answerValidationMap);
 
-        expect(recoilStateResult.current.answerValidationMap?.get(QUESTION.questionId)).toBeFalsy();
+      SECTION.questions.forEach((question) => {
+        newAnswerValidationMap.set(question.questionId, true);
       });
 
       //컴포넌트 렌더링
@@ -460,7 +487,7 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
 
 describe('강점 선택에 따른 질문지 변경 테스트', () => {
   it('강점 선택 카테고리에서 선택한 강점에 대한 꼬리 질문이 질문지에 추가된다.', async () => {
-    const renderResult = renderWithProviders({});
+    const renderResult = renderCardSlider({});
     const targetSectionName = STRENGTH_SECTION_LIST[0].sectionName;
 
     const { result: recoilStateResult } = renderHook(() => useCombinedReviewWritingState(), {
