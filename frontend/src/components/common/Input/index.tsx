@@ -3,11 +3,12 @@ import * as S from './styles';
 export interface InputStyleProps {
   $style?: React.CSSProperties;
 }
+
 interface InputProps extends InputStyleProps {
+  type: React.InputHTMLAttributes<HTMLInputElement>['type'];
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: () => void;
-  type: string;
   id?: string;
   name?: string;
   placeholder?: string;
