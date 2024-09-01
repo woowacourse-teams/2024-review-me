@@ -1,18 +1,16 @@
 import NavigateNextIcon from '@/assets/navigateNext.svg';
 import useStepList from '@/pages/ReviewWritingPage/progressBar/hooks/useStepList';
 import { Direction } from '@/pages/ReviewWritingPage/types';
-import { ReviewWritingCardSection } from '@/types';
 
 import * as S from './styles';
 
 interface ProgressBarProps {
   currentCardIndex: number;
-  cardSectionList: ReviewWritingCardSection[];
   handleCurrentCardIndex: (direction: Direction) => void;
 }
 
-const ProgressBar = ({ currentCardIndex, cardSectionList, handleCurrentCardIndex }: ProgressBarProps) => {
-  const { stepList } = useStepList({ currentCardIndex, cardSectionList });
+const ProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: ProgressBarProps) => {
+  const { stepList } = useStepList({ currentCardIndex });
 
   const handleClick = (index: number) => {
     const { isMovingAvailable } = stepList[index];

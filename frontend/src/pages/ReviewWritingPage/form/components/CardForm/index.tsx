@@ -76,11 +76,7 @@ const CardForm = () => {
             </p>
           </S.ProjectInfoContainer>
         </S.RevieweeDescription>
-        <ProgressBar
-          currentCardIndex={currentCardIndex}
-          cardSectionList={cardSectionList}
-          handleCurrentCardIndex={handleCurrentCardIndex}
-        />
+        <ProgressBar currentCardIndex={currentCardIndex} handleCurrentCardIndex={handleCurrentCardIndex} />
         <CardSlider
           currentCardIndex={currentCardIndex}
           handleCurrentCardIndex={handleCurrentCardIndex}

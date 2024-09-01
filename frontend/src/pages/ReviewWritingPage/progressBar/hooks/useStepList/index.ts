@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
-import { answerValidationMapAtom } from '@/recoil';
-import { ReviewWritingCardSection } from '@/types';
+import { answerValidationMapAtom, cardSectionListSelector } from '@/recoil';
 
 interface UseStepListProps {
   currentCardIndex: number;
-  cardSectionList: ReviewWritingCardSection[];
 }
-const useStepList = ({ currentCardIndex, cardSectionList }: UseStepListProps) => {
+const useStepList = ({ currentCardIndex }: UseStepListProps) => {
+  const cardSectionList = useRecoilValue(cardSectionListSelector);
   const answerValidationMap = useRecoilValue(answerValidationMapAtom);
 
   interface Step {
