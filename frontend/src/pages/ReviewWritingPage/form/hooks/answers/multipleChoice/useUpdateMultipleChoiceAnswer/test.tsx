@@ -90,7 +90,7 @@ describe('객관식 답변 테스트', () => {
     const INVALIDATED_OPTION_LIST = ['', '1,2,3'];
 
     it.each(VALIDATED_OPTION_LIST)(
-      '필수 질문인 객관식은 최소 선택 개수 이상 최대 선택 개수 이하로 선택해야 답변이 유효하다.(선택된 문항:%s)',
+      '필수 질문의 객관식 답변은 최소 선택 개수 이상 최대 선택 개수 이하로 선택해야 답변이 유효하다.(선택된 문항:%s)',
       async (optionList) => {
         const selectedOptionList = optionList.split(',').map((value) => Number(value));
 
@@ -121,7 +121,7 @@ describe('객관식 답변 테스트', () => {
     );
 
     it.each(INVALIDATED_OPTION_LIST)(
-      '필수 질문인 객관식에서 선택된 문항의 개수가 최소 선택 개수 미만이거나 최대 선택 개수를 넘으면 답변이 유효하지 않다.',
+      '필수 질문의 객관식 답변에서 선택된 문항의 개수가 최소 선택 개수 미만이거나 최대 선택 개수를 넘으면 답변이 유효하지 않다.',
       async (optionList) => {
         const selectedOptionList = optionList === '' ? [] : optionList.split(',').map((value) => Number(value));
 
@@ -174,7 +174,7 @@ describe('객관식 답변 테스트', () => {
     const VALIDATED_OPTION_LIST = ['1', '1,2'];
     const INVALIDATED_OPTION_LIST = ['', '1,2,3'];
 
-    it('선택 질문인 객관식에서 선택된 문항이 없다면, 답변이 유효하다.', async () => {
+    it('선택 질문의 객관식 답변에서 선택된 문항이 없다면, 답변이 유효하다.', async () => {
       const SELECTED_OPTION_LIST: number[] = [];
 
       const { result } = renderUseMultipleChoiceHook({
@@ -205,7 +205,7 @@ describe('객관식 답변 테스트', () => {
     });
 
     it.each(VALIDATED_OPTION_LIST)(
-      '선택 질문인 객관식이라도, 선택 된 문항이 있다면 최소 선택 개수 이상 최대 선택 개수 이하로 선택해야 답변이 유효하다.(선택된 문항:%s)',
+      '선택 질문의 객관식 답변이라도, 선택 된 문항이 있다면 최소 선택 개수 이상 최대 선택 개수 이하로 선택해야 답변이 유효하다.(선택된 문항:%s)',
       async (optionList) => {
         const selectedOptionList = optionList.split(',').map((value) => Number(value));
 
@@ -236,7 +236,7 @@ describe('객관식 답변 테스트', () => {
     );
 
     it.each(INVALIDATED_OPTION_LIST)(
-      '선택 질문인 객관식에서 선택된 문항이 있다면, 최소 선택 개수 미만이거나 최대 선택 개수의 요건을 충족하지 않다면 답변이 유효하지 않다.',
+      '선택 질문의 객관식 답변에서 선택된 문항이 있다면, 최소 선택 개수 미만이거나 최대 선택 개수의 요건을 충족하지 않다면 답변이 유효하지 않다.',
       async (optionList) => {
         const selectedOptionList = optionList === '' ? [] : optionList.split(',').map((value) => Number(value));
 
