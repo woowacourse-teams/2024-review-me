@@ -72,18 +72,18 @@ describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따�
       const CARD = REVIEW_QUESTION_DATA.sections[0];
       const QUESTION = CARD.questions[0];
 
-      const { result } = renderHook(() => useCombinedReviewWritingState(), {
+      const { result: recoilStateResult } = renderHook(() => useCombinedReviewWritingState(), {
         wrapper: RecoilRoot,
       });
       // recoil 초기값 설정
       act(() => {
-        result.current.setReviewWritingFormSectionList(REVIEW_QUESTION_DATA.sections);
+        recoilStateResult.current.setReviewWritingFormSectionList(REVIEW_QUESTION_DATA.sections);
       });
 
       await waitFor(() => {
-        expect(result.current.reviewWritingFormSectionList).toEqual(REVIEW_QUESTION_DATA.sections);
+        expect(recoilStateResult.current.reviewWritingFormSectionList).toEqual(REVIEW_QUESTION_DATA.sections);
 
-        expect(result.current.answerValidationMap?.get(QUESTION.questionId)).toBeFalsy();
+        expect(recoilStateResult.current.answerValidationMap?.get(QUESTION.questionId)).toBeFalsy();
       });
 
       //컴포넌트 렌더링
@@ -105,18 +105,18 @@ describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따�
 
       testCase.forEach((count) => {
         it('최소 개수 이상 최대 개수 이하로 선택하면 다음 단계로 이동할 수 있다. (선택된 문항 개수: %s)', async () => {
-          const { result } = renderHook(() => useCombinedReviewWritingState(), {
+          const { result: recoilStateResult } = renderHook(() => useCombinedReviewWritingState(), {
             wrapper: RecoilRoot,
           });
           // recoil 초기값 설정
           act(() => {
-            result.current.setReviewWritingFormSectionList(REVIEW_QUESTION_DATA.sections);
+            recoilStateResult.current.setReviewWritingFormSectionList(REVIEW_QUESTION_DATA.sections);
           });
 
           await waitFor(() => {
-            expect(result.current.reviewWritingFormSectionList).toEqual(REVIEW_QUESTION_DATA.sections);
+            expect(recoilStateResult.current.reviewWritingFormSectionList).toEqual(REVIEW_QUESTION_DATA.sections);
 
-            expect(result.current.answerValidationMap?.get(CARD_QUESTION.questionId)).toBeFalsy();
+            expect(recoilStateResult.current.answerValidationMap?.get(CARD_QUESTION.questionId)).toBeFalsy();
           });
 
           //컴포넌트 렌더링
@@ -152,18 +152,20 @@ describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따�
     it.each(INVALID_TEXT_LIST)(
       '필수 질문인 서술형에서 답변이 유효하지 않으면(=글자수를 충족하지 못하면) 다음 버튼이 활성화되지 않는다. (글자수: %s.length)',
       async (text) => {
-        const { result } = renderHook(() => useCombinedReviewWritingState(), {
+        const { result: recoilStateResult } = renderHook(() => useCombinedReviewWritingState(), {
           wrapper: RecoilRoot,
         });
         // recoil 초기값 설정
         act(() => {
-          result.current.setReviewWritingFormSectionList(SECTION_LIST);
+          recoilStateResult.current.setReviewWritingFormSectionList(SECTION_LIST);
         });
 
         await waitFor(() => {
-          expect(result.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
+          expect(recoilStateResult.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
 
-          expect(result.current.answerValidationMap?.get(FEEDBACK_SECTION.questions[0].questionId)).toBeFalsy();
+          expect(
+            recoilStateResult.current.answerValidationMap?.get(FEEDBACK_SECTION.questions[0].questionId),
+          ).toBeFalsy();
         });
 
         //컴포넌트 렌더링
@@ -193,18 +195,20 @@ describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따�
     it.each(VALID_TEXT_LIST)(
       '필수 질문인 서술형에서 답변이 유효하면(=글자수를 충족하지 못하면) 다음 버튼이 활성화된다.(글자수: %s.length)',
       async (text) => {
-        const { result } = renderHook(() => useCombinedReviewWritingState(), {
+        const { result: recoilStateResult } = renderHook(() => useCombinedReviewWritingState(), {
           wrapper: RecoilRoot,
         });
         // recoil 초기값 설정
         act(() => {
-          result.current.setReviewWritingFormSectionList(SECTION_LIST);
+          recoilStateResult.current.setReviewWritingFormSectionList(SECTION_LIST);
         });
 
         await waitFor(() => {
-          expect(result.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
+          expect(recoilStateResult.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
 
-          expect(result.current.answerValidationMap?.get(FEEDBACK_SECTION.questions[0].questionId)).toBeFalsy();
+          expect(
+            recoilStateResult.current.answerValidationMap?.get(FEEDBACK_SECTION.questions[0].questionId),
+          ).toBeFalsy();
         });
 
         //컴포넌트 렌더링
@@ -258,18 +262,18 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
     ];
 
     it('선택 질문인 객관식의 경우, 선택된 문항이 없어도 유효하며 다음 단계로 이동할 수 있다.', async () => {
-      const { result } = renderHook(() => useCombinedReviewWritingState(), {
+      const { result: recoilStateResult } = renderHook(() => useCombinedReviewWritingState(), {
         wrapper: RecoilRoot,
       });
       // recoil 초기값 설정
       act(() => {
-        result.current.setReviewWritingFormSectionList(REVIEW_WRITING_CARD_SECTION_LIST_DATA);
+        recoilStateResult.current.setReviewWritingFormSectionList(REVIEW_WRITING_CARD_SECTION_LIST_DATA);
       });
 
       await waitFor(() => {
-        expect(result.current.reviewWritingFormSectionList).toEqual(REVIEW_WRITING_CARD_SECTION_LIST_DATA);
+        expect(recoilStateResult.current.reviewWritingFormSectionList).toEqual(REVIEW_WRITING_CARD_SECTION_LIST_DATA);
 
-        expect(result.current.answerValidationMap?.get(CARD_SECTION.questions[0].questionId)).toBeTruthy();
+        expect(recoilStateResult.current.answerValidationMap?.get(CARD_SECTION.questions[0].questionId)).toBeTruthy();
       });
 
       //컴포넌트 렌더링
@@ -286,19 +290,19 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
     });
 
     it('선택 질문인 객관식이더라도 선택한 문항이 있다면 유효성 검사를 통과하지 못하면(=최소 선택 개수 이상 최대 선택 개수 이하 선택 조건을 충족하지 못함) 다음 단계로 이동할 수 없다', async () => {
-      const { result } = renderHook(() => useCombinedReviewWritingState(), {
+      const { result: recoilStateResult } = renderHook(() => useCombinedReviewWritingState(), {
         wrapper: RecoilRoot,
       });
 
       // recoil 초기값 설정
       act(() => {
-        result.current.setReviewWritingFormSectionList(REVIEW_WRITING_CARD_SECTION_LIST_DATA);
+        recoilStateResult.current.setReviewWritingFormSectionList(REVIEW_WRITING_CARD_SECTION_LIST_DATA);
       });
 
       await waitFor(() => {
-        expect(result.current.reviewWritingFormSectionList).toEqual(REVIEW_WRITING_CARD_SECTION_LIST_DATA);
+        expect(recoilStateResult.current.reviewWritingFormSectionList).toEqual(REVIEW_WRITING_CARD_SECTION_LIST_DATA);
 
-        expect(result.current.answerValidationMap?.get(CARD_SECTION.questions[0].questionId)).toBeTruthy();
+        expect(recoilStateResult.current.answerValidationMap?.get(CARD_SECTION.questions[0].questionId)).toBeTruthy();
       });
 
       //컴포넌트 렌더링
@@ -338,18 +342,20 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
     const SECTION_LIST = [EXTRA_REVIEW_SECTION, FEEDBACK_SECTION];
 
     it('선택 질문인 서술형은 작성한 답변이 없다면 다음 버튼이 활성화된다', async () => {
-      const { result } = renderHook(() => useCombinedReviewWritingState(), {
+      const { result: recoilStateResult } = renderHook(() => useCombinedReviewWritingState(), {
         wrapper: RecoilRoot,
       });
       // recoil 초기값 설정
       act(() => {
-        result.current.setReviewWritingFormSectionList(SECTION_LIST);
+        recoilStateResult.current.setReviewWritingFormSectionList(SECTION_LIST);
       });
 
       await waitFor(() => {
-        expect(result.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
+        expect(recoilStateResult.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
 
-        expect(result.current.answerValidationMap?.get(EXTRA_REVIEW_SECTION.questions[0].questionId)).toBeTruthy();
+        expect(
+          recoilStateResult.current.answerValidationMap?.get(EXTRA_REVIEW_SECTION.questions[0].questionId),
+        ).toBeTruthy();
       });
 
       //컴포넌트 렌더링
@@ -366,18 +372,20 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
     it.each(INVALID_TEXT_LIST)(
       '선택 질문인 서술형이더라도 작성 중인 답변이 유효하지 않으면 다음 버튼이 활성화되지 않는다.(글자수: %s.length)',
       async (text) => {
-        const { result } = renderHook(() => useCombinedReviewWritingState(), {
+        const { result: recoilStateResult } = renderHook(() => useCombinedReviewWritingState(), {
           wrapper: RecoilRoot,
         });
         // recoil 초기값 설정
         act(() => {
-          result.current.setReviewWritingFormSectionList(SECTION_LIST);
+          recoilStateResult.current.setReviewWritingFormSectionList(SECTION_LIST);
         });
 
         await waitFor(() => {
-          expect(result.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
+          expect(recoilStateResult.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
 
-          expect(result.current.answerValidationMap?.get(EXTRA_REVIEW_SECTION.questions[0].questionId)).toBeTruthy();
+          expect(
+            recoilStateResult.current.answerValidationMap?.get(EXTRA_REVIEW_SECTION.questions[0].questionId),
+          ).toBeTruthy();
         });
 
         //컴포넌트 렌더링
@@ -407,18 +415,20 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
     it.each(VALID_TEXT_LIST)(
       '선택 질문인 서술형이라도, 작성한 답변이 있는 경우 답변이 유효해야 다음 버튼이 활성화된다. (글자수: %s.length)',
       async (text) => {
-        const { result } = renderHook(() => useCombinedReviewWritingState(), {
+        const { result: recoilStateResult } = renderHook(() => useCombinedReviewWritingState(), {
           wrapper: RecoilRoot,
         });
         // recoil 초기값 설정
         act(() => {
-          result.current.setReviewWritingFormSectionList(SECTION_LIST);
+          recoilStateResult.current.setReviewWritingFormSectionList(SECTION_LIST);
         });
 
         await waitFor(() => {
-          expect(result.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
+          expect(recoilStateResult.current.reviewWritingFormSectionList).toEqual(SECTION_LIST);
 
-          expect(result.current.answerValidationMap?.get(EXTRA_REVIEW_SECTION.questions[0].questionId)).toBeTruthy();
+          expect(
+            recoilStateResult.current.answerValidationMap?.get(EXTRA_REVIEW_SECTION.questions[0].questionId),
+          ).toBeTruthy();
         });
 
         //컴포넌트 렌더링
@@ -453,17 +463,17 @@ describe('강점 선택에 따른 질문지 변경 테스트', () => {
     const renderResult = renderWithProviders({});
     const targetSectionName = STRENGTH_SECTION_LIST[0].sectionName;
 
-    const { result } = renderHook(() => useCombinedReviewWritingState(), {
+    const { result: recoilStateResult } = renderHook(() => useCombinedReviewWritingState(), {
       wrapper: RecoilRoot,
     });
 
     // recoil 초기값 설정
     act(() => {
-      result.current.setReviewWritingFormSectionList(REVIEW_QUESTION_DATA.sections);
+      recoilStateResult.current.setReviewWritingFormSectionList(REVIEW_QUESTION_DATA.sections);
     });
 
     await waitFor(() => {
-      expect(result.current.reviewWritingFormSectionList).toEqual(REVIEW_QUESTION_DATA.sections);
+      expect(recoilStateResult.current.reviewWritingFormSectionList).toEqual(REVIEW_QUESTION_DATA.sections);
     });
 
     // 첫번째 강점에 대한 꼬리 질문 없음
