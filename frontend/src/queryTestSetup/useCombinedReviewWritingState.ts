@@ -9,7 +9,7 @@ import {
   selectedCategoryAtom,
 } from '@/recoil';
 
-const useCombinedAnswerState = () => {
+const useCombinedReviewWritingState = () => {
   const answerMap = useRecoilValue(answerMapAtom);
   const answerValidationMap = useRecoilValue(answerValidationMapAtom);
   const [reviewWritingFormSectionList, setReviewWritingFormSectionList] = useRecoilState(
@@ -30,4 +30,4 @@ const useCombinedAnswerState = () => {
   };
 };
 
-export default useCombinedAnswerState;
+export default useCombinedReviewWritingState;

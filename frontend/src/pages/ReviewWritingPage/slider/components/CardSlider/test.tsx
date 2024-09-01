@@ -5,7 +5,7 @@ import { RecoilRoot, RecoilState } from 'recoil';
 
 import { EXTRA_REVIEW_SECTION, FEEDBACK_SECTION, REVIEW_QUESTION_DATA, STRENGTH_SECTION_LIST } from '@/mocks/mockData';
 import { TEXT_ANSWER_LENGTH } from '@/pages/ReviewWritingPage/form/hooks/answers/useTextAnswer';
-import useCombinedAnswerState from '@/queryTestSetup/useCombinedAnswerState';
+import useCombinedReviewWritingState from '@/queryTestSetup/useCombinedReviewWritingState';
 import { reviewWritingFormSectionListAtom } from '@/recoil';
 import theme from '@/styles/theme';
 import { ReviewWritingCardQuestion, ReviewWritingCardSection, ReviewWritingQuestionOptionGroup } from '@/types';
@@ -72,7 +72,7 @@ describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따�
       const CARD = REVIEW_QUESTION_DATA.sections[0];
       const QUESTION = CARD.questions[0];
 
-      const { result } = renderHook(() => useCombinedAnswerState(), {
+      const { result } = renderHook(() => useCombinedReviewWritingState(), {
         wrapper: RecoilRoot,
       });
       // recoil 초기값 설정
@@ -105,7 +105,7 @@ describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따�
 
       testCase.forEach((count) => {
         it('최소 개수 이상 최대 개수 이하로 선택하면 다음 단계로 이동할 수 있다. (선택된 문항 개수: %s)', async () => {
-          const { result } = renderHook(() => useCombinedAnswerState(), {
+          const { result } = renderHook(() => useCombinedReviewWritingState(), {
             wrapper: RecoilRoot,
           });
           // recoil 초기값 설정
@@ -152,7 +152,7 @@ describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따�
     it.each(INVALID_TEXT_LIST)(
       '필수 질문인 서술형에서 답변이 유효하지 않으면(=글자수를 충족하지 못하면) 다음 버튼이 활성화되지 않는다. (글자수: %s.length)',
       async (text) => {
-        const { result } = renderHook(() => useCombinedAnswerState(), {
+        const { result } = renderHook(() => useCombinedReviewWritingState(), {
           wrapper: RecoilRoot,
         });
         // recoil 초기값 설정
@@ -193,7 +193,7 @@ describe('필수 질문의 질문 유형(객관식/주관식)과 답변에 따�
     it.each(VALID_TEXT_LIST)(
       '필수 질문인 서술형에서 답변이 유효하면(=글자수를 충족하지 못하면) 다음 버튼이 활성화된다.(글자수: %s.length)',
       async (text) => {
-        const { result } = renderHook(() => useCombinedAnswerState(), {
+        const { result } = renderHook(() => useCombinedReviewWritingState(), {
           wrapper: RecoilRoot,
         });
         // recoil 초기값 설정
@@ -258,7 +258,7 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
     ];
 
     it('선택 질문인 객관식의 경우, 선택된 문항이 없어도 유효하며 다음 단계로 이동할 수 있다.', async () => {
-      const { result } = renderHook(() => useCombinedAnswerState(), {
+      const { result } = renderHook(() => useCombinedReviewWritingState(), {
         wrapper: RecoilRoot,
       });
       // recoil 초기값 설정
@@ -286,7 +286,7 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
     });
 
     it('선택 질문인 객관식이더라도 선택한 문항이 있다면 유효성 검사를 통과하지 못하면(=최소 선택 개수 이상 최대 선택 개수 이하 선택 조건을 충족하지 못함) 다음 단계로 이동할 수 없다', async () => {
-      const { result } = renderHook(() => useCombinedAnswerState(), {
+      const { result } = renderHook(() => useCombinedReviewWritingState(), {
         wrapper: RecoilRoot,
       });
 
@@ -338,7 +338,7 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
     const SECTION_LIST = [EXTRA_REVIEW_SECTION, FEEDBACK_SECTION];
 
     it('선택 질문인 서술형은 작성한 답변이 없다면 다음 버튼이 활성화된다', async () => {
-      const { result } = renderHook(() => useCombinedAnswerState(), {
+      const { result } = renderHook(() => useCombinedReviewWritingState(), {
         wrapper: RecoilRoot,
       });
       // recoil 초기값 설정
@@ -366,7 +366,7 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
     it.each(INVALID_TEXT_LIST)(
       '선택 질문인 서술형이더라도 작성 중인 답변이 유효하지 않으면 다음 버튼이 활성화되지 않는다.(글자수: %s.length)',
       async (text) => {
-        const { result } = renderHook(() => useCombinedAnswerState(), {
+        const { result } = renderHook(() => useCombinedReviewWritingState(), {
           wrapper: RecoilRoot,
         });
         // recoil 초기값 설정
@@ -407,7 +407,7 @@ describe('선택 질문의 질문 유형(객관식/주관식)과 답변에 따�
     it.each(VALID_TEXT_LIST)(
       '선택 질문인 서술형이라도, 작성한 답변이 있는 경우 답변이 유효해야 다음 버튼이 활성화된다. (글자수: %s.length)',
       async (text) => {
-        const { result } = renderHook(() => useCombinedAnswerState(), {
+        const { result } = renderHook(() => useCombinedReviewWritingState(), {
           wrapper: RecoilRoot,
         });
         // recoil 초기값 설정
@@ -453,7 +453,7 @@ describe('강점 선택에 따른 질문지 변경 테스트', () => {
     const renderResult = renderWithProviders({});
     const targetSectionName = STRENGTH_SECTION_LIST[0].sectionName;
 
-    const { result } = renderHook(() => useCombinedAnswerState(), {
+    const { result } = renderHook(() => useCombinedReviewWritingState(), {
       wrapper: RecoilRoot,
     });
 
