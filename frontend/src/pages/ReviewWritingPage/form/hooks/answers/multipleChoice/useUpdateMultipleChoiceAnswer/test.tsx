@@ -69,7 +69,6 @@ const renderUseMultipleChoiceHook = ({
       const answerValidationMap = useRecoilValue(answerValidationMapAtom);
       const cardSectionList = useRecoilValue(cardSectionListSelector);
 
-      // 여기에 추가적인 hook을 사용할 수 있음
       useUpdateDefaultAnswers();
 
       return {
