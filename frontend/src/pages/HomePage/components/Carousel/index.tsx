@@ -83,7 +83,7 @@ const Carousel = ({ slideList }: CarouselProps) => {
     }, AUTO_SLIDE_INTERVAL);
 
     return () => clearTimeout(timeout);
-  }, [currentSlideIndex]);
+  }, [currentSlideIndex, clicked]);
 
   return (
     <S.CarouselContainer>
