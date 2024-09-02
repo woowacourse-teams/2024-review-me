@@ -6,11 +6,15 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.fixture.OptionGroupFixture;
+import reviewme.fixture.OptionItemFixture;
+import reviewme.fixture.QuestionFixture;
+import reviewme.fixture.ReviewGroupFixture;
+import reviewme.fixture.SectionFixture;
+import reviewme.fixture.TemplateFixture;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
-import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question;
-import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
@@ -21,12 +25,9 @@ import reviewme.review.service.dto.request.CreateReviewAnswerRequest;
 import reviewme.review.service.dto.request.CreateReviewRequest;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.UnnecessaryQuestionIncludedException;
-import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
 import reviewme.template.domain.Section;
-import reviewme.template.domain.Template;
-import reviewme.template.domain.VisibleType;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
@@ -63,70 +64,76 @@ class CreateReviewServiceTest {
     @Autowired
     private CheckboxAnswerRepository checkboxAnswerRepository;
 
+    @Autowired
+    private ReviewGroupFixture reviewGroupFixture;
+
+    @Autowired
+    private QuestionFixture questionFixture;
+
+    @Autowired
+    private OptionGroupFixture optionGroupFixture;
+
+    @Autowired
+    private OptionItemFixture optionItemFixture;
+
+    @Autowired
+    private SectionFixture sectionFixture;
+
+    @Autowired
+    private TemplateFixture templateFixture;
+
     @Test
     void 필수_질문에_모두_응답하는_경우_예외가_발생하지_않는다() {
         // 리뷰 그룹 저장
         String reviewRequestCode = "1234";
-        reviewGroupRepository.save(new ReviewGroup("리뷰어", "프로젝트", reviewRequestCode, "12341234"));
+        reviewGroupRepository.save(reviewGroupFixture.리뷰_그룹(reviewRequestCode, "12341234"));
 
         // 필수 선택형 질문, 섹션 저장
-        Question alwaysRequiredQuestion = questionRepository.save(
-                new Question(true, QuestionType.CHECKBOX, "질문", "가이드라인", 1)
-        );
+        Question alwaysRequiredQuestion = questionRepository.save(questionFixture.선택형_필수_질문());
         OptionGroup alwaysRequiredOptionGroup = optionGroupRepository.save(
-                new OptionGroup(alwaysRequiredQuestion.getId(), 1, 2)
+                optionGroupFixture.선택지_그룹(alwaysRequiredQuestion.getId())
         );
         OptionItem alwaysRequiredOptionItem1 = optionItemRepository.save(
-                new OptionItem("선택지", alwaysRequiredOptionGroup.getId(), 1, OptionType.KEYWORD)
+                optionItemFixture.선택지(alwaysRequiredOptionGroup.getId(), 1)
         );
         OptionItem alwaysRequiredOptionItem2 = optionItemRepository.save(
-                new OptionItem("선택지", alwaysRequiredOptionGroup.getId(), 2, OptionType.KEYWORD)
+                optionItemFixture.선택지(alwaysRequiredOptionGroup.getId(), 2)
         );
         Section alwaysRequiredSection = sectionRepository.save(
-                new Section(VisibleType.ALWAYS, List.of(alwaysRequiredQuestion.getId()), null, "섹션명", "말머리", 1)
+                sectionFixture.항상_보이는_섹션(List.of(alwaysRequiredQuestion.getId()))
         );
 
         // 필수가 아닌 서술형 질문 저장
-        Question notRequiredQuestion = questionRepository.save(
-                new Question(false, QuestionType.TEXT, "질문", "가이드라인", 1)
-        );
+        Question notRequiredQuestion = questionRepository.save(questionFixture.서술형_옵션_질문());
         Section notRequiredSection = sectionRepository.save(
-                new Section(VisibleType.ALWAYS, List.of(notRequiredQuestion.getId()), null, "섹션명", "말머리", 1)
+                sectionFixture.항상_보이는_섹션(List.of(notRequiredQuestion.getId()), 1)
         );
 
         // optionItem 선택에 따라서 required 가 달라지는 섹션1 저장
-        Question conditionalTextQuestion1 = questionRepository.save(
-                new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1)
-        );
-        Question conditionalCheckQuestion = questionRepository.save(
-                new Question(true, QuestionType.CHECKBOX, "질문", "가이드라인", 1)
-        );
+        Question conditionalTextQuestion1 = questionRepository.save(questionFixture.서술형_필수_질문(1));
+        Question conditionalCheckQuestion = questionRepository.save(questionFixture.선택형_필수_질문(2));
         OptionGroup conditionalOptionGroup = optionGroupRepository.save(
-                new OptionGroup(conditionalCheckQuestion.getId(), 1, 2)
+                optionGroupFixture.선택지_그룹(conditionalCheckQuestion.getId())
         );
         OptionItem conditionalOptionItem = optionItemRepository.save(
-                new OptionItem("선택지", conditionalOptionGroup.getId(), 1, OptionType.KEYWORD)
+                optionItemFixture.선택지(conditionalOptionGroup.getId())
         );
         Section conditionalSection1 = sectionRepository.save(
-                new Section(VisibleType.CONDITIONAL,
-                        List.of(conditionalTextQuestion1.getId(), conditionalCheckQuestion.getId()),
-                        alwaysRequiredOptionItem1.getId(), "섹션명", "말머리", 1)
-        );
+                sectionFixture.조건부로_보이는_섹션(List.of(conditionalTextQuestion1.getId(), conditionalCheckQuestion.getId()),
+                        alwaysRequiredOptionItem1.getId(), 2));
 
         // optionItem 선택에 따라서 required 가 달라지는 섹션2 저장
-        Question conditionalQuestion2 = questionRepository.save(
-                new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1)
-        );
+        Question conditionalQuestion2 = questionRepository.save(questionFixture.서술형_필수_질문());
         Section conditionalSection2 = sectionRepository.save(
-                new Section(VisibleType.CONDITIONAL, List.of(conditionalQuestion2.getId()),
-                        alwaysRequiredOptionItem2.getId(), "섹션명", "말머리", 1)
+                sectionFixture.조건부로_보이는_섹션(List.of(conditionalQuestion2.getId()), alwaysRequiredOptionItem2.getId(), 3)
         );
 
         // 템플릿 저장
-        templateRepository.save(new Template(
-                List.of(alwaysRequiredSection.getId(), conditionalSection1.getId(),
-                        conditionalSection2.getId(), notRequiredSection.getId())
-        ));
+        templateRepository.save(
+                templateFixture.템플릿(
+                        List.of(alwaysRequiredSection.getId(), conditionalSection1.getId(),
+                                conditionalSection2.getId(), notRequiredSection.getId()))
+        );
 
         // 각 질문에 대한 답변 생성
         CreateReviewAnswerRequest alwaysRequiredAnswer = new CreateReviewAnswerRequest(
@@ -168,12 +175,12 @@ class CreateReviewServiceTest {
     void 텍스트가_포함된_리뷰를_저장한다() {
         // given
         String reviewRequestCode = "0000";
-        reviewGroupRepository.save(new ReviewGroup("리뷰어", "프로젝트", reviewRequestCode, "12341234"));
-        Section section = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(1L), 1L, "섹션명", "말머리", 1));
-        templateRepository.save(new Template(List.of(section.getId())));
+        reviewGroupRepository.save(reviewGroupFixture.리뷰_그룹(reviewRequestCode, "12341234"));
+        Section section = sectionRepository.save(sectionFixture.항상_보이는_섹션(List.of(1L)));
+        templateRepository.save(templateFixture.템플릿(List.of(section.getId())));
 
         String expectedTextAnswer = "답".repeat(20);
-        Question savedQuestion = questionRepository.save(new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1));
+        Question savedQuestion = questionRepository.save(questionFixture.서술형_필수_질문());
         CreateReviewAnswerRequest createReviewAnswerRequest = new CreateReviewAnswerRequest(savedQuestion.getId(), null,
                 expectedTextAnswer);
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(reviewRequestCode,
@@ -191,12 +198,11 @@ class CreateReviewServiceTest {
     void 필수가_아닌_텍스트형_응답에_빈문자열이_들어오면_저장하지_않는다() {
         // given
         String reviewRequestCode = "0000";
-        reviewGroupRepository.save(new ReviewGroup("리뷰어", "프로젝트", reviewRequestCode, "12341234"));
-        Section section = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(1L), 1L, "섹션명", "말머리", 1));
-        templateRepository.save(new Template(List.of(section.getId())));
+        reviewGroupRepository.save(reviewGroupFixture.리뷰_그룹(reviewRequestCode, "12341234"));
+        Section section = sectionRepository.save(sectionFixture.항상_보이는_섹션(List.of(1L)));
+        templateRepository.save(templateFixture.템플릿(List.of(section.getId())));
 
-        Question savedQuestion = questionRepository.save(
-                new Question(false, QuestionType.TEXT, "질문", "가이드라인", 1));
+        Question savedQuestion = questionRepository.save(questionFixture.서술형_옵션_질문());
         CreateReviewAnswerRequest emptyTextReviewRequest = new CreateReviewAnswerRequest(
                 savedQuestion.getId(), null, "");
         CreateReviewAnswerRequest validTextReviewRequest = new CreateReviewAnswerRequest(
@@ -216,16 +222,14 @@ class CreateReviewServiceTest {
     void 체크박스가_포함된_리뷰를_저장한다() {
         // given
         String reviewRequestCode = "0000";
-        reviewGroupRepository.save(new ReviewGroup("리뷰어", "프로젝트", reviewRequestCode, "12341234"));
-        Section section = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(1L), 1L, "섹션명", "말머리", 1));
-        templateRepository.save(new Template(List.of(section.getId())));
+        reviewGroupRepository.save(reviewGroupFixture.리뷰_그룹(reviewRequestCode, "12341234"));
+        Section section = sectionRepository.save(sectionFixture.항상_보이는_섹션(List.of(1L)));
+        templateRepository.save(templateFixture.템플릿(List.of(section.getId())));
 
-        Question savedQuestion = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "질문", "가이드라인", 1));
-        OptionGroup savedOptionGroup = optionGroupRepository.save(new OptionGroup(savedQuestion.getId(), 2, 2));
-        OptionItem savedOptionItem1 = optionItemRepository.save(
-                new OptionItem("선택지1", savedOptionGroup.getId(), 1, OptionType.KEYWORD));
-        OptionItem savedOptionItem2 = optionItemRepository.save(
-                new OptionItem("선택지2", savedOptionGroup.getId(), 2, OptionType.KEYWORD));
+        Question savedQuestion = questionRepository.save(questionFixture.선택형_필수_질문());
+        OptionGroup savedOptionGroup = optionGroupRepository.save(optionGroupFixture.선택지_그룹(savedQuestion.getId()));
+        OptionItem savedOptionItem1 = optionItemRepository.save(optionItemFixture.선택지(savedOptionGroup.getId(), 1));
+        OptionItem savedOptionItem2 = optionItemRepository.save(optionItemFixture.선택지(savedOptionGroup.getId(), 2));
         CreateReviewAnswerRequest createReviewAnswerRequest = new CreateReviewAnswerRequest(savedQuestion.getId(),
                 List.of(savedOptionItem1.getId(), savedOptionItem2.getId()), null);
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(reviewRequestCode,
@@ -243,12 +247,13 @@ class CreateReviewServiceTest {
     void 적정_글자수인_텍스트_응답인_경우_정상_저장된다() {
         // given
         String reviewRequestCode = "0000";
-        reviewGroupRepository.save(new ReviewGroup("리뷰어", "프로젝트", reviewRequestCode, "12341234"));
-        Section section = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(1L), 1L, "섹션명", "말머리", 1));
-        templateRepository.save(new Template(List.of(section.getId())));
+        reviewGroupRepository.save(reviewGroupFixture.리뷰_그룹(reviewRequestCode, "12341234"));
+        Section section = sectionRepository.save(sectionFixture.항상_보이는_섹션(List.of(1L)));
+        templateRepository.save(templateFixture.템플릿(List.of(section.getId())));
 
         String expectedTextAnswer = "답".repeat(1000);
-        Question savedQuestion = questionRepository.save(new Question(true, QuestionType.TEXT, "질문", "가이드라인", 1));
+        Question savedQuestion = questionRepository.save(questionFixture.서술형_필수_질문());
+
         CreateReviewAnswerRequest createReviewAnswerRequest = new CreateReviewAnswerRequest(savedQuestion.getId(), null,
                 expectedTextAnswer);
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(reviewRequestCode,
