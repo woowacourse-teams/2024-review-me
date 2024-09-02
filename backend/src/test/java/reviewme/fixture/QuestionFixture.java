@@ -1,10 +1,8 @@
 package reviewme.fixture;
 
-import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
 
-@Component
 public class QuestionFixture {
 
     public static Question 선택형_필수_질문() {

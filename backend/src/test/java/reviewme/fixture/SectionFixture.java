@@ -1,11 +1,9 @@
 package reviewme.fixture;
 
 import java.util.List;
-import org.springframework.stereotype.Component;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.VisibleType;
 
-@Component
 public class SectionFixture {
 
     public static Section 항상_보이는_섹션(List<Long> questionIds) {
