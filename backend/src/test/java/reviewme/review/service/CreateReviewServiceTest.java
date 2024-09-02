@@ -71,15 +71,13 @@ class CreateReviewServiceTest {
     private final SectionFixture sectionFixture;
     private final TemplateFixture templateFixture;
 
-    CreateReviewServiceTest(ReviewGroupFixture reviewGroupFixture, QuestionFixture questionFixture,
-                            OptionGroupFixture optionGroupFixture, OptionItemFixture optionItemFixture,
-                            SectionFixture sectionFixture, TemplateFixture templateFixture) {
-        this.reviewGroupFixture = reviewGroupFixture;
-        this.questionFixture = questionFixture;
-        this.optionGroupFixture = optionGroupFixture;
-        this.optionItemFixture = optionItemFixture;
-        this.sectionFixture = sectionFixture;
-        this.templateFixture = templateFixture;
+    CreateReviewServiceTest() {
+        this.reviewGroupFixture = new ReviewGroupFixture();
+        this.questionFixture = new QuestionFixture();
+        this.optionGroupFixture = new OptionGroupFixture();
+        this.optionItemFixture = new OptionItemFixture();
+        this.sectionFixture = new SectionFixture();
+        this.templateFixture = new TemplateFixture();
     }
 
     @Test

@@ -39,8 +39,8 @@ class CreateCheckBoxAnswerRequestValidatorTest {
 
     private final QuestionFixture questionFixture;
 
-    CreateCheckBoxAnswerRequestValidatorTest(QuestionFixture questionFixture) {
-        this.questionFixture = questionFixture;
+    CreateCheckBoxAnswerRequestValidatorTest() {
+        this.questionFixture = new QuestionFixture();
     }
 
     @Test
