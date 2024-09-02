@@ -64,23 +64,23 @@ class CreateReviewServiceTest {
     @Autowired
     private CheckboxAnswerRepository checkboxAnswerRepository;
 
-    @Autowired
-    private ReviewGroupFixture reviewGroupFixture;
+    private final ReviewGroupFixture reviewGroupFixture;
+    private final QuestionFixture questionFixture;
+    private final OptionGroupFixture optionGroupFixture;
+    private final OptionItemFixture optionItemFixture;
+    private final SectionFixture sectionFixture;
+    private final TemplateFixture templateFixture;
 
-    @Autowired
-    private QuestionFixture questionFixture;
-
-    @Autowired
-    private OptionGroupFixture optionGroupFixture;
-
-    @Autowired
-    private OptionItemFixture optionItemFixture;
-
-    @Autowired
-    private SectionFixture sectionFixture;
-
-    @Autowired
-    private TemplateFixture templateFixture;
+    CreateReviewServiceTest(ReviewGroupFixture reviewGroupFixture, QuestionFixture questionFixture,
+                            OptionGroupFixture optionGroupFixture, OptionItemFixture optionItemFixture,
+                            SectionFixture sectionFixture, TemplateFixture templateFixture) {
+        this.reviewGroupFixture = reviewGroupFixture;
+        this.questionFixture = questionFixture;
+        this.optionGroupFixture = optionGroupFixture;
+        this.optionItemFixture = optionItemFixture;
+        this.sectionFixture = sectionFixture;
+        this.templateFixture = templateFixture;
+    }
 
     @Test
     void 필수_질문에_모두_응답하는_경우_예외가_발생하지_않는다() {

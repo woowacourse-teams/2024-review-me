@@ -37,8 +37,11 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     @Autowired
     private OptionItemRepository optionItemRepository;
 
-    @Autowired
-    private QuestionFixture questionFixture;
+    private final QuestionFixture questionFixture;
+
+    CreateCheckBoxAnswerRequestValidatorTest(QuestionFixture questionFixture) {
+        this.questionFixture = questionFixture;
+    }
 
     @Test
     void 저장되지_않은_질문에_대한_응답이면_예외가_발생한다() {
