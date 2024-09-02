@@ -42,14 +42,14 @@ const Carousel = ({ slideList }: CarouselProps) => {
     if (clicked) return;
     setClicked(true);
     scrollToSlide(currentSlideIndex + 1);
-    setTimeout(() => setClicked(false), TRANSITION_DURATION);
+    setTimeout(() => setClicked(false), TRANSITION_DURATION + 100);
   };
 
   const prevSlide = () => {
     if (clicked) return;
     setClicked(true);
     scrollToSlide(currentSlideIndex - 1);
-    setTimeout(() => setClicked(false), TRANSITION_DURATION);
+    setTimeout(() => setClicked(false), TRANSITION_DURATION + 100);
   };
 
   // NOTE: // 초기 슬라이드 위치 설정
