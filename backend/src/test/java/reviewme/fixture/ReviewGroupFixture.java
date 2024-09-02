@@ -1,7 +1,9 @@
 package reviewme.fixture;
 
+import org.springframework.stereotype.Component;
 import reviewme.reviewgroup.domain.ReviewGroup;
 
+@Component
 public class ReviewGroupFixture {
 
     public static ReviewGroup 리뷰_그룹() {

@@ -1,8 +1,10 @@
 package reviewme.fixture;
 
+import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 
+@Component
 public class OptionItemFixture {
 
     public static OptionItem 선택지(long optionGroupId) {
