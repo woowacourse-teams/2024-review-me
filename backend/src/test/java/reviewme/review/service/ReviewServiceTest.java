@@ -69,11 +69,13 @@ class ReviewServiceTest {
     @Test
     void 그룹_액세스_코드가_일치하지_않는_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        String reviewRequestCode = "Jamsil";
+        String groupAccessCode = "Seolleung";
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
 
         // when, then
         assertThatThrownBy(() -> reviewService.findReceivedReviews(
-                reviewGroup.getReviewRequestCode(), "wrong" + reviewGroup.getGroupAccessCode()
+                reviewRequestCode, "wrong" + groupAccessCode
         )).isInstanceOf(ReviewGroupUnauthorizedException.class);
     }
 
