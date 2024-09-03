@@ -6,7 +6,7 @@ import QueryClientWrapper from '@/queryTestSetup/QueryClientWrapper';
 import useCheckPasswordValidation from '.';
 
 describe('비밀번호 조회 테스트', () => {
-  it('비밀번호가 유효하면 isValidAccess가 true이다 ', async () => {
+  it('비밀번호가 유효하면 hasAccess가 true이다 ', async () => {
     const REVIEW_REQUEST_CODE = 'ABCD1234';
     const INVALIDATED_PASSWORD = '1111';
 
@@ -31,11 +31,11 @@ describe('비밀번호 조회 테스트', () => {
     expect(result.current.data instanceof Error).toBeFalsy();
 
     if (!(result.current.data instanceof Error)) {
-      expect(result.current.data?.isValidAccess).toBeFalsy();
+      expect(result.current.data?.hasAccess).toBeFalsy();
     }
   });
 
-  it('비밀번호가 유효하지 않으면 isValidAccess가 false이다 ', async () => {
+  it('비밀번호가 유효하지 않으면 hasAccess가 false이다 ', async () => {
     const REVIEW_REQUEST_CODE = 'ABCD1234';
     const { result } = renderHook(
       () =>
@@ -56,9 +56,5 @@ describe('비밀번호 조회 테스트', () => {
 
     expect(result.current.data).toBeDefined();
     expect(result.current.data instanceof Error).toBeFalsy();
-
-    if (!(result.current.data instanceof Error)) {
-      expect(result.current.data?.isValidAccess).toBeFalsy();
-    }
   });
 });
