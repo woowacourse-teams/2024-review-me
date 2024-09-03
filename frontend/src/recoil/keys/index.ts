@@ -8,8 +8,6 @@ export const ATOM_KEY = {
     visitedCardList: 'visitedCardList',
     reviewRequestCodeAtom: 'reviewRequestCode',
   },
-  urlGeneratorForm: 'urlGeneratorForm',
-  urlGeneratorFormValidation: 'urlGeneratorFormValidation',
 };
 
 export const SELECTOR_KEY = {
