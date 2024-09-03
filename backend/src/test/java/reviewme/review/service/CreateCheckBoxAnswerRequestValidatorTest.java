@@ -1,11 +1,11 @@
 package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.fixture.QuestionFixture;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
@@ -37,16 +37,10 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     @Autowired
     private OptionItemRepository optionItemRepository;
 
-    private final QuestionFixture questionFixture;
-
-    CreateCheckBoxAnswerRequestValidatorTest() {
-        this.questionFixture = new QuestionFixture();
-    }
-
     @Test
     void 저장되지_않은_질문에_대한_응답이면_예외가_발생한다() {
         // given
-        questionRepository.save(questionFixture.선택형_필수_질문());
+        questionRepository.save(선택형_필수_질문());
         long notSavedQuestionId = 100L;
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
                 notSavedQuestionId, List.of(1L), null
@@ -60,7 +54,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     @Test
     void 선택형_질문에_텍스트_응답을_하면_예외가_발생한다() {
         // given
-        Question savedQuestion = questionRepository.save(questionFixture.선택형_필수_질문());
+        Question savedQuestion = questionRepository.save(선택형_필수_질문());
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
                 savedQuestion.getId(), List.of(1L), "서술형 응답"
         );
@@ -73,7 +67,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     @Test
     void 저장되지_않은_옵션그룹에_대해_응답하면_예외가_발생한다() {
         // given
-        Question savedQuestion = questionRepository.save(questionFixture.선택형_필수_질문());
+        Question savedQuestion = questionRepository.save(선택형_필수_질문());
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
                 savedQuestion.getId(), List.of(1L), null
         );
@@ -86,7 +80,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     @Test
     void 필수_선택형_질문에_응답을_하지_않으면_예외가_발생한다() {
         // given
-        Question savedQuestion = questionRepository.save(questionFixture.선택형_필수_질문());
+        Question savedQuestion = questionRepository.save(선택형_필수_질문());
         optionGroupRepository.save(
                 new OptionGroup(savedQuestion.getId(), 1, 3)
         );
@@ -103,7 +97,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     @Test
     void 옵션그룹에서_제공하지_않은_옵션아이템을_응답하면_예외가_발생한다() {
         // given
-        Question savedQuestion = questionRepository.save(questionFixture.선택형_필수_질문());
+        Question savedQuestion = questionRepository.save(선택형_필수_질문());
         OptionGroup savedOptionGroup = optionGroupRepository.save(
                 new OptionGroup(savedQuestion.getId(), 1, 3)
         );
@@ -123,7 +117,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     @Test
     void 옵션그룹에서_정한_최소_선택_수_보다_적게_선택하면_예외가_발생한다() {
         // given
-        Question savedQuestion = questionRepository.save(questionFixture.선택형_필수_질문());
+        Question savedQuestion = questionRepository.save(선택형_필수_질문());
         OptionGroup savedOptionGroup = optionGroupRepository.save(
                 new OptionGroup(savedQuestion.getId(), 2, 3)
         );
@@ -143,7 +137,7 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     @Test
     void 옵션그룹에서_정한_최대_선택_수_보다_많이_선택하면_예외가_발생한다() {
         // given
-        Question savedQuestion = questionRepository.save(questionFixture.선택형_필수_질문());
+        Question savedQuestion = questionRepository.save(선택형_필수_질문());
         OptionGroup savedOptionGroup = optionGroupRepository.save(
                 new OptionGroup(savedQuestion.getId(), 1, 1)
         );
