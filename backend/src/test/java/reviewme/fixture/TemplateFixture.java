@@ -5,7 +5,7 @@ import reviewme.template.domain.Template;
 
 public class TemplateFixture {
 
-    public Template 템플릿(List<Long> sectionIds) {
+    public static Template 템플릿(List<Long> sectionIds) {
         return new Template(sectionIds);
     }
 }
