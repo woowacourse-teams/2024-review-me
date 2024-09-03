@@ -6,15 +6,13 @@ import { ROUTE } from '@/constants/route';
 import useModals from '@/hooks/useModals';
 import { debounce } from '@/utils/debounce';
 
-import { useURLGeneratorFormState } from '../../hooks';
 import usePostDataForReviewRequestCode from '../../queries/usePostDataForReviewRequestCode';
+import { isValidPasswordInput, isValidReviewGroupDataInput } from '../../utils/validateInput';
 import { FormLayout, ReviewZoneURLModal } from '../index';
 import { ProjectNameField, RevieweeNameField, PasswordField } from '../Inputs';
 
 import * as S from './styles';
 
-// TODO: 디바운스 time 기본 인수로 300 줘버리기
-// TODO: 디바운스 시간을 모든 경우에 0.3초로 고정할 것인지(전역 상수로 사용) 논의하기
 const DEBOUNCE_TIME = 300;
 
 const MODAL_KEYS = {
@@ -22,10 +20,11 @@ const MODAL_KEYS = {
 };
 
 const URLGeneratorForm = () => {
-  const [reviewZoneURL, setReviewZoneURL] = useState('');
+  const [revieweeName, setRevieweeName] = useState('');
+  const [projectName, setProjectName] = useState('');
+  const [password, setPassword] = useState('');
 
-  const { formData, isValidForm, initializeIsValidForm, initializeFormData } = useURLGeneratorFormState();
-  const { revieweeName, projectName, password } = formData;
+  const [reviewZoneURL, setReviewZoneURL] = useState('');
 
   const { isOpen, openModal, closeModal } = useModals();
 
@@ -38,6 +37,11 @@ const URLGeneratorForm = () => {
 
   const mutation = usePostDataForReviewRequestCode();
 
+  const isFormValid =
+    isValidReviewGroupDataInput(revieweeName) &&
+    isValidReviewGroupDataInput(projectName) &&
+    isValidPasswordInput(password);
+
   const postDataForURL = () => {
     const dataForReviewRequestCode: DataForReviewRequestCode = { revieweeName, projectName, groupAccessCode: password };
 
@@ -46,10 +50,15 @@ const URLGeneratorForm = () => {
         const completeReviewZoneURL = getCompleteReviewZoneURL(data.reviewRequestCode);
         setReviewZoneURL(completeReviewZoneURL);
 
-        initializeFormData();
-        initializeIsValidForm();
+        resetForm();
       },
     });
+  };
+
+  const resetForm = () => {
+    setRevieweeName('');
+    setProjectName('');
+    setPassword('');
   };
 
   const getCompleteReviewZoneURL = (reviewRequestCode: string) => {
@@ -65,14 +74,14 @@ const URLGeneratorForm = () => {
   return (
     <S.URLGeneratorForm>
       <FormLayout title="함께한 팀원으로부터 리뷰를 받아보세요!" direction="column">
-        <RevieweeNameField id={INPUT_ID.revieweeName} />
-        <ProjectNameField id={INPUT_ID.projectName} />
-        <PasswordField id={INPUT_ID.password} />
+        <RevieweeNameField id={INPUT_ID.revieweeName} value={revieweeName} setValue={setRevieweeName} />
+        <ProjectNameField id={INPUT_ID.projectName} value={projectName} setValue={setProjectName} />
+        <PasswordField id={INPUT_ID.password} value={password} setValue={setPassword} />
         <Button
           type="button"
-          styleType={isValidForm ? 'primary' : 'disabled'}
+          styleType={isFormValid ? 'primary' : 'disabled'}
           onClick={handleUrlCreationButtonClick}
-          disabled={!isValidForm}
+          disabled={!isFormValid}
         >
           리뷰 링크 생성하기
         </Button>

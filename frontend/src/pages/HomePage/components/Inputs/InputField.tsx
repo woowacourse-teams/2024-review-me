@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 import { EssentialPropsWithChildren } from '@/types';
 
 import * as S from '../URLGeneratorForm/styles';
@@ -7,6 +9,12 @@ interface InputFieldProps {
   labelText: string;
   errorMessage: string;
   inputInfoText?: string;
+}
+
+export interface InputValueProps {
+  id: string;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
 }
 
 const InputField = ({

@@ -3,21 +3,16 @@ import { useEffect } from 'react';
 import { EyeButton, Input } from '@/components';
 import { useEyeButton } from '@/hooks';
 import { usePasswordValidation } from '@/hooks/usePasswordValidation';
-import { URLGeneratorFormField } from '@/types';
 
-import { useFormInput } from '../../hooks';
 import { MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT } from '../../utils/validateInput';
 import * as S from '../URLGeneratorForm/styles';
 
-import { InputField } from './';
+import { InputValueProps } from './InputField';
 
-interface PasswordFieldProps {
-  id: string;
-}
+import { InputField } from '.';
 
-const PasswordField = ({ id }: PasswordFieldProps) => {
-  const [password, setPassword] = useFormInput(URLGeneratorFormField.password);
-
+// TODO : initalizeIsBlurredOnce 확인하기
+const PasswordField = ({ id, value: password, setValue: setPassword }: InputValueProps) => {
   const { isOff, handleEyeButtonToggle } = useEyeButton();
   const { passwordErrorMessage, handlePasswordBlur, initializeIsBlurredOnce } = usePasswordValidation(password);
 
