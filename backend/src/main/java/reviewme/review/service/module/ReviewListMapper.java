@@ -21,7 +21,6 @@ public class ReviewListMapper {
 
     private final ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
 
-
     public List<ReviewListElementResponse> mapToReviewList(ReviewGroup reviewGroup) {
         return reviewRepository.findReceivedReviewsByGroupId(reviewGroup.getId())
                 .stream()
@@ -30,8 +29,8 @@ public class ReviewListMapper {
     }
 
     private ReviewListElementResponse mapToReviewListElementResponse(Review review) {
-        List<OptionItem> categoryOptionItems = optionItemRepository.findByReviewIdAndOptionType(review.getId(),
-                OptionType.CATEGORY);
+        List<OptionItem> categoryOptionItems = optionItemRepository
+                .findByReviewIdAndOptionType(review.getId(), OptionType.CATEGORY);
 
         List<ReviewCategoryResponse> categoryResponses = categoryOptionItems.stream()
                 .map(optionItem -> new ReviewCategoryResponse(optionItem.getId(), optionItem.getContent()))
