@@ -48,13 +48,16 @@ const useTextAnswer = ({ question }: UseTextAnswerProps) => {
 
   const validateTextLength = (text: string): TextAnswerErrorMessage => {
     const { min, max } = TEXT_ANSWER_LENGTH;
+    const isNotMaxSatisfied = text.length > max;
+    const isNotMinSatisfied = text.length < min;
+    //선택 질문 유효성 조건 - 최대 글자 이하
+    if (!question.required) {
+      return isNotMaxSatisfied ? 'max' : 'empty';
+    }
 
-    const isOverMax = text.length > max;
-    // 선택 질문은 최대 글자 수 이하면 유효성 통과
-    const isUnderMin = text.length < min && question.required;
-
-    if (isOverMax) return 'max';
-    if (isUnderMin) return 'min';
+    // 필수 질문 유효성 조건 - 최소 글자 이상 최대 글자 이하
+    if (isNotMaxSatisfied) return 'max';
+    if (isNotMinSatisfied) return 'min';
 
     return 'empty';
   };
