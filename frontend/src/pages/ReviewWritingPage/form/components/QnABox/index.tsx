@@ -18,8 +18,12 @@ const QnABox = ({ question }: QnABoxProps) => {
   const multipleLGuideline = (() => {
     const { optionGroup, questionType } = question;
 
-    if (question.required && questionType === 'TEXT') {
-      return `(최소 ${TEXT_ANSWER_LENGTH.min}자 ~ 최대 ${TEXT_ANSWER_LENGTH.max}자)`;
+    // NOTE: 객관식일 경우의 안내 문구 처리
+    if (questionType === 'TEXT') {
+      const guideline = question.required
+        ? `(최소 ${TEXT_ANSWER_LENGTH.min}자 ~ 최대 ${TEXT_ANSWER_LENGTH.max}자)`
+        : `(최대 ${TEXT_ANSWER_LENGTH.max}자)`;
+      return guideline;
     }
 
     if (!optionGroup) return;
