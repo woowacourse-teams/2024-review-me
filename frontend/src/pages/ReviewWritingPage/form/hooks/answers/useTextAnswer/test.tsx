@@ -119,7 +119,7 @@ describe('서술형 답변 테스트', () => {
   });
 
   describe('선택 질문에 대한 서술형 답변 유효성 검사', () => {
-    it('선택 질문에 대한 서술형 답볌의 경우, 작성한 답변이 없으면 유효한 답변이다.', async () => {
+    it('선택 질문에 대한 서술형 답변의 경우, 작성한 답변이 없으면 유효한 답변이다.', async () => {
       const { result } = renderUseTextAnswerHook({
         reviewWritingFormSectionListData: NOT_REQUIRED_ANSWER_MOCK_SECTION_LIST,
       });
