@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import reviewme.review.service.exception.QuestionNotAnsweredException;
 
 @Entity
 @Table(name = "text_answer")
@@ -29,7 +30,14 @@ public class TextAnswer {
     private String content;
 
     public TextAnswer(long questionId, String content) {
+        validateContent(questionId, content);
         this.questionId = questionId;
         this.content = content;
+    }
+
+    private void validateContent(long questionId, String content) {
+        if (content == null) {
+            throw new QuestionNotAnsweredException(questionId);
+        }
     }
 }

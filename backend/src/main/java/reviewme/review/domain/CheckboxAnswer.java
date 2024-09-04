@@ -15,6 +15,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import reviewme.review.service.exception.QuestionNotAnsweredException;
 
 @Entity
 @Table(name = "checkbox_answer")
@@ -38,9 +39,16 @@ public class CheckboxAnswer {
     private List<CheckBoxAnswerSelectedOption> selectedOptionIds;
 
     public CheckboxAnswer(long questionId, List<Long> selectedOptionIds) {
+        validateSelectedOptionIds(questionId, selectedOptionIds);
         this.questionId = questionId;
         this.selectedOptionIds = selectedOptionIds.stream()
                 .map(CheckBoxAnswerSelectedOption::new)
                 .toList();
+    }
+
+    private void validateSelectedOptionIds(long questionId, List<Long> selectedOptionIds) {
+        if (selectedOptionIds == null) {
+            throw new QuestionNotAnsweredException(questionId);
+        }
     }
 }
