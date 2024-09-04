@@ -171,8 +171,7 @@ describe('객관식 답변 테스트', () => {
     ];
 
     // 선택된 문항 옵션
-    const VALIDATED_OPTION_LIST = ['1', '1,2'];
-    const INVALIDATED_OPTION_LIST = ['', '1,2,3'];
+    const VALIDATED_OPTION_LIST = ['', '1', '1,2'];
 
     it('선택 질문의 객관식 답변에서 선택된 문항이 없다면, 답변이 유효하다.', async () => {
       const SELECTED_OPTION_LIST: number[] = [];
@@ -205,7 +204,7 @@ describe('객관식 답변 테스트', () => {
     });
 
     it.each(VALIDATED_OPTION_LIST)(
-      '선택 질문의 객관식 답변이라도, 선택 된 문항이 있다면 최소 선택 개수 이상 최대 선택 개수 이하로 선택해야 답변이 유효하다.(선택된 문항:%s)',
+      '선택 질문의 객관식 답변이라도, 선택 된 문항이 있다면 최대 선택 개수 이하로 선택해야 답변이 유효하다.(선택된 문항:%s)',
       async (optionList) => {
         const selectedOptionList = optionList.split(',').map((value) => Number(value));
 
@@ -235,36 +234,35 @@ describe('객관식 답변 테스트', () => {
       },
     );
 
-    it.each(INVALIDATED_OPTION_LIST)(
-      '선택 질문의 객관식 답변에서 선택된 문항이 있다면, 최소 선택 개수 미만이거나 최대 선택 개수의 요건을 충족하지 않다면 답변이 유효하지 않다.',
-      async (optionList) => {
-        const selectedOptionList = optionList === '' ? [] : optionList.split(',').map((value) => Number(value));
+    it('선택 질문의 객관식 답변에서 선택된 문항이 있다면, 최소 선택 개수 미만이거나 최대 선택 개수의 요건을 충족하지 않다면 답변이 유효하지 않다.', async () => {
+      const selectedOptionList = [1, 2, 3];
 
-        const { result } = renderUseMultipleChoiceHook({});
+      const { result } = renderUseMultipleChoiceHook({});
 
-        await waitFor(() => {
-          expect(result.current.cardSectionList.length).not.toBe(0);
-        });
+      await waitFor(() => {
+        expect(result.current.cardSectionList.length).not.toBe(0);
+      });
 
-        act(() => {
-          result.current.updateAnswerState(selectedOptionList);
-        });
+      act(() => {
+        result.current.updateAnswerState(selectedOptionList);
+      });
 
-        const { answerMap, answerValidationMap } = result.current;
+      const { answerMap, answerValidationMap } = result.current;
 
-        //해당 질문에 대한 answerMap 답변 확인
-        // 유효하지 않으면 빈배열
-        const updatedAnswer = answerMap?.get(MOCK_QUESTION.questionId);
-        expect(updatedAnswer).toEqual({
-          questionId: MOCK_QUESTION.questionId,
-          selectedOptionIds: [],
-          text: null,
-        });
+      //해당 질문에 대한 answerMap 답변 확인
+      // 유효하지 않으면 빈배열
+      const updatedAnswer = answerMap?.get(MOCK_QUESTION.questionId);
 
-        //해당 질문에 대한 answerValidationMap 답변 확인
-        const isValidated = answerValidationMap?.get(MOCK_QUESTION.questionId);
-        expect(isValidated).toBe(false);
-      },
-    );
+      expect(updatedAnswer).toEqual({
+        questionId: MOCK_QUESTION.questionId,
+        selectedOptionIds: [],
+        text: null,
+      });
+
+      //해당 질문에 대한 answerValidationMap 답변 확인
+      const isValidated = answerValidationMap?.get(MOCK_QUESTION.questionId);
+
+      expect(isValidated).toBe(false);
+    });
   });
 });
