@@ -35,6 +35,13 @@ const globalStyles = css`
     background: #f1f2f4; /*스크롤바 배경 색상 (lightGray)*/
     border-radius: 0.8rem;
   }
+
+  .prevent-drag {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 `;
 
 export default globalStyles;
