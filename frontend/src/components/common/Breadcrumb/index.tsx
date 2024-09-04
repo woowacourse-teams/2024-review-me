@@ -26,7 +26,7 @@ const Breadcrumb = ({ pathList }: BreadcrumbProps) => {
   };
 
   return (
-    <S.BreadcrumbList>
+    <S.BreadcrumbList className="prevent-drag">
       {pathList.map(({ pageName, path }, index) => (
         <S.BreadcrumbItem key={index} onClick={() => handleNavigation(path)}>
           {pageName}

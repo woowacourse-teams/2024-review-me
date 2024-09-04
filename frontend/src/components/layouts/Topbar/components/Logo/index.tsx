@@ -12,7 +12,7 @@ const Logo = () => {
   };
 
   return (
-    <S.Logo>
+    <S.Logo className="prevent-drag">
       {/* <img src={LogoIcon} alt="로고 아이콘" /> */}
       <S.LogoText onClick={handleLogoClick}>
         <span>REVIEW</span>

@@ -11,7 +11,7 @@ interface ReviewCardProps {
 
 const ReviewCard = ({ projectName, createdAt, contentPreview, categories }: ReviewCardProps) => {
   return (
-    <S.Layout>
+    <S.Layout className="prevent-drag">
       <S.Header>
         <S.HeaderContent>
           {/* NOTE: 추후에 깃허브 로고를 다른 이미지로 대체할 수 있어서 일단 주석 처리 */}
