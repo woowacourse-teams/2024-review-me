@@ -19,6 +19,8 @@ const QnABox = ({ question }: QnABoxProps) => {
     if (!optionGroup) return;
 
     const { minCount, maxCount } = optionGroup;
+    //선택 질문
+    if (!question.required) return `(${maxCount}개 이하)`;
 
     const isAllSelectAvailable = maxCount === optionGroup.options.length;
     if (!maxCount || isAllSelectAvailable) return `(최소 ${minCount}개 이상)`;
@@ -31,13 +33,15 @@ const QnABox = ({ question }: QnABoxProps) => {
     <S.QnASection>
       <S.QuestionTitle>
         {question.content}
-        {question.required ? <S.QuestionRequiredMark>*</S.QuestionRequiredMark> : <span> (선택) </span>}
+        {question.required ? (
+          <S.QuestionRequiredMark>*</S.QuestionRequiredMark>
+        ) : (
+          <S.NotRequiredQuestionText>(선택)</S.NotRequiredQuestionText>
+        )}
         <S.MultipleGuideline>{multipleLGuideline ?? ''}</S.MultipleGuideline>
       </S.QuestionTitle>
       {question.guideline && <S.QuestionGuideline>{question.guideline}</S.QuestionGuideline>}
-      {/*객관식*/}
       {question.questionType === 'CHECKBOX' && <MultipleChoiceAnswer question={question} />}
-      {/*서술형*/}
       {question.questionType === 'TEXT' && <TextAnswer question={question} />}
     </S.QnASection>
   );

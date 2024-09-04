@@ -15,7 +15,7 @@ import useUpdateDefaultAnswers from '../useUpdateDefaultAnswers';
 import useTextAnswer, { TEXT_ANSWER_ERROR_MESSAGE, TEXT_ANSWER_LENGTH } from '.';
 
 const MOCK_SECTION_LIST = [FEEDBACK_SECTION];
-const NOT_REQUIRED_MOCK_SECTION_LIST: ReviewWritingCardSection[] = [
+const NOT_REQUIRED_ANSWER_MOCK_SECTION_LIST: ReviewWritingCardSection[] = [
   { ...FEEDBACK_SECTION, questions: [{ ...FEEDBACK_SECTION.questions[0], required: false }] },
 ];
 
@@ -69,11 +69,13 @@ describe('서술형 답변 테스트', () => {
   const { min, max } = TEXT_ANSWER_LENGTH;
 
   const MOCK_TEXT = 'A'.repeat(max + 10);
-  const VALIDATE_CASE = [MOCK_TEXT.slice(0, min), MOCK_TEXT.slice(0, max)];
-  const INVALIDATE_CASE = [MOCK_TEXT.slice(0, min - 1), MOCK_TEXT.slice(0, max + 1)];
+  const COMMON_VALIDATE_CASE_LIST = [MOCK_TEXT.slice(0, min), MOCK_TEXT.slice(0, max)];
+  const NOT_REQUIRED_ANSWER_VALIDATE_CASE_LIST = ['', ...COMMON_VALIDATE_CASE_LIST];
+  const COMMON_INVALIDATE_CASE = MOCK_TEXT.slice(0, max + 1);
+  const REQUIRED_ANSWER_INVALIDATED_CASE_LIST = ['', MOCK_TEXT.slice(0, min - 1), COMMON_INVALIDATE_CASE];
 
   describe('필수 질문에 대한 서술형 답변 유효성 검사', () => {
-    it.each(VALIDATE_CASE)(
+    it.each(COMMON_VALIDATE_CASE_LIST)(
       '필수 질문에 대한 서술형의 경우, 답변 글자 수가 최소 글자 수 이상 최대 글자 수 이하 조건을 만족해야한다.(글자수 : %i.length)',
       async (text) => {
         const { result } = renderUseTextAnswerHook({});
@@ -94,7 +96,7 @@ describe('서술형 답변 테스트', () => {
       },
     );
 
-    it.each(INVALIDATE_CASE)(
+    it.each(REQUIRED_ANSWER_INVALIDATED_CASE_LIST)(
       '필수 질문에 대한 서술형의 경우, 답변 글자 수가 최소 글자 수 미만이거나 최대 글자 수를 초과하면 답변이 유효하지 않디.(글자수 : %i.length)',
       async (text) => {
         const { result } = renderUseTextAnswerHook({});
@@ -117,9 +119,9 @@ describe('서술형 답변 테스트', () => {
   });
 
   describe('선택 질문에 대한 서술형 답변 유효성 검사', () => {
-    it('선택 질문에 대한 서술형 답볌의 경우, 작성한 답변이 없거나 빈문자열이면 유효한 답변이다.', async () => {
+    it('선택 질문에 대한 서술형 답변의 경우, 작성한 답변이 없으면 유효한 답변이다.', async () => {
       const { result } = renderUseTextAnswerHook({
-        reviewWritingFormSectionListData: NOT_REQUIRED_MOCK_SECTION_LIST,
+        reviewWritingFormSectionListData: NOT_REQUIRED_ANSWER_MOCK_SECTION_LIST,
       });
 
       //초기 셋팅 확인
@@ -128,16 +130,16 @@ describe('서술형 답변 테스트', () => {
       });
 
       expect(
-        result.current.answerValidationMap?.get(NOT_REQUIRED_MOCK_SECTION_LIST[0].questions[0].questionId),
+        result.current.answerValidationMap?.get(NOT_REQUIRED_ANSWER_MOCK_SECTION_LIST[0].questions[0].questionId),
       ).toBeTruthy();
     });
 
     describe('선택 질문에 대한 서술형 답변에 작성한 답변이 있는 경우의 유효성 검사', () => {
-      it.each(VALIDATE_CASE)(
-        '선택 질문이어도 작성한 답변이 있다면 답변 글자 수가 최소 글자 수 이상이면서 최대 글자 수 미만이면 답변이 유효하디.(글자수 : %i.length)',
+      it.each(NOT_REQUIRED_ANSWER_VALIDATE_CASE_LIST)(
+        '선택 질문이어도 작성한 답변이 있다면 답변 글자 수가 최대 글자 수 이하면 답변이 유효하디.(글자수 : %i.length)',
         async (text) => {
           const { result } = renderUseTextAnswerHook({
-            reviewWritingFormSectionListData: NOT_REQUIRED_MOCK_SECTION_LIST,
+            reviewWritingFormSectionListData: NOT_REQUIRED_ANSWER_MOCK_SECTION_LIST,
           });
 
           //초기 셋팅 확인
@@ -148,48 +150,41 @@ describe('서술형 답변 테스트', () => {
           expect(result.current.errorMessage).toEqual('');
 
           //change 이벤트 실행
-          if (text) {
-            act(() => {
-              const event = { target: { value: text } } as React.ChangeEvent<HTMLTextAreaElement>;
+          act(() => {
+            const event = { target: { value: text } } as React.ChangeEvent<HTMLTextAreaElement>;
 
-              result.current.handleTextAnswerChange(event);
-            });
-          }
+            result.current.handleTextAnswerChange(event);
+          });
 
           expect(
-            result.current.answerValidationMap?.get(NOT_REQUIRED_MOCK_SECTION_LIST[0].questions[0].questionId),
+            result.current.answerValidationMap?.get(NOT_REQUIRED_ANSWER_MOCK_SECTION_LIST[0].questions[0].questionId),
           ).toBeTruthy();
         },
       );
 
-      it.each(INVALIDATE_CASE)(
-        '선택 질문이어도 작성한 답변이 있다면 답변 글자 수가 최소 글자 수 미만이거나 최대 글자 수를 초과하면 답변이 유효하지 않디.(글자수 : %i.length)',
-        async (text) => {
-          const { result } = renderUseTextAnswerHook({
-            reviewWritingFormSectionListData: NOT_REQUIRED_MOCK_SECTION_LIST,
-          });
+      it('선택 질문이어도 작성한 답변의 글자 수가 최대 글자 수를 초과하면 답변이 유효하지 않디.(글자수 : %i.length)', async () => {
+        const { result } = renderUseTextAnswerHook({
+          reviewWritingFormSectionListData: NOT_REQUIRED_ANSWER_MOCK_SECTION_LIST,
+        });
 
-          //초기 셋팅 확인
-          await waitFor(() => {
-            expect(result.current.cardSectionList[0].questions[0].required).toBeFalsy();
-          });
+        //초기 셋팅 확인
+        await waitFor(() => {
+          expect(result.current.cardSectionList[0].questions[0].required).toBeFalsy();
+        });
 
-          expect(result.current.errorMessage).toEqual('');
+        expect(result.current.errorMessage).toEqual('');
 
-          //change 이벤트 실행
-          if (text) {
-            act(() => {
-              const event = { target: { value: text } } as React.ChangeEvent<HTMLTextAreaElement>;
+        //change 이벤트 실행
+        act(() => {
+          const event = { target: { value: COMMON_INVALIDATE_CASE } } as React.ChangeEvent<HTMLTextAreaElement>;
 
-              result.current.handleTextAnswerChange(event);
-            });
-          }
+          result.current.handleTextAnswerChange(event);
+        });
 
-          expect(
-            result.current.answerValidationMap?.get(NOT_REQUIRED_MOCK_SECTION_LIST[0].questions[0].questionId),
-          ).toBeFalsy();
-        },
-      );
+        expect(
+          result.current.answerValidationMap?.get(NOT_REQUIRED_ANSWER_MOCK_SECTION_LIST[0].questions[0].questionId),
+        ).toBeFalsy();
+      });
     });
   });
 
@@ -205,7 +200,7 @@ describe('서술형 답변 테스트', () => {
 
       // text값 넣기
       act(() => {
-        const event = { target: { value: INVALIDATE_CASE[1] } } as React.ChangeEvent<HTMLTextAreaElement>;
+        const event = { target: { value: COMMON_INVALIDATE_CASE } } as React.ChangeEvent<HTMLTextAreaElement>;
 
         result.current.handleTextAnswerChange(event);
       });
@@ -215,7 +210,7 @@ describe('서술형 답변 테스트', () => {
     });
 
     describe('포커스 해제 시(=onBlur) 메세지 테스트', () => {
-      it.each(['', ...INVALIDATE_CASE])(
+      it.each(REQUIRED_ANSWER_INVALIDATED_CASE_LIST)(
         '필수 질문일 경우, textArea에 포커스가 해제되면 오류 메세지를 띄운다.',
         async (text) => {
           const isUnderMin = text.length < min;
@@ -228,15 +223,6 @@ describe('서술형 답변 테스트', () => {
           });
 
           expect(result.current.errorMessage).toEqual('');
-
-          // text가 빈문자열이 아닐 경우에만 change 이벤트 실행
-          if (text) {
-            act(() => {
-              const event = { target: { value: text } } as React.ChangeEvent<HTMLTextAreaElement>;
-
-              result.current.handleTextAnswerChange(event);
-            });
-          }
 
           //onBlur
           act(() => {
@@ -251,39 +237,13 @@ describe('서술형 답변 테스트', () => {
       );
 
       describe('선택 질문', () => {
-        it('답변을 작성하지 않은 선택 질문에 대한 서술형 답변의경우, textArea에 포커스가 해제되어도 오류메세지를 띄우지 않는다', async () => {
-          const expectedErrorMessage = '';
-
-          const { result } = renderUseTextAnswerHook({
-            reviewWritingFormSectionListData: NOT_REQUIRED_MOCK_SECTION_LIST,
-          });
-
-          //초기 셋팅 확인
-          await waitFor(() => {
-            expect(result.current.cardSectionList[0].questions[0].required).toBeFalsy();
-          });
-
-          expect(result.current.errorMessage).toEqual('');
-
-          //onBlur
-          act(() => {
-            const event = { target: { value: '' } } as React.ChangeEvent<HTMLTextAreaElement>;
-
-            result.current.handleTextAnswerBlur(event);
-          });
-
-          // 오류 메세지 확인
-          expect(result.current.errorMessage).toEqual(expectedErrorMessage);
-        });
-
-        it.each(INVALIDATE_CASE)(
-          '선택 질문이어도 작성한 답변이 있고 답변이 유효하지 않다면, textArea에 포커스가 해제될때 오류 메세지를 띄운다.',
+        it.each(NOT_REQUIRED_ANSWER_VALIDATE_CASE_LIST)(
+          '선택 질문에 대한 유효한 서술형 답변인 경우(= 최소 글자 이하), textArea에 포커스가 해제되어도 오류메세지를 띄우지 않는다',
           async (text) => {
-            const isUnderMin = text.length < min;
-            const expectedErrorMessage = isUnderMin ? TEXT_ANSWER_ERROR_MESSAGE.min : TEXT_ANSWER_ERROR_MESSAGE.max;
+            const expectedErrorMessage = '';
 
             const { result } = renderUseTextAnswerHook({
-              reviewWritingFormSectionListData: NOT_REQUIRED_MOCK_SECTION_LIST,
+              reviewWritingFormSectionListData: NOT_REQUIRED_ANSWER_MOCK_SECTION_LIST,
             });
 
             //초기 셋팅 확인
@@ -292,15 +252,6 @@ describe('서술형 답변 테스트', () => {
             });
 
             expect(result.current.errorMessage).toEqual('');
-
-            // text가 빈문자열이 아닐 경우에만 change 이벤트 실행
-            if (text) {
-              act(() => {
-                const event = { target: { value: text } } as React.ChangeEvent<HTMLTextAreaElement>;
-
-                result.current.handleTextAnswerChange(event);
-              });
-            }
 
             //onBlur
             act(() => {
@@ -313,6 +264,31 @@ describe('서술형 답변 테스트', () => {
             expect(result.current.errorMessage).toEqual(expectedErrorMessage);
           },
         );
+
+        it('선택 질문이어도 작성한 답변이 있고 답변이 유효하지 않다면(= 최대 글자수를 초과), textArea에 포커스가 해제될때 오류 메세지를 띄운다.', async () => {
+          const expectedErrorMessage = TEXT_ANSWER_ERROR_MESSAGE.max;
+
+          const { result } = renderUseTextAnswerHook({
+            reviewWritingFormSectionListData: NOT_REQUIRED_ANSWER_MOCK_SECTION_LIST,
+          });
+
+          //초기 셋팅 확인
+          await waitFor(() => {
+            expect(result.current.cardSectionList[0].questions[0].required).toBeFalsy();
+          });
+
+          expect(result.current.errorMessage).toEqual('');
+
+          //onBlur
+          act(() => {
+            const event = { target: { value: COMMON_INVALIDATE_CASE } } as React.ChangeEvent<HTMLTextAreaElement>;
+
+            result.current.handleTextAnswerBlur(event);
+          });
+
+          // 오류 메세지 확인
+          expect(result.current.errorMessage).toEqual(expectedErrorMessage);
+        });
       });
     });
   });

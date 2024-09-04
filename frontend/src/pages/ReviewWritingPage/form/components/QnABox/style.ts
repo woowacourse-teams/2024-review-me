@@ -25,3 +25,7 @@ export const QuestionRequiredMark = styled.sup`
 export const MultipleGuideline = styled.span`
   margin-left: 0.5rem;
 `;
+
+export const NotRequiredQuestionText = styled.span`
+  margin-left: 0.5rem;
+`;
