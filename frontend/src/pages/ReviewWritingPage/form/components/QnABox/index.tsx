@@ -40,9 +40,7 @@ const QnABox = ({ question }: QnABoxProps) => {
         <S.MultipleGuideline>{multipleLGuideline ?? ''}</S.MultipleGuideline>
       </S.QuestionTitle>
       {question.guideline && <S.QuestionGuideline>{question.guideline}</S.QuestionGuideline>}
-      {/*객관식*/}
       {question.questionType === 'CHECKBOX' && <MultipleChoiceAnswer question={question} />}
-      {/*서술형*/}
       {question.questionType === 'TEXT' && <TextAnswer question={question} />}
     </S.QnASection>
   );
