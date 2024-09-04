@@ -8,7 +8,7 @@ interface TextAnswerProps {
 }
 
 const TextAnswer = ({ question }: TextAnswerProps) => {
-  const { text, minLength, maxLength, errorMessage, handleTextAnswerBlur, handleTextAnswerChange } = useTextAnswer({
+  const { text, maxLength, errorMessage, handleTextAnswerBlur, handleTextAnswerChange } = useTextAnswer({
     question,
   });
 
@@ -22,7 +22,6 @@ const TextAnswer = ({ question }: TextAnswerProps) => {
         $isError={errorMessage !== ''}
         onChange={handleTextAnswerChange}
         onBlur={handleTextAnswerBlur}
-        placeholder={`최소 ${minLength}자 이상, 최대 ${maxLength}자까지 입력 가능해요`}
       />
       <S.TextareaInfoContainer>
         <S.ReviewTextareaError>{errorMessage}</S.ReviewTextareaError>
