@@ -37,7 +37,7 @@ const useTextAnswer = ({ question }: UseTextAnswerProps) => {
     // 1. 글자는 사용자가 입력한대로 보여줘야한다. (복붙해서 사용할때 이슈 있었음)
     // 2. 과도한 입력을 방지하기 위해 max를 넘어서는 일정 수준에서 글자를 자른다.
     sliceTextAnswer(value);
-    handleErrorMessage(value);
+    handleErrorMessageOnChange(value);
     handleUpdateAnswerState(value);
   };
 
@@ -72,10 +72,14 @@ const useTextAnswer = ({ question }: UseTextAnswerProps) => {
   /**
     작성한 답변의 유효성 검사 여뷰에 따라 오류 메세지 관리
    */
-  const handleErrorMessage = (value: string) => {
+  const handleErrorMessageOnChange = (value: string) => {
     const validationResult = validateTextLength(value);
     // 입력 중일때는 최소 글자 오류 메세지 보여주지 않음
-    setErrorMessage(TEXT_ANSWER_ERROR_MESSAGE[validationResult]);
+
+    const isHideErrorMessage = validationResult !== 'max';
+    setErrorMessage(
+      isHideErrorMessage ? TEXT_ANSWER_ERROR_MESSAGE.noError : TEXT_ANSWER_ERROR_MESSAGE[validationResult],
+    );
   };
 
   /**
