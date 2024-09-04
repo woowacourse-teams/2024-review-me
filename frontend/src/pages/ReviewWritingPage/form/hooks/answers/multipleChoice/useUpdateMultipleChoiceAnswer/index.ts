@@ -19,25 +19,30 @@ const useUpdateMultipleChoiceAnswer = ({ question }: UseUpdateMultipleChoiceAnsw
     const { minCount, maxCount } = question.optionGroup;
     const { length } = newSelectedOptionList;
 
-    return length >= minCount && length <= maxCount;
+    const isMinSatisfied = length >= minCount;
+    const isMaxSatisfied = length <= maxCount;
+
+    // 선택 질문 - 최대 선택 이하
+    if (!question.required) {
+      return isMaxSatisfied;
+    }
+
+    //필수 질문 - 최소 선택 이상 최대 선택 이하
+    return isMinSatisfied && isMaxSatisfied;
   };
 
   const updateAnswerState = (newSelectedOptionList: number[]) => {
-    // 유효한 선택(=객관식 문항의 최소,최대 개수를 지켰을 경우)인지에 따라 answer 변경
+    // 유효한 선택인지에 따라 answer 변경
     const isValidatedAnswer = isValidatedChoice(newSelectedOptionList);
-    /**
-     * 선택 질문이면서 선택된 문항이 없는 경우
-     */
-    const isNotRequiredEmptyAnswer = !question.required && newSelectedOptionList.length === 0;
-    // 필수, 선택 질문 여부 상관없이 선택된 문항이 있다면 선택된 문항 개수가 유효할 경우에만 선택이 반영되고 그렇지 않으면 빈배열
+
     const newAnswer: ReviewWritingAnswer = {
       questionId: question.questionId,
-      selectedOptionIds: isNotRequiredEmptyAnswer ? [] : isValidatedAnswer ? newSelectedOptionList : [],
+      selectedOptionIds: isValidatedAnswer ? newSelectedOptionList : [],
       text: null,
     };
 
     updateAnswerMap(newAnswer);
-    updateAnswerValidationMap(newAnswer, isValidatedAnswer || isNotRequiredEmptyAnswer);
+    updateAnswerValidationMap(newAnswer, isValidatedAnswer);
   };
 
   return {
