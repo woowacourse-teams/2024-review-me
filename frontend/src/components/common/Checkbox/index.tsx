@@ -23,7 +23,15 @@ const Checkbox = ({ id, isChecked, handleChange, isDisabled, $style, $isReadonly
   return (
     <S.CheckboxContainer $style={$style} $isReadonly={$isReadonly}>
       <S.CheckboxLabel>
-        <input id={id} checked={isChecked} disabled={isDisabled} type="checkbox" onChange={handleChange} {...rest} />
+        <input
+          id={id}
+          data-testid={`checkbox-${id}`}
+          checked={isChecked}
+          disabled={isDisabled}
+          type="checkbox"
+          onChange={handleChange}
+          {...rest}
+        />
         <img src={isChecked ? CheckedIcon : UncheckedIcon} alt="체크박스" />
       </S.CheckboxLabel>
     </S.CheckboxContainer>

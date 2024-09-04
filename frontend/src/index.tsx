@@ -13,7 +13,7 @@ import {
   HomePage,
   ReviewListPage,
   ReviewWritingCompletePage,
-  ReviewWritingCardFormPage,
+  ReviewWritingPage,
   ReviewZonePage,
 } from '@/pages';
 
@@ -74,7 +74,7 @@ const router = createBrowserRouter([
         path: 'user',
         element: <div>user</div>,
       },
-      { path: `${ROUTE.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewWritingCardFormPage /> },
+      { path: `${ROUTE.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewWritingPage /> },
       { path: ROUTE.reviewWritingComplete, element: <ReviewWritingCompletePage /> },
       {
         path: ROUTE.reviewList,

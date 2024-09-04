@@ -3,7 +3,7 @@ import { useId, useState } from 'react';
 import { DataForReviewRequestCode } from '@/apis/group';
 import { Button } from '@/components';
 import { ROUTE } from '@/constants/route';
-import useModals from '@/hooks/useModals';
+import { useModals } from '@/hooks';
 import { debounce } from '@/utils/debounce';
 
 import usePostDataForReviewRequestCode from '../../queries/usePostDataForReviewRequestCode';
