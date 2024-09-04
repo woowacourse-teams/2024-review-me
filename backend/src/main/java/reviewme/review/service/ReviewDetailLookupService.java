@@ -23,7 +23,6 @@ public class ReviewDetailLookupService {
 
     private final ReviewDetailMapper reviewDetailMapper;
 
-    @Transactional(readOnly = true)
     public ReviewDetailResponse getReviewDetail(long reviewId, String reviewRequestCode, String groupAccessCode) {
         ReviewGroup reviewGroup = findReviewGroupByRequestCodeOrThrow(reviewRequestCode);
         validateGroupAccessCode(groupAccessCode, reviewGroup);
