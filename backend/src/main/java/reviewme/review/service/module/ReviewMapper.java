@@ -2,6 +2,8 @@ package reviewme.review.service.module;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question;
@@ -13,7 +15,6 @@ import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
-import reviewme.review.service.exception.QuestionNotAnsweredException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -25,36 +26,19 @@ import reviewme.template.repository.TemplateRepository;
 @RequiredArgsConstructor
 public class ReviewMapper {
 
+    private final AnswerMapper answerMapper;
+
     private final ReviewGroupRepository reviewGroupRepository;
     private final QuestionRepository questionRepository;
     private final TemplateRepository templateRepository;
 
-    public Review mapToReview(ReviewRegisterRequest request,
-                              TextAnswerValidator textAnswerValidator,
-                              CheckBoxAnswerValidator checkBoxAnswerValidator
-    ) {
+    public Review mapToReview(ReviewRegisterRequest request) {
         ReviewGroup reviewGroup = findReviewGroupByRequestCodeOrThrow(request.reviewRequestCode());
         Template template = findTemplateByReviewGroupOrThrow(reviewGroup);
 
-
         List<TextAnswer> textAnswers = new ArrayList<>();
         List<CheckboxAnswer> checkboxAnswers = new ArrayList<>();
-        for (ReviewAnswerRequest answerRequest : request.answers()) {
-            Question question = questionRepository.findById(answerRequest.questionId())
-                    .orElseThrow(() -> new SubmittedQuestionNotFoundException(answerRequest.questionId()));
-
-            if (question.getQuestionType() == QuestionType.TEXT) {
-                TextAnswer textAnswer = mapToTextAnswer(answerRequest);
-                textAnswerValidator.validate(textAnswer);
-                textAnswers.add(textAnswer);
-            }
-
-            if (question.getQuestionType() == QuestionType.CHECKBOX) {
-                CheckboxAnswer checkboxAnswer = mapToCheckboxAnswer(answerRequest);
-                checkBoxAnswerValidator.validate(checkboxAnswer);
-                checkboxAnswers.add(checkboxAnswer);
-            }
-        }
+        addAnswersByQuestionType(request, textAnswers, checkboxAnswers);
 
         return new Review(template.getId(), reviewGroup.getId(), textAnswers, checkboxAnswers);
     }
@@ -70,19 +54,32 @@ public class ReviewMapper {
                         reviewGroup.getId(), reviewGroup.getTemplateId()));
     }
 
-    private TextAnswer mapToTextAnswer(ReviewAnswerRequest answerRequest) {
-        if (answerRequest.text() == null) {
-            throw new QuestionNotAnsweredException(answerRequest.questionId());
+    private void addAnswersByQuestionType(ReviewRegisterRequest request,
+                                          List<TextAnswer> textAnswers, List<CheckboxAnswer> checkboxAnswers) {
+        List<Long> questionIds = request.answers()
+                .stream()
+                .map(ReviewAnswerRequest::questionId)
+                .toList();
+
+        Map<Long, Question> questionMap = questionRepository.findAllById(questionIds)
+                .stream()
+                .collect(Collectors.toMap(Question::getId, question -> question));
+
+        for (ReviewAnswerRequest answerRequest : request.answers()) {
+            Question question = questionMap.get(answerRequest.questionId());
+            if (question == null) {
+                throw new SubmittedQuestionNotFoundException(answerRequest.questionId());
+            }
+
+            if (question.getQuestionType() == QuestionType.TEXT) {
+                TextAnswer textAnswer = answerMapper.mapToTextAnswer(answerRequest);
+                textAnswers.add(textAnswer);
+            }
+
+            if (question.getQuestionType() == QuestionType.CHECKBOX) {
+                CheckboxAnswer checkboxAnswer = answerMapper.mapToCheckBoxAnswer(answerRequest);
+                checkboxAnswers.add(checkboxAnswer);
+            }
         }
-
-        return new TextAnswer(answerRequest.questionId(), answerRequest.text());
-    }
-
-    private CheckboxAnswer mapToCheckboxAnswer(ReviewAnswerRequest answerRequest) {
-        if (answerRequest.selectedOptionIds() == null) {
-            throw new QuestionNotAnsweredException(answerRequest.questionId());
-        }
-
-        return new CheckboxAnswer(answerRequest.questionId(), answerRequest.selectedOptionIds());
     }
 }

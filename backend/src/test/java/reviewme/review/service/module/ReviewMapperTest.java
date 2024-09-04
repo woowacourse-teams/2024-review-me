@@ -39,12 +39,6 @@ class ReviewMapperTest {
     private ReviewMapper reviewMapper;
 
     @Autowired
-    private TextAnswerValidator textAnswerValidator;
-
-    @Autowired
-    private CheckBoxAnswerValidator checkBoxAnswerValidator;
-
-    @Autowired
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
@@ -83,7 +77,7 @@ class ReviewMapperTest {
         ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(), List.of(reviewAnswerRequest));
 
         // when
-        Review review = reviewMapper.mapToReview(reviewRegisterRequest, textAnswerValidator, checkBoxAnswerValidator);
+        Review review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
         assertThat(review.getTextAnswers()).hasSize(1);
@@ -106,7 +100,7 @@ class ReviewMapperTest {
         ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(), List.of(reviewAnswerRequest));
 
         // when
-        Review review = reviewMapper.mapToReview(reviewRegisterRequest, textAnswerValidator, checkBoxAnswerValidator);
+        Review review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
         assertThat(review.getCheckboxAnswers()).hasSize(1);
@@ -132,7 +126,7 @@ class ReviewMapperTest {
                 reviewGroup.getReviewRequestCode(), List.of(textAnswerRequest, checkAnswerRequest));
 
         // when, then
-        assertThatCode(() -> reviewMapper.mapToReview(reviewRegisterRequest, textAnswerValidator, checkBoxAnswerValidator))
+        assertThatCode(() -> reviewMapper.mapToReview(reviewRegisterRequest))
                 .isInstanceOf(QuestionNotAnsweredException.class);
     }
 
@@ -156,7 +150,7 @@ class ReviewMapperTest {
                 reviewGroup.getReviewRequestCode(), List.of(textAnswerRequest, checkAnswerRequest));
 
         // when, then
-        assertThatCode(() -> reviewMapper.mapToReview(reviewRegisterRequest, textAnswerValidator, checkBoxAnswerValidator))
+        assertThatCode(() -> reviewMapper.mapToReview(reviewRegisterRequest))
                 .isInstanceOf(QuestionNotAnsweredException.class);
     }
 
@@ -172,7 +166,7 @@ class ReviewMapperTest {
 
         // when, then
         assertThatThrownBy(() -> reviewMapper.mapToReview(
-                reviewRegisterRequest, textAnswerValidator, checkBoxAnswerValidator))
+                reviewRegisterRequest))
                 .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 
@@ -193,7 +187,7 @@ class ReviewMapperTest {
 
         // when, then
         assertThatThrownBy(() -> reviewMapper.mapToReview(
-                reviewRegisterRequest, textAnswerValidator, checkBoxAnswerValidator))
+                reviewRegisterRequest))
                 .isInstanceOf(SubmittedQuestionNotFoundException.class);
     }
 }
