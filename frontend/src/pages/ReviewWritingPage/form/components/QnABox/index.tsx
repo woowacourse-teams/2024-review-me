@@ -19,6 +19,8 @@ const QnABox = ({ question }: QnABoxProps) => {
     if (!optionGroup) return;
 
     const { minCount, maxCount } = optionGroup;
+    //선택 질문
+    if (!question.required) return `(${maxCount}개 이하)`;
 
     const isAllSelectAvailable = maxCount === optionGroup.options.length;
     if (!maxCount || isAllSelectAvailable) return `(최소 ${minCount}개 이상)`;
