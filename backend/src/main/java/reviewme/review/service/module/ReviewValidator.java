@@ -14,19 +14,29 @@ import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMis
 import reviewme.template.domain.Section;
 import reviewme.template.domain.SectionQuestion;
 import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
 
 @Component
 @RequiredArgsConstructor
 public class ReviewValidator {
 
-    private final TemplateRepository templateRepository;
+    private final TextAnswerValidator textAnswerValidator;
+    private final CheckBoxAnswerValidator checkBoxAnswerValidator;
+
     private final SectionRepository sectionRepository;
     private final QuestionRepository questionRepository;
 
     public void validate(Review review) {
+        validateAnswer(review);
         validateAllAnswersContainedInTemplate(review);
         validateAllRequiredQuestionsAnswered(review);
+    }
+
+    private void validateAnswer(Review review) {
+        review.getTextAnswers()
+                .forEach(textAnswerValidator::validate);
+
+        review.getCheckboxAnswers()
+                .forEach(checkBoxAnswerValidator::validate);
     }
 
     private void validateAllAnswersContainedInTemplate(Review review) {

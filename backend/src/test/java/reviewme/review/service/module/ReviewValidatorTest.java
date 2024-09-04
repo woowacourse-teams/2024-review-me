@@ -125,7 +125,7 @@ class ReviewValidatorTest {
         Section section = sectionRepository.save(sectionFixture.항상_보이는_섹션(List.of(question1.getId())));
         Template template = templateRepository.save(templateFixture.템플릿(List.of(section.getId())));
 
-        TextAnswer textAnswer = new TextAnswer(question2.getId(), "서술형답변");
+        TextAnswer textAnswer = new TextAnswer(question2.getId(), "답변".repeat(20));
         Review review = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), new ArrayList<>());
 
         // when, then
@@ -143,7 +143,7 @@ class ReviewValidatorTest {
         Section section = sectionRepository.save(sectionFixture.항상_보이는_섹션(List.of(requiredQuestion.getId(), optionalQuestion.getId())));
         Template template = templateRepository.save(templateFixture.템플릿(List.of(section.getId())));
 
-        TextAnswer optionalTextAnswer = new TextAnswer(optionalQuestion.getId(), "서술형답변");
+        TextAnswer optionalTextAnswer = new TextAnswer(optionalQuestion.getId(), "답변".repeat(20));
         Review review = new Review(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer), List.of());
 
         // when, then
