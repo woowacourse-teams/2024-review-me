@@ -14,6 +14,10 @@ const usePasswordValidation = (password: string) => {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [isBlurredOnce, setIsBlurredOnce] = useState(false);
 
+  const initializeIsBlurredOnce = () => {
+    setIsBlurredOnce(false);
+  };
+
   const validatePassword = () => {
     if (!isWithinLengthRange(password, MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT)) {
       return setPasswordErrorMessage(PASSWORD_LENGTH_ERROR_MESSAGE);
@@ -36,6 +40,7 @@ const usePasswordValidation = (password: string) => {
   return {
     passwordErrorMessage,
     handlePasswordBlur,
+    initializeIsBlurredOnce,
   };
 };
 

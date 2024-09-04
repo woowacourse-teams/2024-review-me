@@ -20,6 +20,7 @@ const Carousel = ({ slideList }: CarouselProps) => {
   // NOTE: 마지막 슬라이드를 복제해서 slideList의 맨 앞에 추가하므로 처음에 보여져야 하는 슬라이드는 1번 인덱스
   const [currentSlideIndex, setCurrentSlideIndex] = useState(REAL_START_INDEX);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [clicked, setClicked] = useState(false);
   const slideRef = useRef<HTMLDivElement>(null);
 
   const slideLength = slideList.length;
@@ -38,11 +39,17 @@ const Carousel = ({ slideList }: CarouselProps) => {
   };
 
   const nextSlide = () => {
+    if (clicked) return;
+    setClicked(true);
     scrollToSlide(currentSlideIndex + 1);
+    setTimeout(() => setClicked(false), TRANSITION_DURATION + 100);
   };
 
   const prevSlide = () => {
+    if (clicked) return;
+    setClicked(true);
     scrollToSlide(currentSlideIndex - 1);
+    setTimeout(() => setClicked(false), TRANSITION_DURATION + 100);
   };
 
   // NOTE: // 초기 슬라이드 위치 설정
@@ -76,7 +83,7 @@ const Carousel = ({ slideList }: CarouselProps) => {
     }, AUTO_SLIDE_INTERVAL);
 
     return () => clearTimeout(timeout);
-  }, [currentSlideIndex]);
+  }, [currentSlideIndex, clicked]);
 
   return (
     <S.CarouselContainer>
