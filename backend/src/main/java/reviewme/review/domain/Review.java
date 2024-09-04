@@ -72,6 +72,10 @@ public class Review {
                 .collect(Collectors.toSet());
     }
 
+    public boolean hasAnsweredQuestion(long questionId) {
+        return getAnsweredQuestionIds().contains(questionId);
+    }
+
     public LocalDate getCreatedDate() {
         return createdAt.toLocalDate();
     }

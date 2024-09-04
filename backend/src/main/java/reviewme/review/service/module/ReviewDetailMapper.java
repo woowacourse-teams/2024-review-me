@@ -53,7 +53,7 @@ public class ReviewDetailMapper {
     private SectionAnswerResponse mapToSectionResponse(Review review, ReviewGroup reviewGroup, Section section) {
         List<QuestionAnswerResponse> questionResponses = questionRepository.findAllBySectionId(section.getId())
                 .stream()
-                .filter(question -> review.getAnsweredQuestionIds().contains(question.getId()))
+                .filter(question -> review.hasAnsweredQuestion(question.getId()))
                 .map(question -> mapToQuestionResponse(review, reviewGroup, question))
                 .toList();
 
