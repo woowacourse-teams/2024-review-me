@@ -41,7 +41,7 @@ public class ReviewValidator {
 
     private void validateAllAnswersContainedInTemplate(Review review) {
         Set<Long> providedQuestionIds = questionRepository.findAllQuestionIdByTemplateId(review.getTemplateId());
-        Set<Long> reviewedQuestionIds = review.getAllQuestionIdsFromAnswers();
+        Set<Long> reviewedQuestionIds = review.getAnsweredQuestionIds();
         if (!providedQuestionIds.containsAll(reviewedQuestionIds)) {
             throw new SubmittedQuestionAndProvidedQuestionMismatchException(reviewedQuestionIds, providedQuestionIds);
         }
@@ -55,7 +55,7 @@ public class ReviewValidator {
                 .map(Question::getId)
                 .collect(Collectors.toSet());
 
-        Set<Long> reviewedQuestionIds = review.getAllQuestionIdsFromAnswers();
+        Set<Long> reviewedQuestionIds = review.getAnsweredQuestionIds();
         if (!reviewedQuestionIds.containsAll(requiredQuestionIds)) {
             List<Long> missingRequiredQuestionIds = new ArrayList<>(requiredQuestionIds);
             missingRequiredQuestionIds.removeAll(reviewedQuestionIds);

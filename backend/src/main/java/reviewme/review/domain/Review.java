@@ -58,7 +58,7 @@ public class Review {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Set<Long> getAllQuestionIdsFromAnswers() {
+    public Set<Long> getAnsweredQuestionIds() {
         return Stream.concat(
                 textAnswers.stream().map(TextAnswer::getQuestionId),
                 checkboxAnswers.stream().map(CheckboxAnswer::getQuestionId)

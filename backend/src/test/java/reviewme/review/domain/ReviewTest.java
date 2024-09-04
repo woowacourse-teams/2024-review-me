@@ -1,7 +1,6 @@
 package reviewme.review.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Set;
@@ -17,7 +16,7 @@ class ReviewTest {
         Review review = new Review(1L, 1L, List.of(textAnswer), List.of(checkboxAnswer));
 
         // when
-        Set<Long> allQuestionIdsFromAnswers = review.getAllQuestionIdsFromAnswers();
+        Set<Long> allQuestionIdsFromAnswers = review.getAnsweredQuestionIds();
 
         // then
         assertThat(allQuestionIdsFromAnswers).containsAll(List.of(1L, 2L));
