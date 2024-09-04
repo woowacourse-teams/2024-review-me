@@ -27,7 +27,7 @@ public class ReviewDetailLookupService {
         ReviewGroup reviewGroup =  reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
-        validateGroupAccessCode(groupAccessCode, reviewGroup);
+        validateGroupAccessCode(reviewGroup, groupAccessCode);
 
         Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
                 .orElseThrow(() -> new ReviewNotFoundByIdAndGroupException(reviewId, reviewGroup.getId()));
@@ -35,7 +35,7 @@ public class ReviewDetailLookupService {
         return reviewDetailMapper.mapToReviewDetailResponse(review, reviewGroup);
     }
 
-    private static void validateGroupAccessCode(String groupAccessCode, ReviewGroup reviewGroup) {
+    private void validateGroupAccessCode(ReviewGroup reviewGroup, String groupAccessCode) {
         if (!reviewGroup.matchesGroupAccessCode(groupAccessCode)) {
             throw new ReviewGroupUnauthorizedException(reviewGroup.getId());
         }
