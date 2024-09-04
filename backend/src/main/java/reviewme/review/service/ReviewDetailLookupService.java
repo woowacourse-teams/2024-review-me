@@ -24,18 +24,15 @@ public class ReviewDetailLookupService {
     private final ReviewDetailMapper reviewDetailMapper;
 
     public ReviewDetailResponse getReviewDetail(long reviewId, String reviewRequestCode, String groupAccessCode) {
-        ReviewGroup reviewGroup = findReviewGroupByRequestCodeOrThrow(reviewRequestCode);
+        ReviewGroup reviewGroup =  reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
+
         validateGroupAccessCode(groupAccessCode, reviewGroup);
 
         Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
                 .orElseThrow(() -> new ReviewNotFoundByIdAndGroupException(reviewId, reviewGroup.getId()));
 
         return reviewDetailMapper.mapToReviewDetailResponse(review, reviewGroup);
-    }
-
-    private ReviewGroup findReviewGroupByRequestCodeOrThrow(String reviewRequestCode) {
-        return reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
     }
 
     private static void validateGroupAccessCode(String groupAccessCode, ReviewGroup reviewGroup) {
