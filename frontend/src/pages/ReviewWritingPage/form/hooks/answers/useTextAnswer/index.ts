@@ -50,7 +50,8 @@ const useTextAnswer = ({ question }: UseTextAnswerProps) => {
     const { min, max } = TEXT_ANSWER_LENGTH;
 
     const isOverMax = text.length > max;
-    const isUnderMin = text.length < min;
+    // 선택 질문은 최대 글자 수 이하면 유효성 통과
+    const isUnderMin = text.length < min && question.required;
 
     if (isOverMax) return 'max';
     if (isUnderMin) return 'min';
@@ -83,21 +84,13 @@ const useTextAnswer = ({ question }: UseTextAnswerProps) => {
    * 서술형에 작성한 답변에 따라, answerMap, answerValidationMap에 반영될 새로운 답과 답의 유효성 여부를 반환하는 함수
    */
   const getNewAnswerAndValidation = (value: string) => {
-    const validationResult = validateTextLength(value);
-    //answer 업데이트
-    const isValidatedText = validationResult === 'empty';
-    /**
-     * 선택 질문이면서 답변이 없는 지 여부
-     */
-    const isNotRequiredEmptyAnswer = !question.required && value === '';
-    const answerValidation = isValidatedText || isNotRequiredEmptyAnswer;
+    const answerValidation = validateTextLength(value) === 'empty';
 
     // 유효한 답변이여야 text에 value를 반영
     const newAnswer: ReviewWritingAnswer = {
       questionId: question.questionId,
       selectedOptionIds: null,
-      // 선택 질문이여도, 글자 개수가 유효성 여부 판단
-      text: isValidatedText ? value : '',
+      text: answerValidation ? value : '',
     };
 
     return { newAnswer, answerValidation };
@@ -105,10 +98,8 @@ const useTextAnswer = ({ question }: UseTextAnswerProps) => {
 
   const handleTextAnswerBlur = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
-    // 선택 질문, 작성한 답변이 없는 경우
-    if (!question.required && value.length === 0) return;
-    // 필수 질문 이거나 작성한 답변이 있는 선택 질문
     const validationResult = validateTextLength(value);
+
     setErrorMessage(TEXT_ANSWER_ERROR_MESSAGE[validationResult]);
   };
 
