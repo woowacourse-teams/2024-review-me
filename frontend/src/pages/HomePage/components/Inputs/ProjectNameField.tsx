@@ -18,7 +18,7 @@ const ProjectNameField = ({ id, value: revieweeName, setValue: setRevieweeName }
   }, [revieweeName]);
 
   return (
-    <InputField id={id} labelText="본인의 이름을 적어주세요" errorMessage={errorMessage}>
+    <InputField id={id} labelText="함께한 프로젝트 이름을 입력해주세요" errorMessage={errorMessage}>
       <Input
         id={id}
         value={revieweeName}
