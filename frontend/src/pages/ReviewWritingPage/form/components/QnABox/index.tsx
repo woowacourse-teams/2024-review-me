@@ -32,7 +32,11 @@ const QnABox = ({ question }: QnABoxProps) => {
     <S.QnASection>
       <S.QuestionTitle>
         {question.content}
-        {question.required ? <S.QuestionRequiredMark>*</S.QuestionRequiredMark> : <span> (선택) </span>}
+        {question.required ? (
+          <S.QuestionRequiredMark>*</S.QuestionRequiredMark>
+        ) : (
+          <S.NotRequiredQuestionText>(선택)</S.NotRequiredQuestionText>
+        )}
         <S.MultipleGuideline>{multipleLGuideline ?? ''}</S.MultipleGuideline>
       </S.QuestionTitle>
       {question.guideline && <S.QuestionGuideline>{question.guideline}</S.QuestionGuideline>}
