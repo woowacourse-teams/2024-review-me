@@ -2,6 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { RecoilRoot, RecoilState, useRecoilValue } from 'recoil';
 
 import { FEEDBACK_SECTION } from '@/mocks/mockData';
+import { TEXT_ANSWER_LENGTH } from '@/pages/ReviewWritingPage/constants';
 import {
   answerMapAtom,
   answerValidationMapAtom,
@@ -12,7 +13,7 @@ import { EssentialPropsWithChildren, ReviewWritingCardSection } from '@/types';
 
 import useUpdateDefaultAnswers from '../useUpdateDefaultAnswers';
 
-import useTextAnswer, { TEXT_ANSWER_ERROR_MESSAGE, TEXT_ANSWER_LENGTH } from '.';
+import useTextAnswer, { TEXT_ANSWER_ERROR_MESSAGE } from '.';
 
 const MOCK_SECTION_LIST = [FEEDBACK_SECTION];
 const NOT_REQUIRED_MOCK_SECTION_LIST: ReviewWritingCardSection[] = [
