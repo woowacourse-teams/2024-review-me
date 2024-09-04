@@ -11,7 +11,6 @@ import { InputValueProps } from './InputField';
 
 import { InputField } from '.';
 
-// TODO : initalizeIsBlurredOnce 확인하기
 const PasswordField = ({ id, value: password, setValue: setPassword }: InputValueProps) => {
   const { isOff, handleEyeButtonToggle } = useEyeButton();
   const { passwordErrorMessage, handlePasswordBlur, initializeIsBlurredOnce } = usePasswordValidation(password);
