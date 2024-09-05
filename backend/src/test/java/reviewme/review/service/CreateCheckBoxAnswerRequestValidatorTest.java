@@ -100,12 +100,8 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     void 옵션그룹에서_제공하지_않은_옵션아이템을_응답하면_예외가_발생한다() {
         // given
         Question savedQuestion = questionRepository.save(선택형_필수_질문());
-        OptionGroup savedOptionGroup = optionGroupRepository.save(
-                new OptionGroup(savedQuestion.getId(), 1, 3)
-        );
-        OptionItem savedOptionItem = optionItemRepository.save(
-                new OptionItem("옵션", savedOptionGroup.getId(), 1, OptionType.KEYWORD)
-        );
+        OptionGroup savedOptionGroup = optionGroupRepository.save(OptionGroupFixture.선택지_그룹(savedQuestion.getId()));
+        OptionItem savedOptionItem = optionItemRepository.save(OptionItemFixture.선택지(savedOptionGroup.getId()));
 
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
                 savedQuestion.getId(), List.of(savedOptionItem.getId() + 1L), null
