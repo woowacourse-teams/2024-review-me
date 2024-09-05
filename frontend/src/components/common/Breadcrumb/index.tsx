@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 
-import PreventDrag from '../PreventDrag';
+import UndraggableWrapper from '../UndraggableWrapper';
 
 import * as S from './styles';
 
@@ -31,7 +31,7 @@ const Breadcrumb = ({ pathList }: BreadcrumbProps) => {
     <S.BreadcrumbList>
       {pathList.map(({ pageName, path }, index) => (
         <S.BreadcrumbItem key={index} onClick={() => handleNavigation(path)}>
-          <PreventDrag>{pageName}</PreventDrag>
+          <UndraggableWrapper>{pageName}</UndraggableWrapper>
         </S.BreadcrumbItem>
       ))}
     </S.BreadcrumbList>

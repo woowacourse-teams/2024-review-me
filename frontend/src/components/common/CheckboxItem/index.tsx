@@ -1,5 +1,5 @@
 import Checkbox, { CheckboxProps } from '../Checkbox';
-import PreventDrag from '../PreventDrag';
+import UndraggableWrapper from '../UndraggableWrapper';
 
 import * as S from './styles';
 
@@ -11,9 +11,9 @@ const CheckboxItem = ({ label, ...rest }: CheckboxItemProps) => {
   return (
     <S.CheckboxItem>
       <S.CheckboxLabel>
-        <PreventDrag>
+        <UndraggableWrapper>
           <Checkbox {...rest} />
-        </PreventDrag>
+        </UndraggableWrapper>
         {label}
       </S.CheckboxLabel>
     </S.CheckboxItem>
