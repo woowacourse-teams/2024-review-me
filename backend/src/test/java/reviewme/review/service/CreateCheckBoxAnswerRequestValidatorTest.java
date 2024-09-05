@@ -6,6 +6,8 @@ import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.fixture.OptionGroupFixture;
+import reviewme.fixture.OptionItemFixture;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
@@ -64,11 +66,12 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     }
 
     @Test
-    void 저장되지_않은_옵션그룹에_대해_응답하면_예외가_발생한다() {
+    void 응답한_질문과_대응하는_옵션그룹이_존재하지_않으면_예외가_발생한다() {
         // given
+        long notselectedOptionId = 1L;
         Question savedQuestion = questionRepository.save(선택형_필수_질문());
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
-                savedQuestion.getId(), List.of(1L), null
+                savedQuestion.getId(), List.of(notselectedOptionId), null
         );
 
         // when, then
