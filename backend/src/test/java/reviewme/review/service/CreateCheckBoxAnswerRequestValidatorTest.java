@@ -40,7 +40,6 @@ class CreateCheckBoxAnswerRequestValidatorTest {
     @Test
     void 저장되지_않은_질문에_대한_응답이면_예외가_발생한다() {
         // given
-        questionRepository.save(선택형_필수_질문());
         long notSavedQuestionId = 100L;
         CreateReviewAnswerRequest request = new CreateReviewAnswerRequest(
                 notSavedQuestionId, List.of(1L), null
