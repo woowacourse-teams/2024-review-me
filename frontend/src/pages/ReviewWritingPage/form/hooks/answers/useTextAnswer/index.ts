@@ -1,14 +1,9 @@
 import { useState } from 'react';
 
+import { TEXT_ANSWER_LENGTH } from '@/pages/ReviewWritingPage/constants';
 import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
 
 import useUpdateReviewerAnswer from '../useUpdateReviewerAnswer';
-
-export const TEXT_ANSWER_LENGTH = {
-  min: 20,
-  max: 1000,
-  extra: 10,
-};
 
 export const TEXT_ANSWER_ERROR_MESSAGE = {
   empty: '공백만 입력할 수 없어요',

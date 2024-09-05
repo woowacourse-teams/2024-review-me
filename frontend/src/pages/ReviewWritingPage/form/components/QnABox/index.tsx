@@ -1,3 +1,4 @@
+import { TEXT_ANSWER_LENGTH } from '@/pages/ReviewWritingPage/constants';
 import { MultipleChoiceAnswer, TextAnswer } from '@/pages/ReviewWritingPage/form/components';
 import { ReviewWritingCardQuestion } from '@/types';
 
@@ -16,13 +17,22 @@ const QnABox = ({ question }: QnABoxProps) => {
    */
   const multipleLGuideline = (() => {
     const { optionGroup } = question;
-    if (!optionGroup) return;
 
+    // NOTE: 주관식일 경우의 안내 문구 처리
+    if (!optionGroup) {
+      const guideline = question.required
+        ? `(최소 ${TEXT_ANSWER_LENGTH.min}자 ~ 최대 ${TEXT_ANSWER_LENGTH.max}자)`
+        : `(최대 ${TEXT_ANSWER_LENGTH.max}자)`;
+      return guideline;
+    }
+
+    // NOTE: 객관식일 경우의 안내 문구 처리
     const { minCount, maxCount } = optionGroup;
     //선택 질문
     if (!question.required) return `(${maxCount}개 이하)`;
 
     const isAllSelectAvailable = maxCount === optionGroup.options.length;
+
     if (!maxCount || isAllSelectAvailable) return `(최소 ${minCount}개 이상)`;
     if (minCount === maxCount) return `(${maxCount}개)`;
 
