@@ -4,9 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "serve": "http-server ./dist",
     "dev": "webpack serve --mode=development --open --hot --progress",
     "build": "webpack --mode=production --node-env=production",
+    "serve-dist": "http-server ./dist",
     "lint:styles": "stylelint \"src/**/styles.ts\" --fix",
     "test": "jest"
   },
