@@ -47,7 +47,7 @@ class CheckBoxAnswerValidatorTest {
     }
 
     @Test
-    void 저장되지_않은_질문에_대한_응답이면_예외가_발생한다() {
+    void 저장되지_않은_질문에_대한_답변이면_예외가_발생한다() {
         // given
         long notSavedQuestionId = 100L;
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(notSavedQuestionId, List.of(1L));
@@ -58,7 +58,7 @@ class CheckBoxAnswerValidatorTest {
     }
 
     @Test
-    void 저장되지_않은_옵션그룹에_대해_응답하면_예외가_발생한다() {
+    void 저장되지_않은_옵션그룹의_답변이면_예외가_발생한다() {
         // given
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(savedQuestion.getId(), List.of(1L));
 
@@ -66,17 +66,6 @@ class CheckBoxAnswerValidatorTest {
         assertThatCode(() -> checkBoxAnswerValidator.validate(checkboxAnswer))
                 .isInstanceOf(OptionGroupNotFoundByQuestionIdException.class);
     }
-
-//    @Test
-//    void 필수_선택형_질문에_응답을_하지_않으면_예외가_발생한다() {
-//        // given
-//        optionGroupRepository.save(optionGroupFixture.선택지_그룹(savedQuestion.getId()));
-//        CheckboxAnswer checkboxAnswer = new CheckboxAnswer(savedQuestion.getId(), null);
-//
-//        // when, then
-//        assertThatCode(() -> checkBoxAnswerValidator.validate(checkboxAnswer))
-//                .isInstanceOf(QuestionNotAnsweredException.class);
-//    }
 
     @Test
     void 옵션그룹에서_제공하지_않은_옵션아이템을_응답하면_예외가_발생한다() {
