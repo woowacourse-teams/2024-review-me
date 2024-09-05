@@ -32,7 +32,7 @@ const Checkbox = ({ id, isChecked, handleChange, isDisabled, $style, $isReadonly
           onChange={handleChange}
           {...rest}
         />
-        <img src={isChecked ? CheckedIcon : UncheckedIcon} alt="체크박스" className="prevent-drag" />
+        <img src={isChecked ? CheckedIcon : UncheckedIcon} alt="체크박스" />
       </S.CheckboxLabel>
     </S.CheckboxContainer>
   );

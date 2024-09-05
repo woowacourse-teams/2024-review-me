@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 
+import PreventDrag from '../PreventDrag';
+
 import * as S from './styles';
 
 type PathType = string | number;
@@ -26,10 +28,10 @@ const Breadcrumb = ({ pathList }: BreadcrumbProps) => {
   };
 
   return (
-    <S.BreadcrumbList className="prevent-drag">
+    <S.BreadcrumbList>
       {pathList.map(({ pageName, path }, index) => (
         <S.BreadcrumbItem key={index} onClick={() => handleNavigation(path)}>
-          {pageName}
+          <PreventDrag>{pageName}</PreventDrag>
         </S.BreadcrumbItem>
       ))}
     </S.BreadcrumbList>

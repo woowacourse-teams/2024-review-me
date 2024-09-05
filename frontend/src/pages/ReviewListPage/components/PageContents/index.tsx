@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 
+import PreventDrag from '@/components/common/PreventDrag';
 import ReviewCard from '@/components/ReviewCard';
 import { useGetReviewList } from '@/hooks';
 
@@ -36,14 +37,16 @@ const PageContents = ({ groupAccessCode, reviewRequestCode }: PageContentsProps)
           ) : (
             <S.ReviewSection>
               {reviewListData.reviews.map((review) => (
-                <div key={review.reviewId} onClick={() => handleReviewClick(review.reviewId)}>
-                  <ReviewCard
-                    projectName={reviewListData.projectName}
-                    createdAt={review.createdAt}
-                    contentPreview={review.contentPreview}
-                    categories={review.categories}
-                  />
-                </div>
+                <PreventDrag key={review.reviewId}>
+                  <div onClick={() => handleReviewClick(review.reviewId)}>
+                    <ReviewCard
+                      projectName={reviewListData.projectName}
+                      createdAt={review.createdAt}
+                      contentPreview={review.contentPreview}
+                      categories={review.categories}
+                    />
+                  </div>
+                </PreventDrag>
               ))}
             </S.ReviewSection>
           )}
