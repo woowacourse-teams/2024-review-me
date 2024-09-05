@@ -1,6 +1,8 @@
 // import UserProfileIcon from '../../../assets/userProfile.svg';
 // import { SearchInput } from '../../common';
 
+import UndraggableWrapper from '@/components/common/UndraggableWrapper';
+
 import Logo from './components/Logo';
 import SidebarOpenButton from './components/SidebarOpenButton';
 import * as S from './styles';
@@ -15,7 +17,9 @@ const Topbar = ({ openSidebar }: TopbarProps) => {
     <S.Layout>
       <S.Container>
         {/* <SidebarOpenButton openSidebar={openSidebar} /> */}
-        <Logo />
+        <UndraggableWrapper>
+          <Logo />
+        </UndraggableWrapper>
       </S.Container>
       <S.Container>
         {/* <SearchInput $width="30rem" $height="3.6rem" placeholder={USER_SEARCH_PLACE_HOLDER} /> */}

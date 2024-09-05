@@ -11,6 +11,7 @@ export const BreadcrumbList = styled.ul`
 `;
 
 export const BreadcrumbItem = styled.li`
+  display: flex;
   cursor: pointer;
 
   &:not(:last-child)::after {

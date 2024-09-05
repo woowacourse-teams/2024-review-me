@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 
+import UndraggableWrapper from '../UndraggableWrapper';
+
 import * as S from './styles';
 
 type PathType = string | number;
@@ -29,7 +31,7 @@ const Breadcrumb = ({ pathList }: BreadcrumbProps) => {
     <S.BreadcrumbList>
       {pathList.map(({ pageName, path }, index) => (
         <S.BreadcrumbItem key={index} onClick={() => handleNavigation(path)}>
-          {pageName}
+          <UndraggableWrapper>{pageName}</UndraggableWrapper>
         </S.BreadcrumbItem>
       ))}
     </S.BreadcrumbList>
