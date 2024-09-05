@@ -7,6 +7,7 @@
     "dev": "webpack serve --mode=development --open --hot --progress",
     "build": "webpack --mode=production --node-env=production",
     "serve-dist": "http-server ./dist",
+    "serve-prod": " webpack serve --mode=production --node-env=production --open",
     "lint:styles": "stylelint \"src/**/styles.ts\" --fix",
     "test": "jest"
   },
