@@ -11,7 +11,7 @@ const PrevButton = ({ currentCardIndex, handleCurrentCardIndex, ...rest }: PrevB
 
   return (
     <Button
-      disabled={!!currentCardIndex}
+      disabled={!currentCardIndex}
       styleType={styledType}
       type={'button'}
       onClick={() => handleCurrentCardIndex('prev')}
