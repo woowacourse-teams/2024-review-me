@@ -28,18 +28,16 @@ const useTextAnswer = ({ question }: UseTextAnswerProps) => {
   const handleTextAnswerChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
 
-    // NOTE: max 넘치는 글자는 max+ extra 만큼 자르는 이유
-    // 1. 글자는 사용자가 입력한대로 보여줘야한다. (복붙해서 사용할때 이슈 있었음)
-    // 2. 과도한 입력을 방지하기 위해 max를 넘어서는 일정 수준에서 글자를 자른다.
     sliceTextAnswer(value);
     handleErrorMessageOnChange(value);
     handleUpdateAnswerState(value);
   };
 
   const sliceTextAnswer = (value: string) => {
-    const { max, extra } = TEXT_ANSWER_LENGTH;
+    const { max } = TEXT_ANSWER_LENGTH;
 
-    setText(value.slice(0, max + extra));
+    // 최대 max의 2배 길이 문자열까지 붙여넣어도 문자열이 잘리지 않도록 설정
+    setText(value.slice(0, max * 2));
   };
 
   type TextAnswerErrorMessage = keyof typeof TEXT_ANSWER_ERROR_MESSAGE;
