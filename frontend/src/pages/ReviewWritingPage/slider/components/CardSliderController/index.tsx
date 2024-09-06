@@ -2,21 +2,12 @@ import { Button } from '@/components';
 import { ButtonStyleType } from '@/types';
 
 interface PrevButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  currentCardIndex: number;
   handleCurrentCardIndex: (direction: 'prev' | 'next') => void;
 }
 
-const PrevButton = ({ currentCardIndex, handleCurrentCardIndex, ...rest }: PrevButtonProps) => {
-  const styledType: ButtonStyleType = currentCardIndex ? 'secondary' : 'disabled';
-
+const PrevButton = ({ handleCurrentCardIndex, ...rest }: PrevButtonProps) => {
   return (
-    <Button
-      disabled={!!currentCardIndex}
-      styleType={styledType}
-      type={'button'}
-      onClick={() => handleCurrentCardIndex('prev')}
-      {...rest}
-    >
+    <Button styleType={'secondary'} type={'button'} onClick={() => handleCurrentCardIndex('prev')} {...rest}>
       이전
     </Button>
   );
