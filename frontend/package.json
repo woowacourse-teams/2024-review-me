@@ -4,10 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --mode=development --open --hot --progress",
-    "start": "webpack serve --open --config webpack.config.js",
-    "build": "webpack --config webpack.config.js",
-    "serve": "http-server ./dist",
+    "dev": "webpack serve --mode=development --open --hot --progress",
+    "build": "webpack --mode=production --node-env=production",
+    "serve-dist": "http-server ./dist",
+    "serve-prod": " webpack serve --mode=production --node-env=production --open",
     "lint:styles": "stylelint \"src/**/styles.ts\" --fix",
     "test": "jest"
   },
@@ -71,7 +71,7 @@
     "undici": "5.0.0",
     "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4"
+    "webpack-dev-server": "^5.1.0"
   },
   "msw": {
     "workerDirectory": [

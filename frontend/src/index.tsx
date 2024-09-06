@@ -18,18 +18,17 @@ import {
 } from '@/pages';
 
 import { ErrorSuspenseContainer } from './components';
-import { API_ERROR_MESSAGE, DEV_ENVIRONMENT, ROUTE_PARAM } from './constants';
+import { API_ERROR_MESSAGE, ROUTE_PARAM } from './constants';
 import { ROUTE } from './constants/route';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
-const { hostname, port } = DEV_ENVIRONMENT;
-const isDev = window?.location.hostname === hostname && window.location.port === port;
+const isProduction = process.env.NODE_ENV === 'production';
 const baseUrlPattern = new RegExp(`^${process.env.API_BASE_URL?.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}`);
 
 Sentry.init({
   dsn: `${process.env.SENTRY_DSN}`,
-  enabled: !isDev,
+  enabled: isProduction,
   integrations: [Sentry.browserTracingIntegration()],
   environment: 'production',
   tracesSampleRate: 1.0,
@@ -100,7 +99,7 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 async function enableMocking() {
-  if (isDev) {
+  if (!isProduction) {
     const { worker } = await import('./mocks/browser');
     return worker.start();
   }
