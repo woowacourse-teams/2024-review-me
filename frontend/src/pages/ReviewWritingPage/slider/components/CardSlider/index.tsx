@@ -46,7 +46,6 @@ const CardSlider = ({ currentCardIndex, handleCurrentCardIndex, handleOpenModal 
             {isAblePrevStep(index) && (
               <CardSliderController.PrevButton
                 data-testid={`${section.sectionId}-prevButton`}
-                currentCardIndex={currentCardIndex}
                 handleCurrentCardIndex={handleCurrentCardIndex}
               />
             )}
