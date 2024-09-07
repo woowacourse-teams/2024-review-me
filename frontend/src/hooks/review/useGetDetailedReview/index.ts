@@ -25,6 +25,7 @@ const useGetDetailedReview = ({ reviewId, groupAccessCode, reviewRequestCode }: 
   const result = useSuspenseQuery<DetailReviewData>({
     queryKey: [REVIEW_QUERY_KEY.detailedReview, reviewId],
     queryFn: () => fetchDetailedReview({ reviewId, groupAccessCode, reviewRequestCode }),
+    staleTime: 60 * 60 * 1000,
   });
 
   return result;

@@ -7,6 +7,7 @@ const useGetReviewList = (groupAccessCode: string, reviewRequestCode: string) =>
   const { data, isLoading, error, isSuccess } = useSuspenseQuery({
     queryKey: [REVIEW_QUERY_KEY.reviews],
     queryFn: () => getReviewListApi(groupAccessCode, reviewRequestCode),
+    staleTime: 1 * 60 * 1000,
   });
 
   // NOTE: 무한스크롤 관련 코드 일단 주석 처리

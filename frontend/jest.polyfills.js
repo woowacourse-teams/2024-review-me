@@ -1,4 +1,4 @@
-import 'dotenv/config';
+require('dotenv/config');
 const { TextDecoder, TextEncoder, ReadableStream } = require('node:util');
 
 Object.defineProperties(globalThis, {
