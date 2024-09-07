@@ -8,7 +8,7 @@ public record SectionAnswerResponse(
         List<QuestionAnswerResponse> questions
 ) {
 
-    public boolean hasQuestions() {
+    public boolean hasAnsweredQuestion() {
         return !questions.isEmpty();
     }
 }

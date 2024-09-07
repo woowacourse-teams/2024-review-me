@@ -38,7 +38,7 @@ public class ReviewDetailMapper {
         List<Section> sections = sectionRepository.findAllByTemplateId(templateId);
         List<SectionAnswerResponse> sectionResponses = sections.stream()
                 .map(section -> mapToSectionResponse(review, reviewGroup, section))
-                .filter(SectionAnswerResponse::hasQuestions)
+                .filter(SectionAnswerResponse::hasAnsweredQuestion)
                 .toList();
 
         return new ReviewDetailResponse(
