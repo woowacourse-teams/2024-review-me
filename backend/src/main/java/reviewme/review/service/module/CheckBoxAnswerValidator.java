@@ -13,7 +13,6 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckBoxAnswerSelectedOption;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
-import reviewme.review.service.exception.QuestionNotAnsweredException;
 import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
@@ -33,15 +32,8 @@ public class CheckBoxAnswerValidator {
         OptionGroup optionGroup = optionGroupRepository.findByQuestionId(question.getId())
                 .orElseThrow(() -> new OptionGroupNotFoundByQuestionIdException(question.getId()));
 
-        validateAnswerExist(checkboxAnswer);
         validateOnlyIncludingProvidedOptionItem(checkboxAnswer, optionGroup);
         validateCheckedOptionItemCount(checkboxAnswer, optionGroup);
-    }
-
-    private void validateAnswerExist(CheckboxAnswer checkboxAnswer) {
-        if (checkboxAnswer.getSelectedOptionIds().isEmpty()) {
-            throw new QuestionNotAnsweredException(checkboxAnswer.getId());
-        }
     }
 
     private void validateOnlyIncludingProvidedOptionItem(CheckboxAnswer checkboxAnswer, OptionGroup optionGroup) {

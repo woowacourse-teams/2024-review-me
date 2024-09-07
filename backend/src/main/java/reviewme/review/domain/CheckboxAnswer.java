@@ -15,7 +15,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import reviewme.review.service.exception.QuestionNotAnsweredException;
+import reviewme.review.domain.exception.QuestionNotAnsweredException;
 
 @Entity
 @Table(name = "checkbox_answer")
@@ -47,7 +47,7 @@ public class CheckboxAnswer {
     }
 
     private void validateSelectedOptionIds(long questionId, List<Long> selectedOptionIds) {
-        if (selectedOptionIds == null) {
+        if (selectedOptionIds == null || selectedOptionIds.isEmpty()) {
             throw new QuestionNotAnsweredException(questionId);
         }
     }

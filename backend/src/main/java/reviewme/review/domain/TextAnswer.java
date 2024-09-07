@@ -10,7 +10,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import reviewme.review.service.exception.QuestionNotAnsweredException;
+import reviewme.review.domain.exception.QuestionNotAnsweredException;
 
 @Entity
 @Table(name = "text_answer")
@@ -36,7 +36,7 @@ public class TextAnswer {
     }
 
     private void validateContent(long questionId, String content) {
-        if (content == null) {
+        if (content == null || content.isEmpty()) {
             throw new QuestionNotAnsweredException(questionId);
         }
     }
