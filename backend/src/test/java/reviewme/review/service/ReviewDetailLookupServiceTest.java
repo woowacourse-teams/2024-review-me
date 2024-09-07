@@ -177,7 +177,7 @@ class ReviewDetailLookupServiceTest {
             );
 
             // when
-            TemplateAnswerResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
+            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
                     review.getId(), reviewRequestCode, groupAccessCode
             );
 

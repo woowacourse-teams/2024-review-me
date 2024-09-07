@@ -2,16 +2,17 @@ package reviewme.review.service.module;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
+import static reviewme.fixture.OptionItemFixture.선택지;
+import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
+import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
+import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
+import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.fixture.OptionGroupFixture;
-import reviewme.fixture.OptionItemFixture;
-import reviewme.fixture.QuestionFixture;
-import reviewme.fixture.ReviewGroupFixture;
-import reviewme.fixture.SectionFixture;
-import reviewme.fixture.TemplateFixture;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
@@ -54,21 +55,14 @@ class ReviewMapperTest {
     @Autowired
     private TemplateRepository templateRepository;
 
-    private ReviewGroupFixture reviewGroupFixture = new ReviewGroupFixture();
-    private OptionItemFixture optionItemFixture = new OptionItemFixture();
-    private OptionGroupFixture optionGroupFixture = new OptionGroupFixture();
-    private QuestionFixture questionFixture = new QuestionFixture();
-    private SectionFixture sectionFixture = new SectionFixture();
-    private TemplateFixture templateFixture = new TemplateFixture();
-
     @Test
     void 텍스트가_포함된_리뷰를_생성한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(reviewGroupFixture.리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
-        Question question = questionRepository.save(questionFixture.서술형_필수_질문());
-        Section section = sectionRepository.save(sectionFixture.항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(templateFixture.템플릿(List.of(section.getId())));
+        Question question = questionRepository.save(서술형_필수_질문());
+        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
+        templateRepository.save(템플릿(List.of(section.getId())));
 
         String expectedTextAnswer = "답".repeat(20);
         ReviewAnswerRequest reviewAnswerRequest = new ReviewAnswerRequest(question.getId(), null, expectedTextAnswer);
@@ -84,15 +78,15 @@ class ReviewMapperTest {
     @Test
     void 체크박스가_포함된_리뷰를_생성한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(reviewGroupFixture.리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
-        Question question = questionRepository.save(questionFixture.선택형_필수_질문());
-        OptionGroup optionGroup = optionGroupRepository.save(optionGroupFixture.선택지_그룹(question.getId()));
-        OptionItem optionItem1 = optionItemRepository.save(optionItemFixture.선택지(optionGroup.getId()));
-        OptionItem optionItem2 = optionItemRepository.save(optionItemFixture.선택지(optionGroup.getId()));
+        Question question = questionRepository.save(선택형_필수_질문());
+        OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question.getId()));
+        OptionItem optionItem1 = optionItemRepository.save(선택지(optionGroup.getId()));
+        OptionItem optionItem2 = optionItemRepository.save(선택지(optionGroup.getId()));
 
-        Section section = sectionRepository.save(sectionFixture.항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(templateFixture.템플릿(List.of(section.getId())));
+        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
+        templateRepository.save(템플릿(List.of(section.getId())));
 
         ReviewAnswerRequest reviewAnswerRequest = new ReviewAnswerRequest(question.getId(), List.of(optionItem1.getId()), null);
         ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(), List.of(reviewAnswerRequest));
@@ -108,7 +102,7 @@ class ReviewMapperTest {
     void 잘못된_리뷰_요청_코드로_리뷰를_생성할_경우_예외가_발생한다() {
         // given
         String reviewRequestCode = "notExistCode";
-        Question savedQuestion = questionRepository.save(questionFixture.서술형_필수_질문());
+        Question savedQuestion = questionRepository.save(서술형_필수_질문());
         ReviewAnswerRequest emptyTextReviewRequest = new ReviewAnswerRequest(
                 savedQuestion.getId(), null, "");
         ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(
@@ -123,11 +117,11 @@ class ReviewMapperTest {
     @Test
     void 답변에_해당하는_질문이_없는_리뷰를_생성할_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(reviewGroupFixture.리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
-        Question question = questionRepository.save(questionFixture.서술형_필수_질문());
-        Section section = sectionRepository.save(sectionFixture.항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(templateFixture.템플릿(List.of(section.getId())));
+        Question question = questionRepository.save(서술형_필수_질문());
+        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
+        templateRepository.save(템플릿(List.of(section.getId())));
 
         long notSavedQuestionId = 100L;
         ReviewAnswerRequest notQuestionAnswerRequest = new ReviewAnswerRequest(

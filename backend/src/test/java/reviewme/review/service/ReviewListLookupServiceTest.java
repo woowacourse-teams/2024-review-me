@@ -43,9 +43,6 @@ class ReviewListLookupServiceTest {
     private QuestionRepository questionRepository;
 
     @Autowired
-    private QuestionRepository questionRepository;
-
-    @Autowired
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
