@@ -27,7 +27,6 @@ import reviewme.template.repository.TemplateRepository;
 public class ReviewMapper {
 
     private final AnswerMapper answerMapper;
-
     private final ReviewGroupRepository reviewGroupRepository;
     private final QuestionRepository questionRepository;
     private final TemplateRepository templateRepository;
