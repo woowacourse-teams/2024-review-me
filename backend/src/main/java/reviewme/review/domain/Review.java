@@ -13,6 +13,9 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -53,6 +56,24 @@ public class Review {
         this.textAnswers = textAnswers;
         this.checkboxAnswers = checkboxAnswers;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public Set<Long> getAnsweredQuestionIds() {
+        return Stream.concat(
+                textAnswers.stream().map(TextAnswer::getQuestionId),
+                checkboxAnswers.stream().map(CheckboxAnswer::getQuestionId)
+        ).collect(Collectors.toSet());
+    }
+
+    public Set<Long> getAllCheckBoxOptionIds() {
+        return checkboxAnswers.stream()
+                .flatMap(answer -> answer.getSelectedOptionIds().stream())
+                .map(CheckBoxAnswerSelectedOption::getSelectedOptionId)
+                .collect(Collectors.toSet());
+    }
+
+    public boolean hasAnsweredQuestion(long questionId) {
+        return getAnsweredQuestionIds().contains(questionId);
     }
 
     public LocalDate getCreatedDate() {

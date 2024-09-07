@@ -1,4 +1,4 @@
-package reviewme.template.service;
+package reviewme.template.service.module;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,9 @@ import reviewme.template.domain.SectionQuestion;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.TemplateSection;
 import reviewme.template.domain.exception.SectionInTemplateNotFoundException;
+import reviewme.template.domain.exception.TemplateNotFoundByReviewGroupException;
 import reviewme.template.repository.SectionRepository;
+import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.dto.response.OptionGroupResponse;
 import reviewme.template.service.dto.response.OptionItemResponse;
 import reviewme.template.service.dto.response.QuestionResponse;
@@ -28,12 +30,20 @@ import reviewme.template.service.exception.QuestionInSectionNotFoundException;
 @RequiredArgsConstructor
 public class TemplateMapper {
 
+    public static final String REVIEWEE_NAME_PLACEHOLDER = "{revieweeName}";
+
+    private final TemplateRepository templateRepository;
     private final SectionRepository sectionRepository;
     private final QuestionRepository questionRepository;
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
-    public TemplateResponse mapToTemplateResponse(ReviewGroup reviewGroup, Template template) {
+    public TemplateResponse mapToTemplateResponse(ReviewGroup reviewGroup) {
+        Template template = templateRepository.findById(reviewGroup.getTemplateId())
+                .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(
+                        reviewGroup.getId(), reviewGroup.getTemplateId()
+                ));
+
         List<SectionResponse> sectionResponses = template.getSectionIds()
                 .stream()
                 .map(templateSection -> mapToSectionResponse(templateSection, reviewGroup))
@@ -62,7 +72,7 @@ public class TemplateMapper {
                 section.getSectionName(),
                 section.getVisibleType().name(),
                 section.getOnSelectedOptionId(),
-                section.convertHeader("{revieweeName}", reviewGroup.getReviewee()),
+                section.convertHeader(REVIEWEE_NAME_PLACEHOLDER, reviewGroup.getReviewee()),
                 questionResponses
         );
     }
@@ -79,11 +89,11 @@ public class TemplateMapper {
         return new QuestionResponse(
                 question.getId(),
                 question.isRequired(),
-                question.convertContent("{revieweeName}", reviewGroup.getReviewee()),
+                question.convertContent(REVIEWEE_NAME_PLACEHOLDER, reviewGroup.getReviewee()),
                 question.getQuestionType().name(),
                 optionGroupResponse,
                 question.hasGuideline(),
-                question.convertGuideLine("{revieweeName}", reviewGroup.getReviewee())
+                question.convertGuideLine(REVIEWEE_NAME_PLACEHOLDER, reviewGroup.getReviewee())
         );
     }
 

@@ -34,10 +34,10 @@ import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
-class ReviewServiceTest {
+class ReviewListLookupServiceTest {
 
     @Autowired
-    private ReviewService reviewService;
+    private ReviewListLookupService reviewListLookupService;
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -62,7 +62,7 @@ class ReviewServiceTest {
 
     @Test
     void 리뷰_요청_코드가_존재하지_않는_경우_예외가_발생한다() {
-        assertThatThrownBy(() -> reviewService.findReceivedReviews("abc", "groupAccessCode"))
+        assertThatThrownBy(() -> reviewListLookupService.getReceivedReviews("abc", "groupAccessCode"))
                 .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 
@@ -74,9 +74,9 @@ class ReviewServiceTest {
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
 
         // when, then
-        assertThatThrownBy(() -> reviewService.findReceivedReviews(
-                reviewRequestCode, "wrong" + groupAccessCode
-        )).isInstanceOf(ReviewGroupUnauthorizedException.class);
+        assertThatThrownBy(() -> reviewListLookupService.getReceivedReviews(
+                reviewRequestCode, "wrong" + groupAccessCode))
+                .isInstanceOf(ReviewGroupUnauthorizedException.class);
     }
 
     @Test
@@ -103,7 +103,8 @@ class ReviewServiceTest {
         reviewRepository.saveAll(List.of(review1, review2));
 
         // when
-        ReceivedReviewsResponse response = reviewService.findReceivedReviews(reviewRequestCode, groupAccessCode);
+        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(reviewRequestCode,
+                groupAccessCode);
 
         // then
         assertThat(response.reviews()).hasSize(2);
