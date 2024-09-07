@@ -160,7 +160,7 @@ class ReviewDetailLookupServiceTest {
     class 필수가_아닌_답변에_응답하지_않았을_때 {
 
         @Test
-        void 섹션에_그_질문만_있다면_섹션_자체를_반환하지_않는다() {
+        void 섹션에_필수가_아닌_질문만_있다면_섹션_자체를_반환하지_않는다() {
             // given - 리뷰 그룹 저장
             String reviewRequestCode = "sancho";
             String groupAccessCode = "kirby";
