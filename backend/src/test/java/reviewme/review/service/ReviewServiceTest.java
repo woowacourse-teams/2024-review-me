@@ -2,28 +2,33 @@ package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
+import static reviewme.fixture.OptionItemFixture.선택지;
+import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
+import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
+import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
-import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question;
-import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
-import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
+import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
@@ -32,31 +37,28 @@ import reviewme.template.repository.TemplateRepository;
 class ReviewServiceTest {
 
     @Autowired
-    ReviewService reviewService;
+    private ReviewService reviewService;
 
     @Autowired
-    QuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
 
     @Autowired
-    ReviewGroupRepository reviewGroupRepository;
+    private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    OptionItemRepository optionItemRepository;
+    private OptionItemRepository optionItemRepository;
 
     @Autowired
-    OptionGroupRepository optionGroupRepository;
+    private OptionGroupRepository optionGroupRepository;
 
     @Autowired
-    SectionRepository sectionRepository;
+    private SectionRepository sectionRepository;
 
     @Autowired
-    TemplateRepository templateRepository;
+    private TemplateRepository templateRepository;
 
     @Autowired
-    CheckboxAnswerRepository checkboxAnswerRepository;
-
-    @Autowired
-    ReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Test
     void 리뷰_요청_코드가_존재하지_않는_경우_예외가_발생한다() {
@@ -67,38 +69,38 @@ class ReviewServiceTest {
     @Test
     void 그룹_액세스_코드가_일치하지_않는_경우_예외가_발생한다() {
         // given
-        String reviewRequestCode = "code";
-        String groupAccessCode = "1234";
-        reviewGroupRepository.save(new ReviewGroup("커비", "리뷰미", reviewRequestCode, groupAccessCode));
+        String reviewRequestCode = "Jamsil";
+        String groupAccessCode = "Seolleung";
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
 
         // when, then
-        assertThatThrownBy(() -> reviewService.findReceivedReviews(reviewRequestCode, "5678"))
-                .isInstanceOf(ReviewGroupUnauthorizedException.class);
+        assertThatThrownBy(() -> reviewService.findReceivedReviews(
+                reviewRequestCode, "wrong" + groupAccessCode
+        )).isInstanceOf(ReviewGroupUnauthorizedException.class);
     }
 
     @Test
-    void 확인_코드에_해당하는_그룹이_존재하면_리뷰_리스트를_반환한다() {
-        // given
+    void 확인_코드에_해당하는_그룹이_존재하면_내가_받은_리뷰_목록을_반환한다() {
+        // given - 리뷰 그룹 저장
         String reviewRequestCode = "reviewRequestCode";
         String groupAccessCode = "groupAccessCode";
-        Question question = questionRepository.save(
-                new Question(true, QuestionType.CHECKBOX, "프로젝트 기간 동안, 팀원의 강점이 드러났던 순간을 선택해주세요. (1~2개)", null, 1)
-        );
-        OptionGroup categoryOptionGroup = optionGroupRepository.save(new OptionGroup(question.getId(), 1, 2));
-        OptionItem categoryOption1 = new OptionItem("커뮤니케이션 능력 ", categoryOptionGroup.getId(), 1, OptionType.CATEGORY);
-        OptionItem categoryOption2 = new OptionItem("시간 관리 능력", categoryOptionGroup.getId(), 2, OptionType.CATEGORY);
-        optionItemRepository.saveAll(List.of(categoryOption1, categoryOption2));
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
 
-        Template template = templateRepository.save(new Template(List.of()));
+        // given - 질문 저장
+        Question question = questionRepository.save(선택형_필수_질문());
+        OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question.getId()));
+        OptionItem categoryOption = optionItemRepository.save(선택지(optionGroup.getId(), 1));
 
-        ReviewGroup reviewGroup = reviewGroupRepository.save(
-                new ReviewGroup("커비", "리뷰미", reviewRequestCode, groupAccessCode)
-        );
-        CheckboxAnswer categoryAnswer1 = new CheckboxAnswer(question.getId(), List.of(categoryOption1.getId()));
-        CheckboxAnswer categoryAnswer2 = new CheckboxAnswer(question.getId(), List.of(categoryOption2.getId()));
-        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer1));
-        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer2));
-        reviewRepository.saveAll(List.of(review1, review));
+        // given - 섹션, 템플릿 저장
+        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+
+        // given - 리뷰 답변 저장
+        CheckboxAnswer categoryAnswer = new CheckboxAnswer(question.getId(), List.of(categoryOption.getId()));
+        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer));
+        TextAnswer textAnswer = new TextAnswer(question.getId(), "텍스트형 응답");
+        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
+        reviewRepository.saveAll(List.of(review1, review2));
 
         // when
         ReceivedReviewsResponse response = reviewService.findReceivedReviews(reviewRequestCode, groupAccessCode);
