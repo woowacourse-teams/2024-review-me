@@ -1,4 +1,4 @@
-package reviewme.review.repository;
+package reviewme.question.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import reviewme.question.domain.Question;
 import reviewme.question.domain.QuestionType;
-import reviewme.question.repository.QuestionRepository;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.VisibleType;
