@@ -6,13 +6,13 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
+import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.reviewgroup.service.dto.CheckValidAccessResponse;
@@ -36,7 +36,7 @@ class ReviewGroupServiceTest {
     @Test
     void 코드가_중복되는_경우_다시_생성한다() {
         // given
-        reviewGroupRepository.save(new ReviewGroup("reviewee", "project", "0000", "1111"));
+        reviewGroupRepository.save(리뷰_그룹("0000", "1111"));
         given(randomCodeGenerator.generate(anyInt()))
                 .willReturn("0000") // ReviewRequestCode
                 .willReturn("AAAA");
@@ -56,7 +56,7 @@ class ReviewGroupServiceTest {
         // given
         String reviewRequestCode = "reviewRequestCode";
         String groupAccessCode = "groupAccessCode";
-        reviewGroupRepository.save(new ReviewGroup("reviewee", "project", reviewRequestCode, groupAccessCode));
+        reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
 
         CheckValidAccessRequest request = new CheckValidAccessRequest(reviewRequestCode, groupAccessCode);
         CheckValidAccessRequest wrongRequest = new CheckValidAccessRequest(reviewRequestCode, groupAccessCode + "!");
