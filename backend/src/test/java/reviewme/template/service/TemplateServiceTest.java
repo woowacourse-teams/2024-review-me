@@ -1,6 +1,7 @@
 package reviewme.template.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,7 @@ class TemplateServiceTest {
     @Test
     void 잘못된_리뷰_요청_코드로_리뷰_작성폼을_요청할_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup = new ReviewGroup("리뷰이명", "프로젝트명", "reviewRequestCode", "groupAccessCode");
-        reviewGroupRepository.save(reviewGroup);
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // when, then
         assertThatThrownBy(() -> templateService.generateReviewForm(reviewGroup.getReviewRequestCode() + " "))
@@ -33,8 +33,7 @@ class TemplateServiceTest {
     @Test
     void 리뷰이에게_작성될_리뷰_양식_생성_시_저장된_템플릿이_없을_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup = new ReviewGroup("리뷰이명", "프로젝트명", "reviewRequestCode", "groupAccessCode");
-        reviewGroupRepository.save(reviewGroup);
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // when, then
         assertThatThrownBy(() -> templateService.generateReviewForm(reviewGroup.getReviewRequestCode()))
