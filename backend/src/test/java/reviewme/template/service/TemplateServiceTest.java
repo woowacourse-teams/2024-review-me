@@ -15,10 +15,10 @@ import reviewme.template.domain.exception.TemplateNotFoundByReviewGroupException
 class TemplateServiceTest {
 
     @Autowired
-    TemplateService templateService;
+    private TemplateService templateService;
 
     @Autowired
-    ReviewGroupRepository reviewGroupRepository;
+    private ReviewGroupRepository reviewGroupRepository;
 
     @Test
     void 잘못된_리뷰_요청_코드로_리뷰_작성폼을_요청할_경우_예외가_발생한다() {

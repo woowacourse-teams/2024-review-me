@@ -36,25 +36,25 @@ import reviewme.template.service.module.TemplateMapper;
 class TemplateMapperTest {
 
     @Autowired
-    TemplateMapper templateMapper;
+    private TemplateMapper templateMapper;
 
     @Autowired
-    TemplateRepository templateRepository;
+    private TemplateRepository templateRepository;
 
     @Autowired
-    SectionRepository sectionRepository;
+    private SectionRepository sectionRepository;
 
     @Autowired
-    QuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
 
     @Autowired
-    OptionGroupRepository optionGroupRepository;
+    private OptionGroupRepository optionGroupRepository;
 
     @Autowired
-    OptionItemRepository optionItemRepository;
+    private OptionItemRepository optionItemRepository;
 
     @Autowired
-    ReviewGroupRepository reviewGroupRepository;
+    private ReviewGroupRepository reviewGroupRepository;
 
     @Test
     void 리뷰_그룹과_템플릿으로_템플릿_응답을_매핑한다() {
@@ -155,15 +155,11 @@ class TemplateMapperTest {
     @Test
     void 템플릿_매핑_시_옵션_그룹에_해당하는_옵션_아이템이_없을_경우_예외가_발생한다() {
         // given
-        Question question1 = questionRepository.save(서술형_필수_질문());
-        Question question2 = questionRepository.save(선택형_필수_질문());
+        Question question = questionRepository.save(선택형_필수_질문());
+        optionGroupRepository.save(선택지_그룹(question.getId()));
 
-        optionGroupRepository.save(선택지_그룹(question2.getId()));
-
-        Section section1 = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
-        Section section2 = sectionRepository.save(항상_보이는_섹션(List.of(question2.getId())));
-
-        templateRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
+        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
+        templateRepository.save(템플릿(List.of(section.getId())));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
