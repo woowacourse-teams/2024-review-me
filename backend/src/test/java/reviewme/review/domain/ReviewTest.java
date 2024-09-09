@@ -6,12 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 class ReviewTest {
-
-    private static final Logger log = LoggerFactory.getLogger(ReviewTest.class);
 
     @Test
     void 리뷰에_등록된_답변의_모든_질문들을_반환한다() {
