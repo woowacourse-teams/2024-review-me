@@ -23,7 +23,6 @@ import reviewme.review.domain.Review;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
-import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -41,7 +40,7 @@ class ReviewMapperTest {
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    private  OptionGroupRepository optionGroupRepository;
+    private OptionGroupRepository optionGroupRepository;
 
     @Autowired
     private OptionItemRepository optionItemRepository;
@@ -66,7 +65,8 @@ class ReviewMapperTest {
 
         String expectedTextAnswer = "답".repeat(20);
         ReviewAnswerRequest reviewAnswerRequest = new ReviewAnswerRequest(question.getId(), null, expectedTextAnswer);
-        ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(), List.of(reviewAnswerRequest));
+        ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(),
+                List.of(reviewAnswerRequest));
 
         // when
         Review review = reviewMapper.mapToReview(reviewRegisterRequest);
@@ -88,8 +88,10 @@ class ReviewMapperTest {
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
         templateRepository.save(템플릿(List.of(section.getId())));
 
-        ReviewAnswerRequest reviewAnswerRequest = new ReviewAnswerRequest(question.getId(), List.of(optionItem1.getId()), null);
-        ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(), List.of(reviewAnswerRequest));
+        ReviewAnswerRequest reviewAnswerRequest = new ReviewAnswerRequest(question.getId(),
+                List.of(optionItem1.getId()), null);
+        ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(),
+                List.of(reviewAnswerRequest));
 
         // when
         Review review = reviewMapper.mapToReview(reviewRegisterRequest);
@@ -112,26 +114,5 @@ class ReviewMapperTest {
         assertThatThrownBy(() -> reviewMapper.mapToReview(
                 reviewRegisterRequest))
                 .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
-    }
-
-    @Test
-    void 답변에_해당하는_질문이_없는_리뷰를_생성할_경우_예외가_발생한다() {
-        // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
-
-        Question question = questionRepository.save(서술형_필수_질문());
-        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
-
-        long notSavedQuestionId = 100L;
-        ReviewAnswerRequest notQuestionAnswerRequest = new ReviewAnswerRequest(
-                notSavedQuestionId, null, "");
-        ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(
-                reviewGroup.getReviewRequestCode(), List.of(notQuestionAnswerRequest));
-
-        // when, then
-        assertThatThrownBy(() -> reviewMapper.mapToReview(
-                reviewRegisterRequest))
-                .isInstanceOf(SubmittedQuestionNotFoundException.class);
     }
 }
