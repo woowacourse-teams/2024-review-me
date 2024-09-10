@@ -1,12 +1,8 @@
 package reviewme.global.exception;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public abstract class BadRequestException extends ReviewMeException {
 
-    protected BadRequestException(String errorMessage, String logMessage) {
+    protected BadRequestException(String errorMessage) {
         super(errorMessage);
-        log.info(logMessage);
     }
 }

@@ -10,8 +10,8 @@ public class CheckBoxAnswerIncludedNotProvidedOptionItemException extends BadReq
     public CheckBoxAnswerIncludedNotProvidedOptionItemException(long questionId,
                                                                 List<Long> providedOptionIds,
                                                                 List<Long> submittedOptionIds) {
-        super("제공되는 선택지에 없는 선택지를 응답했어요.",
-                "Answer included not provided options - questionId: %s, providedOptionIds: %s, submittedOptionIds: %s"
-                        .formatted(questionId, providedOptionIds, submittedOptionIds));
+        super("제공되는 선택지에 없는 선택지를 응답했어요.");
+        log.info("Answer included not provided options - questionId:{}, providedOptionIds: {}, submittedOptionIds: {}",
+                questionId, providedOptionIds, submittedOptionIds, this);
     }
 }

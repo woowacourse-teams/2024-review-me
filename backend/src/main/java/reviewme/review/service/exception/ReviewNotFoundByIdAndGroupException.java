@@ -7,7 +7,7 @@ import reviewme.global.exception.NotFoundException;
 public class ReviewNotFoundByIdAndGroupException extends NotFoundException {
 
     public ReviewNotFoundByIdAndGroupException(long reviewId, long reviewGroupId) {
-        super("리뷰를 찾을 수 없어요",
-                "Review not found from group - reviewGroupId: %d, reviewId: %d".formatted(reviewGroupId, reviewId));
+        super("리뷰를 찾을 수 없어요");
+        log.info("Review not found from group - reviewGroupId: {}, reviewId: {}", reviewGroupId, reviewId);
     }
 }

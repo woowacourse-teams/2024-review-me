@@ -7,6 +7,7 @@ import reviewme.global.exception.NotFoundException;
 public class SubmittedQuestionNotFoundException extends NotFoundException {
 
     public SubmittedQuestionNotFoundException(long questionId) {
-        super("제출된 질문이 존재하지 않아요.", "Submitted question not found - questionId: %d".formatted(questionId));
+        super("제출된 질문이 존재하지 않아요.");
+        log.info("Submitted question not found - questionId: {}", questionId, this);
     }
 }
