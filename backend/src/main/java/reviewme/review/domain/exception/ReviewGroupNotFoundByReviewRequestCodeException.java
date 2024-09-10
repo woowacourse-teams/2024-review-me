@@ -7,7 +7,7 @@ import reviewme.global.exception.NotFoundException;
 public class ReviewGroupNotFoundByReviewRequestCodeException extends NotFoundException {
 
     public ReviewGroupNotFoundByReviewRequestCodeException(String reviewRequestCode) {
-        super("리뷰 요청 코드에 대한 리뷰 그룹을 찾을 수 없어요.");
-        log.info("ReviewGroup not found by reviewRequestCode - reviewRequestCode: {}", reviewRequestCode);
+        super("리뷰 요청 코드에 대한 리뷰 그룹을 찾을 수 없어요.",
+                "ReviewGroup not found by reviewRequestCode - reviewRequestCode: %s".formatted(reviewRequestCode));
     }
 }
