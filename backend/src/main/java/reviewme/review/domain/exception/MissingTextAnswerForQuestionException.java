@@ -7,7 +7,7 @@ import reviewme.global.exception.DataInconsistencyException;
 public class MissingTextAnswerForQuestionException extends DataInconsistencyException {
 
     public MissingTextAnswerForQuestionException(long questionId) {
-        super("질문에 해당하는 서술형 답변을 찾지 못했어요.");
-        log.error("The question is a text question but text answer not found for questionId: {}", questionId);
+        super("서버 내부에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        log.error("The question is a text question but text answer not found for questionId: {}", questionId, this);
     }
 }
