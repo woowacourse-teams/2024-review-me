@@ -38,7 +38,7 @@ const CardSlider = ({ currentCardIndex, handleCurrentCardIndex, handleOpenModal 
   };
 
   return (
-    <Carousel ref={wrapperRef} translateX={currentCardIndex * slideWidth} height={slideHeight}>
+    <Carousel ref={wrapperRef} cardIndex={currentCardIndex} height={slideHeight}>
       {cardSectionList?.map((section, index) => (
         <S.Slide data-testid={section.sectionName} id={makeId(index)} key={section.sectionId}>
           <ReviewWritingCard cardSection={section} />
