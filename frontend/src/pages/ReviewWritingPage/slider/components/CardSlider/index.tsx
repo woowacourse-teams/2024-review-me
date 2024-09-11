@@ -4,7 +4,7 @@ import { Carousel } from '@/components';
 import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
 import { ReviewWritingCard } from '@/pages/ReviewWritingPage/form/components';
 import { CardSliderController } from '@/pages/ReviewWritingPage/slider/components';
-import { useMovingStepAvailability, useSlideWidthAndHeight } from '@/pages/ReviewWritingPage/slider/hooks';
+import { useMovingStepAvailability, useSlideHeight } from '@/pages/ReviewWritingPage/slider/hooks';
 import { Direction } from '@/pages/ReviewWritingPage/types';
 import { cardSectionListSelector } from '@/recoil';
 
@@ -18,7 +18,7 @@ interface CardSliderProps {
 
 const CardSlider = ({ currentCardIndex, handleCurrentCardIndex, handleOpenModal }: CardSliderProps) => {
   const cardSectionList = useRecoilValue(cardSectionListSelector);
-  const { wrapperRef, slideHeight, slideWidth, makeId } = useSlideWidthAndHeight({ currentCardIndex });
+  const { wrapperRef, slideHeight, makeId } = useSlideHeight({ currentCardIndex });
 
   const { isAblePrevStep, isAbleNextStep, isLastCard } = useMovingStepAvailability({ currentCardIndex });
 
