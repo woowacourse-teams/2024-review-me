@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { ReviewWritingCardSection } from '@/types';
 
 import QnABox from '../QnABox';
@@ -21,4 +23,4 @@ const ReviewWritingCard = ({ cardSection }: ReviewWritingCardProps) => {
   );
 };
 
-export default ReviewWritingCard;
+export default React.memo(ReviewWritingCard);
