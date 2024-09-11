@@ -27,7 +27,7 @@ const CardForm = () => {
   const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
 
   // 리뷰에 필요한 질문지,프로젝트 정보 가져오기
-  const { revieweeName, projectName, cardSectionList } = useLoadAndPrepareReview({ reviewRequestCode });
+  const { revieweeName, projectName } = useLoadAndPrepareReview({ reviewRequestCode });
   // 답변
   // 생성된 질문지를 바탕으로 답변 기본값 및 답변의 유효성 기본값 설정
   useUpdateDefaultAnswers();
