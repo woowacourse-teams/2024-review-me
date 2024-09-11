@@ -11,13 +11,13 @@ export const CarouselContainer = styled.div`
 `;
 
 export const SlideList = styled.div`
+  will-change: transform;
+
   display: flex;
   align-items: center;
 
   width: 100%;
   height: 100%;
-
-  transition: transform 0.5s ease-in-out;
 `;
 
 export const SlideItem = styled.div`
