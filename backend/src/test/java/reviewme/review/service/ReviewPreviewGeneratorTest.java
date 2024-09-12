@@ -1,4 +1,4 @@
-package reviewme.review.service.module;
+package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

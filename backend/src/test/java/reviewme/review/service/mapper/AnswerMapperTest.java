@@ -1,4 +1,4 @@
-package reviewme.review.service.module;
+package reviewme.review.service.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

@@ -1,4 +1,4 @@
-package reviewme.review.service.module;
+package reviewme.review.service.validator;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

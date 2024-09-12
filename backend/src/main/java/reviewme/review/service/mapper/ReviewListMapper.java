@@ -1,4 +1,4 @@
-package reviewme.review.service.module;
+package reviewme.review.service.mapper;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +10,7 @@ import reviewme.review.domain.Review;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
+import reviewme.review.service.ReviewPreviewGenerator;
 import reviewme.reviewgroup.domain.ReviewGroup;
 
 @Component

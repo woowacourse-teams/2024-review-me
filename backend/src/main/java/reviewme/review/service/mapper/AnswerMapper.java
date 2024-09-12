@@ -1,4 +1,4 @@
-package reviewme.review.service.module;
+package reviewme.review.service.mapper;
 
 import org.springframework.stereotype.Component;
 import reviewme.review.domain.CheckboxAnswer;

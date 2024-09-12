@@ -1,4 +1,4 @@
-package reviewme.review.service.module;
+package reviewme.review.service.validator;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
