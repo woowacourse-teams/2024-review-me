@@ -79,10 +79,7 @@ const router = createBrowserRouter([
         path: 'user',
         element: <div>user</div>,
       },
-      {
-        path: `${ROUTE.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`,
-        element: <ReviewWritingPage />,
-      },
+      { path: `${ROUTE.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewWritingPage /> },
       { path: ROUTE.reviewWritingComplete, element: <ReviewWritingCompletePage /> },
       {
         path: ROUTE.reviewList,
