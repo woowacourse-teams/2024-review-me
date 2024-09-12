@@ -63,7 +63,7 @@ module.exports = (env, argv) => {
         favicon: './src/favicons/favicon.ico',
       }),
       new CleanWebpackPlugin(),
-      !isProduction && new BundleAnalyzerPlugin(),
+      isProduction && new BundleAnalyzerPlugin(),
       new Dotenv({
         systemvars: true,
         path: './.env',
