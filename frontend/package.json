@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack serve --mode=development --open --hot --progress",
+    "prebuild": "svgo -rf ./src/assets -o ./dist ",
     "build": "webpack --mode=production --node-env=production",
     "serve-dist": "http-server ./dist",
     "serve-prod": " webpack serve --mode=production --node-env=production --open",
@@ -66,10 +67,12 @@
     "stylelint": "^16.7.0",
     "stylelint-config-clean-order": "^6.1.0",
     "stylelint-order": "^6.0.4",
+    "svgo": "^3.3.2",
     "ts-jest": "^29.2.4",
     "typescript": "^5.5.3",
     "undici": "5.0.0",
     "webpack": "^5.92.1",
+    "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0"
   },

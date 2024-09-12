@@ -4,6 +4,8 @@ const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const { sentryWebpackPlugin } = require('@sentry/webpack-plugin');
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
 
@@ -61,6 +63,7 @@ module.exports = (env, argv) => {
         favicon: './src/favicons/favicon.ico',
       }),
       new CleanWebpackPlugin(),
+      !isProduction && new BundleAnalyzerPlugin(),
       new Dotenv({
         systemvars: true,
         path: './.env',
