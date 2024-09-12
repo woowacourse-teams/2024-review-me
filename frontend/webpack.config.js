@@ -12,7 +12,7 @@ module.exports = (env, argv) => {
     entry: './src/index.tsx',
     output: {
       path: path.join(__dirname, 'dist'),
-      filename: 'bundle.js',
+      filename: '[name].[contenthash].bundle.js',
       clean: true,
       publicPath: '/',
     },
