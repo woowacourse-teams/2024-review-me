@@ -179,10 +179,10 @@ describe('프로그레스 바 테스트', () => {
 
           return newMap;
         });
-      });
 
-      //두번째 카드 이동 불가
-      expect(result.current.stepList[1].isMovingAvailable).toBeFalsy();
+        //두번째 카드 이동 불가
+        expect(result.current.stepList[1].isMovingAvailable).toBeFalsy();
+      });
     });
   });
 });
