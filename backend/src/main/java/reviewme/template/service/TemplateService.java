@@ -7,7 +7,7 @@ import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeE
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.service.dto.response.TemplateResponse;
-import reviewme.template.service.module.TemplateMapper;
+import reviewme.template.service.mapper.TemplateMapper;
 
 @Service
 @RequiredArgsConstructor
