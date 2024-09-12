@@ -166,10 +166,10 @@ describe('프로그레스 바 테스트', () => {
 
           return newMap;
         });
-      });
 
-      //두번째 카드 이동 가능
-      expect(result.current.stepList[1].isMovingAvailable).toBeTruthy();
+        //두번째 카드 이동 가능
+        expect(result.current.stepList[1].isMovingAvailable).toBeTruthy();
+      });
 
       //첫번째 카드 답변을 유효하지 않게 변경
       await waitFor(() => {
