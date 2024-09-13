@@ -1,4 +1,4 @@
-import { isNotEmptyInput, isAlphanumeric, isWithinLengthRange } from './validateInput';
+import { isNotEmptyInput, isAlphanumeric, isWithinLengthRange } from '@/pages/HomePage/utils/validateInput';
 
 describe('isNotEmptyInput', () => {
   test.each(['abc', '123', '!@#', '하이'])('빈 문자열이 아닐 경우 true를 반환한다. (input: %s)', (input) => {
