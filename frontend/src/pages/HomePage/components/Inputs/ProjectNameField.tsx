@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Input } from '@/components';
-
-import { isWithinLengthRange, MAX_VALID_REVIEW_GROUP_DATA_INPUT } from '../../utils/validateInput';
+import { isWithinLengthRange, MAX_VALID_REVIEW_GROUP_DATA_INPUT } from '@/pages/HomePage/utils/validateInput';
 
 import { InputValueProps } from './InputField';
 
