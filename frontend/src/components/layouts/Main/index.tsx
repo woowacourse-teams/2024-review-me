@@ -3,12 +3,12 @@ import { EssentialPropsWithChildren } from '@/types';
 import * as S from './styles';
 
 interface MainProps {
-  isBreadCrumb?: boolean;
+  isShowBreadCrumb?: boolean;
 }
 
-const Main = ({ children, isBreadCrumb }: EssentialPropsWithChildren<MainProps>) => {
+const Main = ({ children, isShowBreadCrumb }: EssentialPropsWithChildren<MainProps>) => {
   return (
-    <S.MainContainer $isBreadCrumb={isBreadCrumb}>
+    <S.MainContainer $isShowBreadCrumb={isShowBreadCrumb}>
       <S.Contents>{children}</S.Contents>
     </S.MainContainer>
   );
