@@ -41,4 +41,14 @@ public class ReviewDetailLookupService {
             throw new ReviewGroupUnauthorizedException(reviewGroup.getId());
         }
     }
+
+    public ReviewDetailResponse getReviewDetail2(long reviewId, String reviewRequestCode) {
+        ReviewGroup reviewGroup =  reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
+
+        Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
+                .orElseThrow(() -> new ReviewNotFoundByIdAndGroupException(reviewId, reviewGroup.getId()));
+
+        return reviewDetailMapper.mapToReviewDetailResponse(review, reviewGroup);
+    }
 }

@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.global.HeaderProperty;
-import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
+import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
@@ -34,6 +34,11 @@ public class ReviewController {
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
+    /**
+     * @deprecated since 1.0.2
+     * 기존 헤더에 GroupAccessCode를 사용하지 않고, JWT를 활용하여 ReviewRequestCode를 전달합니다.
+     */
+    @Deprecated(since = "1.0.2", forRemoval = true)
     @GetMapping("/v2/reviews")
     public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
             @RequestParam String reviewRequestCode,
@@ -43,6 +48,11 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * @deprecated since 1.0.2
+     * 기존 헤더에 GroupAccessCode를 사용하지 않고, JWT를 활용하여 ReviewRequestCode를 전달합니다.
+     */
+    @Deprecated(since = "1.0.2", forRemoval = true)
     @GetMapping("/v2/reviews/{id}")
     public ResponseEntity<ReviewDetailResponse> findReceivedReviewDetail(
             @PathVariable long id,
@@ -52,6 +62,23 @@ public class ReviewController {
         ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail(
                 id, reviewRequestCode, groupAccessCode
         );
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/vx/reviews")
+    public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews2(
+            @ReviewRequestCode String reviewRequestCode
+    ) {
+        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews2(reviewRequestCode);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/vx/reviews/{id}")
+    public ResponseEntity<ReviewDetailResponse> findReceivedReviewDetail2(
+            @PathVariable long id,
+            @ReviewRequestCode String reviewRequestCode
+    ) {
+        ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail2(id, reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 }

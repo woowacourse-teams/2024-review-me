@@ -39,4 +39,15 @@ public class ReviewListLookupService {
             throw new ReviewGroupUnauthorizedException(reviewGroup.getId());
         }
     }
+
+    @Transactional(readOnly = true)
+    public ReceivedReviewsResponse getReceivedReviews2(String reviewRequestCode) {
+        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
+
+        List<ReviewListElementResponse> reviewGroupResponse = reviewListMapper.mapToReviewList(reviewGroup);
+        return new ReceivedReviewsResponse(
+                reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewGroupResponse
+        );
+    }
 }
