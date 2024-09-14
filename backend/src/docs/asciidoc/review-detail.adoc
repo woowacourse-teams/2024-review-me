@@ -5,3 +5,8 @@ operation::review-detail[snippets="curl-request,request-headers,path-parameters,
 ==== 접근 코드가 올바르지 않은 경우
 
 operation::review-detail-invalid-group-access-code[snippets="http-response"]
+
+
+==== 리뷰 단건 조회 (토큰 사용)
+
+operation::review-detail-with-token[snippets="curl-request,request-headers,path-parameters,http-response,response-fields"]

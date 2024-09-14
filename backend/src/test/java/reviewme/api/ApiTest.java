@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import reviewme.review.controller.ReviewController;
+import reviewme.review.controller.ReviewRequestCodeArgumentResolver;
 import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
@@ -40,6 +41,9 @@ import reviewme.template.service.TemplateService;
 public abstract class ApiTest {
 
     private MockMvcRequestSpecification spec;
+
+    @MockBean
+    protected ReviewRequestCodeArgumentResolver reviewRequestCodeArgumentResolver;
 
     @MockBean
     protected ReviewListLookupService reviewListLookupService;

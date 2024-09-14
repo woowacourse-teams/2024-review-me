@@ -5,3 +5,8 @@ operation::received-reviews[snippets="curl-request,request-headers,http-response
 ==== 접근 코드가 올바르지 않은 경우
 
 operation::received-reviews-invalid-group-access-code[snippets="http-response"]
+
+
+==== 자신이 받은 리뷰 목록 조회 (토큰 사용)
+
+operation::received-reviews-with-token[snippets="curl-request,request-headers,http-response,response-fields"]
