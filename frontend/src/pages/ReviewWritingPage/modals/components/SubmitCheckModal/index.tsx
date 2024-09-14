@@ -1,21 +1,19 @@
 import { ConfirmModal } from '@/components';
+import { useSubmitAnswers } from '@/pages/ReviewWritingPage/form/hooks';
 
 import * as S from './style';
 
 interface SubmitCheckModalProps {
-  handleSubmitButtonClick: (event: React.MouseEvent) => Promise<void>;
   handleCancelButtonClick: () => void;
   handleCloseModal: () => void;
 }
 
-const SubmitCheckModal = ({
-  handleSubmitButtonClick,
-  handleCancelButtonClick,
-  handleCloseModal,
-}: SubmitCheckModalProps) => {
+const SubmitCheckModal = ({ handleCancelButtonClick, handleCloseModal }: SubmitCheckModalProps) => {
+  const { submitAnswers } = useSubmitAnswers({ closeSubmitConfirmModal: handleCloseModal });
+
   return (
     <ConfirmModal
-      confirmButton={{ styleType: 'primary', type: 'submit', text: '제출', handleClick: handleSubmitButtonClick }}
+      confirmButton={{ styleType: 'primary', type: 'submit', text: '제출', handleClick: submitAnswers }}
       cancelButton={{
         styleType: 'secondary',
         text: '취소',

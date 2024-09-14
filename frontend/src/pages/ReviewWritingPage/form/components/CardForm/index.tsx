@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 import { useSearchParamAndQuery } from '@/hooks';
 import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
@@ -8,7 +9,6 @@ import {
   useUpdateDefaultAnswers,
   useNavigateBlocker,
   useLoadAndPrepareReview,
-  useSubmitAnswers,
 } from '@/pages/ReviewWritingPage/form/hooks';
 import { CardFormModalContainer } from '@/pages/ReviewWritingPage/modals/components';
 import useCardFormModal from '@/pages/ReviewWritingPage/modals/hooks/useCardFormModal';
@@ -50,12 +50,6 @@ const CardForm = () => {
     openNavigateConfirmModal: () => handleOpenModal('navigateConfirm'),
   });
 
-  // 답변 제출
-  const { submitAnswers } = useSubmitAnswers({
-    reviewRequestCode,
-    closeModal,
-  });
-
   const { resetFormRecoil } = useResetFormRecoil();
 
   useEffect(() => {
@@ -94,7 +88,6 @@ const CardForm = () => {
         isOpen={isOpen}
         closeModal={closeModal}
         handleNavigateConfirmButtonClick={handleNavigateConfirmButtonClick}
-        submitAnswers={submitAnswers}
       />
     </>
   );
