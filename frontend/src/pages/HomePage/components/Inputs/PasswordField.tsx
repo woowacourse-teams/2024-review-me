@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 
 import { EyeButton, Input } from '@/components';
 import { useEyeButton, usePasswordValidation } from '@/hooks';
+import { MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT } from '@/pages/HomePage/utils/validateInput';
 
-import { MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT } from '../../utils/validateInput';
 import * as S from '../URLGeneratorForm/styles';
 
 import { InputValueProps } from './InputField';
