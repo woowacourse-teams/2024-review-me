@@ -81,4 +81,12 @@ public class ReviewController {
         ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail2(id, reviewRequestCode);
         return ResponseEntity.ok(response);
     }
+
+//    @PostMapping("/vx/token")
+//    public ResponseEntity<ReviewRequestTokenResponse> createReviewRequestToken(
+//            @Valid @RequestBody ReviewRequestTokenRequest request
+//    ) {
+//        ReviewRequestTokenResponse response = reviewRequestTokenService.createToken(request);
+//        return ResponseEntity.ok(response);
+//    }
 }
