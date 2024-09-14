@@ -13,7 +13,7 @@ export const sidebarWidth: ThemeProperty<string> = {
 export const componentHeight = {
   footer: '6rem',
   topbar: '7rem',
-  breadCrumb: '43rem',
+  breadCrumb: '4.3rem',
 };
 export const breakpoints: ThemeProperty<string> = {
   desktop: '102.4rem',
