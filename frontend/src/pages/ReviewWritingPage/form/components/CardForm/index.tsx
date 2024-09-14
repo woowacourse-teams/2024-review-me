@@ -14,6 +14,7 @@ import { CardFormModalContainer } from '@/pages/ReviewWritingPage/modals/compone
 import useCardFormModal from '@/pages/ReviewWritingPage/modals/hooks/useCardFormModal';
 import ProgressBar from '@/pages/ReviewWritingPage/progressBar/components/ProgressBar';
 import { CardSlider } from '@/pages/ReviewWritingPage/slider/components';
+import { reviewRequestCodeAtom } from '@/recoil';
 
 import * as S from './styles';
 
@@ -23,6 +24,8 @@ const CardForm = () => {
   const { param: reviewRequestCode } = useSearchParamAndQuery({
     paramKey: 'reviewRequestCode',
   });
+
+  const setReviewRequestCode = useSetRecoilState(reviewRequestCodeAtom);
 
   const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
 
@@ -56,6 +59,12 @@ const CardForm = () => {
   });
 
   const { resetFormRecoil } = useResetFormRecoil();
+
+  useEffect(() => {
+    if (reviewRequestCode) {
+      setReviewRequestCode(reviewRequestCode);
+    }
+  }, [reviewRequestCode]);
 
   useEffect(() => {
     return () => {
