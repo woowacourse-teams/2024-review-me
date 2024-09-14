@@ -16,9 +16,6 @@ const useMutateReview = ({ executeAfterMutateSuccess }: UseMutateReviewProps) =>
       queryClient.invalidateQueries({ queryKey: [REVIEW_QUERY_KEY.postReview] });
       executeAfterMutateSuccess();
     },
-    onError: (error) => {
-      console.error(error.message);
-    },
   });
 
   const postReview = (formResult: ReviewWritingFormResult) => {
