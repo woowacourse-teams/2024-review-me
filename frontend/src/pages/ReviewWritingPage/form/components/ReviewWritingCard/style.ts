@@ -7,13 +7,16 @@ export const ReviewWritingCard = styled.div`
 
 export const Header = styled.div`
   width: 100%;
-  min-height: 5rem;
   padding: 1rem 2rem;
 
   font-size: ${({ theme }) => theme.fontSize.mediumSmall};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
 
   background-color: ${({ theme }) => theme.colors.lightPurple};
+
+  @media screen and (max-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.basic};
+  }
 `;
 
 export const Main = styled.div`
