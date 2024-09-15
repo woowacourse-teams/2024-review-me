@@ -6,7 +6,7 @@ import {
   fontWeight,
   zIndex,
   breakpoints,
-  sidebarWidth,
+  scrollbarWidth,
   borderRadius,
   componentHeight,
 } from '../styles/theme';
@@ -17,7 +17,7 @@ export type ZIndex = typeof zIndex;
 export type FontSize = typeof fontSize;
 export type FontWeight = typeof fontWeight;
 export type Breakpoints = typeof breakpoints;
-export type SidebarWidthStyle = typeof sidebarWidth;
+export type ScrollbarWidthStyle = typeof scrollbarWidth;
 export type BorderRadius = typeof borderRadius;
 export type ComponentHeight = typeof componentHeight;
 
@@ -27,7 +27,7 @@ type ThemeType = {
   colors: Color;
   zIndex: ZIndex;
   breakpoints: Breakpoints;
-  sidebarWidth: SidebarWidthStyle;
+  scrollbarWidth: ScrollbarWidthStyle;
   borderRadius: BorderRadius;
   formWidth: string;
   componentHeight: ComponentHeight;

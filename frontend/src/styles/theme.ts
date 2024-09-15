@@ -5,10 +5,7 @@ import { ThemeProperty } from '../types';
 
 export const formWidth = '70rem';
 
-export const sidebarWidth: ThemeProperty<string> = {
-  desktop: '25rem',
-  mobile: '100vw',
-};
+export const scrollbarWidth = '1.2rem';
 
 export const componentHeight = {
   footer: '6rem',
@@ -68,7 +65,7 @@ const theme: Theme = {
   zIndex,
   colors,
   breakpoints,
-  sidebarWidth,
+  scrollbarWidth,
   borderRadius,
   formWidth,
   componentHeight,
