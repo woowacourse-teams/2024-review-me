@@ -53,9 +53,7 @@ const CardForm = () => {
   const { resetFormRecoil } = useResetFormRecoil();
 
   useEffect(() => {
-    if (reviewRequestCode) {
-      setReviewRequestCode(reviewRequestCode);
-    }
+    if (reviewRequestCode) setReviewRequestCode(reviewRequestCode);
   }, [reviewRequestCode]);
 
   useEffect(() => {
