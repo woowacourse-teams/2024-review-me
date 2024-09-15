@@ -5,6 +5,10 @@ export const CardForm = styled.form`
   overflow: hidden;
   width: ${({ theme }) => theme.formWidth};
   overflow-wrap: break-word;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const RevieweeDescription = styled.div`
@@ -26,6 +30,10 @@ export const ProjectName = styled.p`
   margin-top: 0;
   font-size: ${({ theme }) => theme.fontSize.medium};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+
+  @media screen and (max-width: 768px) {
+    font-size: ${({ theme }) => theme.fontSize.mediumSmall};
+  }
 `;
 
 export const RevieweeName = styled.span`
