@@ -25,5 +25,9 @@ export const ButtonContainer = styled.div`
 
   @media screen and (max-width: 375px) {
     gap: 1rem;
+
+    button {
+      font-size: ${({ theme }) => theme.fontSize.small};
+    }
   }
 `;
