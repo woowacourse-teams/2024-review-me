@@ -19,6 +19,10 @@ export const ContentModalContainer = styled.div`
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
+
+  @media screen and (max-width: 425px) {
+    padding: ${({ theme }) => theme.contentModalSize.smallPadding};
+  }
 `;
 
 export const ContentModalHeader = styled.div`
