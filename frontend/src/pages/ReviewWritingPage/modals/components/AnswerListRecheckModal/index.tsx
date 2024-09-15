@@ -1,6 +1,6 @@
 import { CheckboxItem, MultilineTextViewer } from '@/components';
 import ContentModal from '@/components/common/modals/ContentModal';
-import { ReviewWritingCardLayout, QnABoxLayout } from '@/pages/ReviewWritingPage/layout';
+import { ReviewWritingCardLayout, QnABoxLayout } from '@/pages/ReviewWritingPage/layout/components';
 import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
 
 import * as S from './styles';

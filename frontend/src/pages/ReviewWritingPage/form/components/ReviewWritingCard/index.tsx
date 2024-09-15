@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReviewWritingCardLayout } from '@/pages/ReviewWritingPage/layout';
+import { ReviewWritingCardLayout } from '@/pages/ReviewWritingPage/layout/components';
 import { ReviewWritingCardSection } from '@/types';
 
 import QnABox from '../QnABox';

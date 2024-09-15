@@ -1,5 +1,5 @@
 import { MultipleChoiceAnswer, TextAnswer } from '@/pages/ReviewWritingPage/form/components';
-import { QnABoxLayout } from '@/pages/ReviewWritingPage/layout';
+import { QnABoxLayout } from '@/pages/ReviewWritingPage/layout/components';
 import { ReviewWritingCardQuestion } from '@/types';
 
 import * as S from './style';
