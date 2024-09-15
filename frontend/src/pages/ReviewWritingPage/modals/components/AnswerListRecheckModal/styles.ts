@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 
-export const AnswerListContainer = styled.div``;
-
-export const CardLayout = styled.div`
+export const AnswerListContainer = styled.div`
   position: relative;
 
   overflow: hidden;
