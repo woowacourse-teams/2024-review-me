@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const ReviewWritingCard = styled.div`
+export const ReviewWritingCardLayout = styled.div`
   display: flex;
   flex-direction: column;
 `;
