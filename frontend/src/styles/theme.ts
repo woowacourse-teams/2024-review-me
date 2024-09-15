@@ -11,6 +11,12 @@ export const confirmModalSize = {
   maxWidth: '90vw',
   padding: '3.2rem',
 };
+
+export const contentModalSize = {
+  maxWidth: '90vw',
+  padding: '3.2rem',
+};
+
 export const componentHeight = {
   footer: '6rem',
   topbar: '7rem',
@@ -74,6 +80,7 @@ const theme: Theme = {
   formWidth,
   componentHeight,
   confirmModalSize,
+  contentModalSize,
 };
 
 export default theme;
