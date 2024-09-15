@@ -17,8 +17,6 @@ import { CardSlider } from '@/pages/ReviewWritingPage/slider/components';
 
 import * as S from './styles';
 
-// const PROJECT_IMAGE_SIZE = '5rem';
-
 const CardForm = () => {
   const { param: reviewRequestCode } = useSearchParamAndQuery({
     paramKey: 'reviewRequestCode',
