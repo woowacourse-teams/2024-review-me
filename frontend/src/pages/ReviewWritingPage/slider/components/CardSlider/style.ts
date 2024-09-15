@@ -22,4 +22,8 @@ export const ButtonContainer = styled.div`
     min-width: 8rem;
     height: 3.5rem;
   }
+
+  @media screen and (max-width: 375px) {
+    gap: 1rem;
+  }
 `;
