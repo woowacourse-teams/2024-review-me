@@ -7,7 +7,7 @@ import reviewme.global.exception.DataInconsistencyException;
 public class OptionGroupNotFoundByQuestionIdException extends DataInconsistencyException {
 
     public OptionGroupNotFoundByQuestionIdException(long questionId) {
-        super("응답한 질문과 대응하는 선택형 문항이 존재하지 않아요.");
-        log.error("User submitted checkBoxAnswer without provided options - questionId: {}", questionId);
+        super("서버 내부에서 문제가 발생했어요. 서버에 문의해주세요.");
+        log.error("Option group not found for the given questionId - questionId: {}", questionId);
     }
 }
