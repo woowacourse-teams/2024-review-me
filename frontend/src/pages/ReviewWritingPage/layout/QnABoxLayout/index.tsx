@@ -1,6 +1,6 @@
 import { EssentialPropsWithChildren, ReviewWritingCardQuestion } from '@/types';
 
-import AnswerGuide from '../AnswerGuide';
+import QuestionGuide from '../QuestionGuide';
 
 import * as S from './style';
 
@@ -18,9 +18,8 @@ const QnABoxLayout = ({
     <S.QnASection>
       <S.QuestionTitle>
         {question.content}
-        {isNeedGuideLine && <AnswerGuide question={question} />}
+        {isNeedGuideLine && <QuestionGuide question={question} />}
       </S.QuestionTitle>
-      {question.guideline && <S.QuestionGuideline>{question.guideline}</S.QuestionGuideline>}
       {children}
     </S.QnASection>
   );

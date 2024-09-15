@@ -7,7 +7,7 @@ interface AnswerGuideProps {
   question: ReviewWritingCardQuestion;
 }
 
-const AnswerGuide = ({ question }: AnswerGuideProps) => {
+const QuestionGuide = ({ question }: AnswerGuideProps) => {
   /**
    * 객관식 문항의 최소,최대 개수에 대한 안내 문구
    */
@@ -46,4 +46,4 @@ const AnswerGuide = ({ question }: AnswerGuideProps) => {
   );
 };
 
-export default AnswerGuide;
+export default QuestionGuide;
