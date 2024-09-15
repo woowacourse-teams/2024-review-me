@@ -15,6 +15,7 @@ export const confirmModalSize = {
 export const contentModalSize = {
   maxWidth: '90vw',
   padding: '3.2rem',
+  smallPadding: '2rem',
 };
 
 export const componentHeight = {
