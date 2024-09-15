@@ -9,6 +9,7 @@ import {
   scrollbarWidth,
   borderRadius,
   componentHeight,
+  confirmModalSize,
 } from '../styles/theme';
 
 // TODO: export 해서 사용하지 않다면 리팩토링
@@ -20,6 +21,7 @@ export type Breakpoints = typeof breakpoints;
 export type ScrollbarWidthStyle = typeof scrollbarWidth;
 export type BorderRadius = typeof borderRadius;
 export type ComponentHeight = typeof componentHeight;
+export type ConfirmModalSize = typeof confirmModalSize;
 
 type ThemeType = {
   fontSize: FontSize;
@@ -31,6 +33,7 @@ type ThemeType = {
   borderRadius: BorderRadius;
   formWidth: string;
   componentHeight: ComponentHeight;
+  confirmModalSize: ConfirmModalSize;
 };
 
 declare module '@emotion/react' {

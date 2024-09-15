@@ -7,6 +7,10 @@ export const formWidth = '70rem';
 
 export const scrollbarWidth = '1.2rem';
 
+export const confirmModalSize = {
+  maxWidth: '90vw',
+  padding: '3.2rem',
+};
 export const componentHeight = {
   footer: '6rem',
   topbar: '7rem',
@@ -69,6 +73,7 @@ const theme: Theme = {
   borderRadius,
   formWidth,
   componentHeight,
+  confirmModalSize,
 };
 
 export default theme;
