@@ -31,7 +31,7 @@ CREATE TABLE section
     on_selected_option_id BIGINT,
     position              INTEGER                       NOT NULL,
     section_name          VARCHAR(255)                  NOT NULL,
-    visible_type          ENUM ('ALWAYS','CONDITIONAL') NOT NULL,
+    visible_type          VARCHAR(255)                  NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -50,7 +50,7 @@ CREATE TABLE question
     content       VARCHAR(1000)            NOT NULL,
     guideline     VARCHAR(1000),
     position      INTEGER                  NOT NULL,
-    question_type ENUM ('CHECKBOX','TEXT') NOT NULL,
+    question_type VARCHAR(255)             NOT NULL,
     required      BOOLEAN                  NOT NULL,
     PRIMARY KEY (id)
 );
@@ -106,7 +106,7 @@ CREATE TABLE option_item
     id              BIGINT AUTO_INCREMENT,
     content         VARCHAR(255)                NOT NULL,
     option_group_id BIGINT                      NOT NULL,
-    option_type     ENUM ('CATEGORY','KEYWORD') NOT NULL,
+    option_type     VARCHAR(255)                NOT NULL,
     position        INTEGER                     NOT NULL,
     PRIMARY KEY (id)
 );
