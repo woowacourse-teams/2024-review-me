@@ -33,7 +33,7 @@ public class TextAnswerValidator {
         }
 
         if (!question.isRequired() && answerLength > MAX_LENGTH) {
-            throw new InvalidTextAnswerLengthException(question.getId(), answerLength, ZERO_LENGTH, MAX_LENGTH);
+            throw new InvalidTextAnswerLengthException(question.getId(), answerLength, MAX_LENGTH);
         }
     }
 }
