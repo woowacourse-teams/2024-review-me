@@ -1,12 +1,14 @@
 import { css, SerializedStyles } from '@emotion/react';
 import { CSSObject } from '@emotion/styled';
 
-export type Breakpoints = 'mobile' | 'tablet' | 'desktop';
+export type Breakpoints = 'xxSmall' | 'xSmall' | 'small' | 'medium' | 'large';
 
 export const breakpoints: Record<Breakpoints, string> = {
-  mobile: '@media (max-width: 768px)',
-  tablet: '@media (max-width: 1024px)',
-  desktop: '@media (min-width: 1025px)',
+  xxSmall: '@media (max-width: 320px)',
+  xSmall: '@media (max-width: 425px)',
+  small: '@media (max-width: 768px)',
+  medium: '@media (max-width: 1024px)',
+  large: '@media (min-width: 1025px)',
 };
 
 const media = Object.entries(breakpoints).reduce(
