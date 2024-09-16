@@ -1,29 +1,40 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const PasswordModal = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
 `;
 
 export const InputContainer = styled.form`
   display: flex;
-  gap: 1rem;
   justify-content: space-between;
-  width: 100%;
-`;
 
-export const Label = styled.label`
-  margin-bottom: 0.5rem;
-  margin-left: 0.2rem;
-  font-size: 1.4rem;
+  ${media.xSmall`
+    height: 3.8rem;
+  `};
+
+  button {
+    ${media.xSmall`
+      font-size: 1.2rem;
+    `};
+
+    ${media.small`
+      font-size: 1.4rem;
+    `};
+  }
 `;
 
 export const PasswordInputContainer = styled.div`
   position: relative;
   display: flex;
-  gap: 30rem;
+
   width: 70%;
+
+  ${media.large`
+      width: 80%;
+  `};
 `;
 
 export const ErrorMessage = styled.p`
