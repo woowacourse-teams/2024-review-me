@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import { breakpoints } from '@/utils/media';
+
 export const ConfirmModalMessage = styled.div`
   display: flex;
   flex-direction: column;
@@ -9,5 +11,17 @@ export const ConfirmModalMessage = styled.div`
   p {
     width: max-content;
     margin: 0;
+  }
+
+  ${breakpoints.xSmall} {
+    width: 100%;
+    min-width: 70vw;
+
+    p {
+      width: inherit;
+      word-break: keep-all;
+      word-wrap: break-word; /* 오래된 속성, 호환성 용 */
+      overflow-wrap: break-word; /* 최신 속성, 단어 단위로 줄바꿈 */
+    }
   }
 `;
