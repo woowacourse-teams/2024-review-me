@@ -1,7 +1,6 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import media from '@/utils/media';
+import { breakpoints } from '@/utils/media';
 
 export const ContentModalContainer = styled.div`
   position: fixed;
@@ -23,12 +22,9 @@ export const ContentModalContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
-  ${media.xSmall(({ theme }) => {
-    const { smallPadding } = theme.contentModalSize;
-    return css`
-      padding: ${smallPadding};
-    `;
-  })}
+  ${breakpoints.xSmall} {
+    padding: ${({ theme }) => theme.contentModalSize.smallPadding};
+  }
 `;
 
 export const ContentModalHeader = styled.div`
