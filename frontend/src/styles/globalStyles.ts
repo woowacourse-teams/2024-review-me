@@ -37,7 +37,7 @@ const globalStyles = css`
     border-radius: 0.8rem;
   }
 
-  ${media.small`
+  ${media.medium`
       body {
       padding-right: 0;
     }
