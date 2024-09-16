@@ -24,11 +24,6 @@ export const componentHeight = {
   breadCrumb: '43rem',
 };
 
-export const breakpoints: ThemeProperty<string> = {
-  desktop: '102.4rem',
-  tablet: '72rem',
-  mobile: '57.6rem',
-};
 // NOTE: 1rem = 10px
 export const fontSize: ThemeProperty<CSSProperties['fontSize']> = {
   small: '1.4rem',
@@ -76,7 +71,6 @@ const theme: Theme = {
   fontWeight,
   zIndex,
   colors,
-  breakpoints,
   scrollbarWidth,
   borderRadius,
   formWidth,
