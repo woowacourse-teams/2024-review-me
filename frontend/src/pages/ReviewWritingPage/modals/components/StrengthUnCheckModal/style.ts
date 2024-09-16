@@ -6,17 +6,15 @@ export const Contents = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
-  width: fit-content;
-
-  white-space: nowrap;
+  width: max-content;
 
   ${breakpoints.xSmall} {
     min-width: ${({ theme }) => {
       const { maxWidth, padding } = theme.confirmModalSize;
       return `calc(${maxWidth} - (${padding} * 2))`;
     }};
-    white-space: break-spaces;
+    word-wrap: break-word; /* 오래된 속성, 호환성 용 */
+    overflow-wrap: break-word; /* 최신 속성, 단어 단위로 줄바꿈 */
   }
 `;
 
