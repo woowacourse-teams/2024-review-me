@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const ContentModalContainer = styled.div`
   position: fixed;
   top: 50%;
@@ -9,12 +11,13 @@ export const ContentModalContainer = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  align-items: center;
+  gap: 2.8rem;
 
   min-width: 30rem;
   max-width: 80vw;
+  min-height: 30vh;
   max-height: 90vh;
+
   padding: 3.2rem;
 
   background-color: ${({ theme }) => theme.colors.white};
@@ -23,16 +26,27 @@ export const ContentModalContainer = styled.div`
 
 export const ContentModalHeader = styled.div`
   display: flex;
-  gap: 2rem;
+  gap: 10rem;
+
+  ${media.small`
+    gap: 5rem; 
+  `};
+
   align-items: center;
   justify-content: space-between;
 
   width: 100%;
   height: 3rem;
+  margin-bottom: 1.5rem;
 `;
 
 export const Title = styled.span`
   font-size: 1.8rem;
+
+  ${media.small`
+      font-size: 1.6rem;
+  `};
+
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
