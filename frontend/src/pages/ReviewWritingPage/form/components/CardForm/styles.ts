@@ -18,6 +18,10 @@ export const RevieweeDescription = styled.div`
   align-items: center;
   width: 100%;
   margin-bottom: 2rem;
+
+  ${breakpoints.small} {
+    padding-left: ${({ theme }) => theme.breadcrumbSize.paddingLeft};
+  }
 `;
 export const ProjectInfoContainer = styled.div`
   display: flex;
