@@ -41,7 +41,7 @@ export const ReviewGuide = styled.p`
   `}
 
   ${media.small`
-    font-size: 2rem;
+    font-size: 1.8rem;
   `}
 `;
 
