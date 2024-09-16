@@ -11,6 +11,7 @@ import {
   confirmModalSize,
   contentModalSize,
   breakpointsWidth,
+  breadcrumbSize,
 } from '../styles/theme';
 
 export type Color = typeof colors;
@@ -23,6 +24,7 @@ export type ComponentHeight = typeof componentHeight;
 export type ConfirmModalSize = typeof confirmModalSize;
 export type ContentModalSize = typeof contentModalSize;
 export type BreakpointsWidth = typeof breakpointsWidth;
+export type BreadcrumbSize = typeof breadcrumbSize;
 
 type ThemeType = {
   fontSize: FontSize;
@@ -36,6 +38,7 @@ type ThemeType = {
   confirmModalSize: ConfirmModalSize;
   contentModalSize: ContentModalSize;
   breakpointsWidth: BreakpointsWidth;
+  breadcrumbSize: BreadcrumbSize;
 };
 
 declare module '@emotion/react' {
