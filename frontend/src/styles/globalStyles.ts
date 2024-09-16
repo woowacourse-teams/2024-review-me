@@ -35,6 +35,15 @@ const globalStyles = css`
     background: #f1f2f4; /*스크롤바 배경 색상 (lightGray)*/
     border-radius: 0.8rem;
   }
+
+  ${media.small`
+      body {
+      padding-right: initial;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    `}
 `;
 
 export default globalStyles;
