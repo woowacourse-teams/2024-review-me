@@ -8,6 +8,9 @@ export const CardForm = styled.form`
   width: ${({ theme }) => theme.formWidth};
   overflow-wrap: break-word;
 
+  ${media.medium`
+  margin-top:2.4rem`}
+
   ${media.small`
     width: 100%;
     `}
