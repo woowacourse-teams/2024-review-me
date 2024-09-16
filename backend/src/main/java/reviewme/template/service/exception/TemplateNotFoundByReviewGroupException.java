@@ -1,4 +1,4 @@
-package reviewme.template.domain.exception;
+package reviewme.template.service.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import reviewme.global.exception.DataInconsistencyException;
