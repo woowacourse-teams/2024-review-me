@@ -21,7 +21,7 @@ export const contentModalSize = {
 export const componentHeight = {
   footer: '6rem',
   topbar: '7rem',
-  breadCrumb: '43rem',
+  breadCrumb: '4.3rem',
 };
 
 // NOTE: 1rem = 10px
