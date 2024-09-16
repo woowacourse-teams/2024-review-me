@@ -23,6 +23,7 @@ export const componentHeight = {
   topbar: '7rem',
   breadCrumb: '43rem',
 };
+
 export const breakpoints: ThemeProperty<string> = {
   desktop: '102.4rem',
   tablet: '72rem',
