@@ -39,7 +39,7 @@ const globalStyles = css`
 
   ${media.small`
       body {
-      padding-right: initial;
+      padding-right: 0;
     }
     ::-webkit-scrollbar-track {
       background: transparent;
