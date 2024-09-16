@@ -1,14 +1,16 @@
 import styled from '@emotion/styled';
 
+import media, { breakpoints } from '@/utils/media';
+
 export const CardForm = styled.form`
   position: relative;
   overflow: hidden;
   width: ${({ theme }) => theme.formWidth};
   overflow-wrap: break-word;
 
-  @media screen and (max-width: 768px) {
+  ${media.small`
     width: 100%;
-  }
+    `}
 `;
 
 export const RevieweeDescription = styled.div`
@@ -31,7 +33,7 @@ export const ProjectName = styled.p`
   font-size: ${({ theme }) => theme.fontSize.medium};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 
-  @media screen and (max-width: 768px) {
+  ${breakpoints.small} {
     font-size: ${({ theme }) => theme.fontSize.mediumSmall};
   }
 `;

@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import { breakpoints } from '@/utils/media';
+
 export const AnswerListContainer = styled.div`
   position: relative;
 
@@ -10,7 +12,7 @@ export const AnswerListContainer = styled.div`
 
   width: ${({ theme }) => theme.formWidth};
 
-  @media screen and (max-width: 1024px) {
+  ${breakpoints.medium} {
     width: ${({ theme }) => {
       const { maxWidth, padding } = theme.contentModalSize;
       const { scrollbarWidth } = theme;
@@ -19,7 +21,7 @@ export const AnswerListContainer = styled.div`
     }};
   }
 
-  @media screen and (max-width: 425px) {
+  ${breakpoints.xSmall} {
     width: ${({ theme }) => {
       const { maxWidth, smallPadding } = theme.contentModalSize;
       const { scrollbarWidth } = theme;
