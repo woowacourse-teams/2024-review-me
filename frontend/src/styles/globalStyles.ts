@@ -1,10 +1,10 @@
-import { css } from '@emotion/react';
+import { css, Theme } from '@emotion/react';
 
 import media from '@/utils/media';
 
 import reset from './reset';
 
-const globalStyles = css`
+const globalStyles = (theme: Theme) => css`
   ${reset()}
 
   html {
@@ -33,7 +33,7 @@ const globalStyles = css`
   }
 
   ::-webkit-scrollbar-track {
-    background: #f1f2f4; /*스크롤바 배경 색상 (lightGray)*/
+    background: ${theme.colors.lightGray}; /*스크롤바 배경 색상 (lightGray)*/
     border-radius: 0.8rem;
   }
 
@@ -41,6 +41,7 @@ const globalStyles = css`
       body {
       padding-right: 0;
     }
+
     ::-webkit-scrollbar-track {
       background: transparent;
     }
