@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const Description = styled.section`
   display: flex;
   align-items: center;
@@ -8,6 +10,10 @@ export const Description = styled.section`
   width: 100%;
   margin: 0;
   padding: 1rem 3rem;
+
+  ${media.xSmall`
+    padding: 1rem 1.2rem;
+  `};
 
   background-color: ${({ theme }) => theme.colors.lightPurple};
   border-radius: ${({ theme }) => theme.borderRadius.basic} 0 0;
