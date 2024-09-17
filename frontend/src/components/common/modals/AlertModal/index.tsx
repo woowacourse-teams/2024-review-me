@@ -32,7 +32,7 @@ const AlertModal = ({
           <Button
             styleType={closeButton.type}
             onClick={closeButton.handleClick}
-            style={{ width: '100%', minWidth: '30rem', height: '4rem' }}
+            style={{ width: '100%', minWidth: '30%', height: '4rem' }}
           >
             {closeButton.content}
           </Button>
