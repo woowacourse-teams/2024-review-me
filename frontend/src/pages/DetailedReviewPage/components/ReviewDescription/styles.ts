@@ -6,7 +6,6 @@ export const Description = styled.section`
   justify-content: space-between;
 
   width: 100%;
-  height: 9rem;
   margin: 0;
   padding: 1rem 3rem;
 
@@ -17,6 +16,7 @@ export const Description = styled.section`
 export const DescriptionSide = styled.div`
   display: flex;
   width: 100%;
+  flex-wrap: wrap;
 `;
 
 //NOTE: 6rem :깃헙 로고 사이즈
@@ -34,16 +34,27 @@ export const ProjectName = styled.p`
   margin-top: 0;
   font-size: ${({ theme }) => theme.fontSize.medium};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+
+  @media (max-width: 425px) {
+    font-size: ${({ theme }) => theme.fontSize.mediumSmall};
+  }
 `;
 
 export const RevieweeNameAndDateContainer = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
 
   width: 100%;
 
   font-size: ${({ theme }) => theme.fontSize.basic};
+
+  @media (max-width: 425px) {
+    font-size: ${({ theme }) => theme.fontSize.small};
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const RevieweeNameWrapper = styled.p`

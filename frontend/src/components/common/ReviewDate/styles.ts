@@ -1,5 +1,17 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
+export const ReviewDateText = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  ${media.small`
+    display: none;
+  `};
+`;
+
 export const ClockImg = styled.img`
   width: auto;
   height: 1.6rem;
@@ -9,7 +21,11 @@ export const ClockImg = styled.img`
 export const ReviewDate = styled.div`
   display: flex;
   align-items: center;
-  font-size: 1.6rem;
+  
+
+  @media (max-width: 425px) {
+    font-size: ${({ theme }) => theme.fontSize.small};
+  }
 `;
 
 export const Colon = styled.span`
