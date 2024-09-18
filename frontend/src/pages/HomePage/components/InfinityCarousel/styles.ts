@@ -13,7 +13,7 @@ export const InfinityCarouselContainer = styled.div`
 
   ${media.small`
     width: 80%;
-    height: 75%;
+    height: 70%;
   `}
 `;
 

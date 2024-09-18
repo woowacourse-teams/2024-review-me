@@ -50,6 +50,11 @@ export const OverviewTitleContainer = styled.div`
     width: 7rem;
     height: 7rem;
 
+    ${media.medium`
+      width: 6rem;
+      height: 6rem;
+    `}
+
     ${media.small`
       width: 5.5rem;
       height: 5.5rem;
@@ -65,6 +70,10 @@ export const OverviewTitleContainer = styled.div`
 export const OverviewTitle = styled.p`
   font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+
+  ${media.medium`
+    font-size: 2.4rem; // theme.fontSize.medium 추후 사용
+  `}
 
   ${media.xSmall`
     font-size: 2rem; // theme.fontSize.mediumSmall 추후 사용

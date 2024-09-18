@@ -10,6 +10,14 @@ export const URLGeneratorForm = styled.section`
   width: 40%;
   padding: 0 9rem;
 
+  ${media.medium`
+    width: 45%;
+
+    h2 {
+      font-size: 2rem;
+    }
+  `}
+
   ${media.small`
     width: 100%;
     margin: 4rem 0;
