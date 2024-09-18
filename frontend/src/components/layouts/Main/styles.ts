@@ -29,7 +29,7 @@ export const Contents = styled.div`
 
   box-sizing: border-box;
   width: 100%;
-  max-width: ${({ theme }) => theme.breakpoints.medium + 'px'};
+  max-width: ${({ theme }) => theme.breakpoint.medium}px;
   height: 100%;
   min-height: inherit;
 

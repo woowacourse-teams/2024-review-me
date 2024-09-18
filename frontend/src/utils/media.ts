@@ -1,21 +1,17 @@
 import theme from '@/styles/theme';
 
-const { breakpoints } = theme;
+const { breakpoint } = theme;
 
-type BreakpointsKey = keyof typeof breakpoints;
+export type Breakpoints = keyof typeof breakpoint;
+type Media = { [key in Breakpoints]: string };
 
-type Media = {
-  [key in BreakpointsKey]: string;
-};
+const breakpointsKeyList = Object.keys(breakpoint) as Breakpoints[];
 
-export const media = Object.keys(breakpoints).reduce((acc, key) => {
-  const size = breakpoints[key as BreakpointsKey];
-  const mediaType = key === 'large' ? 'min' : 'max';
+const media = breakpointsKeyList.reduce((prev, key, index) => {
+  const mediaType = index === breakpointsKeyList.length - 1 ? 'min' : 'max';
 
-  return {
-    ...acc,
-    [key]: `@media (${mediaType}-width: ${size}px)`,
-  };
+  prev[key] = `@media (${mediaType}-width: ${breakpoint[key]}px)`;
+  return prev;
 }, {} as Media);
 
 export default media;

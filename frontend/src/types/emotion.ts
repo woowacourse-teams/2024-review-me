@@ -6,11 +6,11 @@ import {
   fontWeight,
   zIndex,
   scrollbarWidth,
+  breakpoint,
   borderRadius,
   componentHeight,
   confirmModalSize,
   contentModalSize,
-  breakpoints,
   breadcrumbSize,
 } from '../styles/theme';
 
@@ -19,11 +19,11 @@ export type ZIndex = typeof zIndex;
 export type FontSize = typeof fontSize;
 export type FontWeight = typeof fontWeight;
 export type ScrollbarWidthStyle = typeof scrollbarWidth;
+export type Breakpoint = typeof breakpoint;
 export type BorderRadius = typeof borderRadius;
 export type ComponentHeight = typeof componentHeight;
 export type ConfirmModalSize = typeof confirmModalSize;
 export type ContentModalSize = typeof contentModalSize;
-export type BreakpointsWidth = typeof breakpoints;
 export type BreadcrumbSize = typeof breadcrumbSize;
 
 type ThemeType = {
@@ -32,12 +32,12 @@ type ThemeType = {
   colors: Color;
   zIndex: ZIndex;
   scrollbarWidth: ScrollbarWidthStyle;
+  breakpoint: Breakpoint;
   borderRadius: BorderRadius;
   formWidth: string;
   componentHeight: ComponentHeight;
   confirmModalSize: ConfirmModalSize;
   contentModalSize: ContentModalSize;
-  breakpoints: BreakpointsWidth;
   breadcrumbSize: BreadcrumbSize;
 };
 
