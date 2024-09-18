@@ -18,7 +18,7 @@ export const CardForm = styled.form`
   }
 
   ${media.small} {
-    width: 90%;
+    width: 100%;
     min-width: initial;
   }
 `;
