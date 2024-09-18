@@ -1,9 +1,6 @@
 import styled from '@emotion/styled';
 
-import media from '@/utils/media';
-
 export const Slide = styled.div`
-  overflow-x: hidden;
   flex: 0 0 100%;
 
   box-sizing: border-box;
@@ -11,10 +8,6 @@ export const Slide = styled.div`
 
   border: 0.1rem solid ${({ theme }) => theme.colors.lightPurple};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
-
-  ${media.small} {
-    border: none;
-  }
 `;
 
 export const ButtonContainer = styled.div`
