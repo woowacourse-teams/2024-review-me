@@ -3,13 +3,17 @@ import styled from '@emotion/styled';
 import media from '@/utils/media';
 
 export const InfinityCarouselContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  gap: 1.6rem;
+
   position: relative;
 
   overflow: hidden;
 
   width: 100%;
   max-width: 80rem;
-  height: 65%;
 
   ${media.small`
     width: 80%;
@@ -38,9 +42,6 @@ export const SlideItem = styled.div`
 `;
 
 export const SlideContent = styled.div`
-  position: absolute;
-  left: 0;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -50,7 +51,6 @@ export const SlideContent = styled.div`
 
   img {
     width: 80%;
-    margin-bottom: 1.2rem;
   }
 `;
 
@@ -93,9 +93,6 @@ export const NextButton = styled.button`
 `;
 
 export const IndicatorWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;

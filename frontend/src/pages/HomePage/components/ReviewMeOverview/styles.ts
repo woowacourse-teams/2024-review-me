@@ -11,15 +11,7 @@ export const ReviewMeOverview = styled.section`
   ${media.small`
     flex-direction: column;
     width: 100%;
-    height: 45rem;
-  `}
-
-  ${media.xSmall`
-    height: 45vh;
-  `}
-
-  ${media.xxSmall`
-    height: 38vh;
+    padding: 2rem 0;
   `}
 `;
 
@@ -31,13 +23,7 @@ export const ColumnSectionContainer = styled.div`
 
   height: 100%;
 
-  ${media.small`
-    gap: 1.5rem;
-  `}
-
-  ${media.xSmall`
-    gap: 1rem;
-  `}
+  gap: 1.5rem;
 `;
 
 export const OverviewTitleContainer = styled.div`
@@ -64,7 +50,16 @@ export const OverviewTitleContainer = styled.div`
       width: 4rem;
       height: 4rem;
     `}
+
+    ${media.xxSmall`
+      width: 3.5rem;
+      height: 3.5rem;
+    `}
   }
+
+  ${media.xxSmall`
+      gap: 0.6rem;
+    `}
 `;
 
 export const OverviewTitle = styled.p`
@@ -80,6 +75,6 @@ export const OverviewTitle = styled.p`
   `}
 
   ${media.xxSmall`
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   `}
 `;
