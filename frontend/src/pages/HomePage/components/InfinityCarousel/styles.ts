@@ -10,6 +10,10 @@ export const InfinityCarouselContainer = styled.div`
   width: 100%;
   max-width: 80rem;
   height: 65%;
+
+  ${media.small`
+    width: 80%;
+  `}
 `;
 
 export const SlideList = styled.div`

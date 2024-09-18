@@ -10,10 +10,12 @@ export const URLGeneratorForm = styled.section`
   width: 40%;
   padding: 0 9rem;
 
-  ${media.xSmall`
+  ${media.small`
     width: 100%;
     margin: 4rem 0;
+  `}
 
+  ${media.xSmall`
     h2 {
       font-size: 1.8rem;
       margin-bottom: 4rem;

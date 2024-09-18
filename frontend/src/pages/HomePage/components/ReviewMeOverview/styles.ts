@@ -8,9 +8,13 @@ export const ReviewMeOverview = styled.section`
   width: 65%;
   background-color: ${({ theme }) => theme.colors.lightPurple};
 
-  ${media.xSmall`
+  ${media.small`
     flex-direction: column;
     width: 100%;
+    height: 60vh;
+  `}
+
+  ${media.xSmall`
     height: 45vh;
   `}
 
@@ -27,6 +31,10 @@ export const ColumnSectionContainer = styled.div`
 
   height: 100%;
 
+  ${media.small`
+    gap: 1.5rem;
+  `}
+
   ${media.xSmall`
     gap: 1rem;
   `}
@@ -41,14 +49,17 @@ export const OverviewTitleContainer = styled.div`
   img {
     width: 7rem;
     height: 7rem;
-  }
 
-  ${media.xSmall`
-    img {
+    ${media.small`
+      width: 5.5rem;
+      height: 5.5rem;
+    `}
+
+    ${media.xSmall`
       width: 4rem;
       height: 4rem;
-    }
-  `}
+    `}
+  }
 `;
 
 export const OverviewTitle = styled.p`
@@ -56,7 +67,7 @@ export const OverviewTitle = styled.p`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 
   ${media.xSmall`
-    font-size: 2rem;
+    font-size: 2rem; // theme.fontSize.mediumSmall 추후 사용
   `}
 
   ${media.xxSmall`
