@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const URLGeneratorForm = styled.section`
   display: flex;
   align-items: center;
@@ -7,6 +9,29 @@ export const URLGeneratorForm = styled.section`
 
   width: 40%;
   padding: 0 9rem;
+
+  ${media.xxSmall`
+    width: 100%;
+    margin: 4rem 0;
+
+    h2 {
+      font-size: 1.6rem;
+      margin-bottom: 4rem;
+    }
+
+    label {
+      font-size: 1.3rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+    }
+
+    button {
+      font-size: 1.3rem;
+    }
+
+  `}
 `;
 
 export const InputContainer = styled.div`

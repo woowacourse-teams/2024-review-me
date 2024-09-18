@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const InfinityCarouselContainer = styled.div`
   position: relative;
 
@@ -7,7 +9,7 @@ export const InfinityCarouselContainer = styled.div`
 
   width: 100%;
   max-width: 80rem;
-  height: 60vh;
+  height: 65%;
 `;
 
 export const SlideList = styled.div`
@@ -44,6 +46,8 @@ export const SlideContent = styled.div`
   img {
     width: 80%;
     height: 100%;
+
+    margin-bottom: 1.2rem;
   }
 `;
 
@@ -60,6 +64,10 @@ export const PrevButton = styled.button`
 
   background: none;
   border: none;
+
+  ${media.xxSmall`
+    display: none;
+  `}
 `;
 
 export const NextButton = styled.button`
@@ -75,6 +83,10 @@ export const NextButton = styled.button`
 
   background: none;
   border: none;
+
+  ${media.xxSmall`
+    display: none;
+  `}
 `;
 
 export const IndicatorWrapper = styled.div`
@@ -99,4 +111,9 @@ export const Indicator = styled.div<{ focused: boolean }>`
   border-radius: 50%;
 
   transition: background-color 0.3s ease;
+
+  ${media.xxSmall`
+    width: 0.6rem;
+    height: 0.6rem;
+  `}
 `;

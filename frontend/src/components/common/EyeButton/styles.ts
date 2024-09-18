@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 const EYE_BUTTON_SIZE = '1.6rem';
 
 export const EyeButton = styled.button`
@@ -13,4 +15,9 @@ export const EyeButton = styled.button`
 
   width: ${EYE_BUTTON_SIZE};
   height: ${EYE_BUTTON_SIZE};
+
+  ${media.xxSmall`
+    width: 1.3rem;
+    height: 1.3rem;
+  `}
 `;
