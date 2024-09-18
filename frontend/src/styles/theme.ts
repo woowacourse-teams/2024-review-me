@@ -13,13 +13,15 @@ export const sidebarWidth: ThemeProperty<string> = {
 export const componentHeight = {
   footer: '6rem',
   topbar: '7rem',
-  breadCrumb: '43rem',
+  breadCrumb: '4.3rem',
 };
 
-export const breakpoints: ThemeProperty<string> = {
-  desktop: '102.4rem',
-  tablet: '72rem',
-  mobile: '57.6rem',
+export const breakpoint = {
+  xxSmall: 320,
+  xSmall: 425,
+  small: 768,
+  medium: 1024,
+  large: 1025,
 };
 // NOTE: 1rem = 10px
 export const fontSize: ThemeProperty<CSSProperties['fontSize']> = {
@@ -68,7 +70,7 @@ const theme: Theme = {
   fontWeight,
   zIndex,
   colors,
-  breakpoints,
+  breakpoint,
   sidebarWidth,
   borderRadius,
   formWidth,
