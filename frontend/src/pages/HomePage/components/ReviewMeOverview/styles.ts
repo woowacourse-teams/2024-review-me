@@ -8,10 +8,13 @@ export const ReviewMeOverview = styled.section`
   width: 65%;
   background-color: ${({ theme }) => theme.colors.lightPurple};
 
-  ${media.xxSmall`
-    background-color: #E6E3F6; // light-purple
+  ${media.xSmall`
     flex-direction: column;
     width: 100%;
+    height: 45vh;
+  `}
+
+  ${media.xxSmall`
     height: 38vh;
   `}
 `;
@@ -24,7 +27,7 @@ export const ColumnSectionContainer = styled.div`
 
   height: 100%;
 
-  ${media.xxSmall`
+  ${media.xSmall`
     gap: 1rem;
   `}
 `;
@@ -40,18 +43,21 @@ export const OverviewTitleContainer = styled.div`
     height: 7rem;
   }
 
-  ${media.xxSmall`
+  ${media.xSmall`
     img {
       width: 4rem;
       height: 4rem;
     }
-
   `}
 `;
 
 export const OverviewTitle = styled.p`
   font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+
+  ${media.xSmall`
+    font-size: 2rem;
+  `}
 
   ${media.xxSmall`
     font-size: 1.8rem;

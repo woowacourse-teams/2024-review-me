@@ -45,8 +45,6 @@ export const SlideContent = styled.div`
 
   img {
     width: 80%;
-    height: 100%;
-
     margin-bottom: 1.2rem;
   }
 `;
@@ -65,7 +63,7 @@ export const PrevButton = styled.button`
   background: none;
   border: none;
 
-  ${media.xxSmall`
+  ${media.xSmall`
     display: none;
   `}
 `;
@@ -84,7 +82,7 @@ export const NextButton = styled.button`
   background: none;
   border: none;
 
-  ${media.xxSmall`
+  ${media.xSmall`
     display: none;
   `}
 `;
@@ -111,6 +109,11 @@ export const Indicator = styled.div<{ focused: boolean }>`
   border-radius: 50%;
 
   transition: background-color 0.3s ease;
+
+  ${media.xSmall`
+    width: 0.8rem;
+    height: 0.8rem;
+  `}
 
   ${media.xxSmall`
     width: 0.6rem;
