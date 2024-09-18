@@ -7,6 +7,9 @@ export const CardForm = styled.form`
 
   overflow: hidden;
 
+  width: fit-content;
+  min-width: ${({ theme }) => theme.formWidth};
+  max-width: 90rem;
 
   overflow-wrap: break-word;
 
@@ -14,9 +17,10 @@ export const CardForm = styled.form`
     margin-top: 2.4rem;
   }
 
-  ${media.small`
-    width: 100%;
-    `}
+  ${media.small} {
+    width: 90%;
+    min-width: initial;
+  }
 `;
 
 export const RevieweeDescription = styled.div`
