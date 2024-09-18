@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { breakpoints } from '@/utils/media';
+import media from '@/utils/media';
 
 export const ContentModalContainer = styled.div`
   position: fixed;
@@ -22,7 +22,7 @@ export const ContentModalContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
-  ${breakpoints.xSmall} {
+  ${media.xSmall} {
     padding: ${({ theme }) => theme.contentModalSize.smallPadding};
   }
 `;

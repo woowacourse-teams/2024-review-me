@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { breakpoints } from '@/utils/media';
+import media from '@/utils/media';
 
 export const Contents = styled.div`
   display: flex;
@@ -8,7 +8,7 @@ export const Contents = styled.div`
   gap: 1rem;
   width: max-content;
 
-  ${breakpoints.xSmall} {
+  ${media.xSmall} {
     min-width: ${({ theme }) => {
       const { maxWidth, padding } = theme.confirmModalSize;
       return `calc(${maxWidth} - (${padding} * 2))`;

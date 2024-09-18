@@ -1,15 +1,18 @@
 import styled from '@emotion/styled';
 
-import media, { breakpoints } from '@/utils/media';
+import media from '@/utils/media';
 
 export const CardForm = styled.form`
   position: relative;
+
   overflow: hidden;
-  width: ${({ theme }) => theme.formWidth};
+
+
   overflow-wrap: break-word;
 
-  ${media.medium`
-  margin-top:2.4rem`}
+  ${media.medium} {
+    margin-top: 2.4rem;
+  }
 
   ${media.small`
     width: 100%;
@@ -22,7 +25,7 @@ export const RevieweeDescription = styled.div`
   width: 100%;
   margin-bottom: 2rem;
 
-  ${breakpoints.small} {
+  ${media.small} {
     padding-left: ${({ theme }) => theme.breadcrumbSize.paddingLeft};
   }
 `;
@@ -40,7 +43,7 @@ export const ProjectName = styled.p`
   font-size: ${({ theme }) => theme.fontSize.medium};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 
-  ${breakpoints.small} {
+  ${media.small} {
     font-size: ${({ theme }) => theme.fontSize.mediumSmall};
   }
 `;

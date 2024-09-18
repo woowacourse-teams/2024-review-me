@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { breakpoints } from '@/utils/media';
+import media from '@/utils/media';
 
 export const ReviewWritingCardLayout = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ export const Header = styled.div`
 
   background-color: ${({ theme }) => theme.colors.lightPurple};
 
-  ${breakpoints.small} {
+  ${media.small} {
     font-size: ${({ theme }) => theme.fontSize.basic};
   }
 `;
