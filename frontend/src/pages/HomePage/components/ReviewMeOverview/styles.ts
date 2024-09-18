@@ -11,7 +11,7 @@ export const ReviewMeOverview = styled.section`
   ${media.small`
     flex-direction: column;
     width: 100%;
-    height: 60vh;
+    height: 45rem;
   `}
 
   ${media.xSmall`
