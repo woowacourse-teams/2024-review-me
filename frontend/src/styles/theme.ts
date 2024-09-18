@@ -70,11 +70,11 @@ export const zIndex: ThemeProperty<CSSProperties['zIndex']> = {
 };
 
 export const breakpoints = {
-  xxSmall: '320px',
-  xSmall: '425px',
-  small: ' 768px',
-  medium: '1024px',
-  large: '1025px',
+  xxSmall: 320,
+  xSmall: 425,
+  small: 768,
+  medium: 1024,
+  large: 1025,
 };
 
 const theme: Theme = {

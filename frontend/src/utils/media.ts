@@ -14,7 +14,7 @@ export const media = Object.keys(breakpoints).reduce((acc, key) => {
 
   return {
     ...acc,
-    [key]: `@media (${mediaType}-width: ${size})`,
+    [key]: `@media (${mediaType}-width: ${size}px)`,
   };
 }, {} as Media);
 
