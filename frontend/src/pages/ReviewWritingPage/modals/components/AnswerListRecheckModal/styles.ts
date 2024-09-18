@@ -22,12 +22,7 @@ export const AnswerListContainer = styled.div`
   }
 
   ${media.xSmall} {
-    width: ${({ theme }) => {
-      const { maxWidth, smallPadding } = theme.contentModalSize;
-      const { scrollbarWidth } = theme;
-
-      return `calc(${maxWidth} - (${smallPadding} * 2) - ${scrollbarWidth})`;
-    }};
+    width: 100%;
   }
 `;
 
