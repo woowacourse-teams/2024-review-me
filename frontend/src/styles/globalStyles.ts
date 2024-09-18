@@ -37,15 +37,15 @@ const globalStyles = (theme: Theme) => css`
     border-radius: 0.8rem;
   }
 
-  ${media.medium`
-      body {
+  ${media.medium} {
+    body {
       padding-right: 0;
     }
 
     ::-webkit-scrollbar-track {
       background: transparent;
     }
-    `}
+  }
 `;
 
 export default globalStyles;
