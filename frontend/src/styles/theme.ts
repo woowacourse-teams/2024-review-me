@@ -69,7 +69,7 @@ export const zIndex: ThemeProperty<CSSProperties['zIndex']> = {
   modal: 999,
 };
 
-export const breakpointsWidth = {
+export const breakpoints = {
   xxSmall: '320px',
   xSmall: '425px',
   small: ' 768px',
@@ -88,7 +88,7 @@ const theme: Theme = {
   componentHeight,
   confirmModalSize,
   contentModalSize,
-  breakpointsWidth,
+  breakpoints,
   breadcrumbSize,
 };
 

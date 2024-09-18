@@ -10,7 +10,7 @@ import {
   componentHeight,
   confirmModalSize,
   contentModalSize,
-  breakpointsWidth,
+  breakpoints,
   breadcrumbSize,
 } from '../styles/theme';
 
@@ -23,7 +23,7 @@ export type BorderRadius = typeof borderRadius;
 export type ComponentHeight = typeof componentHeight;
 export type ConfirmModalSize = typeof confirmModalSize;
 export type ContentModalSize = typeof contentModalSize;
-export type BreakpointsWidth = typeof breakpointsWidth;
+export type BreakpointsWidth = typeof breakpoints;
 export type BreadcrumbSize = typeof breadcrumbSize;
 
 type ThemeType = {
@@ -37,7 +37,7 @@ type ThemeType = {
   componentHeight: ComponentHeight;
   confirmModalSize: ConfirmModalSize;
   contentModalSize: ContentModalSize;
-  breakpointsWidth: BreakpointsWidth;
+  breakpoints: BreakpointsWidth;
   breadcrumbSize: BreadcrumbSize;
 };
 
