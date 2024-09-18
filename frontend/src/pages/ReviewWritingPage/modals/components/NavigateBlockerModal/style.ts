@@ -8,6 +8,8 @@ export const ConfirmModalMessage = styled.div`
   gap: 0.8rem;
   align-items: start;
 
+  word-break: keep-all;
+
   p {
     width: max-content;
     margin: 0;
@@ -19,9 +21,6 @@ export const ConfirmModalMessage = styled.div`
 
     p {
       width: inherit;
-      word-break: keep-all;
-      word-wrap: break-word; /* 오래된 속성, 호환성 용 */
-      overflow-wrap: break-word; /* 최신 속성, 단어 단위로 줄바꿈 */
     }
   }
 `;

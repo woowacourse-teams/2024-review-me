@@ -11,7 +11,7 @@ export const CardForm = styled.form`
   min-width: ${({ theme }) => theme.formWidth};
   max-width: 90rem;
 
-  overflow-wrap: break-word;
+  word-break: keep-all;
 
   ${media.medium} {
     margin-top: 2.4rem;
@@ -19,9 +19,9 @@ export const CardForm = styled.form`
 
   ${media.small} {
     width: 95vw;
-    margin :0 auto;
-    margin-top: 2.4rem;
     min-width: initial;
+    margin: 0 auto;
+    margin-top: 2.4rem;
   }
 `;
 

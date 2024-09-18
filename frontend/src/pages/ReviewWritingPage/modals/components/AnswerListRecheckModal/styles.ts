@@ -5,12 +5,13 @@ import media from '@/utils/media';
 export const AnswerListContainer = styled.div`
   position: relative;
 
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
 
   width: ${({ theme }) => theme.formWidth};
+
+  word-break: keep-all;
 
   ${media.medium} {
     width: ${({ theme }) => {
