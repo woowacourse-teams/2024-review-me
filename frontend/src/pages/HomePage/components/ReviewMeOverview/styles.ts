@@ -13,15 +13,6 @@ export const ReviewMeOverview = styled.section`
     flex-direction: column;
     width: 100%;
     height: 38vh;
-
-    img {
-      width: 4rem;
-      height: 4rem;
-    }
-
-    p {
-      font-size: 2rem;
-    }
   `}
 `;
 
@@ -48,9 +39,21 @@ export const OverviewTitleContainer = styled.div`
     width: 7rem;
     height: 7rem;
   }
+
+  ${media.xxSmall`
+    img {
+      width: 4rem;
+      height: 4rem;
+    }
+
+  `}
 `;
 
 export const OverviewTitle = styled.p`
   font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+
+  ${media.xxSmall`
+    font-size: 1.8rem;
+  `}
 `;
