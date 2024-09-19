@@ -1,10 +1,11 @@
 import UpperArrowIcon from '@/assets/upperArrow.svg';
 import useTopButton from '@/hooks/useTopButton';
+import { scrollToTop } from '@/utils';
 
 import * as S from './style';
 
 const TopButton = () => {
-  const { showTopButton, scrollToTop } = useTopButton();
+  const { showTopButton } = useTopButton();
 
   if (!showTopButton) return null;
 
