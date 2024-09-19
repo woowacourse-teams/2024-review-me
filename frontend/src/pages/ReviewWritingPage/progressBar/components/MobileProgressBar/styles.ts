@@ -58,6 +58,7 @@ interface StepButtonStyleProps {
 const defaultStyle = (theme: Theme) => css`
   cursor: pointer;
   background-color: ${theme.colors.white};
+  border: 0.2rem solid ${theme.colors.palePurple};
 `;
 
 const disabledStyle = (theme: Theme) => css`
@@ -89,10 +90,9 @@ export const StepButton = styled.button<StepButtonStyleProps>`
 
   font-size: 1.3rem;
 
+  ${({ $isDone, $isMovingAvailable, theme }) => getStepButtonStyle($isDone, $isMovingAvailable, theme)}
   border: ${({ $isCurrentStep, theme }) => ($isCurrentStep ? `0.2rem solid ${theme.colors.primary}` : '')};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
-
-  ${({ $isDone, $isMovingAvailable, theme }) => getStepButtonStyle($isDone, $isMovingAvailable, theme)}
 `;
 
 export const EmptyBlock = styled.div`
