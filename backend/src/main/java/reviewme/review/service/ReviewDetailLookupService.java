@@ -9,7 +9,7 @@ import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.review.service.exception.ReviewNotFoundByIdAndGroupException;
-import reviewme.review.service.module.ReviewDetailMapper;
+import reviewme.review.service.module.ReviewDetailMapperTedVer;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -21,7 +21,7 @@ public class ReviewDetailLookupService {
     private final ReviewRepository reviewRepository;
     private final ReviewGroupRepository reviewGroupRepository;
 
-    private final ReviewDetailMapper reviewDetailMapper;
+    private final ReviewDetailMapperTedVer reviewDetailMapperTedVer;
 
     public ReviewDetailResponse getReviewDetail(long reviewId, String reviewRequestCode, String groupAccessCode) {
         ReviewGroup reviewGroup =  reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
@@ -32,7 +32,7 @@ public class ReviewDetailLookupService {
         Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
                 .orElseThrow(() -> new ReviewNotFoundByIdAndGroupException(reviewId, reviewGroup.getId()));
 
-        return reviewDetailMapper.mapToReviewDetailResponse(review, reviewGroup);
+        return reviewDetailMapperTedVer.mapToReviewDetailResponse(review, reviewGroup);
     }
 
     private void validateGroupAccessCode(ReviewGroup reviewGroup, String groupAccessCode) {

@@ -26,7 +26,7 @@ import reviewme.template.repository.SectionRepository;
 
 @Component
 @RequiredArgsConstructor
-public class ReviewDetailMapper {
+public class ReviewDetailMapperTedVer {
 
     public static final String REVIEWEE_NAME_PLACEHOLDER = "{revieweeName}";
 
