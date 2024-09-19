@@ -11,8 +11,6 @@ export const CardForm = styled.form`
   min-width: ${({ theme }) => theme.formWidth};
   max-width: 90rem;
 
-  word-break: keep-all;
-
   ${media.medium} {
     width: 80vw;
     min-width: initial;

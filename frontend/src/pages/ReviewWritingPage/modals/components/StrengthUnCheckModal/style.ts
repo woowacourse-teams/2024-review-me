@@ -6,10 +6,7 @@ export const Contents = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
   width: max-content;
-
-  word-break: keep-all;
 
   ${media.xSmall} {
     min-width: ${({ theme }) => {
