@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const CardForm = styled.form`
   position: relative;
   overflow: hidden;
@@ -30,6 +32,20 @@ export const ProjectName = styled.p`
 
 export const RevieweeName = styled.span`
   color: ${({ theme }) => theme.colors.primary};
+`;
+
+export const NormalProgressBar = styled.div`
+  ${media.small} {
+    display: none;
+  }
+`;
+
+export const MiniProgressBar = styled.div`
+  display: none;
+
+  ${media.small} {
+    display: block;
+  }
 `;
 
 export const ConfirmModalMessage = styled.div`
