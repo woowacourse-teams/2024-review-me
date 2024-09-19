@@ -37,7 +37,7 @@ const globalStyles = (theme: Theme) => css`
     border-radius: 0.8rem;
   }
 
-  ${media.medium} {
+  ${media.small} {
     body {
       padding-right: 0;
     }
