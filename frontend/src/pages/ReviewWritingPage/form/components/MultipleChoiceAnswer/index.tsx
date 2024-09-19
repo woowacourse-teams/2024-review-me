@@ -1,6 +1,7 @@
-import { CheckboxItem, ConfirmModal } from '@/components';
+import { CheckboxItem } from '@/components';
 import { useModals } from '@/hooks';
 import { useMultipleChoice } from '@/pages/ReviewWritingPage/form/hooks';
+import { StrengthUnCheckModal } from '@/pages/ReviewWritingPage/modals/components';
 import { ReviewWritingCardQuestion } from '@/types';
 
 import * as S from './style';
@@ -54,28 +55,10 @@ const MultipleChoiceAnswer = ({ question }: MultipleChoiceAnswerProps) => {
         )}
       </S.LimitGuideMessage>
       {isOpen(MODAL_KEY.confirm) && (
-        <ConfirmModal
-          confirmButton={{
-            styleType: 'primary',
-            text: '확인',
-            type: 'button',
-            handleClick: handleModalConfirmButtonClick,
-          }}
-          cancelButton={{
-            styleType: 'secondary',
-            text: '취소',
-            type: 'button',
-            handleClick: handleModalCancelButtonClick,
-          }}
-          handleClose={handleModalCancelButtonClick}
-          isClosableOnBackground={true}
-        >
-          <S.ConfirmModalContainer>
-            <S.ConfirmModalTitle>잠깐만요!</S.ConfirmModalTitle>
-            <p>선택을 해제하시면 앞서 작성한 답변이 모두 사라져요</p>
-            <p>변경하시겠어요?</p>
-          </S.ConfirmModalContainer>
-        </ConfirmModal>
+        <StrengthUnCheckModal
+          handleModalCancelButtonClick={handleModalCancelButtonClick}
+          handleModalConfirmButtonClick={handleModalConfirmButtonClick}
+        />
       )}
     </>
   );

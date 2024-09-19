@@ -24,7 +24,7 @@ const globalStyles = (theme: Theme) => css`
   /* 스크롤바 설정 */
 
   ::-webkit-scrollbar {
-    width: 1.2rem; /* 스크롤바 너비 */
+    width: ${theme.scrollbarWidth}; /* 스크롤바 너비 */
   }
 
   ::-webkit-scrollbar-thumb {
