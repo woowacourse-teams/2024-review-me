@@ -12,7 +12,7 @@ public class AnswerMapper {
 
     public TextAnswer mapToTextAnswer(ReviewAnswerRequest answerRequest) {
         if (answerRequest.selectedOptionIds() != null) {
-            throw new TextAnswerIncludedOptionItemException();
+            throw new TextAnswerIncludedOptionItemException(answerRequest.questionId());
         }
 
         return new TextAnswer(answerRequest.questionId(), answerRequest.text());
@@ -20,7 +20,7 @@ public class AnswerMapper {
 
     public CheckboxAnswer mapToCheckBoxAnswer(ReviewAnswerRequest answerRequest) {
         if (answerRequest.text() != null) {
-            throw new CheckBoxAnswerIncludedTextException();
+            throw new CheckBoxAnswerIncludedTextException(answerRequest.questionId());
         }
 
         return new CheckboxAnswer(answerRequest.questionId(), answerRequest.selectedOptionIds());

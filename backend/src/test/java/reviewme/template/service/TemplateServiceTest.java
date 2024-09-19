@@ -5,11 +5,11 @@ import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
-import reviewme.template.domain.exception.TemplateNotFoundByReviewGroupException;
+import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
 
 @ServiceTest
 class TemplateServiceTest {

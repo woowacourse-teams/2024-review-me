@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.domain.exception.InvalidTextAnswerLengthException;
+import reviewme.review.service.exception.InvalidTextAnswerLengthException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 
 @Component

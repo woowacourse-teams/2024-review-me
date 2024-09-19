@@ -5,9 +5,20 @@ import { ThemeProperty } from '../types';
 
 export const formWidth = '70rem';
 
-export const sidebarWidth: ThemeProperty<string> = {
-  desktop: '25rem',
-  mobile: '100vw',
+export const scrollbarWidth = '1.2rem';
+
+export const breadcrumbSize = {
+  paddingLeft: '2rem',
+};
+export const confirmModalSize = {
+  maxWidth: '90vw',
+  padding: '3.2rem',
+};
+
+export const contentModalSize = {
+  maxWidth: '90vw',
+  padding: '3.2rem',
+  smallPadding: '2rem',
 };
 
 export const componentHeight = {
@@ -65,16 +76,27 @@ export const zIndex: ThemeProperty<CSSProperties['zIndex']> = {
   modal: 999,
 };
 
+export const breakpoints = {
+  xxSmall: 320,
+  xSmall: 425,
+  small: 768,
+  medium: 1024,
+  large: 1025,
+};
+
 const theme: Theme = {
   fontSize,
   fontWeight,
   zIndex,
   colors,
+  scrollbarWidth,
   breakpoint,
-  sidebarWidth,
   borderRadius,
   formWidth,
   componentHeight,
+  confirmModalSize,
+  contentModalSize,
+  breadcrumbSize,
 };
 
 export default theme;

@@ -20,12 +20,11 @@ import org.springframework.restdocs.headers.HeaderDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByCodesException;
 
 class ReviewApiTest extends ApiTest {
 
@@ -158,38 +157,6 @@ class ReviewApiTest extends ApiTest {
     }
 
     @Test
-    void 리뷰_단건_조회시_접근_코드가_올바르지_않은_경우_예외를_발생한다() {
-        long reviewId = 1L;
-        String reviewRequestCode = "00001234";
-        String groupAccessCode = "43214321";
-        BDDMockito.given(reviewDetailLookupService.getReviewDetail(reviewId, reviewRequestCode, groupAccessCode))
-                .willThrow(new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
-
-        HeaderDescriptor[] requestHeaderDescriptors = {
-                headerWithName("groupAccessCode").description("그룹 접근 코드")
-        };
-
-        ParameterDescriptor[] requestPathDescriptors = {
-                parameterWithName("id").description("리뷰 ID")
-        };
-
-        RestDocumentationResultHandler handler = document(
-                "review-detail-invalid-group-access-code",
-                requestHeaders(requestHeaderDescriptors),
-                pathParameters(requestPathDescriptors)
-        );
-
-        givenWithSpec().log().all()
-                .pathParam("id", reviewId)
-                .queryParam("reviewRequestCode", reviewRequestCode)
-                .header("groupAccessCode", groupAccessCode)
-                .when().get("/v2/reviews/{id}")
-                .then().log().all()
-                .apply(handler)
-                .statusCode(400);
-    }
-
-    @Test
     void 자신이_받은_리뷰_목록을_조회한다() {
         List<ReviewListElementResponse> receivedReviews = List.of(
                 new ReviewListElementResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
@@ -232,30 +199,5 @@ class ReviewApiTest extends ApiTest {
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
-    }
-
-    @Test
-    void 자신이_받은_리뷰_조회시_접근_코드가_올바르지_않은_경우_예외를_발생한다() {
-        String reviewRequestCode = "43214321";
-        String groupAccessCode = "00001234";
-        BDDMockito.given(reviewListLookupService.getReceivedReviews(reviewRequestCode, groupAccessCode))
-                .willThrow(new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
-
-        HeaderDescriptor[] requestHeaderDescriptors = {
-                headerWithName("groupAccessCode").description("그룹 접근 코드")
-        };
-
-        RestDocumentationResultHandler handler = document(
-                "received-reviews-invalid-group-access-code",
-                requestHeaders(requestHeaderDescriptors)
-        );
-
-        givenWithSpec().log().all()
-                .header("groupAccessCode", groupAccessCode)
-                .queryParam("reviewRequestCode", reviewRequestCode)
-                .when().get("/v2/reviews")
-                .then().log().all()
-                .apply(handler)
-                .statusCode(400);
     }
 }

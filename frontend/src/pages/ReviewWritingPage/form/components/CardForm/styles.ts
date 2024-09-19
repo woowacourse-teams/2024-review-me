@@ -4,9 +4,25 @@ import media from '@/utils/media';
 
 export const CardForm = styled.form`
   position: relative;
+
   overflow: hidden;
-  width: ${({ theme }) => theme.formWidth};
-  overflow-wrap: break-word;
+
+  width: fit-content;
+  min-width: ${({ theme }) => theme.formWidth};
+  max-width: 90rem;
+
+  word-break: keep-all;
+
+  ${media.medium} {
+    width: 80vw;
+    min-width: initial;
+    margin: 0 auto;
+    margin-top: 2.4rem;
+  }
+
+  ${media.xSmall} {
+    width: 95vw;
+  }
 `;
 
 export const RevieweeDescription = styled.div`
@@ -14,6 +30,10 @@ export const RevieweeDescription = styled.div`
   align-items: center;
   width: 100%;
   margin-bottom: 2rem;
+
+  ${media.small} {
+    padding-left: ${({ theme }) => theme.breadcrumbSize.paddingLeft};
+  }
 `;
 export const ProjectInfoContainer = styled.div`
   display: flex;
@@ -28,6 +48,10 @@ export const ProjectName = styled.p`
   margin-top: 0;
   font-size: ${({ theme }) => theme.fontSize.medium};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
+
+  ${media.small} {
+    font-size: ${({ theme }) => theme.fontSize.mediumSmall};
+  }
 `;
 
 export const RevieweeName = styled.span`

@@ -5,32 +5,40 @@ import {
   fontSize,
   fontWeight,
   zIndex,
+  scrollbarWidth,
   breakpoint,
-  sidebarWidth,
   borderRadius,
   componentHeight,
+  confirmModalSize,
+  contentModalSize,
+  breadcrumbSize,
 } from '../styles/theme';
 
-// TODO: export 해서 사용하지 않다면 리팩토링
 export type Color = typeof colors;
 export type ZIndex = typeof zIndex;
 export type FontSize = typeof fontSize;
 export type FontWeight = typeof fontWeight;
+export type ScrollbarWidthStyle = typeof scrollbarWidth;
 export type Breakpoint = typeof breakpoint;
-export type SidebarWidthStyle = typeof sidebarWidth;
 export type BorderRadius = typeof borderRadius;
 export type ComponentHeight = typeof componentHeight;
+export type ConfirmModalSize = typeof confirmModalSize;
+export type ContentModalSize = typeof contentModalSize;
+export type BreadcrumbSize = typeof breadcrumbSize;
 
 type ThemeType = {
   fontSize: FontSize;
   fontWeight: FontWeight;
   colors: Color;
   zIndex: ZIndex;
+  scrollbarWidth: ScrollbarWidthStyle;
   breakpoint: Breakpoint;
-  sidebarWidth: SidebarWidthStyle;
   borderRadius: BorderRadius;
   formWidth: string;
   componentHeight: ComponentHeight;
+  confirmModalSize: ConfirmModalSize;
+  contentModalSize: ContentModalSize;
+  breadcrumbSize: BreadcrumbSize;
 };
 
 declare module '@emotion/react' {

@@ -1,4 +1,4 @@
-package reviewme.template.domain.exception;
+package reviewme.review.service.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import reviewme.global.exception.DataInconsistencyException;
@@ -7,7 +7,7 @@ import reviewme.global.exception.DataInconsistencyException;
 public class OptionGroupNotFoundByQuestionIdException extends DataInconsistencyException {
 
     public OptionGroupNotFoundByQuestionIdException(long questionId) {
-        super("응답한 질문과 대응하는 선택형 문항이 존재하지 않아요.");
-        log.error("User submitted checkBoxAnswer without provided options - questionId: {}", questionId);
+        super("서버 내부에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        log.error("User submitted checkBoxAnswer without provided options - questionId: {}", questionId, this);
     }
 }

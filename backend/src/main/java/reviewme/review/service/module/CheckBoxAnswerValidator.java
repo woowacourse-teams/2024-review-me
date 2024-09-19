@@ -12,10 +12,10 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckBoxAnswerSelectedOption;
 import reviewme.review.domain.CheckboxAnswer;
+import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
-import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
 
 @Component
 @RequiredArgsConstructor
@@ -54,7 +54,7 @@ public class CheckBoxAnswerValidator {
         int answeredOptionItemCount = extractAnsweredOptionItemIds(checkboxAnswer).size();
 
         if (answeredOptionItemCount < optionGroup.getMinSelectionCount()
-                || answeredOptionItemCount > optionGroup.getMaxSelectionCount()) {
+            || answeredOptionItemCount > optionGroup.getMaxSelectionCount()) {
             throw new SelectedOptionItemCountOutOfRangeException(
                     checkboxAnswer.getQuestionId(),
                     answeredOptionItemCount,
