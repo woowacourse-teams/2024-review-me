@@ -14,14 +14,14 @@ export const CardForm = styled.form`
   word-break: keep-all;
 
   ${media.medium} {
-    margin-top: 2.4rem;
-  }
-
-  ${media.small} {
-    width: 95vw;
+    width: 80vw;
     min-width: initial;
     margin: 0 auto;
     margin-top: 2.4rem;
+  }
+
+  ${media.xSmall} {
+    width: 95vw;
   }
 `;
 
