@@ -2,13 +2,14 @@ package reviewme.sanchoTest;
 
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
 import static reviewme.fixture.OptionItemFixture.선택지;
-import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
+import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 import static reviewme.fixture.TemplateFixture.템플릿;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,33 +63,55 @@ class PerformanceTest {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    @Test
-    @DisplayName("성능 테스트")
-    void test() {
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+    private Random rnd = new Random();
 
-        // given - 질문 저장
-        Question question1 = questionRepository.save(선택형_필수_질문());
-        Question question2 = questionRepository.save(서술형_필수_질문());
-        OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question1.getId()));
+    private ReviewGroup saveReviewGroup() {
+        int n = rnd.nextInt(0, Integer.MAX_VALUE);
+        ReviewGroup reviewGroup = new ReviewGroup(String.valueOf(n), String.valueOf(n),
+                String.valueOf(n), String.valueOf(n));
+
+        return reviewGroupRepository.save(reviewGroup);
+    }
+
+    private Review saveReview(long reviewGroupId) {
+        List<Long> questionIds = new ArrayList<>();
+        int n = rnd.nextInt(0, Integer.MAX_VALUE);
+
+        Question question1 = questionRepository.save(서술형_옵션_질문(n));
+        questionIds.add(question1.getId());
+
+        Question question2 = questionRepository.save(선택형_필수_질문(n));
+        questionIds.add(question2.getId());
+        OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question2.getId()));
         OptionItem optionItem1 = optionItemRepository.save(선택지(optionGroup.getId(), 1));
         OptionItem optionItem2 = optionItemRepository.save(선택지(optionGroup.getId(), 2));
 
-        // given - 섹션, 템플릿 저장
-        Section section1 = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
-        Section section2 = sectionRepository.save(항상_보이는_섹션(List.of(question2.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
+        Section section = sectionRepository.save(항상_보이는_섹션(questionIds));
+        Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
-        // given - 리뷰 답변 저장
-        List<TextAnswer> textAnswers = List.of(new TextAnswer(question2.getId(), "답변".repeat(20)));
+        List<TextAnswer> textAnswers = List.of(new TextAnswer(question1.getId(), "답변".repeat(20)));
         List<CheckboxAnswer> checkboxAnswers = List.of(
-                new CheckboxAnswer(question1.getId(), List.of(optionItem1.getId(), optionItem2.getId()))
+                new CheckboxAnswer(question2.getId(), List.of(optionItem1.getId(), optionItem2.getId()))
         );
-        Review review = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), textAnswers, checkboxAnswers)
+        return reviewRepository.save(
+                new Review(template.getId(), reviewGroupId, textAnswers, checkboxAnswers)
         );
+    }
 
+    @Test
+    @DisplayName("성능 테스트")
+    void test() {
         int repeatTime = 10000;
+
+        // 10000개의 데이터 세팅
+        ReviewGroup reviewGroup = saveReviewGroup();
+        Review review = saveReview(reviewGroup.getId());
+        for (int i = 0; i < repeatTime; i++) {
+            ReviewGroup tmpReviewGroup = saveReviewGroup();
+            saveReview(tmpReviewGroup.getId());
+        }
+
+        // 10000번 반복
         long start1 = System.currentTimeMillis();
         for (int i = 0; i < repeatTime; i++) {
             reviewDetailMapperTedVer.mapToReviewDetailResponse(review, reviewGroup);
@@ -101,6 +124,22 @@ class PerformanceTest {
         }
         long end2 = System.currentTimeMillis();
 
+        System.out.println();
+        long reviewGroupCount = reviewGroupRepository.count();
+        long questionCount = questionRepository.count();
+        long optionGroupCount = optionGroupRepository.count();
+        long optionItemCount = optionItemRepository.count();
+        long sectionCount = sectionRepository.count();
+        long templateCount = templateRepository.count();
+        long reviewCount = reviewRepository.count();
+
+        System.out.println("리뷰 그룹 개수: " + reviewGroupCount);
+        System.out.println("질문 개수: " + questionCount);
+        System.out.println("옵션 그룹 개수: " + optionGroupCount);
+        System.out.println("옵션 아이템 개수: " + optionItemCount);
+        System.out.println("섹션 개수: " + sectionCount);
+        System.out.println("템플릿 개수: " + templateCount);
+        System.out.println("리뷰 개수: " + reviewCount);
         System.out.println();
         System.out.println("TedVer: " + (end1 - start1) + "ms");
         System.out.println("OriginVer: " + (end2 - start2) + "ms");
