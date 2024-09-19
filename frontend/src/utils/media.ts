@@ -1,35 +1,17 @@
-import { css, SerializedStyles } from '@emotion/react';
-import { CSSObject } from '@emotion/styled';
+import theme from '@/styles/theme';
 
-export type Breakpoints = 'xxSmall' | 'xSmall' | 'small' | 'medium' | 'large';
+const { breakpoint } = theme;
 
-export const breakpoints: Record<Breakpoints, string> = {
-  xxSmall: '@media (max-width: 320px)',
-  xSmall: '@media (max-width: 425px)',
-  small: '@media (max-width: 768px)',
-  medium: '@media (max-width: 1024px)',
-  large: '@media (min-width: 1025px)',
-};
+export type Breakpoints = keyof typeof breakpoint;
+type Media = { [key in Breakpoints]: string };
 
-const media = Object.entries(breakpoints).reduce(
-  (acc, [key, value]) => {
-    acc[key as Breakpoints] = (
-      styles: CSSObject | TemplateStringsArray,
-      ...interpolations: Array<CSSObject | SerializedStyles>
-    ) => css`
-      ${value} {
-        ${css(styles, ...interpolations)}
-      }
-    `;
-    return acc;
-  },
-  {} as Record<
-    Breakpoints,
-    (
-      styles: CSSObject | TemplateStringsArray,
-      ...interpolations: Array<CSSObject | SerializedStyles>
-    ) => SerializedStyles
-  >,
-);
+const breakpointsKeyList = Object.keys(breakpoint) as Breakpoints[];
+
+const media = breakpointsKeyList.reduce((prev, key, index) => {
+  const mediaType = index === breakpointsKeyList.length - 1 ? 'min' : 'max';
+
+  prev[key] = `@media (${mediaType}-width: ${breakpoint[key]}px)`;
+  return prev;
+}, {} as Media);
 
 export default media;
