@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 
 import NavigateNextIcon from '@/assets/navigateNext.svg';
 import useStepList from '@/pages/ReviewWritingPage/progressBar/hooks/useStepList';
@@ -13,6 +14,17 @@ interface MobileProgressBarProps {
 const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileProgressBarProps) => {
   const { stepList } = useStepList({ currentCardIndex });
 
+  const stepRefs = useRef<HTMLDivElement[]>([]);
+
+  useEffect(() => {
+    if (stepRefs.current[currentCardIndex]) {
+      stepRefs.current[currentCardIndex].scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center',
+      });
+    }
+  }, [currentCardIndex]);
+
   const handleClick = (index: number) => {
     const { isMovingAvailable } = stepList[index];
     if (isMovingAvailable) handleCurrentCardIndex(index);
@@ -27,6 +39,7 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
             <S.StepWrapper
               key={step.sectionId}
               $isCurrentStep={index === currentCardIndex}
+              ref={(element) => (stepRefs.current[index] = element!)}
             >
               <S.EmptyBlock />
               <S.StepButton
