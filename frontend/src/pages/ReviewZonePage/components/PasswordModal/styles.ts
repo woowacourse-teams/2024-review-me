@@ -11,18 +11,18 @@ export const InputContainer = styled.form`
   display: flex;
   justify-content: space-between;
 
-  ${media.xSmall`
+  ${media.xSmall} {
     height: 3.8rem;
-  `};
+  }
 
   button {
-    ${media.xSmall`
-      font-size: 1.2rem;
-    `};
-
-    ${media.small`
+    ${media.small} {
       font-size: 1.4rem;
-    `};
+    }
+
+    ${media.xSmall} {
+      font-size: 1.2rem;
+    }
   }
 `;
 
@@ -30,11 +30,11 @@ export const PasswordInputContainer = styled.div`
   position: relative;
   display: flex;
 
-  width: 70%;
+  width: 80%;
 
-  ${media.large`
-      width: 80%;
-  `};
+  ${media.medium} {
+    width: 70%;
+  }
 `;
 
 export const ErrorMessage = styled.p`
