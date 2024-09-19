@@ -22,16 +22,16 @@ export const ContentModalContainer = styled.div<ContentModalStyleProps>`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
-  ${({ $style }) => $style && { ...$style }}
-
   ${media.xSmall} {
     padding: ${({ theme }) => theme.contentModalSize.smallPadding};
   }
+
+  ${({ $style }) => $style && { ...$style }}
 `;
 
 export const ContentModalHeader = styled.div`
   display: flex;
-  gap: 10rem;
+  gap: 8rem;
 
   ${media.small} {
     gap: 5rem;
