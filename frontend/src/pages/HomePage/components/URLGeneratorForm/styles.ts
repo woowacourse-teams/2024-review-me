@@ -20,7 +20,7 @@ export const URLGeneratorForm = styled.section`
 
   ${media.small} {
     width: 100%;
-    margin: 4rem 0;
+    margin: 5rem 0 4rem 0;
   }
 
   ${media.xSmall} {
