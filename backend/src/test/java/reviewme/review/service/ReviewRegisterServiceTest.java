@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
 import static reviewme.fixture.OptionItemFixture.선택지;
+import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
@@ -82,7 +83,13 @@ class ReviewRegisterServiceTest {
                 requiredOptionItem1.getId(), 2)
         );
 
-        Template template = templateRepository.save(템플릿(List.of(visibleSection.getId(), conditionalSection.getId())));
+        Question optionalTextQuestion = questionRepository.save(서술형_옵션_질문());
+        Section visibleOptionalSection = sectionRepository.save(항상_보이는_섹션(
+                List.of(optionalTextQuestion.getId()), 3)
+        );
+
+        Template template = templateRepository.save(템플릿(
+                List.of(visibleSection.getId(), conditionalSection.getId(), visibleOptionalSection.getId())));
 
         ReviewAnswerRequest requiredCheckQuestionAnswer = new ReviewAnswerRequest(
                 requiredCheckQuestion.getId(), List.of(requiredOptionItem1.getId()), null);
@@ -90,8 +97,11 @@ class ReviewRegisterServiceTest {
                 requiredTextQuestion.getId(), null, "답변".repeat(30));
         ReviewAnswerRequest conditionalCheckQuestionAnswer = new ReviewAnswerRequest(
                 conditionalCheckQuestion.getId(), List.of(conditionalOptionItem1.getId()), null);
+        ReviewAnswerRequest optionalTextQuestionAnswer = new ReviewAnswerRequest(
+                optionalTextQuestion.getId(), null, "");
         ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(),
-                List.of(requiredCheckQuestionAnswer, requiredTextQuestionAnswer, conditionalCheckQuestionAnswer));
+                List.of(requiredCheckQuestionAnswer, requiredTextQuestionAnswer, conditionalCheckQuestionAnswer,
+                        optionalTextQuestionAnswer));
 
         // when
         long registeredReviewId = reviewRegisterService.registerReview(reviewRegisterRequest);

@@ -12,14 +12,14 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Template;
-import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
 import reviewme.template.repository.TemplateRepository;
+import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
 
 @Component
 @RequiredArgsConstructor
@@ -77,8 +77,8 @@ public class ReviewMapper {
     }
 
     private void addIfTextAnswerExists(ReviewAnswerRequest answerRequest,
-                                   Question question,
-                                   List<TextAnswer> textAnswers) {
+                                       Question question,
+                                       List<TextAnswer> textAnswers) {
         if (question.isRequired() || !answerRequest.text().isEmpty()) {
             TextAnswer textAnswer = answerMapper.mapToTextAnswer(answerRequest);
             textAnswers.add(textAnswer);
@@ -86,8 +86,8 @@ public class ReviewMapper {
     }
 
     private void addIfCheckBoxAnswerExists(ReviewAnswerRequest answerRequest,
-                                       Question question,
-                                       List<CheckboxAnswer> checkboxAnswers) {
+                                           Question question,
+                                           List<CheckboxAnswer> checkboxAnswers) {
         if (question.isRequired() || !answerRequest.selectedOptionIds().isEmpty()) {
             CheckboxAnswer checkboxAnswer = answerMapper.mapToCheckBoxAnswer(answerRequest);
             checkboxAnswers.add(checkboxAnswer);
