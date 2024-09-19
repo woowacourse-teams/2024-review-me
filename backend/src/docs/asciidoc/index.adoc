@@ -29,3 +29,7 @@ include::review-list.adoc[]
 === 리뷰 목록 조회
 
 include::review-detail.adoc[]
+
+=== 리뷰 토큰 생성
+
+include::review-token.adoc[]

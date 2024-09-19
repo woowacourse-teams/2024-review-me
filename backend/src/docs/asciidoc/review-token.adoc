@@ -1,0 +1,3 @@
+==== 리뷰 토큰 생성
+
+operation::create-review-token[snippets="curl-request,http-response,response-fields"]

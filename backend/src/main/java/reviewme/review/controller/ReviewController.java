@@ -14,6 +14,9 @@ import reviewme.global.HeaderProperty;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
+import reviewme.review.service.ReviewTokenService;
+import reviewme.review.service.dto.request.ReviewRequestTokenRequest;
+import reviewme.review.service.dto.response.ReviewRequestTokenResponse;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
@@ -27,6 +30,7 @@ public class ReviewController {
     private final ReviewRegisterService reviewRegisterService;
     private final ReviewListLookupService reviewListLookupService;
     private final ReviewDetailLookupService reviewDetailLookupService;
+    private final ReviewTokenService reviewTokenService;
 
     @PostMapping("/v2/reviews")
     public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRegisterRequest request) {
@@ -82,11 +86,11 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
-//    @PostMapping("/vx/token")
-//    public ResponseEntity<ReviewRequestTokenResponse> createReviewRequestToken(
-//            @Valid @RequestBody ReviewRequestTokenRequest request
-//    ) {
-//        ReviewRequestTokenResponse response = reviewRequestTokenService.createToken(request);
-//        return ResponseEntity.ok(response);
-//    }
+    @PostMapping("/vx/token")
+    public ResponseEntity<ReviewRequestTokenResponse> createReviewRequestToken(
+            @Valid @RequestBody ReviewRequestTokenRequest request
+    ) {
+        ReviewRequestTokenResponse response = reviewTokenService.generateToken(request);
+        return ResponseEntity.ok(response);
+    }
 }

@@ -26,6 +26,7 @@ import reviewme.review.controller.ReviewRequestCodeArgumentResolver;
 import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
+import reviewme.review.service.ReviewTokenService;
 import reviewme.reviewgroup.controller.ReviewGroupController;
 import reviewme.reviewgroup.service.ReviewGroupLookupService;
 import reviewme.reviewgroup.service.ReviewGroupService;
@@ -62,6 +63,9 @@ public abstract class ApiTest {
 
     @MockBean
     protected ReviewGroupLookupService reviewGroupLookupService;
+
+    @MockBean
+    protected ReviewTokenService reviewTokenService;
 
     @BeforeEach
     void setUpRestDocs(WebApplicationContext context, RestDocumentationContextProvider provider) {

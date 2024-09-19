@@ -22,6 +22,7 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
+import reviewme.review.service.dto.response.ReviewRequestTokenResponse;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
@@ -360,5 +361,40 @@ class ReviewApiTest extends ApiTest {
                 .then().log().all()
                 .apply(handler)
                 .statusCode(400);
+    }
+
+    @Test
+    void 리뷰_토큰을_발급한다() {
+        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+        String body = """
+                {
+                    "reviewRequestCode": "ABCD1234",
+                    "groupAccessCode": "12341234"
+                }
+                """;
+        BDDMockito.given(reviewTokenService.generateToken(any()))
+                .willReturn(new ReviewRequestTokenResponse(token));
+
+        FieldDescriptor[] requestFieldDescriptors = {
+                fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
+                fieldWithPath("groupAccessCode").description("비밀번호")
+        };
+
+        FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("reviewRequestToken").description("리뷰 토큰")
+        };
+
+        RestDocumentationResultHandler handler = document(
+                "create-review-token",
+                requestFields(requestFieldDescriptors),
+                responseFields(responseFieldDescriptors)
+        );
+
+        givenWithSpec().log().all()
+                .body(body)
+                .when().post("/vx/token")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(200);
     }
 }
