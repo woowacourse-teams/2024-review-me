@@ -10,7 +10,6 @@ import reviewme.review.domain.Review;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
-import reviewme.review.service.ReviewPreviewGenerator;
 import reviewme.reviewgroup.domain.ReviewGroup;
 
 @Component
