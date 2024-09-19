@@ -1,11 +1,20 @@
 import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
+export const ProgressBarContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  margin-bottom: 1.7rem;
+`;
+
 export const ProgressBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.7rem;
+  width: 100%;
 `;
 
 interface StepButtonStyleProps {
@@ -40,7 +49,9 @@ const getStepButtonStyle = ($isDone: boolean, $isMovingAvailable: boolean, theme
 export const StepButton = styled.button<StepButtonStyleProps>`
   overflow: hidden;
 
-  width: 12rem;
+  width: 100%;
+  min-width: 12rem;
+  max-width: 15rem;
   height: 3rem;
   padding: 0 1rem;
 
