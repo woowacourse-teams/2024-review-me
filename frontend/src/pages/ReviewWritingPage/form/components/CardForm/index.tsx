@@ -67,7 +67,6 @@ const CardForm = () => {
     <>
       <S.CardForm>
         <S.RevieweeDescription>
-          {/* 현재 프로젝트가 깃헙 연동이 아니라서 주석 처리 <ProjectImg projectName={projectName} $size={PROJECT_IMAGE_SIZE} /> */}
           <S.ProjectInfoContainer>
             <S.ProjectName>{projectName}</S.ProjectName>
             <p>

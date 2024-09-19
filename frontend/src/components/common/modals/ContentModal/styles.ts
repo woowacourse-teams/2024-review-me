@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const ContentModalContainer = styled.div`
   position: fixed;
   top: 50%;
@@ -13,12 +15,16 @@ export const ContentModalContainer = styled.div`
   align-items: center;
 
   min-width: 30rem;
-  max-width: 80vw;
+  max-width: ${({ theme }) => theme.contentModalSize.maxWidth};
   max-height: 90vh;
-  padding: 3.2rem;
+  padding: ${({ theme }) => theme.contentModalSize.padding};
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
+
+  ${media.xSmall} {
+    padding: ${({ theme }) => theme.contentModalSize.smallPadding};
+  }
 `;
 
 export const ContentModalHeader = styled.div`
