@@ -15,16 +15,18 @@ export const ContentModalContainer = styled.div<ContentModalStyleProps>`
   flex-direction: column;
 
   min-width: 30rem;
-  max-width: 80vw;
-  min-height: 30vh;
+  max-width: ${({ theme }) => theme.contentModalSize.maxWidth};
   max-height: 90vh;
-
-  padding: 3.2rem;
+  padding: ${({ theme }) => theme.contentModalSize.padding};
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
   ${({ $style }) => $style && { ...$style }}
+
+  ${media.xSmall} {
+    padding: ${({ theme }) => theme.contentModalSize.smallPadding};
+  }
 `;
 
 export const ContentModalHeader = styled.div`

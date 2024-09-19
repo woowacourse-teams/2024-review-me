@@ -115,7 +115,7 @@ enableMocking().then(() => {
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
-          <Global styles={globalStyles} />
+          <Global styles={(theme) => globalStyles(theme)} />
           <RecoilRoot>
             <RouterProvider router={router} />
           </RecoilRoot>
