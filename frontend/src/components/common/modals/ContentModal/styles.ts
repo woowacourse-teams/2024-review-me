@@ -2,7 +2,9 @@ import styled from '@emotion/styled';
 
 import media from '@/utils/media';
 
-export const ContentModalContainer = styled.div`
+import { ContentModalStyleProps } from '.';
+
+export const ContentModalContainer = styled.div<ContentModalStyleProps>`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -22,6 +24,8 @@ export const ContentModalContainer = styled.div`
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
+
+  ${({ $style }) => $style && { ...$style }}
 `;
 
 export const ContentModalHeader = styled.div`
