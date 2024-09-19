@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 export const ProgressBarContainer = styled.div`
   position: relative;
 
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
