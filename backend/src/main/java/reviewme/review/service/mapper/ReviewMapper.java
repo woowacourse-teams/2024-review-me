@@ -67,14 +67,30 @@ public class ReviewMapper {
             Question question = questionMap.get(answerRequest.questionId());
 
             if (question.getQuestionType() == QuestionType.TEXT) {
-                TextAnswer textAnswer = answerMapper.mapToTextAnswer(answerRequest);
-                textAnswers.add(textAnswer);
+                addIfTextAnswerExists(answerRequest, question, textAnswers);
             }
 
             if (question.getQuestionType() == QuestionType.CHECKBOX) {
-                CheckboxAnswer checkboxAnswer = answerMapper.mapToCheckBoxAnswer(answerRequest);
-                checkboxAnswers.add(checkboxAnswer);
+                addIfCheckBoxAnswerExists(answerRequest, question, checkboxAnswers);
             }
+        }
+    }
+
+    private void addIfTextAnswerExists(ReviewAnswerRequest answerRequest,
+                                   Question question,
+                                   List<TextAnswer> textAnswers) {
+        if (question.isRequired() || !answerRequest.text().isEmpty()) {
+            TextAnswer textAnswer = answerMapper.mapToTextAnswer(answerRequest);
+            textAnswers.add(textAnswer);
+        }
+    }
+
+    private void addIfCheckBoxAnswerExists(ReviewAnswerRequest answerRequest,
+                                       Question question,
+                                       List<CheckboxAnswer> checkboxAnswers) {
+        if (question.isRequired() || !answerRequest.selectedOptionIds().isEmpty()) {
+            CheckboxAnswer checkboxAnswer = answerMapper.mapToCheckBoxAnswer(answerRequest);
+            checkboxAnswers.add(checkboxAnswer);
         }
     }
 }
