@@ -54,7 +54,7 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
               </S.StepButton>
               <S.EmptyBlock />
             </S.StepWrapper>
-            {index < stepList.length - 1 && <img src={NavigateNextIcon} alt="Next" />}
+            {index < stepList.length - 1 && <img src={NavigateNextIcon} alt="다음 화살표" />}
           </>
         ))}
         <S.EmptyStepWrapper />
