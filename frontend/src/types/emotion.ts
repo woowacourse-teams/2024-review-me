@@ -5,7 +5,7 @@ import {
   fontSize,
   fontWeight,
   zIndex,
-  breakpoints,
+  breakpoint,
   sidebarWidth,
   borderRadius,
   componentHeight,
@@ -16,7 +16,7 @@ export type Color = typeof colors;
 export type ZIndex = typeof zIndex;
 export type FontSize = typeof fontSize;
 export type FontWeight = typeof fontWeight;
-export type Breakpoints = typeof breakpoints;
+export type Breakpoint = typeof breakpoint;
 export type SidebarWidthStyle = typeof sidebarWidth;
 export type BorderRadius = typeof borderRadius;
 export type ComponentHeight = typeof componentHeight;
@@ -26,7 +26,7 @@ type ThemeType = {
   fontWeight: FontWeight;
   colors: Color;
   zIndex: ZIndex;
-  breakpoints: Breakpoints;
+  breakpoint: Breakpoint;
   sidebarWidth: SidebarWidthStyle;
   borderRadius: BorderRadius;
   formWidth: string;
