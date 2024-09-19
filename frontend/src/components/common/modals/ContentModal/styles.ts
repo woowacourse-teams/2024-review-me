@@ -13,7 +13,6 @@ export const ContentModalContainer = styled.div<ContentModalStyleProps>`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 2.8rem;
 
   min-width: 30rem;
   max-width: 80vw;

@@ -13,6 +13,7 @@ export const InputContainer = styled.form`
   gap: 1.5rem;
 
   height: 4rem;
+  margin-top: 3rem;
 
   ${media.xSmall} {
     height: 3.8rem;
@@ -40,7 +41,7 @@ export const PasswordInputContainer = styled.div`
 `;
 
 export const ErrorMessage = styled.p`
-  margin-top: 0.2rem;
+  margin-top: 0.3rem;
   margin-left: 0.4rem;
   font-size: 1.2rem;
   color: ${({ theme }) => theme.colors.red};
