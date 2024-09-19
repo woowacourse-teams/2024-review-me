@@ -28,9 +28,9 @@ export const ContentModalHeader = styled.div`
   display: flex;
   gap: 10rem;
 
-  ${media.small`
-    gap: 5rem; 
-  `};
+  ${media.small} {
+    gap: 5rem;
+  }
 
   align-items: center;
   justify-content: space-between;
@@ -43,9 +43,9 @@ export const ContentModalHeader = styled.div`
 export const Title = styled.span`
   font-size: 1.8rem;
 
-  ${media.small`
-      font-size: 1.6rem;
-  `};
+  ${media.small} {
+    font-size: 1.6rem;
+  }
 
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;

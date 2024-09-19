@@ -81,9 +81,9 @@ export const Keyword = styled.div`
   flex-wrap: wrap;
   gap: 2.5rem;
 
-  ${media.small`
+  ${media.small} {
     gap: 1.6rem;
-  `};
+  }
 
   align-items: center;
 

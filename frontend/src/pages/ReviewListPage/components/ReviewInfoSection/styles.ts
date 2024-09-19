@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const ReviewInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -9,36 +11,31 @@ export const ReviewInfoContainer = styled.div`
 `;
 
 export const ProjectName = styled.span`
+  font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
 
-  @media (max-width: 425px) {
-    font-size: ${({ theme }) => theme.fontSize.medium};
-  }
-
-  @media (min-width: 425px) and (max-width: 767px) {
-    font-size: 2.8rem;
-  }
-
-  @media (min-width: 768px) and (max-width: 1024px) {
+  ${media.medium} {
     font-size: 3rem;
   }
 
-  @media (min-width: 1025px) {
-    font-size: ${({ theme }) => theme.fontSize.large};
+  ${media.small} {
+    font-size: 2.8rem;
+  }
+
+  ${media.xSmall} {
+    font-size: 2.6rem;
   }
 `;
 
 export const RevieweeInfoWrapper = styled.div`
-  @media (min-width: 426px) {
-    font-size: ${({ theme }) => theme.fontSize.small};
-  }
+  font-size: ${({ theme }) => theme.fontSize.mediumSmall};
 
-  @media (min-width: 768px) and (max-width: 1024px) {
+  ${media.medium} {
     font-size: ${({ theme }) => theme.fontSize.basic};
   }
 
-  @media (min-width: 1025px) {
-    font-size: ${({ theme }) => theme.fontSize.mediumSmall};
+  ${media.xSmall} {
+    font-size: ${({ theme }) => theme.fontSize.small};
   }
 `;
 

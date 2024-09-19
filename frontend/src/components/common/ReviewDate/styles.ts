@@ -7,9 +7,9 @@ export const ReviewDateText = styled.div`
   align-items: center;
   justify-content: center;
 
-  ${media.small`
+  ${media.small} {
     display: none;
-  `};
+  }
 `;
 
 export const ClockImg = styled.img`
@@ -21,9 +21,8 @@ export const ClockImg = styled.img`
 export const ReviewDate = styled.div`
   display: flex;
   align-items: center;
-  
 
-  @media (max-width: 425px) {
+  ${media.xSmall} {
     font-size: ${({ theme }) => theme.fontSize.small};
   }
 `;

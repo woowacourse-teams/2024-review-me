@@ -21,12 +21,12 @@ export const Footer = styled.footer`
 
   background-color: ${({ theme }) => theme.colors.white};
 
-  ${media.medium`
+  ${media.medium} {
     font-size: 1.2rem;
-    
+
     flex-direction: column;
     gap: 0.2rem;
-  `};
+  }
 `;
 
 export const Link = styled.a`

@@ -11,9 +11,9 @@ export const Description = styled.section`
   margin: 0;
   padding: 1rem 3rem;
 
-  ${media.xSmall`
+  ${media.xSmall} {
     padding: 1rem 1.2rem;
-  `};
+  }
 
   background-color: ${({ theme }) => theme.colors.lightPurple};
   border-radius: ${({ theme }) => theme.borderRadius.basic} 0 0;
@@ -25,13 +25,11 @@ export const DescriptionSide = styled.div`
   flex-wrap: wrap;
 `;
 
-//NOTE: 6rem :깃헙 로고 사이즈
 export const ProjectInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 
-  /* width: calc(100% - 6rem); */
   width: 100%;
   margin: 0 1rem;
 `;
@@ -39,11 +37,12 @@ export const ProjectInfoContainer = styled.div`
 export const ProjectName = styled.p`
   margin-top: 0;
   font-size: ${({ theme }) => theme.fontSize.medium};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
 
-  @media (max-width: 425px) {
+  ${media.xSmall} {
     font-size: ${({ theme }) => theme.fontSize.mediumSmall};
   }
+
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 export const RevieweeNameAndDateContainer = styled.div`
@@ -54,12 +53,12 @@ export const RevieweeNameAndDateContainer = styled.div`
 
   font-size: ${({ theme }) => theme.fontSize.basic};
 
-  @media (max-width: 425px) {
-    font-size: ${({ theme }) => theme.fontSize.small};
+  ${media.small} {
+    flex-direction: column;
   }
 
-  @media (max-width: 768px) {
-    flex-direction: column;
+  ${media.xSmall} {
+    font-size: ${({ theme }) => theme.fontSize.small};
   }
 `;
 
