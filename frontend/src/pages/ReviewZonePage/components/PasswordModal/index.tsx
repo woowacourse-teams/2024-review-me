@@ -59,7 +59,8 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
       title={REVIEW_PASSWORD_INPUT_MESSAGE}
       handleClose={closeModal}
       isClosableOnBackground={false}
-      $style={{ maxWidth: '42rem' }}
+      // NOTE: ContentModal의 미디어 쿼리로 padding이 줄어드는 것을 방어하기 위한 인라인 스타일 적용
+      $style={{ padding: '3.2rem' }}
     >
       <S.PasswordModal>
         <S.InputContainer>
@@ -77,7 +78,7 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
             확인
           </Button>
         </S.InputContainer>
-        {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
+        <S.ErrorMessageWrapper>{errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}</S.ErrorMessageWrapper>
       </S.PasswordModal>
     </ContentModal>
   );

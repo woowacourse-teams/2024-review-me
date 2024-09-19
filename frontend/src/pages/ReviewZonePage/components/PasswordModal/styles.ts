@@ -5,6 +5,8 @@ import media from '@/utils/media';
 export const PasswordModal = styled.div`
   display: flex;
   flex-direction: column;
+
+  overflow: hidden;
 `;
 
 export const InputContainer = styled.form`
@@ -40,9 +42,18 @@ export const PasswordInputContainer = styled.div`
   }
 `;
 
+export const ErrorMessageWrapper = styled.div`
+  height: 1.7rem;
+`;
+
 export const ErrorMessage = styled.p`
   margin-top: 0.3rem;
   margin-left: 0.4rem;
   font-size: 1.2rem;
+
+  ${media.xxSmall} {
+    font-size: 1.1rem;
+  }
+
   color: ${({ theme }) => theme.colors.red};
 `;
