@@ -55,7 +55,12 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
   };
 
   return (
-    <ContentModal title={REVIEW_PASSWORD_INPUT_MESSAGE} handleClose={closeModal} isClosableOnBackground={false}>
+    <ContentModal
+      title={REVIEW_PASSWORD_INPUT_MESSAGE}
+      handleClose={closeModal}
+      isClosableOnBackground={false}
+      $style={{ maxWidth: '42rem' }}
+    >
       <S.PasswordModal>
         <S.InputContainer>
           <S.PasswordInputContainer>
@@ -64,7 +69,7 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
               value={password}
               onChange={handlePasswordInputChange}
               type={isOff ? 'password' : 'text'}
-              $style={{ width: '100%', paddingRight: '3rem' }}
+              $style={{ width: '100%' }}
             />
             <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />
           </S.PasswordInputContainer>

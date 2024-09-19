@@ -10,18 +10,20 @@ export const PasswordModal = styled.div`
 export const InputContainer = styled.form`
   display: flex;
   justify-content: space-between;
+  gap: 1.5rem;
+
+  height: 4rem;
 
   ${media.xSmall} {
     height: 3.8rem;
   }
 
   button {
-    ${media.small} {
-      font-size: 1.4rem;
-    }
+    font-size: 1.4rem;
+    white-space: nowrap;
 
-    ${media.xSmall} {
-      font-size: 1.2rem;
+    ${media.small} {
+      font-size: 1.3rem;
     }
   }
 `;
