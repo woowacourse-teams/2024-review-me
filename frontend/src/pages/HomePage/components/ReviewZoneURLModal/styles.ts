@@ -8,11 +8,11 @@ export const ReviewZoneURLModal = styled.div`
   width: 52rem;
   height: 18rem;
 
-  ${media.small`
+  ${media.small} {
     button {
       display: none;
     }
-  `}
+  }
 `;
 
 export const RequestURLContainer = styled.div`
@@ -25,11 +25,11 @@ export const RequestURLContainer = styled.div`
     display: none;
   }
 
-  ${media.small`
+  ${media.small} {
     button {
       display: block;
     }
-  `}
+  }
 `;
 
 export const ModalTitle = styled.p`
@@ -37,10 +37,10 @@ export const ModalTitle = styled.p`
   font-size: 2rem;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 
-  ${media.small`
+  ${media.small} {
     font-size: 1.8rem;
     margin-bottom: 2.2rem;
-  `}
+  }
 `;
 
 export const ReviewZoneURLModalItem = styled.div`
@@ -51,10 +51,10 @@ export const ReviewZoneURLModalItem = styled.div`
 
   font-size: 1.5rem;
 
-  ${media.small`
+  ${media.small} {
     flex-direction: column;
     align-items: flex-start;
-  `}
+  }
 `;
 
 export const DataName = styled.span`
@@ -62,9 +62,9 @@ export const DataName = styled.span`
   white-space: nowrap;
   margin-right: 1rem;
 
-  ${media.xSmall`
+  ${media.xSmall} {
     font-size: 1.6rem;
-  `}
+  }
 `;
 
 export const Data = styled.span`
@@ -98,8 +98,8 @@ export const WarningMessage = styled.p`
   font-size: smaller;
   color: ${({ theme }) => theme.colors.red};
 
-  ${media.small`
+  ${media.small} {
     margin-top: 0;
     font-size: 1rem;
-  `}
+  }
 `;

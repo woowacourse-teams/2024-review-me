@@ -15,10 +15,10 @@ export const InfinityCarouselContainer = styled.div`
   width: 100%;
   max-width: 80rem;
 
-  ${media.small`
+  ${media.small} {
     width: 80%;
     height: 70%;
-  `}
+  }
 `;
 
 export const SlideList = styled.div`
@@ -68,9 +68,9 @@ export const PrevButton = styled.button`
   background: none;
   border: none;
 
-  ${media.xSmall`
+  ${media.xSmall} {
     display: none;
-  `}
+  }
 `;
 
 export const NextButton = styled.button`
@@ -87,9 +87,9 @@ export const NextButton = styled.button`
   background: none;
   border: none;
 
-  ${media.xSmall`
+  ${media.xSmall} {
     display: none;
-  `}
+  }
 `;
 
 export const IndicatorWrapper = styled.div`
@@ -112,13 +112,13 @@ export const Indicator = styled.div<{ focused: boolean }>`
 
   transition: background-color 0.3s ease;
 
-  ${media.xSmall`
+  ${media.xSmall} {
     width: 0.8rem;
     height: 0.8rem;
-  `}
+  }
 
-  ${media.xxSmall`
+  ${media.xxSmall} {
     width: 0.6rem;
     height: 0.6rem;
-  `}
+  }
 `;

@@ -7,7 +7,7 @@ export const HomePage = styled.div`
   width: 100vw;
   min-height: inherit;
 
-  ${media.small`
+  ${media.small} {
     flex-direction: column;
-  `}
+  }
 `;

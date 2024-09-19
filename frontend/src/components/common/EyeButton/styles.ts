@@ -16,13 +16,13 @@ export const EyeButton = styled.button`
   width: ${EYE_BUTTON_SIZE};
   height: ${EYE_BUTTON_SIZE};
 
-  ${media.xSmall`
+  ${media.xSmall} {
     width: 1.5rem;
     height: 1.5rem;
-  `}
+  }
 
-  ${media.xxSmall`
+  ${media.xxSmall} {
     width: 1.3rem;
     height: 1.3rem;
-  `}
+  }
 `;

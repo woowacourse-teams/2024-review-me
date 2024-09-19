@@ -8,11 +8,11 @@ export const ReviewMeOverview = styled.section`
   width: 65%;
   background-color: ${({ theme }) => theme.colors.lightPurple};
 
-  ${media.small`
+  ${media.small} {
     flex-direction: column;
     width: 100%;
     padding: 2rem 0;
-  `}
+  }
 `;
 
 export const ColumnSectionContainer = styled.div`
@@ -36,45 +36,45 @@ export const OverviewTitleContainer = styled.div`
     width: 7rem;
     height: 7rem;
 
-    ${media.medium`
+    ${media.medium} {
       width: 6rem;
       height: 6rem;
-    `}
+    }
 
-    ${media.small`
+    ${media.small} {
       width: 5.5rem;
       height: 5.5rem;
-    `}
+    }
 
-    ${media.xSmall`
+    ${media.xSmall} {
       width: 4rem;
       height: 4rem;
-    `}
+    }
 
-    ${media.xxSmall`
+    ${media.xxSmall} {
       width: 3.5rem;
       height: 3.5rem;
-    `}
+    }
   }
 
-  ${media.xxSmall`
-      gap: 0.6rem;
-    `}
+  ${media.xxSmall} {
+    gap: 0.6rem;
+  }
 `;
 
 export const OverviewTitle = styled.p`
   font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 
-  ${media.medium`
-    font-size: 2.4rem; // theme.fontSize.medium 추후 사용
-  `}
+  ${media.medium} {
+    font-size: ${({ theme }) => theme.fontSize.medium};
+  }
 
-  ${media.xSmall`
-    font-size: 2rem; // theme.fontSize.mediumSmall 추후 사용
-  `}
+  ${media.xSmall} {
+    font-size: ${({ theme }) => theme.fontSize.mediumSmall};
+  }
 
-  ${media.xxSmall`
+  ${media.xxSmall} {
     font-size: 1.6rem;
-  `}
+  }
 `;
