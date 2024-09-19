@@ -12,14 +12,13 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
-import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Template;
-import reviewme.template.domain.exception.TemplateNotFoundByReviewGroupException;
+import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
 import reviewme.template.repository.TemplateRepository;
 
 @Component
@@ -66,9 +65,6 @@ public class ReviewMapper {
 
         for (ReviewAnswerRequest answerRequest : request.answers()) {
             Question question = questionMap.get(answerRequest.questionId());
-            if (question == null) {
-                throw new SubmittedQuestionNotFoundException(answerRequest.questionId());
-            }
 
             if (question.getQuestionType() == QuestionType.TEXT) {
                 TextAnswer textAnswer = answerMapper.mapToTextAnswer(answerRequest);

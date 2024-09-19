@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.exception.ReviewGroupUnauthorizedException;

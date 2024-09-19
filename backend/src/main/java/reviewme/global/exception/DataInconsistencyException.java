@@ -7,6 +7,5 @@ public abstract class DataInconsistencyException extends ReviewMeException {
 
     protected DataInconsistencyException(String errorMessage) {
         super(errorMessage);
-        log.error("", this);
     }
 }
