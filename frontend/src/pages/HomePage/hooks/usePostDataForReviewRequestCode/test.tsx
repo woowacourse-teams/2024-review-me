@@ -1,10 +1,9 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 
+import { CREATED_REVIEW_REQUEST_CODE } from '@/mocks/mockData/group';
 import QueryClientWrapper from '@/queryTestSetup/QueryClientWrapper';
 
-import { CREATED_REVIEW_REQUEST_CODE } from '../../../mocks/mockData/group';
-
-import usePostDataForReviewRequestCode from './usePostDataForReviewRequestCode';
+import usePostDataForReviewRequestCode from '.';
 
 describe('usePostDataForReviewRequestCode', () => {
   it('ReviewRequestCode를 발급받을 수 있다.', async () => {

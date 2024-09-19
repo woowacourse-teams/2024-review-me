@@ -18,6 +18,6 @@ describe('리뷰 생성 요청 테스트', () => {
 
     await waitFor(() => result.current.isSuccess);
 
-    expect(result.current.isSuccess).toBe(true);
+    expect(result.current.isSuccess).toBeTruthy();
   });
 });

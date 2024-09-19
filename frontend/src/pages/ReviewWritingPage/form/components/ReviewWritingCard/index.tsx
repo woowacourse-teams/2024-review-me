@@ -1,8 +1,9 @@
+import React from 'react';
+
+import { ReviewWritingCardLayout } from '@/pages/ReviewWritingPage/layout/components';
 import { ReviewWritingCardSection } from '@/types';
 
 import QnABox from '../QnABox';
-
-import * as S from './style';
 
 interface ReviewWritingCardProps {
   cardSection: ReviewWritingCardSection;
@@ -10,15 +11,12 @@ interface ReviewWritingCardProps {
 
 const ReviewWritingCard = ({ cardSection }: ReviewWritingCardProps) => {
   return (
-    <S.ReviewWritingCard>
-      <S.Header>{cardSection.header}</S.Header>
-      <S.Main>
-        {cardSection.questions.map((question) => (
-          <QnABox key={question.questionId} question={question} />
-        ))}
-      </S.Main>
-    </S.ReviewWritingCard>
+    <ReviewWritingCardLayout cardSection={cardSection}>
+      {cardSection.questions.map((question) => (
+        <QnABox key={question.questionId} question={question} />
+      ))}
+    </ReviewWritingCardLayout>
   );
 };
 
-export default ReviewWritingCard;
+export default React.memo(ReviewWritingCard);

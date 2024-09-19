@@ -2,6 +2,7 @@ package reviewme.review.service.module;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class TextAnswerValidatorTest {
 
     @ParameterizedTest
     @ValueSource(ints = {19, 10001})
-    void 답변_길이가_유효하지_않으면_예외가_발생한다(int length) {
+    void 필수_질문의_답변_길이가_유효하지_않으면_예외가_발생한다(int length) {
         // given
         String content = "답".repeat(length);
         Question savedQuestion = questionRepository.save(서술형_필수_질문());
@@ -46,5 +47,28 @@ class TextAnswerValidatorTest {
         // when, then
         assertThatThrownBy(() -> textAnswerValidator.validate(textAnswer))
                 .isInstanceOf(InvalidTextAnswerLengthException.class);
+    }
+
+    @Test
+    void 선택_질문의_답변_길이가_유효하지_않으면_예외가_발생한다() {
+        // given
+        String content = "답".repeat(10001);
+        Question savedQuestion = questionRepository.save(서술형_옵션_질문());
+        TextAnswer textAnswer = new TextAnswer(savedQuestion.getId(), content);
+
+        // when, then
+        assertThatThrownBy(() -> textAnswerValidator.validate(textAnswer))
+                .isInstanceOf(InvalidTextAnswerLengthException.class);
+    }
+
+    @Test
+    void 선택_질문은_최소_글자수_제한을_받지_않는다() {
+        // given
+        String content = "답".repeat(1);
+        Question savedQuestion = questionRepository.save(서술형_옵션_질문());
+        TextAnswer textAnswer = new TextAnswer(savedQuestion.getId(), content);
+
+        // when, then
+        assertThatCode(() -> textAnswerValidator.validate(textAnswer)).doesNotThrowAnyException();
     }
 }

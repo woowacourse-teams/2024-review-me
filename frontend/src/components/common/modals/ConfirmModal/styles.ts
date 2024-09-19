@@ -12,8 +12,9 @@ export const ConfirmModalContainer = styled.div`
   justify-content: space-between;
 
   width: fit-content;
+  max-width: ${({ theme }) => theme.confirmModalSize.maxWidth};
   max-height: 80vh;
-  padding: 3.2rem;
+  padding: ${({ theme }) => theme.confirmModalSize.padding};
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.basic};

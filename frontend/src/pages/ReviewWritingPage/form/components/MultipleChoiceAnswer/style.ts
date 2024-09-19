@@ -10,18 +10,3 @@ export const LimitGuideMessage = styled.div`
     border-radius: ${({ theme }) => theme.borderRadius.basic};
   }
 `;
-
-export const ConfirmModalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  width: fit-content;
-
-  white-space: nowrap;
-`;
-
-export const ConfirmModalTitle = styled.p`
-  font-size: ${({ theme }) => theme.fontSize.medium};
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
-`;

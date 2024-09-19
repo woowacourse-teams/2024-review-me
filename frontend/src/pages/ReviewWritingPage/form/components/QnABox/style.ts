@@ -16,16 +16,3 @@ export const QuestionTitle = styled.div`
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.colors.black};
 `;
-
-export const QuestionRequiredMark = styled.sup`
-  font-size: ${({ theme }) => theme.colors.small};
-  color: ${({ theme }) => theme.colors.red};
-`;
-
-export const MultipleGuideline = styled.span`
-  margin-left: 0.5rem;
-`;
-
-export const NotRequiredQuestionText = styled.span`
-  margin-left: 0.5rem;
-`;

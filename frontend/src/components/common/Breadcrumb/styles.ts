@@ -4,15 +4,15 @@ export const BreadcrumbList = styled.ul`
   display: flex;
 
   max-height: ${({ theme }) => theme.componentHeight.breadCrumb};
-  padding: 2rem 0 0 2.5rem;
+  padding: ${({ theme }) => theme.breadcrumbSize.paddingLeft} 0 0 2.5rem;
 
   font-size: 1.5rem;
   list-style: none;
 `;
 
 export const BreadcrumbItem = styled.li`
-  display: flex;
   cursor: pointer;
+  display: flex;
 
   &:not(:last-child)::after {
     content: '/';

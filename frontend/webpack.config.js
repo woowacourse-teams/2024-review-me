@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const { sentryWebpackPlugin } = require('@sentry/webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -12,7 +14,7 @@ module.exports = (env, argv) => {
     entry: './src/index.tsx',
     output: {
       path: path.join(__dirname, 'dist'),
-      filename: 'bundle.js',
+      filename: '[name].[contenthash].bundle.js',
       clean: true,
       publicPath: '/',
     },
@@ -26,7 +28,7 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.(ts|tsx|js)$/,
-          exclude: /node_modules/,
+          exclude: /(test.ts$|test.tsx$|node_modules)/,
           use: [
             {
               loader: 'babel-loader',
@@ -39,7 +41,6 @@ module.exports = (env, argv) => {
         },
       ],
     },
-    devtool: 'hidden-source-map',
     plugins: [
       sentryWebpackPlugin({
         authToken: process.env.SENTRY_AUTH_TOKEN,
@@ -61,6 +62,7 @@ module.exports = (env, argv) => {
         favicon: './src/favicons/favicon.ico',
       }),
       new CleanWebpackPlugin(),
+      //new BundleAnalyzerPlugin(),
       new Dotenv({
         systemvars: true,
         path: './.env',
@@ -76,6 +78,27 @@ module.exports = (env, argv) => {
       historyApiFallback: true,
       port: 3000,
       hot: true,
+    },
+    optimization: {
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: true,
+              drop_debugger: true,
+              passes: 3,
+            },
+            format: {
+              comments: false,
+            },
+            mangle: true,
+          },
+          extractComments: false,
+        }),
+      ],
+      splitChunks: {
+        chunks: 'all',
+      },
     },
   };
 };

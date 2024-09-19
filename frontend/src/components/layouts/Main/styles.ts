@@ -2,12 +2,12 @@ import { css, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 interface MainContainerProps {
-  $isBreadCrumb?: boolean;
+  $isShowBreadCrumb?: boolean;
 }
-const calculateMinHeight = ({ $isBreadCrumb, ...theme }: MainContainerProps & Theme) => {
+const calculateMinHeight = ({ $isShowBreadCrumb, ...theme }: MainContainerProps & Theme) => {
   const topbarHeight = theme.componentHeight.topbar;
   const footerHeight = theme.componentHeight.footer;
-  const breadCrumbHeight = $isBreadCrumb ? theme.componentHeight.breadCrumb : '0rem';
+  const breadCrumbHeight = $isShowBreadCrumb ? theme.componentHeight.breadCrumb : '0rem';
 
   return `calc(100vh - ${topbarHeight} - ${footerHeight} - ${breadCrumbHeight})`;
 };
@@ -17,7 +17,7 @@ export const MainContainer = styled.div<MainContainerProps>`
   align-items: center;
   justify-content: center;
 
-  min-height: ${({ theme, $isBreadCrumb }) => css(calculateMinHeight({ $isBreadCrumb, ...theme }))};
+  min-height: ${({ theme, $isShowBreadCrumb }) => css(calculateMinHeight({ $isShowBreadCrumb, ...theme }))};
   margin-bottom: ${({ theme }) => theme.componentHeight.footer};
 `;
 
@@ -29,7 +29,7 @@ export const Contents = styled.div`
 
   box-sizing: border-box;
   width: 100%;
-  max-width: ${({ theme }) => theme.breakpoints.desktop};
+  max-width: ${({ theme }) => theme.breakpoint.medium}px;
   height: 100%;
   min-height: inherit;
 

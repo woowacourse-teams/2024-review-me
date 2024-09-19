@@ -7,7 +7,7 @@ export interface Slide {
   alt: string;
 }
 
-interface CarouselProps {
+interface InfinityCarouselProps {
   slideList: Slide[];
 }
 
@@ -16,7 +16,7 @@ const REAL_START_INDEX = 1;
 const TRANSITION_DURATION = 500; // NOTE: 트랜지션(애니메이션) 시간
 const AUTO_SLIDE_INTERVAL = 6000; // NOTE: 자동 슬라이드 시간
 
-const Carousel = ({ slideList }: CarouselProps) => {
+const InfinityCarousel = ({ slideList }: InfinityCarouselProps) => {
   // NOTE: 마지막 슬라이드를 복제해서 slideList의 맨 앞에 추가하므로 처음에 보여져야 하는 슬라이드는 1번 인덱스
   const [currentSlideIndex, setCurrentSlideIndex] = useState(REAL_START_INDEX);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -30,12 +30,21 @@ const Carousel = ({ slideList }: CarouselProps) => {
   const scrollToSlide = (index: number, withTransition = true) => {
     if (slideRef.current) {
       setIsTransitioning(true);
-
-      const slideWidth = slideRef.current.clientWidth;
-      slideRef.current.style.transition = withTransition ? `transform ${TRANSITION_DURATION}ms ease-in-out` : 'none';
-      slideRef.current.style.transform = `translateX(-${slideWidth * index * 0.1}rem)`;
+      window.requestAnimationFrame(() => handleSlideAnimation({ slide: slideRef.current!, withTransition, index }));
     }
     setCurrentSlideIndex(index);
+  };
+
+  interface HandleSlideAnimationParams {
+    slide: HTMLDivElement;
+    withTransition: boolean;
+    index: number;
+  }
+
+  const handleSlideAnimation = ({ slide, withTransition, index }: HandleSlideAnimationParams) => {
+    const slideWidth = slide.clientWidth;
+    slide.style.transition = withTransition ? `transform ${TRANSITION_DURATION}ms ease-in-out` : 'none';
+    slide.style.transform = `translate3d(-${slideWidth * index * 0.1}rem, 0, 0)`;
   };
 
   const nextSlide = () => {
@@ -86,7 +95,7 @@ const Carousel = ({ slideList }: CarouselProps) => {
   }, [currentSlideIndex, clicked]);
 
   return (
-    <S.CarouselContainer>
+    <S.InfinityCarouselContainer>
       <S.SlideList ref={slideRef}>
         {clonedSlideList.map((slide, index) => (
           <S.SlideItem key={index}>
@@ -107,8 +116,8 @@ const Carousel = ({ slideList }: CarouselProps) => {
       </S.IndicatorWrapper>
       <S.PrevButton onClick={prevSlide}>{'<'}</S.PrevButton>
       <S.NextButton onClick={nextSlide}>{'>'}</S.NextButton>
-    </S.CarouselContainer>
+    </S.InfinityCarouselContainer>
   );
 };
 
-export default Carousel;
+export default InfinityCarousel;

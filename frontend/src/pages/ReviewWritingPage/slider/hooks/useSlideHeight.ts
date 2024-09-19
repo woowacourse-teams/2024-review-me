@@ -1,23 +1,17 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 
-interface UseSlideWidthAndHeightProps {
+interface UseSlideHeightProps {
   currentCardIndex: number;
 }
 
-const INITIAL_SIDE_WIDTH = 0;
 const SLIDE_CLASS_NAME = 'reviewWritingCardSlide';
 const REM_UNIT = 10;
 
-const useSlideWidthAndHeight = ({ currentCardIndex }: UseSlideWidthAndHeightProps) => {
-  const [slideWidth, setSlideWidth] = useState(INITIAL_SIDE_WIDTH);
+const useSlideHeight = ({ currentCardIndex }: UseSlideHeightProps) => {
   const [slideHeight, setSlideHeight] = useState<string>('auto');
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const makeId = (index: number) => `${SLIDE_CLASS_NAME}_${index}`;
   const targetSlide = document.getElementById(makeId(currentCardIndex));
-
-  useLayoutEffect(() => {
-    if (wrapperRef.current) setSlideWidth(wrapperRef.current.clientWidth);
-  }, [wrapperRef]);
 
   useLayoutEffect(() => {
     if (targetSlide) {
@@ -28,10 +22,9 @@ const useSlideWidthAndHeight = ({ currentCardIndex }: UseSlideWidthAndHeightProp
 
   return {
     wrapperRef,
-    slideWidth,
     slideHeight,
     makeId,
   };
 };
 
-export default useSlideWidthAndHeight;
+export default useSlideHeight;

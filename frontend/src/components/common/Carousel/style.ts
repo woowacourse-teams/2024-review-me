@@ -1,12 +1,11 @@
 import styled from '@emotion/styled';
 
 interface SlideContainerProps {
-  $translateX: number;
   $height?: string;
 }
 
 export const SliderContainer = styled.div<SlideContainerProps>`
-  transform: ${({ $translateX }) => `translateX(-${$translateX}px)`};
+  will-change: transform;
 
   display: flex;
 
