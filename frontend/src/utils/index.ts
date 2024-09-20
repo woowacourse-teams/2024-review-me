@@ -1,4 +1,4 @@
 export * from './date';
 export * from './isExistentElement';
-export * from './scroll';
+export { default as scrollToTop } from './scrollToTop';
 export * from './media';
