@@ -25,4 +25,6 @@ export const Contents = styled.div`
   display: flex;
   align-items: center;
   white-space: pre-line;
+
+  width: 100%;
 `;
