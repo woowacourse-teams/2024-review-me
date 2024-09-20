@@ -2,9 +2,6 @@ package reviewme.review.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -15,16 +12,9 @@ import reviewme.review.domain.exception.QuestionNotAnsweredException;
 @Entity
 @Table(name = "text_answer")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(callSuper = true)
 @Getter
-public class TextAnswer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "question_id", nullable = false)
-    private long questionId;
+public class TextAnswer extends Answer {
 
     @Column(name = "content", nullable = false, length = 5000)
     private String content;
