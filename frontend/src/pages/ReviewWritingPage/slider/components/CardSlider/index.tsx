@@ -41,35 +41,36 @@ const CardSlider = ({ currentCardIndex, handleCurrentCardIndex, handleOpenModal 
     <Carousel ref={wrapperRef} cardIndex={currentCardIndex} height={slideHeight}>
       {cardSectionList?.map((section, index) => (
         <S.Slide data-testid={section.sectionName} id={makeId(index)} key={section.sectionId}>
-          <ReviewWritingCard cardSection={section} />
-          <S.ButtonContainer>
-            {isAblePrevStep(index) && (
-              <CardSliderController.PrevButton
-                data-testid={`${section.sectionId}-prevButton`}
-                handleCurrentCardIndex={handleCurrentCardIndex}
-              />
-            )}
-            {isLastCard() ? (
-              <>
-                <CardSliderController.RecheckButton
-                  data-testid={`${section.sectionId}-recheckButton`}
-                  isAbleNextStep={isAbleNextStep}
-                  handleRecheckButtonClick={handleRecheckButtonClick}
+          <ReviewWritingCard cardSection={section}>
+            <S.ButtonContainer>
+              {isAblePrevStep(index) && (
+                <CardSliderController.PrevButton
+                  data-testid={`${section.sectionId}-prevButton`}
+                  handleCurrentCardIndex={handleCurrentCardIndex}
                 />
-                <CardSliderController.ConfirmModalOpenButton
-                  data-testid={`${section.sectionId}-submitButton`}
+              )}
+              {isLastCard() ? (
+                <>
+                  <CardSliderController.RecheckButton
+                    data-testid={`${section.sectionId}-recheckButton`}
+                    isAbleNextStep={isAbleNextStep}
+                    handleRecheckButtonClick={handleRecheckButtonClick}
+                  />
+                  <CardSliderController.ConfirmModalOpenButton
+                    data-testid={`${section.sectionId}-submitButton`}
+                    isAbleNextStep={isAbleNextStep}
+                    handleSubmitConfirmModalOpenButtonClick={handleSubmitConfirmModalOpenButtonClick}
+                  />
+                </>
+              ) : (
+                <CardSliderController.NextButton
+                  data-testid={`${section.sectionId}-nextButton`}
                   isAbleNextStep={isAbleNextStep}
-                  handleSubmitConfirmModalOpenButtonClick={handleSubmitConfirmModalOpenButtonClick}
+                  handleCurrentCardIndex={handleNextClick}
                 />
-              </>
-            ) : (
-              <CardSliderController.NextButton
-                data-testid={`${section.sectionId}-nextButton`}
-                isAbleNextStep={isAbleNextStep}
-                handleCurrentCardIndex={handleNextClick}
-              />
-            )}
-          </S.ButtonContainer>
+              )}
+            </S.ButtonContainer>
+          </ReviewWritingCard>
         </S.Slide>
       ))}
     </Carousel>
