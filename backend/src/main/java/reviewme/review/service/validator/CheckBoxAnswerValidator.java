@@ -1,4 +1,4 @@
-package reviewme.review.service.module;
+package reviewme.review.service.validator;
 
 import java.util.HashSet;
 import java.util.List;

@@ -1,4 +1,4 @@
-package reviewme.review.service.module;
+package reviewme.review.service.mapper;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
