@@ -57,6 +57,15 @@ public class Review {
                 .collect(Collectors.toSet());
     }
 
+    public Set<Long> getAllCheckBoxOptionIds() {
+        return answers.stream()
+                .filter(CheckboxAnswer.class::isInstance)
+                .map(CheckboxAnswer.class::cast)
+                .flatMap(answer -> answer.getSelectedOptionIds().stream())
+                .map(CheckBoxAnswerSelectedOption::getSelectedOptionId)
+                .collect(Collectors.toSet());
+    }
+
     public boolean hasAnsweredQuestion(long questionId) {
         return getAnsweredQuestionIds().contains(questionId);
     }
