@@ -66,6 +66,13 @@ public class Review {
                 .collect(Collectors.toSet());
     }
 
+    public List<TextAnswer> getTextAnswers() {
+        return answers.stream()
+                .filter(TextAnswer.class::isInstance)
+                .map(TextAnswer.class::cast)
+                .toList();
+    }
+
     public boolean hasAnsweredQuestion(long questionId) {
         return getAnsweredQuestionIds().contains(questionId);
     }
