@@ -12,9 +12,7 @@ export const ButtonContainer = styled.div`
   display: flex;
   gap: 2rem;
   justify-content: flex-end;
-
-  padding: 0 2rem;
-  padding-bottom: 2rem;
+  padding: 2rem 0 0 2rem;
   button {
     width: auto;
     min-width: 8rem;
@@ -24,6 +22,9 @@ export const ButtonContainer = styled.div`
   ${media.xSmall} {
     gap: 1.5rem;
     button {
+      max-width: calc(100% - (0.8rem * 2) / 3);
+      padding-right: 0.8rem;
+      padding-left: 0.8rem;
       font-size: ${({ theme }) => theme.fontSize.small};
     }
   }
@@ -32,10 +33,8 @@ export const ButtonContainer = styled.div`
     gap: 0.8rem;
 
     button {
-      max-width: calc(100% - (0.8rem * 2) / 3);
       padding-right: 0.4rem;
       padding-left: 0.4rem;
-
       font-size: 1.2rem;
       text-align: center;
     }
