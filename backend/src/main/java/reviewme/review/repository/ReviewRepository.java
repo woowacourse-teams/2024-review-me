@@ -12,8 +12,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query(value = """
             SELECT r.* FROM review r
-            WHERE r.reviewGroupId = :reviewGroupId
-            ORDER BY r.createdAt DESC 
+            WHERE r.review_group_id = :reviewGroupId
+            ORDER BY r.created_at DESC 
             """, nativeQuery = true)
     List<Review> findAllByGroupId(long reviewGroupId);
 
