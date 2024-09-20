@@ -18,9 +18,11 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
 
   useEffect(() => {
     if (stepRefs.current[currentCardIndex]) {
-      stepRefs.current[currentCardIndex].scrollIntoView({
-        behavior: 'smooth',
-        inline: 'center',
+      requestAnimationFrame(() => {
+        stepRefs.current[currentCardIndex].scrollIntoView({
+          behavior: 'smooth',
+          inline: 'center',
+        });
       });
     }
   }, [currentCardIndex]);
