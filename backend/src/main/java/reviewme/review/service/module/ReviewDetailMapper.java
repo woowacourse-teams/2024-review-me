@@ -3,6 +3,7 @@ package reviewme.review.service.module;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -44,7 +45,7 @@ public class ReviewDetailMapper {
                 .toList();
         Map<Long, OptionGroup> optionGroupsByQuestion = optionGroupRepository.findAllByQuestionIds(questionIds)
                 .stream()
-                .collect(Collectors.toMap(OptionGroup::getQuestionId, optionGroup -> optionGroup));
+                .collect(Collectors.toMap(OptionGroup::getQuestionId, Function.identity()));
         Map<Long, List<OptionItem>> optionItemsByOptionGroup = optionItemRepository.findAllByQuestionIds(questionIds)
                 .stream()
                 .collect(Collectors.groupingBy(OptionItem::getOptionGroupId));
