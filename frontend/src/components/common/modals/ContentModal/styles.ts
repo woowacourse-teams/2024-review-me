@@ -16,7 +16,7 @@ export const ContentModalContainer = styled.div<ContentModalStyleProps>`
 
   min-width: 30rem;
   max-width: ${({ theme }) => theme.contentModalSize.maxWidth};
-  max-height: 90vh;
+  max-height: 90%;
   padding: ${({ theme }) => theme.contentModalSize.padding};
 
   background-color: ${({ theme }) => theme.colors.white};
@@ -32,27 +32,25 @@ export const ContentModalContainer = styled.div<ContentModalStyleProps>`
 export const ContentModalHeader = styled.div`
   display: flex;
   gap: 8rem;
-
-  ${media.small} {
-    gap: 5rem;
-  }
-
   align-items: center;
   justify-content: space-between;
 
   width: 100%;
   height: 3rem;
   margin-bottom: 1.5rem;
+
+  ${media.small} {
+    gap: 5rem;
+  }
 `;
 
 export const Title = styled.span`
   font-size: 1.8rem;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 
   ${media.small} {
     font-size: 1.6rem;
   }
-
-  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 export const Contents = styled.div`
