@@ -11,7 +11,7 @@ export const BreadcrumbList = styled.ul`
   font-size: 1.5rem;
 
   ${media.xSmall} {
-    font-size: 1.4rem;
+    ${({ theme }) => theme.fontSize.small};
   }
 
   list-style: none;
