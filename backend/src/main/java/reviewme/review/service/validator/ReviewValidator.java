@@ -8,9 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.CheckboxAnswer;
+import reviewme.review.domain.Answer;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.template.domain.Section;
@@ -21,27 +20,25 @@ import reviewme.template.repository.SectionRepository;
 @RequiredArgsConstructor
 public class ReviewValidator {
 
-    private final TextAnswerValidator textAnswerValidator;
-    private final CheckBoxAnswerValidator checkBoxAnswerValidator;
+    private final AnswerValidatorFactory answerValidatorFactory;
 
     private final SectionRepository sectionRepository;
     private final QuestionRepository questionRepository;
 
     public void validate(Review review) {
-        validateAnswer(review.getTextAnswers(), review.getCheckboxAnswers());
+        validateAnswer(review.getAnswers());
         validateAllAnswersContainedInTemplate(review);
         validateAllRequiredQuestionsAnswered(review);
     }
 
-    private void validateAnswer(List<TextAnswer> textAnswers, List<CheckboxAnswer> checkboxAnswers) {
-        textAnswers.forEach(textAnswerValidator::validate);
-        checkboxAnswers.forEach(checkBoxAnswerValidator::validate);
+    private void validateAnswer(List<Answer> answers) {
+        answers.forEach(answer -> answerValidatorFactory.getAnswerValidator(answer.getClass()).validate(answer));
     }
 
     private void validateAllAnswersContainedInTemplate(Review review) {
         Set<Long> providedQuestionIds = questionRepository.findAllQuestionIdByTemplateId(review.getTemplateId());
         Set<Long> reviewedQuestionIds = review.getAnsweredQuestionIds();
-        if (!providedQuestionIds.containsAll(reviewedQuestionIds)) {
+        if (!providedQuestionIds.equals(reviewedQuestionIds)) {
             throw new SubmittedQuestionAndProvidedQuestionMismatchException(reviewedQuestionIds, providedQuestionIds);
         }
     }
