@@ -21,7 +21,6 @@ import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.template.domain.Section;
-import reviewme.template.domain.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.template.repository.SectionRepository;
 
 @Component
@@ -99,9 +98,6 @@ public class ReviewDetailMapper {
                                                                  Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
         // 1. 질문에 해당하는 옵션 그룹 찾기
         OptionGroup optionGroup = optionGroupsByQuestion.get(question.getId());
-        if (optionGroup == null) {
-            throw new OptionGroupNotFoundByQuestionIdException(question.getId());
-        }
 
         // 2. 옵션 그룹에 있는 옵션 아이템 찾기
         List<OptionItem> optionItems = optionItemsByOptionGroup.get(optionGroup.getId());
