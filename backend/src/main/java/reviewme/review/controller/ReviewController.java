@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import reviewme.global.HeaderProperty;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
@@ -35,8 +36,7 @@ public class ReviewController {
     }
 
     /**
-     * @deprecated since 1.0.2
-     * 기존 헤더에 GroupAccessCode를 사용하지 않고, JWT를 활용하여 ReviewRequestCode를 전달합니다.
+     * @deprecated since 1.0.2 기존 헤더에 GroupAccessCode를 사용하지 않고, 세션을 활용하여 ReviewRequestCode를 전달합니다.
      */
     @Deprecated(since = "1.0.2", forRemoval = true)
     @GetMapping("/v2/reviews")
@@ -44,13 +44,13 @@ public class ReviewController {
             @RequestParam String reviewRequestCode,
             @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode
     ) {
-        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(reviewRequestCode, groupAccessCode);
+        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(reviewRequestCode,
+                groupAccessCode);
         return ResponseEntity.ok(response);
     }
 
     /**
-     * @deprecated since 1.0.2
-     * 기존 헤더에 GroupAccessCode를 사용하지 않고, JWT를 활용하여 ReviewRequestCode를 전달합니다.
+     * @deprecated since 1.0.2 기존 헤더에 GroupAccessCode를 사용하지 않고, 세션을 활용하여 ReviewRequestCode를 전달합니다.
      */
     @Deprecated(since = "1.0.2", forRemoval = true)
     @GetMapping("/v2/reviews/{id}")
@@ -67,7 +67,7 @@ public class ReviewController {
 
     @GetMapping("/vx/reviews")
     public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews2(
-            @ReviewRequestCode String reviewRequestCode
+            @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
         ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews2(reviewRequestCode);
         return ResponseEntity.ok(response);
@@ -76,7 +76,7 @@ public class ReviewController {
     @GetMapping("/vx/reviews/{id}")
     public ResponseEntity<ReviewDetailResponse> findReceivedReviewDetail2(
             @PathVariable long id,
-            @ReviewRequestCode String reviewRequestCode
+            @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
         ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail2(id, reviewRequestCode);
         return ResponseEntity.ok(response);
