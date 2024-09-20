@@ -11,8 +11,6 @@ export const AnswerListContainer = styled.div`
 
   width: ${({ theme }) => theme.formWidth};
 
-  word-break: keep-all;
-
   ${media.medium} {
     width: ${({ theme }) => {
       const { maxWidth, padding } = theme.contentModalSize;

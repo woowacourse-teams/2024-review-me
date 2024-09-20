@@ -19,6 +19,7 @@ const globalStyles = (theme: Theme) => css`
 
     font-family: 'Pretendard Variable', 'Noto Sans', sans-serif;
     font-size: 1.6rem;
+    word-break: keep-all;
   }
 
   /* 스크롤바 설정 */

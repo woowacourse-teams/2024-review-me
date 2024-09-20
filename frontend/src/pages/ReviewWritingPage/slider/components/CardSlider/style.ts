@@ -4,12 +4,8 @@ import media from '@/utils/media';
 
 export const Slide = styled.div`
   flex: 0 0 100%;
-
   box-sizing: border-box;
   height: fit-content;
-
-  border: 0.1rem solid ${({ theme }) => theme.colors.lightPurple};
-  border-radius: ${({ theme }) => theme.borderRadius.basic};
 `;
 
 export const ButtonContainer = styled.div`
