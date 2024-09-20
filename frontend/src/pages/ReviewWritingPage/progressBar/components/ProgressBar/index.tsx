@@ -1,3 +1,5 @@
+import React from 'react';
+
 import NavigateNextIcon from '@/assets/navigateNext.svg';
 import useStepList from '@/pages/ReviewWritingPage/progressBar/hooks/useStepList';
 import { Direction } from '@/pages/ReviewWritingPage/types';
@@ -22,9 +24,8 @@ const ProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: ProgressBarPr
       <S.ProgressBar>
         {stepList.map((step, index) => {
           return (
-            <>
+            <React.Fragment key={step.sectionId}>
               <S.StepButton
-                key={step.sectionId}
                 $isDone={step.isDone}
                 $isMovingAvailable={step.isMovingAvailable}
                 $isCurrentStep={step.isCurrentStep}
@@ -34,7 +35,7 @@ const ProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: ProgressBarPr
                 {step.sectionName}
               </S.StepButton>
               {index < stepList.length - 1 && <img src={NavigateNextIcon} alt="다음 화살표" />}
-            </>
+            </React.Fragment>
           );
         })}
       </S.ProgressBar>
