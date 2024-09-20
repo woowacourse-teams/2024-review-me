@@ -1,6 +1,6 @@
 type NullableElement = Element | HTMLElement | null | undefined;
 
-export const isExistentElement = (element: NullableElement, elementName: string): boolean => {
+const isExistentElement = (element: NullableElement, elementName: string): boolean => {
   const isExistentElement = element !== null && element !== undefined;
   const isHTMLElementOrElement = element instanceof HTMLElement || element instanceof Element;
 
@@ -16,3 +16,5 @@ export const isExistentElement = (element: NullableElement, elementName: string)
 
   return true;
 };
+
+export default isExistentElement;

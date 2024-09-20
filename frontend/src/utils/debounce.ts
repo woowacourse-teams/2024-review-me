@@ -21,7 +21,7 @@
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function debounce<T extends (...args: any[]) => void>(func: T, wait: number): T {
+const debounce = <T extends (...args: any[]) => void>(func: T, wait: number): T => {
   let timeoutId: ReturnType<typeof setTimeout> | null;
 
   return function (this: any, ...args: any[]) {
@@ -31,4 +31,6 @@ export function debounce<T extends (...args: any[]) => void>(func: T, wait: numb
       func.apply(this, args);
     }, wait);
   } as T;
-}
+};
+
+export default debounce;
