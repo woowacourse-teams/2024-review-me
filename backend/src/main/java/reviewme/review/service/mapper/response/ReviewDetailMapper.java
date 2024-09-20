@@ -1,4 +1,4 @@
-package reviewme.review.service.mapper;
+package reviewme.review.service.mapper.response;
 
 import java.util.List;
 import java.util.Set;
