@@ -38,6 +38,7 @@ export const DataName = styled.span`
 export const Data = styled.span`
   flex: 2;
   color: ${({ theme }) => theme.colors.gray};
+  word-break: break-all;
 `;
 
 export const CheckContainer = styled.div`
