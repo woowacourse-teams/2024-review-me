@@ -3,8 +3,12 @@ import styled from '@emotion/styled';
 import media from '@/utils/media';
 
 export const ReviewWritingCardLayout = styled.div`
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
+
+  border: 0.1rem solid ${({ theme }) => theme.colors.lightPurple};
+  border-radius: ${({ theme }) => theme.borderRadius.basic};
 `;
 
 export const Header = styled.div`
