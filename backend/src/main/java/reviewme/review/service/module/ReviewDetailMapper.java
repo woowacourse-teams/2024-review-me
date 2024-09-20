@@ -97,14 +97,8 @@ public class ReviewDetailMapper {
                                                                  Question question,
                                                                  Map<Long, OptionGroup> optionGroupsByQuestion,
                                                                  Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
-        // 1. 질문에 해당하는 옵션 그룹 찾기
         OptionGroup optionGroup = optionGroupsByQuestion.get(question.getId());
-
-        // 2. 옵션 그룹에 있는 옵션 아이템 찾기
         List<OptionItem> optionItems = optionItemsByOptionGroup.get(optionGroup.getId());
-
-
-        // 3. 옵션 아이템을 dto 변환, 해당 과정에서 답변에 있는 아이템 체크
         Set<Long> selectedOptionIds = review.getAllCheckBoxOptionIds();
 
         List<OptionItemAnswerResponse> optionItemResponse = optionItems.stream()
@@ -115,7 +109,6 @@ public class ReviewDetailMapper {
                 )
                 .toList();
 
-        // 4. 옵션 그룹을 dto 변환
         OptionGroupAnswerResponse optionGroupAnswerResponse = new OptionGroupAnswerResponse(
                 optionGroup.getId(),
                 optionGroup.getMinSelectionCount(),
@@ -123,7 +116,6 @@ public class ReviewDetailMapper {
                 optionItemResponse
         );
 
-        // 5. 질문 답변 dto 변환
         return new QuestionAnswerResponse(
                 question.getId(),
                 question.isRequired(),
