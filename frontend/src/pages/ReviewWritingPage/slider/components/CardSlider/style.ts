@@ -39,6 +39,8 @@ export const ButtonContainer = styled.div`
       max-width: calc(100% - (0.8rem * 2) / 3);
       padding-right: 0.4rem;
       padding-left: 0.4rem;
+
+      font-size: 1.2rem;
       text-align: center;
     }
   }
