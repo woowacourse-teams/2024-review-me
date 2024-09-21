@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import reviewme.question.domain.OptionItem;
+import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.repository.ReviewRepository;
@@ -42,11 +43,11 @@ class OptionItemRepositoryTest {
         long optionId4 = optionItemRepository.save(선택지(optionGroupId)).getId();
         optionItemRepository.save(선택지(optionGroupId));
 
-        List<CheckboxAnswer> checkboxAnswers = List.of(
+        List<Answer> checkboxAnswers = List.of(
                 new CheckboxAnswer(questionId, List.of(optionId1, optionId2)),
                 new CheckboxAnswer(questionId, List.of(optionId3, optionId4))
         );
-        Review review = reviewRepository.save(new Review(0, 0, List.of(), checkboxAnswers));
+        Review review = reviewRepository.save(new Review(0, 0, checkboxAnswers));
 
         // when
         Set<Long> actual = optionItemRepository.findSelectedOptionItemIdsByReviewId(review.getId());
@@ -68,12 +69,12 @@ class OptionItemRepositoryTest {
         long optionId4 = optionItemRepository.save(선택지(optionGroupId, 1)).getId();
         long optionId5 = optionItemRepository.save(선택지(optionGroupId, 1)).getId();
 
-        List<CheckboxAnswer> checkboxAnswers = List.of(
+        List<Answer> checkboxAnswers = List.of(
                 new CheckboxAnswer(questionId1, List.of(optionId1, optionId3)),
                 new CheckboxAnswer(questionId2, List.of(optionId4))
         );
 
-        Review review = reviewRepository.save(new Review(0, 0, List.of(), checkboxAnswers));
+        Review review = reviewRepository.save(new Review(0, 0, checkboxAnswers));
 
         // when
         List<OptionItem> actual = optionItemRepository.findSelectedOptionItemsByReviewIdAndQuestionId(

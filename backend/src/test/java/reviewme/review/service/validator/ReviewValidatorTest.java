@@ -12,7 +12,6 @@ import static reviewme.fixture.SectionFixture.조건부로_보이는_섹션;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 import static reviewme.fixture.TemplateFixture.템플릿;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
+import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
@@ -106,9 +106,10 @@ class ReviewValidatorTest {
                 List.of(conditionalOptionItem.getId()));
 
         // 리뷰 생성
-        Review review = new Review(template.getId(), reviewGroup.getId(),
-                List.of(notRequiredlTextAnswer, conditionalTextAnswer1),
-                List.of(alwaysRequiredCheckAnswer, conditionalCheckAnswer1));
+        List<Answer> answers = List.of(
+                notRequiredlTextAnswer, conditionalTextAnswer1, alwaysRequiredCheckAnswer, conditionalCheckAnswer1
+        );
+        Review review = new Review(template.getId(), reviewGroup.getId(), answers);
 
         // when, then
         assertThatCode(() -> reviewValidator.validate(review))
@@ -126,7 +127,7 @@ class ReviewValidatorTest {
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         TextAnswer textAnswer = new TextAnswer(question2.getId(), "답변".repeat(20));
-        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), new ArrayList<>());
+        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
 
         // when, then
         assertThatThrownBy(() -> reviewValidator.validate(review))
@@ -145,7 +146,7 @@ class ReviewValidatorTest {
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         TextAnswer optionalTextAnswer = new TextAnswer(optionalQuestion.getId(), "답변".repeat(20));
-        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer), List.of());
+        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer));
 
         // when, then
         assertThatThrownBy(() -> reviewValidator.validate(review))

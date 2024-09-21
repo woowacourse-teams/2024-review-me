@@ -19,7 +19,9 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
             ON c.selected_option_id = o.id
             LEFT JOIN checkbox_answer ca
             ON c.checkbox_answer_id = ca.id
-            WHERE ca.review_id = :reviewId
+            LEFT JOIN answer
+            ON answer.id = ca.id
+            WHERE answer.review_id = :reviewId
             """, nativeQuery = true)
     Set<Long> findSelectedOptionItemIdsByReviewId(long reviewId);
 
@@ -29,8 +31,10 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
             ON c.selected_option_id = o.id
             LEFT JOIN checkbox_answer ca
             ON c.checkbox_answer_id = ca.id
-            WHERE ca.review_id = :reviewId
-            AND ca.question_id = :questionId
+            LEFT JOIN answer
+            ON answer.id = ca.id
+            WHERE answer.review_id = :reviewId
+            AND answer.question_id = :questionId
             ORDER BY o.position ASC
             """, nativeQuery = true)
     List<OptionItem> findSelectedOptionItemsByReviewIdAndQuestionId(long reviewId, long questionId);
@@ -41,7 +45,9 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
             ON cao.selected_option_id = o.id
             INNER JOIN checkbox_answer ca
             ON cao.checkbox_answer_id = ca.id
-            WHERE ca.review_id = :reviewId
+            INNER JOIN answer
+            ON answer.id = ca.id
+            WHERE answer.review_id = :reviewId
             AND o.option_type = :#{#optionType.name()}
             """, nativeQuery = true)
     List<OptionItem> findByReviewIdAndOptionType(long reviewId, OptionType optionType);

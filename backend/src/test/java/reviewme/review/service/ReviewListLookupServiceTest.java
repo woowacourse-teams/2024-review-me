@@ -97,9 +97,9 @@ class ReviewListLookupServiceTest {
 
         // given - 리뷰 답변 저장
         CheckboxAnswer categoryAnswer = new CheckboxAnswer(question.getId(), List.of(categoryOption.getId()));
-        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer));
+        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(categoryAnswer));
         TextAnswer textAnswer = new TextAnswer(question.getId(), "텍스트형 응답");
-        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
+        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
         reviewRepository.saveAll(List.of(review1, review2));
 
         // when

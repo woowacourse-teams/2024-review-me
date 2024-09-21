@@ -40,7 +40,7 @@ public class ReviewValidator {
     private void validateAllAnswersContainedInTemplate(Review review) {
         Set<Long> providedQuestionIds = questionRepository.findAllQuestionIdByTemplateId(review.getTemplateId());
         Set<Long> reviewedQuestionIds = review.getAnsweredQuestionIds();
-        if (!providedQuestionIds.equals(reviewedQuestionIds)) {
+        if (!providedQuestionIds.containsAll(reviewedQuestionIds)) {
             throw new SubmittedQuestionAndProvidedQuestionMismatchException(reviewedQuestionIds, providedQuestionIds);
         }
     }

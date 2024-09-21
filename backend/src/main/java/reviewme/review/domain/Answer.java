@@ -29,5 +29,5 @@ public abstract class Answer {
     protected long questionId;
 
     @Column(name = "review_id", nullable = false, insertable = false, updatable = false)
-    private long reviewId;
+    protected long reviewId;
 }

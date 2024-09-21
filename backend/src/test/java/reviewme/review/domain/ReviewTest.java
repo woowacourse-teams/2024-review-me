@@ -14,27 +14,13 @@ class ReviewTest {
         // given
         TextAnswer textAnswer = new TextAnswer(1L, "답변");
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(2L, List.of(1L));
-        Review review = new Review(1L, 1L, List.of(textAnswer), List.of(checkboxAnswer));
+        Review review = new Review(1L, 1L, List.of(textAnswer, checkboxAnswer));
 
         // when
         Set<Long> allQuestionIdsFromAnswers = review.getAnsweredQuestionIds();
 
         // then
         assertThat(allQuestionIdsFromAnswers).containsAll(List.of(1L, 2L));
-    }
-
-    @Test
-    void 리뷰에_등록된_모든_선택형_답변의_옵션들을_반환환다() {
-        // given
-        CheckboxAnswer checkboxAnswer1 = new CheckboxAnswer(1L, List.of(1L, 2L));
-        CheckboxAnswer checkboxAnswer2 = new CheckboxAnswer(1L, List.of(3L, 4L));
-        Review review = new Review(1L, 1L, List.of(), List.of(checkboxAnswer1, checkboxAnswer2));
-
-        // when
-        Set<Long> allQuestionIdsFromAnswers = review.getAllCheckBoxOptionIds();
-
-        // then
-        assertThat(allQuestionIdsFromAnswers).containsAll(List.of(1L, 2L, 3L, 4L));
     }
 
     @Test
@@ -45,7 +31,7 @@ class ReviewTest {
 
         TextAnswer textAnswer = new TextAnswer(textQuestionId, "답변");
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(checkBoxQuestionId, List.of(1L));
-        Review review = new Review(1L, 1L, List.of(textAnswer), List.of(checkboxAnswer));
+        Review review = new Review(1L, 1L, List.of(textAnswer, checkboxAnswer));
 
         // when, then
         assertAll(
