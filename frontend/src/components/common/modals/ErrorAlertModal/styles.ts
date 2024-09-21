@@ -5,6 +5,8 @@ export const Contents = styled.div`
   flex-direction: column;
   gap: 1.6rem;
   align-items: center;
+
+  width: inherit;
 `;
 
 export const AlertTriangle = styled.img`
