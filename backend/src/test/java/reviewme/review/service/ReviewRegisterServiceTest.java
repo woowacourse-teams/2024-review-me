@@ -99,9 +99,9 @@ class ReviewRegisterServiceTest {
         // when, then
         Review review = reviewRepository.findById(registeredReviewId).orElseThrow();
         assertAll(
-                () -> assertThat(review.getTypeAnswers(TextAnswer.class)).extracting(TextAnswer::getQuestionId)
+                () -> assertThat(review.getAnswersByType(TextAnswer.class)).extracting(TextAnswer::getQuestionId)
                         .containsExactly(requiredTextQuestion.getId()),
-                () -> assertThat(review.getTypeAnswers(CheckboxAnswer.class)).extracting(CheckboxAnswer::getQuestionId)
+                () -> assertThat(review.getAnswersByType(CheckboxAnswer.class)).extracting(CheckboxAnswer::getQuestionId)
                         .containsAll(List.of(requiredCheckQuestion.getId(), conditionalCheckQuestion.getId()))
         );
     }

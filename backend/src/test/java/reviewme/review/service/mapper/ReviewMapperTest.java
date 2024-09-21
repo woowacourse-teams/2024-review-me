@@ -74,7 +74,7 @@ class ReviewMapperTest {
         Review review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
-        assertThat(review.getTypeAnswers(TextAnswer.class)).hasSize(1);
+        assertThat(review.getAnswersByType(TextAnswer.class)).hasSize(1);
     }
 
     @Test
@@ -99,7 +99,7 @@ class ReviewMapperTest {
         Review review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
-        assertThat(review.getTypeAnswers(CheckboxAnswer.class)).hasSize(1);
+        assertThat(review.getAnswersByType(CheckboxAnswer.class)).hasSize(1);
     }
 
     @Test

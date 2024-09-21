@@ -106,7 +106,7 @@ public class ReviewDetailMapper {
 
     private QuestionAnswerResponse mapToTextQuestionResponse(Review review, ReviewGroup reviewGroup,
                                                              Question question) {
-        TextAnswers textAnswers = new TextAnswers(review.getTypeAnswers(TextAnswer.class));
+        TextAnswers textAnswers = new TextAnswers(review.getAnswersByType(TextAnswer.class));
         TextAnswer textAnswer = textAnswers.getAnswerByQuestionId(question.getId());
         return new QuestionAnswerResponse(
                 question.getId(),

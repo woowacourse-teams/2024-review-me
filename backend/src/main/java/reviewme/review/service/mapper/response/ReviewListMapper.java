@@ -41,7 +41,7 @@ public class ReviewListMapper {
         return new ReviewListElementResponse(
                 review.getId(),
                 review.getCreatedDate(),
-                reviewPreviewGenerator.generatePreview(review.getTypeAnswers(TextAnswer.class)),
+                reviewPreviewGenerator.generatePreview(review.getAnswersByType(TextAnswer.class)),
                 categoryResponses
         );
     }

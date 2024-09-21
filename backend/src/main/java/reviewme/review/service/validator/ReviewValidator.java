@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
+import reviewme.review.domain.CheckBoxAnswerSelectedOption;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
@@ -60,7 +62,11 @@ public class ReviewValidator {
     }
 
     private Set<Long> extractDisplayedQuestionIds(Review review) {
-        Set<Long> selectedOptionIds = review.getAllCheckBoxOptionIds();
+        Set<Long> selectedOptionIds = review.getAnswersByType(CheckboxAnswer.class)
+                .stream()
+                .flatMap(answer -> answer.getSelectedOptionIds().stream())
+                .map(CheckBoxAnswerSelectedOption::getSelectedOptionId)
+                .collect(Collectors.toSet());
         List<Section> sections = sectionRepository.findAllByTemplateId(review.getTemplateId());
 
         return sections.stream()
