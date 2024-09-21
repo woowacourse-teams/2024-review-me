@@ -6,6 +6,7 @@ export const Message = styled.div`
   gap: 0.8rem;
   align-items: start;
 
+  width: fit-content;
   p {
     width: max-content;
     margin: 0;
