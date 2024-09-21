@@ -24,7 +24,6 @@ export const AlertModalContainer = styled.div`
 export const Contents = styled.div`
   display: flex;
   align-items: center;
-  white-space: pre-line;
-
   width: 100%;
+  white-space: pre-line;
 `;

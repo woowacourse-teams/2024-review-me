@@ -24,6 +24,8 @@ export const LogoText = styled.div`
 
   span {
     font-size: 3rem;
+    font-weight: ${({ theme }) => theme.fontWeight.bolder};
+    letter-spacing: 0.7rem;
 
     ${media.small} {
       font-size: 2.8rem;
@@ -32,9 +34,6 @@ export const LogoText = styled.div`
     ${media.xSmall} {
       font-size: 2.6rem;
     }
-
-    font-weight: ${({ theme }) => theme.fontWeight.bolder};
-    letter-spacing: 0.7rem;
   }
 
   span:last-child {

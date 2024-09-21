@@ -3,16 +3,15 @@ import styled from '@emotion/styled';
 import media from '@/utils/media';
 
 export const PasswordModal = styled.div`
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-
-  overflow: hidden;
 `;
 
 export const InputContainer = styled.form`
   display: flex;
-  justify-content: space-between;
   gap: 1.5rem;
+  justify-content: space-between;
 
   height: 4rem;
   margin-top: 3rem;
@@ -34,7 +33,6 @@ export const InputContainer = styled.form`
 export const PasswordInputContainer = styled.div`
   position: relative;
   display: flex;
-
   width: 80%;
 
   ${media.medium} {
@@ -50,10 +48,9 @@ export const ErrorMessage = styled.p`
   margin-top: 0.3rem;
   margin-left: 0.4rem;
   font-size: 1.2rem;
+  color: ${({ theme }) => theme.colors.red};
 
   ${media.xxSmall} {
     font-size: 1.1rem;
   }
-
-  color: ${({ theme }) => theme.colors.red};
 `;

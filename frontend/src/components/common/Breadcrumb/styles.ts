@@ -9,12 +9,11 @@ export const BreadcrumbList = styled.ul`
   padding: ${({ theme }) => theme.breadcrumbSize.paddingLeft} 0 0 2.5rem;
 
   font-size: 1.5rem;
+  list-style: none;
 
   ${media.xSmall} {
     ${({ theme }) => theme.fontSize.small};
   }
-
-  list-style: none;
 `;
 
 export const BreadcrumbItem = styled.li`
