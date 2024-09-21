@@ -19,7 +19,9 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
@@ -72,7 +74,7 @@ class ReviewMapperTest {
         Review review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
-        assertThat(review.getTextAnswers()).hasSize(1);
+        assertThat(review.getTypeAnswers(TextAnswer.class)).hasSize(1);
     }
 
     @Test
@@ -97,7 +99,7 @@ class ReviewMapperTest {
         Review review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
-        assertThat(review.getCheckboxAnswers()).hasSize(1);
+        assertThat(review.getTypeAnswers(CheckboxAnswer.class)).hasSize(1);
     }
 
     @Test

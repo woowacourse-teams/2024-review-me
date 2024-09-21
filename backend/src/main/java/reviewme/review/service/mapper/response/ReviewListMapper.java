@@ -7,6 +7,7 @@ import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
@@ -40,7 +41,7 @@ public class ReviewListMapper {
         return new ReviewListElementResponse(
                 review.getId(),
                 review.getCreatedDate(),
-                reviewPreviewGenerator.generatePreview(review.getTextAnswers()),
+                reviewPreviewGenerator.generatePreview(review.getTypeAnswers(TextAnswer.class)),
                 categoryResponses
         );
     }
