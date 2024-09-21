@@ -5,6 +5,7 @@ import media from '@/utils/media';
 export const Slide = styled.div`
   flex: 0 0 100%;
   box-sizing: border-box;
+  width: 100%;
   height: fit-content;
 `;
 
