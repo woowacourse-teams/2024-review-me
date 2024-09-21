@@ -66,13 +66,6 @@ public class Review {
                 .collect(Collectors.toSet());
     }
 
-    public List<TextAnswer> getTypeAnswers2() {
-        return answers.stream()
-                .filter(TextAnswer.class::isInstance)
-                .map(TextAnswer.class::cast)
-                .toList();
-    }
-
     public <T extends Answer> List<T> getTypeAnswers(Class<T> clazz) {
         return answers.stream()
                 .filter(clazz::isInstance)
