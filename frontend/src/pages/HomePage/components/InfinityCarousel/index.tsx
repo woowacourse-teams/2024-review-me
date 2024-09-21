@@ -28,6 +28,7 @@ const AUTO_SLIDE_INTERVAL = 6000; // 자동 슬라이드 시간
 const DRAG_THRESHOLD = 0.3; // 슬라이드 넘기기 위한 최소 드래그 거리 비율 (슬라이드 너비의 30%)
 
 const InfinityCarousel = ({ slideList }: InfinityCarouselProps) => {
+  // 마지막 슬라이드를 복제해서 slideList의 맨 앞에 추가하므로 처음에 보여져야 하는 슬라이드는 1번 인덱스
   const [currentSlideIndex, setCurrentSlideIndex] = useState(REAL_START_INDEX);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -38,6 +39,7 @@ const InfinityCarousel = ({ slideList }: InfinityCarouselProps) => {
   const slideRef = useRef<HTMLDivElement>(null);
 
   const slideLength = slideList.length;
+  // 첫 슬라이드와 마지막 슬라이드의 복제본을 각각 맨 뒤, 맨 처음에 추가
   const clonedSlideList = [slideList[slideLength - 1], ...slideList, slideList[0]];
 
   const scrollToSlide = (index: number, withTransition = true) => {
@@ -73,14 +75,14 @@ const InfinityCarousel = ({ slideList }: InfinityCarouselProps) => {
     scrollToSlide(REAL_START_INDEX, false);
   }, []);
 
-  // 슬라이드 경계 처리
+  // 맨 처음/맨 끝 슬라이드 전환용 useEffect
   useEffect(() => {
     if (isTransitioning) {
       if (currentSlideIndex === slideLength + 1) {
         setTimeout(() => {
           setIsTransitioning(false);
           scrollToSlide(REAL_START_INDEX, false);
-        }, TRANSITION_DURATION);
+        }, TRANSITION_DURATION); // 애니메이션 트랜지션 시간과 동일하게 설정 (0.5초)
       } else if (currentSlideIndex === 0) {
         setTimeout(() => {
           setIsTransitioning(false);
