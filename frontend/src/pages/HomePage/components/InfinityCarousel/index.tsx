@@ -99,14 +99,14 @@ const InfinityCarousel = ({ slideList }: InfinityCarouselProps) => {
     return () => clearTimeout(timeout);
   }, [currentSlideIndex, clicked]);
 
-  const handleTouchStart = (e: React.MouseEvent | React.TouchEvent) => {
+  const handleTouchStart = (e: React.TouchEvent) => {
     if (window.innerWidth <= breakpoints.xSmall) {
       setIsDragging(true);
       setStartX(getClientX(e));
     }
   };
 
-  const handleTouchMove = (e: React.MouseEvent | React.TouchEvent) => {
+  const handleTouchMove = (e: React.TouchEvent) => {
     if (!isDragging || !slideRef.current) return;
     const currentX = getClientX(e);
     const dragDistance = currentX - startX;
@@ -136,7 +136,7 @@ const InfinityCarousel = ({ slideList }: InfinityCarouselProps) => {
     setDeltaX(0);
   };
 
-  const getClientX = (e: React.MouseEvent | React.TouchEvent) => ('touches' in e ? e.touches[0].clientX : e.clientX);
+  const getClientX = (e: React.TouchEvent) => e.touches[0].clientX;
 
   return (
     <S.InfinityCarouselContainer>
