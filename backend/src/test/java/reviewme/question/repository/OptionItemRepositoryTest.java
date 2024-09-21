@@ -2,7 +2,7 @@ package reviewme.question.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
+import static reviewme.fixture.OptionItemFixture.선택지_카테고리;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 
 import java.util.List;
@@ -10,6 +10,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import reviewme.fixture.OptionItemFixture;
 import reviewme.question.domain.OptionItem;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
@@ -36,11 +37,11 @@ class OptionItemRepositoryTest {
         long questionId = questionRepository.save(선택형_필수_질문()).getId();
 
         Long optionGroupId = optionGroupRepository.save(선택지_그룹(questionId)).getId();
-        long optionId1 = optionItemRepository.save(선택지(optionGroupId)).getId();
-        long optionId2 = optionItemRepository.save(선택지(optionGroupId)).getId();
-        long optionId3 = optionItemRepository.save(선택지(optionGroupId)).getId();
-        long optionId4 = optionItemRepository.save(선택지(optionGroupId)).getId();
-        optionItemRepository.save(선택지(optionGroupId));
+        long optionId1 = optionItemRepository.save(OptionItemFixture.선택지_카테고리(optionGroupId)).getId();
+        long optionId2 = optionItemRepository.save(OptionItemFixture.선택지_카테고리(optionGroupId)).getId();
+        long optionId3 = optionItemRepository.save(OptionItemFixture.선택지_카테고리(optionGroupId)).getId();
+        long optionId4 = optionItemRepository.save(OptionItemFixture.선택지_카테고리(optionGroupId)).getId();
+        optionItemRepository.save(OptionItemFixture.선택지_카테고리(optionGroupId));
 
         List<CheckboxAnswer> checkboxAnswers = List.of(
                 new CheckboxAnswer(questionId, List.of(optionId1, optionId2)),
@@ -62,11 +63,11 @@ class OptionItemRepositoryTest {
         long questionId2 = questionRepository.save(선택형_필수_질문()).getId();
 
         long optionGroupId = optionGroupRepository.save(선택지_그룹(questionId1)).getId();
-        long optionId1 = optionItemRepository.save(선택지(optionGroupId, 3)).getId();
-        long optionId2 = optionItemRepository.save(선택지(optionGroupId, 2)).getId();
-        long optionId3 = optionItemRepository.save(선택지(optionGroupId, 1)).getId();
-        long optionId4 = optionItemRepository.save(선택지(optionGroupId, 1)).getId();
-        long optionId5 = optionItemRepository.save(선택지(optionGroupId, 1)).getId();
+        long optionId1 = optionItemRepository.save(선택지_카테고리(optionGroupId, 3)).getId();
+        long optionId2 = optionItemRepository.save(선택지_카테고리(optionGroupId, 2)).getId();
+        long optionId3 = optionItemRepository.save(선택지_카테고리(optionGroupId, 1)).getId();
+        long optionId4 = optionItemRepository.save(선택지_카테고리(optionGroupId, 1)).getId();
+        long optionId5 = optionItemRepository.save(선택지_카테고리(optionGroupId, 1)).getId();
 
         List<CheckboxAnswer> checkboxAnswers = List.of(
                 new CheckboxAnswer(questionId1, List.of(optionId1, optionId3)),

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
+import static reviewme.fixture.OptionItemFixture.선택지_카테고리;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
@@ -130,8 +130,8 @@ class ReviewDetailLookupServiceTest {
         Question question1 = questionRepository.save(선택형_필수_질문());
         Question question2 = questionRepository.save(서술형_필수_질문());
         OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question1.getId()));
-        OptionItem optionItem1 = optionItemRepository.save(선택지(optionGroup.getId(), 1));
-        OptionItem optionItem2 = optionItemRepository.save(선택지(optionGroup.getId(), 2));
+        OptionItem optionItem1 = optionItemRepository.save(선택지_카테고리(optionGroup.getId(), 1));
+        OptionItem optionItem2 = optionItemRepository.save(선택지_카테고리(optionGroup.getId(), 2));
 
         // given - 섹션, 템플릿 저장
         Section section1 = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));

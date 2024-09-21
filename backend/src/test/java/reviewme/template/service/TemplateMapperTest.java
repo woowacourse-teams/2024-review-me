@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
@@ -14,6 +13,7 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.fixture.OptionItemFixture;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.Question;
 import reviewme.question.domain.exception.MissingOptionItemsInOptionGroupException;
@@ -63,7 +63,7 @@ class TemplateMapperTest {
         Question question2 = questionRepository.save(서술형_필수_질문());
 
         OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question1.getId()));
-        optionItemRepository.save(선택지(optionGroup.getId()));
+        optionItemRepository.save(OptionItemFixture.선택지_카테고리(optionGroup.getId()));
 
         Section section1 = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
         Section section2 = sectionRepository.save(항상_보이는_섹션(List.of(question2.getId())));

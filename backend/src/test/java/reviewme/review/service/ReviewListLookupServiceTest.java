@@ -3,7 +3,7 @@ package reviewme.review.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
+import static reviewme.fixture.OptionItemFixture.선택지_카테고리;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
@@ -89,7 +89,7 @@ class ReviewListLookupServiceTest {
         // given - 질문 저장
         Question question = questionRepository.save(선택형_필수_질문());
         OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question.getId()));
-        OptionItem categoryOption = optionItemRepository.save(선택지(optionGroup.getId(), 1));
+        OptionItem categoryOption = optionItemRepository.save(선택지_카테고리(optionGroup.getId(), 1));
 
         // given - 섹션, 템플릿 저장
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));

@@ -1,7 +1,7 @@
 package reviewme.sanchoTest;
 
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
+import static reviewme.fixture.OptionItemFixture.선택지_카테고리;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
@@ -83,8 +83,8 @@ class PerformanceTest {
         Question question2 = questionRepository.save(선택형_필수_질문(n));
         questionIds.add(question2.getId());
         OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question2.getId()));
-        OptionItem optionItem1 = optionItemRepository.save(선택지(optionGroup.getId(), 1));
-        OptionItem optionItem2 = optionItemRepository.save(선택지(optionGroup.getId(), 2));
+        OptionItem optionItem1 = optionItemRepository.save(선택지_카테고리(optionGroup.getId(), 1));
+        OptionItem optionItem2 = optionItemRepository.save(선택지_카테고리(optionGroup.getId(), 2));
 
         Section section = sectionRepository.save(항상_보이는_섹션(questionIds));
         Template template = templateRepository.save(템플릿(List.of(section.getId())));

@@ -3,7 +3,6 @@ package reviewme.review.service.module;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.fixture.OptionItemFixture;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
@@ -71,15 +71,18 @@ class ReviewValidatorTest {
         // 필수 선택형 질문, 섹션 저장
         Question requiredCheckQuestion = questionRepository.save(선택형_필수_질문());
         OptionGroup requiredOptionGroup = optionGroupRepository.save(선택지_그룹(requiredCheckQuestion.getId()));
-        OptionItem requiredOptionItem1 = optionItemRepository.save(선택지(requiredOptionGroup.getId()));
-        OptionItem requiredOptionItem2 = optionItemRepository.save(선택지(requiredOptionGroup.getId()));
+        OptionItem requiredOptionItem1 = optionItemRepository.save(
+                OptionItemFixture.선택지_카테고리(requiredOptionGroup.getId()));
+        OptionItem requiredOptionItem2 = optionItemRepository.save(
+                OptionItemFixture.선택지_카테고리(requiredOptionGroup.getId()));
         Section visibleSection2 = sectionRepository.save(항상_보이는_섹션(List.of(requiredCheckQuestion.getId()), 2));
 
         // optionItem 선택에 따라서 required 가 달라지는 섹션1 저장
         Question conditionalTextQuestion1 = questionRepository.save(서술형_필수_질문());
         Question conditionalCheckQuestion = questionRepository.save(선택형_필수_질문());
         OptionGroup conditionalOptionGroup = optionGroupRepository.save(선택지_그룹(conditionalCheckQuestion.getId()));
-        OptionItem conditionalOptionItem = optionItemRepository.save(선택지(conditionalOptionGroup.getId()));
+        OptionItem conditionalOptionItem = optionItemRepository.save(
+                OptionItemFixture.선택지_카테고리(conditionalOptionGroup.getId()));
         Section conditionalSection1 = sectionRepository.save(조건부로_보이는_섹션(
                 List.of(conditionalTextQuestion1.getId(), conditionalCheckQuestion.getId()),
                 requiredOptionItem1.getId(), 3)

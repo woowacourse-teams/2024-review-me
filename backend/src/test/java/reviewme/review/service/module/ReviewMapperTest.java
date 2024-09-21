@@ -3,7 +3,6 @@ package reviewme.review.service.module;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
@@ -13,6 +12,7 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.fixture.OptionItemFixture;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
@@ -41,7 +41,7 @@ class ReviewMapperTest {
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    private  OptionGroupRepository optionGroupRepository;
+    private OptionGroupRepository optionGroupRepository;
 
     @Autowired
     private OptionItemRepository optionItemRepository;
@@ -66,7 +66,8 @@ class ReviewMapperTest {
 
         String expectedTextAnswer = "답".repeat(20);
         ReviewAnswerRequest reviewAnswerRequest = new ReviewAnswerRequest(question.getId(), null, expectedTextAnswer);
-        ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(), List.of(reviewAnswerRequest));
+        ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(),
+                List.of(reviewAnswerRequest));
 
         // when
         Review review = reviewMapper.mapToReview(reviewRegisterRequest);
@@ -82,14 +83,16 @@ class ReviewMapperTest {
 
         Question question = questionRepository.save(선택형_필수_질문());
         OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question.getId()));
-        OptionItem optionItem1 = optionItemRepository.save(선택지(optionGroup.getId()));
-        OptionItem optionItem2 = optionItemRepository.save(선택지(optionGroup.getId()));
+        OptionItem optionItem1 = optionItemRepository.save(OptionItemFixture.선택지_카테고리(optionGroup.getId()));
+        OptionItem optionItem2 = optionItemRepository.save(OptionItemFixture.선택지_카테고리(optionGroup.getId()));
 
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
         templateRepository.save(템플릿(List.of(section.getId())));
 
-        ReviewAnswerRequest reviewAnswerRequest = new ReviewAnswerRequest(question.getId(), List.of(optionItem1.getId()), null);
-        ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(), List.of(reviewAnswerRequest));
+        ReviewAnswerRequest reviewAnswerRequest = new ReviewAnswerRequest(question.getId(),
+                List.of(optionItem1.getId()), null);
+        ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(),
+                List.of(reviewAnswerRequest));
 
         // when
         Review review = reviewMapper.mapToReview(reviewRegisterRequest);

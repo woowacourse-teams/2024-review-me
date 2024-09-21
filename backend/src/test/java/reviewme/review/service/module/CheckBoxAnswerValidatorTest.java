@@ -2,12 +2,13 @@ package reviewme.review.service.module;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
+import static reviewme.fixture.OptionItemFixture.선택지_카테고리;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.fixture.OptionItemFixture;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
@@ -63,7 +64,7 @@ class CheckBoxAnswerValidatorTest {
         // given
         Question savedQuestion = questionRepository.save(선택형_필수_질문());
         OptionGroup savedOptionGroup = optionGroupRepository.save(선택지_그룹(savedQuestion.getId()));
-        OptionItem savedOptionItem = optionItemRepository.save(선택지(savedOptionGroup.getId()));
+        OptionItem savedOptionItem = optionItemRepository.save(OptionItemFixture.선택지_카테고리(savedOptionGroup.getId()));
 
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(savedQuestion.getId(),
                 List.of(savedOptionItem.getId() + 1L));
@@ -80,7 +81,7 @@ class CheckBoxAnswerValidatorTest {
         OptionGroup savedOptionGroup = optionGroupRepository.save(
                 new OptionGroup(savedQuestion.getId(), 2, 3)
         );
-        OptionItem savedOptionItem1 = optionItemRepository.save(선택지(savedOptionGroup.getId()));
+        OptionItem savedOptionItem1 = optionItemRepository.save(OptionItemFixture.선택지_카테고리(savedOptionGroup.getId()));
 
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(savedQuestion.getId(), List.of(savedOptionItem1.getId()));
 
@@ -96,8 +97,8 @@ class CheckBoxAnswerValidatorTest {
         OptionGroup savedOptionGroup = optionGroupRepository.save(
                 new OptionGroup(savedQuestion.getId(), 1, 1)
         );
-        OptionItem savedOptionItem1 = optionItemRepository.save(선택지(savedOptionGroup.getId(), 1));
-        OptionItem savedOptionItem2 = optionItemRepository.save(선택지(savedOptionGroup.getId(), 2));
+        OptionItem savedOptionItem1 = optionItemRepository.save(선택지_카테고리(savedOptionGroup.getId(), 1));
+        OptionItem savedOptionItem2 = optionItemRepository.save(선택지_카테고리(savedOptionGroup.getId(), 2));
 
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(
                 savedQuestion.getId(), List.of(savedOptionItem1.getId(), savedOptionItem2.getId()));
