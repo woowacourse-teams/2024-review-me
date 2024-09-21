@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 
+import nextArrowIcon from '@/assets/nextArrow.svg';
+import prevArrowIcon from '@/assets/prevArrow.svg';
 import { breakpoints } from '@/styles/theme';
 
 import * as S from './styles';
@@ -161,8 +163,12 @@ const InfinityCarousel = ({ slideList }: InfinityCarouselProps) => {
           />
         ))}
       </S.IndicatorWrapper>
-      <S.PrevButton onClick={prevSlide}>{'<'}</S.PrevButton>
-      <S.NextButton onClick={nextSlide}>{'>'}</S.NextButton>
+      <S.PrevButton onClick={prevSlide}>
+        <img src={prevArrowIcon} alt="이전 화살표" />
+      </S.PrevButton>
+      <S.NextButton onClick={nextSlide}>
+        <img src={nextArrowIcon} alt="다음 화살표" />
+      </S.NextButton>
     </S.InfinityCarouselContainer>
   );
 };
