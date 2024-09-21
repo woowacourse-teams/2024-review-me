@@ -4,11 +4,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
-import reviewme.review.service.module.ReviewListMapper;
+import reviewme.review.service.mapper.ReviewListMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 

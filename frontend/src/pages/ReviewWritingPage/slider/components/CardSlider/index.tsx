@@ -4,7 +4,7 @@ import { Carousel } from '@/components';
 import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
 import { ReviewWritingCard } from '@/pages/ReviewWritingPage/form/components';
 import { CardSliderController } from '@/pages/ReviewWritingPage/slider/components';
-import { useMovingStepAvailability, useSlideWidthAndHeight } from '@/pages/ReviewWritingPage/slider/hooks';
+import { useMovingStepAvailability, useSlideHeight } from '@/pages/ReviewWritingPage/slider/hooks';
 import { Direction } from '@/pages/ReviewWritingPage/types';
 import { cardSectionListSelector } from '@/recoil';
 
@@ -18,7 +18,7 @@ interface CardSliderProps {
 
 const CardSlider = ({ currentCardIndex, handleCurrentCardIndex, handleOpenModal }: CardSliderProps) => {
   const cardSectionList = useRecoilValue(cardSectionListSelector);
-  const { wrapperRef, slideHeight, slideWidth, makeId } = useSlideWidthAndHeight({ currentCardIndex });
+  const { wrapperRef, slideHeight, makeId } = useSlideHeight({ currentCardIndex });
 
   const { isAblePrevStep, isAbleNextStep, isLastCard } = useMovingStepAvailability({ currentCardIndex });
 
@@ -38,38 +38,39 @@ const CardSlider = ({ currentCardIndex, handleCurrentCardIndex, handleOpenModal 
   };
 
   return (
-    <Carousel ref={wrapperRef} translateX={currentCardIndex * slideWidth} height={slideHeight}>
+    <Carousel ref={wrapperRef} cardIndex={currentCardIndex} height={slideHeight}>
       {cardSectionList?.map((section, index) => (
         <S.Slide data-testid={section.sectionName} id={makeId(index)} key={section.sectionId}>
-          <ReviewWritingCard cardSection={section} />
-          <S.ButtonContainer>
-            {isAblePrevStep(index) && (
-              <CardSliderController.PrevButton
-                data-testid={`${section.sectionId}-prevButton`}
-                handleCurrentCardIndex={handleCurrentCardIndex}
-              />
-            )}
-            {isLastCard() ? (
-              <>
-                <CardSliderController.RecheckButton
-                  data-testid={`${section.sectionId}-recheckButton`}
-                  isAbleNextStep={isAbleNextStep}
-                  handleRecheckButtonClick={handleRecheckButtonClick}
+          <ReviewWritingCard cardSection={section}>
+            <S.ButtonContainer>
+              {isAblePrevStep(index) && (
+                <CardSliderController.PrevButton
+                  data-testid={`${section.sectionId}-prevButton`}
+                  handleCurrentCardIndex={handleCurrentCardIndex}
                 />
-                <CardSliderController.ConfirmModalOpenButton
-                  data-testid={`${section.sectionId}-submitButton`}
+              )}
+              {isLastCard() ? (
+                <>
+                  <CardSliderController.RecheckButton
+                    data-testid={`${section.sectionId}-recheckButton`}
+                    isAbleNextStep={isAbleNextStep}
+                    handleRecheckButtonClick={handleRecheckButtonClick}
+                  />
+                  <CardSliderController.ConfirmModalOpenButton
+                    data-testid={`${section.sectionId}-submitButton`}
+                    isAbleNextStep={isAbleNextStep}
+                    handleSubmitConfirmModalOpenButtonClick={handleSubmitConfirmModalOpenButtonClick}
+                  />
+                </>
+              ) : (
+                <CardSliderController.NextButton
+                  data-testid={`${section.sectionId}-nextButton`}
                   isAbleNextStep={isAbleNextStep}
-                  handleSubmitConfirmModalOpenButtonClick={handleSubmitConfirmModalOpenButtonClick}
+                  handleCurrentCardIndex={handleNextClick}
                 />
-              </>
-            ) : (
-              <CardSliderController.NextButton
-                data-testid={`${section.sectionId}-nextButton`}
-                isAbleNextStep={isAbleNextStep}
-                handleCurrentCardIndex={handleNextClick}
-              />
-            )}
-          </S.ButtonContainer>
+              )}
+            </S.ButtonContainer>
+          </ReviewWritingCard>
         </S.Slide>
       ))}
     </Carousel>

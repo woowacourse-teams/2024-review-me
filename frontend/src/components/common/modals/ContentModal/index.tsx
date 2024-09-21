@@ -6,7 +6,11 @@ import ModalPortal from '../ModalPortal';
 
 import * as S from './styles';
 
-interface ContentModalProps {
+export interface ContentModalStyleProps {
+  $style?: React.CSSProperties;
+}
+
+interface ContentModalProps extends ContentModalStyleProps {
   title?: string;
   handleClose: () => void;
   isClosableOnBackground?: boolean;
@@ -16,12 +20,13 @@ const ContentModal = ({
   title,
   handleClose,
   children,
+  $style,
   isClosableOnBackground = true,
 }: EssentialPropsWithChildren<ContentModalProps>) => {
   return (
     <ModalPortal>
       <ModalBackground closeModal={isClosableOnBackground ? handleClose : null}>
-        <S.ContentModalContainer>
+        <S.ContentModalContainer style={$style}>
           <S.ContentModalHeader>
             <S.Title>{title}</S.Title>
             <S.CloseButton onClick={handleClose}>

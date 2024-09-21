@@ -4,10 +4,10 @@ import { DataForReviewRequestCode } from '@/apis/group';
 import { Button } from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useModals } from '@/hooks';
-import { debounce } from '@/utils/debounce';
+import { isValidPasswordInput, isValidReviewGroupDataInput } from '@/pages/HomePage/utils/validateInput';
+import { debounce } from '@/utils';
 
-import usePostDataForReviewRequestCode from '../../queries/usePostDataForReviewRequestCode';
-import { isValidPasswordInput, isValidReviewGroupDataInput } from '../../utils/validateInput';
+import usePostDataForReviewRequestCode from '../../hooks/usePostDataForReviewRequestCode';
 import { FormLayout, ReviewZoneURLModal } from '../index';
 import { ProjectNameField, RevieweeNameField, PasswordField } from '../Inputs';
 

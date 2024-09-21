@@ -31,9 +31,11 @@ const ReviewZoneURLModal = ({ reviewZoneURL, closeModal }: ReviewZoneURLModalPro
       <S.ReviewZoneURLModal>
         <S.ModalTitle>아래 요청 URL을 확인해주세요</S.ModalTitle>
         <S.ReviewZoneURLModalItem>
-          <S.DataName>리뷰 요청 URL</S.DataName>
+          <S.RequestURLContainer>
+            <S.DataName>리뷰 요청 URL</S.DataName>
+            <CopyTextButton targetText={reviewZoneURL} alt="리뷰 공간 페이지 링크 복사하기" />
+          </S.RequestURLContainer>
           <S.Data>{reviewZoneURL}</S.Data>
-          <CopyTextButton targetText={reviewZoneURL} alt="리뷰 공간 페이지 링크 복사하기"></CopyTextButton>
         </S.ReviewZoneURLModalItem>
         <S.CheckContainer>
           <Checkbox

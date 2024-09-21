@@ -6,8 +6,8 @@ import reviewme.global.exception.BadRequestException;
 @Slf4j
 public class CheckBoxAnswerIncludedTextException extends BadRequestException {
 
-    public CheckBoxAnswerIncludedTextException() {
+    public CheckBoxAnswerIncludedTextException(long questionId) {
         super("체크박스형 응답은 텍스트를 포함할 수 없어요.");
-        log.warn("CheckBox type answer cannot have option items");
+        log.info("CheckBox type answer cannot have option items - questionId: {}", questionId);
     }
 }

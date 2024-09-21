@@ -25,7 +25,6 @@ import reviewme.global.exception.DataInconsistencyException;
 import reviewme.global.exception.FieldErrorResponse;
 import reviewme.global.exception.NotFoundException;
 import reviewme.global.exception.UnauthorizedException;
-import reviewme.global.exception.UnexpectedRequestException;
 
 @Slf4j
 @RestControllerAdvice
@@ -38,11 +37,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     public ProblemDetail handleBadRequestException(BadRequestException ex) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getErrorMessage());
-    }
-
-    @ExceptionHandler(UnexpectedRequestException.class)
-    public ProblemDetail handleUnexpectedRequestException(UnexpectedRequestException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getErrorMessage());
     }
 

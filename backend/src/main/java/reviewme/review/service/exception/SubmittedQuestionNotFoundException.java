@@ -8,6 +8,6 @@ public class SubmittedQuestionNotFoundException extends NotFoundException {
 
     public SubmittedQuestionNotFoundException(long questionId) {
         super("제출된 질문이 존재하지 않아요.");
-        log.warn("Submitted question not found - questionId: {}", questionId, this);
+        log.info("Submitted question not found - questionId: {}", questionId, this);
     }
 }

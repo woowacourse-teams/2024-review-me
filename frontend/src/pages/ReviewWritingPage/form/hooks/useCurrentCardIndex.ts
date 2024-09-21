@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
+
+import { scrollToTop } from '@/utils';
 
 import { Direction } from '../../types';
 
@@ -17,6 +19,10 @@ const useCurrentCardIndex = () => {
       setCurrentCardIndex((prev) => prev + STEP[direction]);
     }
   };
+
+  useLayoutEffect(() => {
+    scrollToTop();
+  }, [currentCardIndex]);
 
   return {
     currentCardIndex,
