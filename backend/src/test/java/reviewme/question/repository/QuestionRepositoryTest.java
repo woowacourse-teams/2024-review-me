@@ -29,26 +29,7 @@ class QuestionRepositoryTest {
     private TemplateRepository templateRepository;
 
     @Test
-    void 섹션_아이디로_질문_목록을_순서대로_가져온다() {
-        // given
-        Question question1 = questionRepository.save(서술형_필수_질문(1));
-        Question question2 = questionRepository.save(서술형_필수_질문(2));
-        Question question3 = questionRepository.save(서술형_필수_질문(3));
-        questionRepository.save(서술형_필수_질문(1));
-
-        List<Long> questionIds = List.of(question3.getId(), question1.getId(), question2.getId());
-        Section section = sectionRepository.save(항상_보이는_섹션(questionIds));
-
-        // when
-        List<Question> actual = questionRepository.findAllBySectionId(section.getId());
-
-        // then
-        assertThat(actual).extracting(Question::getId)
-                .containsExactly(question1.getId(), question2.getId(), question3.getId());
-    }
-
-    @Test
-    void 템플릿_아이디로_질문_목록을_모두_가져온다() {
+    void 템플릿_아이디로_질문_목록_아이디를_모두_가져온다() {
         // given
         Question question1 = questionRepository.save(서술형_필수_질문(1));
         Question question2 = questionRepository.save(서술형_필수_질문(2));
@@ -67,5 +48,27 @@ class QuestionRepositoryTest {
 
         // then
         assertThat(actual).containsExactlyInAnyOrder(question1.getId(), question2.getId());
+    }
+
+    @Test
+    void 템플릿_아이디로_질문_목록을_모두_가져온다() {
+        // given
+        Question question1 = questionRepository.save(서술형_필수_질문(1));
+        Question question2 = questionRepository.save(서술형_필수_질문(2));
+        Question question3 = questionRepository.save(서술형_필수_질문(1));
+        Question question4 = questionRepository.save(서술형_필수_질문(2));
+
+        List<Long> sectionQuestion1 = List.of(question1.getId(), question2.getId());
+        List<Long> sectionQuestion2 = List.of(question3.getId(), question4.getId());
+        Section section1 = sectionRepository.save(항상_보이는_섹션(sectionQuestion1));
+        sectionRepository.save(항상_보이는_섹션(sectionQuestion2));
+        List<Long> sectionIds = List.of(section1.getId());
+        Template template = templateRepository.save(템플릿(sectionIds));
+
+        // when
+        List<Question> actual = questionRepository.findAllByTemplatedId(template.getId());
+
+        // then
+        assertThat(actual).containsExactlyInAnyOrder(question1, question2);
     }
 }
