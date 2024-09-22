@@ -32,14 +32,7 @@ public class ReviewListMapper {
 
     private ReviewListElementResponse mapToReviewListElementResponse(Review review,
                                                                      List<OptionItem> categoryOptionItems) {
-        Set<Long> checkBoxOptionIds = review.getAllCheckBoxOptionIds();
-        List<OptionItem> categoryOptionItemsByReview = categoryOptionItems.stream()
-                .filter(optionItem -> checkBoxOptionIds.contains(optionItem.getId()))
-                .toList();
-
-        List<ReviewCategoryResponse> categoryResponses = categoryOptionItemsByReview.stream()
-                .map(optionItem -> new ReviewCategoryResponse(optionItem.getId(), optionItem.getContent()))
-                .toList();
+        List<ReviewCategoryResponse> categoryResponses = mapToCategoryOptionResponse(review, categoryOptionItems);
 
         return new ReviewListElementResponse(
                 review.getId(),
@@ -47,5 +40,14 @@ public class ReviewListMapper {
                 reviewPreviewGenerator.generatePreview(review.getTextAnswers()),
                 categoryResponses
         );
+    }
+
+    private List<ReviewCategoryResponse> mapToCategoryOptionResponse(Review review,
+                                                                            List<OptionItem> categoryOptionItems) {
+        Set<Long> checkBoxOptionIds = review.getAllCheckBoxOptionIds();
+        return categoryOptionItems.stream()
+                .filter(optionItem -> checkBoxOptionIds.contains(optionItem.getId()))
+                .map(optionItem -> new ReviewCategoryResponse(optionItem.getId(), optionItem.getContent()))
+                .toList();
     }
 }
