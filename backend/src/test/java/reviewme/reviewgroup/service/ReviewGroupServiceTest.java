@@ -1,7 +1,9 @@
 package reviewme.reviewgroup.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -13,9 +15,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
-import reviewme.reviewgroup.service.dto.CheckValidAccessResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.support.ServiceTest;
@@ -62,13 +64,10 @@ class ReviewGroupServiceTest {
         CheckValidAccessRequest wrongRequest = new CheckValidAccessRequest(reviewRequestCode, groupAccessCode + "!");
 
         // when
-        CheckValidAccessResponse expected1 = reviewGroupService.checkGroupAccessCode(request);
-        CheckValidAccessResponse expected2 = reviewGroupService.checkGroupAccessCode(wrongRequest);
-
-        // then
         assertAll(
-                () -> assertThat(expected1.hasAccess()).isTrue(),
-                () -> assertThat(expected2.hasAccess()).isFalse()
+                () -> assertDoesNotThrow(() -> reviewGroupService.checkGroupAccessCode(request)),
+                () -> assertThatThrownBy(() -> reviewGroupService.checkGroupAccessCode(wrongRequest))
+                        .isInstanceOf(ReviewGroupUnauthorizedException.class)
         );
     }
 }

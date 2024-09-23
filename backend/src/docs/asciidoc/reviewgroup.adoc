@@ -8,4 +8,4 @@ operation::review-group-summary[snippets="curl-request,request-headers,http-resp
 
 ==== 리뷰 요청 코드, 확인 코드 일치 여부
 
-operation::review-group-check-access[snippets="curl-request,request-fields,http-response,response-fields"]
+operation::review-group-check-access[snippets="curl-request,request-fields,http-response"]
