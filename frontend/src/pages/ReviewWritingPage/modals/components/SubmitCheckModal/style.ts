@@ -7,7 +7,7 @@ export const ConfirmModalMessage = styled.div`
   align-items: start;
 
   p {
-    width: max-content;
+    width: inherit;
     margin: 0;
   }
 `;

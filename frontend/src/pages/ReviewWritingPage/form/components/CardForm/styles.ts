@@ -12,7 +12,6 @@ export const CardFormContainer = styled.div`
   ${media.medium} {
     width: 80vw;
     min-width: initial;
-    margin: 0 auto;
     margin-top: 2.4rem;
   }
 
