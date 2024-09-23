@@ -36,7 +36,7 @@ public class DatabaseInitializer {
 
     @PostConstruct
     @Transactional
-    void setup() {
+    public void setup() {
         // 템플릿이 이미 존재하면 종료
         if (!templateRepository.findAll().isEmpty()) {
             return;
@@ -46,11 +46,11 @@ public class DatabaseInitializer {
         long categoryQuestionId = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "프로젝트 기간 동안, {revieweeName}의 강점이 드러났던 순간을 선택해주세요.", null, 1)).getId();
         long categorySectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(categoryQuestionId), null, "강점 발견", "{revieweeName}와 함께 한 기억을 떠올려볼게요.", 1)).getId();
         long categoryOptionGroupId = optionGroupRepository.save(new OptionGroup(categoryQuestionId, KEYWORD_CHECKBOX_MIN_COUNT, KEYWORD_CHECKBOX_MAX_COUNT)).getId();
-        long communicationOptionId = optionItemRepository.save(new OptionItem("🗣️커뮤니케이션, 협업 능력  (ex: 팀원간의 원활한 정보 공유, 명확한 의사소통)", categoryOptionGroupId, 1, OptionType.CATEGORY)).getId();
-        long problemSolvingOptionId = optionItemRepository.save(new OptionItem("💡문제 해결 능력  (ex: 프로젝트 중 만난 버그/오류를 분석하고 이를 해결하는 능력)",categoryOptionGroupId,2, OptionType.CATEGORY )).getId();
-        long timeManagingOptionId = optionItemRepository.save(new OptionItem("⏰시간 관리 능력 (ex: 일정과 마감 기한 준수, 업무의 우선 순위 분배)",categoryOptionGroupId,3, OptionType.CATEGORY )).getId();
-        long technicalOptionId = optionItemRepository.save(new OptionItem("💻기술적 역량, 전문 지식 (ex: 요구 사항을 이해하고 이를 구현하는 능력)",categoryOptionGroupId,4, OptionType.CATEGORY )).getId();
-        long growthOptionId = optionItemRepository.save(new OptionItem("🌱성장 마인드셋 (ex: 새로운 분야나 잘 모르는 분야에 도전하는 마음, 꾸준한 노력으로 프로젝트 이전보다 성장하는 모습)",categoryOptionGroupId,5, OptionType.CATEGORY )).getId();
+        long communicationOptionId = optionItemRepository.save(new OptionItem("🗣️커뮤니케이션, 협업 능력  (예: 팀원간의 원활한 정보 공유, 명확한 의사소통)", categoryOptionGroupId, 1, OptionType.CATEGORY)).getId();
+        long problemSolvingOptionId = optionItemRepository.save(new OptionItem("💡문제 해결 능력  (예: 프로젝트 중 만난 버그/오류를 분석하고 이를 해결하는 능력)",categoryOptionGroupId,2, OptionType.CATEGORY )).getId();
+        long timeManagingOptionId = optionItemRepository.save(new OptionItem("⏰시간 관리 능력 (예: 일정과 마감 기한 준수, 업무의 우선 순위 분배)",categoryOptionGroupId,3, OptionType.CATEGORY )).getId();
+        long technicalOptionId = optionItemRepository.save(new OptionItem("💻기술적 역량, 전문 지식 (예: 요구 사항을 이해하고 이를 구현하는 능력)",categoryOptionGroupId,4, OptionType.CATEGORY )).getId();
+        long growthOptionId = optionItemRepository.save(new OptionItem("🌱성장 마인드셋 (예: 새로운 분야나 잘 모르는 분야에 도전하는 마음, 꾸준한 노력으로 프로젝트 이전보다 성장하는 모습)",categoryOptionGroupId,5, OptionType.CATEGORY )).getId();
 
         // 커뮤니케이션 능력 섹션
         long checkBoxCommunicationQuestionId = questionRepository.save(new Question(true, QuestionType.CHECKBOX, "커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요.", null, 1)).getId();

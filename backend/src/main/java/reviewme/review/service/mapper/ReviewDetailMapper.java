@@ -15,8 +15,6 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.domain.TextAnswers;
-import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
@@ -29,8 +27,6 @@ import reviewme.template.repository.SectionRepository;
 @Component
 @RequiredArgsConstructor
 public class ReviewDetailMapper {
-
-    public static final String REVIEWEE_NAME_PLACEHOLDER = "{revieweeName}";
 
     private final SectionRepository sectionRepository;
     private final QuestionRepository questionRepository;
@@ -79,7 +75,7 @@ public class ReviewDetailMapper {
 
         return new SectionAnswerResponse(
                 section.getId(),
-                section.convertHeader(REVIEWEE_NAME_PLACEHOLDER, reviewGroup.getReviewee()),
+                reviewGroup.getReviewee(),
                 questionResponses
         );
     }
@@ -122,7 +118,7 @@ public class ReviewDetailMapper {
                 question.getId(),
                 question.isRequired(),
                 question.getQuestionType(),
-                question.convertContent(REVIEWEE_NAME_PLACEHOLDER, reviewGroup.getReviewee()),
+                reviewGroup.getReviewee(),
                 optionGroupAnswerResponse,
                 null
         );
@@ -140,7 +136,7 @@ public class ReviewDetailMapper {
                 question.getId(),
                 question.isRequired(),
                 question.getQuestionType(),
-                question.convertContent(REVIEWEE_NAME_PLACEHOLDER, reviewGroup.getReviewee()),
+                reviewGroup.getReviewee(),
                 null,
                 textAnswer.getContent()
         );

@@ -72,7 +72,7 @@ public class TemplateMapper {
                 section.getSectionName(),
                 section.getVisibleType().name(),
                 section.getOnSelectedOptionId(),
-                section.convertHeader(REVIEWEE_NAME_PLACEHOLDER, reviewGroup.getReviewee()),
+                reviewGroup.getReviewee(),
                 questionResponses
         );
     }
@@ -89,11 +89,11 @@ public class TemplateMapper {
         return new QuestionResponse(
                 question.getId(),
                 question.isRequired(),
-                question.convertContent(REVIEWEE_NAME_PLACEHOLDER, reviewGroup.getReviewee()),
+                reviewGroup.getReviewee(),
                 question.getQuestionType().name(),
                 optionGroupResponse,
                 question.hasGuideline(),
-                question.convertGuideLine(REVIEWEE_NAME_PLACEHOLDER, reviewGroup.getReviewee())
+                reviewGroup.getReviewee()
         );
     }
 
