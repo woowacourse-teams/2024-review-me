@@ -18,14 +18,15 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
 
   useEffect(() => {
     if (stepRefs.current[currentCardIndex]) {
-      requestAnimationFrame(() => {
-        stepRefs.current[currentCardIndex].scrollIntoView({
+      const element = stepRefs.current[currentCardIndex];
+      setTimeout(() => {
+        element.scrollIntoView({
           behavior: 'smooth',
           inline: 'center',
         });
-      });
+      }, 0);
     }
-  }, [currentCardIndex]);
+  }, [currentCardIndex, stepRefs]);
 
   const handleClick = (index: number) => {
     const { isMovingAvailable } = stepList[index];
