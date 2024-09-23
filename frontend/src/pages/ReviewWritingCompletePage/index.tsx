@@ -20,7 +20,7 @@ const ReviewWritingCompletePage = () => {
           <img src={SmileIcon} alt="작성 완료 스마일 이미지" />
           <S.Title>리뷰 작성 완료!</S.Title>
         </S.ReviewComplete>
-        <Button styleType="secondary" type="button" onClick={handleClickHomeButton} style={{}}>
+        <Button styleType="secondary" type="button" onClick={handleClickHomeButton}>
           <S.HomeIcon src={PrimaryHomeIcon} />
           <S.HomeText>홈으로 돌아가기</S.HomeText>
         </Button>

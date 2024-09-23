@@ -4,7 +4,6 @@ import media from '@/utils/media';
 
 export const CardFormContainer = styled.div`
   position: relative;
-
   width: fit-content;
   min-width: ${({ theme }) => theme.formWidth};
   max-width: 90rem;
