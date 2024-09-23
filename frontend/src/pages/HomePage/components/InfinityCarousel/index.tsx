@@ -53,7 +53,7 @@ const InfinityCarousel = ({ slideList }: InfinityCarouselProps) => {
   const handleSlideAnimation = ({ slide, withTransition, index, deltaX = 0 }: HandleSlideAnimationParams) => {
     const slideWidth = slide.clientWidth;
     slide.style.transition = withTransition ? `transform ${TRANSITION_DURATION}ms ease-in-out` : 'none';
-    slide.style.transform = `translate3d(${-slideWidth * index + deltaX}px, 0, 0)`;
+    slide.style.transform = `translate3d(${(-slideWidth * index + deltaX) * 0.1}rem, 0, 0)`;
   };
 
   const nextSlide = () => {
