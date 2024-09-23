@@ -21,11 +21,10 @@ export const Footer = styled.footer`
 
   background-color: ${({ theme }) => theme.colors.white};
 
-  ${media.medium} {
-    font-size: 1.2rem;
-
+  ${media.xSmall} {
     flex-direction: column;
     gap: 0.2rem;
+    font-size: 1.2rem;
   }
 `;
 
