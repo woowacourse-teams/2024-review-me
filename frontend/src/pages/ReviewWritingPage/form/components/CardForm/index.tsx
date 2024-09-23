@@ -64,16 +64,16 @@ const CardForm = () => {
   }, []);
 
   return (
-    <>
+    <S.CardFormContainer>
+      <S.RevieweeDescription>
+        <S.ProjectInfoContainer>
+          <S.ProjectName>{projectName}</S.ProjectName>
+          <p>
+            <S.RevieweeName>{revieweeName}</S.RevieweeName>을(를) 리뷰해주세요!
+          </p>
+        </S.ProjectInfoContainer>
+      </S.RevieweeDescription>
       <S.CardForm>
-        <S.RevieweeDescription>
-          <S.ProjectInfoContainer>
-            <S.ProjectName>{projectName}</S.ProjectName>
-            <p>
-              <S.RevieweeName>{revieweeName}</S.RevieweeName>을(를) 리뷰해주세요!
-            </p>
-          </S.ProjectInfoContainer>
-        </S.RevieweeDescription>
         <ProgressBar currentCardIndex={currentCardIndex} handleCurrentCardIndex={handleCurrentCardIndex} />
         <CardSlider
           currentCardIndex={currentCardIndex}
@@ -86,7 +86,7 @@ const CardForm = () => {
         closeModal={closeModal}
         handleNavigateConfirmButtonClick={handleNavigateConfirmButtonClick}
       />
-    </>
+    </S.CardFormContainer>
   );
 };
 

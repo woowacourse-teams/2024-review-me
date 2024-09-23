@@ -42,7 +42,9 @@ const globalStyles = (theme: Theme) => css`
     body {
       padding-right: 0;
     }
-
+    ::-webkit-scrollbar {
+      width: 0.5rem;
+    }
     ::-webkit-scrollbar-track {
       background: transparent;
     }

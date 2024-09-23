@@ -7,6 +7,8 @@ export const ReviewWritingCardLayout = styled.div`
   display: flex;
   flex-direction: column;
 
+  margin: 0 0.1rem;
+
   border: 0.1rem solid ${({ theme }) => theme.colors.lightPurple};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 `;
