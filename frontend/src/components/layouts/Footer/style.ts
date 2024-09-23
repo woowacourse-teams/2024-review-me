@@ -22,10 +22,9 @@ export const Footer = styled.footer`
   background-color: ${({ theme }) => theme.colors.white};
 
   ${media.xSmall} {
-    font-size: 1.2rem;
-
     flex-direction: column;
     gap: 0.2rem;
+    font-size: 1.2rem;
   }
 `;
 
