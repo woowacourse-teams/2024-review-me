@@ -25,8 +25,8 @@ export const URLGeneratorForm = styled.section`
 
   ${media.xSmall} {
     h2 {
-      font-size: 1.8rem;
       margin-bottom: 4rem;
+      font-size: 1.8rem;
     }
 
     label {

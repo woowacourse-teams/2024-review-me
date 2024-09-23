@@ -3,14 +3,12 @@ import styled from '@emotion/styled';
 import media from '@/utils/media';
 
 export const InfinityCarouselContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  gap: 1.6rem;
-
   position: relative;
 
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
 
   width: 100%;
   max-width: 80rem;
@@ -96,7 +94,6 @@ export const IndicatorWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 100%;
 `;
 
