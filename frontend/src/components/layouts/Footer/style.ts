@@ -21,7 +21,7 @@ export const Footer = styled.footer`
 
   background-color: ${({ theme }) => theme.colors.white};
 
-  ${media.small} {
+  ${media.xSmall} {
     font-size: 1.2rem;
 
     flex-direction: column;
