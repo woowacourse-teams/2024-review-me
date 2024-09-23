@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router';
 
 import PrimaryHomeIcon from '@/assets/primaryHome.svg';
+import SmileIcon from '@/assets/smile.svg';
 import { Button } from '@/components';
 
 import * as S from './styles';
@@ -15,7 +16,10 @@ const ReviewWritingCompletePage = () => {
   return (
     <S.Layout>
       <S.Container>
-        <S.Title>😊 리뷰 작성을 완료했어요!</S.Title>
+        <S.ReviewComplete>
+          <img src={SmileIcon} alt="작성 완료 스마일 이미지" />
+          <S.Title>리뷰 작성 완료!</S.Title>
+        </S.ReviewComplete>
         <Button styleType="secondary" type="button" onClick={handleClickHomeButton}>
           <S.HomeIcon src={PrimaryHomeIcon} />
           <S.HomeText>홈으로 돌아가기</S.HomeText>
