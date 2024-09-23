@@ -166,10 +166,10 @@ const InfinityCarousel = ({ slideList }: InfinityCarouselProps) => {
         ))}
       </S.IndicatorWrapper>
       <S.PrevButton onClick={prevSlide}>
-        <img src={prevArrowIcon} alt="이전 화살표" />
+        <img src={prevArrowIcon} alt="캐러셀 이전 화살표" />
       </S.PrevButton>
       <S.NextButton onClick={nextSlide}>
-        <img src={nextArrowIcon} alt="다음 화살표" />
+        <img src={nextArrowIcon} alt="캐러셀 다음 화살표" />
       </S.NextButton>
     </S.InfinityCarouselContainer>
   );
