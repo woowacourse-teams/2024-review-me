@@ -29,10 +29,9 @@ export const ReviewGuideContainer = styled.div`
 `;
 
 export const ReviewGuide = styled.p`
+  font-size: 2.2rem;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   overflow-wrap: break-word;
-
-  font-size: 2.2rem;
 
   ${media.small} {
     font-size: 1.8rem;
