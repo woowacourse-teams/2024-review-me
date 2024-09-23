@@ -2,12 +2,7 @@ import { useState, useEffect } from 'react';
 
 const TOP_BUTTON_DISPLAY_THRESHOLD = 500;
 
-interface UseTopButtonResult {
-  showTopButton: boolean;
-  scrollToTop: () => void;
-}
-
-const useTopButton = (): UseTopButtonResult => {
+const useTopButton = () => {
   const [showTopButton, setShowTopButton] = useState(false);
 
   const handleShowTopButton = () => {
@@ -26,14 +21,7 @@ const useTopButton = (): UseTopButtonResult => {
     };
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
-  return { showTopButton, scrollToTop };
+  return { showTopButton };
 };
 
 export default useTopButton;

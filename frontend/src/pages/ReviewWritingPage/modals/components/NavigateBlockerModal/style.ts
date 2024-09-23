@@ -8,8 +8,6 @@ export const ConfirmModalMessage = styled.div`
   gap: 0.8rem;
   align-items: start;
 
-  word-break: keep-all;
-
   p {
     width: max-content;
     margin: 0;

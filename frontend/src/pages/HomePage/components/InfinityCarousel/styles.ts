@@ -1,13 +1,24 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const InfinityCarouselContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  gap: 1.6rem;
+
   position: relative;
 
   overflow: hidden;
 
   width: 100%;
   max-width: 80rem;
-  height: 60vh;
+
+  ${media.small} {
+    width: 80%;
+    height: 70%;
+  }
 `;
 
 export const SlideList = styled.div`
@@ -31,9 +42,6 @@ export const SlideItem = styled.div`
 `;
 
 export const SlideContent = styled.div`
-  position: absolute;
-  left: 0;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,7 +51,6 @@ export const SlideContent = styled.div`
 
   img {
     width: 80%;
-    height: 100%;
   }
 `;
 
@@ -60,6 +67,10 @@ export const PrevButton = styled.button`
 
   background: none;
   border: none;
+
+  ${media.xSmall} {
+    display: none;
+  }
 `;
 
 export const NextButton = styled.button`
@@ -75,12 +86,13 @@ export const NextButton = styled.button`
 
   background: none;
   border: none;
+
+  ${media.xSmall} {
+    display: none;
+  }
 `;
 
 export const IndicatorWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,4 +111,14 @@ export const Indicator = styled.div<{ focused: boolean }>`
   border-radius: 50%;
 
   transition: background-color 0.3s ease;
+
+  ${media.xSmall} {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+
+  ${media.xxSmall} {
+    width: 0.6rem;
+    height: 0.6rem;
+  }
 `;

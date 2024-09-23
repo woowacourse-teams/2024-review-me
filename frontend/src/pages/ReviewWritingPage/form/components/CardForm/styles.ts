@@ -2,16 +2,12 @@ import styled from '@emotion/styled';
 
 import media from '@/utils/media';
 
-export const CardForm = styled.form`
+export const CardFormContainer = styled.div`
   position: relative;
-
-  overflow: hidden;
 
   width: fit-content;
   min-width: ${({ theme }) => theme.formWidth};
   max-width: 90rem;
-
-  word-break: keep-all;
 
   ${media.medium} {
     width: 80vw;
@@ -20,9 +16,14 @@ export const CardForm = styled.form`
     margin-top: 2.4rem;
   }
 
-  ${media.xSmall} {
+  @media screen and (max-width: 500px) {
     width: 95vw;
   }
+`;
+export const CardForm = styled.form`
+  position: relative;
+  overflow: hidden;
+  width: 100%;
 `;
 
 export const RevieweeDescription = styled.div`
@@ -30,10 +31,6 @@ export const RevieweeDescription = styled.div`
   align-items: center;
   width: 100%;
   margin-bottom: 2rem;
-
-  ${media.small} {
-    padding-left: ${({ theme }) => theme.breadcrumbSize.paddingLeft};
-  }
 `;
 export const ProjectInfoContainer = styled.div`
   display: flex;

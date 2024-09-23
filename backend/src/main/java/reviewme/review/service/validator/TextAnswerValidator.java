@@ -1,4 +1,4 @@
-package reviewme.review.service.module;
+package reviewme.review.service.validator;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
