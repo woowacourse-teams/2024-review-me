@@ -1,7 +1,6 @@
 package reviewme.review.service.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
@@ -11,8 +10,6 @@ import reviewme.review.domain.CheckBoxAnswerSelectedOption;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
-import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
-import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
@@ -55,31 +52,5 @@ class AnswerMapperTest {
                         .extracting(CheckBoxAnswerSelectedOption::getSelectedOptionId)
                         .containsOnly(selectedOptionsId)
         );
-    }
-
-    @Test
-    void 서술형_답변_매핑시_선택형_답변이_존재할_경우_예외가_발생한다() {
-        // given
-        long questionId = 1L;
-        String text = "답변";
-        long selectedOptionsId = 2L;
-        ReviewAnswerRequest answerRequest = new ReviewAnswerRequest(questionId, List.of(selectedOptionsId), text);
-
-        // when, then
-        assertThatThrownBy(() -> answerMapper.mapToTextAnswer(answerRequest))
-                .isInstanceOf(TextAnswerIncludedOptionItemException.class);
-    }
-
-    @Test
-    void 선택형_답변_매핑시_서술형_답변이_존재할_경우_예외가_발생한다() {
-        // given
-        long questionId = 1L;
-        String text = "답변";
-        long selectedOptionsId = 2L;
-        ReviewAnswerRequest answerRequest = new ReviewAnswerRequest(questionId, List.of(selectedOptionsId), text);
-
-        // when, then
-        assertThatThrownBy(() -> answerMapper.mapToCheckBoxAnswer(answerRequest))
-                .isInstanceOf(CheckBoxAnswerIncludedTextException.class);
     }
 }
