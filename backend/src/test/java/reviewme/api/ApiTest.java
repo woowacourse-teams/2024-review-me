@@ -103,6 +103,7 @@ public abstract class ApiTest {
                 .build();
 
         spec = RestAssuredMockMvc.given()
+                .sessionAttr("reviewRequestCode", "12341234")
                 .mockMvc(mockMvc);
     }
 
