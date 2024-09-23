@@ -18,12 +18,11 @@ export const ReviewMeOverview = styled.section`
 export const ColumnSectionContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
   align-items: center;
   justify-content: center;
 
   height: 100%;
-
-  gap: 1.5rem;
 `;
 
 export const OverviewTitleContainer = styled.div`
