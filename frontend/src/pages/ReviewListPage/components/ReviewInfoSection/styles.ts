@@ -5,8 +5,12 @@ import media from '@/utils/media';
 export const ReviewInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
-  margin-left: 1rem;
+
+  margin: 2rem 0 3rem 1rem;
+
+  ${media.small} {
+    margin-bottom: 1.8rem;
+  }
 `;
 
 export const ProjectName = styled.span`
