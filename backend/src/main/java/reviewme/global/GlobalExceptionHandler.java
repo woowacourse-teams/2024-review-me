@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleException(Exception ex) {
-        log.error("Initial server error has occurred", ex);
+        log.error("Internal server error has occurred", ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러가 발생했습니다.");
     }
 
