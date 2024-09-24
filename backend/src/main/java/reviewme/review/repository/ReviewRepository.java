@@ -27,4 +27,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByReviewGroupIdWithPagination(long reviewGroupId, long lastReviewId, int limit);
 
     Optional<Review> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
+
+    int countByReviewGroupId(long id);
 }

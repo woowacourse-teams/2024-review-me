@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponseWithPagination;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
@@ -19,6 +20,7 @@ public class ReviewListLookupService {
 
     private final ReviewGroupRepository reviewGroupRepository;
     private final ReviewListMapper reviewListMapper;
+    private final ReviewRepository reviewRepository;
 
     @Transactional(readOnly = true)
     public ReceivedReviewsResponse getReceivedReviews(String reviewRequestCode, String groupAccessCode) {
@@ -53,11 +55,24 @@ public class ReviewListLookupService {
     }
 
     @Transactional(readOnly = true)
-    public ReceivedReviewsResponseWithPagination getReceivedReviewsWithPagination(String reviewRequestCode) {
+    public ReceivedReviewsResponseWithPagination getReceivedReviewsWithPagination(String reviewRequestCode,
+                                                                                  long lastReviewId, int limit) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
-        List<ReviewListElementResponse> reviewGroupResponse = reviewListMapper.mapToReviewList(reviewGroup);
-        return null;
+        List<ReviewListElementResponse> elements
+                = reviewListMapper.mapToReviewListWithPagination(reviewGroup, lastReviewId, limit);
+        int totalSize = reviewRepository.countByReviewGroupId(reviewGroup.getId());
+        long newLastReviewId = calculateLastReviewId(elements);
+        return new ReceivedReviewsResponseWithPagination(
+                reviewGroup.getReviewee(), reviewGroup.getProjectName(), totalSize, newLastReviewId, elements
+        );
+    }
+
+    private long calculateLastReviewId(List<ReviewListElementResponse> elements) {
+        if(elements.isEmpty()) {
+            return 0;
+        }
+        return elements.get(elements.size() - 1).reviewId();
     }
 }
