@@ -5,7 +5,6 @@ import media from '@/utils/media';
 export const ReviewInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   margin: 2rem 0 3rem 1rem;
 
   ${media.small} {
