@@ -42,14 +42,6 @@ module.exports = (env, argv) => {
       ],
     },
     plugins: [
-      sentryWebpackPlugin({
-        authToken: process.env.SENTRY_AUTH_TOKEN,
-        org: 'review-me',
-        project: 'woowacourse-review-me',
-        sourcemaps: {
-          filesToDeleteAfterUpload: '**/*.js.map',
-        },
-      }),
       new HtmlWebpackPlugin({
         template: './public/index.html',
         minify: isProduction
@@ -70,7 +62,10 @@ module.exports = (env, argv) => {
       sentryWebpackPlugin({
         authToken: process.env.SENTRY_AUTH_TOKEN,
         org: 'review-me',
-        project: 'review-me',
+        project: 'woowacourse-review-me',
+        sourcemaps: {
+          filesToDeleteAfterUpload: '**/*.js.map',
+        },
       }),
     ],
     devtool: isProduction ? 'hidden-source-map' : 'eval',
