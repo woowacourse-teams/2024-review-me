@@ -69,7 +69,7 @@ jobs:
           token: ${{ secrets.PRIVATE_REPOSITORY_TOKEN }}
           ref: develop
 
-      - name: Move appliation-related files to local
+      - name: Move application-related files to local
         run: |
           mkdir -p ${{ env.APPLICATION_DIRECTORY }}/app
           mv ./app/* ./app/.* ${{ env.APPLICATION_DIRECTORY }}/app
