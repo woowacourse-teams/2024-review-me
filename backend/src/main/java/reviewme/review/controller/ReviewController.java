@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import reviewme.global.HeaderProperty;
-import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
+import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
@@ -61,7 +60,7 @@ public class ReviewController {
     public ResponseEntity<ReceivedReviewsResponseWithPagination> findReceivedReviewsWithPagination(
             @RequestParam(required = false) Long lastReviewId,
             @RequestParam(defaultValue = "5") int size,
-            @SessionAttribute("reviewRequestCode") String reviewRequestCode
+            @RequestParam String reviewRequestCode
     ) {
         if (lastReviewId == null) {
             lastReviewId = Long.MAX_VALUE;

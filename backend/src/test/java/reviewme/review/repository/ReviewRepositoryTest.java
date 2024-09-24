@@ -104,7 +104,7 @@ class ReviewRepositoryTest {
 
             // then
             assertThat(actual)
-                    .hasSize(1)
+                    .hasSize(2)
                     .containsExactly(review3, review2);
         }
 

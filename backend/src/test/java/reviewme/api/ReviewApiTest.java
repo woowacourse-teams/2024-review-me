@@ -4,8 +4,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
-import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -20,18 +18,16 @@ import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
-import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.headers.HeaderDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponseWithPagination;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 
 class ReviewApiTest extends ApiTest {
 
@@ -221,15 +217,10 @@ class ReviewApiTest extends ApiTest {
         BDDMockito.given(reviewListLookupService.getReceivedReviewsWithPagination(anyString(), anyLong(), anyInt()))
                 .willReturn(response);
 
-        CookieDescriptor[] cookieDescriptors = {
-                cookieWithName("JSESSIONID").description("세션 쿠키")
-        };
-
         ParameterDescriptor[] queryParameter = {
-                parameterWithName("lastReviewId")
-                        .description("페이지의 마지막 리뷰 아이디 - 기본으로 최신순 첫번째 페이지 응답"),
-                parameterWithName("size")
-                        .description("페이지의 크기 - 기본으로 5개씩 응답")
+                parameterWithName("reviewRequestCode").description("리뷰 요청 코드"),
+                parameterWithName("lastReviewId").description("페이지의 마지막 리뷰 아이디 - 기본으로 최신순 첫번째 페이지 응답"),
+                parameterWithName("size").description("페이지의 크기 - 기본으로 5개씩 응답")
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
@@ -250,15 +241,14 @@ class ReviewApiTest extends ApiTest {
 
         RestDocumentationResultHandler handler = document(
                 "received-review-list-with-pagination",
-                requestCookies(cookieDescriptors),
                 queryParameters(queryParameter),
                 responseFields(responseFieldDescriptors)
         );
 
         givenWithSpec().log().all()
-                .cookie("JSESSIONID", "ASVNE1VAKDNV4")
-                .param("lastReviewId", "2")
-                .param("size", "5")
+                .queryParam("reviewRequestCode", "hello!!")
+                .queryParam("lastReviewId", "2")
+                .queryParam("size", "5")
                 .when().get("/v3/reviews")
                 .then().log().all()
                 .apply(handler)
