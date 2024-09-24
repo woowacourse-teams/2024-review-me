@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse3;
+import reviewme.review.service.dto.response.list.ReceivedReviewsResponseWithPagination;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
@@ -53,7 +53,7 @@ public class ReviewListLookupService {
     }
 
     @Transactional(readOnly = true)
-    public ReceivedReviewsResponse3 getReceivedReviews3(String reviewRequestCode) {
+    public ReceivedReviewsResponseWithPagination getReceivedReviewsWithPagination(String reviewRequestCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 

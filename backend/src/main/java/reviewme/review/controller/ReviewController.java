@@ -18,7 +18,7 @@ import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse3;
+import reviewme.review.service.dto.response.list.ReceivedReviewsResponseWithPagination;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,12 +58,13 @@ public class ReviewController {
     }
 
     @GetMapping("/v3/reviews")
-    public ResponseEntity<ReceivedReviewsResponse3> findReceivedReviewsWithPagination(
+    public ResponseEntity<ReceivedReviewsResponseWithPagination> findReceivedReviewsWithPagination(
             @RequestParam(required = false) Long lastReviewId,
             @RequestParam(defaultValue = "5") int size,
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
-        ReceivedReviewsResponse3 response = reviewListLookupService.getReceivedReviews3(reviewRequestCode);
+        ReceivedReviewsResponseWithPagination response
+                = reviewListLookupService.getReceivedReviewsWithPagination(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 }
