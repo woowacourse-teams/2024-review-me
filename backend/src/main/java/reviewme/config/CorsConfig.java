@@ -9,8 +9,10 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        // TODO: Origin 서버 도메인으로 설정
         registry.addMapping("/**")
-                .allowedMethods("*")
-                .allowedOrigins("*");
+                .allowCredentials(true)
+                .allowedMethods("GET", "POST")
+                .allowedOriginPatterns("*");
     }
 }
