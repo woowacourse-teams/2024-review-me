@@ -63,8 +63,9 @@ public class ReviewController {
             @RequestParam(defaultValue = "5") int size,
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
-        ReceivedReviewsResponseWithPagination response
-                = reviewListLookupService.getReceivedReviewsWithPagination(reviewRequestCode);
+        if (lastReviewId == null) {
+            lastReviewId = Long.MAX_VALUE;
+        }
         ReceivedReviewsResponseWithPagination response = reviewListLookupService.getReceivedReviewsWithPagination(
                 reviewRequestCode, lastReviewId, size);
         return ResponseEntity.ok(response);
