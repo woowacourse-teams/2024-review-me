@@ -11,7 +11,7 @@ on:
 env:
   ARTIFACT_NAME: review-me-dev
   ARTIFACT_DIRECTORY: ./backend/build/libs
-  APPLICATION_DIRECTORY: /home/ubuntu/review-me-app
+  APPLICATION_DIRECTORY: /home/ubuntu/review-me
 
 jobs:
   build:
