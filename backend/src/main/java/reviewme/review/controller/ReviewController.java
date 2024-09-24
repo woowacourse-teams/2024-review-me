@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import reviewme.global.HeaderProperty;
 import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.ReviewDetailLookupService;
@@ -17,6 +18,7 @@ import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewsResponse3;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,6 +54,16 @@ public class ReviewController {
         ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail(
                 id, reviewRequestCode, groupAccessCode
         );
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/v3/reviews")
+    public ResponseEntity<ReceivedReviewsResponse3> findReceivedReviewsWithPagination(
+            @RequestParam(required = false) Long lastReviewId,
+            @RequestParam(defaultValue = "5") int size,
+            @SessionAttribute("reviewRequestCode") String reviewRequestCode
+    ) {
+        ReceivedReviewsResponse3 response = reviewListLookupService.getReceivedReviews3(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 }
