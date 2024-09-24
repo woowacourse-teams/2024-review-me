@@ -5,8 +5,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -19,7 +17,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.restdocs.cookies.CookieDescriptor;
-import org.springframework.restdocs.headers.HeaderDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
@@ -101,65 +98,6 @@ class ReviewApiTest extends ApiTest {
                 .statusCode(404);
     }
 
-    @Deprecated(since = "1.0.2", forRemoval = true)
-    @Test
-    void 자신이_받은_리뷰_한_개를_조회한다() {
-        BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyLong(), anyString(), anyString()))
-                .willReturn(TemplateFixture.templateAnswerResponse());
-
-        HeaderDescriptor[] requestHeaderDescriptors = {
-                headerWithName("groupAccessCode").description("그룹 접근 코드")
-        };
-
-        ParameterDescriptor[] requestPathDescriptors = {
-                parameterWithName("id").description("리뷰 ID")
-        };
-
-        FieldDescriptor[] responseFieldDescriptors = {
-                fieldWithPath("createdAt").description("리뷰 작성 날짜"),
-                fieldWithPath("formId").description("폼 ID"),
-                fieldWithPath("revieweeName").description("리뷰이 이름"),
-                fieldWithPath("projectName").description("프로젝트 이름"),
-
-                fieldWithPath("sections[]").description("섹션 목록"),
-                fieldWithPath("sections[].sectionId").description("섹션 ID"),
-                fieldWithPath("sections[].header").description("섹션 제목"),
-
-                fieldWithPath("sections[].questions[]").description("질문 목록"),
-                fieldWithPath("sections[].questions[].questionId").description("질문 ID"),
-                fieldWithPath("sections[].questions[].required").description("필수 여부"),
-                fieldWithPath("sections[].questions[].content").description("질문 내용"),
-                fieldWithPath("sections[].questions[].questionType").description("질문 타입"),
-
-                fieldWithPath("sections[].questions[].optionGroup").description("옵션 그룹").optional(),
-                fieldWithPath("sections[].questions[].optionGroup.optionGroupId").description("옵션 그룹 ID"),
-                fieldWithPath("sections[].questions[].optionGroup.minCount").description("최소 선택 개수"),
-                fieldWithPath("sections[].questions[].optionGroup.maxCount").description("최대 선택 개수"),
-
-                fieldWithPath("sections[].questions[].optionGroup.options[]").description("선택 항목 목록"),
-                fieldWithPath("sections[].questions[].optionGroup.options[].optionId").description("선택 항목 ID"),
-                fieldWithPath("sections[].questions[].optionGroup.options[].content").description("선택 항목 내용"),
-                fieldWithPath("sections[].questions[].optionGroup.options[].isChecked").description("선택 여부"),
-                fieldWithPath("sections[].questions[].answer").description("서술형 답변").optional(),
-        };
-
-        RestDocumentationResultHandler handler = document(
-                "review-detail",
-                requestHeaders(requestHeaderDescriptors),
-                pathParameters(requestPathDescriptors),
-                responseFields(responseFieldDescriptors)
-        );
-
-        givenWithSpec().log().all()
-                .pathParam("id", "1")
-                .queryParam("reviewRequestCode", "00001234")
-                .header("groupAccessCode", "abc12344")
-                .when().get("/v2/reviews/{id}")
-                .then().log().all()
-                .apply(handler)
-                .statusCode(200);
-    }
-
     @Test
     void 세션으로_자신이_받은_리뷰_한_개를_조회한다() {
         BDDMockito.given(reviewDetailLookupService.getReviewDetail2(anyLong(), anyString()))
@@ -211,52 +149,7 @@ class ReviewApiTest extends ApiTest {
         givenWithSpec().log().all()
                 .pathParam("id", "1")
                 .cookie("JSESSIONID", "AVEBNKLCL13TNVZ")
-                .when().get("/vx/reviews/{id}")
-                .then().log().all()
-                .apply(handler)
-                .statusCode(200);
-    }
-
-    @Test
-    void 자신이_받은_리뷰_목록을_조회한다() {
-        List<ReviewListElementResponse> receivedReviews = List.of(
-                new ReviewListElementResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
-                        List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
-                new ReviewListElementResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
-                        List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
-        );
-        ReceivedReviewsResponse response = new ReceivedReviewsResponse("아루", "리뷰미", receivedReviews);
-        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyString(), anyString()))
-                .willReturn(response);
-
-        HeaderDescriptor[] requestHeaderDescriptors = {
-                headerWithName("groupAccessCode").description("그룹 접근 코드")
-        };
-
-        FieldDescriptor[] responseFieldDescriptors = {
-                fieldWithPath("revieweeName").description("리뷰이 이름"),
-                fieldWithPath("projectName").description("프로젝트 이름"),
-
-                fieldWithPath("reviews[]").description("리뷰 목록"),
-                fieldWithPath("reviews[].reviewId").description("리뷰 ID"),
-                fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
-                fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
-
-                fieldWithPath("reviews[].categories[]").description("카테고리 목록"),
-                fieldWithPath("reviews[].categories[].optionId").description("카테고리 ID"),
-                fieldWithPath("reviews[].categories[].content").description("카테고리 내용")
-        };
-
-        RestDocumentationResultHandler handler = document(
-                "received-reviews",
-                requestHeaders(requestHeaderDescriptors),
-                responseFields(responseFieldDescriptors)
-        );
-
-        givenWithSpec().log().all()
-                .queryParam("reviewRequestCode", "asdfasdf")
-                .header("groupAccessCode", "qwerqwer")
-                .when().get("/v2/reviews")
+                .when().get("/v2/reviews/{id}")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
@@ -300,7 +193,7 @@ class ReviewApiTest extends ApiTest {
 
         givenWithSpec().log().all()
                 .cookie("JSESSIONID", "ASVNE1VAKDNV4")
-                .when().get("/vx/reviews")
+                .when().get("/v2/reviews")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
