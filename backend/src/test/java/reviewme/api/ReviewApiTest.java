@@ -1,6 +1,7 @@
 package reviewme.api;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
@@ -217,7 +218,7 @@ class ReviewApiTest extends ApiTest {
         );
         ReceivedReviewsResponseWithPagination response = new ReceivedReviewsResponseWithPagination(
                 "아루3", "리뷰미", receivedReviews.size(), 2, receivedReviews);
-        BDDMockito.given(reviewListLookupService.getReceivedReviewsWithPagination(anyString()))
+        BDDMockito.given(reviewListLookupService.getReceivedReviewsWithPagination(anyString(), anyLong(), anyInt()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {

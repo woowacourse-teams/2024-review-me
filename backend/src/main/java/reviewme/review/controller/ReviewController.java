@@ -65,6 +65,8 @@ public class ReviewController {
     ) {
         ReceivedReviewsResponseWithPagination response
                 = reviewListLookupService.getReceivedReviewsWithPagination(reviewRequestCode);
+        ReceivedReviewsResponseWithPagination response = reviewListLookupService.getReceivedReviewsWithPagination(
+                reviewRequestCode, lastReviewId, size);
         return ResponseEntity.ok(response);
     }
 }
