@@ -30,6 +30,15 @@ public class ReviewListMapper {
                 .toList();
     }
 
+    public List<ReviewListElementResponse> mapToReviewListWithPagination(ReviewGroup reviewGroup,
+                                                                         long lastReviewId, int limit) {
+        List<OptionItem> categoryOptionIds = optionItemRepository.findAllByOptionType(OptionType.CATEGORY);
+        return reviewRepository.findByReviewGroupIdWithPagination(reviewGroup.getId(), lastReviewId, limit)
+                .stream()
+                .map(review -> mapToReviewListElementResponse(review, categoryOptionIds))
+                .toList();
+    }
+
     private ReviewListElementResponse mapToReviewListElementResponse(Review review,
                                                                      List<OptionItem> categoryOptionItems) {
         List<ReviewCategoryResponse> categoryResponses = mapToCategoryOptionResponse(review, categoryOptionItems);
