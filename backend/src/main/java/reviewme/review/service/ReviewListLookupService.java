@@ -60,17 +60,17 @@ public class ReviewListLookupService {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
-        List<ReviewListElementResponse> elements
+        List<ReviewListElementResponse> reviewListElements
                 = reviewListMapper.mapToReviewListWithPagination(reviewGroup, lastReviewId, size);
         int totalSize = reviewRepository.countByReviewGroupId(reviewGroup.getId());
-        long newLastReviewId = calculateLastReviewId(elements);
+        long newLastReviewId = calculateLastReviewId(reviewListElements);
         return new ReceivedReviewsResponseWithPagination(
-                reviewGroup.getReviewee(), reviewGroup.getProjectName(), totalSize, newLastReviewId, elements
+                reviewGroup.getReviewee(), reviewGroup.getProjectName(), totalSize, newLastReviewId, reviewListElements
         );
     }
 
     private long calculateLastReviewId(List<ReviewListElementResponse> elements) {
-        if(elements.isEmpty()) {
+        if (elements.isEmpty()) {
             return 0;
         }
         return elements.get(elements.size() - 1).reviewId();
