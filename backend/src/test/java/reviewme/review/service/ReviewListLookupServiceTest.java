@@ -2,6 +2,7 @@ package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
 import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
@@ -137,11 +138,17 @@ class ReviewListLookupServiceTest {
                 = reviewListLookupService.getReceivedReviewsWithPagination(reviewRequestCode, Long.MAX_VALUE, 2);
 
         // then
-        assertThat(response.reviews())
-                .hasSize(2)
-                .extracting("reviewId")
-                .containsExactly(review3.getId(), review2.getId());
-        assertThat(response.totalSize())
-                .isEqualTo(3);
+        assertAll(
+                () -> assertThat(response.reviews())
+                        .hasSize(2)
+                        .extracting("reviewId")
+                        .containsExactly(review3.getId(), review2.getId()),
+                () ->
+                        assertThat(response.totalSize())
+                                .isEqualTo(3),
+                () ->
+                        assertThat(response.lastReviewId())
+                                .isEqualTo(review2.getId())
+        );
     }
 }
