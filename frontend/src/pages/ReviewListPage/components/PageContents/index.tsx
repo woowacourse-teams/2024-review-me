@@ -1,3 +1,4 @@
+import { useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router';
 
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
@@ -21,38 +22,64 @@ interface PageContentsProps {
 const PageContents = ({ groupAccessCode, reviewRequestCode }: PageContentsProps) => {
   const navigate = useNavigate();
 
-  const { data: reviewListData, isSuccess } = useGetReviewList(groupAccessCode, reviewRequestCode);
+  const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useGetReviewList(
+    groupAccessCode,
+    reviewRequestCode,
+  );
+
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const lastReviewElementRef = useCallback(
+    (node: HTMLElement | null) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, fetchNextPage, hasNextPage],
+  );
 
   const handleReviewClick = (id: number) => {
     navigate(`/user/detailed-review/${id}`);
   };
 
+  const projectName = data.pages[0].projectName;
+  const revieweeName = data.pages[0].revieweeName;
+  const reviews = data.pages.flatMap((page) => page.reviews);
+
   return (
-    <>
-      {isSuccess && (
-        <S.Layout>
-          <ReviewInfoSection projectName={reviewListData.projectName} revieweeName={reviewListData.revieweeName} />
-          {reviewListData.reviews.length === 0 ? (
-            <ReviewEmptySection />
-          ) : (
-            <S.ReviewSection>
-              {reviewListData.reviews.map((review) => (
+    isSuccess && (
+      <S.Layout>
+        <ReviewInfoSection projectName={projectName} revieweeName={revieweeName} />
+        {reviews.length === 0 ? (
+          <ReviewEmptySection />
+        ) : (
+          <S.ReviewSection>
+            {reviews.map((review, index) => {
+              const isLastReview = reviews.length === index + 1;
+              return (
                 <UndraggableWrapper key={review.reviewId}>
-                  <div onClick={() => handleReviewClick(review.reviewId)}>
-                    <ReviewCard
-                      projectName={reviewListData.projectName}
-                      createdAt={review.createdAt}
-                      contentPreview={review.contentPreview}
-                      categories={review.categories}
-                    />
-                  </div>
+                  <ReviewCard
+                    projectName={projectName}
+                    createdAt={review.createdAt}
+                    contentPreview={review.contentPreview}
+                    categories={review.categories}
+                    onClick={() => handleReviewClick(review.reviewId)}
+                  />
+                  <div ref={isLastReview ? lastReviewElementRef : null} style={{ height: '0.1rem' }} />
                 </UndraggableWrapper>
-              ))}
-            </S.ReviewSection>
-          )}
-        </S.Layout>
-      )}
-    </>
+              );
+            })}
+          </S.ReviewSection>
+        )}
+      </S.Layout>
+    )
   );
 };
 

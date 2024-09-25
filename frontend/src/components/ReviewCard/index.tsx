@@ -7,11 +7,12 @@ interface ReviewCardProps {
   createdAt: string;
   contentPreview: string;
   categories: Category[];
+  onClick: () => void;
 }
 
-const ReviewCard = ({ projectName, createdAt, contentPreview, categories }: ReviewCardProps) => {
+const ReviewCard = ({ projectName, createdAt, contentPreview, categories, onClick }: ReviewCardProps) => {
   return (
-    <S.Layout>
+    <S.Layout onClick={onClick}>
       <S.Header>
         <S.HeaderContent>
           {/* NOTE: 추후에 깃허브 로고를 다른 이미지로 대체할 수 있어서 일단 주석 처리 */}
