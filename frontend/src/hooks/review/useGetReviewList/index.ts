@@ -5,7 +5,7 @@ import { REVIEW_QUERY_KEY } from '@/constants';
 
 const useGetReviewList = (groupAccessCode: string, reviewRequestCode: string) => {
   // NOTE: 무한스크롤 관련 코드 일단 주석 처리
-  const { data, fetchNextPage, hasNextPage, isLoading, error, isSuccess } = useSuspenseInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useSuspenseInfiniteQuery({
     queryKey: [REVIEW_QUERY_KEY.reviews],
     queryFn: ({ pageParam }) =>
       getReviewListApi({
