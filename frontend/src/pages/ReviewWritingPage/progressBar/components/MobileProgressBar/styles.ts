@@ -9,7 +9,6 @@ export const ProgressBarContainer = styled.div`
   justify-content: center;
 
   width: 100%;
-  height: 5rem;
   margin-bottom: 1.7rem;
 `;
 
@@ -18,13 +17,9 @@ export const ProgressBar = styled.div`
 
   overflow-x: scroll;
   display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: flex-start;
 
   width: 100%;
-  height: 5rem;
-  padding: 0 1rem;
+  padding: 1rem 0;
 
   &::-webkit-scrollbar {
     display: none;
@@ -44,7 +39,7 @@ export const StepWrapper = styled.div<{ $isCurrentStep: boolean }>`
   align-items: center;
   justify-content: space-between;
 
-  width: 50%;
+  width: 100%;
   margin: 0 ${({ $isCurrentStep }) => ($isCurrentStep ? '1.5rem' : 0)};
 `;
 
@@ -95,14 +90,7 @@ export const StepButton = styled.button<StepButtonStyleProps>`
 `;
 
 export const EmptyBlock = styled.div`
-  width: 0.1rem;
-  height: 0.1rem;
-  visibility: hidden;
-`;
-
-export const EmptyStepWrapper = styled.div`
-  display: flex;
-  min-width: 50%;
-  height: 3rem;
+  width: 2.4rem;
+  height: 2.4rem;
   visibility: hidden;
 `;

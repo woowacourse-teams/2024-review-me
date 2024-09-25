@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
 import NavigateNextIcon from '@/assets/navigateNext.svg';
 import useStepList from '@/pages/ReviewWritingPage/progressBar/hooks/useStepList';
@@ -14,19 +14,25 @@ interface MobileProgressBarProps {
 const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileProgressBarProps) => {
   const { stepList } = useStepList({ currentCardIndex });
 
+  const progressBarRef = useRef<HTMLDivElement>(null);
   const stepRefs = useRef<HTMLDivElement[]>([]);
+  const animationFrameId = useRef<number | null>(null);
 
-  useEffect(() => {
-    if (stepRefs.current[currentCardIndex]) {
-      const element = stepRefs.current[currentCardIndex];
-      setTimeout(() => {
-        element.scrollIntoView({
-          behavior: 'smooth',
-          inline: 'center',
-        });
-      }, 0);
+  useLayoutEffect(() => {
+    if (!progressBarRef.current || !stepRefs.current[currentCardIndex]) return;
+
+    if (animationFrameId.current) {
+      cancelAnimationFrame(animationFrameId.current);
     }
-  }, [currentCardIndex, stepRefs]);
+
+    const scrollProgressBar = () => {
+      setTimeout(() => {
+        stepRefs.current[currentCardIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'center' });
+      }, 250);
+    };
+
+    animationFrameId.current = requestAnimationFrame(scrollProgressBar);
+  }, [currentCardIndex]);
 
   const handleClick = (index: number) => {
     const { isMovingAvailable } = stepList[index];
@@ -35,30 +41,26 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
 
   return (
     <S.ProgressBarContainer>
-      <S.ProgressBar>
-        <S.EmptyStepWrapper />
+      <S.ProgressBar ref={progressBarRef}>
         {stepList.map((step, index) => (
-          <React.Fragment key={step.sectionId}>
-            <S.StepWrapper
-              $isCurrentStep={index === currentCardIndex}
-              ref={(element) => (stepRefs.current[index] = element!)}
+          <S.StepWrapper
+            key={step.sectionId}
+            ref={(el) => (stepRefs.current[index] = el!)}
+            $isCurrentStep={index === currentCardIndex}
+          >
+            {index > 0 ? <img src={NavigateNextIcon} alt="Next" /> : <S.EmptyBlock />}
+            <S.StepButton
+              $isDone={step.isDone}
+              $isMovingAvailable={step.isMovingAvailable}
+              $isCurrentStep={step.isCurrentStep}
+              onClick={() => handleClick(index)}
+              type="button"
             >
-              <S.EmptyBlock />
-              <S.StepButton
-                $isDone={step.isDone}
-                $isMovingAvailable={step.isMovingAvailable}
-                $isCurrentStep={step.isCurrentStep}
-                onClick={() => handleClick(index)}
-                type="button"
-              >
-                {step.sectionName}
-              </S.StepButton>
-              <S.EmptyBlock />
-            </S.StepWrapper>
-            {index < stepList.length - 1 && <img src={NavigateNextIcon} alt="다음 화살표" />}
-          </React.Fragment>
+              {step.sectionName}
+            </S.StepButton>
+            {index < stepList.length - 1 ? <img src={NavigateNextIcon} alt="Next" /> : <S.EmptyBlock />}
+          </S.StepWrapper>
         ))}
-        <S.EmptyStepWrapper />
       </S.ProgressBar>
     </S.ProgressBarContainer>
   );
