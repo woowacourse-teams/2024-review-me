@@ -100,7 +100,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 세션으로_자신이_받은_리뷰_한_개를_조회한다() {
-        BDDMockito.given(reviewDetailLookupService.getReviewDetail2(anyLong(), anyString()))
+        BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyLong(), anyString()))
                 .willReturn(TemplateFixture.templateAnswerResponse());
 
         ParameterDescriptor[] requestPathDescriptors = {
@@ -164,7 +164,7 @@ class ReviewApiTest extends ApiTest {
                         List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
         );
         ReceivedReviewsResponse response = new ReceivedReviewsResponse("아루", "리뷰미", receivedReviews);
-        BDDMockito.given(reviewListLookupService.getReceivedReviews2(anyString()))
+        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyString()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {

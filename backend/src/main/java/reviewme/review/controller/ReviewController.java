@@ -37,7 +37,7 @@ public class ReviewController {
     public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
-        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews2(reviewRequestCode);
+        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 
@@ -46,7 +46,7 @@ public class ReviewController {
             @PathVariable long id,
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
-        ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail2(id, reviewRequestCode);
+        ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail(id, reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 }
