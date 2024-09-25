@@ -3,10 +3,10 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { getReviewListApi } from '@/apis/review';
 import { REVIEW_QUERY_KEY } from '@/constants';
 
-const useGetReviewList = (groupAccessCode: string, reviewRequestCode: string) => {
+const useGetReviewList = () => {
   const { data, isLoading, error, isSuccess } = useSuspenseQuery({
     queryKey: [REVIEW_QUERY_KEY.reviews],
-    queryFn: () => getReviewListApi(groupAccessCode, reviewRequestCode),
+    queryFn: () => getReviewListApi(),
     staleTime: 1 * 60 * 1000,
   });
 
@@ -25,8 +25,6 @@ const useGetReviewList = (groupAccessCode: string, reviewRequestCode: string) =>
     isLoading,
     error,
     isSuccess,
-    // fetchNextPage,
-    // hasNextPage,
   };
 };
 
