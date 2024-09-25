@@ -23,6 +23,7 @@ public class ReviewDetailLookupService {
 
     private final ReviewDetailMapper reviewDetailMapper;
 
+    @Transactional(readOnly = true)
     public ReviewDetailResponse getReviewDetail(long reviewId, String reviewRequestCode, String groupAccessCode) {
         ReviewGroup reviewGroup =  reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
