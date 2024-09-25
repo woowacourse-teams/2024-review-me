@@ -1,4 +1,5 @@
 export const VERSION2 = 'v2';
+export const VERSION3 = 'v3';
 
 const getDevServerUrl = () => {
   const serverUrlList = process.env.API_BASE_URL?.split('//');
@@ -53,7 +54,7 @@ export const REVIEW_GROUP_DATA_API_PARAMS = {
 };
 
 export const REVIEW_WRITING_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_WRITING_API_PARAMS.resource}`;
-export const REVIEW_LIST_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_LIST_API_PARAMS.resource}`;
+export const REVIEW_LIST_API_URL = `${serverUrl}/${VERSION3}/${REVIEW_LIST_API_PARAMS.resource}`;
 export const DETAILED_REVIEW_API_URL = `${serverUrl}/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}`;
 export const REVIEW_GROUP_DATA_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_GROUP_DATA_API_PARAMS.resource}`;
 
@@ -63,8 +64,8 @@ const endPoint = {
     `${DETAILED_REVIEW_API_URL}/${reviewId}?${DETAILED_REVIEW_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
-  gettingReviewList: (reviewRequestCode: string) =>
-    `${REVIEW_LIST_API_URL}?${REVIEW_LIST_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
+  gettingReviewList: (reviewRequestCode: string, lastReviewId: number | null) =>
+    `${REVIEW_LIST_API_URL}?${REVIEW_LIST_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}&lastReviewId=${lastReviewId}`,
   postingDataForReviewRequestCode: `${serverUrl}/${VERSION2}/groups`,
   checkingPassword: `${serverUrl}/${VERSION2}/${REVIEW_PASSWORD_API_PARAMS.resource}/${REVIEW_PASSWORD_API_PARAMS.queryString.check}`,
   gettingReviewGroupData: (reviewRequestCode: string) =>

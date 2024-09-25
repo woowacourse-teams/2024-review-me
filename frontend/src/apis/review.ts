@@ -55,8 +55,14 @@ export const getDetailedReviewApi = async ({ reviewId, groupAccessCode, reviewRe
   return data as DetailReviewData;
 };
 
-export const getReviewListApi = async (groupAccessCode: string, reviewRequestCode: string) => {
-  const response = await fetch(endPoint.gettingReviewList(reviewRequestCode), {
+interface GetReviewListApi {
+  groupAccessCode: string;
+  reviewRequestCode: string;
+  lastReviewId: number | null;
+}
+
+export const getReviewListApi = async ({ groupAccessCode, reviewRequestCode, lastReviewId }: GetReviewListApi) => {
+  const response = await fetch(endPoint.gettingReviewList(reviewRequestCode, lastReviewId), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
