@@ -85,7 +85,7 @@ jobs:
 
       - name: Pull from DockerHub
         run: |
-          sudo docker-compose -- env-file .env.prod down || true
+          sudo docker-compose --env-file .env.prod down || true
           sudo docker pull ${{ secrets.DOCKERHUB_ID }}/review-me-app
           sudo docker-compose --env-file .env.prod up -d
         working-directory: ${{ env.APPLICATION_DIRECTORY }}/app
