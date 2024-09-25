@@ -5,6 +5,7 @@ import { API_ERROR_MESSAGE, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants'
 
 import {
   CREATED_REVIEW_REQUEST_CODE,
+  MOCK_AUTH_TOKEN_NAME,
   REVIEW_GROUP_DATA,
   VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
   VALIDATED_PASSWORD,
@@ -25,7 +26,7 @@ const postDataForReviewRequestCode = () => {
 // };
 
 const postPassWordValidation = () => {
-  return http.post(endPoint.checkingPassword, async ({ request }) => {
+  return http.post(endPoint.checkingPassword, async ({ request, cookies }) => {
     // request body의 존재 검증
     if (!request.body) return HttpResponse.json({ error: API_ERROR_MESSAGE[400] }, { status: 400 });
 
@@ -47,7 +48,15 @@ const postPassWordValidation = () => {
     }
 
     // 정상 응답 (유효한 비밀번호)
-    return new HttpResponse(null, { status: 204 });
+    //세션 쿠키 생성 (브라우저 창 닫히면 자동 삭제됨, 이미 있으면 생성 하지 않음)
+    return new HttpResponse(null, {
+      headers: cookies[MOCK_AUTH_TOKEN_NAME]
+        ? {}
+        : {
+            'Set-cookie': `${MOCK_AUTH_TOKEN_NAME}=2024-review-me`,
+          },
+      status: 204,
+    });
   });
 };
 
