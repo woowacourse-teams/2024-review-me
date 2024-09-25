@@ -50,8 +50,8 @@ const getDataToWriteReview = () =>
     return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
   });
 
-const getReviewList = (reviewRequestCode: string) => {
-  return http.get(endPoint.gettingReviewList(reviewRequestCode), async ({ request }) => {
+const getReviewList = () => {
+  return http.get(endPoint.gettingReviewList, async () => {
     // const url = new URL(request.url);
 
     // const lastReviewId = Number(url.searchParams.get('lastReviewId'));
@@ -73,6 +73,8 @@ const getReviewList = (reviewRequestCode: string) => {
     //   lastReviewId: isLastPage ? null : lastReviewId + limit,
     //   reviews: paginatedReviews,
     // });
+
+
     return HttpResponse.json(REVIEW_LIST);
   });
 };
@@ -82,6 +84,6 @@ const postReview = () =>
     return HttpResponse.json({ message: 'post 성공' }, { status: 201 });
   });
 
-const reviewHandler = [getDetailedReview(), getReviewList('ABCD1234'), getDataToWriteReview(), postReview()];
+const reviewHandler = [getDetailedReview(), getReviewList(), getDataToWriteReview(), postReview()];
 
 export default reviewHandler;
