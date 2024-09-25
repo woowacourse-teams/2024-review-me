@@ -1,10 +1,10 @@
-import { useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router';
 
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import ReviewCard from '@/components/ReviewCard';
 import { useGetReviewList } from '@/hooks';
 
+import { useInfiniteScroll } from '../../hooks';
 import ReviewEmptySection from '../ReviewEmptySection';
 import ReviewInfoSection from '../ReviewInfoSection';
 // import SearchSection from '../SearchSection';
@@ -27,23 +27,7 @@ const PageContents = ({ groupAccessCode, reviewRequestCode }: PageContentsProps)
     reviewRequestCode,
   );
 
-  const observer = useRef<IntersectionObserver | null>(null);
-
-  const lastReviewElementRef = useCallback(
-    (node: HTMLElement | null) => {
-      if (isLoading) return;
-      if (observer.current) observer.current.disconnect();
-
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
-          fetchNextPage();
-        }
-      });
-
-      if (node) observer.current.observe(node);
-    },
-    [isLoading, fetchNextPage, hasNextPage],
-  );
+  const lastReviewElementRef = useInfiniteScroll({ fetchNextPage, hasNextPage, isLoading });
 
   const handleReviewClick = (id: number) => {
     navigate(`/user/detailed-review/${id}`);
