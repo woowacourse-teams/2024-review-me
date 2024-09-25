@@ -9,8 +9,8 @@ public class ReplicationRoutingDataSource extends AbstractRoutingDataSource {
     protected Object determineCurrentLookupKey() {
         boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
         if (readOnly) {
-            return "read";
+            return DataSourceType.READ;
         }
-        return "write";
+        return DataSourceType.WRITE;
     }
 }

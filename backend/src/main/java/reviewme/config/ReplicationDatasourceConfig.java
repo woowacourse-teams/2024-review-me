@@ -17,13 +17,17 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 @Configuration
 public class ReplicationDatasourceConfig {
 
-    @Bean(name = "writeDataSource")
+    public static final String WRITE_DATA_SOURCE_NAME = "writeDataSource";
+    public static final String READ_DATA_SOURCE_NAME = "readDataSource";
+    public static final String ROUTING_DATA_SOURCE_NAME = "routingDataSource";
+
+    @Bean(name = WRITE_DATA_SOURCE_NAME)
     @ConfigurationProperties(prefix = "spring.datasource.write.hikari")
     public DataSource writeDataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean(name = "readDataSource")
+    @Bean(name = READ_DATA_SOURCE_NAME)
     @ConfigurationProperties(prefix = "spring.datasource.read.hikari")
     public DataSource readDataSource() {
         return DataSourceBuilder.create().build();
@@ -31,12 +35,12 @@ public class ReplicationDatasourceConfig {
 
     @Bean
     DataSource routingDataSource(
-            @Qualifier("writeDataSource") DataSource writeDataSource,
-            @Qualifier("readDataSource") DataSource readDataSource) {
+            @Qualifier(WRITE_DATA_SOURCE_NAME) DataSource writeDataSource,
+            @Qualifier(READ_DATA_SOURCE_NAME) DataSource readDataSource) {
         AbstractRoutingDataSource routingDataSource = new ReplicationRoutingDataSource();
         Map<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put("write", writeDataSource);
-        dataSourceMap.put("read", readDataSource);
+        dataSourceMap.put(DataSourceType.WRITE, writeDataSource);
+        dataSourceMap.put(DataSourceType.READ, readDataSource);
 
         routingDataSource.setTargetDataSources(dataSourceMap);
         routingDataSource.setDefaultTargetDataSource(writeDataSource);
@@ -46,7 +50,8 @@ public class ReplicationDatasourceConfig {
 
     @Primary
     @Bean
-    public DataSource dataSource(@Qualifier("routingDataSource") DataSource routingDataSource) {
+    public DataSource dataSource(@Qualifier(ROUTING_DATA_SOURCE_NAME) DataSource routingDataSource) {
         return new LazyConnectionDataSourceProxy(routingDataSource);
     }
 }
+
