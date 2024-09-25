@@ -27,9 +27,7 @@ export const PAGE = {
 const getDetailedReview = () =>
   http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), async ({ request, cookies }) => {
     // authToken 쿠키 확인
-
-    if (!cookies[MOCK_AUTH_TOKEN_NAME]) return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 400 });
-
+    if (!cookies[MOCK_AUTH_TOKEN_NAME]) return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
     //요청 url에서 reviewId, memberId 추출
     const url = new URL(request.url);
     const urlReviewId = url.pathname.replace(`/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}/`, '');
@@ -58,7 +56,7 @@ const getDataToWriteReview = () =>
 const getReviewList = () => {
   return http.get(endPoint.gettingReviewList, async ({ cookies }) => {
     // authToken 쿠키 확인
-    if (!cookies[MOCK_AUTH_TOKEN_NAME]) return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 400 });
+    if (!cookies[MOCK_AUTH_TOKEN_NAME]) return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
 
     // const url = new URL(request.url);
 
