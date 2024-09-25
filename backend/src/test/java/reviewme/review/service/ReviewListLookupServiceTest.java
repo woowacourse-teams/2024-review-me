@@ -63,7 +63,7 @@ class ReviewListLookupServiceTest {
 
     @Test
     void 리뷰_요청_코드가_존재하지_않는_경우_예외가_발생한다() {
-        assertThatThrownBy(() -> reviewListLookupService.getReceivedReviews("abc", "groupAccessCode"))
+        assertThatThrownBy(() -> reviewListLookupService.getReceivedReviewsWithPagination("abc", 0L, 1))
                 .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 
