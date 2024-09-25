@@ -48,7 +48,7 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
             ref={(el) => (stepRefs.current[index] = el!)}
             $isCurrentStep={index === currentCardIndex}
           >
-            {index > 0 ? <img src={NavigateNextIcon} alt="Next" /> : <S.EmptyBlock />}
+            {index > 0 ? <img src={NavigateNextIcon} /> : <S.EmptyBlock />}
             <S.StepButton
               $isDone={step.isDone}
               $isMovingAvailable={step.isMovingAvailable}
@@ -58,7 +58,7 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
             >
               {step.sectionName}
             </S.StepButton>
-            {index < stepList.length - 1 ? <img src={NavigateNextIcon} alt="Next" /> : <S.EmptyBlock />}
+            {index < stepList.length - 1 ? <img src={NavigateNextIcon} /> : <S.EmptyBlock />}
           </S.StepWrapper>
         ))}
       </S.ProgressBar>
