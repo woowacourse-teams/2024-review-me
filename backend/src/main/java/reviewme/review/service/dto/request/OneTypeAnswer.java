@@ -9,10 +9,10 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = EitherTextOrCheckboxValidator.class)
-public @interface EitherTextOrCheckbox {
+@Constraint(validatedBy = OntTypeAnswerValidator.class)
+public @interface OneTypeAnswer {
 
-    String message() default "선택형 응답과 서술형 응답 중 하나만 입력해주세요.";
+    String message() default "";
 
     Class<?>[] groups() default {};
 

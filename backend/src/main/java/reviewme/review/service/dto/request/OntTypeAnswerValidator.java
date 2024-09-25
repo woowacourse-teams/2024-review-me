@@ -3,8 +3,8 @@ package reviewme.review.service.dto.request;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class EitherTextOrCheckboxValidator
-        implements ConstraintValidator<EitherTextOrCheckbox, ReviewAnswerRequest> {
+public class OntTypeAnswerValidator
+        implements ConstraintValidator<OneTypeAnswer, ReviewAnswerRequest> {
 
     @Override
     public boolean isValid(ReviewAnswerRequest request, ConstraintValidatorContext context) {
