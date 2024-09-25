@@ -12,11 +12,14 @@ interface ErrorSuspenseContainerProps {
   fallback?: React.ComponentType<FallbackProps>;
 }
 
-const ErrorSuspenseContainer = ({ children, fallback }: EssentialPropsWithChildren<ErrorSuspenseContainerProps>) => {
+const ErrorSuspenseContainer = ({
+  children,
+  fallback = ErrorFallback,
+}: EssentialPropsWithChildren<ErrorSuspenseContainerProps>) => {
   return (
     <QueryErrorResetBoundary>
       {({ reset }) => (
-        <ErrorBoundary FallbackComponent={fallback ?? ErrorFallback} onReset={reset}>
+        <ErrorBoundary FallbackComponent={fallback} onReset={reset}>
           <Suspense fallback={<LoadingPage />}>{children}</Suspense>
         </ErrorBoundary>
       )}
