@@ -73,6 +73,8 @@ export interface WritingReviewInfoData {
 export interface ReviewList {
   revieweeName: string;
   projectName: string;
+  totalSize: number;
+  lastReviewId: number | null;
   reviews: ReviewInfo[];
 }
 
