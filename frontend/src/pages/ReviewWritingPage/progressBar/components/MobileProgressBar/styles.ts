@@ -31,7 +31,7 @@ export const ProgressBar = styled.div`
   }
 `;
 
-export const StepWrapper = styled.div<{ $isCurrentStep: boolean }>`
+export const StepWrapper = styled.div`
   scroll-snap-align: center;
 
   display: flex;
@@ -40,7 +40,6 @@ export const StepWrapper = styled.div<{ $isCurrentStep: boolean }>`
   justify-content: space-between;
 
   width: 100%;
-  margin: 0 ${({ $isCurrentStep }) => ($isCurrentStep ? '1.5rem' : 0)};
 `;
 
 interface StepButtonStyleProps {
