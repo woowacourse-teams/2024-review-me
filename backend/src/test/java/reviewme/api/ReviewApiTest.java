@@ -219,15 +219,15 @@ class ReviewApiTest extends ApiTest {
 
         ParameterDescriptor[] queryParameter = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드"),
-                parameterWithName("lastReviewId").description("페이지의 마지막 리뷰 아이디 - 기본으로 최신순 첫번째 페이지 응답"),
+                parameterWithName("lastReviewId").description("페이지의 마지막 리뷰 ID - 기본으로 최신순 첫번째 페이지 응답"),
                 parameterWithName("size").description("페이지의 크기 - 기본으로 5개씩 응답")
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
                 fieldWithPath("revieweeName").description("리뷰이 이름"),
                 fieldWithPath("projectName").description("프로젝트 이름"),
-                fieldWithPath("totalSize").description("받은 리뷰 전채 개수"),
-                fieldWithPath("lastReviewId").description("페이지의 마지막 리뷰 아이디"),
+                fieldWithPath("totalSize").description("받은 리뷰 전체 개수"),
+                fieldWithPath("lastReviewId").description("페이지의 마지막 리뷰 ID"),
 
                 fieldWithPath("reviews[]").description("리뷰 목록"),
                 fieldWithPath("reviews[].reviewId").description("리뷰 ID"),
