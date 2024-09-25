@@ -51,7 +51,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ./backend
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ secrets.DOCKERHUB_ID }}/review-me-app:latest
@@ -82,7 +82,7 @@ jobs:
 
       - name: Pull from DockerHub
         run: |
-          sudo docker-compose down || true
+          sudo docker-compose -- env-file .env.dev down || true
           sudo docker pull ${{ secrets.DOCKERHUB_ID }}/review-me-app
           sudo docker-compose --env-file .env.dev up -d
         working-directory: ${{ env.APPLICATION_DIRECTORY }}/app
