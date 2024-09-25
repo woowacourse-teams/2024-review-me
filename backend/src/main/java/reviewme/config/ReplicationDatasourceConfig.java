@@ -16,6 +16,7 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 @Profile("prod")
 @Configuration
 public class ReplicationDatasourceConfig {
+
     @Bean(name = "writeDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.write.hikari")
     public DataSource writeDataSource() {
