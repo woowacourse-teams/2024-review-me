@@ -8,19 +8,10 @@ interface UseGetDetailedReviewProps {
   reviewId: number;
 }
 
-interface FetchDetailedReviewParams {
-  reviewId: number;
-}
-
 const useGetDetailedReview = ({ reviewId }: UseGetDetailedReviewProps) => {
-  const fetchDetailedReview = async ({ reviewId }: FetchDetailedReviewParams) => {
-    const result = await getDetailedReviewApi({ reviewId });
-    return result;
-  };
-
   const result = useSuspenseQuery<DetailReviewData>({
     queryKey: [REVIEW_QUERY_KEY.detailedReview, reviewId],
-    queryFn: () => fetchDetailedReview({ reviewId }),
+    queryFn: () => getDetailedReviewApi({ reviewId }),
     staleTime: 60 * 60 * 1000,
   });
 
