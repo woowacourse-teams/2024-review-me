@@ -79,6 +79,7 @@ export const StepButton = styled.button<StepButtonStyleProps>`
   min-width: 12rem;
   max-width: 15rem;
   height: 3rem;
+  margin: 0 ${({ $isCurrentStep }) => ($isCurrentStep ? '2.5rem' : '2rem')};
   padding: 0 1rem;
 
   font-size: 1.3rem;
@@ -88,8 +89,15 @@ export const StepButton = styled.button<StepButtonStyleProps>`
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 `;
 
+export const DottedLine = styled.div`
+  width: 100%;
+  height: 0.1rem;
+  margin: 0 0.2rem;
+  border-top: 0.5rem dotted ${({ theme }) => theme.colors.lightGray};
+`;
+
 export const EmptyBlock = styled.div`
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 100%;
+  height: 1rem;
   visibility: hidden;
 `;
