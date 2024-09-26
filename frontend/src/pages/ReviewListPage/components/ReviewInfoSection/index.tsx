@@ -1,3 +1,5 @@
+import calculateParticle from '@/utils/calculateParticle';
+
 import * as S from './styles';
 
 interface ReviewInfoSectionProps {
@@ -5,9 +7,9 @@ interface ReviewInfoSectionProps {
   revieweeName: string;
 }
 
-const REVIEW_MESSAGE_SUFFIX = '이(가) 받은 리뷰 목록이에요';
-
 const ReviewInfoSection = ({ projectName, revieweeName }: ReviewInfoSectionProps) => {
+  const REVIEW_MESSAGE_SUFFIX = `${calculateParticle({ target: revieweeName, particles: { withFinalConsonant: '이', withoutFinalConsonant: '가' } })} 받은 리뷰 목록이에요`;
+
   return (
     <S.ReviewInfoContainer>
       <S.ProjectName>{projectName}</S.ProjectName>

@@ -8,6 +8,7 @@ import { Button } from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useGetReviewGroupData, useSearchParamAndQuery, useModals } from '@/hooks';
 import { reviewRequestCodeAtom } from '@/recoil';
+import calculateParticle from '@/utils/calculateParticle';
 
 import PasswordModal from './components/PasswordModal';
 import * as S from './styles';
@@ -49,7 +50,7 @@ const ReviewZonePage = () => {
       <S.ReviewZoneMainImg src={ReviewZoneIcon} alt="" />
       <S.ReviewGuideContainer>
         {/* NOTE: 추후 API 연동되면 서버에서 받아온 이름들을 출력하도록 수정해야 함 */}
-        <S.ReviewGuide>{`${reviewGroupData.projectName}을(를) 함께한`}</S.ReviewGuide>
+        <S.ReviewGuide>{`${reviewGroupData.projectName}${calculateParticle({ target: reviewGroupData.projectName, particles: { withFinalConsonant: '을', withoutFinalConsonant: '를' } })} 함께한`}</S.ReviewGuide>
         <S.ReviewGuide>{`${reviewGroupData.revieweeName}의 리뷰 공간이에요`}</S.ReviewGuide>
       </S.ReviewGuideContainer>
       <S.ButtonContainer>
