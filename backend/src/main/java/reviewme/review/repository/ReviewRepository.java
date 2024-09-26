@@ -27,4 +27,12 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByReviewGroupIdWithLimit(long reviewGroupId, Long lastReviewId, int limit);
 
     Optional<Review> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
+
+    @Query(value = """
+            SELECT r.id FROM review r
+            WHERE r.review_group_id = :reviewGroupId
+            ORDER BY r.id DESC
+            LIMIT 1
+            """, nativeQuery = true)
+    Long findLastReviewIdByReviewGroupId(long reviewGroupId);
 }
