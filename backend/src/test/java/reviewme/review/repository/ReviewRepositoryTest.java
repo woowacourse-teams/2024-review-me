@@ -83,7 +83,7 @@ class ReviewRepositoryTest {
             long lastReviewId = Long.MAX_VALUE;
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithPagination(
+            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -99,7 +99,7 @@ class ReviewRepositoryTest {
             long lastReviewId = Long.MAX_VALUE;
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithPagination(
+            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -115,7 +115,7 @@ class ReviewRepositoryTest {
             long lastReviewId = review3.getId();
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithPagination(
+            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -131,7 +131,7 @@ class ReviewRepositoryTest {
             long lastReviewId = review1.getId();
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithPagination(
+            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then

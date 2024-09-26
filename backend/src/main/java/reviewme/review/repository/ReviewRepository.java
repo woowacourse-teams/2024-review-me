@@ -24,7 +24,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             ORDER BY r.created_at DESC 
             LIMIT :limit
             """, nativeQuery = true)
-    List<Review> findByReviewGroupIdWithPagination(long reviewGroupId, long lastReviewId, int limit);
+    List<Review> findByReviewGroupIdWithLimit(long reviewGroupId, long lastReviewId, int limit);
 
     Optional<Review> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
 
