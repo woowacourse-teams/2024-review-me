@@ -6,6 +6,8 @@ export const ConfirmModalMessage = styled.div`
   gap: 0.8rem;
   align-items: start;
 
+  min-width: 30rem;
+
   p {
     width: inherit;
     margin: 0;
