@@ -24,7 +24,7 @@ class PageSizeTest {
     @ValueSource(ints = {0, -1, 51})
     void 유효한_범위_외의_값이_들어오면_기본값으로_설정한다(Integer size) {
         // given
-        int defaultSize = 5;
+        int defaultSize = 10;
 
         // when
         PageSize pageSize = new PageSize(size);
@@ -36,7 +36,7 @@ class PageSizeTest {
     @Test
     void null이_들어오면_기본값으로_설정한다() {
         // given
-        int defaultSize = 5;
+        int defaultSize = 10;
 
         // when
         PageSize pageSize = new PageSize(null);
