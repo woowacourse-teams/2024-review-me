@@ -29,10 +29,12 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<Review> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
 
     @Query(value = """
-            SELECT r.id FROM review r
-            WHERE r.review_group_id = :reviewGroupId
-            ORDER BY r.id DESC
-            LIMIT 1
+            SELECT NOT EXISTS (
+                SELECT 1
+                FROM review r
+                WHERE r.review_group_id = :reviewGroupId
+                  AND r.id < :smallestReviewId
+            )
             """, nativeQuery = true)
-    Long findLastReviewIdByReviewGroupId(long reviewGroupId);
+    boolean isSmallestReviewIdByReviewGroupId(long reviewGroupId, long smallestReviewId);
 }
