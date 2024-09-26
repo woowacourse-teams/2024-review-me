@@ -65,8 +65,4 @@ public class Section {
     public boolean isVisibleBySelectedOptionIds(Collection<Long> selectedOptionIds) {
         return visibleType == VisibleType.ALWAYS || selectedOptionIds.contains(onSelectedOptionId);
     }
-
-    public String convertHeader(String target, String replacement) {
-        return header.replace(target, replacement);
-    }
 }
