@@ -12,14 +12,14 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Template;
-import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
 import reviewme.template.repository.TemplateRepository;
+import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
 
 @Component
 @RequiredArgsConstructor
@@ -67,14 +67,30 @@ public class ReviewMapper {
             Question question = questionMap.get(answerRequest.questionId());
 
             if (question.getQuestionType() == QuestionType.TEXT) {
-                TextAnswer textAnswer = answerMapper.mapToTextAnswer(answerRequest);
-                textAnswers.add(textAnswer);
+                addIfTextAnswerExists(answerRequest, question, textAnswers);
             }
 
             if (question.getQuestionType() == QuestionType.CHECKBOX) {
-                CheckboxAnswer checkboxAnswer = answerMapper.mapToCheckBoxAnswer(answerRequest);
-                checkboxAnswers.add(checkboxAnswer);
+                addIfCheckBoxAnswerExists(answerRequest, question, checkboxAnswers);
             }
+        }
+    }
+
+    private void addIfTextAnswerExists(ReviewAnswerRequest answerRequest,
+                                       Question question,
+                                       List<TextAnswer> textAnswers) {
+        if (question.isRequired() || answerRequest.hasTextAnswer()) {
+            TextAnswer textAnswer = answerMapper.mapToTextAnswer(answerRequest);
+            textAnswers.add(textAnswer);
+        }
+    }
+
+    private void addIfCheckBoxAnswerExists(ReviewAnswerRequest answerRequest,
+                                           Question question,
+                                           List<CheckboxAnswer> checkboxAnswers) {
+        if (question.isRequired() || answerRequest.hasCheckboxAnswer()) {
+            CheckboxAnswer checkboxAnswer = answerMapper.mapToCheckBoxAnswer(answerRequest);
+            checkboxAnswers.add(checkboxAnswer);
         }
     }
 }

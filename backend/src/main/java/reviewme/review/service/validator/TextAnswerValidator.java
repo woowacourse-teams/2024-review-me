@@ -12,7 +12,6 @@ import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 @RequiredArgsConstructor
 public class TextAnswerValidator {
 
-    private static final int ZERO_LENGTH = 0;
     private static final int MIN_LENGTH = 20;
     private static final int MAX_LENGTH = 1_000;
 

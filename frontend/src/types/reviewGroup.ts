@@ -1,5 +1,6 @@
 export interface PasswordResponse {
-  hasAccess: boolean;
+  status: 'valid' | 'error' | 'invalid';
+  error?: Error;
 }
 export interface ReviewGroupData {
   revieweeName: string;

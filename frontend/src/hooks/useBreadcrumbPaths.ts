@@ -1,20 +1,26 @@
 import { useLocation } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 
 import { Path } from '@/components/common/Breadcrumb';
+import { ROUTE_PARAM } from '@/constants';
 import { ROUTE } from '@/constants/route';
-import { reviewRequestCodeAtom } from '@/recoil';
+
+import useSearchParamAndQuery from './useSearchParamAndQuery';
 
 const useBreadcrumbPaths = () => {
   const { pathname } = useLocation();
-  const storedReviewRequestCode = useRecoilValue(reviewRequestCodeAtom);
 
-  const breadcrumbPathList: Path[] = [
-    { pageName: '연결 페이지', path: `${ROUTE.reviewZone}/${storedReviewRequestCode}` },
-  ];
+  const { param: reviewRequestCode } = useSearchParamAndQuery({
+    paramKey: 'reviewRequestCode',
+  });
 
-  if (pathname === `/${ROUTE.reviewList}`) {
-    breadcrumbPathList.push({ pageName: '목록 페이지', path: pathname });
+  const { param: reviewId } = useSearchParamAndQuery({
+    paramKey: ROUTE_PARAM.reviewId,
+  });
+
+  const breadcrumbPathList: Path[] = [{ pageName: '연결 페이지', path: `${ROUTE.reviewZone}/${reviewRequestCode}` }];
+
+  if (pathname === `/${ROUTE.reviewList}/${reviewRequestCode}`) {
+    breadcrumbPathList.push({ pageName: '목록 페이지', path: `${ROUTE.reviewList}/${reviewRequestCode}` });
   }
 
   if (pathname.includes(`/${ROUTE.reviewWriting}/`)) {
@@ -27,8 +33,11 @@ const useBreadcrumbPaths = () => {
 
   if (pathname.includes(ROUTE.detailedReview)) {
     breadcrumbPathList.push(
-      { pageName: '목록 페이지', path: ROUTE.reviewList },
-      { pageName: '상세 페이지', path: pathname },
+      { pageName: '목록 페이지', path: `${ROUTE.reviewList}/${reviewRequestCode}` },
+      {
+        pageName: '상세 페이지',
+        path: `${ROUTE.detailedReview}/${reviewRequestCode}/${reviewId}`,
+      },
     );
   }
 
