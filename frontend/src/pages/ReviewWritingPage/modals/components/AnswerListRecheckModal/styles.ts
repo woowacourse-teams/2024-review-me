@@ -28,6 +28,10 @@ export const AnswerListContainer = styled.div`
       return `calc(${maxWidth} - (${smallPadding} * 2) - ${small})`;
     }};
   }
+
+  @media screen and (max-width: 330px) {
+    width: inherit;
+  }
 `;
 
 export const EmptyTextAnswer = styled.p`
