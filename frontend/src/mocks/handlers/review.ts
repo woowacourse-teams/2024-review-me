@@ -19,8 +19,6 @@ import {
 export const PAGE = {
   firstPageNumber: 1,
   firstPageStartIndex: 0,
-  defaultPageSize: 3,
-  additionalPageSize: 5,
 };
 
 const getDetailedReview = () =>
