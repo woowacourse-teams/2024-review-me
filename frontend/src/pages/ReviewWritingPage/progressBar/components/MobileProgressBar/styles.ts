@@ -76,8 +76,8 @@ export const StepButton = styled.button<StepButtonStyleProps>`
   transform: scale(${({ $isCurrentStep }) => ($isCurrentStep ? 1.1 : 1)});
 
   width: 100%;
-  min-width: 12rem;
-  max-width: 15rem;
+  min-width: 15rem;
+  max-width: 20rem;
   height: 3rem;
   margin: 0 ${({ $isCurrentStep }) => ($isCurrentStep ? '2.5rem' : '2rem')};
   padding: 0 1rem;
