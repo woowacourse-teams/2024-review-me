@@ -90,8 +90,8 @@ class ReviewListLookupServiceTest {
         reviewRepository.saveAll(List.of(review1, review2));
 
         // when
-        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(Long.MAX_VALUE, 5,
-                reviewRequestCode);
+        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(
+                Long.MAX_VALUE, 5, reviewRequestCode);
 
         // then
         assertAll(
