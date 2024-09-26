@@ -29,8 +29,7 @@ const PageContents = ({ groupAccessCode, reviewRequestCode }: PageContentsProps)
     navigate(`/user/detailed-review/${id}`);
   };
 
-  const projectName = data.pages[0].projectName;
-  const revieweeName = data.pages[0].revieweeName;
+  const { projectName, revieweeName } = data.pages[0];
   const reviews = data.pages.flatMap((page) => page.reviews);
 
   return (
@@ -50,7 +49,7 @@ const PageContents = ({ groupAccessCode, reviewRequestCode }: PageContentsProps)
                     createdAt={review.createdAt}
                     contentPreview={review.contentPreview}
                     categories={review.categories}
-                    onClick={() => handleReviewClick(review.reviewId)}
+                    handleClick={() => handleReviewClick(review.reviewId)}
                   />
                   <div ref={isLastReview ? lastReviewElementRef : null} style={{ height: '0.1rem' }} />
                 </UndraggableWrapper>

@@ -7,12 +7,12 @@ interface ReviewCardProps {
   createdAt: string;
   contentPreview: string;
   categories: Category[];
-  onClick: () => void;
+  handleClick: () => void;
 }
 
-const ReviewCard = ({ projectName, createdAt, contentPreview, categories, onClick }: ReviewCardProps) => {
+const ReviewCard = ({ projectName, createdAt, contentPreview, categories, handleClick }: ReviewCardProps) => {
   return (
-    <S.Layout onClick={onClick}>
+    <S.Layout onClick={handleClick}>
       <S.Header>
         <S.HeaderContent>
           <div>
