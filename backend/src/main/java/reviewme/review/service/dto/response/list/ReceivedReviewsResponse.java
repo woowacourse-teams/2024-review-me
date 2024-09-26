@@ -6,6 +6,7 @@ public record ReceivedReviewsResponse(
         String revieweeName,
         String projectName,
         long lastReviewId,
+        boolean isLastPage,
         List<ReviewListElementResponse> reviews
 ) {
 }
