@@ -3,6 +3,8 @@ package reviewme.api;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -12,11 +14,10 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
+import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
-import reviewme.reviewgroup.service.dto.CheckValidAccessResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
@@ -90,9 +91,6 @@ class ReviewGroupApiTest extends ApiTest {
 
     @Test
     void 리뷰_그룹_코드와_액세스_코드로_일치_여부를_판단한다() {
-        BDDMockito.given(reviewGroupService.checkGroupAccessCode(any(CheckValidAccessRequest.class)))
-                .willReturn(new CheckValidAccessResponse(true));
-
         String request = """
                 {
                     "reviewRequestCode": "ABCD1234",
@@ -105,14 +103,14 @@ class ReviewGroupApiTest extends ApiTest {
                 fieldWithPath("groupAccessCode").description("그룹 접근 코드 (비밀번호)")
         };
 
-        FieldDescriptor[] responseFieldDescriptors = {
-                fieldWithPath("hasAccess").description("코드 일치 여부 (비밀번호 일치)")
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 ID")
         };
 
         RestDocumentationResultHandler handler = document(
                 "review-group-check-access",
                 requestFields(requestFieldDescriptors),
-                responseFields(responseFieldDescriptors)
+                responseCookies(cookieDescriptors)
         );
 
         givenWithSpec().log().all()
@@ -120,6 +118,7 @@ class ReviewGroupApiTest extends ApiTest {
                 .when().post("/v2/groups/check")
                 .then().log().all()
                 .apply(handler)
-                .statusCode(200);
+                .cookie("JSESSIONID")
+                .statusCode(204);
     }
 }

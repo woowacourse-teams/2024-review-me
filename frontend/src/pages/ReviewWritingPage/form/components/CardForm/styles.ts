@@ -53,6 +53,20 @@ export const RevieweeName = styled.span`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
+export const NormalProgressBar = styled.div`
+  ${media.small} {
+    display: none;
+  }
+`;
+
+export const MiniProgressBar = styled.div`
+  display: none;
+
+  ${media.small} {
+    display: block;
+  }
+`;
+
 export const ConfirmModalMessage = styled.div`
   display: flex;
   flex-direction: column;

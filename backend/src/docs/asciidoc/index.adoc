@@ -24,8 +24,8 @@ include::create-review.adoc[]
 
 === 리뷰 단건 조회
 
-include::review-list.adoc[]
+include::review-detail.adoc[]
 
 === 리뷰 목록 조회
 
-include::review-detail.adoc[]
+include::review-list.adoc[]

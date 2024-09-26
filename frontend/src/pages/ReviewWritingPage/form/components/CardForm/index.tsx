@@ -12,6 +12,7 @@ import {
 } from '@/pages/ReviewWritingPage/form/hooks';
 import { CardFormModalContainer } from '@/pages/ReviewWritingPage/modals/components';
 import useCardFormModal from '@/pages/ReviewWritingPage/modals/hooks/useCardFormModal';
+import MobileProgressBar from '@/pages/ReviewWritingPage/progressBar/components/MobileProgressBar';
 import ProgressBar from '@/pages/ReviewWritingPage/progressBar/components/ProgressBar';
 import { CardSlider } from '@/pages/ReviewWritingPage/slider/components';
 import { reviewRequestCodeAtom } from '@/recoil';
@@ -65,16 +66,21 @@ const CardForm = () => {
 
   return (
     <S.CardFormContainer>
-      <S.RevieweeDescription>
-        <S.ProjectInfoContainer>
-          <S.ProjectName>{projectName}</S.ProjectName>
-          <p>
-            <S.RevieweeName>{revieweeName}</S.RevieweeName>을(를) 리뷰해주세요!
-          </p>
-        </S.ProjectInfoContainer>
-      </S.RevieweeDescription>
       <S.CardForm>
-        <ProgressBar currentCardIndex={currentCardIndex} handleCurrentCardIndex={handleCurrentCardIndex} />
+        <S.RevieweeDescription>
+          <S.ProjectInfoContainer>
+            <S.ProjectName>{projectName}</S.ProjectName>
+            <p>
+              <S.RevieweeName>{revieweeName}</S.RevieweeName>을(를) 리뷰해주세요!
+            </p>
+          </S.ProjectInfoContainer>
+        </S.RevieweeDescription>
+        <S.NormalProgressBar>
+          <ProgressBar currentCardIndex={currentCardIndex} handleCurrentCardIndex={handleCurrentCardIndex} />
+        </S.NormalProgressBar>
+        <S.MiniProgressBar>
+          <MobileProgressBar currentCardIndex={currentCardIndex} handleCurrentCardIndex={handleCurrentCardIndex} />
+        </S.MiniProgressBar>
         <CardSlider
           currentCardIndex={currentCardIndex}
           handleCurrentCardIndex={handleCurrentCardIndex}
