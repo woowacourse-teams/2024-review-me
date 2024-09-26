@@ -153,4 +153,37 @@ class ReviewRepositoryTest {
             assertThat(actual).isEmpty();
         }
     }
+
+    @Test
+    void 아이디가_가장_큰_리뷰의_아이디를_반환한다() {
+        // given
+        Question question = questionRepository.save(서술형_필수_질문());
+        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+
+        Review review1 = reviewRepository.save(
+                new Review(template.getId(), reviewGroup.getId(), null, null));
+        Review review2 = reviewRepository.save(
+                new Review(template.getId(), reviewGroup.getId(), null, null));
+
+        // when
+        Long lastReviewId = reviewRepository.findLastReviewIdByReviewGroupId(reviewGroup.getId());
+
+        // then
+        assertThat(lastReviewId).isEqualTo(review2.getId());
+    }
+
+    @Test
+    void 그룹에_작성된_리뷰가_없으면_null을_반환한다() {
+        // given
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+
+        // when
+        Long lastReviewId = reviewRepository.findLastReviewIdByReviewGroupId(reviewGroup.getId());
+
+        // then
+        assertThat(lastReviewId).isNull();
+    }
 }
