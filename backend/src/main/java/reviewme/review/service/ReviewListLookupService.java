@@ -47,6 +47,6 @@ public class ReviewListLookupService {
             return true;
         }
 
-        return reviewRepository.isSmallestReviewIdByReviewGroupId(reviewGroup.getId(), calculateLastReviewId(elements));
+        return reviewRepository.isOldestReviewIdByReviewGroupId(reviewGroup.getId(), calculateLastReviewId(elements));
     }
 }

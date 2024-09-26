@@ -155,7 +155,7 @@ class ReviewRepositoryTest {
     }
 
     @Nested
-    class 주어진_아이디가_가장_작은_아이디인지_검사한다{
+    class 주어진_리뷰의_아이디가_가장_오래된_것인지_검사한다 {
 
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
@@ -169,29 +169,29 @@ class ReviewRepositoryTest {
                 new Review(template.getId(), reviewGroup.getId(), null, null));
 
         @Test
-        void 주어진_아이디가_가장_작은_경우() {
+        void 주어진_리뷰가_가장_오래된_경우() {
             // given
             long reviewGroupId = reviewGroup.getId();
             long reviewId = review1.getId();
 
             // when
-            boolean isSmallest = reviewRepository.isSmallestReviewIdByReviewGroupId(reviewGroupId, reviewId);
+            boolean isOldest = reviewRepository.isOldestReviewIdByReviewGroupId(reviewGroupId, reviewId);
 
             // then
-            assertThat(isSmallest).isTrue();
+            assertThat(isOldest).isTrue();
         }
 
         @Test
-        void 주어진_아이디가_가장_작지_않은_경우() {
+        void 주어진_리뷰가_가장_오래되지_않은_경우() {
             // given
             long reviewGroupId = reviewGroup.getId();
             long reviewId = review2.getId();
 
             // when
-            boolean isSmallest = reviewRepository.isSmallestReviewIdByReviewGroupId(reviewGroupId, reviewId);
+            boolean isOldest = reviewRepository.isOldestReviewIdByReviewGroupId(reviewGroupId, reviewId);
 
             // then
-            assertThat(isSmallest).isFalse();
+            assertThat(isOldest).isFalse();
         }
     }
 }
