@@ -129,14 +129,14 @@ class ReviewMapperTest {
         templateRepository.save(템플릿(List.of(section.getId())));
 
         String textAnswer = "답".repeat(20);
-        ReviewAnswerRequest requiredTextAnswerRequest = new ReviewAnswerRequest
-                (requiredTextQuestion.getId(), null, textAnswer);
-        ReviewAnswerRequest optionalTextAnswerRequest = new ReviewAnswerRequest
-                (optionalTextQuestion.getId(), null, "");
-        ReviewAnswerRequest requiredCheckBoxAnswerRequest = new ReviewAnswerRequest
-                (requeiredCheckBoxQuestion.getId(), List.of(optionItem1.getId()), null);
-        ReviewAnswerRequest optionalCheckBoxAnswerRequest = new ReviewAnswerRequest
-                (optionalCheckBoxQuestion.getId(), List.of(), null);
+        ReviewAnswerRequest requiredTextAnswerRequest = new ReviewAnswerRequest(
+                requiredTextQuestion.getId(), null, textAnswer);
+        ReviewAnswerRequest optionalTextAnswerRequest = new ReviewAnswerRequest(
+                optionalTextQuestion.getId(), null, "");
+        ReviewAnswerRequest requiredCheckBoxAnswerRequest = new ReviewAnswerRequest(
+                requeiredCheckBoxQuestion.getId(), List.of(optionItem1.getId()), null);
+        ReviewAnswerRequest optionalCheckBoxAnswerRequest = new ReviewAnswerRequest(
+                optionalCheckBoxQuestion.getId(), List.of(), null);
         ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(),
                 List.of(requiredTextAnswerRequest, optionalTextAnswerRequest,
                         requiredCheckBoxAnswerRequest, optionalCheckBoxAnswerRequest));
@@ -147,9 +147,11 @@ class ReviewMapperTest {
         // then
         assertAll(
                 () -> assertThat(review.getTextAnswers())
-                        .extracting(TextAnswer::getQuestionId).containsExactly(requiredTextQuestion.getId()),
+                        .extracting(TextAnswer::getQuestionId)
+                        .containsExactly(requiredTextQuestion.getId()),
                 () -> assertThat(review.getCheckboxAnswers())
-                        .extracting(CheckboxAnswer::getQuestionId).containsExactly(requeiredCheckBoxQuestion.getId())
+                        .extracting(CheckboxAnswer::getQuestionId)
+                        .containsExactly(requeiredCheckBoxQuestion.getId())
         );
     }
 
