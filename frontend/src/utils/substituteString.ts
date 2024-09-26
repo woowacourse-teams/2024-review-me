@@ -22,7 +22,7 @@ const substituteString = ({ content, variables }: SubstituteStringProps) => {
       return value + `${particleWithFinalConsonant}(${particleWithoutFinalConsonant})`;
     }
 
-    if (value !== undefined && particleWithoutFinalConsonant && particleWithFinalConsonant) {
+    if (!value && particleWithoutFinalConsonant && particleWithFinalConsonant) {
       return value + (hasFinalConsonant(value) ? particleWithFinalConsonant : particleWithoutFinalConsonant);
     }
     return value;
