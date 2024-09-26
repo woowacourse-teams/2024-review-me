@@ -20,7 +20,7 @@ export const AnswerListContainer = styled.div`
     }};
   }
 
-  ${media.xxSmall} {
+  @media screen and (max-width: 400px) {
     width: 100%;
   }
 `;
