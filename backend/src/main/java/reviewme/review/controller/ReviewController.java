@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reviewme.global.HeaderProperty;
-import reviewme.review.service.ReviewRegisterService;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
+import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
@@ -36,22 +35,18 @@ public class ReviewController {
 
     @GetMapping("/v2/reviews")
     public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
-            @RequestParam String reviewRequestCode,
-            @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode
+            @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
-        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(reviewRequestCode, groupAccessCode);
+        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/v2/reviews/{id}")
     public ResponseEntity<ReviewDetailResponse> findReceivedReviewDetail(
             @PathVariable long id,
-            @RequestParam String reviewRequestCode,
-            @HeaderProperty(GROUP_ACCESS_CODE_HEADER) String groupAccessCode
+            @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
-        ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail(
-                id, reviewRequestCode, groupAccessCode
-        );
+        ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail(id, reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 }

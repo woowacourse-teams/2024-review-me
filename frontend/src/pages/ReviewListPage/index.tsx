@@ -1,15 +1,8 @@
-import { useRecoilValue } from 'recoil';
-
-import { ErrorSuspenseContainer } from '@/components';
-import { useGroupAccessCode } from '@/hooks';
-import { reviewRequestCodeAtom } from '@/recoil';
+import { ErrorSuspenseContainer, AuthAndServerErrorFallback } from '@/components';
 
 import PageContents from './components/PageContents';
 
 const ReviewListPage = () => {
-  const { groupAccessCode } = useGroupAccessCode();
-  const storedReviewRequestCode = useRecoilValue(reviewRequestCodeAtom);
-
   // NOTE: 무한스크롤 코드 일단 주석 처리
   // const { data, fetchNextPage, hasNextPage, isLoading, error } = useGetReviewList();
   // const observer = useRef<IntersectionObserver | null>(null);
@@ -31,13 +24,9 @@ const ReviewListPage = () => {
   // );
 
   return (
-    <>
-      {groupAccessCode && storedReviewRequestCode && (
-        <ErrorSuspenseContainer>
-          <PageContents groupAccessCode={groupAccessCode} reviewRequestCode={storedReviewRequestCode} />
-        </ErrorSuspenseContainer>
-      )}
-    </>
+    <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
+      <PageContents />
+    </ErrorSuspenseContainer>
   );
 };
 

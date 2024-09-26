@@ -121,9 +121,9 @@ describe('프로그레스 바 테스트', () => {
 
           return newMap;
         });
-      });
 
-      expect(result.current.stepList[1].isDone).toBeTruthy();
+        expect(result.current.stepList[1].isDone).toBeTruthy();
+      });
     });
 
     it('현재 카드의 질문 중 하나라도 답변이 유효하지 않다면, isDone의 값은 거짓이다.', async () => {

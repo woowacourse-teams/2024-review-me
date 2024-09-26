@@ -34,17 +34,15 @@ export const postReviewApi = async (formResult: ReviewWritingFormResult) => {
 
 interface GetDetailedReviewApi {
   reviewId: number;
-  groupAccessCode: string;
-  reviewRequestCode: string;
 }
 // 상세 리뷰
-export const getDetailedReviewApi = async ({ reviewId, groupAccessCode, reviewRequestCode }: GetDetailedReviewApi) => {
-  const response = await fetch(endPoint.gettingDetailedReview(reviewId, reviewRequestCode), {
+export const getDetailedReviewApi = async ({ reviewId }: GetDetailedReviewApi) => {
+  const response = await fetch(endPoint.gettingDetailedReview(reviewId), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      GroupAccessCode: groupAccessCode,
     },
+    credentials: 'include',
   });
 
   if (!response.ok) {
@@ -55,13 +53,13 @@ export const getDetailedReviewApi = async ({ reviewId, groupAccessCode, reviewRe
   return data as DetailReviewData;
 };
 
-export const getReviewListApi = async (groupAccessCode: string, reviewRequestCode: string) => {
-  const response = await fetch(endPoint.gettingReviewList(reviewRequestCode), {
+export const getReviewListApi = async () => {
+  const response = await fetch(endPoint.gettingReviewList, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      GroupAccessCode: groupAccessCode,
     },
+    credentials: 'include',
   });
 
   if (!response.ok) {
