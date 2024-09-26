@@ -65,4 +65,9 @@ public class Section {
     public boolean isVisibleBySelectedOptionIds(Collection<Long> selectedOptionIds) {
         return visibleType == VisibleType.ALWAYS || selectedOptionIds.contains(onSelectedOptionId);
     }
+
+    public boolean containsQuestionId(long questionId) {
+        return questionIds.stream()
+                .anyMatch(sectionQuestion -> sectionQuestion.hasQuestionId(questionId));
+    }
 }

@@ -68,6 +68,7 @@ public class ReviewDetailMapper {
                                                        Map<Long, OptionGroup> optionGroupsByQuestion,
                                                        Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
         List<QuestionAnswerResponse> questionResponses = questions.stream()
+                .filter(question -> section.containsQuestionId(question.getId()))
                 .filter(question -> review.hasAnsweredQuestion(question.getId()))
                 .map(question -> mapToQuestionResponse(
                         review, question, optionGroupsByQuestion, optionItemsByOptionGroup)
