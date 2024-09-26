@@ -6,7 +6,7 @@ export const REVIEW_LIST: ReviewList = {
   lastReviewId: 12,
   reviews: [
     {
-      reviewId: 5,
+      reviewId: 1,
       createdAt: '2024-07-24',
       contentPreview: `1. 물론 시중에 출간되어 있는 책들로 공부하는 것도 큰 장점이지만 더 깊은 공부를 하고 싶을 때 공식 문서를 확인해보는 것이 좋기 때문에, 저 개인적인 생각으로는 언어 공부를 아예 처음 입문하시는 분들은 한국에서 출간된 개발 서적으로 공부를 시작하시다가 모르는 부분이.....`,
       categories: [

@@ -6,6 +6,7 @@ export const CREATED_REVIEW_REQUEST_CODE = {
 
 export const VALIDATED_PASSWORD = '1234';
 
+export const MOCK_AUTH_TOKEN_NAME = 'mockAuthToken';
 /**
  * 리뷰 연결 페이지에서 사용하는 리뷰 그룹 정보
  */

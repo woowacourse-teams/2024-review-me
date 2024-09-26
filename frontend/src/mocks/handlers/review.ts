@@ -14,6 +14,7 @@ import {
   REVIEW_REQUEST_CODE,
   REVIEW_QUESTION_DATA,
   REVIEW_LIST,
+  MOCK_AUTH_TOKEN_NAME,
 } from '../mockData';
 
 export const PAGE = {
@@ -22,7 +23,12 @@ export const PAGE = {
 };
 
 const getDetailedReview = () =>
-  http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), async ({ request }) => {
+  http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), async ({ request, cookies }) => {
+    // authToken 쿠키 확인
+    if (!cookies[MOCK_AUTH_TOKEN_NAME]) {
+      return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
+    }
+
     //요청 url에서 reviewId, memberId 추출
     const url = new URL(request.url);
     const urlReviewId = url.pathname.replace(`/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}/`, '');
@@ -48,9 +54,12 @@ const getDataToWriteReview = () =>
     return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
   });
 
-const getReviewList = (reviewRequestCode: string, lastReviewId: number | null, size: number) => {
-  return http.get(endPoint.gettingReviewList(reviewRequestCode, lastReviewId, size), async ({ request }) => {
-    const url = new URL(request.url);
+const getReviewList = (lastReviewId: number | null, size: number) => {
+  return http.get(endPoint.gettingReviewList(lastReviewId, size), async ({ cookies }) => {
+    // authToken 쿠키 확인
+    if (!cookies[MOCK_AUTH_TOKEN_NAME]) return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
+
+    // const url = new URL(request.url);
 
     const lastReviewIdParam = url.searchParams.get('lastReviewId');
     const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
@@ -80,6 +89,6 @@ const postReview = () =>
     return HttpResponse.json({ message: 'post 성공' }, { status: 201 });
   });
 
-const reviewHandler = [getDetailedReview(), getReviewList('ABCD1234', null, 10), getDataToWriteReview(), postReview()];
+const reviewHandler = [getDetailedReview(), getReviewList(null, 10), getDataToWriteReview(), postReview()];
 
 export default reviewHandler;

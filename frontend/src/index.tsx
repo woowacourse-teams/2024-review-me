@@ -82,11 +82,11 @@ const router = createBrowserRouter([
       { path: `${ROUTE.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewWritingPage /> },
       { path: ROUTE.reviewWritingComplete, element: <ReviewWritingCompletePage /> },
       {
-        path: ROUTE.reviewList,
+        path: `${ROUTE.reviewList}/:${ROUTE_PARAM.reviewRequestCode}`,
         element: <ReviewListPage />,
       },
       {
-        path: `${ROUTE.detailedReview}/:${ROUTE_PARAM.reviewId}`,
+        path: `${ROUTE.detailedReview}/:${ROUTE_PARAM.reviewRequestCode}/:${ROUTE_PARAM.reviewId}`,
         element: <DetailedReviewPage />,
       },
       {

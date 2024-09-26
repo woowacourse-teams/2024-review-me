@@ -25,12 +25,11 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
-import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.exception.ReviewNotFoundByIdAndGroupException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -77,22 +76,8 @@ class ReviewDetailLookupServiceTest {
 
         // when, then
         assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(
-                review.getId(), "wrong" + reviewRequestCode, groupAccessCode
+                review.getId(), "wrong" + reviewRequestCode
         )).isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
-    }
-
-    @Test
-    void 잘못된_그룹_액세스_코드로_리뷰를_조회할_경우_예외가_발생한다() {
-        // given
-        String reviewRequestCode = "review";
-        String groupAccessCode = "preview";
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
-        Review review = reviewRepository.save(new Review(0, reviewGroup.getId(), List.of(), List.of()));
-
-        // when, then
-        assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(
-                review.getId(), reviewGroup.getReviewRequestCode(), "wrong" + reviewGroup.getGroupAccessCode()
-        )).isInstanceOf(ReviewGroupUnauthorizedException.class);
     }
 
     @Test
@@ -111,10 +96,10 @@ class ReviewDetailLookupServiceTest {
         // when, then
         assertAll(
                 () -> assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(
-                        review2.getId(), reviewRequestCode1, groupAccessCode1
+                        review2.getId(), reviewRequestCode1
                 )).isInstanceOf(ReviewNotFoundByIdAndGroupException.class),
                 () -> assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(
-                        review1.getId(), reviewRequestCode2, groupAccessCode2
+                        review1.getId(), reviewRequestCode2
                 )).isInstanceOf(ReviewNotFoundByIdAndGroupException.class)
         );
     }
@@ -149,7 +134,7 @@ class ReviewDetailLookupServiceTest {
 
         // when
         ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
-                review.getId(), reviewRequestCode, groupAccessCode
+                review.getId(), reviewRequestCode
         );
 
         // then
@@ -178,7 +163,7 @@ class ReviewDetailLookupServiceTest {
 
             // when
             ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
-                    review.getId(), reviewRequestCode, groupAccessCode
+                    review.getId(), reviewRequestCode
             );
 
             // then
@@ -208,7 +193,7 @@ class ReviewDetailLookupServiceTest {
 
             // when
             ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
-                    review.getId(), reviewRequestCode, groupAccessCode
+                    review.getId(), reviewRequestCode
             );
 
             // then

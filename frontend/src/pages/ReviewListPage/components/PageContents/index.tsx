@@ -2,7 +2,8 @@ import { useNavigate } from 'react-router';
 
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import ReviewCard from '@/components/ReviewCard';
-import { useGetReviewList } from '@/hooks';
+import { ROUTE } from '@/constants/route';
+import { useGetReviewList, useSearchParamAndQuery } from '@/hooks';
 
 import { useInfiniteScroll } from '../../hooks';
 import ReviewEmptySection from '../ReviewEmptySection';
@@ -10,23 +11,19 @@ import ReviewInfoSection from '../ReviewInfoSection';
 
 import * as S from './styles';
 
-interface PageContentsProps {
-  groupAccessCode: string;
-  reviewRequestCode: string;
-}
-
-const PageContents = ({ groupAccessCode, reviewRequestCode }: PageContentsProps) => {
+const PageContents = () => {
   const navigate = useNavigate();
 
-  const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useGetReviewList(
-    groupAccessCode,
-    reviewRequestCode,
-  );
+  const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useGetReviewList();
+
+  const { param: reviewRequestCode } = useSearchParamAndQuery({
+    paramKey: 'reviewRequestCode',
+  });
 
   const lastReviewElementRef = useInfiniteScroll({ fetchNextPage, hasNextPage, isLoading });
 
   const handleReviewClick = (id: number) => {
-    navigate(`/user/detailed-review/${id}`);
+    navigate(`/${ROUTE.detailedReview}/${reviewRequestCode}/${id}`);
   };
 
   const { projectName, revieweeName } = data.pages[0];
