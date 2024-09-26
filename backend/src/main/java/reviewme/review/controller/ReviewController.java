@@ -35,7 +35,7 @@ public class ReviewController {
     }
 
     @GetMapping("/v2/reviews")
-    public ResponseEntity<ReceivedReviewsResponse> findReceivedReviewsWithPagination(
+    public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
             @RequestParam(required = false) Long lastReviewId,
             @RequestParam(required = false) Integer size,
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
