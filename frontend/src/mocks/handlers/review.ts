@@ -14,6 +14,7 @@ import {
   REVIEW_REQUEST_CODE,
   REVIEW_QUESTION_DATA,
   REVIEW_LIST,
+  MOCK_AUTH_TOKEN_NAME,
 } from '../mockData';
 
 export const PAGE = {
@@ -24,7 +25,12 @@ export const PAGE = {
 };
 
 const getDetailedReview = () =>
-  http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), async ({ request }) => {
+  http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), async ({ request, cookies }) => {
+    // authToken 쿠키 확인
+    if (!cookies[MOCK_AUTH_TOKEN_NAME]) {
+      return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
+    }
+
     //요청 url에서 reviewId, memberId 추출
     const url = new URL(request.url);
     const urlReviewId = url.pathname.replace(`/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}/`, '');
@@ -51,7 +57,10 @@ const getDataToWriteReview = () =>
   });
 
 const getReviewList = () => {
-  return http.get(endPoint.gettingReviewList, async () => {
+  return http.get(endPoint.gettingReviewList, async ({ cookies }) => {
+    // authToken 쿠키 확인
+    if (!cookies[MOCK_AUTH_TOKEN_NAME]) return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
+
     // const url = new URL(request.url);
 
     // const lastReviewId = Number(url.searchParams.get('lastReviewId'));
@@ -73,7 +82,6 @@ const getReviewList = () => {
     //   lastReviewId: isLastPage ? null : lastReviewId + limit,
     //   reviews: paginatedReviews,
     // });
-
 
     return HttpResponse.json(REVIEW_LIST);
   });
