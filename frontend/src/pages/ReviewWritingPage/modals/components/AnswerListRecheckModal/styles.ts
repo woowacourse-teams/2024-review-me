@@ -14,14 +14,19 @@ export const AnswerListContainer = styled.div`
   ${media.medium} {
     width: ${({ theme }) => {
       const { maxWidth, padding } = theme.contentModalSize;
-      const { scrollbarWidth } = theme;
+      const { basic } = theme.scrollbarWidth;
 
-      return `calc(${maxWidth} - (${padding} * 2) - ${scrollbarWidth})`;
+      return `calc(${maxWidth} - (${padding} * 2) - ${basic})`;
     }};
   }
 
-  @media screen and (max-width: 400px) {
-    width: 100%;
+  ${media.xSmall} {
+    width: ${({ theme }) => {
+      const { maxWidth, smallPadding } = theme.contentModalSize;
+      const { small } = theme.scrollbarWidth;
+
+      return `calc(${maxWidth} - (${smallPadding} * 2) - ${small})`;
+    }};
   }
 `;
 
