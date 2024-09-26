@@ -10,10 +10,13 @@ class PageSizeTest {
 
     @Test
     void 유효한_값이_들어오면_그_값을_설정한다() {
+        // given
         int size = 10;
 
+        // when
         PageSize pageSize = new PageSize(size);
 
+        // then
         assertEquals(size, pageSize.getSize());
     }
 
