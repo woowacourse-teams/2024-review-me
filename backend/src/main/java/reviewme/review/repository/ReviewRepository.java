@@ -30,12 +30,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<Review> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
 
     @Query(value = """
-            SELECT EXISTS (
-                SELECT 1 FROM review r
-                WHERE r.review_group_id = :reviewGroupId
-                AND r.id < :reviewId
-                AND CAST(r.created_at AS DATE) <= :createdDate
-            )
+            SELECT COUNT(r.id) > 0 FROM review r
+            WHERE r.review_group_id = :reviewGroupId
+            AND r.id < :reviewId
+            AND CAST(r.created_at AS DATE) <= :createdDate
             """, nativeQuery = true)
     boolean existsOlderReviewInGroup(long reviewGroupId, long reviewId, LocalDate createdDate);
 }
