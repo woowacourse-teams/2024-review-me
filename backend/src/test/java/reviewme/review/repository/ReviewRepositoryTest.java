@@ -154,9 +154,9 @@ class ReviewRepositoryTest {
         }
     }
 
-    @Test
-    void 아이디가_가장_큰_리뷰의_아이디를_반환한다() {
-        // given
+    @Nested
+    class 주어진_아이디가_가장_작은_아이디인지_검사한다{
+
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
@@ -168,22 +168,30 @@ class ReviewRepositoryTest {
         Review review2 = reviewRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), null, null));
 
-        // when
-        Long lastReviewId = reviewRepository.findLastReviewIdByReviewGroupId(reviewGroup.getId());
+        @Test
+        void 주어진_아이디가_가장_작은_경우() {
+            // given
+            long reviewGroupId = reviewGroup.getId();
+            long reviewId = review1.getId();
 
-        // then
-        assertThat(lastReviewId).isEqualTo(review2.getId());
-    }
+            // when
+            boolean isSmallest = reviewRepository.isSmallestReviewIdByReviewGroupId(reviewGroupId, reviewId);
 
-    @Test
-    void 그룹에_작성된_리뷰가_없으면_null을_반환한다() {
-        // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+            // then
+            assertThat(isSmallest).isTrue();
+        }
 
-        // when
-        Long lastReviewId = reviewRepository.findLastReviewIdByReviewGroupId(reviewGroup.getId());
+        @Test
+        void 주어진_아이디가_가장_작지_않은_경우() {
+            // given
+            long reviewGroupId = reviewGroup.getId();
+            long reviewId = review2.getId();
 
-        // then
-        assertThat(lastReviewId).isNull();
+            // when
+            boolean isSmallest = reviewRepository.isSmallestReviewIdByReviewGroupId(reviewGroupId, reviewId);
+
+            // then
+            assertThat(isSmallest).isFalse();
+        }
     }
 }
