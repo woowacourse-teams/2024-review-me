@@ -58,8 +58,12 @@ const endPoint = {
   gettingDetailedReview: (reviewId: number) => `${DETAILED_REVIEW_API_URL}/${reviewId}`,
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
-  gettingReviewList: (lastReviewId: number | null, size: number) =>
-    `${REVIEW_LIST_API_URL}?lastReviewId=${lastReviewId}&size=${size}`,
+  gettingReviewList: (lastReviewId: number | null, size: number) => {
+    if (lastReviewId) {
+      return `${REVIEW_LIST_API_URL}?lastReviewId=${lastReviewId}&size=${size}`;
+    }
+    return `${REVIEW_LIST_API_URL}?size=${size}`;
+  },
   postingDataForReviewRequestCode: `${serverUrl}/${VERSION2}/groups`,
   checkingPassword: `${serverUrl}/${VERSION2}/${REVIEW_PASSWORD_API_PARAMS.resource}/${REVIEW_PASSWORD_API_PARAMS.queryString.check}`,
   gettingReviewGroupData: (reviewRequestCode: string) =>
