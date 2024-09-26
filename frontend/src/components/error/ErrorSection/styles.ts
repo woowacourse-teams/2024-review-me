@@ -39,8 +39,8 @@ export const ErrorLogoWrapper = styled.div`
 `;
 
 export const ErrorMessage = styled.span`
+  width: max-content;
   font-size: 2rem;
-
   ${media.xSmall} {
     font-size: 1.6rem;
   }
