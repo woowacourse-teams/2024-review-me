@@ -12,20 +12,21 @@ export const Container = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: 100%;
-
   display: flex;
   flex-direction: column;
   gap: 3.5rem;
   align-items: center;
   justify-content: center;
+
+  width: 100%;
 `;
 
 export const ReviewComplete = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 1rem;
+  align-items: center;
+  justify-content: center;
+
   width: 100%;
 
   img {
@@ -56,8 +57,8 @@ export const HomeIcon = styled.img`
 `;
 
 export const HomeText = styled.p`
-  margin-left: 0.5rem;
   height: 1.6rem;
+  margin-left: 0.5rem;
 
   ${media.xSmall} {
     height: 1.2rem;

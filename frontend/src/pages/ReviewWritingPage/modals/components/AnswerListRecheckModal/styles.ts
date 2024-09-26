@@ -3,8 +3,8 @@ import styled from '@emotion/styled';
 import media from '@/utils/media';
 
 export const AnswerListModalContent = styled.div`
-  width: 100%;
   overflow-x: hidden;
+  width: 100%;
 `;
 
 export const AnswerListContainer = styled.div`
