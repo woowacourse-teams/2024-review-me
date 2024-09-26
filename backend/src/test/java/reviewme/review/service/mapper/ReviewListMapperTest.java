@@ -46,7 +46,7 @@ class ReviewListMapperTest {
     private ReviewRepository reviewRepository;
 
     @Test
-    void 리뷰_그룹에_있는_리뷰를_반환() {
+    void 리뷰_그룹에_있는_리뷰를_반환한다() {
         // given - 리뷰 그룹
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
