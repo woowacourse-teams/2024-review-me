@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class PageSize {
 
-    private static final int DEFAULT_SIZE = 5;
+    private static final int DEFAULT_SIZE = 10;
     private static final int MAX_SIZE = 50;
 
     private final int size;
