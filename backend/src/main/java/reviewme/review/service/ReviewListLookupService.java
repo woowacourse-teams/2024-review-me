@@ -22,13 +22,14 @@ public class ReviewListLookupService {
 
     @Transactional(readOnly = true)
     public ReceivedReviewsResponse getReceivedReviews(String reviewRequestCode,
-                                                      long lastReviewId, Integer size) {
+                                                      Long lastReviewId, Integer size) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
+        LastReviewId lastId = new LastReviewId(lastReviewId);
         PageSize pageSize = new PageSize(size);
         List<ReviewListElementResponse> reviewListElements
-                = reviewListMapper.mapToReviewList(reviewGroup, lastReviewId, pageSize.getSize());
+                = reviewListMapper.mapToReviewList(reviewGroup, lastId.getId(), pageSize.getSize());
         int totalSize = reviewRepository.countByReviewGroupId(reviewGroup.getId());
         long newLastReviewId = calculateLastReviewId(reviewListElements);
         return new ReceivedReviewsResponse(

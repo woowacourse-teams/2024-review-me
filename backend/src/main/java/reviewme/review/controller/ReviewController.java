@@ -40,11 +40,8 @@ public class ReviewController {
             @RequestParam(required = false) Integer size,
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
-        if (lastReviewId == null) {
-            lastReviewId = Long.MAX_VALUE;
-        }
-        ReceivedReviewsResponse response
-                = reviewListLookupService.getReceivedReviews(reviewRequestCode, lastReviewId, size);
+        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(
+                reviewRequestCode, lastReviewId, size);
         return ResponseEntity.ok(response);
     }
 
