@@ -75,7 +75,6 @@ class ReviewRepositoryTest {
         private final Review review3 = reviewRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), null, null));
 
-
         @Test
         void 페이징_크기보다_적은_수의_리뷰가_등록되었으면_그_크기만큼의_리뷰만_반환한다() {
             // given
@@ -106,6 +105,22 @@ class ReviewRepositoryTest {
             assertThat(actual)
                     .hasSize(2)
                     .containsExactly(review3, review2);
+        }
+
+        @Test
+        void 마지막_리뷰_아이디가_주어지지_않으면_가장_최신순으로_리뷰를_반환한다() {
+            // given
+            int limit = 5;
+            Long lastReviewId = null;
+
+            // when
+            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
+                    reviewGroup.getId(), lastReviewId, limit);
+
+            // then
+            assertThat(actual)
+                    .hasSize(3)
+                    .containsExactly(review3, review2, review1);
         }
 
         @Test

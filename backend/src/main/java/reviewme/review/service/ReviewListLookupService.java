@@ -23,10 +23,9 @@ public class ReviewListLookupService {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
-        LastReviewId lastId = new LastReviewId(lastReviewId);
         PageSize pageSize = new PageSize(size);
         List<ReviewListElementResponse> reviewListResponse
-                = reviewListMapper.mapToReviewList(reviewGroup, lastId.getId(), pageSize.getSize());
+                = reviewListMapper.mapToReviewList(reviewGroup, lastReviewId, pageSize.getSize());
         long newLastReviewId = calculateLastReviewId(reviewListResponse);
         return new ReceivedReviewsResponse(
                 reviewGroup.getReviewee(), reviewGroup.getProjectName(), newLastReviewId, reviewListResponse

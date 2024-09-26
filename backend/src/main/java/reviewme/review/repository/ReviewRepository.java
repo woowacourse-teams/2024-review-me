@@ -20,11 +20,11 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query(value = """
             SELECT r.* FROM review r
             WHERE r.review_group_id = :reviewGroupId
-            AND r.id < :lastReviewId
+            AND (:lastReviewId IS NULL OR r.id < :lastReviewId)
             ORDER BY r.created_at DESC 
             LIMIT :limit
             """, nativeQuery = true)
-    List<Review> findByReviewGroupIdWithLimit(long reviewGroupId, long lastReviewId, int limit);
+    List<Review> findByReviewGroupIdWithLimit(long reviewGroupId, Long lastReviewId, int limit);
 
     Optional<Review> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
 
