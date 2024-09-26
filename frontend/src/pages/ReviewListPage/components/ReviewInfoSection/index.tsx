@@ -8,14 +8,14 @@ interface ReviewInfoSectionProps {
 }
 
 const ReviewInfoSection = ({ projectName, revieweeName }: ReviewInfoSectionProps) => {
-  const REVIEW_MESSAGE_SUFFIX = `${calculateParticle({ target: revieweeName, particles: { withFinalConsonant: '이', withoutFinalConsonant: '가' } })} 받은 리뷰 목록이에요`;
+  const reviewMessageSuffix = `${calculateParticle({ target: revieweeName, particles: { withFinalConsonant: '이', withoutFinalConsonant: '가' } })} 받은 리뷰 목록이에요`;
 
   return (
     <S.ReviewInfoContainer>
       <S.ProjectName>{projectName}</S.ProjectName>
       <S.RevieweeInfoWrapper>
         <S.RevieweeName>{revieweeName}</S.RevieweeName>
-        {REVIEW_MESSAGE_SUFFIX}
+        {reviewMessageSuffix}
       </S.RevieweeInfoWrapper>
     </S.ReviewInfoContainer>
   );
