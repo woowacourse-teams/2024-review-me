@@ -1,8 +1,3 @@
 ==== 리뷰 단건 조회
 
-operation::review-detail[snippets="curl-request,request-headers,path-parameters,http-response,response-fields"]
-
-
-==== 리뷰 단건 조회 (세션 사용)
-
 operation::review-detail-with-session[snippets="curl-request,request-cookies,path-parameters,http-response,response-fields"]
