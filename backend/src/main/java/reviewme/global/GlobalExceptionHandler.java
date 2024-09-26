@@ -1,5 +1,6 @@
 package reviewme.global;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -58,26 +59,26 @@ public class GlobalExceptionHandler {
 
     // Following exceptions are exceptions that occur in Spring
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ProblemDetail handleHttpRequestMethodNotSupportedException(Exception ex) {
-        logSpringException(ex);
+    public ProblemDetail handleHttpRequestMethodNotSupportedException(Exception ex, HttpServletRequest request) {
+        logSpringException(ex, request);
         return ProblemDetail.forStatusAndDetail(HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP 메서드입니다.");
     }
 
     @ExceptionHandler(HttpMediaTypeException.class)
-    public ProblemDetail handleHttpMediaTypeException(Exception ex) {
-        logSpringException(ex);
+    public ProblemDetail handleHttpMediaTypeException(Exception ex, HttpServletRequest request) {
+        logSpringException(ex, request);
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "잘못된 media type 입니다.");
     }
 
     @ExceptionHandler({MissingRequestValueException.class, MissingServletRequestPartException.class})
-    public ProblemDetail handleMissingRequestException(Exception ex) {
-        logSpringException(ex);
+    public ProblemDetail handleMissingRequestException(Exception ex, HttpServletRequest request) {
+        logSpringException(ex, request);
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "필수 요청 데이터가 누락되었습니다.");
     }
 
     @ExceptionHandler({ServletRequestBindingException.class, HttpMessageNotReadableException.class})
-    public ProblemDetail handleServletRequestBindingException(Exception ex) {
-        logSpringException(ex);
+    public ProblemDetail handleServletRequestBindingException(Exception ex, HttpServletRequest request) {
+        logSpringException(ex, request);
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "요청을 읽을 수 없습니다.");
     }
 
@@ -85,20 +86,20 @@ public class GlobalExceptionHandler {
             MethodValidationException.class, BindException.class,
             TypeMismatchException.class, HandlerMethodValidationException.class
     })
-    public ProblemDetail handleRequestFormatException(Exception ex) {
-        logSpringException(ex);
+    public ProblemDetail handleRequestFormatException(Exception ex, HttpServletRequest request) {
+        logSpringException(ex, request);
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "요청의 형식이 잘못되었습니다.");
     }
 
     @ExceptionHandler({NoHandlerFoundException.class, NoResourceFoundException.class})
-    public ProblemDetail handleNoHandlerFoundException(Exception ex) {
-        logSpringException(ex);
+    public ProblemDetail handleNoHandlerFoundException(Exception ex, HttpServletRequest request) {
+        logSpringException(ex, request);
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "잘못된 경로의 요청입니다.");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ProblemDetail handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        logSpringException(ex);
+    public ProblemDetail handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpServletRequest request) {
+        logSpringException(ex, request);
         List<FieldErrorResponse> fieldErrors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -116,7 +117,16 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
-    private void logSpringException(Exception ex) {
-        log.info("Spring error has occurred - {}: {}", ex.getClass().getSimpleName(), ex.getLocalizedMessage());
+    private void logSpringException(Exception ex, HttpServletRequest request) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(request.getMethod())
+                .append(" ")
+                .append(request.getRequestURI());
+        if (request.getQueryString() != null) {
+            sb.append("?").append(request.getQueryString());
+        }
+
+        log.info("Spring error has occurred - Request: {}, {}: {}",
+                sb, ex.getClass().getSimpleName(), ex.getLocalizedMessage());
     }
 }
