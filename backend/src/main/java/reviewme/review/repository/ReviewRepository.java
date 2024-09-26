@@ -31,11 +31,11 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query(value = """
             SELECT EXISTS (
-                    SELECT 1 FROM review r
-                    WHERE r.review_group_id = :reviewGroupId
-                    AND r.id < :reviewId
-                    AND CAST(r.created_at AS DATE) <= :createdDate
-                    )
+                SELECT 1 FROM review r
+                WHERE r.review_group_id = :reviewGroupId
+                AND r.id < :reviewId
+                AND CAST(r.created_at AS DATE) <= :createdDate
+            )
             """, nativeQuery = true)
     boolean existsOlderReviewInGroup(long reviewGroupId, long reviewId, LocalDate createdDate);
 }
