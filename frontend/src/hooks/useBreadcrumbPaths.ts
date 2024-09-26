@@ -27,7 +27,7 @@ const useBreadcrumbPaths = () => {
     breadcrumbPathList.push({ pageName: '작성 페이지', path: pathname });
   }
 
-  if (pathname === `/${ROUTE.reviewWritingComplete}`) {
+  if (pathname.includes(`/${ROUTE.reviewWritingComplete}`)) {
     breadcrumbPathList.push({ pageName: '작성 페이지', path: -1 }, { pageName: '작성 완료 페이지', path: pathname });
   }
 
