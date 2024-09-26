@@ -9,14 +9,15 @@ export const AnswerListContainer = styled.div`
   flex-direction: column;
   gap: 1.2rem;
 
-  width: ${({ theme }) => theme.formWidth};
+  width: calc(${({ theme }) => theme.formWidth}- 0.2rem);
+  margin-right: 0.2rem;
 
   ${media.medium} {
     width: ${({ theme }) => {
       const { maxWidth, padding } = theme.contentModalSize;
       const { basic } = theme.scrollbarWidth;
 
-      return `calc(${maxWidth} - (${padding} * 2) - ${basic})`;
+      return `calc(${maxWidth} - (${padding} * 2) - ${basic} - 0.2rem)`;
     }};
   }
 
@@ -25,12 +26,12 @@ export const AnswerListContainer = styled.div`
       const { maxWidth, smallPadding } = theme.contentModalSize;
       const { small } = theme.scrollbarWidth;
 
-      return `calc(${maxWidth} - (${smallPadding} * 2) - ${small})`;
+      return `calc(${maxWidth} - (${smallPadding} * 2) - ${small} - 0.2rem)`;
     }};
   }
 
   @media screen and (max-width: 330px) {
-    width: inherit;
+    width: calc(100% - 0.2rem);
   }
 `;
 
