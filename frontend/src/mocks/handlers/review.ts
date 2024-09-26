@@ -55,11 +55,11 @@ const getDataToWriteReview = () =>
   });
 
 const getReviewList = (lastReviewId: number | null, size: number) => {
-  return http.get(endPoint.gettingReviewList(lastReviewId, size), async ({ cookies }) => {
+  return http.get(endPoint.gettingReviewList(lastReviewId, size), async ({ request, cookies }) => {
     // authToken 쿠키 확인
     if (!cookies[MOCK_AUTH_TOKEN_NAME]) return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
 
-    // const url = new URL(request.url);
+    const url = new URL(request.url);
 
     const lastReviewIdParam = url.searchParams.get('lastReviewId');
     const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);

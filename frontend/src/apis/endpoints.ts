@@ -19,15 +19,11 @@ export const DETAILED_REVIEW_API_PARAMS = {
   resource: 'reviews',
   queryString: {
     memberId: 'memberId',
-    reviewRequestCode: 'reviewRequestCode',
   },
 };
 
 export const REVIEW_LIST_API_PARAMS = {
   resource: 'reviews',
-  queryString: {
-    reviewRequestCode: 'reviewRequestCode',
-  },
 };
 
 export const REVIEW_WRITING_API_PARAMS = {
@@ -59,7 +55,6 @@ export const REVIEW_GROUP_DATA_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_GROU
 
 const endPoint = {
   postingReview: `${serverUrl}/${VERSION2}/reviews`,
-  gettingReviewList: `${serverUrl}/${VERSION2}/reviews`,
   gettingDetailedReview: (reviewId: number) => `${DETAILED_REVIEW_API_URL}/${reviewId}`,
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
