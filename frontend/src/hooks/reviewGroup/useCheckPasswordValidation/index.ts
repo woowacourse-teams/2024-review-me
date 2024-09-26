@@ -26,7 +26,7 @@ const useCheckPasswordValidation = ({
     return result;
   };
 
-  const result = useQuery<PasswordResponse | Error>({
+  const result = useQuery<PasswordResponse>({
     queryKey: [GROUP_QUERY_KEY.password, groupAccessCode, reviewRequestCode],
     queryFn: () => fetchPasswordValidation({ groupAccessCode, reviewRequestCode }),
     enabled: !!groupAccessCode && !!reviewRequestCode,
@@ -37,22 +37,22 @@ const useCheckPasswordValidation = ({
    * 비밀번호 조회 결과에 따른 액션 핸들러
    */
   const handleResult = () => {
-    // case1. http 요청 실패
-    const { data, status } = result;
+    const { data, isLoading } = result;
 
-    if (status === 'pending') return;
+    if (isLoading) return;
 
-    if (data instanceof Error) {
-      return onError(data);
+    // 요청 성공
+    if (data?.status === 'valid') {
+      onSuccess();
     }
-    // case2 요청 성공
-    //  data 속 비밀번호 유효성 여부에 따른 액션
-    // 2-1 유효하지 않은 비밀번호
-    if (!data?.hasAccess) {
+    // 유효하지 않은 비밀번호
+    if (data?.status === 'invalid') {
       return onError(new Error(INVALID_REVIEW_PASSWORD_MESSAGE));
     }
-    // 2-2 유효한 비밀번호
-    onSuccess();
+    // 에러 처리
+    if (data?.status === 'error' && data?.error) {
+      return onError(data.error);
+    }
   };
 
   useEffect(() => {

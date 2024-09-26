@@ -16,7 +16,7 @@ const ErrorPage = () => {
 
   return (
     <PageLayout isNeedBreadCrumb={false}>
-      <ErrorSection errorMessage={ROUTE_ERROR_MESSAGE} handleReload={handleReload} handleGoHome={handleGoHome} />
+      <ErrorSection errorMessage={ROUTE_ERROR_MESSAGE} handleReload={handleReload} handleGoOtherPage={handleGoHome} />
     </PageLayout>
   );
 };

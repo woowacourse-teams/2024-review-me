@@ -7,10 +7,12 @@ const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
   const navigate = useNavigate();
   const handleGoHome = () => {
     resetErrorBoundary();
-    navigate('/'); //TODO : 홈 페이지 경로가 결정되면 변경
+    navigate('/');
   };
 
-  return <ErrorSection errorMessage={error.message} handleGoHome={handleGoHome} handleReload={resetErrorBoundary} />;
+  return (
+    <ErrorSection errorMessage={error.message} handleGoOtherPage={handleGoHome} handleReload={resetErrorBoundary} />
+  );
 };
 
 export default ErrorFallback;
