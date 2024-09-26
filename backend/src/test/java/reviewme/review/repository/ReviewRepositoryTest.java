@@ -177,7 +177,7 @@ class ReviewRepositoryTest {
             LocalDate createdAt = firstReview.getCreatedAt().toLocalDate();
 
             // when
-            boolean isOlderExist = reviewRepository.existOlderReviewInGroup(reviewGroupId, reviewId, createdAt);
+            boolean isOlderExist = reviewRepository.existsOlderReviewInGroup(reviewGroupId, reviewId, createdAt);
 
             // then
             assertThat(isOlderExist).isFalse();
@@ -191,7 +191,7 @@ class ReviewRepositoryTest {
             LocalDate createdAt = secondReview.getCreatedAt().toLocalDate();
 
             // when
-            boolean isOlderExist = reviewRepository.existOlderReviewInGroup(reviewGroupId, reviewId, createdAt);
+            boolean isOlderExist = reviewRepository.existsOlderReviewInGroup(reviewGroupId, reviewId, createdAt);
 
             // then
             assertThat(isOlderExist).isTrue();

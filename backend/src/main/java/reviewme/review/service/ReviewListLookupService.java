@@ -48,7 +48,7 @@ public class ReviewListLookupService {
         }
 
         ReviewListElementResponse lastReviewResponse = elements.get(elements.size() - 1);
-        return !reviewRepository.existOlderReviewInGroup(
+        return !reviewRepository.existsOlderReviewInGroup(
                 reviewGroup.getId(), lastReviewResponse.reviewId(), lastReviewResponse.createdAt());
     }
 }
