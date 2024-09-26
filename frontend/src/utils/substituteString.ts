@@ -1,6 +1,6 @@
 const hasFinalConsonant = (word: string) => {
   const code = word.charCodeAt(word.length - 1);
-  return (code - 0xac00) % 28 != 0;
+  return (code - 0xac00) % 28 !== 0;
 };
 
 interface SubstituteStringProps {
@@ -13,10 +13,10 @@ const substituteString = ({ content, variables }: SubstituteStringProps) => {
 
   return content.replace(regex, (_, variableName, particleWithoutFinalConsonant, particleWithFinalConsonant) => {
     const value = variables[variableName];
-    if (value !== undefined && particleWithoutFinalConsonant && particleWithFinalConsonant) {
-      return value + hasFinalConsonant(value) ? particleWithFinalConsonant : particleWithoutFinalConsonant;
-    }
 
+    if (value !== undefined && particleWithoutFinalConsonant && particleWithFinalConsonant) {
+      return value + (hasFinalConsonant(value) ? particleWithFinalConsonant : particleWithoutFinalConsonant);
+    }
     return value;
   });
 };
