@@ -166,7 +166,7 @@ class ReviewApiTest extends ApiTest {
                         List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
         );
         ReceivedReviewsResponse response = new ReceivedReviewsResponse(
-                "아루3", "리뷰미", 1L, receivedReviews);
+                "아루3", "리뷰미", 1L, true, receivedReviews);
         BDDMockito.given(reviewListLookupService.getReceivedReviews(anyLong(), anyInt(), anyString()))
                 .willReturn(response);
 
@@ -177,13 +177,14 @@ class ReviewApiTest extends ApiTest {
         ParameterDescriptor[] queryParameter = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드"),
                 parameterWithName("lastReviewId").description("페이지의 마지막 리뷰 ID - 기본으로 최신순 첫번째 페이지 응답"),
-                parameterWithName("size").description("페이지의 크기 - 기본으로 5개씩 응답")
+                parameterWithName("size").description("페이지의 크기 - 기본으로 10개씩 응답")
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
                 fieldWithPath("revieweeName").description("리뷰이 이름"),
                 fieldWithPath("projectName").description("프로젝트 이름"),
                 fieldWithPath("lastReviewId").description("페이지의 마지막 리뷰 ID"),
+                fieldWithPath("isLastPage").description("마지막 페이지 여부"),
 
                 fieldWithPath("reviews[]").description("리뷰 목록"),
                 fieldWithPath("reviews[].reviewId").description("리뷰 ID"),
