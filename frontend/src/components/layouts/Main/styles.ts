@@ -13,6 +13,8 @@ const calculateMinHeight = ({ $isShowBreadCrumb, ...theme }: MainContainerProps 
 };
 
 export const MainContainer = styled.div<MainContainerProps>`
+  z-index: ${({ theme }) => theme.zIndex.main};
+
   display: flex;
   align-items: center;
   justify-content: center;

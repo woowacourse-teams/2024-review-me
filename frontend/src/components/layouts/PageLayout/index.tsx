@@ -24,7 +24,6 @@ const PageLayout = ({ children, isNeedBreadCrumb = true }: EssentialPropsWithChi
         <Main isShowBreadCrumb={isShowBreadCrumb}>{children}</Main>
         <Footer />
       </S.Wrapper>
-      <TopButton />
     </S.Layout>
   );
 };

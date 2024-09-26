@@ -1,4 +1,4 @@
-import { ErrorSuspenseContainer, AuthAndServerErrorFallback } from '@/components';
+import { ErrorSuspenseContainer, AuthAndServerErrorFallback, TopButton } from '@/components';
 
 import { DetailedReviewPageContents } from './components';
 
@@ -6,6 +6,7 @@ const DetailedReviewPage = () => {
   return (
     <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
       <DetailedReviewPageContents />
+      <TopButton />
     </ErrorSuspenseContainer>
   );
 };
