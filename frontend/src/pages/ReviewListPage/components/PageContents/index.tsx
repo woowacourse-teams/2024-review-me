@@ -6,7 +6,6 @@ import { useGetReviewList } from '@/hooks';
 
 import ReviewEmptySection from '../ReviewEmptySection';
 import ReviewInfoSection from '../ReviewInfoSection';
-// import SearchSection from '../SearchSection';
 
 import * as S from './styles';
 

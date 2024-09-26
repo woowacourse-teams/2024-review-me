@@ -1,6 +1,6 @@
 import { useRecoilValue } from 'recoil';
 
-import { ErrorSuspenseContainer, LoginRedirectModal } from '@/components';
+import { ErrorSuspenseContainer } from '@/components';
 import { useGroupAccessCode } from '@/hooks';
 import { reviewRequestCodeAtom } from '@/recoil';
 
@@ -32,12 +32,10 @@ const ReviewListPage = () => {
 
   return (
     <>
-      {groupAccessCode && storedReviewRequestCode ? (
+      {groupAccessCode && storedReviewRequestCode && (
         <ErrorSuspenseContainer>
           <PageContents groupAccessCode={groupAccessCode} reviewRequestCode={storedReviewRequestCode} />
         </ErrorSuspenseContainer>
-      ) : (
-        <LoginRedirectModal />
       )}
     </>
   );

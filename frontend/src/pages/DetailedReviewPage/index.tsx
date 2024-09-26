@@ -1,4 +1,4 @@
-import { ErrorSuspenseContainer, LoginRedirectModal } from '@/components';
+import { ErrorSuspenseContainer } from '@/components';
 import { useGroupAccessCode } from '@/hooks';
 
 import { DetailedReviewPageContents } from './components';
@@ -6,7 +6,7 @@ import { DetailedReviewPageContents } from './components';
 const DetailedReviewPage = () => {
   const { groupAccessCode } = useGroupAccessCode();
 
-  if (!groupAccessCode) return <LoginRedirectModal />;
+  if (!groupAccessCode) return;
 
   return (
     <ErrorSuspenseContainer>
