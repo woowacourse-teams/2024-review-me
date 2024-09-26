@@ -61,14 +61,6 @@ module.exports = (env, argv) => {
         path: './.env',
       }),
       //new BundleAnalyzerPlugin(),
-      sentryWebpackPlugin({
-        authToken: process.env.SENTRY_AUTH_TOKEN,
-        org: 'review-me',
-        project: 'woowacourse-review-me',
-        sourcemaps: {
-          filesToDeleteAfterUpload: '**/*.js.map',
-        },
-      }),
       ...(isProduction
         ? [
             new CompressionPlugin({
@@ -81,6 +73,14 @@ module.exports = (env, argv) => {
                 level: 11, // 압축 수준 (0~11, 기본값: 11)
               },
               deleteOriginalAssets: false, // 원본 파일을 삭제하지 않음
+            }),
+            sentryWebpackPlugin({
+              authToken: process.env.SENTRY_AUTH_TOKEN,
+              org: 'review-me',
+              project: 'woowacourse-review-me',
+              sourcemaps: {
+                filesToDeleteAfterUpload: '**/*.js.map',
+              },
             }),
           ]
         : []),
