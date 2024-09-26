@@ -46,7 +46,7 @@ public class TemplateMapper {
 
         List<SectionResponse> sectionResponses = template.getSectionIds()
                 .stream()
-                .map(templateSection -> mapToSectionResponse(templateSection, reviewGroup))
+                .map(this::mapToSectionResponse)
                 .toList();
 
         return new TemplateResponse(
@@ -57,14 +57,14 @@ public class TemplateMapper {
         );
     }
 
-    private SectionResponse mapToSectionResponse(TemplateSection templateSection, ReviewGroup reviewGroup) {
+    private SectionResponse mapToSectionResponse(TemplateSection templateSection) {
         Section section = sectionRepository.findById(templateSection.getSectionId())
                 .orElseThrow(() -> new SectionInTemplateNotFoundException(
                         templateSection.getTemplateId(), templateSection.getSectionId())
                 );
         List<QuestionResponse> questionResponses = section.getQuestionIds()
                 .stream()
-                .map(sectionQuestion -> mapToQuestionResponse(sectionQuestion, reviewGroup))
+                .map(this::mapToQuestionResponse)
                 .toList();
 
         return new SectionResponse(
@@ -72,12 +72,12 @@ public class TemplateMapper {
                 section.getSectionName(),
                 section.getVisibleType().name(),
                 section.getOnSelectedOptionId(),
-                reviewGroup.getReviewee(),
+                section.getHeader(),
                 questionResponses
         );
     }
 
-    private QuestionResponse mapToQuestionResponse(SectionQuestion sectionQuestion, ReviewGroup reviewGroup) {
+    private QuestionResponse mapToQuestionResponse(SectionQuestion sectionQuestion) {
         Question question = questionRepository.findById(sectionQuestion.getQuestionId())
                 .orElseThrow(() -> new QuestionInSectionNotFoundException(
                         sectionQuestion.getSectionId(), sectionQuestion.getQuestionId())
@@ -89,11 +89,11 @@ public class TemplateMapper {
         return new QuestionResponse(
                 question.getId(),
                 question.isRequired(),
-                reviewGroup.getReviewee(),
+                question.getContent(),
                 question.getQuestionType().name(),
                 optionGroupResponse,
                 question.hasGuideline(),
-                reviewGroup.getReviewee()
+                question.getGuideline()
         );
     }
 
