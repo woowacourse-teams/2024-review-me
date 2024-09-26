@@ -25,7 +25,6 @@ import reviewme.global.exception.DataInconsistencyException;
 import reviewme.global.exception.FieldErrorResponse;
 import reviewme.global.exception.NotFoundException;
 import reviewme.global.exception.UnauthorizedException;
-import reviewme.global.exception.UnexpectedRequestException;
 
 @Slf4j
 @RestControllerAdvice
@@ -41,11 +40,6 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getErrorMessage());
     }
 
-    @ExceptionHandler(UnexpectedRequestException.class)
-    public ProblemDetail handleUnexpectedRequestException(UnexpectedRequestException ex) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getErrorMessage());
-    }
-
     @ExceptionHandler(UnauthorizedException.class)
     public ProblemDetail handleUnauthorizedException(UnauthorizedException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getErrorMessage());
@@ -58,7 +52,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleException(Exception ex) {
-        log.error("Initial server error has occurred", ex);
+        log.error("Internal server error has occurred", ex);
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러가 발생했습니다.");
     }
 

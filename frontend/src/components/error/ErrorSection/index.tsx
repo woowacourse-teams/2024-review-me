@@ -9,13 +9,13 @@ import { ButtonStyleType } from '@/types/styles';
 
 import * as S from './styles';
 
-interface ErrorSectionProps {
+export interface ErrorSectionProps {
   errorMessage: string;
   handleReload: () => void;
-  handleGoHome: () => void;
+  handleGoOtherPage: () => void;
 }
 
-interface ErrorSectionButton {
+export interface ErrorSectionButton {
   buttonType: ButtonStyleType;
   key: string;
   text: string;
@@ -25,7 +25,7 @@ interface ErrorSectionButton {
   onClick: () => void;
 }
 
-const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSectionProps) => {
+const ErrorSection = ({ errorMessage, handleReload, handleGoOtherPage }: ErrorSectionProps) => {
   const isGoHomeButtonFirst = errorMessage === ROUTE_ERROR_MESSAGE;
   // errorMessage에 따른 커스텀
   const buttonList: ErrorSectionButton[] = [
@@ -43,7 +43,7 @@ const ErrorSection = ({ errorMessage, handleReload, handleGoHome }: ErrorSection
       text: '홈으로 이동하기',
       imageSrc: isGoHomeButtonFirst ? WhiteHomeIcon : PrimaryHomeIcon,
       imageDescription: '홈 이미지',
-      onClick: handleGoHome,
+      onClick: handleGoOtherPage,
     },
   ];
 

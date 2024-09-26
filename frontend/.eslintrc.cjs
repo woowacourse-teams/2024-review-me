@@ -19,6 +19,7 @@ module.exports = {
     'jest.polyfills.js',
     'jest.setup.js',
     'tsconfig.json',
+    'svgTransformer.js',
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh'],

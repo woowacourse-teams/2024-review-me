@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { Input, Button, EyeButton } from '@/components';
 import ContentModal from '@/components/common/modals/ContentModal';
 import { ROUTE } from '@/constants/route';
-import { useCheckPasswordValidation, useEyeButton, useGroupAccessCode } from '@/hooks';
+import { useCheckPasswordValidation, useEyeButton } from '@/hooks';
 
 import * as S from './styles';
 
@@ -24,12 +24,9 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
 
   const { isOff, handleEyeButtonToggle } = useEyeButton();
 
-  const { updateGroupAccessCode } = useGroupAccessCode();
-
   const handleValidatedPassword = () => {
-    updateGroupAccessCode(password);
     setErrorMessage('');
-    navigate(`/${ROUTE.reviewList}`);
+    navigate(`/${ROUTE.reviewList}/${reviewRequestCode}`);
   };
 
   const handleInvalidatedPassword = (error: Error) => {
@@ -55,7 +52,13 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
   };
 
   return (
-    <ContentModal title={REVIEW_PASSWORD_INPUT_MESSAGE} handleClose={closeModal} isClosableOnBackground={false}>
+    <ContentModal
+      title={REVIEW_PASSWORD_INPUT_MESSAGE}
+      handleClose={closeModal}
+      isClosableOnBackground={false}
+      // NOTE: ContentModal의 미디어 쿼리로 padding이 줄어드는 것을 방어하기 위한 인라인 스타일 적용
+      $style={{ padding: '3.2rem' }}
+    >
       <S.PasswordModal>
         <S.InputContainer>
           <S.PasswordInputContainer>
@@ -64,7 +67,7 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
               value={password}
               onChange={handlePasswordInputChange}
               type={isOff ? 'password' : 'text'}
-              $style={{ width: '100%', paddingRight: '3rem' }}
+              $style={{ width: '100%' }}
             />
             <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />
           </S.PasswordInputContainer>
@@ -72,7 +75,7 @@ const PasswordModal = ({ closeModal, reviewRequestCode }: PasswordModalProps) =>
             확인
           </Button>
         </S.InputContainer>
-        {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
+        <S.ErrorMessageWrapper>{errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}</S.ErrorMessageWrapper>
       </S.PasswordModal>
     </ContentModal>
   );

@@ -8,7 +8,7 @@ export const AlertModalContainer = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 3.2rem;
+  gap: 2rem;
   align-items: center;
   justify-content: space-between;
 
@@ -24,5 +24,6 @@ export const AlertModalContainer = styled.div`
 export const Contents = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
   white-space: pre-line;
 `;

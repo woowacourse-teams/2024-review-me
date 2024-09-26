@@ -3,8 +3,8 @@ import styled from '@emotion/styled';
 export const Layout = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4rem;
-  width: ${({ theme }) => theme.formWidth};
+  width: 90%;
+  min-height: inherit;
 `;
 
 export const ReviewSection = styled.div`

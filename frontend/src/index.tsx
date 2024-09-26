@@ -1,35 +1,35 @@
 import { Global, ThemeProvider } from '@emotion/react';
 import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 import App from '@/App';
-import {
-  DetailedReviewPage,
-  ErrorPage,
-  HomePage,
-  ReviewListPage,
-  ReviewWritingCompletePage,
-  ReviewWritingCardFormPage,
-  ReviewZonePage,
-} from '@/pages';
 
 import { ErrorSuspenseContainer } from './components';
-import { API_ERROR_MESSAGE, DEV_ENVIRONMENT, ROUTE_PARAM } from './constants';
+import { API_ERROR_MESSAGE, ROUTE_PARAM } from './constants';
 import { ROUTE } from './constants/route';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
-const { hostname, port } = DEV_ENVIRONMENT;
-const isDev = window?.location.hostname === hostname && window.location.port === port;
+const isProduction = process.env.NODE_ENV === 'production';
 const baseUrlPattern = new RegExp(`^${process.env.API_BASE_URL?.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}`);
+
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const DetailedReviewPage = lazy(() => import('@/pages/DetailedReviewPage'));
+const ErrorPage = lazy(() => import('@/pages/ErrorPage'));
+const ReviewListPage = lazy(() => import('@/pages/ReviewListPage'));
+const ReviewWritingCompletePage = lazy(() => import('@/pages/ReviewWritingCompletePage'));
+const ReviewWritingPage = lazy(() => import('@/pages/ReviewWritingPage'));
+const ReviewZonePage = lazy(() => import('@/pages/ReviewZonePage'));
+
+const LoadingPage = lazy(() => import('@/pages/LoadingPage'));
 
 Sentry.init({
   dsn: `${process.env.SENTRY_DSN}`,
-  enabled: !isDev,
+  enabled: isProduction,
   integrations: [Sentry.browserTracingIntegration()],
   environment: 'production',
   tracesSampleRate: 1.0,
@@ -52,6 +52,7 @@ const queryClient = new QueryClient({
     queries: {
       throwOnError: true,
       retry: retryFunction,
+      refetchOnWindowFocus: false,
     },
     mutations: {
       throwOnError: true,
@@ -63,7 +64,11 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: ROUTE.home,
-    element: <App />,
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <App />
+      </Suspense>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {
@@ -74,14 +79,17 @@ const router = createBrowserRouter([
         path: 'user',
         element: <div>user</div>,
       },
-      { path: `${ROUTE.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewWritingCardFormPage /> },
-      { path: ROUTE.reviewWritingComplete, element: <ReviewWritingCompletePage /> },
+      { path: `${ROUTE.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewWritingPage /> },
       {
-        path: ROUTE.reviewList,
+        path: `${ROUTE.reviewWritingComplete}/:${ROUTE_PARAM.reviewRequestCode}`,
+        element: <ReviewWritingCompletePage />,
+      },
+      {
+        path: `${ROUTE.reviewList}/:${ROUTE_PARAM.reviewRequestCode}`,
         element: <ReviewListPage />,
       },
       {
-        path: `${ROUTE.detailedReview}/:${ROUTE_PARAM.reviewId}`,
+        path: `${ROUTE.detailedReview}/:${ROUTE_PARAM.reviewRequestCode}/:${ROUTE_PARAM.reviewId}`,
         element: <DetailedReviewPage />,
       },
       {
@@ -99,7 +107,7 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 async function enableMocking() {
-  if (isDev) {
+  if (!isProduction) {
     const { worker } = await import('./mocks/browser');
     return worker.start();
   }
@@ -110,7 +118,7 @@ enableMocking().then(() => {
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
-          <Global styles={globalStyles} />
+          <Global styles={(theme) => globalStyles(theme)} />
           <RecoilRoot>
             <RouterProvider router={router} />
           </RecoilRoot>

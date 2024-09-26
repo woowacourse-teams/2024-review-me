@@ -5,6 +5,8 @@ import java.util.List;
 public record ReceivedReviewsResponse(
         String revieweeName,
         String projectName,
-        List<ReceivedReviewResponse> reviews
+        long lastReviewId,
+        boolean isLastPage,
+        List<ReviewListElementResponse> reviews
 ) {
 }

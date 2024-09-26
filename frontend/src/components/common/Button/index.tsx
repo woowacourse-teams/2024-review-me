@@ -6,9 +6,16 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   styleType: ButtonStyleType;
 }
 
-const Button = ({ styleType: buttonType, type, style, children, onClick }: EssentialPropsWithChildren<ButtonProps>) => {
+const Button = ({
+  styleType: buttonType,
+  type,
+  style,
+  children,
+  onClick,
+  ...rest
+}: EssentialPropsWithChildren<ButtonProps>) => {
   return (
-    <S.Button buttonType={buttonType} type={type} onClick={onClick} $style={style}>
+    <S.Button buttonType={buttonType} type={type} onClick={onClick} $style={style} {...rest}>
       {children}
     </S.Button>
   );

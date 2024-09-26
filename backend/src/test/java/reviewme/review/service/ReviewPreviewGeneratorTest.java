@@ -7,11 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reviewme.review.domain.TextAnswer;
+import reviewme.review.service.mapper.ReviewPreviewGenerator;
 
 class ReviewPreviewGeneratorTest {
 
     @Test
-    void 답변_내용이_미리보기_최대_글자를_넘는_경우_미리보기_길이만큼_잘라서_반환한다() {
+    void 답변_내용이_미리보기_최대_글자를_넘는_경우_미리보기_길이만큼_자르고_말줄임표를_붙여_반환한다() {
         // given
         ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
         String answer = "*".repeat(151);
@@ -21,7 +22,7 @@ class ReviewPreviewGeneratorTest {
         String actual = reviewPreviewGenerator.generatePreview(List.of(textAnswer));
 
         // then
-        assertThat(actual).hasSize(150);
+        assertThat(actual).isEqualTo("*".repeat(150) + "...");
     }
 
     @ParameterizedTest

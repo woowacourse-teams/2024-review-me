@@ -20,7 +20,7 @@ const useGetReviewGroupData = ({ reviewRequestCode }: UseGetReviewGroupDataProps
   const result = useSuspenseQuery<ReviewGroupData>({
     queryKey: [GROUP_QUERY_KEY.reviewGroupData, reviewRequestCode],
     queryFn: () => fetchReviewGroupData({ reviewRequestCode }),
-    staleTime: 1000 * 60 * 5,
+    staleTime: 60 * 60 * 1000,
   });
 
   return result;

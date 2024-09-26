@@ -66,7 +66,8 @@ public class Section {
         return visibleType == VisibleType.ALWAYS || selectedOptionIds.contains(onSelectedOptionId);
     }
 
-    public String convertHeader(String target, String replacement) {
-        return header.replace(target, replacement);
+    public boolean containsQuestionId(long questionId) {
+        return questionIds.stream()
+                .anyMatch(sectionQuestion -> sectionQuestion.hasQuestionId(questionId));
     }
 }

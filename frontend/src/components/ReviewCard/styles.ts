@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const Layout = styled.div`
   display: flex;
   flex-direction: column;
-
-  width: 100%;
-
   border: 0.1rem solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 0.8rem;
 
@@ -82,6 +81,10 @@ export const Keyword = styled.div`
   align-items: center;
 
   font-size: 1.4rem;
+
+  ${media.small} {
+    gap: 1.6rem;
+  }
 
   div {
     padding: 0.5rem 3rem;

@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const Logo = styled.div`
   display: flex;
   gap: 0.5rem;
@@ -24,6 +26,14 @@ export const LogoText = styled.div`
     font-size: 3rem;
     font-weight: ${({ theme }) => theme.fontWeight.bolder};
     letter-spacing: 0.7rem;
+
+    ${media.small} {
+      font-size: 2.8rem;
+    }
+
+    ${media.xSmall} {
+      font-size: 2.6rem;
+    }
   }
 
   span:last-child {

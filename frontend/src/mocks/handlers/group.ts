@@ -1,11 +1,11 @@
 import { http, HttpResponse } from 'msw';
 
 import endPoint, { REVIEW_GROUP_DATA_API_PARAMS, REVIEW_GROUP_DATA_API_URL } from '@/apis/endpoints';
-import { API_ERROR_MESSAGE } from '@/constants';
-import { PasswordResponse } from '@/types';
+import { API_ERROR_MESSAGE, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
 
 import {
   CREATED_REVIEW_REQUEST_CODE,
+  MOCK_AUTH_TOKEN_NAME,
   REVIEW_GROUP_DATA,
   VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
   VALIDATED_PASSWORD,
@@ -26,27 +26,37 @@ const postDataForReviewRequestCode = () => {
 // };
 
 const postPassWordValidation = () => {
-  return http.post(endPoint.checkingPassword, async ({ request }) => {
-    // password가 있는 경우
+  return http.post(endPoint.checkingPassword, async ({ request, cookies }) => {
+    // request body의 존재 검증
     if (!request.body) return HttpResponse.json({ error: API_ERROR_MESSAGE[400] }, { status: 400 });
 
     const rawBody = await request.body.getReader().read();
     const textDecoder = new TextDecoder();
     const bodyText = textDecoder.decode(rawBody.value);
 
-    // password가 유효한 패스워드인지 확인
+    // request에 포함된 값들의 검증 시작
     const { reviewRequestCode, groupAccessCode: password } = JSON.parse(bodyText);
 
+    // 유효하지 않은 비밀번호인 경우
+    if (password !== VALIDATED_PASSWORD) {
+      return HttpResponse.json({ error: INVALID_REVIEW_PASSWORD_MESSAGE }, { status: 401 });
+    }
+
     // reviewRequestCode가 없는 경우
-    //password가 없을 경우
-    if (!password || !reviewRequestCode) return HttpResponse.json({ error: API_ERROR_MESSAGE[400] }, { status: 400 });
-    // password가 있는 경우
+    if (!reviewRequestCode) {
+      return HttpResponse.json({ error: API_ERROR_MESSAGE[400] }, { status: 400 });
+    }
 
-    const response: PasswordResponse = {
-      hasAccess: password === VALIDATED_PASSWORD,
-    };
-
-    return HttpResponse.json(response, { status: 200 });
+    // 정상 응답 (유효한 비밀번호)
+    //세션 쿠키 생성 (브라우저 창 닫히면 자동 삭제됨, 이미 있으면 생성 하지 않음)
+    return new HttpResponse(null, {
+      headers: cookies[MOCK_AUTH_TOKEN_NAME]
+        ? {}
+        : {
+            'Set-cookie': `${MOCK_AUTH_TOKEN_NAME}=2024-review-me`,
+          },
+      status: 204,
+    });
   });
 };
 

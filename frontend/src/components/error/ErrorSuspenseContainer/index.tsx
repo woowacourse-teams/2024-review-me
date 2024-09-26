@@ -1,17 +1,25 @@
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
-import { Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+import { lazy, Suspense } from 'react';
+import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 
-import LoadingPage from '@/pages/LoadingPage';
 import { EssentialPropsWithChildren } from '@/types';
 
 import ErrorFallback from '../ErrorFallback';
 
-const ErrorSuspenseContainer = ({ children }: EssentialPropsWithChildren) => {
+const LoadingPage = lazy(() => import('@/pages/LoadingPage'));
+
+interface ErrorSuspenseContainerProps {
+  fallback?: React.ComponentType<FallbackProps>;
+}
+
+const ErrorSuspenseContainer = ({
+  children,
+  fallback = ErrorFallback,
+}: EssentialPropsWithChildren<ErrorSuspenseContainerProps>) => {
   return (
     <QueryErrorResetBoundary>
       {({ reset }) => (
-        <ErrorBoundary FallbackComponent={ErrorFallback} onReset={reset}>
+        <ErrorBoundary FallbackComponent={fallback} onReset={reset}>
           <Suspense fallback={<LoadingPage />}>{children}</Suspense>
         </ErrorBoundary>
       )}

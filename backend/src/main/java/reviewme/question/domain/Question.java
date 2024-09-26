@@ -55,15 +55,4 @@ public class Question {
     public boolean hasGuideline() {
         return guideline != null && !guideline.isEmpty();
     }
-
-    public String convertContent(String target, String replacement) {
-        return content.replace(target, replacement);
-    }
-
-    public String convertGuideLine(String target, String replacement) {
-        if (guideline == null) {
-            return null;
-        }
-        return guideline.replace(target, replacement);
-    }
 }

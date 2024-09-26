@@ -1,14 +1,29 @@
-import { PropsWithChildren } from 'react';
-
 import { TopButton } from '@/components/common';
+import Breadcrumb from '@/components/common/Breadcrumb';
+import useBreadcrumbPaths from '@/hooks/useBreadcrumbPaths';
+import { EssentialPropsWithChildren } from '@/types';
+
+import Footer from '../Footer';
+import Main from '../Main';
+import Topbar from '../Topbar';
 
 import * as S from './styles';
 
-const PageLayout = ({ children }: PropsWithChildren) => {
+interface PageLayoutProps {
+  isNeedBreadCrumb?: boolean;
+}
+const PageLayout = ({ children, isNeedBreadCrumb = true }: EssentialPropsWithChildren<PageLayoutProps>) => {
+  const breadcrumbPathList = useBreadcrumbPaths();
+  const isShowBreadCrumb = isNeedBreadCrumb && breadcrumbPathList.length > 1;
+
   return (
     <S.Layout>
-      <S.Wrapper>{children}</S.Wrapper>
-      <TopButton />
+      <S.Wrapper>
+        <Topbar />
+        {isShowBreadCrumb && <Breadcrumb pathList={breadcrumbPathList} />}
+        <Main isShowBreadCrumb={isShowBreadCrumb}>{children}</Main>
+        <Footer />
+      </S.Wrapper>
     </S.Layout>
   );
 };

@@ -1,31 +1,32 @@
 package reviewme.api;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
-import org.springframework.restdocs.headers.HeaderDescriptor;
+import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.review.domain.exception.ReviewGroupNotFoundByReviewRequestCodeException;
-import reviewme.review.service.dto.request.CreateReviewRequest;
-import reviewme.review.service.dto.response.list.ReceivedReviewCategoryResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewResponse;
+import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByCodesException;
+import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
+import reviewme.review.service.dto.response.list.ReviewListElementResponse;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 
 class ReviewApiTest extends ApiTest {
 
@@ -47,7 +48,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 리뷰를_등록한다() {
-        BDDMockito.given(createReviewService.createReview(any(CreateReviewRequest.class)))
+        BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
                 .willReturn(1L);
 
         FieldDescriptor[] requestFieldDescriptors = {
@@ -74,7 +75,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 리뷰_그룹_코드가_올바르지_않은_경우_예외가_발생한다() {
-        BDDMockito.given(createReviewService.createReview(any(CreateReviewRequest.class)))
+        BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
                 .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException(anyString()));
 
         FieldDescriptor[] requestFieldDescriptors = {
@@ -100,16 +101,16 @@ class ReviewApiTest extends ApiTest {
     }
 
     @Test
-    void 자신이_받은_리뷰_한_개를_조회한다() {
-        BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyLong(), anyString(), anyString()))
+    void 세션으로_자신이_받은_리뷰_한_개를_조회한다() {
+        BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyLong(), anyString()))
                 .willReturn(TemplateFixture.templateAnswerResponse());
-
-        HeaderDescriptor[] requestHeaderDescriptors = {
-                headerWithName("groupAccessCode").description("그룹 접근 코드")
-        };
 
         ParameterDescriptor[] requestPathDescriptors = {
                 parameterWithName("id").description("리뷰 ID")
+        };
+
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 쿠키")
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
@@ -141,16 +142,15 @@ class ReviewApiTest extends ApiTest {
         };
 
         RestDocumentationResultHandler handler = document(
-                "review-detail",
-                requestHeaders(requestHeaderDescriptors),
+                "review-detail-with-session",
+                requestCookies(cookieDescriptors),
                 pathParameters(requestPathDescriptors),
                 responseFields(responseFieldDescriptors)
         );
 
         givenWithSpec().log().all()
                 .pathParam("id", "1")
-                .queryParam("reviewRequestCode", "00001234")
-                .header("groupAccessCode", "abc12344")
+                .cookie("JSESSIONID", "AVEBNKLCL13TNVZ")
                 .when().get("/v2/reviews/{id}")
                 .then().log().all()
                 .apply(handler)
@@ -158,56 +158,33 @@ class ReviewApiTest extends ApiTest {
     }
 
     @Test
-    void 리뷰_단건_조회시_접근_코드가_올바르지_않은_경우_예외를_발생한다() {
-        long reviewId = 1L;
-        String reviewRequestCode = "00001234";
-        String groupAccessCode = "43214321";
-        BDDMockito.given(reviewDetailLookupService.getReviewDetail(reviewId, reviewRequestCode, groupAccessCode))
-                .willThrow(new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
-
-        HeaderDescriptor[] requestHeaderDescriptors = {
-                headerWithName("groupAccessCode").description("그룹 접근 코드")
-        };
-
-        ParameterDescriptor[] requestPathDescriptors = {
-                parameterWithName("id").description("리뷰 ID")
-        };
-
-        RestDocumentationResultHandler handler = document(
-                "review-detail-invalid-group-access-code",
-                requestHeaders(requestHeaderDescriptors),
-                pathParameters(requestPathDescriptors)
-        );
-
-        givenWithSpec().log().all()
-                .pathParam("id", reviewId)
-                .queryParam("reviewRequestCode", reviewRequestCode)
-                .header("groupAccessCode", groupAccessCode)
-                .when().get("/v2/reviews/{id}")
-                .then().log().all()
-                .apply(handler)
-                .statusCode(400);
-    }
-
-    @Test
     void 자신이_받은_리뷰_목록을_조회한다() {
-        List<ReceivedReviewResponse> receivedReviews = List.of(
-                new ReceivedReviewResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
-                        List.of(new ReceivedReviewCategoryResponse(1L, "카테고리 1"))),
-                new ReceivedReviewResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
-                        List.of(new ReceivedReviewCategoryResponse(2L, "카테고리 2")))
+        List<ReviewListElementResponse> receivedReviews = List.of(
+                new ReviewListElementResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
+                        List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
+                new ReviewListElementResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
+                        List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
         );
-        ReceivedReviewsResponse response = new ReceivedReviewsResponse("아루", "리뷰미", receivedReviews);
-        BDDMockito.given(reviewService.findReceivedReviews(anyString(), anyString()))
+        ReceivedReviewsResponse response = new ReceivedReviewsResponse(
+                "아루3", "리뷰미", 1L, true, receivedReviews);
+        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyLong(), anyInt(), anyString()))
                 .willReturn(response);
 
-        HeaderDescriptor[] requestHeaderDescriptors = {
-                headerWithName("groupAccessCode").description("그룹 접근 코드")
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 쿠키")
+        };
+
+        ParameterDescriptor[] queryParameter = {
+                parameterWithName("reviewRequestCode").description("리뷰 요청 코드"),
+                parameterWithName("lastReviewId").description("페이지의 마지막 리뷰 ID - 기본으로 최신순 첫번째 페이지 응답"),
+                parameterWithName("size").description("페이지의 크기 - 기본으로 10개씩 응답")
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
                 fieldWithPath("revieweeName").description("리뷰이 이름"),
                 fieldWithPath("projectName").description("프로젝트 이름"),
+                fieldWithPath("lastReviewId").description("페이지의 마지막 리뷰 ID"),
+                fieldWithPath("isLastPage").description("마지막 페이지 여부"),
 
                 fieldWithPath("reviews[]").description("리뷰 목록"),
                 fieldWithPath("reviews[].reviewId").description("리뷰 ID"),
@@ -220,42 +197,20 @@ class ReviewApiTest extends ApiTest {
         };
 
         RestDocumentationResultHandler handler = document(
-                "received-reviews",
-                requestHeaders(requestHeaderDescriptors),
+                "received-review-list-with-pagination",
+                requestCookies(cookieDescriptors),
+                queryParameters(queryParameter),
                 responseFields(responseFieldDescriptors)
         );
 
         givenWithSpec().log().all()
-                .queryParam("reviewRequestCode", "asdfasdf")
-                .header("groupAccessCode", "qwerqwer")
+                .cookie("JSESSIONID", "ASVNE1VAKDNV4")
+                .queryParam("reviewRequestCode", "hello!!")
+                .queryParam("lastReviewId", "2")
+                .queryParam("size", "5")
                 .when().get("/v2/reviews")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
-    }
-
-    @Test
-    void 자신이_받은_리뷰_조회시_접근_코드가_올바르지_않은_경우_예외를_발생한다() {
-        String reviewRequestCode = "43214321";
-        String groupAccessCode = "00001234";
-        BDDMockito.given(reviewService.findReceivedReviews(reviewRequestCode, groupAccessCode))
-                .willThrow(new ReviewGroupNotFoundByCodesException(reviewRequestCode, groupAccessCode));
-
-        HeaderDescriptor[] requestHeaderDescriptors = {
-                headerWithName("groupAccessCode").description("그룹 접근 코드")
-        };
-
-        RestDocumentationResultHandler handler = document(
-                "received-reviews-invalid-group-access-code",
-                requestHeaders(requestHeaderDescriptors)
-        );
-
-        givenWithSpec().log().all()
-                .header("groupAccessCode", groupAccessCode)
-                .queryParam("reviewRequestCode", reviewRequestCode)
-                .when().get("/v2/reviews")
-                .then().log().all()
-                .apply(handler)
-                .statusCode(400);
     }
 }

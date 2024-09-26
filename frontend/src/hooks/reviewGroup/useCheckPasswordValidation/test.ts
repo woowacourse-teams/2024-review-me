@@ -6,37 +6,9 @@ import QueryClientWrapper from '@/queryTestSetup/QueryClientWrapper';
 import useCheckPasswordValidation from '.';
 
 describe('비밀번호 조회 테스트', () => {
-  it('비밀번호가 유효하면 isValidAccess가 true이다 ', async () => {
+  it('비밀번호가 유효하면 status가 valid이다 ', async () => {
     const REVIEW_REQUEST_CODE = 'ABCD1234';
-    const INVALIDATED_PASSWORD = '1111';
 
-    const { result } = renderHook(
-      () =>
-        useCheckPasswordValidation({
-          reviewRequestCode: REVIEW_REQUEST_CODE,
-          groupAccessCode: INVALIDATED_PASSWORD,
-          onSuccess: () => {},
-          onError: () => {},
-        }),
-      {
-        wrapper: QueryClientWrapper,
-      },
-    );
-
-    await waitFor(() => {
-      expect(result.current.status).toBe('success');
-    });
-
-    expect(result.current.data).toBeDefined();
-    expect(result.current.data instanceof Error).toBeFalsy();
-
-    if (!(result.current.data instanceof Error)) {
-      expect(result.current.data?.isValidAccess).toBeFalsy();
-    }
-  });
-
-  it('비밀번호가 유효하지 않으면 isValidAccess가 false이다 ', async () => {
-    const REVIEW_REQUEST_CODE = 'ABCD1234';
     const { result } = renderHook(
       () =>
         useCheckPasswordValidation({
@@ -55,10 +27,31 @@ describe('비밀번호 조회 테스트', () => {
     });
 
     expect(result.current.data).toBeDefined();
-    expect(result.current.data instanceof Error).toBeFalsy();
+    expect(result.current.data?.status).toBe('valid');
+  });
 
-    if (!(result.current.data instanceof Error)) {
-      expect(result.current.data?.isValidAccess).toBeFalsy();
-    }
+  it('비밀번호가 유효하지 않으면 status가 invalid이다 ', async () => {
+    const REVIEW_REQUEST_CODE = 'ABCD1234';
+    const INVALID_PASSWORD = 'wrongPassword';
+
+    const { result } = renderHook(
+      () =>
+        useCheckPasswordValidation({
+          reviewRequestCode: REVIEW_REQUEST_CODE,
+          groupAccessCode: INVALID_PASSWORD,
+          onSuccess: () => {},
+          onError: () => {},
+        }),
+      {
+        wrapper: QueryClientWrapper,
+      },
+    );
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('success');
+    });
+
+    expect(result.current.data).toBeDefined();
+    expect(result.current.data?.status).toBe('invalid');
   });
 });

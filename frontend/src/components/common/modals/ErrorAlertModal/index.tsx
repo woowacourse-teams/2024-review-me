@@ -1,28 +1,27 @@
 import AlertTrianglePrimaryIcon from '@/assets/alertTrianglePrimary.svg';
-import { ButtonStyleType } from '@/types';
+import { ButtonStyleType, EssentialPropsWithChildren } from '@/types';
 
 import AlertModal from '../AlertModal';
 
 import * as S from './styles';
 
-interface CloseButton {
+export interface ErrorAlertModalCloseButton {
   type: ButtonStyleType;
   handleClick: () => void;
   content: React.ReactNode;
 }
 
 interface ErrorAlertModalProps {
-  closeButton: CloseButton;
-  errorText: string;
+  closeButton: ErrorAlertModalCloseButton;
   handleClose: () => void;
 }
 
-const ErrorAlertModal = ({ closeButton, errorText, handleClose }: ErrorAlertModalProps) => {
+const ErrorAlertModal = ({ closeButton, children, handleClose }: EssentialPropsWithChildren<ErrorAlertModalProps>) => {
   return (
     <AlertModal closeButton={closeButton} isClosableOnBackground={true} handleClose={handleClose}>
       <S.Contents>
         <S.AlertTriangle src={AlertTrianglePrimaryIcon} alt="경고 마크" />
-        <p>{errorText}</p>
+        {children}
       </S.Contents>
     </AlertModal>
   );

@@ -8,6 +8,6 @@ public class InvalidGroupAccessCodeFormatException extends BadRequestException {
 
     public InvalidGroupAccessCodeFormatException(String groupAccessCode) {
         super("그룹 액세스 코드 형식이 올바르지 않아요.");
-        log.warn("Invalid groupAccessCode format - groupAccessCode: {}", groupAccessCode);
+        log.info("Invalid groupAccessCode format - groupAccessCode: {}", groupAccessCode);
     }
 }

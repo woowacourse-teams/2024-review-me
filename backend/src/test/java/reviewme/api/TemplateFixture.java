@@ -7,7 +7,7 @@ import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
-import reviewme.review.service.dto.response.detail.TemplateAnswerResponse;
+import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.template.domain.VisibleType;
 import reviewme.template.service.dto.response.OptionGroupResponse;
 import reviewme.template.service.dto.response.OptionItemResponse;
@@ -72,7 +72,7 @@ class TemplateFixture {
         return new TemplateResponse(1, "아루", "리뷰미", List.of(firstSection, secondSection));
     }
 
-    public static TemplateAnswerResponse templateAnswerResponse() {
+    public static ReviewDetailResponse templateAnswerResponse() {
         // Section 1
         List<OptionItemAnswerResponse> firstOptionAnswers = List.of(
                 new OptionItemAnswerResponse(1, "커뮤니케이션, 협업 능력 (ex: 팀원간의 원활한 정보 공유, 명확한 의사소통)", true),
@@ -102,7 +102,7 @@ class TemplateFixture {
                 2, "커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요.", List.of(secondQuestionAnswer)
         );
 
-        return new TemplateAnswerResponse(
+        return new ReviewDetailResponse(
                 1, "아루", "리뷰미", LocalDate.of(2024, 8, 1), List.of(firstSectionAnswer, secondSectionAnswer)
         );
     }

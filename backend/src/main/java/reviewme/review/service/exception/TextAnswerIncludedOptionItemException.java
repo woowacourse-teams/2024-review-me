@@ -6,8 +6,8 @@ import reviewme.global.exception.BadRequestException;
 @Slf4j
 public class TextAnswerIncludedOptionItemException extends BadRequestException {
 
-    public TextAnswerIncludedOptionItemException() {
+    public TextAnswerIncludedOptionItemException(long questionId) {
         super("텍스트형 응답은 옵션 항목을 포함할 수 없어요.");
-        log.warn("Text type answer cannot have option items", this);
+        log.info("Text type answer cannot have option items - questionId: {}", questionId);
     }
 }
