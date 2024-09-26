@@ -1,6 +1,9 @@
+import { useMemo } from 'react';
+
 import { ROUTE_PARAM } from '@/constants';
 import { useGetDetailedReview, useSearchParamAndQuery } from '@/hooks';
 import { ReviewDescription, ReviewSection, KeywordSection } from '@/pages/DetailedReviewPage/components';
+import { substituteString } from '@/utils';
 
 import * as S from './styles';
 
@@ -13,17 +16,47 @@ const DetailedReviewPageContents = () => {
     reviewId: Number(reviewId),
   });
 
+  const parsedDetailedReview = useMemo(() => {
+    return {
+      ...detailedReview,
+      sections: detailedReview.sections.map((section) => {
+        const newHeader = substituteString({
+          content: section.header,
+          variables: { revieweeName: detailedReview.revieweeName, projectName: detailedReview.projectName },
+        });
+
+        const newQuestions = section.questions.map((question) => {
+          const newContent = substituteString({
+            content: question.content,
+            variables: { revieweeName: detailedReview.revieweeName, projectName: detailedReview.projectName },
+          });
+
+          return {
+            ...question,
+            content: newContent,
+          };
+        });
+
+        return {
+          ...section,
+          header: newHeader,
+          questions: newQuestions,
+        };
+      }),
+    };
+  }, [detailedReview]);
+
   // TODO: 리뷰 공개/비공개 토글 버튼 기능
   return (
     <S.DetailedReviewPageContents>
       <ReviewDescription
-        projectName={detailedReview.projectName}
-        date={new Date(detailedReview.createdAt)}
-        revieweeName={detailedReview.revieweeName}
+        projectName={parsedDetailedReview.projectName}
+        date={new Date(parsedDetailedReview.createdAt)}
+        revieweeName={parsedDetailedReview.revieweeName}
         isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
       />
-      {detailedReview.sections.map((section) =>
+      {parsedDetailedReview.sections.map((section) =>
         section.questions.map((question) => (
           <S.ReviewContentContainer key={question.questionId}>
             <ReviewSection question={question.content} answer={question.answer!} />
