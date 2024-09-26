@@ -34,3 +34,7 @@ logging:
   pattern:
     console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } [%15.15t] %-40.40logger{39} : %m%n%wEx"
+
+cors:
+  allowed-origins:
+    - https://allowed-domain.com
