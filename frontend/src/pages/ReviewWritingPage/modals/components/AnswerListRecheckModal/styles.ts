@@ -2,6 +2,11 @@ import styled from '@emotion/styled';
 
 import media from '@/utils/media';
 
+export const AnswerListModalContent = styled.div`
+  width: 100%;
+  overflow-x: hidden;
+`;
+
 export const AnswerListContainer = styled.div`
   position: relative;
 
