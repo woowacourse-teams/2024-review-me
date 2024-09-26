@@ -7,12 +7,12 @@ export const FEEDBACK_SECTION: ReviewWritingCardSection = {
   sectionName: '단점 피드백',
   visible: 'ALWAYS',
   onSelectedOptionId: null,
-  header: 'bada의 성장을 도와주세요!',
+  header: '${revieweeName}의 성장을 도와주세요!',
   questions: [
     {
       questionId: 12,
       required: true,
-      content: '앞으로의 성장을 위해서 bada이/가 어떤 목표를 설정하면 좋을까요?',
+      content: '앞으로의 성장을 위해서 ${revieweeName/가:이} 어떤 목표를 설정하면 좋을까요?',
       questionType: 'TEXT',
       optionGroup: null,
       hasGuideline: true,
@@ -31,7 +31,7 @@ export const EXTRA_REVIEW_SECTION: ReviewWritingCardSection = {
     {
       questionId: 13,
       required: false,
-      content: 'bada에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요',
+      content: '${revieweeName}에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요',
       questionType: 'TEXT',
       optionGroup: null,
       hasGuideline: false,
@@ -45,7 +45,7 @@ export const STRENGTH_SECTION_LIST: ReviewWritingCardSection[] = [
     sectionName: '커뮤니케이션, 협업 능력',
     visible: 'CONDITIONAL',
     onSelectedOptionId: 1,
-    header: '이제, 선택한 순간들을 바탕으로 bada에 대한 리뷰를 작성해볼게요',
+    header: '이제, 선택한 순간들을 바탕으로 ${revieweeName}에 대한 리뷰를 작성해볼게요',
     questions: [
       {
         questionId: 2,
@@ -77,7 +77,7 @@ export const STRENGTH_SECTION_LIST: ReviewWritingCardSection[] = [
         optionGroup: null,
         hasGuideline: true,
         guideline:
-          '상황을 자세하게 기록할수록 bada에게 도움이 돼요 bada 덕분에 팀이 원활한 소통을 이뤘거나, 함께 일하면서 배울 점이 있었는지 떠올려 보세요',
+          '상황을 자세하게 기록할수록 ${revieweeName}에게 도움이 돼요 ${revieweeName} 덕분에 팀이 원활한 소통을 이뤘거나, 함께 일하면서 배울 점이 있었는지 떠올려 보세요',
       },
     ],
   },
@@ -86,7 +86,7 @@ export const STRENGTH_SECTION_LIST: ReviewWritingCardSection[] = [
     sectionName: '문제해결 능력',
     visible: 'CONDITIONAL',
     onSelectedOptionId: 2,
-    header: '이제, 선택한 순간들을 바탕으로 bada에 대한 리뷰를 작성해볼게요',
+    header: '이제, 선택한 순간들을 바탕으로 ${revieweeName}에 대한 리뷰를 작성해볼게요',
     questions: [
       {
         questionId: 4,
@@ -125,7 +125,7 @@ export const STRENGTH_SECTION_LIST: ReviewWritingCardSection[] = [
         optionGroup: null,
         hasGuideline: true,
         guideline:
-          '상황을 자세하게 기록할수록 bada에게 도움이 돼요  어떤 문제 상황이 발생했고, bada이/가 어떻게 해결했는지 그 과정을 떠올려 보세요',
+          '상황을 자세하게 기록할수록 ${revieweeName}에게 도움이 돼요  어떤 문제 상황이 발생했고, ${revieweeName/가:이} 어떻게 해결했는지 그 과정을 떠올려 보세요',
       },
     ],
   },
@@ -134,7 +134,7 @@ export const STRENGTH_SECTION_LIST: ReviewWritingCardSection[] = [
     sectionName: '시간 관리 능력',
     visible: 'CONDITIONAL',
     onSelectedOptionId: 3,
-    header: '이제, 선택한 순간들을 바탕으로 bada에 대한 리뷰를 작성해볼게요',
+    header: '이제, 선택한 순간들을 바탕으로 ${revieweeName}에 대한 리뷰를 작성해볼게요',
     questions: [
       {
         questionId: 6,
@@ -167,7 +167,7 @@ export const STRENGTH_SECTION_LIST: ReviewWritingCardSection[] = [
         optionGroup: null,
         hasGuideline: true,
         guideline:
-          '상황을 자세하게 기록할수록 bada에게 도움이 돼요 bada 덕분에 팀이 효율적으로 시간관리를 할 수 있었는지 떠올려 보세요',
+          '상황을 자세하게 기록할수록 ${revieweeName}에게 도움이 돼요 ${revieweeName} 덕분에 팀이 효율적으로 시간관리를 할 수 있었는지 떠올려 보세요',
       },
     ],
   },
@@ -176,7 +176,7 @@ export const STRENGTH_SECTION_LIST: ReviewWritingCardSection[] = [
     sectionName: '기술 역량, 전문 지식',
     visible: 'CONDITIONAL',
     onSelectedOptionId: 4,
-    header: '이제, 선택한 순간들을 바탕으로 bada에 대한 리뷰를 작성해볼게요',
+    header: '이제, 선택한 순간들을 바탕으로 ${revieweeNAme}에 대한 리뷰를 작성해볼게요',
     questions: [
       {
         questionId: 8,
@@ -213,7 +213,7 @@ export const STRENGTH_SECTION_LIST: ReviewWritingCardSection[] = [
         optionGroup: null,
         hasGuideline: true,
         guideline:
-          '상황을 자세하게 기록할수록 bada에게 도움이 돼요 bada 덕분에 기술적 역량, 전문 지식적으로 도움을 받은 경험을 떠올려 보세요',
+          '상황을 자세하게 기록할수록 ${revieweeName}에게 도움이 돼요 ${revieweeName} 덕분에 기술적 역량, 전문 지식적으로 도움을 받은 경험을 떠올려 보세요',
       },
     ],
   },
@@ -222,7 +222,7 @@ export const STRENGTH_SECTION_LIST: ReviewWritingCardSection[] = [
     sectionName: '성장 마인드셋',
     visible: 'CONDITIONAL',
     onSelectedOptionId: 5,
-    header: '이제, 선택한 순간들을 바탕으로 bada에 대한 리뷰를 작성해볼게요',
+    header: '이제, 선택한 순간들을 바탕으로 ${revieweeName}에 대한 리뷰를 작성해볼게요',
     questions: [
       {
         questionId: 10,
@@ -256,27 +256,28 @@ export const STRENGTH_SECTION_LIST: ReviewWritingCardSection[] = [
         questionType: 'TEXT',
         optionGroup: null,
         hasGuideline: true,
-        guideline: '상황을 자세하게 기록할수록 bada에게 도움이 돼요 인상깊었던 bada의 성장 마인드셋을 떠올려 보세요',
+        guideline:
+          '상황을 자세하게 기록할수록 ${revieweeName}에게 도움이 돼요 인상깊었던 ${revieweeName}의 성장 마인드셋을 떠올려 보세요',
       },
     ],
   },
 ];
 export const REVIEW_QUESTION_DATA: ReviewWritingFormData = {
   formId: 1,
-  revieweeName: 'bada',
-  projectName: 'bada',
+  revieweeName: '에프이',
+  projectName: '리뷰미',
   sections: [
     {
       sectionId: 1,
       sectionName: '카테고리 선택',
       visible: 'ALWAYS',
       onSelectedOptionId: null,
-      header: 'bada와 함께 한 기억을 떠올려볼게요',
+      header: '${revieweeName}와 함께 한 기억을 떠올려볼게요',
       questions: [
         {
           questionId: 1,
           required: true,
-          content: '프로젝트 기간 동안, bada의 강점이 드러났던 순간을 선택해주세요',
+          content: '프로젝트 기간 동안, ${revieweeName}의 강점이 드러났던 순간을 선택해주세요',
           questionType: 'CHECKBOX',
           optionGroup: {
             optionGroupId: 1,
