@@ -54,7 +54,7 @@ jobs:
           context: ./backend
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ secrets.DOCKERHUB_ID }}/review-me-app:latest
+          tags: ${{ secrets.DOCKERHUB_ID }}/review-me-app:release
 
   deploy:
     name: Deploy via self-hosted runner
@@ -70,7 +70,6 @@ jobs:
         with:
           repository: ${{ secrets.PRIVATE_REPOSITORY_URL }}
           token: ${{ secrets.PRIVATE_REPOSITORY_TOKEN }}
-          ref: develop
 
       - name: Move application-related files to local
         run: |
@@ -86,6 +85,6 @@ jobs:
       - name: Pull from DockerHub
         run: |
           sudo docker-compose --env-file .env.prod down || true
-          sudo docker pull ${{ secrets.DOCKERHUB_ID }}/review-me-app
+          sudo docker pull ${{ secrets.DOCKERHUB_ID }}/review-me-app:release
           sudo docker-compose --env-file .env.prod up -d
         working-directory: ${{ env.APPLICATION_DIRECTORY }}/app
