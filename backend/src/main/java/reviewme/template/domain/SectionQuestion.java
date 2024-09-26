@@ -29,4 +29,8 @@ public class SectionQuestion {
     public SectionQuestion(long questionId) {
         this.questionId = questionId;
     }
+
+    public boolean hasQuestionId(long questionId) {
+        return this.questionId == questionId;
+    }
 }
