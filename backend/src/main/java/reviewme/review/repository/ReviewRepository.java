@@ -1,5 +1,6 @@
 package reviewme.review.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,16 +31,11 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query(value = """
             SELECT EXISTS (
-                    SELECT 1
-                    FROM (
-                        SELECT r.id
-                        FROM review r
-                        WHERE r.review_group_id = :reviewGroupId
-                        ORDER BY r.created_at ASC, r.id ASC
-                        LIMIT 1
-                    ) AS sub
-                    WHERE sub.id = :reviewId
-                )
+                    SELECT 1 FROM review r
+                    WHERE r.review_group_id = :reviewGroupId
+                    AND r.id < :reviewId
+                    AND r.created_at <= :createdAt
+                    )
             """, nativeQuery = true)
-    boolean isOldestReviewIdByReviewGroupId(long reviewGroupId, long reviewId);
+    boolean existOlderReviewInGroup(long reviewGroupId, long reviewId, LocalDate createdAt);
 }

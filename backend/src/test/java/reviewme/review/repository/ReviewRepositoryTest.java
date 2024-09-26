@@ -6,6 +6,7 @@ import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 import static reviewme.fixture.TemplateFixture.템플릿;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -155,7 +156,7 @@ class ReviewRepositoryTest {
     }
 
     @Nested
-    class 주어진_리뷰의_아이디가_가장_오래된_것인지_검사한다 {
+    class 주어진_리뷰보다_오래된_리뷰가_있는지_검사한다 {
 
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
@@ -163,35 +164,37 @@ class ReviewRepositoryTest {
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
-        Review review1 = reviewRepository.save(
+        Review firstReview = reviewRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), null, null));
-        Review review2 = reviewRepository.save(
+        Review secondReview = reviewRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), null, null));
 
         @Test
         void 주어진_리뷰가_가장_오래된_경우() {
             // given
             long reviewGroupId = reviewGroup.getId();
-            long reviewId = review1.getId();
+            long reviewId = firstReview.getId();
+            LocalDate createdAt = firstReview.getCreatedAt().toLocalDate();
 
             // when
-            boolean isOldest = reviewRepository.isOldestReviewIdByReviewGroupId(reviewGroupId, reviewId);
+            boolean isOlderExist = reviewRepository.existOlderReviewInGroup(reviewGroupId, reviewId, createdAt);
 
             // then
-            assertThat(isOldest).isTrue();
+            assertThat(isOlderExist).isFalse();
         }
 
         @Test
         void 주어진_리뷰가_가장_오래되지_않은_경우() {
             // given
             long reviewGroupId = reviewGroup.getId();
-            long reviewId = review2.getId();
+            long reviewId = secondReview.getId();
+            LocalDate createdAt = secondReview.getCreatedAt().toLocalDate();
 
             // when
-            boolean isOldest = reviewRepository.isOldestReviewIdByReviewGroupId(reviewGroupId, reviewId);
+            boolean isOlderExist = reviewRepository.existOlderReviewInGroup(reviewGroupId, reviewId, createdAt);
 
             // then
-            assertThat(isOldest).isFalse();
+            assertThat(isOlderExist).isTrue();
         }
     }
 }
