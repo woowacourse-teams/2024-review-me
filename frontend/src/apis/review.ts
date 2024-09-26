@@ -59,10 +59,16 @@ interface GetReviewListApi {
   groupAccessCode: string;
   reviewRequestCode: string;
   lastReviewId: number | null;
+  size: number;
 }
 
-export const getReviewListApi = async ({ groupAccessCode, reviewRequestCode, lastReviewId }: GetReviewListApi) => {
-  const response = await fetch(endPoint.gettingReviewList(reviewRequestCode, lastReviewId), {
+export const getReviewListApi = async ({
+  groupAccessCode,
+  reviewRequestCode,
+  lastReviewId,
+  size,
+}: GetReviewListApi) => {
+  const response = await fetch(endPoint.gettingReviewList(reviewRequestCode, lastReviewId, size), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

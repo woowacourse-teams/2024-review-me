@@ -50,20 +50,19 @@ const getDataToWriteReview = () =>
     return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
   });
 
-const getReviewList = (reviewRequestCode: string, lastReviewId: number | null) => {
-  return http.get(endPoint.gettingReviewList(reviewRequestCode, lastReviewId), async ({ request }) => {
+const getReviewList = (reviewRequestCode: string, lastReviewId: number | null, size: number) => {
+  return http.get(endPoint.gettingReviewList(reviewRequestCode, lastReviewId, size), async ({ request }) => {
     const url = new URL(request.url);
 
     const lastReviewIdParam = url.searchParams.get('lastReviewId');
     const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
 
     const isFirstPage = lastReviewId === 0;
-    const limit = isFirstPage ? PAGE.defaultPageSize : PAGE.additionalPageSize;
     const startIndex = isFirstPage
       ? PAGE.firstPageStartIndex
       : REVIEW_LIST.reviews.findIndex((review) => review.reviewId === lastReviewId) + 1;
 
-    const endIndex = startIndex + limit;
+    const endIndex = startIndex + size;
 
     const paginatedReviews = REVIEW_LIST.reviews.slice(startIndex, endIndex);
 
@@ -72,7 +71,7 @@ const getReviewList = (reviewRequestCode: string, lastReviewId: number | null) =
     return HttpResponse.json({
       revieweeName: REVIEW_LIST.revieweeName,
       projectName: REVIEW_LIST.projectName,
-      lastReviewId: !isLastPage && lastReviewId !== null ? lastReviewId + limit : null,
+      lastReviewId: !isLastPage && lastReviewId !== null ? lastReviewId + size : null,
       reviews: paginatedReviews,
     });
   });
@@ -83,6 +82,6 @@ const postReview = () =>
     return HttpResponse.json({ message: 'post 성공' }, { status: 201 });
   });
 
-const reviewHandler = [getDetailedReview(), getReviewList('ABCD1234', null), getDataToWriteReview(), postReview()];
+const reviewHandler = [getDetailedReview(), getReviewList('ABCD1234', null, 10), getDataToWriteReview(), postReview()];
 
 export default reviewHandler;
