@@ -18,20 +18,20 @@ const useLoadAndPrepareReview = ({ reviewRequestCode }: UseLoadAndPrepareReviewP
   const { revieweeName, projectName } = data;
 
   // 리뷰 작성 폼에서 사용할 질문의 문자열 치환
-  const newDataSection: ReviewWritingCardSection[] = useMemo(() => {
+  const parsedDataSection: ReviewWritingCardSection[] = useMemo(() => {
     return data.sections.map((section) => {
-      const newHeader = substituteString({
+      const parsedHeader = substituteString({
         content: section.header,
         variables: { revieweeName, projectName },
       });
 
-      const newQuestions = section.questions.map((question) => {
-        const newContent = substituteString({
+      const parsedQuestions = section.questions.map((question) => {
+        const parsedContent = substituteString({
           content: question.content,
           variables: { revieweeName, projectName },
         });
 
-        const newGuideline = question.guideline
+        const parsedGuideline = question.guideline
           ? substituteString({
               content: question.guideline,
               variables: { revieweeName, projectName },
@@ -40,20 +40,20 @@ const useLoadAndPrepareReview = ({ reviewRequestCode }: UseLoadAndPrepareReviewP
 
         return {
           ...question,
-          content: newContent,
-          guideline: newGuideline,
+          content: parsedContent,
+          guideline: parsedGuideline,
         };
       });
 
       return {
         ...section,
-        header: newHeader,
-        questions: newQuestions,
+        header: parsedHeader,
+        questions: parsedQuestions,
       };
     });
   }, [data.sections, revieweeName, projectName]);
 
-  const { cardSectionList } = useCardSectionList({ cardSectionListData: newDataSection });
+  const { cardSectionList } = useCardSectionList({ cardSectionListData: parsedDataSection });
 
   return {
     revieweeName,

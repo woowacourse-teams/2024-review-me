@@ -16,7 +16,7 @@ const DetailedReviewPageContents = () => {
     reviewId: Number(reviewId),
   });
 
-  const newDetailedReview = useMemo(() => {
+  const parsedDetailedReview = useMemo(() => {
     return {
       ...detailedReview,
       sections: detailedReview.sections.map((section) => {
@@ -50,13 +50,13 @@ const DetailedReviewPageContents = () => {
   return (
     <S.DetailedReviewPageContents>
       <ReviewDescription
-        projectName={newDetailedReview.projectName}
-        date={new Date(newDetailedReview.createdAt)}
-        revieweeName={newDetailedReview.revieweeName}
+        projectName={parsedDetailedReview.projectName}
+        date={new Date(parsedDetailedReview.createdAt)}
+        revieweeName={parsedDetailedReview.revieweeName}
         isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
       />
-      {newDetailedReview.sections.map((section) =>
+      {parsedDetailedReview.sections.map((section) =>
         section.questions.map((question) => (
           <S.ReviewContentContainer key={question.questionId}>
             <ReviewSection question={question.content} answer={question.answer!} />
