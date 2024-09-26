@@ -20,7 +20,12 @@ const PageContents = () => {
     paramKey: 'reviewRequestCode',
   });
 
-  const lastReviewElementRef = useInfiniteScroll({ fetchNextPage, hasNextPage, isLoading });
+  const lastReviewElementRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isLastPage: data.pages[0].isLastPage,
+  });
 
   const handleReviewClick = (id: number) => {
     navigate(`/${ROUTE.detailedReview}/${reviewRequestCode}/${id}`);

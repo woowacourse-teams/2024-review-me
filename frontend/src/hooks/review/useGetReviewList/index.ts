@@ -9,7 +9,7 @@ const useGetReviewList = () => {
     queryFn: ({ pageParam }) =>
       getReviewListApi({
         lastReviewId: pageParam === 0 ? null : pageParam, // 첫 api 요청 시, null 값 보내기
-        size: pageParam === 0 ? 10 : 5, // 첫 api 요청 시, 10개의 리뷰를 불러오고 그 이후로는 5개씩 불러온다.
+        size: 10,
       }),
 
     initialPageParam: 0,

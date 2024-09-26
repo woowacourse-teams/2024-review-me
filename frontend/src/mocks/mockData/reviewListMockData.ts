@@ -3,6 +3,7 @@ export const REVIEW_LIST: ReviewList = {
   revieweeName: '쑤쑤',
   projectName: 'review-me',
   lastReviewId: 12,
+  isLastPage: false,
   reviews: [
     {
       reviewId: 5,
