@@ -90,10 +90,15 @@ class ReviewListLookupServiceTest {
         reviewRepository.saveAll(List.of(review1, review2));
 
         // when
-        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(Long.MAX_VALUE, 5, reviewRequestCode);
+        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(Long.MAX_VALUE, 5,
+                reviewRequestCode);
 
         // then
-        assertThat(response.reviews()).hasSize(2);
+        assertAll(
+                () -> assertThat(response.reviews()).hasSize(2),
+                () -> assertThat(response.lastReviewId()).isEqualTo(review1.getId()),
+                () -> assertThat(response.isLastPage()).isTrue()
+        );
     }
 
     @Test
@@ -127,9 +132,10 @@ class ReviewListLookupServiceTest {
                         .hasSize(2)
                         .extracting("reviewId")
                         .containsExactly(review3.getId(), review2.getId()),
-                () ->
-                        assertThat(response.lastReviewId())
-                                .isEqualTo(review2.getId())
+                () -> assertThat(response.lastReviewId())
+                        .isEqualTo(review2.getId()),
+                () -> assertThat(response.isLastPage())
+                        .isFalse()
         );
     }
 }
