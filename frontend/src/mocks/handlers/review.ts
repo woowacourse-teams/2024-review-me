@@ -79,6 +79,7 @@ const getReviewList = (lastReviewId: number | null, size: number) => {
       revieweeName: REVIEW_LIST.revieweeName,
       projectName: REVIEW_LIST.projectName,
       lastReviewId: !isLastPage && lastReviewId !== null ? lastReviewId + size : null,
+      isLastPage: isLastPage,
       reviews: paginatedReviews,
     });
   });
