@@ -4,7 +4,7 @@ import { getReviewListApi } from '@/apis/review';
 import { REVIEW_QUERY_KEY } from '@/constants';
 
 const useGetReviewList = (groupAccessCode: string, reviewRequestCode: string) => {
-  const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useSuspenseInfiniteQuery({
+  const result = useSuspenseInfiniteQuery({
     queryKey: [REVIEW_QUERY_KEY.reviews],
     queryFn: ({ pageParam }) =>
       getReviewListApi({
@@ -21,13 +21,7 @@ const useGetReviewList = (groupAccessCode: string, reviewRequestCode: string) =>
     staleTime: 1 * 60 * 1000,
   });
 
-  return {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-    isSuccess,
-  };
+  return result;
 };
 
 export default useGetReviewList;
