@@ -17,14 +17,17 @@ const substituteString = ({ content, variables }: SubstituteStringProps) => {
 
   return content.replace(regex, (_, variableName, particleWithoutFinalConsonant, particleWithFinalConsonant) => {
     const value = variables[variableName];
-
+    // 조사 선택형이 아닌 경우 문자열만 치환
+    if (!particleWithFinalConsonant || !particleWithoutFinalConsonant) return value;
+    // 영어 이름인 경우 가능한 조사를 모두 포함해서 치환
     if (hasAlphabet.test(value)) {
       return value + `${particleWithFinalConsonant}(${particleWithoutFinalConsonant})`;
     }
-
-    if (value && particleWithoutFinalConsonant && particleWithFinalConsonant) {
+    // 한글 이름인 경우 받침 유무에 따라 맞는 조사로 치환
+    if (value) {
       return value + (hasFinalConsonant(value) ? particleWithFinalConsonant : particleWithoutFinalConsonant);
     }
+
     return value;
   });
 };
