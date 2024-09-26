@@ -2,7 +2,7 @@ package reviewme.review.service.dto.response.list;
 
 import java.util.List;
 
-public record ReceivedReviewsResponseWithPagination(
+public record PagedReceivedReviewsResponse(
         String revieweeName,
         String projectName,
         int totalSize,

@@ -24,7 +24,7 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponseWithPagination;
+import reviewme.review.service.dto.response.list.PagedReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
@@ -212,7 +212,7 @@ class ReviewApiTest extends ApiTest {
                 new ReviewListElementResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
                         List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
         );
-        ReceivedReviewsResponseWithPagination response = new ReceivedReviewsResponseWithPagination(
+        PagedReceivedReviewsResponse response = new PagedReceivedReviewsResponse(
                 "아루3", "리뷰미", receivedReviews.size(), 2, receivedReviews);
         BDDMockito.given(reviewListLookupService.getReceivedReviewsWithPagination(anyString(), anyLong(), anyInt()))
                 .willReturn(response);

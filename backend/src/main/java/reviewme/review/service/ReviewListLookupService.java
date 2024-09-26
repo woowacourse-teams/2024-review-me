@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponseWithPagination;
+import reviewme.review.service.dto.response.list.PagedReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
@@ -55,8 +55,8 @@ public class ReviewListLookupService {
     }
 
     @Transactional(readOnly = true)
-    public ReceivedReviewsResponseWithPagination getReceivedReviewsWithPagination(String reviewRequestCode,
-                                                                                  long lastReviewId, int size) {
+    public PagedReceivedReviewsResponse getReceivedReviewsWithPagination(String reviewRequestCode,
+                                                                         long lastReviewId, int size) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
@@ -64,7 +64,7 @@ public class ReviewListLookupService {
                 = reviewListMapper.mapToReviewListWithPagination(reviewGroup, lastReviewId, size);
         int totalSize = reviewRepository.countByReviewGroupId(reviewGroup.getId());
         long newLastReviewId = calculateLastReviewId(reviewListElements);
-        return new ReceivedReviewsResponseWithPagination(
+        return new PagedReceivedReviewsResponse(
                 reviewGroup.getReviewee(), reviewGroup.getProjectName(), totalSize, newLastReviewId, reviewListElements
         );
     }

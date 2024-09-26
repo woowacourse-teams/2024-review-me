@@ -24,7 +24,7 @@ import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponseWithPagination;
+import reviewme.review.service.dto.response.list.PagedReceivedReviewsResponse;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -134,7 +134,7 @@ class ReviewListLookupServiceTest {
         reviewRepository.saveAll(List.of(review1, review2, review3));
 
         // when
-        ReceivedReviewsResponseWithPagination response
+        PagedReceivedReviewsResponse response
                 = reviewListLookupService.getReceivedReviewsWithPagination(reviewRequestCode, Long.MAX_VALUE, 2);
 
         // then
