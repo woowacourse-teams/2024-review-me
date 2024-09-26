@@ -1,3 +1,5 @@
+import React from 'react';
+
 import NavigateNextIcon from '@/assets/navigateNext.svg';
 import useStepList from '@/pages/ReviewWritingPage/progressBar/hooks/useStepList';
 import { Direction } from '@/pages/ReviewWritingPage/types';
@@ -18,25 +20,26 @@ const ProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: ProgressBarPr
   };
 
   return (
-    <S.ProgressBar>
-      {stepList.map((step, index) => {
-        return (
-          <>
-            <S.StepButton
-              key={step.sectionId}
-              $isDone={step.isDone}
-              $isMovingAvailable={step.isMovingAvailable}
-              $isCurrentStep={step.isCurrentStep}
-              onClick={() => handleClick(index)}
-              type="button"
-            >
-              {step.sectionName}
-            </S.StepButton>
-            {index < stepList.length - 1 && <img src={NavigateNextIcon} alt="다음 화살표" />}
-          </>
-        );
-      })}
-    </S.ProgressBar>
+    <S.ProgressBarContainer>
+      <S.ProgressBar>
+        {stepList.map((step, index) => {
+          return (
+            <React.Fragment key={step.sectionId}>
+              <S.StepButton
+                $isDone={step.isDone}
+                $isMovingAvailable={step.isMovingAvailable}
+                $isCurrentStep={step.isCurrentStep}
+                onClick={() => handleClick(index)}
+                type="button"
+              >
+                {step.sectionName}
+              </S.StepButton>
+              {index < stepList.length - 1 && <img src={NavigateNextIcon} alt="다음 화살표" />}
+            </React.Fragment>
+          );
+        })}
+      </S.ProgressBar>
+    </S.ProgressBarContainer>
   );
 };
 
