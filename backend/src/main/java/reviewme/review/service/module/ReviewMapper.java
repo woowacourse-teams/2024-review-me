@@ -79,7 +79,7 @@ public class ReviewMapper {
     private void addIfTextAnswerExists(ReviewAnswerRequest answerRequest,
                                        Question question,
                                        List<TextAnswer> textAnswers) {
-        if (question.isRequired() || !answerRequest.text().isEmpty()) {
+        if (question.isRequired() || answerRequest.hasTextAnswer()) {
             TextAnswer textAnswer = answerMapper.mapToTextAnswer(answerRequest);
             textAnswers.add(textAnswer);
         }
@@ -88,7 +88,7 @@ public class ReviewMapper {
     private void addIfCheckBoxAnswerExists(ReviewAnswerRequest answerRequest,
                                            Question question,
                                            List<CheckboxAnswer> checkboxAnswers) {
-        if (question.isRequired() || !answerRequest.selectedOptionIds().isEmpty()) {
+        if (question.isRequired() || answerRequest.hasCheckboxAnswer()) {
             CheckboxAnswer checkboxAnswer = answerMapper.mapToCheckBoxAnswer(answerRequest);
             checkboxAnswers.add(checkboxAnswer);
         }
