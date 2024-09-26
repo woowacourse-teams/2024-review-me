@@ -19,6 +19,10 @@ export const AnswerListContainer = styled.div`
       return `calc(${maxWidth} - (${padding} * 2) - ${scrollbarWidth})`;
     }};
   }
+
+  ${media.xxSmall} {
+    width: 100%;
+  }
 `;
 
 export const EmptyTextAnswer = styled.p`
