@@ -44,7 +44,7 @@ public class ReviewController {
             lastReviewId = Long.MAX_VALUE;
         }
         PagedReceivedReviewsResponse response
-                = reviewListLookupService.getReceivedReviewsWithPagination(reviewRequestCode, lastReviewId, size);
+                = reviewListLookupService.getReceivedReviews(reviewRequestCode, lastReviewId, size);
         return ResponseEntity.ok(response);
     }
 

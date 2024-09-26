@@ -5,11 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.repository.ReviewRepository;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.PagedReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
-import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.mapper.ReviewListMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -24,36 +21,14 @@ public class ReviewListLookupService {
     private final ReviewRepository reviewRepository;
 
     @Transactional(readOnly = true)
-    public ReceivedReviewsResponse getReceivedReviews(String reviewRequestCode) {
-        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
-
-        List<ReviewListElementResponse> reviewGroupResponse = reviewListMapper.mapToReviewList(reviewGroup);
-        return new ReceivedReviewsResponse(
-                reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewGroupResponse
-        );
-    }
-
-    @Transactional(readOnly = true)
-    public ReceivedReviewsResponse getReceivedReviews2(String reviewRequestCode) {
-        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
-
-        List<ReviewListElementResponse> reviewGroupResponse = reviewListMapper.mapToReviewList(reviewGroup);
-        return new ReceivedReviewsResponse(
-                reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewGroupResponse
-        );
-    }
-
-    @Transactional(readOnly = true)
-    public PagedReceivedReviewsResponse getReceivedReviewsWithPagination(String reviewRequestCode,
-                                                                         long lastReviewId, Integer size) {
+    public PagedReceivedReviewsResponse getReceivedReviews(String reviewRequestCode,
+                                                           long lastReviewId, Integer size) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
         PageSize pageSize = new PageSize(size);
         List<ReviewListElementResponse> reviewListElements
-                = reviewListMapper.mapToReviewListWithPagination(reviewGroup, lastReviewId, pageSize.getSize());
+                = reviewListMapper.mapToReviewList(reviewGroup, lastReviewId, pageSize.getSize());
         int totalSize = reviewRepository.countByReviewGroupId(reviewGroup.getId());
         long newLastReviewId = calculateLastReviewId(reviewListElements);
         return new PagedReceivedReviewsResponse(

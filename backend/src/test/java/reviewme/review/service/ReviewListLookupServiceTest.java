@@ -23,11 +23,8 @@ import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.dto.response.list.PagedReceivedReviewsResponse;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
-import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -65,7 +62,7 @@ class ReviewListLookupServiceTest {
 
     @Test
     void 리뷰_요청_코드가_존재하지_않는_경우_예외가_발생한다() {
-        assertThatThrownBy(() -> reviewListLookupService.getReceivedReviews("abc"))
+        assertThatThrownBy(() -> reviewListLookupService.getReceivedReviews("abc", 1L, 1))
                 .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 
@@ -93,7 +90,7 @@ class ReviewListLookupServiceTest {
         reviewRepository.saveAll(List.of(review1, review2));
 
         // when
-        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(reviewRequestCode);
+        PagedReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(reviewRequestCode, 100L, 5);
 
         // then
         assertThat(response.reviews()).hasSize(2);
@@ -122,7 +119,7 @@ class ReviewListLookupServiceTest {
 
         // when
         PagedReceivedReviewsResponse response
-                = reviewListLookupService.getReceivedReviewsWithPagination(reviewRequestCode, Long.MAX_VALUE, 2);
+                = reviewListLookupService.getReceivedReviews(reviewRequestCode, Long.MAX_VALUE, 2);
 
         // then
         assertAll(
