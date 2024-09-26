@@ -47,6 +47,8 @@ public class ReviewListLookupService {
             return true;
         }
 
-        return reviewRepository.isOldestReviewIdByReviewGroupId(reviewGroup.getId(), calculateLastReviewId(elements));
+        ReviewListElementResponse lastReviewResponse = elements.get(elements.size() - 1);
+        return !reviewRepository.existOlderReviewInGroup(
+                reviewGroup.getId(), lastReviewResponse.reviewId(), lastReviewResponse.createdAt());
     }
 }
