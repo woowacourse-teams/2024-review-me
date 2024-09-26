@@ -46,10 +46,7 @@ public class ReviewListLookupService {
         if (elements.isEmpty()) {
             return true;
         }
-        Long lastReviewId = reviewRepository.findLastReviewIdByReviewGroupId(reviewGroup.getId());
-        if (lastReviewId == null) {
-            return true;
-        }
-        return calculateLastReviewId(elements) == lastReviewId;
+
+        return reviewRepository.isSmallestReviewIdByReviewGroupId(reviewGroup.getId(), calculateLastReviewId(elements));
     }
 }
