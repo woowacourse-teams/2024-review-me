@@ -74,6 +74,7 @@ export interface ReviewList {
   revieweeName: string;
   projectName: string;
   lastReviewId: number | null;
+  isLastPage: boolean;
   reviews: ReviewInfo[];
 }
 
