@@ -65,6 +65,11 @@ const CardForm = () => {
     };
   }, []);
 
+  const revieweeNameSuffix = `${calculateParticle({
+    target: revieweeName,
+    particles: { withFinalConsonant: '을', withoutFinalConsonant: '를' },
+  })} 리뷰해주세요!`;
+
   return (
     <S.CardFormContainer>
       <S.CardForm>
@@ -73,11 +78,7 @@ const CardForm = () => {
             <S.ProjectName>{projectName}</S.ProjectName>
             <p>
               <S.RevieweeName>{revieweeName}</S.RevieweeName>
-              {calculateParticle({
-                target: revieweeName,
-                particles: { withFinalConsonant: '을', withoutFinalConsonant: '를' },
-              })}
-              리뷰해주세요!
+              {revieweeNameSuffix}
             </p>
           </S.ProjectInfoContainer>
         </S.RevieweeDescription>
