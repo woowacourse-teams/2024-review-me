@@ -166,7 +166,7 @@ class ReviewApiTest extends ApiTest {
                         List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
         );
         ReceivedReviewsResponse response = new ReceivedReviewsResponse(
-                "아루3", "리뷰미", receivedReviews.size(), 2, receivedReviews);
+                "아루3", "리뷰미", 1L, receivedReviews);
         BDDMockito.given(reviewListLookupService.getReceivedReviews(anyLong(), anyInt(), anyString()))
                 .willReturn(response);
 
@@ -183,7 +183,6 @@ class ReviewApiTest extends ApiTest {
         FieldDescriptor[] responseFieldDescriptors = {
                 fieldWithPath("revieweeName").description("리뷰이 이름"),
                 fieldWithPath("projectName").description("프로젝트 이름"),
-                fieldWithPath("totalSize").description("받은 리뷰 전체 개수"),
                 fieldWithPath("lastReviewId").description("페이지의 마지막 리뷰 ID"),
 
                 fieldWithPath("reviews[]").description("리뷰 목록"),

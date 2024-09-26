@@ -128,9 +128,6 @@ class ReviewListLookupServiceTest {
                         .extracting("reviewId")
                         .containsExactly(review3.getId(), review2.getId()),
                 () ->
-                        assertThat(response.totalSize())
-                                .isEqualTo(3),
-                () ->
                         assertThat(response.lastReviewId())
                                 .isEqualTo(review2.getId())
         );

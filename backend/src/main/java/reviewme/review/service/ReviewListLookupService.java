@@ -29,10 +29,9 @@ public class ReviewListLookupService {
         PageSize pageSize = new PageSize(size);
         List<ReviewListElementResponse> reviewListResponse
                 = reviewListMapper.mapToReviewList(reviewGroup, lastId.getId(), pageSize.getSize());
-        int totalSize = reviewRepository.countByReviewGroupId(reviewGroup.getId());
         long newLastReviewId = calculateLastReviewId(reviewListResponse);
         return new ReceivedReviewsResponse(
-                reviewGroup.getReviewee(), reviewGroup.getProjectName(), totalSize, newLastReviewId, reviewListResponse
+                reviewGroup.getReviewee(), reviewGroup.getProjectName(), newLastReviewId, reviewListResponse
         );
     }
 
