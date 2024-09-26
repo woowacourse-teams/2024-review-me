@@ -16,8 +16,8 @@ import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.PagedReceivedReviewsResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -59,7 +59,7 @@ public class ReviewController {
     @GetMapping("/v3/reviews")
     public ResponseEntity<PagedReceivedReviewsResponse> findReceivedReviewsWithPagination(
             @RequestParam(required = false) Long lastReviewId,
-            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(required = false) Integer size,
             @RequestParam String reviewRequestCode
     ) {
         if (lastReviewId == null) {

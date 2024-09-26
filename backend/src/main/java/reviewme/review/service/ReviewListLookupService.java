@@ -56,12 +56,13 @@ public class ReviewListLookupService {
 
     @Transactional(readOnly = true)
     public PagedReceivedReviewsResponse getReceivedReviewsWithPagination(String reviewRequestCode,
-                                                                         long lastReviewId, int size) {
+                                                                         long lastReviewId, Integer size) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
+        PageSize pageSize = new PageSize(size);
         List<ReviewListElementResponse> reviewListElements
-                = reviewListMapper.mapToReviewListWithPagination(reviewGroup, lastReviewId, size);
+                = reviewListMapper.mapToReviewListWithPagination(reviewGroup, lastReviewId, pageSize.getSize());
         int totalSize = reviewRepository.countByReviewGroupId(reviewGroup.getId());
         long newLastReviewId = calculateLastReviewId(reviewListElements);
         return new PagedReceivedReviewsResponse(
