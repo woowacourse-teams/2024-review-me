@@ -20,8 +20,6 @@ import {
 export const PAGE = {
   firstPageNumber: 1,
   firstPageStartIndex: 0,
-  defaultPageSize: 5,
-  additionalPageSize: 2,
 };
 
 const getDetailedReview = () =>
@@ -56,34 +54,33 @@ const getDataToWriteReview = () =>
     return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
   });
 
-const getReviewList = () => {
-  return http.get(endPoint.gettingReviewList, async ({ cookies }) => {
+const getReviewList = (lastReviewId: number | null, size: number) => {
+  return http.get(endPoint.gettingReviewList(lastReviewId, size), async ({ request, cookies }) => {
     // authToken 쿠키 확인
     if (!cookies[MOCK_AUTH_TOKEN_NAME]) return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
 
-    // const url = new URL(request.url);
+    const url = new URL(request.url);
 
-    // const lastReviewId = Number(url.searchParams.get('lastReviewId'));
+    const lastReviewIdParam = url.searchParams.get('lastReviewId');
+    const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
 
-    // const isFirstPage = lastReviewId === 0;
-    // const limit = isFirstPage ? PAGE.defaultPageSize : PAGE.additionalPageSize;
-    // const startIndex = isFirstPage
-    //   ? PAGE.firstPageStartIndex
-    //   : REVIEW_PREVIEW_LIST.reviews.findIndex((review) => review.id === lastReviewId) + 1;
+    const isFirstPage = lastReviewId === 0;
+    const startIndex = isFirstPage
+      ? PAGE.firstPageStartIndex
+      : REVIEW_LIST.reviews.findIndex((review) => review.reviewId === lastReviewId) + 1;
 
-    // const endIndex = startIndex + limit;
+    const endIndex = startIndex + size;
 
-    // const paginatedReviews = REVIEW_PREVIEW_LIST.reviews.slice(startIndex, endIndex);
+    const paginatedReviews = REVIEW_LIST.reviews.slice(startIndex, endIndex);
 
-    // const isLastPage = endIndex >= REVIEW_PREVIEW_LIST.reviews.length;
+    const isLastPage = endIndex >= REVIEW_LIST.reviews.length;
 
-    // return HttpResponse.json({
-    //   size: paginatedReviews.length,
-    //   lastReviewId: isLastPage ? null : lastReviewId + limit,
-    //   reviews: paginatedReviews,
-    // });
-
-    return HttpResponse.json(REVIEW_LIST);
+    return HttpResponse.json({
+      revieweeName: REVIEW_LIST.revieweeName,
+      projectName: REVIEW_LIST.projectName,
+      lastReviewId: !isLastPage && lastReviewId !== null ? lastReviewId + size : null,
+      reviews: paginatedReviews,
+    });
   });
 };
 
@@ -92,6 +89,6 @@ const postReview = () =>
     return HttpResponse.json({ message: 'post 성공' }, { status: 201 });
   });
 
-const reviewHandler = [getDetailedReview(), getReviewList(), getDataToWriteReview(), postReview()];
+const reviewHandler = [getDetailedReview(), getReviewList(null, 10), getDataToWriteReview(), postReview()];
 
 export default reviewHandler;

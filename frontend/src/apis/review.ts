@@ -53,8 +53,13 @@ export const getDetailedReviewApi = async ({ reviewId }: GetDetailedReviewApi) =
   return data as DetailReviewData;
 };
 
-export const getReviewListApi = async () => {
-  const response = await fetch(endPoint.gettingReviewList, {
+interface GetReviewListApi {
+  lastReviewId: number | null;
+  size: number;
+}
+
+export const getReviewListApi = async ({ lastReviewId, size }: GetReviewListApi) => {
+  const response = await fetch(endPoint.gettingReviewList(lastReviewId, size), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
