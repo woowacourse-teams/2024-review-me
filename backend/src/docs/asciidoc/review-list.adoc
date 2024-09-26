@@ -2,6 +2,10 @@
 
 operation::received-reviews[snippets="curl-request,request-headers,http-response,response-fields"]
 
+==== 자신이 받은 리뷰 목록 조회 (세션 사용)
+
+operation::received-review-list-with-session[snippets="curl-request,request-cookies,http-response,response-fields"]
+
 ==== 자신이 받은 리뷰 목록 조회 (페이지네이션 적용)
 
 operation::received-review-list-with-pagination[snippets="curl-request,query-parameters,http-response,response-fields"]

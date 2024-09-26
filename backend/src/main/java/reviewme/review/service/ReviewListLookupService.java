@@ -10,6 +10,7 @@ import reviewme.review.service.dto.response.list.PagedReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.exception.ReviewGroupUnauthorizedException;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.mapper.ReviewListMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -23,24 +24,14 @@ public class ReviewListLookupService {
     private final ReviewRepository reviewRepository;
 
     @Transactional(readOnly = true)
-    public ReceivedReviewsResponse getReceivedReviews(String reviewRequestCode, String groupAccessCode) {
-        ReviewGroup reviewGroup = findReviewGroupByRequestCodeOrThrow(reviewRequestCode);
-        validateGroupAccessCode(groupAccessCode, reviewGroup);
+    public ReceivedReviewsResponse getReceivedReviews(String reviewRequestCode) {
+        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
         List<ReviewListElementResponse> reviewGroupResponse = reviewListMapper.mapToReviewList(reviewGroup);
-        return new ReceivedReviewsResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName(),
-                reviewGroupResponse);
-    }
-
-    private ReviewGroup findReviewGroupByRequestCodeOrThrow(String reviewRequestCode) {
-        return reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
-    }
-
-    private static void validateGroupAccessCode(String groupAccessCode, ReviewGroup reviewGroup) {
-        if (!reviewGroup.matchesGroupAccessCode(groupAccessCode)) {
-            throw new ReviewGroupUnauthorizedException(reviewGroup.getId());
-        }
+        return new ReceivedReviewsResponse(
+                reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewGroupResponse
+        );
     }
 
     @Transactional(readOnly = true)

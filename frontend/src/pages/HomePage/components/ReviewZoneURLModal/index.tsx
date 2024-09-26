@@ -24,7 +24,7 @@ const ReviewZoneURLModal = ({ reviewZoneURL, closeModal }: ReviewZoneURLModalPro
 
   return (
     <AlertModal
-      closeButton={{ content: '닫기', type: isChecked ? 'secondary' : 'disabled', handleClick: handleCloseButtonClick }}
+      closeButton={{ content: '닫기', type: isChecked ? 'primary' : 'disabled', handleClick: handleCloseButtonClick }}
       handleClose={null}
       isClosableOnBackground={false}
     >

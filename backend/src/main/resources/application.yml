@@ -4,7 +4,6 @@ spring:
 
   config:
     import:
-      - classpath:api-docs.yml
       - classpath:logback.yml
 
   datasource:
@@ -19,3 +18,17 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+    open-in-view: false
+
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: strict
+        http-only: true
+        secure: true
+
+cors:
+  allowed-origins:
+    - http://localhost
+    - https://localhost
