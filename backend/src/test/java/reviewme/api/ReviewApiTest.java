@@ -23,8 +23,6 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.PagedReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
@@ -160,51 +158,7 @@ class ReviewApiTest extends ApiTest {
     }
 
     @Test
-    void 세션으로_자신이_받은_리뷰_목록을_조회한다() {
-        List<ReviewListElementResponse> receivedReviews = List.of(
-                new ReviewListElementResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
-                        List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
-                new ReviewListElementResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
-                        List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
-        );
-        ReceivedReviewsResponse response = new ReceivedReviewsResponse("아루", "리뷰미", receivedReviews);
-        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyString()))
-                .willReturn(response);
-
-        CookieDescriptor[] cookieDescriptors = {
-                cookieWithName("JSESSIONID").description("세션 쿠키")
-        };
-
-        FieldDescriptor[] responseFieldDescriptors = {
-                fieldWithPath("revieweeName").description("리뷰이 이름"),
-                fieldWithPath("projectName").description("프로젝트 이름"),
-
-                fieldWithPath("reviews[]").description("리뷰 목록"),
-                fieldWithPath("reviews[].reviewId").description("리뷰 ID"),
-                fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
-                fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
-
-                fieldWithPath("reviews[].categories[]").description("카테고리 목록"),
-                fieldWithPath("reviews[].categories[].optionId").description("카테고리 ID"),
-                fieldWithPath("reviews[].categories[].content").description("카테고리 내용")
-        };
-
-        RestDocumentationResultHandler handler = document(
-                "received-review-list-with-session",
-                requestCookies(cookieDescriptors),
-                responseFields(responseFieldDescriptors)
-        );
-
-        givenWithSpec().log().all()
-                .cookie("JSESSIONID", "ASVNE1VAKDNV4")
-                .when().get("/v2/reviews")
-                .then().log().all()
-                .apply(handler)
-                .statusCode(200);
-    }
-
-    @Test
-    void 페이지네이션으로_자신이_받은_리뷰_목록을_조회한다() {
+    void 자신이_받은_리뷰_목록을_조회한다() {
         List<ReviewListElementResponse> receivedReviews = List.of(
                 new ReviewListElementResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
                         List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
@@ -215,6 +169,10 @@ class ReviewApiTest extends ApiTest {
                 "아루3", "리뷰미", receivedReviews.size(), 2, receivedReviews);
         BDDMockito.given(reviewListLookupService.getReceivedReviewsWithPagination(anyString(), anyLong(), anyInt()))
                 .willReturn(response);
+
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 쿠키")
+        };
 
         ParameterDescriptor[] queryParameter = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드"),
@@ -240,15 +198,17 @@ class ReviewApiTest extends ApiTest {
 
         RestDocumentationResultHandler handler = document(
                 "received-review-list-with-pagination",
+                requestCookies(cookieDescriptors),
                 queryParameters(queryParameter),
                 responseFields(responseFieldDescriptors)
         );
 
         givenWithSpec().log().all()
+                .cookie("JSESSIONID", "ASVNE1VAKDNV4")
                 .queryParam("reviewRequestCode", "hello!!")
                 .queryParam("lastReviewId", "2")
                 .queryParam("size", "5")
-                .when().get("/v3/reviews")
+                .when().get("/v2/reviews")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
