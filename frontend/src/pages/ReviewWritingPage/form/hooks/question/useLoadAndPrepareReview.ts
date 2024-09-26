@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { ReviewWritingCardSection } from '@/types';
-import substituteString from '@/utils/substituteString';
+import { substituteString } from '@/utils';
 
 import useCardSectionList from './useCardSectionList';
 import useGetDataToWrite from './useGetDataToWrite';

@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { ROUTE_PARAM } from '@/constants';
 import { useGetDetailedReview, useSearchParamAndQuery } from '@/hooks';
 import { ReviewDescription, ReviewSection, KeywordSection } from '@/pages/DetailedReviewPage/components';
-import substituteString from '@/utils/substituteString';
+import { substituteString } from '@/utils';
 
 import * as S from './styles';
 

@@ -1,4 +1,4 @@
-import calculateParticle from '@/utils/calculateParticle';
+import { calculateParticle } from '@/utils';
 
 import * as S from './styles';
 

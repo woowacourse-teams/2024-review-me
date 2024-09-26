@@ -8,7 +8,7 @@ import { Button } from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useGetReviewGroupData, useSearchParamAndQuery, useModals } from '@/hooks';
 import { reviewRequestCodeAtom } from '@/recoil';
-import calculateParticle from '@/utils/calculateParticle';
+import { calculateParticle } from '@/utils';
 
 import PasswordModal from './components/PasswordModal';
 import * as S from './styles';
