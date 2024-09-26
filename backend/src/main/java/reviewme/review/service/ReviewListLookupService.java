@@ -21,8 +21,7 @@ public class ReviewListLookupService {
     private final ReviewRepository reviewRepository;
 
     @Transactional(readOnly = true)
-    public ReceivedReviewsResponse getReceivedReviews(String reviewRequestCode,
-                                                      Long lastReviewId, Integer size) {
+    public ReceivedReviewsResponse getReceivedReviews(Long lastReviewId, Integer size, String reviewRequestCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 

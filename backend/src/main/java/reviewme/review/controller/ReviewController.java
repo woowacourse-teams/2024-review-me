@@ -41,7 +41,7 @@ public class ReviewController {
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
         ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(
-                reviewRequestCode, lastReviewId, size);
+                lastReviewId, size, reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 

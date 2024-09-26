@@ -167,7 +167,7 @@ class ReviewApiTest extends ApiTest {
         );
         ReceivedReviewsResponse response = new ReceivedReviewsResponse(
                 "아루3", "리뷰미", receivedReviews.size(), 2, receivedReviews);
-        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyString(), anyLong(), anyInt()))
+        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyLong(), anyInt(), anyString()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {

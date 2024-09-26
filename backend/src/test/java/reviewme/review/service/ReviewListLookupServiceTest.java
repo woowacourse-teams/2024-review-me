@@ -62,7 +62,7 @@ class ReviewListLookupServiceTest {
 
     @Test
     void 리뷰_요청_코드가_존재하지_않는_경우_예외가_발생한다() {
-        assertThatThrownBy(() -> reviewListLookupService.getReceivedReviews("abc", 1L, 1))
+        assertThatThrownBy(() -> reviewListLookupService.getReceivedReviews(Long.MAX_VALUE, 5, "abc"))
                 .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 
@@ -90,7 +90,7 @@ class ReviewListLookupServiceTest {
         reviewRepository.saveAll(List.of(review1, review2));
 
         // when
-        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(reviewRequestCode, 100L, 5);
+        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(100L, 5, reviewRequestCode);
 
         // then
         assertThat(response.reviews()).hasSize(2);
@@ -119,7 +119,7 @@ class ReviewListLookupServiceTest {
 
         // when
         ReceivedReviewsResponse response
-                = reviewListLookupService.getReceivedReviews(reviewRequestCode, Long.MAX_VALUE, 2);
+                = reviewListLookupService.getReceivedReviews(Long.MAX_VALUE, 2, reviewRequestCode);
 
         // then
         assertAll(
