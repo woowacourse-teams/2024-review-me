@@ -99,11 +99,8 @@ public class ReviewDetailMapper {
         Set<Long> selectedOptionIds = review.getAllCheckBoxOptionIds();
 
         List<OptionItemAnswerResponse> optionItemResponse = optionItems.stream()
-                .map(optionItem -> new OptionItemAnswerResponse(
-                        optionItem.getId(),
-                        optionItem.getContent(),
-                        selectedOptionIds.contains(optionItem.getId()))
-                )
+                .filter(optionItem -> selectedOptionIds.contains(optionItem.getId()))
+                .map(optionItem -> new OptionItemAnswerResponse(optionItem.getId(), optionItem.getContent(), true))
                 .toList();
 
         OptionGroupAnswerResponse optionGroupAnswerResponse = new OptionGroupAnswerResponse(
