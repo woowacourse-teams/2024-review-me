@@ -16,6 +16,7 @@ import MobileProgressBar from '@/pages/ReviewWritingPage/progressBar/components/
 import ProgressBar from '@/pages/ReviewWritingPage/progressBar/components/ProgressBar';
 import { CardSlider } from '@/pages/ReviewWritingPage/slider/components';
 import { reviewRequestCodeAtom } from '@/recoil';
+import { calculateParticle } from '@/utils';
 
 import * as S from './styles';
 
@@ -71,7 +72,12 @@ const CardForm = () => {
           <S.ProjectInfoContainer>
             <S.ProjectName>{projectName}</S.ProjectName>
             <p>
-              <S.RevieweeName>{revieweeName}</S.RevieweeName>을(를) 리뷰해주세요!
+              <S.RevieweeName>{revieweeName}</S.RevieweeName>
+              {calculateParticle({
+                target: revieweeName,
+                particles: { withFinalConsonant: '을', withoutFinalConsonant: '를' },
+              })}
+              리뷰해주세요!
             </p>
           </S.ProjectInfoContainer>
         </S.RevieweeDescription>
