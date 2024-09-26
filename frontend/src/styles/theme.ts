@@ -5,8 +5,10 @@ import { ThemeProperty } from '../types';
 
 export const formWidth = '70rem';
 
-export const scrollbarWidth = '1.2rem';
-
+export const scrollbarWidth = {
+  basic: '1.2rem',
+  small: '0.5rem',
+};
 export const breadcrumbSize = {
   paddingLeft: '2rem',
 };

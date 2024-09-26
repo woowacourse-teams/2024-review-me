@@ -14,14 +14,23 @@ export const AnswerListContainer = styled.div`
   ${media.medium} {
     width: ${({ theme }) => {
       const { maxWidth, padding } = theme.contentModalSize;
-      const { scrollbarWidth } = theme;
+      const { basic } = theme.scrollbarWidth;
 
-      return `calc(${maxWidth} - (${padding} * 2) - ${scrollbarWidth})`;
+      return `calc(${maxWidth} - (${padding} * 2) - ${basic})`;
     }};
   }
 
   ${media.xSmall} {
-    width: 100%;
+    width: ${({ theme }) => {
+      const { maxWidth, smallPadding } = theme.contentModalSize;
+      const { small } = theme.scrollbarWidth;
+
+      return `calc(${maxWidth} - (${smallPadding} * 2) - ${small})`;
+    }};
+  }
+
+  @media screen and (max-width: 330px) {
+    width: inherit;
   }
 `;
 

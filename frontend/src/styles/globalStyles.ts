@@ -25,7 +25,7 @@ const globalStyles = (theme: Theme) => css`
   /* 스크롤바 설정 */
 
   ::-webkit-scrollbar {
-    width: ${theme.scrollbarWidth}; /* 스크롤바 너비 */
+    width: ${theme.scrollbarWidth.basic}; /* 스크롤바 너비 */
   }
 
   ::-webkit-scrollbar-thumb {
@@ -43,7 +43,7 @@ const globalStyles = (theme: Theme) => css`
       padding-right: 0;
     }
     ::-webkit-scrollbar {
-      width: 0.5rem;
+      width: ${theme.scrollbarWidth.small};
     }
     ::-webkit-scrollbar-track {
       background: transparent;
