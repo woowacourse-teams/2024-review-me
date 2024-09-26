@@ -21,7 +21,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             SELECT r.* FROM review r
             WHERE r.review_group_id = :reviewGroupId
             AND (:lastReviewId IS NULL OR r.id < :lastReviewId)
-            ORDER BY r.created_at DESC 
+            ORDER BY r.created_at DESC, r.id DESC
             LIMIT :limit
             """, nativeQuery = true)
     List<Review> findByReviewGroupIdWithLimit(long reviewGroupId, Long lastReviewId, int limit);

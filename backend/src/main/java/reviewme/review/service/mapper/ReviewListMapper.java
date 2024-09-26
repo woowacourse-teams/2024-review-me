@@ -23,10 +23,10 @@ public class ReviewListMapper {
     private final ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
 
     public List<ReviewListElementResponse> mapToReviewList(ReviewGroup reviewGroup, Long lastReviewId, int size) {
-        List<OptionItem> categoryOptionIds = optionItemRepository.findAllByOptionType(OptionType.CATEGORY);
+        List<OptionItem> categoryOptionItems = optionItemRepository.findAllByOptionType(OptionType.CATEGORY);
         return reviewRepository.findByReviewGroupIdWithLimit(reviewGroup.getId(), lastReviewId, size)
                 .stream()
-                .map(review -> mapToReviewListElementResponse(review, categoryOptionIds))
+                .map(review -> mapToReviewListElementResponse(review, categoryOptionItems))
                 .toList();
     }
 
