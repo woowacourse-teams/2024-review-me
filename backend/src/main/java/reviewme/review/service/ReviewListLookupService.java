@@ -19,13 +19,23 @@ public class ReviewListLookupService {
     private final ReviewListMapper reviewListMapper;
 
     @Transactional(readOnly = true)
-    public ReceivedReviewsResponse getReceivedReviews(String reviewRequestCode) {
+    public ReceivedReviewsResponse getReceivedReviews(Long lastReviewId, Integer size, String reviewRequestCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
-        List<ReviewListElementResponse> reviewGroupResponse = reviewListMapper.mapToReviewList(reviewGroup);
+        PageSize pageSize = new PageSize(size);
+        List<ReviewListElementResponse> reviewListResponse
+                = reviewListMapper.mapToReviewList(reviewGroup, lastReviewId, pageSize.getSize());
+        long newLastReviewId = calculateLastReviewId(reviewListResponse);
         return new ReceivedReviewsResponse(
-                reviewGroup.getReviewee(), reviewGroup.getProjectName(), reviewGroupResponse
+                reviewGroup.getReviewee(), reviewGroup.getProjectName(), newLastReviewId, reviewListResponse
         );
+    }
+
+    private long calculateLastReviewId(List<ReviewListElementResponse> elements) {
+        if (elements.isEmpty()) {
+            return 0;
+        }
+        return elements.get(elements.size() - 1).reviewId();
     }
 }

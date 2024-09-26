@@ -22,9 +22,9 @@ public class ReviewListMapper {
 
     private final ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
 
-    public List<ReviewListElementResponse> mapToReviewList(ReviewGroup reviewGroup) {
+    public List<ReviewListElementResponse> mapToReviewList(ReviewGroup reviewGroup, Long lastReviewId, int size) {
         List<OptionItem> categoryOptionIds = optionItemRepository.findAllByOptionType(OptionType.CATEGORY);
-        return reviewRepository.findAllByGroupId(reviewGroup.getId())
+        return reviewRepository.findByReviewGroupIdWithLimit(reviewGroup.getId(), lastReviewId, size)
                 .stream()
                 .map(review -> mapToReviewListElementResponse(review, categoryOptionIds))
                 .toList();
@@ -43,7 +43,7 @@ public class ReviewListMapper {
     }
 
     private List<ReviewCategoryResponse> mapToCategoryOptionResponse(Review review,
-                                                                            List<OptionItem> categoryOptionItems) {
+                                                                     List<OptionItem> categoryOptionItems) {
         Set<Long> checkBoxOptionIds = review.getAllCheckBoxOptionIds();
         return categoryOptionItems.stream()
                 .filter(optionItem -> checkBoxOptionIds.contains(optionItem.getId()))

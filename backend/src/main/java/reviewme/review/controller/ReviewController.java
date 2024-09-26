@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import reviewme.review.service.ReviewDetailLookupService;
@@ -35,9 +36,12 @@ public class ReviewController {
 
     @GetMapping("/v2/reviews")
     public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
+            @RequestParam(required = false) Long lastReviewId,
+            @RequestParam(required = false) Integer size,
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
-        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(reviewRequestCode);
+        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(
+                lastReviewId, size, reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 
