@@ -24,7 +24,6 @@ const PageContents = () => {
     fetchNextPage,
     hasNextPage,
     isLoading,
-    isLastPage: data.pages[0].isLastPage,
   });
 
   const handleReviewClick = (id: number) => {

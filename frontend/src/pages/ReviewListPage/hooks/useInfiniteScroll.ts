@@ -4,15 +4,14 @@ export interface InfiniteScrollProps {
   fetchNextPage: () => void;
   hasNextPage: boolean;
   isLoading: boolean;
-  isLastPage: boolean;
 }
 
-const useInfiniteScroll = ({ fetchNextPage, hasNextPage, isLoading, isLastPage }: InfiniteScrollProps) => {
+const useInfiniteScroll = ({ fetchNextPage, hasNextPage, isLoading }: InfiniteScrollProps) => {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const lastElementRef = useCallback(
     (node: HTMLElement | null) => {
-      if (isLoading || isLastPage) return;
+      if (isLoading) return;
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
@@ -23,7 +22,7 @@ const useInfiniteScroll = ({ fetchNextPage, hasNextPage, isLoading, isLastPage }
 
       if (node) observer.current.observe(node);
     },
-    [isLoading, fetchNextPage, hasNextPage, isLastPage],
+    [isLoading, fetchNextPage, hasNextPage],
   );
 
   return lastElementRef;
