@@ -19,7 +19,9 @@ const useGetReviewList = () => {
     staleTime: 1 * 60 * 1000,
   });
 
-  return result;
+  const hasNextPage = !result.data.pages.some((page) => page.reviews.length === 0);
+
+  return { ...result, hasNextPage };
 };
 
 export default useGetReviewList;
