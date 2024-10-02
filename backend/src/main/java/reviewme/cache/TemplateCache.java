@@ -18,7 +18,6 @@ import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
-import reviewme.template.repository.TemplateSectionRepository;
 
 @Component
 @RequiredArgsConstructor
@@ -26,7 +25,6 @@ import reviewme.template.repository.TemplateSectionRepository;
 public class TemplateCache {
 
     private final TemplateRepository templateRepository;
-    private final TemplateSectionRepository templateSectionRepository;
     private final SectionRepository sectionRepository;
     private final QuestionRepository questionRepository;
     private final OptionGroupRepository optionGroupRepository;
