@@ -2,11 +2,11 @@ import { useCallback, useRef } from 'react';
 
 export interface InfiniteScrollProps {
   fetchNextPage: () => void;
-  hasNextPage: boolean;
   isLoading: boolean;
+  isLastPage: boolean;
 }
 
-const useInfiniteScroll = ({ fetchNextPage, hasNextPage, isLoading }: InfiniteScrollProps) => {
+const useInfiniteScroll = ({ fetchNextPage, isLoading, isLastPage }: InfiniteScrollProps) => {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const lastElementRef = useCallback(
@@ -15,14 +15,14 @@ const useInfiniteScroll = ({ fetchNextPage, hasNextPage, isLoading }: InfiniteSc
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
+        if (entries[0].isIntersecting && !isLastPage) {
           fetchNextPage();
         }
       });
 
       if (node) observer.current.observe(node);
     },
-    [isLoading, fetchNextPage, hasNextPage],
+    [isLoading, fetchNextPage, isLastPage],
   );
 
   return lastElementRef;
