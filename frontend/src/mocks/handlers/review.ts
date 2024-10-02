@@ -78,7 +78,7 @@ const getReviewList = (lastReviewId: number | null, size: number) => {
     return HttpResponse.json({
       revieweeName: REVIEW_LIST.revieweeName,
       projectName: REVIEW_LIST.projectName,
-      lastReviewId: !isLastPage && lastReviewId !== null ? lastReviewId + size : null,
+      lastReviewId: paginatedReviews.length > 0 ? paginatedReviews[paginatedReviews.length - 1].reviewId : 0,
       isLastPage: isLastPage,
       reviews: paginatedReviews,
     });

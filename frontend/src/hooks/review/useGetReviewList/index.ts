@@ -19,7 +19,7 @@ const useGetReviewList = () => {
     staleTime: 1 * 60 * 1000,
   });
 
-  return result;
+  return { ...result };
 };
 
 export default useGetReviewList;
