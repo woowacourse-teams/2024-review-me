@@ -14,17 +14,10 @@ import * as S from './styles';
 const PageContents = () => {
   const navigate = useNavigate();
 
-  const { data, fetchNextPage, hasNextPage, isLoading, isSuccess } = useGetReviewList();
+  const { data, fetchNextPage, isLoading, isSuccess } = useGetReviewList();
 
   const { param: reviewRequestCode } = useSearchParamAndQuery({
     paramKey: 'reviewRequestCode',
-  });
-
-  const lastReviewElementRef = useInfiniteScroll({
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-    isLastPage: data.pages[0].isLastPage,
   });
 
   const handleReviewClick = (id: number) => {
@@ -32,7 +25,14 @@ const PageContents = () => {
   };
 
   const { projectName, revieweeName } = data.pages[0];
+  const isLastPage = data.pages[data.pages.length - 1].isLastPage;
   const reviews = data.pages.flatMap((page) => page.reviews);
+
+  const lastReviewElementRef = useInfiniteScroll({
+    fetchNextPage,
+    isLoading,
+    isLastPage,
+  });
 
   return (
     isSuccess && (

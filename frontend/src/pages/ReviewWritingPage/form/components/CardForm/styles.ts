@@ -4,14 +4,19 @@ import media from '@/utils/media';
 
 export const CardFormContainer = styled.div`
   position: relative;
+
+  display: flex;
+  align-items: start;
+
   width: fit-content;
   min-width: ${({ theme }) => theme.formWidth};
   max-width: 90rem;
+  min-height: inherit;
+  padding-top: 3rem;
 
   ${media.medium} {
     width: 80vw;
     min-width: initial;
-    margin-top: 2.4rem;
   }
 
   @media screen and (max-width: 500px) {
