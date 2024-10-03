@@ -2,11 +2,10 @@ package reviewme.review.service.validator;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reviewme.cache.TemplateCacheRepository;
 import reviewme.question.domain.Question;
-import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.exception.InvalidTextAnswerLengthException;
-import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 
 @Component
 @RequiredArgsConstructor
@@ -15,12 +14,10 @@ public class TextAnswerValidator {
     private static final int MIN_LENGTH = 20;
     private static final int MAX_LENGTH = 1_000;
 
-    private final QuestionRepository questionRepository;
+    private final TemplateCacheRepository templateCacheRepository;
 
     public void validate(TextAnswer textAnswer) {
-        Question question = questionRepository.findById(textAnswer.getQuestionId())
-                .orElseThrow(() -> new SubmittedQuestionNotFoundException(textAnswer.getQuestionId()));
-
+        Question question = templateCacheRepository.findQuestionById(textAnswer.getQuestionId());
         validateLength(textAnswer, question);
     }
 

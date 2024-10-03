@@ -6,16 +6,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reviewme.cache.TemplateCacheRepository;
 import reviewme.question.domain.Question;
-import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.template.domain.Section;
-import reviewme.template.domain.SectionQuestion;
-import reviewme.template.repository.SectionRepository;
 
 @Component
 @RequiredArgsConstructor
@@ -23,9 +21,7 @@ public class ReviewValidator {
 
     private final TextAnswerValidator textAnswerValidator;
     private final CheckBoxAnswerValidator checkBoxAnswerValidator;
-
-    private final SectionRepository sectionRepository;
-    private final QuestionRepository questionRepository;
+    private final TemplateCacheRepository templateCacheRepository;
 
     public void validate(Review review) {
         validateAnswer(review.getTextAnswers(), review.getCheckboxAnswers());
@@ -39,7 +35,11 @@ public class ReviewValidator {
     }
 
     private void validateAllAnswersContainedInTemplate(Review review) {
-        Set<Long> providedQuestionIds = questionRepository.findAllQuestionIdByTemplateId(review.getTemplateId());
+        Set<Long> providedQuestionIds = templateCacheRepository.findAllQuestionByTemplateId(review.getTemplateId())
+                .stream()
+                .map(Question::getId)
+                .collect(Collectors.toSet());
+
         Set<Long> reviewedQuestionIds = review.getAnsweredQuestionIds();
         if (!providedQuestionIds.containsAll(reviewedQuestionIds)) {
             throw new SubmittedQuestionAndProvidedQuestionMismatchException(reviewedQuestionIds, providedQuestionIds);
@@ -47,29 +47,27 @@ public class ReviewValidator {
     }
 
     private void validateAllRequiredQuestionsAnswered(Review review) {
-        Set<Long> displayedQuestionIds = extractDisplayedQuestionIds(review);
-        Set<Long> requiredQuestionIds = questionRepository.findAllById(displayedQuestionIds)
-                .stream()
+        Set<Long> requiredQuestionIds = extractDisplayedQuestions(review).stream()
                 .filter(Question::isRequired)
                 .map(Question::getId)
                 .collect(Collectors.toSet());
 
         Set<Long> reviewedQuestionIds = review.getAnsweredQuestionIds();
-        if (!reviewedQuestionIds.containsAll(requiredQuestionIds)) {
-            List<Long> missingRequiredQuestionIds = new ArrayList<>(requiredQuestionIds);
-            missingRequiredQuestionIds.removeAll(reviewedQuestionIds);
-            throw new MissingRequiredQuestionException(missingRequiredQuestionIds);
+        reviewedQuestionIds.removeAll(reviewedQuestionIds);
+
+        if (requiredQuestionIds.isEmpty()) {
+            throw new MissingRequiredQuestionException(new ArrayList<>(requiredQuestionIds));
         }
     }
 
-    private Set<Long> extractDisplayedQuestionIds(Review review) {
-        Set<Long> selectedOptionIds = review.getAllCheckBoxOptionIds();
-        List<Section> sections = sectionRepository.findAllByTemplateId(review.getTemplateId());
+    private Set<Question> extractDisplayedQuestions(Review review) {
+        List<Section> visibleSections = templateCacheRepository.findAllSectionByTemplateId(review.getTemplateId())
+                .stream()
+                .filter(section -> section.isVisibleBySelectedOptionIds(review.getAllCheckBoxOptionIds()))
+                .toList();
 
-        return sections.stream()
-                .filter(section -> section.isVisibleBySelectedOptionIds(selectedOptionIds))
-                .flatMap(section -> section.getQuestionIds().stream())
-                .map(SectionQuestion::getQuestionId)
+        return visibleSections.stream()
+                .flatMap(section -> templateCacheRepository.findAllQuestionBySectionId(section.getId()).stream())
                 .collect(Collectors.toSet());
     }
 }

@@ -15,7 +15,6 @@ public class ReviewRegisterService {
 
     private final ReviewMapper reviewMapper;
     private final ReviewValidator reviewValidator;
-
     private final ReviewRepository reviewRepository;
 
     @Transactional
