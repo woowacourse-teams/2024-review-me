@@ -59,19 +59,37 @@ public class ReviewDetailMapper {
         );
     }
 
+    private Map<Long, List<OptionItem>> mapToOptionItemsByQuestion(Review review) {
+        // 1. 리뷰가 갖고있는 checkboxAnswer들을 가져옵니다.
+        List<CheckboxAnswer> checkboxAnswers = checkboxAnswerRepository.findAllByReviewId(review.getId());
+
+        // 2. checkboxAnswer들을 같은 question id인 것끼리 묶어서 Map으로 만듭니다.
+        Map<Long, Long> checkboxAnswersByQuestionId = checkboxAnswers.stream()
+                .collect(Collectors.toMap(CheckboxAnswer::getQuestionId, CheckboxAnswer::getId));
+
+        // 3. checkboxAnswer들의 id를 모아서, 해당 id로 selectedOptions들을 조회합니다.
+        Map<Long, List<Long>> selectedOptionsByCheckBoxAnswerId = getSelectedOptionsByCheckBoxAnswerId(checkboxAnswers);
+
+        // 4. 각 리뷰의 CheckboxAnswer에 해당하는 OptionItem들을 Map에 넣습니다.
+        return checkboxAnswersByQuestionId.entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Entry::getKey,
+                        checkboxAnswerByQuestionId -> mapOptionItemsForCheckboxAnswers(
+                                checkboxAnswerByQuestionId.getValue(), selectedOptionsByCheckBoxAnswerId
+                        )
+                ));
+    }
+
     private Map<Section, List<Question>> mapToQuestionsBySection(Review review) {
-        Map<Section, List<Question>> questionsBySection = Stream.concat(
+        return Stream.concat(
                         review.getCheckboxAnswers().stream().map(CheckboxAnswer::getQuestionId),
                         review.getTextAnswers().stream().map(TextAnswer::getQuestionId)
                 )
                 .map(templateCacheRepository::findQuestionById)
-                .collect(Collectors.groupingBy(templateCacheRepository::findSectionByQuestion));
-
-        // TreeMap을 사용하여 Section의 getId()를 기준으로 정렬
-        Map<Section, List<Question>> sortedQuestionsBySection = new TreeMap<>(Comparator.comparing(Section::getId));
-        sortedQuestionsBySection.putAll(questionsBySection);
-
-        return sortedQuestionsBySection;
+                .collect(Collectors.groupingBy(
+                        templateCacheRepository::findSectionByQuestion, TreeMap::new, Collectors.toList()
+                ));
     }
 
     private SectionAnswerResponse mapToSectionResponse(Section section, List<Question> questions,
@@ -138,47 +156,28 @@ public class ReviewDetailMapper {
         );
     }
 
-    private Map<Long, List<OptionItem>> mapToOptionItemsByQuestion(Review review) {
-        // 리뷰가 갖고있는 checkboxAnswer들을 가져온다.
-        List<CheckboxAnswer> checkboxAnswers = checkboxAnswerRepository.findAllByReviewId(review.getId());
-        // checkboxAnswer들을 같은 question id인 것끼리 묶어 map으로 만든다.
-        // Map <question id, checkboxanswer>
-        Map<Long, Long> checkboxAnswersByQuestionId = checkboxAnswers.stream()
-                .collect(Collectors.toMap(CheckboxAnswer::getQuestionId, CheckboxAnswer::getId));
-        // checkboxAnswer들의 id들을 모은다.
+    private Map<Long, List<Long>> getSelectedOptionsByCheckBoxAnswerId(List<CheckboxAnswer> checkboxAnswers) {
         List<Long> checkboxAnswerIds = checkboxAnswers.stream()
                 .map(CheckboxAnswer::getId)
                 .toList();
-        // checkboxAnswer의 id들을 갖고 checkBoxAnswerSelectedOption들을 조회해,
-        List<CheckBoxAnswerSelectedOption> checkBoxAnswerSelectedOptionGroup = checkBoxAnswerSelectedOptionRepository
-                .findAllByCheckboxAnswerIds(checkboxAnswerIds)
-                .stream()
-                .toList();
-        // checkboxAnswerid, selectedOptionid 조합으로 map을 만든다.
-        // Map<checkboxAnswerId, List<selectedOptionId>>
-        Map<Long, List<Long>> checkBoxAnswerSelectedOptions = new HashMap<>();
-        for (CheckBoxAnswerSelectedOption checkBoxAnswerSelectedOption : checkBoxAnswerSelectedOptionGroup) {
-            if (checkBoxAnswerSelectedOptions.containsKey(checkBoxAnswerSelectedOption.getCheckboxAnswerId())) {
-                List<Long> selectedOptionIds = checkBoxAnswerSelectedOptions.get(  // TODO: 예외처리 필요
-                        checkBoxAnswerSelectedOption.getCheckboxAnswerId());
-                selectedOptionIds.add(checkBoxAnswerSelectedOption.getSelectedOptionId());
-            } else {
-                checkBoxAnswerSelectedOptions.put(checkBoxAnswerSelectedOption.getCheckboxAnswerId(),
-                        new ArrayList<>(List.of(checkBoxAnswerSelectedOption.getSelectedOptionId())));
-            }
-        }
 
-        // checkboxAnswer를 하나씩 꺼내서 갖고있는 seletecOptionId를 list에 넣는다. -> cache 로 해결
-        // Map <questionId, list<optionId>>
-        Map<Long, List<OptionItem>> optionItemsByQuestion = new HashMap<>();
-        for (Entry<Long, Long> checkboxAnswerByQuestionEntry : checkboxAnswersByQuestionId.entrySet()) {
-            List<OptionItem> optionItemGroup = new ArrayList<>();
-            List<Long> optionIds = checkBoxAnswerSelectedOptions.get(checkboxAnswerByQuestionEntry.getValue());
-            for (long optionId : optionIds) {
-                optionItemGroup.add(templateCacheRepository.findAllOptionItems(optionId));  // TODO: 예외처리 필요
-            }
-            optionItemsByQuestion.put(checkboxAnswerByQuestionEntry.getKey(), optionItemGroup);
+        List<CheckBoxAnswerSelectedOption> checkBoxAnswerSelectedOptionGroup = checkBoxAnswerSelectedOptionRepository
+                .findAllByCheckboxAnswerIds(checkboxAnswerIds);
+
+        Map<Long, List<Long>> checkBoxAnswerSelectedOptions = new HashMap<>();
+        for (CheckBoxAnswerSelectedOption option : checkBoxAnswerSelectedOptionGroup) {
+            checkBoxAnswerSelectedOptions
+                    .computeIfAbsent(option.getCheckboxAnswerId(), selectedOptionIds -> new ArrayList<>())
+                    .add(option.getSelectedOptionId());
         }
-        return optionItemsByQuestion;
+        return checkBoxAnswerSelectedOptions;
+    }
+
+    private List<OptionItem> mapOptionItemsForCheckboxAnswers(long checkBoxAnswerId,
+                                                              Map<Long, List<Long>> selectedOptionsByCheckBoxAnswerId) {
+        return selectedOptionsByCheckBoxAnswerId.get(checkBoxAnswerId)
+                .stream()
+                .map(templateCacheRepository::findOptionItem)
+                .toList();
     }
 }
