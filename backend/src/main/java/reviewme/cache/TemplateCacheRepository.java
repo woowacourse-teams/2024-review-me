@@ -55,7 +55,7 @@ public class TemplateCacheRepository {
                 .toList();
     }
 
-    public OptionItem findAllOptionItems(long optionItemId) {
+    public OptionItem findOptionItem(long optionItemId) {
         return templateCache.getOptionItems().get(optionItemId);
     }
 
