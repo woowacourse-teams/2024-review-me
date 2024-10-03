@@ -2,6 +2,7 @@ package reviewme.cache;
 
 import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -36,6 +37,10 @@ public class TemplateCache {
     private Map<Long, OptionGroup> optionGroups = new HashMap<>();
     private Map<Long, OptionItem> optionItems = new HashMap<>();
 
+    private Map<Long, List<Section>> templateSections = new HashMap<>();
+    private Map<Long, List<Question>> sectionQuestions = new HashMap<>();
+    private Map<Long, OptionGroup> questionOptionGroups = new HashMap<>();
+
     @PostConstruct
     public void init() {
         this.templates = loadTemplates();
@@ -43,7 +48,9 @@ public class TemplateCache {
         this.questions = loadQuestions();
         this.optionGroups = loadOptionGroups();
         this.optionItems = loadOptionItems();
-
+        this.templateSections = loadTemplateSections();
+        this.sectionQuestions = loadSectionQuestions();
+        this.questionOptionGroups = loadQuestionOptionGroups();
     }
 
     private Map<Long, Template> loadTemplates() {
@@ -74,5 +81,26 @@ public class TemplateCache {
         return optionItemRepository.findAll()
                 .stream()
                 .collect(Collectors.toMap(OptionItem::getId, Function.identity()));
+    }
+
+    private Map<Long, List<Section>> loadTemplateSections() {
+        return templates.keySet()
+                .stream()
+                .collect(Collectors.toMap(templateId -> templateId, sectionRepository::findAllByTemplateId));
+    }
+
+    private Map<Long, List<Question>> loadSectionQuestions() {
+        return sections.keySet()
+                .stream()
+                .collect(Collectors.toMap(sectionId -> sectionId, questionRepository::findAllBySectionId));
+    }
+
+    private Map<Long, OptionGroup> loadQuestionOptionGroups() {
+        return questions.values()
+                .stream()
+                .filter(Question::isSelectable)
+                .collect(Collectors.toMap(Question::getId,
+                        question -> optionGroupRepository.findByQuestionId(question.getId())
+                                .orElseThrow()));
     }
 }
