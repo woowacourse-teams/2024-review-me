@@ -15,6 +15,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
+import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
@@ -40,6 +41,7 @@ public class TemplateCache {
     private Map<Long, List<Section>> templateSections = new HashMap<>();
     private Map<Long, List<Question>> sectionQuestions = new HashMap<>();
     private Map<Long, OptionGroup> questionOptionGroups = new HashMap<>();
+    private Map<Long, List<OptionItem>> optionGroupOptionItems = new HashMap<>();
 
     @PostConstruct
     public void init() {
@@ -51,6 +53,7 @@ public class TemplateCache {
         this.templateSections = loadTemplateSections();
         this.sectionQuestions = loadSectionQuestions();
         this.questionOptionGroups = loadQuestionOptionGroups();
+        this.optionGroupOptionItems = loadOptionGroupOptionItems();
     }
 
     private Map<Long, Template> loadTemplates() {
@@ -99,8 +102,16 @@ public class TemplateCache {
         return questions.values()
                 .stream()
                 .filter(Question::isSelectable)
-                .collect(Collectors.toMap(Question::getId,
+                .collect(Collectors.toMap(
+                        Question::getId,
                         question -> optionGroupRepository.findByQuestionId(question.getId())
-                                .orElseThrow()));
+                                .orElseThrow(() -> new OptionGroupNotFoundByQuestionIdException(question.getId()))
+                ));
+    }
+
+    private Map<Long, List<OptionItem>> loadOptionGroupOptionItems() {
+        return optionGroups.keySet()
+                .stream()
+                .collect(Collectors.toMap(optionGroupId -> optionGroupId, optionItemRepository::findAllByOptionGroupId));
     }
 }
