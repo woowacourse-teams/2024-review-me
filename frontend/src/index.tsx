@@ -11,6 +11,7 @@ import App from '@/App';
 import { ErrorSuspenseContainer } from './components';
 import { API_ERROR_MESSAGE, ROUTE_PARAM } from './constants';
 import { ROUTE } from './constants/route';
+import EditorTestPage from './pages/EditorTestPage';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
@@ -75,10 +76,6 @@ const router = createBrowserRouter([
         path: '',
         element: <HomePage />,
       },
-      {
-        path: 'user',
-        element: <div>user</div>,
-      },
       { path: `${ROUTE.reviewWriting}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewWritingPage /> },
       {
         path: `${ROUTE.reviewWritingComplete}/:${ROUTE_PARAM.reviewRequestCode}`,
@@ -99,6 +96,10 @@ const router = createBrowserRouter([
             <ReviewZonePage />
           </ErrorSuspenseContainer>
         ),
+      },
+      {
+        path: `/editor-test`,
+        element: <EditorTestPage />,
       },
     ],
   },
