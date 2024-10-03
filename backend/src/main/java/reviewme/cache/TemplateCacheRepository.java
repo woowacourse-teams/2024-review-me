@@ -1,11 +1,12 @@
 package reviewme.cache;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reviewme.cache.exception.QuestionNotFoundException;
+import reviewme.cache.exception.SectionNotFoundException;
+import reviewme.cache.exception.TemplateNotFoundException;
 import reviewme.question.domain.Question;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
@@ -16,31 +17,28 @@ public class TemplateCacheRepository {
 
     private final TemplateCache templateCache;
 
-    public Optional<Template> findTemplateById(long templateId) {
-        return Optional.ofNullable(templateCache.getTemplates().get(templateId));
+    public Template findTemplateById(long templateId) {
+        return Optional.ofNullable(templateCache.getTemplates().get(templateId))
+                .orElseThrow(() -> new TemplateNotFoundException(templateId));
     }
 
-    public Optional<Section> findSectionById(long sectionId) {
-        return Optional.ofNullable(templateCache.getSections().get(sectionId));
+    public Section findSectionById(long sectionId) {
+        return Optional.ofNullable(templateCache.getSections().get(sectionId))
+                .orElseThrow(() -> new SectionNotFoundException(sectionId));
     }
 
-    public Optional<Question> findQuestionById(long questionId) {
-        return Optional.ofNullable(templateCache.getQuestions().get(questionId));
+    public Question findQuestionById(long questionId) {
+        return Optional.ofNullable(templateCache.getQuestions().get(questionId))
+                .orElseThrow(() -> new QuestionNotFoundException(questionId));
     }
 
     public List<Section> findAllSectionByTemplateId(long templateId) {
-        return templateCache.getTemplateSections().get(templateId);
-        // TODO : null 검증 필요할까?
+        Template template = findTemplateById(templateId);
+        return templateCache.getTemplateSections().get(template.getId());
     }
 
     public List<Question> findAllQuestionByTemplateId(long templateId) {
-        Map<Long, List<Section>> templateSections = templateCache.getTemplateSections();
-
-        List<Section> sections = templateCache.getTemplateSections().get(templateId);
-        // TODO : null 검증 필요할까?
-        if (sections == null) {
-            return Collections.emptyList();
-        }
+        List<Section> sections = findAllSectionByTemplateId(templateId);
         return sections.stream()
                 .flatMap(section -> templateCache.getSectionQuestions().get(section.getId()).stream())
                 .toList();
