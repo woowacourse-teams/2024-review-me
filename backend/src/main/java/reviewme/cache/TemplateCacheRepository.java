@@ -1,6 +1,8 @@
 package reviewme.cache;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -47,9 +49,14 @@ public class TemplateCacheRepository {
 
     public List<Question> findAllQuestionByTemplateId(long templateId) {
         List<Section> sections = findAllSectionByTemplateId(templateId);
+
         return sections.stream()
                 .flatMap(section -> templateCache.getSectionQuestions().get(section.getId()).stream())
                 .toList();
+    }
+
+    public OptionItem findAllOptionItems(long optionItemId) {
+        return templateCache.getOptionItems().get(optionItemId);
     }
 
     public List<Question> findAllQuestionBySectionId(long sectionId) {
@@ -65,5 +72,16 @@ public class TemplateCacheRepository {
     public List<OptionItem> findAllOptionItemByOptionGroupId(long optionGroupId) {
         OptionGroup optionGroup = findOptionGroupById(optionGroupId);
         return templateCache.getOptionGroupOptionItems().get(optionGroup.getId());
+    }
+
+    public Section findSectionByQuestion(Question question) {
+        Map<Long, List<Question>> sectionQuestions = templateCache.getSectionQuestions();
+        long sectionId = sectionQuestions.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().contains(question))
+                .findFirst()
+                .map(Entry::getKey)
+                .orElseThrow();
+        return templateCache.getSections().get(sectionId);
     }
 }

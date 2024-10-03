@@ -10,7 +10,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query(value = """
             SELECT q.* FROM question q
-            JOIN section_question qa
+            JOIN section_question sq
             ON q.id = sq.question_id
             WHERE sq.section_id = :sectionId
             """, nativeQuery = true)

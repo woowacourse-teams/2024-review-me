@@ -14,4 +14,6 @@ public interface CheckboxAnswerRepository extends JpaRepository<CheckboxAnswer, 
             WHERE ca.review_id IN (:reviewIds)
             """, nativeQuery = true)
     List<CheckboxAnswer> findAllByReviewIds(List<Long> reviewIds);
+
+    List<CheckboxAnswer> findAllByReviewId(long id);
 }
