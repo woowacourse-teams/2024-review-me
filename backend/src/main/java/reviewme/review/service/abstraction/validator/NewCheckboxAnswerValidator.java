@@ -12,7 +12,7 @@ import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.abstraction.Answer;
-import reviewme.review.domain.abstraction.NewCheckBoxAnswerSelectedOption;
+import reviewme.review.domain.abstraction.NewCheckboxAnswerSelectedOption;
 import reviewme.review.domain.abstraction.NewCheckboxAnswer;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
@@ -76,7 +76,7 @@ public class NewCheckboxAnswerValidator implements NewAnswerValidator {
     private List<Long> extractAnsweredOptionItemIds(NewCheckboxAnswer checkboxAnswer) {
         return checkboxAnswer.getSelectedOptionIds()
                 .stream()
-                .map(NewCheckBoxAnswerSelectedOption::getSelectedOptionId)
+                .map(NewCheckboxAnswerSelectedOption::getSelectedOptionId)
                 .toList();
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.abstraction.Answer;
-import reviewme.review.domain.abstraction.NewCheckBoxAnswerSelectedOption;
+import reviewme.review.domain.abstraction.NewCheckboxAnswerSelectedOption;
 import reviewme.review.domain.abstraction.NewCheckboxAnswer;
 import reviewme.review.domain.abstraction.NewReview;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
@@ -69,7 +69,7 @@ public class NewReviewValidator {
         Set<Long> selectedOptionIds = review.getAnswersByType(NewCheckboxAnswer.class)
                 .stream()
                 .flatMap(answer -> answer.getSelectedOptionIds().stream())
-                .map(NewCheckBoxAnswerSelectedOption::getSelectedOptionId)
+                .map(NewCheckboxAnswerSelectedOption::getSelectedOptionId)
                 .collect(Collectors.toSet());
         List<Section> sections = sectionRepository.findAllByTemplateId(review.getTemplateId());
 
