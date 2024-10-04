@@ -36,4 +36,4 @@ CREATE TABLE new_checkbox_answer_selected_option (
     selected_option_id BIGINT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (checkbox_answer_id) REFERENCES new_checkbox_answer (id),
-)
+);
