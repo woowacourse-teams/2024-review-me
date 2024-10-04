@@ -37,3 +37,9 @@ CREATE TABLE new_checkbox_answer_selected_option (
     PRIMARY KEY (id),
     FOREIGN KEY (checkbox_answer_id) REFERENCES new_checkbox_answer (id)
 );
+
+-- MYSQL에서는 아래와 같이 초기화합니다.
+ALTER TABLE new_review AUTO_INCREMENT = 1500000;
+ALTER TABLE new_checkbox_answer AUTO_INCREMENT = 1500000;
+ALTER TABLE new_text_answer AUTO_INCREMENT = 1500000;
+ALTER TABLE new_checkbox_answer_selected_option AUTO_INCREMENT = 1500000;
