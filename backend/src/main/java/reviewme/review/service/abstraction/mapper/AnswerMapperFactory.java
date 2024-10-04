@@ -15,6 +15,6 @@ public class AnswerMapperFactory {
         return answerMappers.stream()
                 .filter(answerMapper -> answerMapper.supports(questionType))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unsupported answer type: " + questionType));
+                .orElseThrow(() -> new IllegalArgumentException("Unsupported question type: " + questionType));
     }
 }
