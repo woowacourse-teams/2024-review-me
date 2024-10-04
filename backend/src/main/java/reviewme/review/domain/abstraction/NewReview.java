@@ -61,6 +61,13 @@ public class NewReview {
         return getAnsweredQuestionIds().contains(questionId);
     }
 
+    public <T extends Answer> List<T> getAnswersByType(Class<T> clazz) {
+        return answers.stream()
+                .filter(clazz::isInstance)
+                .map(clazz::cast)
+                .toList();
+    }
+
     public LocalDate getCreatedDate() {
         return createdAt.toLocalDate();
     }
