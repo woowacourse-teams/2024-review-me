@@ -6,7 +6,7 @@ CREATE TABLE new_review (
     created_at TIMESTAMP(6) NOT NULL,
     review_group_id BIGINT NOT NULL,
     template_id BIGINT NOT NULL,
-    PRIMARY KEY (id),
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE answer (
@@ -14,20 +14,20 @@ CREATE TABLE answer (
     question_id BIGINT NOT NULL,
     review_id BIGINT NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (review_id) REFERENCES new_review (id),
+    FOREIGN KEY (review_id) REFERENCES new_review (id)
 );
 
 CREATE TABLE new_checkbox_answer (
     id BIGINT NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES answer (id),
+    FOREIGN KEY (id) REFERENCES answer (id)
 );
 
 CREATE TABLE new_text_answer (
     id BIGINT NOT NULL,
     content varchar(5000) NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES answer (id),
+    FOREIGN KEY (id) REFERENCES answer (id)
 );
 
 CREATE TABLE new_checkbox_answer_selected_option (
@@ -35,5 +35,5 @@ CREATE TABLE new_checkbox_answer_selected_option (
     checkbox_answer_id BIGINT NOT NULL,
     selected_option_id BIGINT NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (checkbox_answer_id) REFERENCES new_checkbox_answer (id),
+    FOREIGN KEY (checkbox_answer_id) REFERENCES new_checkbox_answer (id)
 );
