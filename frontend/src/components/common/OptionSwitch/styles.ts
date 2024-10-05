@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const SwitchContainer = styled.div`
+export const OptionSwitchContainer = styled.div`
   cursor: pointer;
 
   display: flex;
