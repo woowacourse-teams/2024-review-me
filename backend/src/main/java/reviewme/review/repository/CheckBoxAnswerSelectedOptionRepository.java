@@ -6,9 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import reviewme.review.domain.CheckBoxAnswerSelectedOption;
 
 public interface CheckBoxAnswerSelectedOptionRepository extends JpaRepository<CheckBoxAnswerSelectedOption, Long> {
+
     @Query(value = """
-            SELECT caso.* FROM checkbox_answer_selected_option caso
-            WHERE caso.checkbox_answer_id IN (:checkboxAnswerIds)
+            select caso.selected_option_id from checkbox_answer_selected_option caso 
+            join checkbox_answer ca 
+            on ca.id = caso.checkbox_answer_id
+            where ca.review_id = :reviewId 
+            and ca.question_id = :questionId 
             """, nativeQuery = true)
-    List<CheckBoxAnswerSelectedOption> findAllByCheckboxAnswerIds(List<Long> checkboxAnswerIds);
+    List<Long> findSelectedOptionIdByReviewAndQuestion(long reviewId, long questionId);
 }

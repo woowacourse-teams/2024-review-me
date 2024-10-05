@@ -7,6 +7,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.cache.exception.OptionGroupNotFoundException;
+import reviewme.cache.exception.OptionItemNotFoundException;
 import reviewme.cache.exception.QuestionNotFoundException;
 import reviewme.cache.exception.SectionNotFoundException;
 import reviewme.cache.exception.TemplateNotFoundException;
@@ -40,6 +41,11 @@ public class TemplateCacheRepository {
     public OptionGroup findOptionGroupById(long optionGroupId) {
         return Optional.ofNullable(templateCache.getOptionGroups().get(optionGroupId))
                 .orElseThrow(() -> new OptionGroupNotFoundException(optionGroupId));
+    }
+
+    public OptionItem findOptionItemById(long optionItemId) {
+        return Optional.ofNullable(templateCache.getOptionItems().get(optionItemId))
+                .orElseThrow(() -> new OptionItemNotFoundException(optionItemId));
     }
 
     public List<Section> findAllSectionByTemplateId(long templateId) {

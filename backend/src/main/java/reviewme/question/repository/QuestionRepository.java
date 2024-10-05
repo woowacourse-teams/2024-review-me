@@ -35,4 +35,18 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             WHERE ts.template_id = :templateId
             """, nativeQuery = true)
     List<Question> findAllByTemplatedId(long templateId);
+
+    @Query(value = """
+            SELECT q.* FROM question q 
+            join section_question sq 
+            on q.id = sq.question_id 
+            LEFT JOIN text_answer ta 
+            ON q.id = ta.question_id 
+            LEFT JOIN checkbox_answer ca 
+            ON q.id = ca.question_id 
+            WHERE (ta.review_id = :reviewId 
+            OR ca.review_id = :reviewId) 
+            and sq.section_id = :sectionId
+            """, nativeQuery = true)
+    Set<Question> findByReviewAndSectionId(long reviewId, long sectionId);
 }
