@@ -60,7 +60,7 @@ const HighlightEditor = () => {
   /**
    * 하이라이트에 따라, 블록의 글자를 하이라이트 적용되는 부분과 그렇지 않은 부분으로 나누는 함수
    */
-  const splitTextWithHighlights = (text: string, highlightList: Highlight[]) => {
+  const splitTextWithHighlightList = (text: string, highlightList: Highlight[]) => {
     const result: { isHighlight: boolean; text: string }[] = [];
     let currentIndex = 0;
 
@@ -90,7 +90,7 @@ const HighlightEditor = () => {
       return <span key={key}>{text}</span>;
     }
 
-    const highlightedTextList = splitTextWithHighlights(text, highlightList);
+    const highlightedTextList = splitTextWithHighlightList(text, highlightList);
     return (
       <>
         {highlightedTextList.map(({ isHighlight, text }, i) => (
@@ -103,15 +103,8 @@ const HighlightEditor = () => {
   };
 
   // 선택된 텍스트의 오프셋을 계산하는 함수
-  const getSelectionOffsetInBlock = (
-    selection: Selection,
-    blockElement: Element,
-  ): { start: number; end: number } | null => {
+  const getSelectionOffsetInBlock = (selection: Selection, blockElement: Element) => {
     const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
-
-    const anchorBlock = anchorNode?.parentElement?.closest('.block');
-    const focusBlock = focusNode?.parentElement?.closest('.block');
-    if (!anchorBlock || !focusBlock) return null;
 
     let totalOffset = 0;
     const allSpans = Array.from(blockElement.querySelectorAll('span'));
@@ -139,24 +132,45 @@ const HighlightEditor = () => {
     return { start: Math.min(start, end), end: Math.max(start, end) };
   };
 
-  const updateBlockListByHighlight = (blockIndex: number, start: number, end: number) => {
-    const newBlocks = [...blockList];
+  const getUpdatedBlockByHighlight = (blockIndex: number, start: number, end: number) => {
     const newHighlight = { start, length: end - start };
+    const block = blockList[blockIndex];
 
-    newBlocks[blockIndex] = {
-      ...newBlocks[blockIndex],
-      highlightList: mergeHighlightList(newBlocks[blockIndex].highlightList, newHighlight),
+    return {
+      ...block,
+      highlightList: mergeHighlightList(block.highlightList, newHighlight),
     };
-
-    setBlockList(newBlocks);
   };
 
   // 하이라이트 삭제 함수
-  const getRemovedHighlightList = (highlights: Highlight[], start: number, end: number) => {
-    return highlights.filter(({ start: hStart, length }) => {
+  const getRemovedHighlightList = (highlightList: Highlight[], start: number, end: number) => {
+    const isDeleteHighlightFully = highlightList.find((item) => item.start === start && item.length === start + end);
+    // 이미 있는 하이라이트 영역을 모두 삭제 경우
+    if (isDeleteHighlightFully) {
+      return highlightList.filter(({ start: hStart, length }) => {
+        const hEnd = hStart + length;
+        return hEnd <= start || hStart >= end;
+      });
+    }
+    // 일부분을 삭제하는 경우
+    const newHighlightList: Highlight[] = [];
+
+    highlightList.forEach(({ start: hStart, length }) => {
       const hEnd = hStart + length;
-      return hEnd <= start || hStart >= end;
+      //제거되는 하이라이트가 아닌 경우
+      if (hEnd <= start || hStart >= end) {
+        newHighlightList.push({ start: hStart, length });
+      }
+      //제거되는 하이라이트인 경우
+      if (hStart < start) {
+        newHighlightList.push({ start: hStart, length: start - hStart });
+      }
+      if (hEnd > end) {
+        newHighlightList.push({ start: end, length: hEnd - end });
+      }
     });
+
+    return newHighlightList;
   };
 
   const handleClickHighlight = () => {
@@ -167,11 +181,31 @@ const HighlightEditor = () => {
     const focusBlock = selection.focusNode?.parentElement?.closest('.block');
     if (!anchorBlock || !focusBlock) return;
 
-    const blockIndex = parseInt(anchorBlock.getAttribute('data-index') || '-1', 10);
-    const offsets = getSelectionOffsetInBlock(selection, anchorBlock);
-    if (!offsets) return;
+    const anchorBlockIndex = parseInt(anchorBlock.getAttribute('data-index') || '-1', 10);
+    const focusBlockIndex = parseInt(focusBlock.getAttribute('data-index') || '-1', 10);
+    const startBlockIndex = Math.min(anchorBlockIndex, focusBlockIndex);
+    const endBlockIndex = Math.max(anchorBlockIndex, focusBlockIndex);
+    const startBlock = startBlockIndex === anchorBlockIndex ? anchorBlock : focusBlock;
+    const endBlock = startBlockIndex === anchorBlockIndex ? focusBlock : anchorBlock;
 
-    updateBlockListByHighlight(blockIndex, offsets.start, offsets.end);
+    const newBlockList = blockList.map((block, index) => {
+      if (index < startBlockIndex) return block;
+      if (index > endBlockIndex) return block;
+      if (index === startBlockIndex) {
+        const startOffset = getSelectionOffsetInBlock(selection, startBlock);
+        return getUpdatedBlockByHighlight(index, startOffset.start, startOffset.end);
+      }
+      if (index === endBlockIndex) {
+        const endOffset = getSelectionOffsetInBlock(selection, endBlock);
+        return getUpdatedBlockByHighlight(index, 0, endOffset.start);
+      }
+      return {
+        ...block,
+        highlightList: [{ start: 0, length: block.text.length }],
+      };
+    });
+
+    setBlockList(newBlockList);
   };
 
   const handleClickHighlightRemover = () => {
