@@ -9,12 +9,9 @@ import static reviewme.fixture.SectionFixture.조건부로_보이는_섹션;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 import static reviewme.fixture.TemplateFixture.템플릿;
 
-import jakarta.annotation.PostConstruct;
 import java.util.List;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.cache.TemplateCache;
 import reviewme.fixture.OptionGroupFixture;
 import reviewme.fixture.OptionItemFixture;
 import reviewme.question.domain.OptionGroup;
@@ -27,7 +24,6 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.repository.CheckboxAnswerRepository;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
@@ -66,16 +62,82 @@ class ReviewListMapperTest {
     @Autowired
     private OptionGroupRepository optionGroupRepository;
 
-    // TODO: 테스트 환경에서는 TemplateCache가 세팅된 후, repository에 데이터를 삽입해서 TemplateCache를 통해 데이터를 불러올 수 없음.
-    @Nested
-    class 리뷰_목록에_리뷰별로_바르게_응답이_반환되는지_검사한다 {
+    @Test
+    void 각_리뷰에_포함된_선택형_서술형_응답만을_반환한다() {
+        // given - 리뷰 그룹
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+
+        // given - 질문 저장
+        Question question = questionRepository.save(선택형_필수_질문());
+        Question textQuestion = questionRepository.save(서술형_필수_질문());
+
+        OptionGroup optionGroup = optionGroupRepository.save(
+                OptionGroupFixture.선택지_그룹(question.getId()));
+
+        long optionItem1 = optionItemRepository.save(OptionItemFixture.선택지(optionGroup.getId()))
+                .getId();
+        long optionItem2 = optionItemRepository.save(OptionItemFixture.선택지(optionGroup.getId()))
+                .getId();
+        long optionItem3 = optionItemRepository.save(OptionItemFixture.선택지(optionGroup.getId()))
+                .getId();
+
+        // 답변 저장
+        CheckboxAnswer checkboxAnswer1 = new CheckboxAnswer(
+                question.getId(), List.of(optionItem1)
+        );
+        CheckboxAnswer checkboxAnswer2 = new CheckboxAnswer(
+                question.getId(), List.of(optionItem2)
+        );
+        CheckboxAnswer checkboxAnswer3 = new CheckboxAnswer(
+                question.getId(), List.of(optionItem3)
+        );
+
+        TextAnswer textAnswer1 = new TextAnswer(textQuestion.getId(), "텍스트형 응답1");
+        TextAnswer textAnswer2 = new TextAnswer(textQuestion.getId(), "텍스트형 응답2");
+        TextAnswer textAnswer3 = new TextAnswer(textQuestion.getId(), "텍스트형 응답3");
+
+        // given - 섹션, 템플릿 저장
+        Section categorySection = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
+        Template template = templateRepository.save(템플릿(List.of(categorySection.getId())));
+
+        // given - 리뷰 저장
+        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer1, textAnswer2),
+                List.of(checkboxAnswer1, checkboxAnswer2)
+        );
+        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer3),
+                List.of(checkboxAnswer3)
+        );
+
+        long lastReviewId = 8L;
+        int size = 5;
+
+        reviewRepository.saveAll(List.of(review1, review2));
+
+        // when
+        List<ReviewListElementResponse> responses = reviewListMapper.mapToReviewList(
+                reviewGroup, lastReviewId, size);
+
+        // then
+        ReviewListElementResponse response1 = responses.get(1);
+        ReviewListElementResponse response2 = responses.get(0);
+        assertAll(
+                () -> assertThat(response1.contentPreview()).contains("텍스트형 응답1"),
+                () -> assertThat(response1.categories().stream().map(ReviewCategoryResponse::optionId).toList())
+                        .containsExactly(optionItem1, optionItem2),
+                () -> assertThat(response2.contentPreview()).contains("텍스트형 응답3"),
+                () -> assertThat(response2.categories().stream().map(ReviewCategoryResponse::optionId).toList())
+                        .containsExactly(optionItem3)
+        );
+    }
+
+    @Test
+    void 선택형_답변_중_카테고리_답변만_반환한다() {
         // given - 리뷰 그룹
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // given - 질문 저장
         Question categoryQuestion = questionRepository.save(선택형_필수_질문());
         Question nonCategoryQuestion = questionRepository.save(선택형_필수_질문());
-        Question textQuestion = questionRepository.save(서술형_필수_질문());
 
         OptionGroup categoryOptionGroup = optionGroupRepository.save(
                 OptionGroupFixture.선택지_그룹(categoryQuestion.getId()));
@@ -86,9 +148,7 @@ class ReviewListMapperTest {
                 .getId();
         long categoryOptionItem2 = optionItemRepository.save(OptionItemFixture.선택지(categoryOptionGroup.getId()))
                 .getId();
-        long categoryOptionItem3 = optionItemRepository.save(OptionItemFixture.선택지(categoryOptionGroup.getId()))
-                .getId();
-        long nonCategoryOptionItem4 = optionItemRepository.save(new OptionItem(
+        long nonCategoryOptionItem3 = optionItemRepository.save(new OptionItem(
                 "비카테고리 옵션", nonCategoryOptionGroup.getId(), 1, OptionType.KEYWORD)).getId();
 
         // 답변 저장
@@ -98,16 +158,9 @@ class ReviewListMapperTest {
         CheckboxAnswer categoryCheckboxAnswer2 = new CheckboxAnswer(
                 categoryQuestion.getId(), List.of(categoryOptionItem2)
         );
-        CheckboxAnswer categoryCheckboxAnswer3 = new CheckboxAnswer(
-                categoryQuestion.getId(), List.of(categoryOptionItem3)
+        CheckboxAnswer nonCategoryCheckboxAnswer3 = new CheckboxAnswer(
+                nonCategoryQuestion.getId(), List.of(nonCategoryOptionItem3)
         );
-        CheckboxAnswer nonCategoryCheckboxAnswer4 = new CheckboxAnswer(
-                nonCategoryQuestion.getId(), List.of(nonCategoryOptionItem4)
-        );
-
-        TextAnswer textAnswer1 = new TextAnswer(textQuestion.getId(), "텍스트형 응답1");
-        TextAnswer textAnswer2 = new TextAnswer(textQuestion.getId(), "텍스트형 응답2");
-        TextAnswer textAnswer3 = new TextAnswer(textQuestion.getId(), "텍스트형 응답3");
 
         // given - 섹션, 템플릿 저장
         Section categorySection = sectionRepository.save(항상_보이는_섹션(List.of(categoryQuestion.getId())));
@@ -115,49 +168,22 @@ class ReviewListMapperTest {
         Template template = templateRepository.save(템플릿(List.of(categorySection.getId(), nonCategorySection.getId())));
 
         // given - 리뷰 저장
-        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer1, textAnswer2),
-                List.of(categoryCheckboxAnswer1, categoryCheckboxAnswer2, nonCategoryCheckboxAnswer4)
-        );
-        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer3),
-                List.of(categoryCheckboxAnswer3)
+        reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(),
+                List.of(categoryCheckboxAnswer1, categoryCheckboxAnswer2, nonCategoryCheckboxAnswer3))
         );
 
         long lastReviewId = 8L;
         int size = 5;
 
-        @Test
-        void 각_리뷰에_포함된_선택형_서술형_응답만을_반환한다() {
-            reviewRepository.saveAll(List.of(review1, review2));
+        // when
+        List<ReviewListElementResponse> responses = reviewListMapper.mapToReviewList(reviewGroup, lastReviewId, size);
 
-            // when
-            List<ReviewListElementResponse> responses = reviewListMapper.mapToReviewList(
-                    reviewGroup, lastReviewId, size);
-
-            // then
-            ReviewListElementResponse response1 = responses.get(1);
-            ReviewListElementResponse response2 = responses.get(0);
-            assertAll(
-                    () -> assertThat(response1.contentPreview()).contains("텍스트형 응답1"),
-                    () -> assertThat(response1.categories().stream().map(ReviewCategoryResponse::optionId).toList())
-                            .containsExactly(categoryOptionItem1, categoryOptionItem2),
-                    () -> assertThat(response2.contentPreview()).contains("텍스트형 응답3"),
-                    () -> assertThat(response2.categories().stream().map(ReviewCategoryResponse::optionId).toList())
-                            .containsExactly(categoryOptionItem3)
-            );
-        }
-
-        @Test
-        void 선택형_답변_중_카테고리_답변만_반환한다() {
-            reviewRepository.saveAll(List.of(review1, review2));
-
-            // when
-            List<ReviewListElementResponse> responses = reviewListMapper.mapToReviewList(
-                    reviewGroup, lastReviewId, size);
-
-            ReviewListElementResponse response1 = responses.get(1);
-            assertThat(response1.categories().stream().map(ReviewCategoryResponse::optionId).toList())
-                    .containsExactly(categoryOptionItem1, categoryOptionItem2)
-                    .doesNotContain(nonCategoryOptionItem4);
-        }
+        // then
+        List<Long> categoryOptionIds = responses.get(0).categories()
+                .stream()
+                .map(ReviewCategoryResponse::optionId)
+                .toList();
+        assertThat(categoryOptionIds).containsExactly(categoryOptionItem1, categoryOptionItem2)
+                .doesNotContain(nonCategoryOptionItem3);
     }
 }

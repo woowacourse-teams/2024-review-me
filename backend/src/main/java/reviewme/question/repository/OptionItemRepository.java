@@ -25,4 +25,13 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
             WHERE og.question_id IN (:questionIds)
             """, nativeQuery = true)
     List<OptionItem> findAllByQuestionIds(List<Long> questionIds);
+
+    @Query(value = """
+            SELECT o.* FROM option_item o 
+            JOIN checkbox_answer_selected_option caso on caso.selected_option_id = o.id  
+            JOIN checkbox_answer ca ON ca.id = caso.checkbox_answer_id  
+            WHERE ca.review_id = :reviewId 
+            AND o.option_type = :#{#optionType.name()} 
+            """, nativeQuery = true)
+    List<OptionItem> findByReviewIdAndOptionType(long reviewId, OptionType optionType);
 }
