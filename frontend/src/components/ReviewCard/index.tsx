@@ -10,24 +10,21 @@ interface ReviewCardProps {
   handleClick: () => void;
 }
 
-const ReviewCard = ({ projectName, createdAt, contentPreview, categories, handleClick }: ReviewCardProps) => {
+const ReviewCard = ({ createdAt, contentPreview, categories, handleClick }: ReviewCardProps) => {
   return (
     <S.Layout onClick={handleClick}>
-      <S.Header>
-        <S.HeaderContent>
-          <div>
-            <S.Title>{projectName}</S.Title>
-            <S.SubTitle>{createdAt}</S.SubTitle>
-          </div>
-        </S.HeaderContent>
-      </S.Header>
+      <S.LeftLineBorder />
+
       <S.Main>
         <span>{contentPreview}</span>
-        <S.Keyword>
-          {categories.map((category) => (
-            <div key={category.optionId}>{category.content}</div>
-          ))}
-        </S.Keyword>
+        <S.Footer>
+          <S.Keyword>
+            {categories.map((category) => (
+              <div key={category.optionId}>{category.content}</div>
+            ))}
+          </S.Keyword>
+          <S.Date>{createdAt}</S.Date>
+        </S.Footer>
       </S.Main>
     </S.Layout>
   );
