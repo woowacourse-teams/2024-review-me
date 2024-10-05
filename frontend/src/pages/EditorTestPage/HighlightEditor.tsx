@@ -173,7 +173,7 @@ const HighlightEditor = () => {
     return newHighlightList;
   };
 
-  const handleClickHighlight = () => {
+  const getSelectionInfo = () => {
     const selection = document.getSelection();
     if (!selection || selection.isCollapsed) return;
 
@@ -187,6 +187,20 @@ const HighlightEditor = () => {
     const endBlockIndex = Math.max(anchorBlockIndex, focusBlockIndex);
     const startBlock = startBlockIndex === anchorBlockIndex ? anchorBlock : focusBlock;
     const endBlock = startBlockIndex === anchorBlockIndex ? focusBlock : anchorBlock;
+
+    return {
+      startBlock,
+      endBlock,
+      startBlockIndex,
+      endBlockIndex,
+      selection,
+    };
+  };
+
+  const handleClickHighlight = () => {
+    const info = getSelectionInfo();
+    if (!info) return;
+    const { selection, startBlock, startBlockIndex, endBlock, endBlockIndex } = info;
 
     const newBlockList = blockList.map((block, index) => {
       if (index < startBlockIndex) return block;
@@ -209,24 +223,34 @@ const HighlightEditor = () => {
   };
 
   const handleClickHighlightRemover = () => {
-    const selection = document.getSelection();
-    if (!selection || selection.isCollapsed) return;
+    const info = getSelectionInfo();
+    if (!info) return;
+    const { selection, startBlock, startBlockIndex, endBlock, endBlockIndex } = info;
 
-    const anchorBlock = selection.anchorNode?.parentElement?.closest('.block');
-    const focusBlock = selection.focusNode?.parentElement?.closest('.block');
-    if (!anchorBlock || !focusBlock) return;
+    const newBlockList = blockList.map((block, index) => {
+      if (index < startBlockIndex) return block;
+      if (index > endBlockIndex) return block;
+      if (index === startBlockIndex) {
+        const startOffset = getSelectionOffsetInBlock(selection, startBlock);
+        return {
+          ...block,
+          highlightList: getRemovedHighlightList(block.highlightList, startOffset.start, startOffset.end),
+        };
+      }
+      if (index === endBlockIndex) {
+        const endOffset = getSelectionOffsetInBlock(selection, endBlock);
+        return {
+          ...block,
+          highlightList: getRemovedHighlightList(block.highlightList, 0, endOffset.start),
+        };
+      }
+      return {
+        ...block,
+        highlightList: [],
+      };
+    });
 
-    const blockIndex = parseInt(anchorBlock.getAttribute('data-index') || '-1', 10);
-    const offsets = getSelectionOffsetInBlock(selection, anchorBlock);
-    if (!offsets) return;
-
-    const newBlocks = [...blockList];
-    newBlocks[blockIndex] = {
-      ...newBlocks[blockIndex],
-      highlightList: getRemovedHighlightList(newBlocks[blockIndex].highlightList, offsets.start, offsets.end),
-    };
-
-    setBlockList(newBlocks);
+    setBlockList(newBlockList);
   };
 
   return (
