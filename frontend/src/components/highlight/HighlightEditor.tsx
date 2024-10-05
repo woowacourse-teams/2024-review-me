@@ -5,6 +5,7 @@ import {
   getSelectionInfo,
   getSelectionOffsetInBlock,
   getUpdatedBlockByHighlight,
+  removeSelection,
   splitTextWithHighlightList,
 } from '@/utils';
 
@@ -77,6 +78,7 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
     });
 
     setBlockList(newBlockList);
+    removeSelection();
   };
 
   const handleClickHighlightRemover = () => {
@@ -112,6 +114,7 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
     });
 
     setBlockList(newBlockList);
+    removeSelection();
   };
 
   return (

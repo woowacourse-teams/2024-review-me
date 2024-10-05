@@ -169,3 +169,5 @@ export const getSelectionInfo = () => {
     selection,
   };
 };
+
+export const removeSelection = () => document.getSelection()?.removeAllRanges();
