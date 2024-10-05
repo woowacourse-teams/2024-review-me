@@ -28,7 +28,7 @@ const HighlightEditor = () => {
    * @param newHighlight
    * @returns
    */
-  const mergeHighlights = (highlightList: Highlight[], newHighlight: Highlight) => {
+  const mergeHighlightList = (highlightList: Highlight[], newHighlight: Highlight) => {
     const merged = [...highlightList];
     let hasMerged = false;
 
@@ -102,65 +102,98 @@ const HighlightEditor = () => {
     );
   };
 
-  const updateBlockList = (
-    startBlockIndex: number,
-    endBlockIndex: number,
-    anchorOffset: number,
-    focusOffset: number,
-  ) => {
-    const newBlockList = [...blockList];
-    const startOffset = Math.min(anchorOffset, focusOffset);
-    const endOffset = Math.max(anchorOffset, focusOffset);
+  // 선택된 텍스트의 오프셋을 계산하는 함수
+  const getSelectionOffsetInBlock = (
+    selection: Selection,
+    blockElement: Element,
+  ): { start: number; end: number } | null => {
+    const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
 
-    for (let i = startBlockIndex; i <= endBlockIndex; i++) {
-      const start = i === startBlockIndex ? startOffset : 0;
-      const end = i === endBlockIndex ? endOffset : newBlockList[i].text.length;
+    const anchorBlock = anchorNode?.parentElement?.closest('.block');
+    const focusBlock = focusNode?.parentElement?.closest('.block');
+    if (!anchorBlock || !focusBlock) return null;
 
-      // 하이라이트 병합 로직 적용
-      const newHighlight = { start: start, length: end - start };
-      newBlockList[i] = {
-        ...newBlockList[i],
-        highlightList: mergeHighlights(newBlockList[i].highlightList, newHighlight),
-      };
+    let totalOffset = 0;
+    const allSpans = Array.from(blockElement.querySelectorAll('span'));
+
+    for (const span of allSpans) {
+      if (span.contains(anchorNode)) {
+        totalOffset += anchorOffset;
+        break;
+      }
+      totalOffset += span.textContent?.length || 0;
     }
 
-    setBlockList(newBlockList);
+    const start = totalOffset;
+
+    totalOffset = 0;
+    for (const span of allSpans) {
+      if (span.contains(focusNode)) {
+        totalOffset += focusOffset;
+        break;
+      }
+      totalOffset += span.textContent?.length || 0;
+    }
+
+    const end = totalOffset;
+    return { start: Math.min(start, end), end: Math.max(start, end) };
   };
 
-  const addHighlight = () => {
+  const updateBlockListByHighlight = (blockIndex: number, start: number, end: number) => {
+    const newBlocks = [...blockList];
+    const newHighlight = { start, length: end - start };
+
+    newBlocks[blockIndex] = {
+      ...newBlocks[blockIndex],
+      highlightList: mergeHighlightList(newBlocks[blockIndex].highlightList, newHighlight),
+    };
+
+    setBlockList(newBlocks);
+  };
+
+  // 하이라이트 삭제 함수
+  const getRemovedHighlightList = (highlights: Highlight[], start: number, end: number) => {
+    return highlights.filter(({ start: hStart, length }) => {
+      const hEnd = hStart + length;
+      return hEnd <= start || hStart >= end;
+    });
+  };
+
+  const handleClickHighlight = () => {
     const selection = document.getSelection();
     if (!selection || selection.isCollapsed) return;
 
-    const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
-    const anchorSpan = anchorNode?.parentElement;
-    const anchorBlock = anchorSpan?.closest('.block');
-    const focusSpan = focusNode?.parentElement;
-    const focusBlock = focusSpan?.closest('.block');
-    if (!anchorSpan || !anchorBlock || !focusSpan || !focusBlock) return;
-    const anchorSpanIndex = parseInt(anchorSpan.getAttribute('data-index') || '-1', 10);
-    const anchorBlockIndex = parseInt(anchorBlock.getAttribute('data-index') || '-1', 10);
-    const focusSpanIndex = parseInt(focusSpan.getAttribute('data-index') || '-1', 10);
-    const focusBlockIndex = parseInt(focusBlock.getAttribute('data-index') || '-1', 10);
+    const anchorBlock = selection.anchorNode?.parentElement?.closest('.block');
+    const focusBlock = selection.focusNode?.parentElement?.closest('.block');
+    if (!anchorBlock || !focusBlock) return;
 
-    const totalAnchorOffset =
-      [...anchorBlock.querySelectorAll('span')]
-        .slice(0, anchorSpanIndex)
-        .reduce((acc, cur) => acc + (cur.textContent?.length || 0), 0) + anchorOffset;
+    const blockIndex = parseInt(anchorBlock.getAttribute('data-index') || '-1', 10);
+    const offsets = getSelectionOffsetInBlock(selection, anchorBlock);
+    if (!offsets) return;
 
-    const totalFocusOffset =
-      [...focusBlock.querySelectorAll('span')]
-        .slice(0, focusSpanIndex)
-        .reduce((acc, cur) => acc + (cur.textContent?.length || 0), 0) + focusOffset;
-
-    if (anchorBlockIndex === -1 || focusBlockIndex === -1) return;
-
-    const startBlockIndex = Math.min(anchorBlockIndex, focusBlockIndex);
-    const endBlockIndex = Math.max(anchorBlockIndex, focusBlockIndex);
-
-    updateBlockList(startBlockIndex, endBlockIndex, totalAnchorOffset, totalFocusOffset);
+    updateBlockListByHighlight(blockIndex, offsets.start, offsets.end);
   };
 
-  const deleteHighlight = () => {};
+  const handleClickHighlightRemover = () => {
+    const selection = document.getSelection();
+    if (!selection || selection.isCollapsed) return;
+
+    const anchorBlock = selection.anchorNode?.parentElement?.closest('.block');
+    const focusBlock = selection.focusNode?.parentElement?.closest('.block');
+    if (!anchorBlock || !focusBlock) return;
+
+    const blockIndex = parseInt(anchorBlock.getAttribute('data-index') || '-1', 10);
+    const offsets = getSelectionOffsetInBlock(selection, anchorBlock);
+    if (!offsets) return;
+
+    const newBlocks = [...blockList];
+    newBlocks[blockIndex] = {
+      ...newBlocks[blockIndex],
+      highlightList: getRemovedHighlightList(newBlocks[blockIndex].highlightList, offsets.start, offsets.end),
+    };
+
+    setBlockList(newBlocks);
+  };
 
   return (
     <div className="highlight-editor">
@@ -169,8 +202,8 @@ const HighlightEditor = () => {
           {renderBlock(block, index)}
         </div>
       ))}
-      <button onClick={addHighlight}>Add Highlight</button>
-      <button onClick={deleteHighlight}>Delete Highlight</button>
+      <button onClick={handleClickHighlight}>Add Highlight</button>
+      <button onClick={handleClickHighlightRemover}>Delete Highlight</button>
     </div>
   );
 };
