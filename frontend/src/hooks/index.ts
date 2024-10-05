@@ -5,3 +5,4 @@ export { default as usePasswordValidation } from './usePasswordValidation';
 export * from './review';
 export * from './reviewGroup';
 export * from './modal';
+export * from './highlight';
