@@ -11,8 +11,9 @@ import {
 
 interface UseHighlightProps {
   text: string;
+  hideButton: () => void;
 }
-const useHighlight = ({ text }: UseHighlightProps) => {
+const useHighlight = ({ text, hideButton }: UseHighlightProps) => {
   const [blockList, setBlockList] = useState<EditorBlockData[]>(() =>
     text.split('\n').map((text) => ({
       text,
@@ -44,6 +45,7 @@ const useHighlight = ({ text }: UseHighlightProps) => {
 
     setBlockList(newBlockList);
     removeSelection();
+    hideButton();
   };
 
   const handleClickHighlightRemover = () => {
@@ -80,6 +82,7 @@ const useHighlight = ({ text }: UseHighlightProps) => {
 
     setBlockList(newBlockList);
     removeSelection();
+    hideButton();
   };
 
   return {

@@ -12,14 +12,17 @@ interface HighlightEditorProps {
 }
 
 const HighlightEditor = ({ text }: HighlightEditorProps) => {
-  const { blockList, handleClickHighlight, handleClickHighlightRemover } = useHighlight({ text });
   const [buttonPosition, setButtonPosition] = useState<{ top: number; left: number } | null>(null);
 
-  const hideButton = (e: React.MouseEvent) => {
+  const hideButton = () => setButtonPosition(null);
+
+  const { blockList, handleClickHighlight, handleClickHighlightRemover } = useHighlight({ text, hideButton });
+
+  const handleMouseDown = (e: React.MouseEvent) => {
     const isInButton = (e.target as HTMLElement).closest(`.${HIGHLIGHT_BUTTON_CLASS_NAME}`);
 
     if (isInButton) return;
-    setButtonPosition(null);
+    hideButton();
   };
 
   const calculateEndPosition = ({ selection, isForwardDrag, startBlock }: SelectionInfo) => {
@@ -49,7 +52,7 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
   };
 
   return (
-    <div className="highlight-editor" onMouseUp={handleMouseUp} onMouseDown={hideButton}>
+    <div className="highlight-editor" onMouseUp={handleMouseUp} onMouseDown={handleMouseDown}>
       {blockList.map((block, index) => (
         <EditorBlock key={`${EDITOR_BLOCK_CLASS_NAME}-${index}`} block={block} blockIndex={index} />
       ))}
