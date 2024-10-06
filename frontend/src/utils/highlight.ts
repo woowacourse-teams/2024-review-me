@@ -185,6 +185,25 @@ export const calculateStartAndEndBlock = ({
     endBlockIndex,
   };
 };
+
+interface CalculateDragDirectionParams {
+  selection: Selection;
+  startBlockIndex: number;
+  endBlockIndex: number;
+}
+
+export const calculateDragDirection = ({ selection, startBlockIndex, endBlockIndex }: CalculateDragDirectionParams) => {
+  const { anchorOffset, focusOffset } = selection;
+  const minOffset = Math.min(anchorOffset, focusOffset);
+
+  const isForwardDrag =
+    startBlockIndex === endBlockIndex ? minOffset === anchorOffset : endBlockIndex > startBlockIndex;
+
+  return {
+    isForwardDrag,
+  };
+};
+
 export const getSelectionInfo = () => {
   const selection = document.getSelection();
   if (!selection || selection.isCollapsed) return;
@@ -194,12 +213,15 @@ export const getSelectionInfo = () => {
 
   const { startBlock, startBlockIndex, endBlock, endBlockIndex } = calculateStartAndEndBlock(blockInfo);
 
+  const { isForwardDrag } = calculateDragDirection({ selection, startBlockIndex, endBlockIndex });
+
   return {
     startBlock,
     endBlock,
     startBlockIndex,
     endBlockIndex,
     selection,
+    isForwardDrag,
   };
 };
 
