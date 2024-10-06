@@ -1,6 +1,6 @@
 export interface Highlight {
   start: number;
-  length: number;
+  end: number;
 }
 
 export interface EditorBlockData {

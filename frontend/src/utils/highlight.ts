@@ -11,13 +11,10 @@ export const mergeHighlightList = ({ highlightList, newHighlight }: MergeHighlig
 
   for (let i = 0; i < merged.length; i++) {
     const current = merged[i];
-    if (
-      newHighlight.start <= current.start + current.length &&
-      newHighlight.start + newHighlight.length >= current.start
-    ) {
+    if (newHighlight.start <= current.end && newHighlight.end >= current.start) {
       const start = Math.min(current.start, newHighlight.start);
-      const end = Math.max(current.start + current.length, newHighlight.start + newHighlight.length);
-      merged[i] = { start, length: end - start };
+      const end = Math.max(current.end, newHighlight.end);
+      merged[i] = { start, end };
       hasMerged = true;
       break;
     }
@@ -41,12 +38,12 @@ export const splitTextWithHighlightList = ({ text, highlightList }: SplitTextWit
   const result: { isHighlight: boolean; text: string }[] = [];
   let currentIndex = 0;
 
-  highlightList.forEach(({ start, length }) => {
+  highlightList.forEach(({ start, end }) => {
     if (currentIndex < start) {
       result.push({ isHighlight: false, text: text.slice(currentIndex, start) });
     }
-    result.push({ isHighlight: true, text: text.slice(start, start + length) });
-    currentIndex = start + length;
+    result.push({ isHighlight: true, text: text.slice(start, end) });
+    currentIndex = end;
   });
 
   if (currentIndex < text.length) {
@@ -100,7 +97,7 @@ interface GetUpdatedBlockByHighlightParams {
 }
 
 export const getUpdatedBlockByHighlight = ({ blockIndex, start, end, blockList }: GetUpdatedBlockByHighlightParams) => {
-  const newHighlight = { start, length: end - start };
+  const newHighlight = { start, end };
   const block = blockList[blockIndex];
   const { highlightList } = block;
 
@@ -118,29 +115,27 @@ interface GetRemovedHighlightParams {
 
 /*하이라이트 삭제 함수*/
 export const getRemovedHighlightList = ({ highlightList, start, end }: GetRemovedHighlightParams) => {
-  const isDeleteHighlightFully = highlightList.find((item) => item.start === start && item.length === start + end);
+  const isDeleteHighlightFully = highlightList.find((item) => item.start === start && item.end === end);
   // 이미 있는 하이라이트 영역을 모두 삭제 경우
   if (isDeleteHighlightFully) {
-    return highlightList.filter(({ start: hStart, length }) => {
-      const hEnd = hStart + length;
+    return highlightList.filter(({ start: hStart, end: hEnd }) => {
       return hEnd <= start || hStart >= end;
     });
   }
   // 일부분을 삭제하는 경우
   const newHighlightList: Highlight[] = [];
 
-  highlightList.forEach(({ start: hStart, length }) => {
-    const hEnd = hStart + length;
+  highlightList.forEach(({ start: hStart, end: hEnd }) => {
     //제거되는 하이라이트가 아닌 경우
     if (hEnd <= start || hStart >= end) {
-      newHighlightList.push({ start: hStart, length });
+      newHighlightList.push({ start: hStart, end: hEnd });
     }
     //제거되는 하이라이트인 경우
     if (hStart < start) {
-      newHighlightList.push({ start: hStart, length: start - hStart });
+      newHighlightList.push({ start: hStart, end: start });
     }
     if (hEnd > end) {
-      newHighlightList.push({ start: end, length: hEnd - end });
+      newHighlightList.push({ start: end, end: hEnd });
     }
   });
 
