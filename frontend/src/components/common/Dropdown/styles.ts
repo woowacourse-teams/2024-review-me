@@ -6,7 +6,7 @@ export const DropdownContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  width: max-content;
+  width: 24rem;
   margin-bottom: 1rem;
 `;
 
@@ -15,6 +15,7 @@ export const DropdownButton = styled.button`
   gap: 1rem;
   justify-content: space-between;
 
+  width: 100%;
   padding: 1rem;
 
   background-color: ${({ theme }) => theme.colors.white};
@@ -26,12 +27,18 @@ export const DropdownButton = styled.button`
   }
 `;
 
+export const SelectedOption = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 export const ArrowIcon = styled.img<{ $isOpened: boolean }>`
   transform: ${({ $isOpened }) => ($isOpened ? 'rotate(180deg)' : 'rotate(0deg)')};
   transition: transform 0.3s ease-in-out;
 `;
 
-export const OptionContainer = styled.ul`
+export const ItemContainer = styled.ul`
   position: absolute;
   z-index: ${({ theme }) => theme.zIndex.dropdown};
   top: 100%;
@@ -44,15 +51,16 @@ export const OptionContainer = styled.ul`
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 `;
 
-export const OptionItem = styled.li`
+export const DropdownItem = styled.li`
   cursor: pointer;
   user-select: none;
 
   display: flex;
   align-items: center;
 
+  width: 100%;
   height: 4rem;
-  padding-left: 1rem;
+  padding: 0 1rem;
 
   background-color: ${({ theme }) => theme.colors.white};
 

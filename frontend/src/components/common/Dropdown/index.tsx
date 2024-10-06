@@ -3,31 +3,36 @@ import useDropdown from '@/hooks/useDropdown';
 
 import * as S from './styles';
 
-interface DropdownProps {
-  options: string[];
-  selectedOption: string;
-  handleSelect: (option: string) => void;
+interface DropdownItem {
+  text: string;
+  value: string;
 }
 
-const Dropdown = ({ options, selectedOption, handleSelect }: DropdownProps) => {
+interface DropdownProps {
+  items: DropdownItem[];
+  selectedItem: string;
+  handleSelect: (item: string) => void;
+}
+
+const Dropdown = ({ items, selectedItem: selectedOption, handleSelect }: DropdownProps) => {
   const { isOpened, handleDropdownButtonClick, handleOptionClick, dropdownRef } = useDropdown({ handleSelect });
 
   return (
     <S.DropdownContainer ref={dropdownRef}>
       <S.DropdownButton onClick={handleDropdownButtonClick}>
-        <span>{selectedOption}</span>
+        <S.SelectedOption>{selectedOption}</S.SelectedOption>
         <S.ArrowIcon src={DownArrowIcon} $isOpened={isOpened} alt="" />
       </S.DropdownButton>
       {isOpened && (
-        <S.OptionContainer>
-          {options.map((option, index) => {
+        <S.ItemContainer>
+          {items.map((item) => {
             return (
-              <S.OptionItem key={index} id={option} onClick={(e) => handleOptionClick((e.target as HTMLLIElement).id)}>
-                {option}
-              </S.OptionItem>
+              <S.DropdownItem key={item.value} onClick={() => handleOptionClick(item.value)}>
+                {item.text}
+              </S.DropdownItem>
             );
           })}
-        </S.OptionContainer>
+        </S.ItemContainer>
       )}
     </S.DropdownContainer>
   );
