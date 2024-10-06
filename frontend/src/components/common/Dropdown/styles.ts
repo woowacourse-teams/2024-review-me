@@ -19,7 +19,7 @@ export const DropdownButton = styled.button`
   padding: 1rem;
 
   background-color: ${({ theme }) => theme.colors.white};
-  border: 0.1rem solid ${({ theme }) => theme.colors.lightGray};
+  border: 0.1rem solid ${({ theme }) => theme.colors.placeholder};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
   &:hover {
@@ -47,7 +47,7 @@ export const ItemContainer = styled.ul`
 
   width: 100%;
 
-  border: 0.1rem solid ${({ theme }) => theme.colors.lightGray};
+  border: 0.1rem solid ${({ theme }) => theme.colors.placeholder};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 `;
 
