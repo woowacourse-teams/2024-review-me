@@ -51,6 +51,7 @@ const useHighlight = ({ text, hideHighlightButton }: UseHighlightProps) => {
           isOnlyOneSelectedBlock,
           isStartBlock: false,
         });
+
         return getUpdatedBlockByHighlight({
           blockTextLength: text.length,
           blockIndex: index,
@@ -106,7 +107,7 @@ const useHighlight = ({ text, hideHighlightButton }: UseHighlightProps) => {
             blockTextLength: text.length,
             highlightList: block.highlightList,
             start: 0,
-            end: endOffset.start,
+            end: endOffset.end,
           }),
         };
       }
