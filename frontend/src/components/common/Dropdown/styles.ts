@@ -13,6 +13,7 @@ export const DropdownContainer = styled.div`
 export const DropdownButton = styled.button`
   display: flex;
   gap: 1rem;
+  justify-content: space-between;
 
   padding: 1rem;
 
@@ -45,6 +46,7 @@ export const OptionContainer = styled.ul`
 
 export const OptionItem = styled.li`
   cursor: pointer;
+  user-select: none;
 
   display: flex;
   align-items: center;
