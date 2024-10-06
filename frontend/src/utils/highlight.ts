@@ -165,14 +165,14 @@ export const getSelectionOffsetBlockInfo = (selection: Selection) => {
   };
 };
 
-type CalculateStartAndEndBlockParams = Exclude<ReturnType<typeof getSelectionOffsetBlockInfo>, undefined>;
+export type SelectionBlockInfo = Exclude<ReturnType<typeof getSelectionOffsetBlockInfo>, undefined>;
 
 export const calculateStartAndEndBlock = ({
   anchorBlock,
   anchorBlockIndex,
   focusBlock,
   focusBlockIndex,
-}: CalculateStartAndEndBlockParams) => {
+}: SelectionBlockInfo) => {
   const startBlockIndex = Math.min(anchorBlockIndex, focusBlockIndex);
   const endBlockIndex = Math.max(anchorBlockIndex, focusBlockIndex);
   const startBlock = startBlockIndex === anchorBlockIndex ? anchorBlock : focusBlock;
@@ -190,14 +190,20 @@ interface CalculateDragDirectionParams {
   selection: Selection;
   startBlockIndex: number;
   endBlockIndex: number;
+  anchorBlockIndex: number;
 }
 
-export const calculateDragDirection = ({ selection, startBlockIndex, endBlockIndex }: CalculateDragDirectionParams) => {
+export const calculateDragDirection = ({
+  selection,
+  startBlockIndex,
+  endBlockIndex,
+  anchorBlockIndex,
+}: CalculateDragDirectionParams) => {
   const { anchorOffset, focusOffset } = selection;
   const minOffset = Math.min(anchorOffset, focusOffset);
 
   const isForwardDrag =
-    startBlockIndex === endBlockIndex ? minOffset === anchorOffset : endBlockIndex > startBlockIndex;
+    startBlockIndex === endBlockIndex ? minOffset === anchorOffset : startBlockIndex === anchorBlockIndex;
 
   return {
     isForwardDrag,
@@ -213,14 +219,19 @@ export const getSelectionInfo = () => {
 
   const { startBlock, startBlockIndex, endBlock, endBlockIndex } = calculateStartAndEndBlock(blockInfo);
 
-  const { isForwardDrag } = calculateDragDirection({ selection, startBlockIndex, endBlockIndex });
+  const { isForwardDrag } = calculateDragDirection({
+    selection,
+    startBlockIndex,
+    endBlockIndex,
+    anchorBlockIndex: blockInfo.anchorBlockIndex,
+  });
 
   return {
+    selection,
     startBlock,
     endBlock,
     startBlockIndex,
     endBlockIndex,
-    selection,
     isForwardDrag,
   };
 };
