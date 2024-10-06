@@ -61,6 +61,16 @@ public class NewReviewMapper {
 
     private Answer mapRequestToAnswer(Map<Long, Question> questions, ReviewAnswerRequest answerRequest) {
         Question question = questions.get(answerRequest.questionId());
+
+        // TODO: 아래 코드를 삭제해야 한다
+        if (question.isSelectable() && answerRequest.selectedOptionIds() != null && answerRequest.selectedOptionIds().isEmpty()) {
+            return null;
+        }
+        if (!question.isSelectable() && answerRequest.text() != null && answerRequest.text().isEmpty()) {
+            return null;
+        }
+        // END
+
         NewAnswerMapper answerMapper = answerMapperFactory.getAnswerMapper(question.getQuestionType());
         return answerMapper.mapToAnswer(answerRequest);
     }
