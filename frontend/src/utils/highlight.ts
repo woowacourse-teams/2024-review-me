@@ -1,120 +1,137 @@
 import { EDITOR_BLOCK_CLASS_NAME } from '@/constants';
 import { Highlight, EditorBlockData } from '@/types';
 
-interface MergeHighlightListParams {
-  highlightList: Highlight[];
-  newHighlight: Highlight;
-}
-export const mergeHighlightList = ({ highlightList, newHighlight }: MergeHighlightListParams) => {
-  const merged = [...highlightList];
-  let hasMerged = false;
-
-  for (let i = 0; i < merged.length; i++) {
-    const current = merged[i];
-    if (newHighlight.start <= current.end && newHighlight.end >= current.start) {
-      const start = Math.min(current.start, newHighlight.start);
-      const end = Math.max(current.end, newHighlight.end);
-      merged[i] = { start, end };
-      hasMerged = true;
-      break;
-    }
-  }
-
-  if (!hasMerged) {
-    merged.push(newHighlight);
-  }
-
-  return merged.sort((a, b) => a.start - b.start);
-};
-
-interface SplitTextWithHighlightListParams {
-  text: string;
-  highlightList: Highlight[];
-}
 /**
- * 하이라이트에 따라, 블록의 글자를 하이라이트 적용되는 부분과 그렇지 않은 부분으로 나누는 함수
+ * '0','1'로 이루어진 배열을 가지고, highlightList를 만드는 함수
+ * 1이 하나 이상일 경우, 시작 index가 start 이고 연속이 끝나는 index가 end
+ * @param array
+ * @returns
  */
-export const splitTextWithHighlightList = ({ text, highlightList }: SplitTextWithHighlightListParams) => {
-  const result: { isHighlight: boolean; text: string }[] = [];
-  let currentIndex = 0;
+const makeHighlightListByConsecutiveOnes = (array: string[]) => {
+  const result = [];
+  let start = -1; // 시작점 초기화 (아직 찾지 못한 상태)
 
-  highlightList.forEach(({ start, end }) => {
-    if (currentIndex < start) {
-      result.push({ isHighlight: false, text: text.slice(currentIndex, start) });
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] === '1' && start === -1) {
+      // 1이 시작되는 지점
+      start = i;
+    } else if ((array[i] === '0' || i === array.length - 1) && start !== -1) {
+      // 1이 끝나는 지점: 0을 만났거나 배열의 끝에 도달했을 때
+      const end = array[i] === '1' ? i : i - 1;
+      result.push({ start, end });
+      start = -1; // 다시 초기화
     }
-    result.push({ isHighlight: true, text: text.slice(start, end) });
-    currentIndex = end;
-  });
-
-  if (currentIndex < text.length) {
-    result.push({ isHighlight: false, text: text.slice(currentIndex) });
   }
 
   return result;
 };
 
+interface MergeHighlightListParams {
+  blockTextLength: number;
+  highlightList: Highlight[];
+  newHighlight: Highlight;
+}
+export const mergeHighlightList = ({
+  blockTextLength,
+  highlightList,
+  newHighlight,
+}: MergeHighlightListParams): Highlight[] => {
+  const stack = '0'.repeat(blockTextLength).split('');
+
+  [...highlightList, newHighlight].forEach((item) => {
+    const { start, end } = item;
+    console.log(start, end);
+    for (let i = start; i <= end; i++) {
+      stack[i] = '1';
+    }
+  });
+
+  return makeHighlightListByConsecutiveOnes(stack);
+};
+
 interface GetSelectionOffsetInBlockParams {
   selection: Selection;
   blockElement: Element;
+  isOnlyOneSelectedBlock: boolean;
+  isStartBlock: boolean;
 }
 /*
  *선택된 텍스트의 block 기준 offset을 계산하는 함수
  */
-export const getSelectionOffsetInBlock = ({ selection, blockElement }: GetSelectionOffsetInBlockParams) => {
+export const getSelectionOffsetInBlock = ({
+  selection,
+  blockElement,
+  isOnlyOneSelectedBlock,
+  isStartBlock,
+}: GetSelectionOffsetInBlockParams) => {
   const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
 
-  let totalOffset = 0;
-  const allSpans = Array.from(blockElement.querySelectorAll('span'));
+  const anchorSpanIndex = anchorNode?.parentElement?.getAttribute('data-index');
+  const focusSpanIndex = focusNode?.parentElement?.getAttribute('data-index');
 
-  for (const span of allSpans) {
-    if (span.contains(anchorNode)) {
-      totalOffset += anchorOffset;
-      break;
-    }
-    totalOffset += span.textContent?.length || 0;
+  if (!anchorSpanIndex) {
+    console.error('anchorNode에 대한 span의 data-index를 찾을 수 없습니다.');
+    return { start: 0, end: 0 };
+  }
+  if (!focusSpanIndex) {
+    console.error('focusNode에 대한 span의 data-index를 찾을 수 없습니다.');
+    return { start: 0, end: 0 };
   }
 
-  const start = totalOffset;
+  const spanList = [...blockElement.querySelectorAll('span')];
+  const anchorIndex =
+    spanList.slice(0, Number(anchorSpanIndex)).reduce((acc, cur) => acc + (cur.textContent?.length || 0), 0) +
+    anchorOffset;
+  const focusIndex =
+    spanList.slice(0, Number(focusSpanIndex)).reduce((acc, cur) => acc + (cur.textContent?.length || 0), 0) +
+    focusOffset;
 
-  totalOffset = 0;
-  for (const span of allSpans) {
-    if (span.contains(focusNode)) {
-      totalOffset += focusOffset;
-      break;
-    }
-    totalOffset += span.textContent?.length || 0;
-  }
-
-  const end = totalOffset;
-  return { start: Math.min(start, end), end: Math.max(start, end) };
+  const start = !isOnlyOneSelectedBlock && !isStartBlock ? 0 : Math.min(anchorIndex, focusIndex);
+  const end =
+    !isOnlyOneSelectedBlock && isStartBlock
+      ? (blockElement.textContent?.length || 0) - 1
+      : Math.max(anchorIndex, focusIndex) - 1;
+  console.log(blockElement.textContent, start, end);
+  return {
+    start,
+    end,
+  };
 };
 
 interface GetUpdatedBlockByHighlightParams {
+  blockTextLength: number;
   blockIndex: number;
   start: number;
   end: number;
   blockList: EditorBlockData[];
 }
 
-export const getUpdatedBlockByHighlight = ({ blockIndex, start, end, blockList }: GetUpdatedBlockByHighlightParams) => {
+export const getUpdatedBlockByHighlight = ({
+  blockTextLength,
+  blockIndex,
+  start,
+  end,
+  blockList,
+}: GetUpdatedBlockByHighlightParams) => {
   const newHighlight = { start, end };
   const block = blockList[blockIndex];
   const { highlightList } = block;
 
   return {
     ...block,
-    highlightList: mergeHighlightList({ highlightList, newHighlight }),
+    highlightList: mergeHighlightList({ blockTextLength, highlightList, newHighlight }),
   };
 };
 
 interface GetRemovedHighlightParams {
+  blockTextLength: number;
   highlightList: Highlight[];
-  start: number;
-  end: number;
+  start: number; // 지우는 영역 시작점
+  end: number; // 지우는 영역 끝나는 지점
 }
 
 /*하이라이트 삭제 함수*/
-export const getRemovedHighlightList = ({ highlightList, start, end }: GetRemovedHighlightParams) => {
+export const getRemovedHighlightList = ({ blockTextLength, highlightList, start, end }: GetRemovedHighlightParams) => {
   const isDeleteHighlightFully = highlightList.find((item) => item.start === start && item.end === end);
   // 이미 있는 하이라이트 영역을 모두 삭제 경우
   if (isDeleteHighlightFully) {
@@ -123,23 +140,19 @@ export const getRemovedHighlightList = ({ highlightList, start, end }: GetRemove
     });
   }
   // 일부분을 삭제하는 경우
-  const newHighlightList: Highlight[] = [];
-
+  const stack = '0'.repeat(blockTextLength).split('');
+  // 채우기
   highlightList.forEach(({ start: hStart, end: hEnd }) => {
-    //제거되는 하이라이트가 아닌 경우
-    if (hEnd <= start || hStart >= end) {
-      newHighlightList.push({ start: hStart, end: hEnd });
-    }
-    //제거되는 하이라이트인 경우
-    if (hStart < start) {
-      newHighlightList.push({ start: hStart, end: start });
-    }
-    if (hEnd > end) {
-      newHighlightList.push({ start: end, end: hEnd });
+    for (let i = hStart; i <= hEnd; i++) {
+      stack[i] = '1';
     }
   });
+  // 지우기
+  for (let i = start; i <= end; i++) {
+    stack[i] = '0';
+  }
 
-  return newHighlightList;
+  return makeHighlightListByConsecutiveOnes(stack);
 };
 
 export const getSelectionOffsetBlockInfo = (selection: Selection) => {

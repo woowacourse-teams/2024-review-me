@@ -1,6 +1,5 @@
 import { EDITOR_BLOCK_CLASS_NAME } from '@/constants';
-import { EditorBlockData } from '@/types';
-import { splitTextWithHighlightList } from '@/utils';
+import { EditorBlockData, Highlight } from '@/types';
 
 import Sentence from '../Sentence';
 
@@ -14,7 +13,7 @@ const EditorBlock = ({ block, blockIndex }: EditorBlockProps) => {
 
   const renderSentenceList = () => {
     if (!highlightList.length) {
-      return <Sentence isHighlight={false} text={text} />;
+      return <Sentence isHighlight={false} text={text} index={0} />;
     }
     return renderStyledSentenceList();
   };
@@ -29,7 +28,7 @@ const EditorBlock = ({ block, blockIndex }: EditorBlockProps) => {
     return (
       <>
         {highlightedTextList.map(({ isHighlight, text }, i) => (
-          <Sentence key={`${key}-${i}`} isHighlight={isHighlight} text={text} />
+          <Sentence key={`${key}-${i}`} isHighlight={isHighlight} text={text} index={i} />
         ))}
       </>
     );
