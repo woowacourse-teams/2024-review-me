@@ -1,4 +1,4 @@
-import { Highlight, EditorBlock } from '@/types';
+import { Highlight, EditorBlockData } from '@/types';
 
 interface MergeHighlightListParams {
   highlightList: Highlight[];
@@ -95,7 +95,7 @@ interface GetUpdatedBlockByHighlightParams {
   blockIndex: number;
   start: number;
   end: number;
-  blockList: EditorBlock[];
+  blockList: EditorBlockData[];
 }
 
 export const getUpdatedBlockByHighlight = ({ blockIndex, start, end, blockList }: GetUpdatedBlockByHighlightParams) => {

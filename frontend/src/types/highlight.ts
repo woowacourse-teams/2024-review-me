@@ -3,7 +3,7 @@ export interface Highlight {
   length: number;
 }
 
-export interface EditorBlock {
+export interface EditorBlockData {
   text: string;
   highlightList: Highlight[];
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { EditorBlock } from '@/types';
+import { EditorBlockData } from '@/types';
 import {
   getRemovedHighlightList,
   getSelectionInfo,
@@ -13,7 +13,7 @@ interface UseHighlightProps {
   text: string;
 }
 const useHighlight = ({ text }: UseHighlightProps) => {
-  const [blockList, setBlockList] = useState<EditorBlock[]>(() =>
+  const [blockList, setBlockList] = useState<EditorBlockData[]>(() =>
     text.split('\n').map((text) => ({
       text,
       highlightList: [],
