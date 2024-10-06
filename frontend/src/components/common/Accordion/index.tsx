@@ -1,6 +1,5 @@
-import { useState } from 'react';
-
 import DownArrowIcon from '@/assets/downArrow.svg';
+import useAccordion from '@/hooks/useAccordion';
 import { EssentialPropsWithChildren } from '@/types';
 
 import * as S from './styles';
@@ -10,11 +9,7 @@ interface AccordionProps {
 }
 
 const Accordion = ({ title, children }: EssentialPropsWithChildren<AccordionProps>) => {
-  const [isOpened, setIsOpened] = useState(false);
-
-  const handleAccordionButtonClick = () => {
-    setIsOpened((prev) => !prev);
-  };
+  const { isOpened, handleAccordionButtonClick } = useAccordion();
 
   return (
     <S.AccordionContainer $isOpened={isOpened}>
