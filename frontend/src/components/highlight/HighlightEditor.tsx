@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { EDITOR_BLOCK_CLASS_NAME, HIGHLIGHT_BUTTON_CLASS_NAME } from '@/constants';
-import { useHighlightButtonPosition, useHighlight } from '@/hooks';
+import { useHighlightButtonPosition, useHighlight, useCheckHighlight } from '@/hooks';
 import { getSelectionInfo } from '@/utils';
 
 import EditorBlock from './EditorBlock';
@@ -16,6 +16,7 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
     isAbleEdit,
   });
   const { blockList, handleClickHighlight, handleClickHighlightRemover } = useHighlight({ text, hideHighlightButton });
+  const { isAddingHighlight, checkHighlight } = useCheckHighlight();
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!isAbleEdit) return;
@@ -28,9 +29,10 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
 
   const handleMouseUp = () => {
     if (!isAbleEdit) return;
-
     const info = getSelectionInfo();
     if (!info) return;
+
+    checkHighlight(info);
     updateHighlightButtonPosition(info);
   };
 
@@ -50,8 +52,11 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
       ))}
       {isAbleEdit && highlightButtonPosition && (
         <div className={HIGHLIGHT_BUTTON_CLASS_NAME} style={{ position: 'fixed', ...highlightButtonPosition }}>
-          <button onClick={handleClickHighlight}>Add</button>
-          <button onClick={handleClickHighlightRemover}>Delete</button>
+          {isAddingHighlight ? (
+            <button onClick={handleClickHighlight}>Add</button>
+          ) : (
+            <button onClick={handleClickHighlightRemover}>Delete</button>
+          )}
         </div>
       )}
     </div>
