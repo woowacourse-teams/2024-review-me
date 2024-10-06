@@ -1,3 +1,4 @@
+import { EDITOR_BLOCK_CLASS_NAME } from '@/constants';
 import { Highlight, EditorBlockData } from '@/types';
 
 interface MergeHighlightListParams {
@@ -150,8 +151,8 @@ export const getSelectionInfo = () => {
   const selection = document.getSelection();
   if (!selection || selection.isCollapsed) return;
 
-  const anchorBlock = selection.anchorNode?.parentElement?.closest('.block');
-  const focusBlock = selection.focusNode?.parentElement?.closest('.block');
+  const anchorBlock = selection.anchorNode?.parentElement?.closest(`.${EDITOR_BLOCK_CLASS_NAME}`);
+  const focusBlock = selection.focusNode?.parentElement?.closest(`.${EDITOR_BLOCK_CLASS_NAME}`);
   if (!anchorBlock || !focusBlock) return;
 
   const anchorBlockIndex = parseInt(anchorBlock.getAttribute('data-index') || '-1', 10);
