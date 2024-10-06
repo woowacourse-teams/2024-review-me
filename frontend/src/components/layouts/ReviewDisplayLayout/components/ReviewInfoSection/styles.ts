@@ -9,7 +9,7 @@ export const ReviewInfoContainer = styled.div`
   margin: 2rem 0 3rem 0;
 
   ${media.small} {
-    margin-bottom: 1.8rem;
+    margin-bottom: 1rem;
   }
 `;
 

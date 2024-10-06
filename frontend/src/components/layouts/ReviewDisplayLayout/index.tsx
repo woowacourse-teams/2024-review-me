@@ -36,7 +36,7 @@ const ReviewDisplayLayout = ({
 
   return (
     <S.ReviewDisplayLayout>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <S.Container>
         <ReviewInfoSection
           revieweeName={revieweeName}
           projectName={projectName}
@@ -49,7 +49,7 @@ const ReviewDisplayLayout = ({
           isReviewList={isReviewList}
           handleSwitchClick={handleSwitchToggle}
         />
-      </div>
+      </S.Container>
       <TopButton />
       {children}
     </S.ReviewDisplayLayout>
