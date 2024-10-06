@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-
 import DownArrowIcon from '@/assets/downArrow.svg';
+import useDropdown from '@/hooks/useDropdown';
 
 import * as S from './styles';
 
@@ -11,32 +10,7 @@ interface DropdownProps {
 }
 
 const Dropdown = ({ options, selectedOption, handleSelect }: DropdownProps) => {
-  const [isOpened, setIsOpened] = useState(false);
-
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const handleDropdownButtonClick = () => {
-    setIsOpened((prev) => !prev);
-  };
-
-  const handleOptionClick = (option: string) => {
-    handleSelect(option);
-    setIsOpened(false);
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-      setIsOpened(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [dropdownRef]);
+  const { isOpened, handleDropdownButtonClick, handleOptionClick, dropdownRef } = useDropdown({ handleSelect });
 
   return (
     <S.DropdownContainer ref={dropdownRef}>
