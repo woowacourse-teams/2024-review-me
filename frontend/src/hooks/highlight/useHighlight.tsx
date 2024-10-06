@@ -24,45 +24,53 @@ const useHighlight = ({ text, hideHighlightButton }: UseHighlightProps) => {
   const handleClickHighlight = () => {
     const info = getSelectionInfo();
     if (!info) return;
-    const { selection, startBlock, startBlockIndex, endBlock, endBlockIndex } = info;
+    const { selection, startBlock, startBlockIndex, endBlock, endBlockIndex, isForwardDrag } = info;
+    const { anchorNode, anchorOffset, focusNode, focusOffset } = selection;
     const isOnlyOneSelectedBlock = startBlockIndex === endBlockIndex;
     const newBlockList = blockList.map((block, index) => {
       if (index < startBlockIndex) return block;
       if (index > endBlockIndex) return block;
       if (index === startBlockIndex) {
-        const startOffset = getSelectionOffsetInBlock({
-          selection,
+        const start = getSelectionOffsetInBlock({
+          selectionTargetNode: isForwardDrag ? anchorNode : focusNode,
+          selectionTargetOffset: isForwardDrag ? anchorOffset : focusOffset,
           blockElement: startBlock,
-          isOnlyOneSelectedBlock,
-          isStartBlock: true,
         });
+        // NOTE: end에 -1하는 이유 : 끝나는 포커스위치의 offset이 글자 index보다 1큼
+        const end = isOnlyOneSelectedBlock
+          ? getSelectionOffsetInBlock({
+              selectionTargetNode: isForwardDrag ? focusNode : anchorNode,
+              selectionTargetOffset: isForwardDrag ? focusOffset - 1 : anchorOffset - 1,
+              blockElement: startBlock,
+            })
+          : block.text.length;
 
         return getUpdatedBlockByHighlight({
           blockTextLength: text.length,
           blockIndex: index,
-          ...startOffset,
+          start,
+          end,
           blockList,
         });
       }
       if (index === endBlockIndex) {
-        const endOffset = getSelectionOffsetInBlock({
-          selection,
+        const end = getSelectionOffsetInBlock({
+          selectionTargetNode: isForwardDrag ? focusNode : anchorNode,
+          selectionTargetOffset: isForwardDrag ? focusOffset - 1 : anchorOffset - 1,
           blockElement: endBlock,
-          isOnlyOneSelectedBlock,
-          isStartBlock: false,
         });
 
         return getUpdatedBlockByHighlight({
           blockTextLength: text.length,
           blockIndex: index,
           start: 0,
-          end: endOffset.end,
+          end,
           blockList,
         });
       }
       return {
         ...block,
-        highlightList: [{ start: 0, end: block.text.length - 1 }],
+        highlightList: [{ start: 0, end: block.text.length }],
       };
     });
     setBlockList(newBlockList);
@@ -73,33 +81,42 @@ const useHighlight = ({ text, hideHighlightButton }: UseHighlightProps) => {
   const handleClickHighlightRemover = () => {
     const info = getSelectionInfo();
     if (!info) return;
-    const { selection, startBlock, startBlockIndex, endBlock, endBlockIndex } = info;
+    const { selection, startBlock, startBlockIndex, endBlock, endBlockIndex, isForwardDrag } = info;
+    const { anchorNode, anchorOffset, focusNode, focusOffset } = selection;
     const isOnlyOneSelectedBlock = startBlockIndex === endBlockIndex;
     const newBlockList = blockList.map((block, index) => {
       if (index < startBlockIndex) return block;
       if (index > endBlockIndex) return block;
       if (index === startBlockIndex) {
-        const startOffset = getSelectionOffsetInBlock({
-          selection,
+        const start = getSelectionOffsetInBlock({
+          selectionTargetNode: isForwardDrag ? anchorNode : focusNode,
+          selectionTargetOffset: isForwardDrag ? anchorOffset : focusOffset,
           blockElement: startBlock,
-          isOnlyOneSelectedBlock,
-          isStartBlock: true,
         });
+
+        const end = isOnlyOneSelectedBlock
+          ? getSelectionOffsetInBlock({
+              selectionTargetNode: isForwardDrag ? focusNode : anchorNode,
+              selectionTargetOffset: isForwardDrag ? focusOffset - 1 : anchorOffset - 1,
+              blockElement: startBlock,
+            })
+          : block.text.length;
+
         return {
           ...block,
           highlightList: getRemovedHighlightList({
             blockTextLength: text.length,
             highlightList: block.highlightList,
-            ...startOffset,
+            start,
+            end,
           }),
         };
       }
       if (index === endBlockIndex) {
-        const endOffset = getSelectionOffsetInBlock({
-          selection,
+        const end = getSelectionOffsetInBlock({
+          selectionTargetNode: isForwardDrag ? focusNode : anchorNode,
+          selectionTargetOffset: isForwardDrag ? focusOffset - 1 : anchorOffset - 1,
           blockElement: endBlock,
-          isOnlyOneSelectedBlock,
-          isStartBlock: false,
         });
         return {
           ...block,
@@ -107,7 +124,7 @@ const useHighlight = ({ text, hideHighlightButton }: UseHighlightProps) => {
             blockTextLength: text.length,
             highlightList: block.highlightList,
             start: 0,
-            end: endOffset.end,
+            end,
           }),
         };
       }

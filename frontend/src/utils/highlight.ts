@@ -40,7 +40,6 @@ export const mergeHighlightList = ({
 
   [...highlightList, newHighlight].forEach((item) => {
     const { start, end } = item;
-    console.log(start, end);
     for (let i = start; i <= end; i++) {
       stack[i] = '1';
     }
@@ -50,52 +49,30 @@ export const mergeHighlightList = ({
 };
 
 interface GetSelectionOffsetInBlockParams {
-  selection: Selection;
+  selectionTargetNode: Node | null;
+  selectionTargetOffset: number;
   blockElement: Element;
-  isOnlyOneSelectedBlock: boolean;
-  isStartBlock: boolean;
 }
 /*
  *선택된 텍스트의 block 기준 offset을 계산하는 함수
  */
 export const getSelectionOffsetInBlock = ({
-  selection,
+  selectionTargetNode,
+  selectionTargetOffset,
   blockElement,
-  isOnlyOneSelectedBlock,
-  isStartBlock,
 }: GetSelectionOffsetInBlockParams) => {
-  const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
+  const spanIndex = selectionTargetNode?.parentElement?.getAttribute('data-index');
 
-  const anchorSpanIndex = anchorNode?.parentElement?.getAttribute('data-index');
-  const focusSpanIndex = focusNode?.parentElement?.getAttribute('data-index');
-
-  if (!anchorSpanIndex) {
-    console.error('anchorNode에 대한 span의 data-index를 찾을 수 없습니다.');
-    return { start: 0, end: 0 };
-  }
-  if (!focusSpanIndex) {
-    console.error('focusNode에 대한 span의 data-index를 찾을 수 없습니다.');
-    return { start: 0, end: 0 };
+  if (!spanIndex) {
+    console.error(`${selectionTargetNode}에 대한 span의 data-index를 찾을 수 없습니다.`);
+    return 0;
   }
 
   const spanList = [...blockElement.querySelectorAll('span')];
-  const anchorIndex =
-    spanList.slice(0, Number(anchorSpanIndex)).reduce((acc, cur) => acc + (cur.textContent?.length || 0), 0) +
-    anchorOffset;
-  const focusIndex =
-    spanList.slice(0, Number(focusSpanIndex)).reduce((acc, cur) => acc + (cur.textContent?.length || 0), 0) +
-    focusOffset;
-
-  const start = !isOnlyOneSelectedBlock && !isStartBlock ? 0 : Math.min(anchorIndex, focusIndex);
-  const end =
-    !isOnlyOneSelectedBlock && isStartBlock
-      ? (blockElement.textContent?.length || 0) - 1
-      : Math.max(anchorIndex, focusIndex) - 1;
-  console.log(blockElement.textContent, start, end);
-  return {
-    start,
-    end,
-  };
+  const offset =
+    spanList.slice(0, Number(spanIndex)).reduce((acc, cur) => acc + (cur.textContent?.length || 0), 0) +
+    selectionTargetOffset;
+  return offset;
 };
 
 interface GetUpdatedBlockByHighlightParams {
