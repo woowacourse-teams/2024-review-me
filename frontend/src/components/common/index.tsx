@@ -7,4 +7,7 @@ export { default as Checkbox } from './Checkbox';
 export { default as CheckboxItem } from './CheckboxItem';
 export { default as EyeButton } from './EyeButton';
 export { default as Carousel } from './Carousel';
+export { default as Accordion } from './Accordion';
+export { default as Dropdown } from './Dropdown';
+
 export * from './modals';
