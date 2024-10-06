@@ -29,7 +29,7 @@ const EditorBlock = ({ block, blockIndex }: EditorBlockProps) => {
     return (
       <>
         {highlightedTextList.map(({ isHighlight, text }, i) => (
-          <Sentence key={`${key}-${i}`} isHighlight={isHighlight} text={text} data-index={i} />
+          <Sentence key={`${key}-${i}`} isHighlight={isHighlight} text={text} />
         ))}
       </>
     );

@@ -1,25 +1,24 @@
 import { useState } from 'react';
 
-import { HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
-import { isExistentElement, SelectionInfo } from '@/utils';
+import { HIGHLIGHT_SPAN_CLASS_NAME, SENTENCE_BASIC_CLASS_NAME } from '@/constants';
+import { SelectionInfo } from '@/utils';
 
 const useCheckHighlight = () => {
   const [isAddingHighlight, setIsAddingHighlight] = useState(false);
 
   const checkHighlight = (info: SelectionInfo) => {
-    const { selection } = info;
-    const anchorSpan = selection.anchorNode?.parentElement;
-    const focusSpan = selection.focusNode?.parentElement;
+    const selectedAllSpanList = getAllSpanInSelection(info.selection);
+    const isNoneHighlight = selectedAllSpanList.some((span) => !span.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME));
 
-    if (!anchorSpan) return isExistentElement(anchorSpan, 'anchorNode의 부모인span');
-    if (!focusSpan) return isExistentElement(focusSpan, 'anchorNode의 부모인span');
-
-    const isAnchorHighlight = anchorSpan.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME);
-    const isFocusHighlight = focusSpan.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME);
-
-    const isHighlight = isAnchorHighlight || isFocusHighlight;
-    setIsAddingHighlight(!isHighlight);
+    setIsAddingHighlight(isNoneHighlight);
   };
+
+  function getAllSpanInSelection(selection: Selection) {
+    const range = selection.getRangeAt(0);
+    const sentenceElList = document.getElementsByClassName(SENTENCE_BASIC_CLASS_NAME);
+
+    return [...sentenceElList].filter((el) => range.intersectsNode(el));
+  }
 
   return {
     isAddingHighlight,
