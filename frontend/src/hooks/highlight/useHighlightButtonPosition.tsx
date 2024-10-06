@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
 
-import { SelectionInfo } from '@/utils';
+import { EditorSelectionInfo } from '@/utils';
 
 interface UseHighlightButtonPositionProps {
   isAbleEdit: boolean;
@@ -14,7 +14,7 @@ const useHighlightButtonPosition = ({ isAbleEdit }: UseHighlightButtonPositionPr
   const [highlightButtonPosition, setHighlightButtonPosition] = useState<Position | null>(null);
   const hideHighlightButton = () => setHighlightButtonPosition(null);
 
-  const calculateEndPosition = ({ selection, isForwardDrag, startBlock }: SelectionInfo) => {
+  const calculateEndPosition = ({ selection, isForwardDrag, startBlock }: EditorSelectionInfo) => {
     const range = selection.getRangeAt(0);
     const rects = range.getClientRects();
 
@@ -31,7 +31,7 @@ const useHighlightButtonPosition = ({ isAbleEdit }: UseHighlightButtonPositionPr
     return endPosition;
   };
 
-  const updateHighlightButtonPosition = (info: SelectionInfo) => {
+  const updateHighlightButtonPosition = (info: EditorSelectionInfo) => {
     const endPosition = calculateEndPosition(info);
     if (!endPosition) return console.error('endPosition을 찾을 수 없어요.');
 

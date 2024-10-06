@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { EDITOR_BLOCK_CLASS_NAME, HIGHLIGHT_BUTTON_CLASS_NAME } from '@/constants';
 import { useHighlightButtonPosition, useHighlight, useCheckHighlight } from '@/hooks';
-import { getSelectionInfo } from '@/utils';
+import { findSelectionInfo } from '@/utils';
 
 import EditorBlock from './EditorBlock';
 
@@ -29,7 +29,7 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
 
   const handleMouseUp = () => {
     if (!isAbleEdit) return;
-    const info = getSelectionInfo();
+    const info = findSelectionInfo();
     if (!info) return;
 
     checkHighlight(info);

@@ -6,4 +6,4 @@ export { default as hasFinalConsonant } from './hasFinalConsonant';
 export { default as substituteString } from './substituteString';
 export { default as calculateParticle } from './calculateParticle';
 export * from './media';
-export * from './highlight';
+export * from './highlight/index';
