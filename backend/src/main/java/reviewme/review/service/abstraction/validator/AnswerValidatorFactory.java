@@ -16,6 +16,6 @@ public class AnswerValidatorFactory {
         return answerValidators.stream()
                 .filter(validator -> validator.supports(answerClass))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unsupported answer class: " + answerClass));
+                .orElseThrow(() -> new UnsupportedAnswerTypeException(answerClass));
     }
 }
