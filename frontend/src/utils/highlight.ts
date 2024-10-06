@@ -236,4 +236,5 @@ export const getSelectionInfo = () => {
   };
 };
 
+export type SelectionInfo = Exclude<ReturnType<typeof getSelectionInfo>, undefined>;
 export const removeSelection = () => document.getSelection()?.removeAllRanges();
