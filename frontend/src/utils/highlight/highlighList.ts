@@ -1,10 +1,30 @@
 import { EditorBlockData, Highlight } from '@/types';
 
+interface CreateHighlightBinaryArrayParams {
+  arrayLength: number;
+  list: Highlight[];
+}
+/**
+ * 하이라이트 적용 여부를 이진법에 따라 표시하는 배열을 생성하는 함수
+ * @param list 배열에 표시할 하이라이트 배열
+ * @param arrayLength 이진법 배열의 length이자 하이라이트 적용 대상인 block의 글자 수
+ */
+const createHighlightBinaryArray = ({ arrayLength, list }: CreateHighlightBinaryArrayParams) => {
+  const array = '0'.repeat(arrayLength).split('');
+
+  list.forEach((item) => {
+    const { start, end } = item;
+    for (let i = start; i <= end; i++) {
+      array[i] = '1';
+    }
+  });
+
+  return array;
+};
 /**
  * '0','1'로 이루어진 배열을 가지고, highlightList를 만드는 함수
  * 1이 하나 이상일 경우, 시작 index가 start 이고 연속이 끝나는 index가 end
  * @param array
- * @returns
  */
 const makeHighlightListByConsecutiveOnes = (array: string[]) => {
   const result = [];
@@ -35,16 +55,9 @@ export const mergeHighlightList = ({
   highlightList,
   newHighlight,
 }: MergeHighlightListParams): Highlight[] => {
-  const stack = '0'.repeat(blockTextLength).split('');
+  const array = createHighlightBinaryArray({ arrayLength: blockTextLength, list: highlightList.concat(newHighlight) });
 
-  [...highlightList, newHighlight].forEach((item) => {
-    const { start, end } = item;
-    for (let i = start; i <= end; i++) {
-      stack[i] = '1';
-    }
-  });
-
-  return makeHighlightListByConsecutiveOnes(stack);
+  return makeHighlightListByConsecutiveOnes(array);
 };
 
 interface GetUpdatedBlockByHighlightParams {
@@ -79,27 +92,28 @@ interface GetRemovedHighlightListParams {
   end: number; // 지우는 영역 끝나는 지점
 }
 
+/**
+ * 이미 있는 하이라이트 중, 일부분을 삭제하고 새로운 highlightList를 반환하는 함수
+ */
 const getHighlightListAfterPartialRemoval = ({
   blockTextLength,
   highlightList,
   start,
   end,
 }: GetRemovedHighlightListParams) => {
-  // 일부분을 삭제하는 경우
-  const stack = '0'.repeat(blockTextLength).split('');
-  // 채우기
-  highlightList.forEach(({ start: hStart, end: hEnd }) => {
-    for (let i = hStart; i <= hEnd; i++) {
-      stack[i] = '1';
-    }
-  });
+  const array = createHighlightBinaryArray({ arrayLength: blockTextLength, list: highlightList });
+
+  //지우기
   for (let i = start; i <= end; i++) {
-    stack[i] = '0';
+    array[i] = '0';
   }
 
-  return makeHighlightListByConsecutiveOnes(stack);
+  return makeHighlightListByConsecutiveOnes(array);
 };
 
+/**
+ * 이미 있는 하이라이트 중, 해당 하이라이트를 삭제하고 새로운 highlightList를 반환하는 함수
+ */
 const getHighlightListAfterFullyRemoval = ({
   highlightList,
   start,
