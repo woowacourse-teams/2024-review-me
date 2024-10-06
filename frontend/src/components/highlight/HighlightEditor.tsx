@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { EDITOR_BLOCK_CLASS_NAME, HIGHLIGHT_BUTTON_CLASS_NAME } from '@/constants';
 import { useHighlightButtonPosition, useHighlight } from '@/hooks';
@@ -11,10 +11,15 @@ interface HighlightEditorProps {
 }
 
 const HighlightEditor = ({ text }: HighlightEditorProps) => {
-  const { highlightButtonPosition, hideHighlightButton, updateHighlightButtonPosition } = useHighlightButtonPosition();
+  const [isAbleEdit, setIsAbleEdit] = useState(false);
+  const { highlightButtonPosition, hideHighlightButton, updateHighlightButtonPosition } = useHighlightButtonPosition({
+    isAbleEdit,
+  });
   const { blockList, handleClickHighlight, handleClickHighlightRemover } = useHighlight({ text, hideHighlightButton });
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (!isAbleEdit) return;
+
     const isInButton = (e.target as HTMLElement).closest(`.${HIGHLIGHT_BUTTON_CLASS_NAME}`);
 
     if (isInButton) return;
@@ -22,17 +27,28 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
   };
 
   const handleMouseUp = () => {
+    if (!isAbleEdit) return;
+
     const info = getSelectionInfo();
     if (!info) return;
     updateHighlightButtonPosition(info);
   };
 
+  const handleToggleButton = () => {
+    setIsAbleEdit((prev) => !prev);
+  };
+
   return (
     <div onMouseUp={handleMouseUp} onMouseDown={handleMouseDown}>
+      <div>
+        <p>형광펜 모드:</p>
+        <button onClick={handleToggleButton}> {isAbleEdit ? '끄기' : '켜기'}</button>
+      </div>
+
       {blockList.map((block, index) => (
         <EditorBlock key={`${EDITOR_BLOCK_CLASS_NAME}-${index}`} block={block} blockIndex={index} />
       ))}
-      {highlightButtonPosition && (
+      {isAbleEdit && highlightButtonPosition && (
         <div className={HIGHLIGHT_BUTTON_CLASS_NAME} style={{ position: 'fixed', ...highlightButtonPosition }}>
           <button onClick={handleClickHighlight}>Add</button>
           <button onClick={handleClickHighlightRemover}>Delete</button>

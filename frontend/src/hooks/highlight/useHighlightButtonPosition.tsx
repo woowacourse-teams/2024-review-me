@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import { SelectionInfo } from '@/utils';
 
-const useHighlightButtonPosition = () => {
+interface UseHighlightButtonPositionProps {
+  isAbleEdit: boolean;
+}
+const useHighlightButtonPosition = ({ isAbleEdit }: UseHighlightButtonPositionProps) => {
   interface Position {
     top: number;
     left: number;
@@ -34,6 +37,10 @@ const useHighlightButtonPosition = () => {
 
     setHighlightButtonPosition(endPosition);
   };
+
+  useLayoutEffect(() => {
+    if (!isAbleEdit) hideHighlightButton();
+  }, [isAbleEdit]);
 
   return {
     highlightButtonPosition,
