@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const OptionSwitchContainer = styled.div`
   cursor: pointer;
 
@@ -12,6 +14,11 @@ export const OptionSwitchContainer = styled.div`
 
   background-color: ${({ theme }) => theme.colors.lightGray};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
+
+  ${media.small} {
+    height: 3.5rem;
+    font-size: 1.2rem;
+  }
 `;
 
 export const CheckboxWrapper = styled.div<{ isChecked: boolean }>`
