@@ -147,20 +147,52 @@ export const getRemovedHighlightList = ({ highlightList, start, end }: GetRemove
   return newHighlightList;
 };
 
-export const getSelectionInfo = () => {
-  const selection = document.getSelection();
-  if (!selection || selection.isCollapsed) return;
+export const getSelectionOffsetBlockInfo = (selection: Selection) => {
+  const { anchorNode, focusNode } = selection;
+  const anchorBlock = anchorNode?.parentElement?.closest(`.${EDITOR_BLOCK_CLASS_NAME}`);
+  const focusBlock = focusNode?.parentElement?.closest(`.${EDITOR_BLOCK_CLASS_NAME}`);
 
-  const anchorBlock = selection.anchorNode?.parentElement?.closest(`.${EDITOR_BLOCK_CLASS_NAME}`);
-  const focusBlock = selection.focusNode?.parentElement?.closest(`.${EDITOR_BLOCK_CLASS_NAME}`);
   if (!anchorBlock || !focusBlock) return;
 
   const anchorBlockIndex = parseInt(anchorBlock.getAttribute('data-index') || '-1', 10);
   const focusBlockIndex = parseInt(focusBlock.getAttribute('data-index') || '-1', 10);
+
+  return {
+    anchorBlock,
+    anchorBlockIndex,
+    focusBlock,
+    focusBlockIndex,
+  };
+};
+
+type CalculateStartAndEndBlockParams = Exclude<ReturnType<typeof getSelectionOffsetBlockInfo>, undefined>;
+
+export const calculateStartAndEndBlock = ({
+  anchorBlock,
+  anchorBlockIndex,
+  focusBlock,
+  focusBlockIndex,
+}: CalculateStartAndEndBlockParams) => {
   const startBlockIndex = Math.min(anchorBlockIndex, focusBlockIndex);
   const endBlockIndex = Math.max(anchorBlockIndex, focusBlockIndex);
   const startBlock = startBlockIndex === anchorBlockIndex ? anchorBlock : focusBlock;
   const endBlock = startBlockIndex === anchorBlockIndex ? focusBlock : anchorBlock;
+
+  return {
+    startBlock,
+    startBlockIndex,
+    endBlock,
+    endBlockIndex,
+  };
+};
+export const getSelectionInfo = () => {
+  const selection = document.getSelection();
+  if (!selection || selection.isCollapsed) return;
+
+  const blockInfo = getSelectionOffsetBlockInfo(selection);
+  if (!blockInfo) return;
+
+  const { startBlock, startBlockIndex, endBlock, endBlockIndex } = calculateStartAndEndBlock(blockInfo);
 
   return {
     startBlock,
