@@ -37,3 +37,7 @@ cors:
   allowed-origins:
     - http://localhost
     - https://localhost
+
+redis:
+  host: localhost
+  port: 6379
