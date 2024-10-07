@@ -23,6 +23,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
+import reviewme.review.service.dto.response.list.ReceivedReviewSummaryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
@@ -209,6 +210,35 @@ class ReviewApiTest extends ApiTest {
                 .queryParam("lastReviewId", "2")
                 .queryParam("size", "5")
                 .when().get("/v2/reviews")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(200);
+    }
+
+    @Test
+    void 자신이_받은_리뷰의_요약를_조회한다() {
+        BDDMockito.given(reviewSummaryService.getReviewSummary(anyString()))
+                .willReturn(new ReceivedReviewSummaryResponse("리뷰미", "산초", 5));
+
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 쿠키")
+        };
+
+        FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("projectName").description("프로젝트 이름"),
+                fieldWithPath("revieweeName").description("리뷰어 이름"),
+                fieldWithPath("totalReviewCount").description("받은 리뷰 전체 개수")
+        };
+
+        RestDocumentationResultHandler handler = document(
+                "received-review-summary",
+                requestCookies(cookieDescriptors),
+                responseFields(responseFieldDescriptors)
+        );
+
+        givenWithSpec().log().all()
+                .cookie("JSESSIONID", "ABCDEFGHI1234")
+                .when().get("/v2/reviews/summary")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);

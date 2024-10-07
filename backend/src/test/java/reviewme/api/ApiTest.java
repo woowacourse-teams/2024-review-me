@@ -30,6 +30,7 @@ import reviewme.review.controller.ReviewController;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
+import reviewme.review.service.ReviewSummaryService;
 import reviewme.reviewgroup.controller.ReviewGroupController;
 import reviewme.reviewgroup.service.ReviewGroupLookupService;
 import reviewme.reviewgroup.service.ReviewGroupService;
@@ -63,6 +64,9 @@ public abstract class ApiTest {
 
     @MockBean
     protected ReviewGroupLookupService reviewGroupLookupService;
+
+    @MockBean
+    protected ReviewSummaryService reviewSummaryService;
 
     Filter sessionCookieFilter = (request, response, chain) -> {
         chain.doFilter(request, response);
