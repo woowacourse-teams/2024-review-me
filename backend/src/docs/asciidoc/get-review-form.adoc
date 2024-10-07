@@ -5,3 +5,7 @@ operation::get-review-form[snippets="curl-request,http-response,response-fields"
 ==== 그룹 코드가 올바르지 않은 경우
 
 operation::get-review-form-not-found[snippets="http-response"]
+
+=== 리뷰 그룹에 해당하는 섹션 이름 목록 가져오기
+
+operation::get-session-names[snippets="curl-request,request-cookies,http-response,response-fields"]
