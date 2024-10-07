@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
+import reviewme.review.service.ReviewSummaryService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewSummaryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 
 @RestController
@@ -27,6 +29,7 @@ public class ReviewController {
     private final ReviewRegisterService reviewRegisterService;
     private final ReviewListLookupService reviewListLookupService;
     private final ReviewDetailLookupService reviewDetailLookupService;
+    private final ReviewSummaryService reviewSummaryService;
 
     @PostMapping("/v2/reviews")
     public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRegisterRequest request) {
@@ -51,6 +54,14 @@ public class ReviewController {
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
         ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail(id, reviewRequestCode);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/v2/reviews/summary")
+    public ResponseEntity<ReceivedReviewSummaryResponse> findReceivedReviewOverview(
+            @SessionAttribute("reviewRequestCode") String reviewRequestCode
+    ) {
+        ReceivedReviewSummaryResponse response = reviewSummaryService.getReviewSummary(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 }
