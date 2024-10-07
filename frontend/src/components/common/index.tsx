@@ -10,4 +10,5 @@ export { default as Carousel } from './Carousel';
 export { default as Accordion } from './Accordion';
 export { default as Dropdown } from './Dropdown';
 
+export { default as OptionSwitch } from './OptionSwitch';
 export * from './modals';

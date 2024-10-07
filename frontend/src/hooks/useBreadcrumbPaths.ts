@@ -17,25 +17,29 @@ const useBreadcrumbPaths = () => {
     paramKey: ROUTE_PARAM.reviewId,
   });
 
-  const breadcrumbPathList: Path[] = [{ pageName: '연결 페이지', path: `${ROUTE.reviewZone}/${reviewRequestCode}` }];
+  const breadcrumbPathList: Path[] = [{ pageName: '리뷰 연결', path: `${ROUTE.reviewZone}/${reviewRequestCode}` }];
 
   if (pathname === `/${ROUTE.reviewList}/${reviewRequestCode}`) {
-    breadcrumbPathList.push({ pageName: '목록 페이지', path: `${ROUTE.reviewList}/${reviewRequestCode}` });
+    breadcrumbPathList.push({ pageName: '리뷰 목록', path: `${ROUTE.reviewList}/${reviewRequestCode}` });
+  }
+
+  if (pathname === `/${ROUTE.reviewCollection}/${reviewRequestCode}`) {
+    breadcrumbPathList.push({ pageName: '리뷰 모아보기', path: `${ROUTE.reviewCollection}/${reviewRequestCode}` });
   }
 
   if (pathname.includes(`/${ROUTE.reviewWriting}/`)) {
-    breadcrumbPathList.push({ pageName: '작성 페이지', path: pathname });
+    breadcrumbPathList.push({ pageName: '리뷰 작성', path: pathname });
   }
 
   if (pathname.includes(`/${ROUTE.reviewWritingComplete}`)) {
-    breadcrumbPathList.push({ pageName: '작성 페이지', path: -1 }, { pageName: '작성 완료 페이지', path: pathname });
+    breadcrumbPathList.push({ pageName: '리뷰 작성', path: -1 }, { pageName: '리뷰 작성 완료 페이지', path: pathname });
   }
 
   if (pathname.includes(ROUTE.detailedReview)) {
     breadcrumbPathList.push(
-      { pageName: '목록 페이지', path: `${ROUTE.reviewList}/${reviewRequestCode}` },
+      { pageName: '리뷰 목록', path: `${ROUTE.reviewList}/${reviewRequestCode}` },
       {
-        pageName: '상세 페이지',
+        pageName: '리뷰 상세',
         path: `${ROUTE.detailedReview}/${reviewRequestCode}/${reviewId}`,
       },
     );
