@@ -5,12 +5,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.NewCheckboxAnswerSelectedOption;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
 
-class NewCheckboxAnswerMapperTest {
+class CheckboxAnswerMapperTest {
 
     @Test
     void 체크박스_답변을_요청으로부터_매핑한다() {
@@ -19,7 +19,7 @@ class NewCheckboxAnswerMapperTest {
         NewCheckboxAnswerMapper mapper = new NewCheckboxAnswerMapper();
 
         // when
-        NewCheckboxAnswer actual = mapper.mapToAnswer(request);
+        CheckboxAnswer actual = mapper.mapToAnswer(request);
 
         // then
         assertThat(actual.getQuestionId()).isEqualTo(1L);

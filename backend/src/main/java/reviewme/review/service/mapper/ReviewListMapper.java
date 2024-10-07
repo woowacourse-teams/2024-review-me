@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.repository.OptionItemRepository;
-import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.NewCheckboxAnswerSelectedOption;
 import reviewme.review.domain.NewReview;
 import reviewme.review.domain.NewTextAnswer;
@@ -48,7 +48,7 @@ public class ReviewListMapper {
 
     private List<ReviewCategoryResponse> mapToCategoryOptionResponse(NewReview review,
                                                                      List<OptionItem> categoryOptionItems) {
-        Set<Long> checkBoxOptionIds = review.getAnswersByType(NewCheckboxAnswer.class)
+        Set<Long> checkBoxOptionIds = review.getAnswersByType(CheckboxAnswer.class)
                 .stream()
                 .flatMap(answer -> answer.getSelectedOptionIds().stream())
                 .map(NewCheckboxAnswerSelectedOption::getSelectedOptionId)

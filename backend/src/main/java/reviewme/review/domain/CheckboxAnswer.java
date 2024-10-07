@@ -18,13 +18,13 @@ import reviewme.review.domain.exception.QuestionNotAnsweredException;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
 @Getter
-public class NewCheckboxAnswer extends Answer {
+public class CheckboxAnswer extends Answer {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "checkbox_answer_id", nullable = false, updatable = false)
     private List<NewCheckboxAnswerSelectedOption> selectedOptionIds;
 
-    public NewCheckboxAnswer(long questionId, List<Long> selectedOptionIds) {
+    public CheckboxAnswer(long questionId, List<Long> selectedOptionIds) {
         validateSelectedOptionIds(questionId, selectedOptionIds);
         this.questionId = questionId;
         this.selectedOptionIds = selectedOptionIds.stream()

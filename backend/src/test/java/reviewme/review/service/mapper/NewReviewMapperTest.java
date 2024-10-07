@@ -22,7 +22,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.NewReview;
 import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
@@ -102,7 +102,7 @@ class NewReviewMapperTest {
         NewReview review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
-        assertThat(review.getAnswersByType(NewCheckboxAnswer.class)).hasSize(1);
+        assertThat(review.getAnswersByType(CheckboxAnswer.class)).hasSize(1);
     }
 
     @Test
@@ -153,8 +153,8 @@ class NewReviewMapperTest {
                 () -> assertThat(review.getAnswersByType(NewTextAnswer.class))
                         .extracting(NewTextAnswer::getQuestionId)
                         .containsExactly(requiredTextQuestion.getId()),
-                () -> assertThat(review.getAnswersByType(NewCheckboxAnswer.class))
-                        .extracting(NewCheckboxAnswer::getQuestionId)
+                () -> assertThat(review.getAnswersByType(CheckboxAnswer.class))
+                        .extracting(CheckboxAnswer::getQuestionId)
                         .containsExactly(requeiredCheckBoxQuestion.getId())
         );
     }

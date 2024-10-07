@@ -13,7 +13,7 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
 import reviewme.review.domain.NewCheckboxAnswerSelectedOption;
-import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
@@ -29,12 +29,12 @@ public class NewCheckboxAnswerValidator implements NewAnswerValidator {
 
     @Override
     public boolean supports(Class<? extends Answer> answerClass) {
-        return NewCheckboxAnswer.class.isAssignableFrom(answerClass);
+        return CheckboxAnswer.class.isAssignableFrom(answerClass);
     }
 
     @Override
     public void validate(Answer answer) {
-        NewCheckboxAnswer checkboxAnswer = (NewCheckboxAnswer) answer;
+        CheckboxAnswer checkboxAnswer = (CheckboxAnswer) answer;
         Question question = questionRepository.findById(checkboxAnswer.getQuestionId())
                 .orElseThrow(() -> new SubmittedQuestionNotFoundException(checkboxAnswer.getQuestionId()));
 
@@ -45,7 +45,7 @@ public class NewCheckboxAnswerValidator implements NewAnswerValidator {
         validateCheckedOptionItemCount(checkboxAnswer, optionGroup);
     }
 
-    private void validateOnlyIncludingProvidedOptionItem(NewCheckboxAnswer checkboxAnswer, OptionGroup optionGroup) {
+    private void validateOnlyIncludingProvidedOptionItem(CheckboxAnswer checkboxAnswer, OptionGroup optionGroup) {
         List<Long> providedOptionItemIds = optionItemRepository.findAllByOptionGroupId(optionGroup.getId())
                 .stream()
                 .map(OptionItem::getId)
@@ -59,7 +59,7 @@ public class NewCheckboxAnswerValidator implements NewAnswerValidator {
         }
     }
 
-    private void validateCheckedOptionItemCount(NewCheckboxAnswer checkboxAnswer, OptionGroup optionGroup) {
+    private void validateCheckedOptionItemCount(CheckboxAnswer checkboxAnswer, OptionGroup optionGroup) {
         int answeredOptionItemCount = extractAnsweredOptionItemIds(checkboxAnswer).size();
 
         if (answeredOptionItemCount < optionGroup.getMinSelectionCount()
@@ -73,7 +73,7 @@ public class NewCheckboxAnswerValidator implements NewAnswerValidator {
         }
     }
 
-    private List<Long> extractAnsweredOptionItemIds(NewCheckboxAnswer checkboxAnswer) {
+    private List<Long> extractAnsweredOptionItemIds(CheckboxAnswer checkboxAnswer) {
         return checkboxAnswer.getSelectedOptionIds()
                 .stream()
                 .map(NewCheckboxAnswerSelectedOption::getSelectedOptionId)

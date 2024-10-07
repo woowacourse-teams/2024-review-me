@@ -21,7 +21,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.NewReview;
 import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.repository.NewReviewRepository;
@@ -111,8 +111,8 @@ class ReviewRegisterServiceTest {
         assertAll(
                 () -> assertThat(review.getAnswersByType(NewTextAnswer.class)).extracting(NewTextAnswer::getQuestionId)
                         .containsExactly(requiredTextQuestion.getId()),
-                () -> assertThat(review.getAnswersByType(NewCheckboxAnswer.class)).extracting(
-                                NewCheckboxAnswer::getQuestionId)
+                () -> assertThat(review.getAnswersByType(CheckboxAnswer.class)).extracting(
+                                CheckboxAnswer::getQuestionId)
                         .containsAll(List.of(requiredCheckQuestion.getId(), conditionalCheckQuestion.getId()))
         );
     }

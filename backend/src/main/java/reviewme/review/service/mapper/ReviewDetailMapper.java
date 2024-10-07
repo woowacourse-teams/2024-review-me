@@ -13,7 +13,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.NewCheckboxAnswerSelectedOption;
 import reviewme.review.domain.NewReview;
 import reviewme.review.domain.NewTextAnswer;
@@ -99,7 +99,7 @@ public class ReviewDetailMapper {
                                                                  Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
         OptionGroup optionGroup = optionGroupsByQuestion.get(question.getId());
         List<OptionItem> optionItems = optionItemsByOptionGroup.get(optionGroup.getId());
-        Set<Long> selectedOptionIds = review.getAnswersByType(NewCheckboxAnswer.class)
+        Set<Long> selectedOptionIds = review.getAnswersByType(CheckboxAnswer.class)
                 .stream()
                 .flatMap(answer -> answer.getSelectedOptionIds().stream())
                 .map(NewCheckboxAnswerSelectedOption::getSelectedOptionId)

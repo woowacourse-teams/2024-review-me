@@ -19,7 +19,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.NewReview;
 import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.repository.NewReviewRepository;
@@ -83,7 +83,7 @@ class ReviewListLookupServiceTest {
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         // given - 리뷰 답변 저장
-        NewCheckboxAnswer categoryAnswer = new NewCheckboxAnswer(question.getId(), List.of(categoryOption.getId()));
+        CheckboxAnswer categoryAnswer = new CheckboxAnswer(question.getId(), List.of(categoryOption.getId()));
         NewReview review1 = new NewReview(template.getId(), reviewGroup.getId(), List.of(categoryAnswer));
         NewTextAnswer textAnswer = new NewTextAnswer(question.getId(), "텍스트형 응답");
         NewReview review2 = new NewReview(template.getId(), reviewGroup.getId(), List.of(textAnswer));

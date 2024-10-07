@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import reviewme.review.domain.Answer;
-import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswer;
 
 class AnswerValidatorFactoryTest {
 
@@ -14,7 +14,7 @@ class AnswerValidatorFactoryTest {
 
         @Override
         public boolean supports(Class<? extends Answer> answerClass) {
-            return answerClass.equals(NewCheckboxAnswer.class);
+            return answerClass.equals(CheckboxAnswer.class);
         }
 
         @Override
@@ -29,7 +29,7 @@ class AnswerValidatorFactoryTest {
         AnswerValidatorFactory factory = new AnswerValidatorFactory(validators);
 
         // when
-        NewAnswerValidator actual = factory.getAnswerValidator(NewCheckboxAnswer.class);
+        NewAnswerValidator actual = factory.getAnswerValidator(CheckboxAnswer.class);
 
         // then
         assertThat(actual).isEqualTo(validator);
@@ -41,7 +41,7 @@ class AnswerValidatorFactoryTest {
         AnswerValidatorFactory factory = new AnswerValidatorFactory(List.of());
 
         // when, then
-        assertThatThrownBy(() -> factory.getAnswerValidator(NewCheckboxAnswer.class))
+        assertThatThrownBy(() -> factory.getAnswerValidator(CheckboxAnswer.class))
                 .isInstanceOf(UnsupportedAnswerTypeException.class);
     }
 }

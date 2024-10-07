@@ -11,7 +11,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
 import reviewme.review.domain.NewCheckboxAnswerSelectedOption;
-import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.NewReview;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
@@ -66,7 +66,7 @@ public class NewReviewValidator {
     }
 
     private Set<Long> extractDisplayedQuestionIds(NewReview review) {
-        Set<Long> selectedOptionIds = review.getAnswersByType(NewCheckboxAnswer.class)
+        Set<Long> selectedOptionIds = review.getAnswersByType(CheckboxAnswer.class)
                 .stream()
                 .flatMap(answer -> answer.getSelectedOptionIds().stream())
                 .map(NewCheckboxAnswerSelectedOption::getSelectedOptionId)

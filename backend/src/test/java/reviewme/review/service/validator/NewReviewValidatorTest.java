@@ -21,7 +21,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.NewReview;
 import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
@@ -98,10 +98,10 @@ class NewReviewValidatorTest {
 
         // 각 질문에 대한 답변 생성
         NewTextAnswer notRequiredTextAnswer = new NewTextAnswer(notRequiredTextQuestion.getId(), "답변".repeat(30));
-        NewCheckboxAnswer alwaysRequiredCheckAnswer = new NewCheckboxAnswer(requiredCheckQuestion.getId(),
+        CheckboxAnswer alwaysRequiredCheckAnswer = new CheckboxAnswer(requiredCheckQuestion.getId(),
                 List.of(requiredOptionItem1.getId()));
         NewTextAnswer conditionalTextAnswer1 = new NewTextAnswer(conditionalTextQuestion1.getId(), "답변".repeat(30));
-        NewCheckboxAnswer conditionalCheckAnswer1 = new NewCheckboxAnswer(conditionalCheckQuestion.getId(),
+        CheckboxAnswer conditionalCheckAnswer1 = new CheckboxAnswer(conditionalCheckQuestion.getId(),
                 List.of(conditionalOptionItem.getId()));
 
         // 리뷰 생성
