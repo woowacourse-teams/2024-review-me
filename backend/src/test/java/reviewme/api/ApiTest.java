@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import reviewme.review.controller.ReviewController;
+import reviewme.review.service.GatheredReviewLookupService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
@@ -73,6 +74,9 @@ public abstract class ApiTest {
 
     @MockBean
     protected SectionService sectionService;
+
+    @MockBean
+    protected GatheredReviewLookupService gatheredReviewLookupService;
 
     Filter sessionCookieFilter = (request, response, chain) -> {
         chain.doFilter(request, response);

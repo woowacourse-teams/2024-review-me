@@ -22,7 +22,13 @@ import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
+import reviewme.question.domain.QuestionType;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
+import reviewme.review.service.dto.response.gathered.AnswerContentResponse;
+import reviewme.review.service.dto.response.gathered.GatheredReviewResponse;
+import reviewme.review.service.dto.response.gathered.GatheredReviewsResponse;
+import reviewme.review.service.dto.response.gathered.QuestionResponse;
+import reviewme.review.service.dto.response.gathered.VoteResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewSummaryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
@@ -239,6 +245,58 @@ class ReviewApiTest extends ApiTest {
         givenWithSpec().log().all()
                 .cookie("JSESSIONID", "ABCDEFGHI1234")
                 .when().get("/v2/reviews/summary")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(200);
+    }
+
+    @Test
+    void 자신이_받은_리뷰의_요약를_섹션별로_조회한다() {
+        GatheredReviewsResponse response = new GatheredReviewsResponse(List.of(
+                new GatheredReviewResponse(
+                        new QuestionResponse("서술형 질문", QuestionType.TEXT),
+                        List.of(
+                                new AnswerContentResponse("산초의 답변"),
+                                new AnswerContentResponse("삼촌의 답변")),
+                        null),
+                new GatheredReviewResponse(
+                        new QuestionResponse("선택형 질문", QuestionType.CHECKBOX),
+                        null,
+                        List.of(
+                                new VoteResponse("짜장", 3),
+                                new VoteResponse("짬뽕", 5))))
+        );
+        BDDMockito.given(gatheredReviewLookupService.getReceivedReviewsBySectionId(anyString(), anyLong()))
+                .willReturn(response);
+
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 쿠키")
+        };
+        ParameterDescriptor[] queryParameterDescriptors = {
+                parameterWithName("sectionId").description("섹션 ID")
+        };
+        FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("reviews").description("리뷰 목록"),
+                fieldWithPath("reviews[].question").description("질문 정보"),
+                fieldWithPath("reviews[].question.name").description("질문 이름"),
+                fieldWithPath("reviews[].question.type").description("질문 유형"),
+                fieldWithPath("reviews[].answers").description("서술형 답변 목록").optional(),
+                fieldWithPath("reviews[].answers[].content").description("서술형 답변 내용"),
+                fieldWithPath("reviews[].votes").description("객관식 답변 목록").optional(),
+                fieldWithPath("reviews[].votes[].content").description("객관식 항목"),
+                fieldWithPath("reviews[].votes[].count").description("선택한 사람 수"),
+        };
+        RestDocumentationResultHandler handler = document(
+                "received-review-by-section",
+                requestCookies(cookieDescriptors),
+                queryParameters(queryParameterDescriptors),
+                responseFields(responseFieldDescriptors)
+        );
+
+        givenWithSpec().log().all()
+                .cookie("JSESSIONID", "ABCDEFGHI1234")
+                .queryParam("sectionId", 1)
+                .when().get("/v2/reviews/gather")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
