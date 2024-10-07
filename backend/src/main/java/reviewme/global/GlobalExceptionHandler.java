@@ -22,6 +22,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import reviewme.global.exception.BadRequestException;
 import reviewme.global.exception.DataInconsistencyException;
+import reviewme.global.exception.TooManyDuplicateRequestException;
 import reviewme.global.exception.FieldErrorResponse;
 import reviewme.global.exception.NotFoundException;
 import reviewme.global.exception.UnauthorizedException;
@@ -48,6 +49,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataInconsistencyException.class)
     public ProblemDetail handleDataConsistencyException(DataInconsistencyException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getErrorMessage());
+    }
+
+    @ExceptionHandler(TooManyDuplicateRequestException.class)
+    public ProblemDetail handleDuplicateRequestException(TooManyDuplicateRequestException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.TOO_MANY_REQUESTS, ex.getErrorMessage());
     }
 
     @ExceptionHandler(Exception.class)
