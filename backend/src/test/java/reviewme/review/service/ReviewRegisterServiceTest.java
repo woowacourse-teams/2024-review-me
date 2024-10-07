@@ -24,7 +24,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.repository.NewReviewRepository;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -57,7 +57,7 @@ class ReviewRegisterServiceTest {
     private TemplateRepository templateRepository;
 
     @Autowired
-    private NewReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private SectionRepository sectionRepository;

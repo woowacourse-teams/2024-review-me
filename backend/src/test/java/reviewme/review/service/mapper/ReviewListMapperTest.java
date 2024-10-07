@@ -14,7 +14,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.repository.NewReviewRepository;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -43,7 +43,7 @@ class ReviewListMapperTest {
     private TemplateRepository templateRepository;
 
     @Autowired
-    private NewReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Test
     void 리뷰_그룹에_있는_리뷰를_반환한다() {

@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.review.repository.NewReviewRepository;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
@@ -17,7 +17,7 @@ import reviewme.reviewgroup.repository.ReviewGroupRepository;
 public class ReviewListLookupService {
 
     private final ReviewGroupRepository reviewGroupRepository;
-    private final NewReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
     private final ReviewListMapper reviewListMapper;
 
     @Transactional(readOnly = true)

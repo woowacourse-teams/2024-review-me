@@ -26,7 +26,7 @@ import reviewme.template.repository.TemplateRepository;
 class ReviewRepositoryTest {
 
     @Autowired
-    private NewReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;

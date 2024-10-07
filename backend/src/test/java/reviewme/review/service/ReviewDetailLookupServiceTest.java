@@ -26,7 +26,7 @@ import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.repository.NewReviewRepository;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
@@ -50,7 +50,7 @@ class ReviewDetailLookupServiceTest {
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    private NewReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private SectionRepository sectionRepository;

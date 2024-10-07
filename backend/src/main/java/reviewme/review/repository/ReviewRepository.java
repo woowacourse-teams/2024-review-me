@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import reviewme.review.domain.Review;
 
-public interface NewReviewRepository extends JpaRepository<Review, Long> {
+public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query(value = """
             SELECT r.* FROM new_review r

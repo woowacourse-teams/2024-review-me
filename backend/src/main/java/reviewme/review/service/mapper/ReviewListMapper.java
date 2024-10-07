@@ -12,7 +12,7 @@ import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.repository.NewReviewRepository;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -21,7 +21,7 @@ import reviewme.reviewgroup.domain.ReviewGroup;
 @RequiredArgsConstructor
 public class ReviewListMapper {
 
-    private final NewReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
     private final OptionItemRepository optionItemRepository;
 
     private final ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
