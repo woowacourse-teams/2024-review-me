@@ -1,0 +1,3 @@
+==== 자신이 받은 리뷰 섹션별 모아보기
+
+operation::received-review-by-section[snippets="curl-request,request-cookies,query-parameters,http-response,response-fields"]
