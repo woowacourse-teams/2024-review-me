@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
@@ -44,6 +45,7 @@ public class TemplateCache {
     private Map<Long, List<OptionItem>> optionGroupOptionItems = new HashMap<>();
 
     @PostConstruct
+    @Profile("!test")
     public void init() {
         this.templates = loadTemplates();
         this.sections = loadSections();
