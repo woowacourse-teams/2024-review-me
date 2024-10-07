@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import reviewme.review.service.GatheredReviewLookupService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.ReviewSummaryService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
+import reviewme.review.service.dto.response.gathered.GatheredReviewsResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewSummaryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 
@@ -30,6 +32,7 @@ public class ReviewController {
     private final ReviewListLookupService reviewListLookupService;
     private final ReviewDetailLookupService reviewDetailLookupService;
     private final ReviewSummaryService reviewSummaryService;
+    private final GatheredReviewLookupService gatheredReviewLookupService;
 
     @PostMapping("/v2/reviews")
     public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRegisterRequest request) {
@@ -62,6 +65,16 @@ public class ReviewController {
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
         ReceivedReviewSummaryResponse response = reviewSummaryService.getReviewSummary(reviewRequestCode);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/v2/reviews/gather")
+    public ResponseEntity<GatheredReviewsResponse> getReceivedReviewsBySectionId(
+            @RequestParam("sectionId") Long sectionId,
+            @SessionAttribute("reviewRequestCode") String reviewRequestCode
+    ) {
+        GatheredReviewsResponse response = gatheredReviewLookupService.getReceivedReviewsBySectionId(
+                reviewRequestCode, sectionId);
         return ResponseEntity.ok(response);
     }
 }
