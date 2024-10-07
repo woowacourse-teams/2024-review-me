@@ -29,7 +29,6 @@ public class DuplicateRequestInterceptor implements HandlerInterceptor {
 
         String key = generateRequestKey(request);
         Object value = redisTemplate.opsForValue().get(key);
-
         if (value == null) {
             redisTemplate.opsForValue().set(key, 1, DURATION);
             return true;
@@ -38,7 +37,6 @@ public class DuplicateRequestInterceptor implements HandlerInterceptor {
         if (!(value instanceof Integer)) {
             throw new RequestFrequencyNonNumericException(value);
         }
-
         int frequency = (int) value;
         if (frequency >= MAX_FREQUENCY) {
             throw new TooManyDuplicateRequestException(key);
