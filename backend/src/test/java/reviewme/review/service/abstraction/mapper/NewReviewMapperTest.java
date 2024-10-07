@@ -37,6 +37,7 @@ import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
 class NewReviewMapperTest {
+
     @Autowired
     private NewReviewMapper reviewMapper;
 
