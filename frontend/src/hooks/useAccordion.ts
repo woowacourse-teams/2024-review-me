@@ -1,7 +1,11 @@
 import { useState } from 'react';
 
-const useAccordion = () => {
-  const [isOpened, setIsOpened] = useState(false);
+interface UseAccordionProps {
+  initiallyOpened: boolean;
+}
+
+const useAccordion = ({ initiallyOpened }: UseAccordionProps) => {
+  const [isOpened, setIsOpened] = useState(initiallyOpened);
 
   const handleAccordionButtonClick = () => {
     setIsOpened((prev) => !prev);
