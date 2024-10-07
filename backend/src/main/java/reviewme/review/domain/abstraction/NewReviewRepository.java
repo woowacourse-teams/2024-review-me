@@ -28,7 +28,7 @@ public interface NewReviewRepository extends JpaRepository<NewReview, Long> {
 
     @Query("""
        SELECT DISTINCT r FROM NewReview r
-       JOIN FETCH r.answers a
+       LEFT JOIN FETCH r.answers a
        WHERE r.id = :reviewId AND r.reviewGroupId = :reviewGroupId
        """)
     Optional<NewReview> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
