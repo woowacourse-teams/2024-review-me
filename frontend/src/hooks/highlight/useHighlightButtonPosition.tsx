@@ -13,6 +13,16 @@ const useHighlightButtonPosition = ({ isAbleEdit }: UseHighlightButtonPositionPr
 
   const [highlightButtonPosition, setHighlightButtonPosition] = useState<Position | null>(null);
   const hideHighlightButton = () => setHighlightButtonPosition(null);
+  const [removalButtonPosition, setRemovalButtonPosition] = useState<{ top: number; left: number } | null>(null);
+
+  const updateRemovalButtonPosition = (rect: DOMRect) => {
+    setRemovalButtonPosition({
+      top: rect.bottom,
+      left: rect.right,
+    });
+  };
+
+  const hideRemovalButton = () => setRemovalButtonPosition(null);
 
   const calculateEndPosition = ({ selection, isForwardDrag, startBlock }: EditorSelectionInfo) => {
     const range = selection.getRangeAt(0);
@@ -46,6 +56,9 @@ const useHighlightButtonPosition = ({ isAbleEdit }: UseHighlightButtonPositionPr
     highlightButtonPosition,
     hideHighlightButton,
     updateHighlightButtonPosition,
+    updateRemovalButtonPosition,
+    hideRemovalButton,
+    removalButtonPosition,
   };
 };
 

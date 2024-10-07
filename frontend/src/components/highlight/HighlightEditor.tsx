@@ -12,10 +12,31 @@ interface HighlightEditorProps {
 
 const HighlightEditor = ({ text }: HighlightEditorProps) => {
   const [isAbleEdit, setIsAbleEdit] = useState(false);
-  const { highlightButtonPosition, hideHighlightButton, updateHighlightButtonPosition } = useHighlightButtonPosition({
+  const {
+    highlightButtonPosition,
+    hideHighlightButton,
+    updateHighlightButtonPosition,
+    removalButtonPosition,
+    hideRemovalButton,
+    updateRemovalButtonPosition,
+  } = useHighlightButtonPosition({
     isAbleEdit,
   });
-  const { blockList, handleClickHighlight, handleClickHighlightRemover } = useHighlight({ text, hideHighlightButton });
+
+  const {
+    blockList,
+    handleClickHighlight,
+    handleClickHighlightRemover,
+    handleClickBlockList,
+    handleClickRemovalButton,
+    removalTarget,
+  } = useHighlight({
+    isAbleEdit,
+    text,
+    hideHighlightButton,
+    hideRemovalButton,
+    updateRemovalButtonPosition,
+  });
   const { isAddingHighlight, checkHighlight } = useCheckHighlight();
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -46,10 +67,11 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
         <p>형광펜 모드:</p>
         <button onClick={handleToggleButton}> {isAbleEdit ? '끄기' : '켜기'}</button>
       </div>
-
-      {blockList.map((block, index) => (
-        <EditorBlock key={`${EDITOR_BLOCK_CLASS_NAME}-${index}`} block={block} blockIndex={index} />
-      ))}
+      <div onClick={handleClickBlockList}>
+        {blockList.map((block, index) => (
+          <EditorBlock key={`${EDITOR_BLOCK_CLASS_NAME}-${index}`} block={block} blockIndex={index} />
+        ))}
+      </div>
       {isAbleEdit && highlightButtonPosition && (
         <div className={HIGHLIGHT_BUTTON_CLASS_NAME} style={{ position: 'fixed', ...highlightButtonPosition }}>
           {isAddingHighlight ? (
@@ -58,6 +80,11 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
             <button onClick={handleClickHighlightRemover}>Delete</button>
           )}
         </div>
+      )}
+      {isAbleEdit && removalTarget && removalButtonPosition && (
+        <button style={{ position: 'fixed', ...removalButtonPosition }} onClick={handleClickRemovalButton}>
+          removal
+        </button>
       )}
     </div>
   );

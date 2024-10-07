@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
 import { EditorBlockData } from '@/types';
 import {
   getEndBlockOffset,
@@ -11,16 +12,33 @@ import {
 } from '@/utils';
 
 interface UseHighlightProps {
+  isAbleEdit: boolean;
   text: string;
   hideHighlightButton: () => void;
+  updateRemovalButtonPosition: (rect: DOMRect) => void;
+  hideRemovalButton: () => void;
 }
-const useHighlight = ({ text, hideHighlightButton }: UseHighlightProps) => {
+
+interface RemovalTarget {
+  blockIndex: number;
+  highlightIndex: number;
+}
+
+const useHighlight = ({
+  isAbleEdit,
+  text,
+  hideHighlightButton,
+  updateRemovalButtonPosition,
+  hideRemovalButton,
+}: UseHighlightProps) => {
   const [blockList, setBlockList] = useState<EditorBlockData[]>(() =>
     text.split('\n').map((text) => ({
       text,
       highlightList: [],
     })),
   );
+  // span 클릭 시, 제공되는 형광펜 삭제 기능 타겟
+  const [removalTarget, setRemovalTarget] = useState<RemovalTarget | null>(null);
 
   const handleClickHighlight = () => {
     const selectionInfo = findSelectionInfo();
@@ -109,10 +127,53 @@ const useHighlight = ({ text, hideHighlightButton }: UseHighlightProps) => {
     hideHighlightButton();
   };
 
+  const handleClickBlockList = (event: React.MouseEvent) => {
+    if (!document.getSelection()?.isCollapsed) return;
+    if (!isAbleEdit) return;
+
+    const target = event.target as HTMLElement;
+    const rect = target.getClientRects()[0];
+
+    if (!target.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME)) return;
+    const blockIndex = target.parentElement?.getAttribute('data-index');
+    const start = target.getAttribute('data-highlight-start');
+    const end = target.getAttribute('data-highlight-end');
+
+    if (!blockIndex || !start || !end) return;
+    const { highlightList } = blockList[Number(blockIndex)];
+    const highlightIndex = highlightList.findIndex((i) => i.start === Number(start) && i.end === Number(end));
+
+    setRemovalTarget({ blockIndex: Number(blockIndex), highlightIndex: Number(highlightIndex) });
+
+    updateRemovalButtonPosition(rect);
+  };
+
+  const handleClickRemovalButton = () => {
+    if (!removalTarget) return;
+
+    const { blockIndex, highlightIndex } = removalTarget;
+    const newBlockList = [...blockList];
+    const targetBlock = newBlockList[blockIndex];
+    const newHighlightList = [...targetBlock.highlightList];
+
+    newHighlightList.splice(highlightIndex, 1);
+    const newTargetBlock: EditorBlockData = { ...targetBlock, highlightList: newHighlightList };
+
+    newBlockList.splice(blockIndex, 1, newTargetBlock);
+    setBlockList(newBlockList);
+
+    hideRemovalButton();
+    setRemovalTarget(null);
+  };
+
   return {
     blockList,
+    setBlockList,
     handleClickHighlight,
     handleClickHighlightRemover,
+    handleClickBlockList,
+    handleClickRemovalButton,
+    removalTarget,
   };
 };
 

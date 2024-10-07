@@ -2,17 +2,31 @@ import { HIGHLIGHT_SPAN_CLASS_NAME, SENTENCE_BASIC_CLASS_NAME } from '@/constant
 
 import * as S from './style';
 interface SentenceProps {
-  isHighlight: boolean;
   text: string;
-  index: number;
+  spanIndex: number;
+  highlightInfo?: { start: number; end: number };
 }
 
-const Sentence = ({ isHighlight, text, index }: SentenceProps) => {
-  const className = `${SENTENCE_BASIC_CLASS_NAME} ${isHighlight ? HIGHLIGHT_SPAN_CLASS_NAME : ''}`;
+const Sentence = ({ text, spanIndex, highlightInfo }: SentenceProps) => {
+  const className = `${SENTENCE_BASIC_CLASS_NAME} ${highlightInfo ? HIGHLIGHT_SPAN_CLASS_NAME : ''}`;
   return (
-    <S.Sentence className={className} $isHighlight={isHighlight} data-index={index}>
-      {text}
-    </S.Sentence>
+    <>
+      {highlightInfo ? (
+        <S.Sentence
+          className={className}
+          $isHighlight={true}
+          data-index={spanIndex}
+          data-highlight-start={highlightInfo.start}
+          data-highlight-end={highlightInfo.end}
+        >
+          {text}
+        </S.Sentence>
+      ) : (
+        <S.Sentence className={className} $isHighlight={false} data-index={spanIndex}>
+          {text}
+        </S.Sentence>
+      )}
+    </>
   );
 };
 
