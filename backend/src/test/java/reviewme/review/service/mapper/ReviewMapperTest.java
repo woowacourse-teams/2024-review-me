@@ -24,7 +24,7 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.NewTextAnswer;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
@@ -77,7 +77,7 @@ class ReviewMapperTest {
         Review review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
-        assertThat(review.getAnswersByType(NewTextAnswer.class)).hasSize(1);
+        assertThat(review.getAnswersByType(TextAnswer.class)).hasSize(1);
     }
 
     @Test
@@ -150,8 +150,8 @@ class ReviewMapperTest {
 
         // then
         assertAll(
-                () -> assertThat(review.getAnswersByType(NewTextAnswer.class))
-                        .extracting(NewTextAnswer::getQuestionId)
+                () -> assertThat(review.getAnswersByType(TextAnswer.class))
+                        .extracting(TextAnswer::getQuestionId)
                         .containsExactly(requiredTextQuestion.getId()),
                 () -> assertThat(review.getAnswersByType(CheckboxAnswer.class))
                         .extracting(CheckboxAnswer::getQuestionId)

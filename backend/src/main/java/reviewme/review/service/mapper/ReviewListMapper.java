@@ -11,7 +11,7 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.NewTextAnswer;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.NewReviewRepository;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
@@ -41,7 +41,7 @@ public class ReviewListMapper {
         return new ReviewListElementResponse(
                 review.getId(),
                 review.getCreatedDate(),
-                reviewPreviewGenerator.generatePreview(review.getAnswersByType(NewTextAnswer.class)),
+                reviewPreviewGenerator.generatePreview(review.getAnswersByType(TextAnswer.class)),
                 categoryResponses
         );
     }

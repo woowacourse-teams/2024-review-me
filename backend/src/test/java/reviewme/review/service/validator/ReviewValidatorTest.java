@@ -23,7 +23,7 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.NewTextAnswer;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -97,10 +97,10 @@ class ReviewValidatorTest {
         ));
 
         // 각 질문에 대한 답변 생성
-        NewTextAnswer notRequiredTextAnswer = new NewTextAnswer(notRequiredTextQuestion.getId(), "답변".repeat(30));
+        TextAnswer notRequiredTextAnswer = new TextAnswer(notRequiredTextQuestion.getId(), "답변".repeat(30));
         CheckboxAnswer alwaysRequiredCheckAnswer = new CheckboxAnswer(requiredCheckQuestion.getId(),
                 List.of(requiredOptionItem1.getId()));
-        NewTextAnswer conditionalTextAnswer1 = new NewTextAnswer(conditionalTextQuestion1.getId(), "답변".repeat(30));
+        TextAnswer conditionalTextAnswer1 = new TextAnswer(conditionalTextQuestion1.getId(), "답변".repeat(30));
         CheckboxAnswer conditionalCheckAnswer1 = new CheckboxAnswer(conditionalCheckQuestion.getId(),
                 List.of(conditionalOptionItem.getId()));
 
@@ -124,7 +124,7 @@ class ReviewValidatorTest {
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
-        NewTextAnswer textAnswer = new NewTextAnswer(question2.getId(), "답변".repeat(20));
+        TextAnswer textAnswer = new TextAnswer(question2.getId(), "답변".repeat(20));
         Review review = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
 
         // when, then
@@ -143,7 +143,7 @@ class ReviewValidatorTest {
                 항상_보이는_섹션(List.of(requiredQuestion.getId(), optionalQuestion.getId())));
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
-        NewTextAnswer optionalTextAnswer = new NewTextAnswer(optionalQuestion.getId(), "답변".repeat(20));
+        TextAnswer optionalTextAnswer = new TextAnswer(optionalQuestion.getId(), "답변".repeat(20));
         Review review = new Review(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer));
 
         // when, then

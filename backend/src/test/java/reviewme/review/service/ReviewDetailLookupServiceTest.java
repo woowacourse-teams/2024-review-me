@@ -25,7 +25,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.NewTextAnswer;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.NewReviewRepository;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
@@ -126,7 +126,7 @@ class ReviewDetailLookupServiceTest {
 
         // given - 리뷰 답변 저장
         List<Answer> answers = List.of(
-                new NewTextAnswer(question2.getId(), "답변".repeat(20)),
+                new TextAnswer(question2.getId(), "답변".repeat(20)),
                 new CheckboxAnswer(question1.getId(), List.of(optionItem1.getId(), optionItem2.getId()))
         );
         Review review = reviewRepository.save(
@@ -187,7 +187,7 @@ class ReviewDetailLookupServiceTest {
             Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
             // given - 질문 하나에만 응답한 리뷰 답변 저장
-            NewTextAnswer textAnswer = new NewTextAnswer(question1.getId(), "답변".repeat(20));
+            TextAnswer textAnswer = new TextAnswer(question1.getId(), "답변".repeat(20));
             Review review = reviewRepository.save(
                     new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer))
             );

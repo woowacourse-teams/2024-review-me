@@ -11,7 +11,7 @@ class ReviewTest {
     @Test
     void 리뷰에_등록된_답변의_모든_질문들을_반환한다() {
         // given
-        NewTextAnswer textAnswer = new NewTextAnswer(1L, "답변");
+        TextAnswer textAnswer = new TextAnswer(1L, "답변");
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(2L, List.of(1L));
         Review review = new Review(1L, 1L, List.of(textAnswer, checkboxAnswer));
 

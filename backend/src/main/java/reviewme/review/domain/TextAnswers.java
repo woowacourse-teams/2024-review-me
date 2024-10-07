@@ -10,14 +10,14 @@ import reviewme.review.domain.exception.MissingTextAnswerForQuestionException;
 @Slf4j
 public class TextAnswers {
 
-    private final Map<Long, NewTextAnswer> textAnswers;
+    private final Map<Long, TextAnswer> textAnswers;
 
-    public TextAnswers(List<NewTextAnswer> textAnswers) {
+    public TextAnswers(List<TextAnswer> textAnswers) {
         this.textAnswers = textAnswers.stream()
-                .collect(Collectors.toMap(NewTextAnswer::getQuestionId, Function.identity()));
+                .collect(Collectors.toMap(TextAnswer::getQuestionId, Function.identity()));
     }
 
-    public NewTextAnswer getAnswerByQuestionId(long questionId) {
+    public TextAnswer getAnswerByQuestionId(long questionId) {
         if (!textAnswers.containsKey(questionId)) {
             throw new MissingTextAnswerForQuestionException(questionId);
         }

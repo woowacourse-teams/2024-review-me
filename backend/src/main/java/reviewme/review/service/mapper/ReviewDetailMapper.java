@@ -16,7 +16,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.NewTextAnswer;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
@@ -129,8 +129,8 @@ public class ReviewDetailMapper {
 
     private QuestionAnswerResponse mapToTextQuestionResponse(Review review,
                                                              Question question) {
-        List<NewTextAnswer> textAnswers = review.getAnswersByType(NewTextAnswer.class);
-        NewTextAnswer textAnswer = textAnswers.stream()
+        List<TextAnswer> textAnswers = review.getAnswersByType(TextAnswer.class);
+        TextAnswer textAnswer = textAnswers.stream()
                 .filter(answer -> answer.getQuestionId() == question.getId())
                 .findFirst()
                 .orElseThrow();

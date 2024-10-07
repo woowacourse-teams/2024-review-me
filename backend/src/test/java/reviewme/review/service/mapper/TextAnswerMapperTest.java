@@ -5,11 +5,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import reviewme.review.domain.NewTextAnswer;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 
-class NewTextAnswerMapperTest {
+class TextAnswerMapperTest {
 
     /*
      TODO: Request를 추상화해야 할까요?
@@ -25,7 +25,7 @@ class NewTextAnswerMapperTest {
 
         // when
         NewTextAnswerMapper mapper = new NewTextAnswerMapper();
-        NewTextAnswer actual = mapper.mapToAnswer(request);
+        TextAnswer actual = mapper.mapToAnswer(request);
 
         // then
         assertThat(actual.getContent()).isEqualTo("text");

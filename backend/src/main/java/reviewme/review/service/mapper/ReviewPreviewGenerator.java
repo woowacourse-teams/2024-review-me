@@ -1,14 +1,14 @@
 package reviewme.review.service.mapper;
 
 import java.util.List;
-import reviewme.review.domain.NewTextAnswer;
+import reviewme.review.domain.TextAnswer;
 
 public class ReviewPreviewGenerator {
 
     private static final int PREVIEW_LENGTH = 150;
     private static final String ELLIPSIS = "...";
 
-    public String generatePreview(List<NewTextAnswer> reviewTextAnswers) {
+    public String generatePreview(List<TextAnswer> reviewTextAnswers) {
         if (reviewTextAnswers.isEmpty()) {
             return "";
         }

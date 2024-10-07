@@ -14,12 +14,12 @@ import reviewme.review.domain.exception.QuestionNotAnsweredException;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
 @Getter
-public class NewTextAnswer extends Answer {
+public class TextAnswer extends Answer {
 
     @Column(name = "content", nullable = false, length = 5000)
     private String content;
 
-    public NewTextAnswer(long questionId, String content) {
+    public TextAnswer(long questionId, String content) {
         validateContent(questionId, content);
         this.questionId = questionId;
         this.content = content;

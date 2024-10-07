@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
-import reviewme.review.domain.NewTextAnswer;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.exception.InvalidTextAnswerLengthException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 
@@ -22,19 +22,19 @@ public class NewTextAnswerValidator implements NewAnswerValidator {
 
     @Override
     public boolean supports(Class<? extends Answer> answerClass) {
-        return NewTextAnswer.class.isAssignableFrom(answerClass);
+        return TextAnswer.class.isAssignableFrom(answerClass);
     }
 
     @Override
     public void validate(Answer answer) {
-        NewTextAnswer textAnswer = (NewTextAnswer) answer;
+        TextAnswer textAnswer = (TextAnswer) answer;
         Question question = questionRepository.findById(textAnswer.getQuestionId())
                 .orElseThrow(() -> new SubmittedQuestionNotFoundException(textAnswer.getQuestionId()));
 
         validateLength(textAnswer, question);
     }
 
-    private void validateLength(NewTextAnswer textAnswer, Question question) {
+    private void validateLength(TextAnswer textAnswer, Question question) {
         int answerLength = textAnswer.getContent().length();
 
         if (question.isRequired() && (answerLength < MIN_LENGTH || answerLength > MAX_LENGTH)) {

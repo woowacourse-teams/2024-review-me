@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import reviewme.review.domain.NewTextAnswer;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.mapper.ReviewPreviewGenerator;
 
 class ReviewPreviewGeneratorTest {
@@ -16,7 +16,7 @@ class ReviewPreviewGeneratorTest {
         // given
         ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
         String answer = "*".repeat(151);
-        NewTextAnswer textAnswer = new NewTextAnswer(1, answer);
+        TextAnswer textAnswer = new TextAnswer(1, answer);
 
         // when
         String actual = reviewPreviewGenerator.generatePreview(List.of(textAnswer));
@@ -31,7 +31,7 @@ class ReviewPreviewGeneratorTest {
         // given
         ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
         String answer = "*".repeat(length);
-        NewTextAnswer textAnswer = new NewTextAnswer(1, answer);
+        TextAnswer textAnswer = new TextAnswer(1, answer);
 
         // when
         String actual = reviewPreviewGenerator.generatePreview(List.of(textAnswer));

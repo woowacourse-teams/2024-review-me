@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Review;
-import reviewme.review.domain.NewTextAnswer;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.NewReviewRepository;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -58,7 +58,7 @@ class ReviewListMapperTest {
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         // given - 리뷰 답변 저장
-        NewTextAnswer textAnswer = new NewTextAnswer(question.getId(), "텍스트형 응답");
+        TextAnswer textAnswer = new TextAnswer(question.getId(), "텍스트형 응답");
         Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
         Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
         Review review3 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
