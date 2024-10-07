@@ -101,7 +101,7 @@ class ReviewApiTest extends ApiTest {
     }
 
     @Test
-    void 세션으로_자신이_받은_리뷰_한_개를_조회한다() {
+    void 자신이_받은_리뷰_한_개를_조회한다() {
         BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyLong(), anyString()))
                 .willReturn(TemplateFixture.templateAnswerResponse());
 
