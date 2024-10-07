@@ -1,16 +1,19 @@
 package reviewme.review.service.mapper;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.cache.TemplateCacheRepository;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.Question;
-import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.Review;
-import reviewme.review.domain.TextAnswer;
+import reviewme.review.domain.abstraction.Answer;
+import reviewme.review.domain.abstraction.NewCheckboxAnswer;
+import reviewme.review.domain.abstraction.NewCheckboxAnswerSelectedOption;
+import reviewme.review.domain.abstraction.NewReview;
+import reviewme.review.domain.abstraction.NewTextAnswer;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
@@ -25,21 +28,15 @@ public class ReviewDetailMapper {
 
     private final TemplateCacheRepository templateCacheRepository;
 
-    public ReviewDetailResponse mapToReviewDetailResponse(Review review, ReviewGroup reviewGroup) {
+    public ReviewDetailResponse mapToReviewDetailResponse(NewReview review, ReviewGroup reviewGroup) {
         long templateId = review.getTemplateId();
-        // TODO: 추상화 적용 후, answer.questionId 로 변경예정
-        List<Long> reviewQuestionIds = Stream.concat(
-                review.getTextAnswers()
-                        .stream()
-                        .map(TextAnswer::getQuestionId),
-                review.getCheckboxAnswers()
-                        .stream()
-                        .map(CheckboxAnswer::getQuestionId)
-        ).toList();
+        Map<Long, Answer> questionAnswers = review.getAnswers()
+                .stream()
+                .collect(Collectors.toMap(Answer::getQuestionId, Function.identity()));
 
         List<SectionAnswerResponse> sectionResponses = templateCacheRepository.findAllSectionByTemplateId(templateId)
                 .stream()
-                .map(section -> mapToSectionResponse(review, section, reviewQuestionIds))
+                .map(section -> mapToSectionResponse(questionAnswers, section))
                 .filter(SectionAnswerResponse::hasAnsweredQuestion)
                 .toList();
 
@@ -52,12 +49,12 @@ public class ReviewDetailMapper {
         );
     }
 
-    private SectionAnswerResponse mapToSectionResponse(Review review, Section section, List<Long> reviewQuestionIds) {
+    private SectionAnswerResponse mapToSectionResponse(Map<Long, Answer> questionAnswers, Section section) {
         List<QuestionAnswerResponse> questionResponses = templateCacheRepository.findAllQuestionBySectionId(
                         section.getId())
                 .stream()
-                .filter(question -> reviewQuestionIds.contains(question.getId()))
-                .map(question -> mapToQuestionResponse(review, question))
+                .filter(question -> questionAnswers.containsKey(question.getId()))
+                .map(question -> mapToQuestionResponse(questionAnswers.get(question.getId()), question))
                 .toList();
 
         return new SectionAnswerResponse(
@@ -67,34 +64,23 @@ public class ReviewDetailMapper {
         );
     }
 
-    private QuestionAnswerResponse mapToQuestionResponse(Review review, Question question) {
+    private QuestionAnswerResponse mapToQuestionResponse(Answer answer, Question question) {
         if (question.isSelectable()) {
-            return mapToCheckboxQuestionResponse(review, question);
+            return mapToCheckboxQuestionResponse((NewCheckboxAnswer) answer, question);
+
         } else {
-            return mapToTextQuestionResponse(review, question);
+            return mapToTextQuestionResponse((NewTextAnswer) answer, question);
         }
     }
 
-    private QuestionAnswerResponse mapToCheckboxQuestionResponse(Review review, Question question) {
-        OptionGroup optionGroup = templateCacheRepository.findOptionGroupByQuestionId(question.getId());
-        Set<Long> selectedOptionIds = review.getAllCheckBoxOptionIds();
-
-        List<OptionItemAnswerResponse> optionItemResponse = templateCacheRepository
-                .findAllOptionItemByOptionGroupId(optionGroup.getId())
+    private QuestionAnswerResponse mapToCheckboxQuestionResponse(NewCheckboxAnswer answer, Question question) {
+        List<Long> selectedOptionIds = answer.getSelectedOptionIds()
                 .stream()
-                .filter(optionItem -> selectedOptionIds.contains(optionItem.getId()))
-                .map(optionItem -> new OptionItemAnswerResponse(
-                        optionItem.getId(),
-                        optionItem.getContent(),
-                        true))
+                .map(NewCheckboxAnswerSelectedOption::getSelectedOptionId)
                 .toList();
 
-        OptionGroupAnswerResponse optionGroupAnswerResponse = new OptionGroupAnswerResponse(
-                optionGroup.getId(),
-                optionGroup.getMinSelectionCount(),
-                optionGroup.getMaxSelectionCount(),
-                optionItemResponse
-        );
+        OptionGroup optionGroup = templateCacheRepository.findOptionGroupByQuestionId(question.getId());
+        OptionGroupAnswerResponse optionGroupAnswerResponse = mapToOptionGroupResponse(optionGroup, selectedOptionIds);
 
         return new QuestionAnswerResponse(
                 question.getId(),
@@ -106,20 +92,33 @@ public class ReviewDetailMapper {
         );
     }
 
-    private QuestionAnswerResponse mapToTextQuestionResponse(Review review, Question question) {
-        TextAnswer textAnswer = review.getTextAnswers()
+    private OptionGroupAnswerResponse mapToOptionGroupResponse(OptionGroup optionGroup, List<Long> selectedOptionIds) {
+        List<OptionItemAnswerResponse> optionItemResponse = templateCacheRepository
+                .findAllOptionItemByOptionGroupId(optionGroup.getId())
                 .stream()
-                .filter(answer -> answer.getQuestionId() == question.getId())
-                .findFirst()
-                .get(); // TODO: 조회 검증 불필요하므로 다른 방식으로 추후 처리
+                .filter(optionItem -> selectedOptionIds.contains(optionItem.getId()))
+                .map(optionItem -> new OptionItemAnswerResponse(
+                        optionItem.getId(),
+                        optionItem.getContent(),
+                        true))
+                .toList();
 
+        return new OptionGroupAnswerResponse(
+                optionGroup.getId(),
+                optionGroup.getMinSelectionCount(),
+                optionGroup.getMaxSelectionCount(),
+                optionItemResponse
+        );
+    }
+
+    private QuestionAnswerResponse mapToTextQuestionResponse(NewTextAnswer answer, Question question) {
         return new QuestionAnswerResponse(
                 question.getId(),
                 question.isRequired(),
                 question.getQuestionType(),
                 question.getContent(),
                 null,
-                textAnswer.getContent()
+                answer.getContent()
         );
     }
 }

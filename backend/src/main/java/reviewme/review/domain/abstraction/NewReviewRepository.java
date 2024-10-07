@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface NewReviewRepository extends JpaRepository<NewReview, Long> {
 
     @Query(value = """
@@ -24,6 +26,11 @@ public interface NewReviewRepository extends JpaRepository<NewReview, Long> {
             """, nativeQuery = true)
     List<NewReview> findByReviewGroupIdWithLimit(long reviewGroupId, Long lastReviewId, int limit);
 
+    @Query("""
+       SELECT DISTINCT r FROM NewReview r
+       JOIN FETCH r.answers a
+       WHERE r.id = :reviewId AND r.reviewGroupId = :reviewGroupId
+       """)
     Optional<NewReview> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
 
     @Query(value = """
