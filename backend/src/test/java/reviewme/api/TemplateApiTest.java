@@ -1,18 +1,24 @@
 package reviewme.api;
 
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
+import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.template.service.dto.response.SectionNameResponse;
+import reviewme.template.service.dto.response.SectionNamesResponse;
 
 class TemplateApiTest extends ApiTest {
 
@@ -89,5 +95,35 @@ class TemplateApiTest extends ApiTest {
                 .then().log().all()
                 .apply(handler)
                 .statusCode(404);
+    }
+
+    @Test
+    void 섹션_이름을_반환한다() {
+        SectionNamesResponse response = new SectionNamesResponse(List.of(
+                new SectionNameResponse("섹션1 이름", 1),
+                new SectionNameResponse("섹션2 이름", 2)
+        ));
+        BDDMockito.given(sectionService.getSectionNames(anyString()))
+                .willReturn(response);
+
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 쿠키")
+        };
+        FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("sections[]").description("섹션 목록"),
+                fieldWithPath("sections[].name").description("섹션 이름"),
+                fieldWithPath("sections[].id").description("섹션 ID")
+        };
+        RestDocumentationResultHandler handler = document(
+                "get-session-names",
+                requestCookies(cookieDescriptors),
+                responseFields(responseFieldDescriptors)
+        );
+        givenWithSpec().log().all()
+                .cookie("JSESSIONID", "ABCDEFGHI1234")
+                .when().get("/v2/sections")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(200);
     }
 }
