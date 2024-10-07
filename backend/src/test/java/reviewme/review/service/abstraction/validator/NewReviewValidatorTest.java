@@ -97,7 +97,7 @@ class NewReviewValidatorTest {
         ));
 
         // 각 질문에 대한 답변 생성
-        NewTextAnswer notRequiredlTextAnswer = new NewTextAnswer(notRequiredTextQuestion.getId(), "답변".repeat(30));
+        NewTextAnswer notRequiredTextAnswer = new NewTextAnswer(notRequiredTextQuestion.getId(), "답변".repeat(30));
         NewCheckboxAnswer alwaysRequiredCheckAnswer = new NewCheckboxAnswer(requiredCheckQuestion.getId(),
                 List.of(requiredOptionItem1.getId()));
         NewTextAnswer conditionalTextAnswer1 = new NewTextAnswer(conditionalTextQuestion1.getId(), "답변".repeat(30));
@@ -106,7 +106,7 @@ class NewReviewValidatorTest {
 
         // 리뷰 생성
         NewReview review = new NewReview(template.getId(), reviewGroup.getId(),
-                List.of(notRequiredlTextAnswer, conditionalTextAnswer1,
+                List.of(notRequiredTextAnswer, conditionalTextAnswer1,
                         alwaysRequiredCheckAnswer, conditionalCheckAnswer1));
 
         // when, then
