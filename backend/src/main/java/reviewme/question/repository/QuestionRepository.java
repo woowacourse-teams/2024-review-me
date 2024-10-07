@@ -48,5 +48,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             OR ca.review_id = :reviewId) 
             and sq.section_id = :sectionId
             """, nativeQuery = true)
-    Set<Question> findByReviewAndSectionId(long reviewId, long sectionId);
+    Set<Question> findByReviewIdAndSectionId(long reviewId, long sectionId);
 }

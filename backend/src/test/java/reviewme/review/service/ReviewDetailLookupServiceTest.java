@@ -16,6 +16,7 @@ import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.cache.TemplateCache;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
@@ -52,6 +53,9 @@ class ReviewDetailLookupServiceTest {
     private ReviewRepository reviewRepository;
 
     @Autowired
+    private TemplateRepository templateRepository;
+
+    @Autowired
     private SectionRepository sectionRepository;
 
     @Autowired
@@ -64,7 +68,8 @@ class ReviewDetailLookupServiceTest {
     private OptionItemRepository optionItemRepository;
 
     @Autowired
-    private TemplateRepository templateRepository;
+    private TemplateCache templateCache;
+
 
     @Test
     void 잘못된_리뷰_요청_코드로_리뷰를_조회할_경우_예외가_발생한다() {
@@ -122,6 +127,8 @@ class ReviewDetailLookupServiceTest {
         Section section1 = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
         Section section2 = sectionRepository.save(항상_보이는_섹션(List.of(question2.getId())));
         Template template = templateRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
+
+        templateCache.init();
 
         // given - 리뷰 답변 저장
         List<TextAnswer> textAnswers = List.of(new TextAnswer(question2.getId(), "답변".repeat(20)));
