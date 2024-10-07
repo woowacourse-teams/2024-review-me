@@ -22,7 +22,7 @@ import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.NewReview;
+import reviewme.review.domain.Review;
 import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.repository.NewReviewRepository;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
@@ -107,7 +107,7 @@ class ReviewRegisterServiceTest {
         long registeredReviewId = reviewRegisterService.registerReview(reviewRegisterRequest);
 
         // when, then
-        NewReview review = reviewRepository.findById(registeredReviewId).orElseThrow();
+        Review review = reviewRepository.findById(registeredReviewId).orElseThrow();
         assertAll(
                 () -> assertThat(review.getAnswersByType(NewTextAnswer.class)).extracting(NewTextAnswer::getQuestionId)
                         .containsExactly(requiredTextQuestion.getId()),

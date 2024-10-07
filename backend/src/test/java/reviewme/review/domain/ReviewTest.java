@@ -13,7 +13,7 @@ class ReviewTest {
         // given
         NewTextAnswer textAnswer = new NewTextAnswer(1L, "답변");
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(2L, List.of(1L));
-        NewReview review = new NewReview(1L, 1L, List.of(textAnswer, checkboxAnswer));
+        Review review = new Review(1L, 1L, List.of(textAnswer, checkboxAnswer));
 
         // when
         Set<Long> allQuestionIdsFromAnswers = review.getAnsweredQuestionIds();

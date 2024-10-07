@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
-import reviewme.review.domain.NewReview;
+import reviewme.review.domain.Review;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
@@ -30,7 +30,7 @@ public class NewReviewMapper {
     private final QuestionRepository questionRepository;
     private final TemplateRepository templateRepository;
 
-    public NewReview mapToReview(ReviewRegisterRequest request) {
+    public Review mapToReview(ReviewRegisterRequest request) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(request.reviewRequestCode())
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(request.reviewRequestCode()));
         Template template = templateRepository.findById(reviewGroup.getTemplateId())
@@ -39,7 +39,7 @@ public class NewReviewMapper {
                 ));
 
         List<Answer> answers = getAnswersByQuestionType(request);
-        return new NewReview(template.getId(), reviewGroup.getId(), answers);
+        return new Review(template.getId(), reviewGroup.getId(), answers);
     }
 
     private List<Answer> getAnswersByQuestionType(ReviewRegisterRequest request) {

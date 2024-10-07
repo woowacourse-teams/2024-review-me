@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
-public class NewReview {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +44,7 @@ public class NewReview {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public NewReview(long templateId, long reviewGroupId, List<Answer> answers) {
+    public Review(long templateId, long reviewGroupId, List<Answer> answers) {
         this.templateId = templateId;
         this.reviewGroupId = reviewGroupId;
         this.answers = answers;

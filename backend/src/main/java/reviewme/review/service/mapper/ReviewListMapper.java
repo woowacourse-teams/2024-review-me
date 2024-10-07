@@ -10,7 +10,7 @@ import reviewme.question.domain.OptionType;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.CheckboxAnswerSelectedOption;
-import reviewme.review.domain.NewReview;
+import reviewme.review.domain.Review;
 import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.repository.NewReviewRepository;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
@@ -34,7 +34,7 @@ public class ReviewListMapper {
                 .toList();
     }
 
-    private ReviewListElementResponse mapToReviewListElementResponse(NewReview review,
+    private ReviewListElementResponse mapToReviewListElementResponse(Review review,
                                                                      List<OptionItem> categoryOptionItems) {
         List<ReviewCategoryResponse> categoryResponses = mapToCategoryOptionResponse(review, categoryOptionItems);
 
@@ -46,7 +46,7 @@ public class ReviewListMapper {
         );
     }
 
-    private List<ReviewCategoryResponse> mapToCategoryOptionResponse(NewReview review,
+    private List<ReviewCategoryResponse> mapToCategoryOptionResponse(Review review,
                                                                      List<OptionItem> categoryOptionItems) {
         Set<Long> checkBoxOptionIds = review.getAnswersByType(CheckboxAnswer.class)
                 .stream()

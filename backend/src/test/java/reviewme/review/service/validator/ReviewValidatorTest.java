@@ -22,7 +22,7 @@ import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.NewReview;
+import reviewme.review.domain.Review;
 import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
@@ -35,7 +35,7 @@ import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
-class NewReviewValidatorTest {
+class ReviewValidatorTest {
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -105,7 +105,7 @@ class NewReviewValidatorTest {
                 List.of(conditionalOptionItem.getId()));
 
         // 리뷰 생성
-        NewReview review = new NewReview(template.getId(), reviewGroup.getId(),
+        Review review = new Review(template.getId(), reviewGroup.getId(),
                 List.of(notRequiredTextAnswer, conditionalTextAnswer1,
                         alwaysRequiredCheckAnswer, conditionalCheckAnswer1));
 
@@ -125,7 +125,7 @@ class NewReviewValidatorTest {
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         NewTextAnswer textAnswer = new NewTextAnswer(question2.getId(), "답변".repeat(20));
-        NewReview review = new NewReview(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
 
         // when, then
         assertThatThrownBy(() -> reviewValidator.validate(review))
@@ -144,7 +144,7 @@ class NewReviewValidatorTest {
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         NewTextAnswer optionalTextAnswer = new NewTextAnswer(optionalQuestion.getId(), "답변".repeat(20));
-        NewReview review = new NewReview(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer));
+        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer));
 
         // when, then
         assertThatThrownBy(() -> reviewValidator.validate(review))

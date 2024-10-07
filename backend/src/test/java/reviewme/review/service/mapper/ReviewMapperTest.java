@@ -23,7 +23,7 @@ import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.NewReview;
+import reviewme.review.domain.Review;
 import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
@@ -36,7 +36,7 @@ import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
-class NewReviewMapperTest {
+class ReviewMapperTest {
 
     @Autowired
     private NewReviewMapper reviewMapper;
@@ -74,7 +74,7 @@ class NewReviewMapperTest {
                 List.of(reviewAnswerRequest));
 
         // when
-        NewReview review = reviewMapper.mapToReview(reviewRegisterRequest);
+        Review review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
         assertThat(review.getAnswersByType(NewTextAnswer.class)).hasSize(1);
@@ -99,7 +99,7 @@ class NewReviewMapperTest {
                 List.of(reviewAnswerRequest));
 
         // when
-        NewReview review = reviewMapper.mapToReview(reviewRegisterRequest);
+        Review review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
         assertThat(review.getAnswersByType(CheckboxAnswer.class)).hasSize(1);
@@ -146,7 +146,7 @@ class NewReviewMapperTest {
                         requiredCheckBoxAnswerRequest, optionalCheckBoxAnswerRequest));
 
         // when
-        NewReview review = reviewMapper.mapToReview(reviewRegisterRequest);
+        Review review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
         assertAll(

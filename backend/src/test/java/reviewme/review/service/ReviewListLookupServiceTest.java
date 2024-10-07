@@ -20,7 +20,7 @@ import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.NewReview;
+import reviewme.review.domain.Review;
 import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.repository.NewReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
@@ -84,9 +84,9 @@ class ReviewListLookupServiceTest {
 
         // given - 리뷰 답변 저장
         CheckboxAnswer categoryAnswer = new CheckboxAnswer(question.getId(), List.of(categoryOption.getId()));
-        NewReview review1 = new NewReview(template.getId(), reviewGroup.getId(), List.of(categoryAnswer));
+        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(categoryAnswer));
         NewTextAnswer textAnswer = new NewTextAnswer(question.getId(), "텍스트형 응답");
-        NewReview review2 = new NewReview(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
         reviewRepository.saveAll(List.of(review1, review2));
 
         // when
@@ -117,9 +117,9 @@ class ReviewListLookupServiceTest {
 
         // given - 리뷰 답변 저장
         NewTextAnswer textAnswer = new NewTextAnswer(question.getId(), "텍스트형 응답");
-        NewReview review1 = new NewReview(template.getId(), reviewGroup.getId(), List.of(textAnswer));
-        NewReview review2 = new NewReview(template.getId(), reviewGroup.getId(), List.of(textAnswer));
-        NewReview review3 = new NewReview(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review3 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
         reviewRepository.saveAll(List.of(review1, review2, review3));
 
         // when

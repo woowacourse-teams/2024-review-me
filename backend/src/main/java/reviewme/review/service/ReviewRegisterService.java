@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.review.domain.NewReview;
+import reviewme.review.domain.Review;
 import reviewme.review.repository.NewReviewRepository;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.mapper.NewReviewMapper;
@@ -28,9 +28,9 @@ public class ReviewRegisterService {
 
     @Transactional
     public long registerReview(ReviewRegisterRequest request) {
-        NewReview newReview = newReviewMapper.mapToReview(request);
-        newReviewValidator.validate(newReview);
-        NewReview registeredReview = newReviewRepository.save(newReview);
+        Review review = newReviewMapper.mapToReview(request);
+        newReviewValidator.validate(review);
+        Review registeredReview = newReviewRepository.save(review);
 
         return registeredReview.getId();
     }

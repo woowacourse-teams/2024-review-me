@@ -15,7 +15,7 @@ import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.CheckboxAnswerSelectedOption;
-import reviewme.review.domain.NewReview;
+import reviewme.review.domain.Review;
 import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
@@ -35,7 +35,7 @@ public class ReviewDetailMapper {
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
-    public ReviewDetailResponse mapToReviewDetailResponse(NewReview review, ReviewGroup reviewGroup) {
+    public ReviewDetailResponse mapToReviewDetailResponse(Review review, ReviewGroup reviewGroup) {
         long templateId = review.getTemplateId();
 
         List<Section> sections = sectionRepository.findAllByTemplateId(templateId);
@@ -65,7 +65,7 @@ public class ReviewDetailMapper {
         );
     }
 
-    private SectionAnswerResponse mapToSectionResponse(NewReview review, Section section,
+    private SectionAnswerResponse mapToSectionResponse(Review review, Section section,
                                                        List<Question> questions,
                                                        Map<Long, OptionGroup> optionGroupsByQuestion,
                                                        Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
@@ -83,7 +83,7 @@ public class ReviewDetailMapper {
         );
     }
 
-    private QuestionAnswerResponse mapToQuestionResponse(NewReview review, Question question,
+    private QuestionAnswerResponse mapToQuestionResponse(Review review, Question question,
                                                          Map<Long, OptionGroup> optionGroupsByQuestion,
                                                          Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
         if (question.isSelectable()) {
@@ -93,7 +93,7 @@ public class ReviewDetailMapper {
         }
     }
 
-    private QuestionAnswerResponse mapToCheckboxQuestionResponse(NewReview review,
+    private QuestionAnswerResponse mapToCheckboxQuestionResponse(Review review,
                                                                  Question question,
                                                                  Map<Long, OptionGroup> optionGroupsByQuestion,
                                                                  Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
@@ -127,7 +127,7 @@ public class ReviewDetailMapper {
         );
     }
 
-    private QuestionAnswerResponse mapToTextQuestionResponse(NewReview review,
+    private QuestionAnswerResponse mapToTextQuestionResponse(Review review,
                                                              Question question) {
         List<NewTextAnswer> textAnswers = review.getAnswersByType(NewTextAnswer.class);
         NewTextAnswer textAnswer = textAnswers.stream()

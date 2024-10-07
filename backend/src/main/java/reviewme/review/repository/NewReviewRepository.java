@@ -5,16 +5,16 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import reviewme.review.domain.NewReview;
+import reviewme.review.domain.Review;
 
-public interface NewReviewRepository extends JpaRepository<NewReview, Long> {
+public interface NewReviewRepository extends JpaRepository<Review, Long> {
 
     @Query(value = """
             SELECT r.* FROM new_review r
             WHERE r.review_group_id = :reviewGroupId
             ORDER BY r.created_at DESC
             """, nativeQuery = true)
-    List<NewReview> findAllByGroupId(long reviewGroupId);
+    List<Review> findAllByGroupId(long reviewGroupId);
 
     @Query(value = """
             SELECT r.* FROM new_review r
@@ -23,9 +23,9 @@ public interface NewReviewRepository extends JpaRepository<NewReview, Long> {
             ORDER BY r.created_at DESC, r.id DESC
             LIMIT :limit
             """, nativeQuery = true)
-    List<NewReview> findByReviewGroupIdWithLimit(long reviewGroupId, Long lastReviewId, int limit);
+    List<Review> findByReviewGroupIdWithLimit(long reviewGroupId, Long lastReviewId, int limit);
 
-    Optional<NewReview> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
+    Optional<Review> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
 
     @Query(value = """
             SELECT COUNT(r.id) FROM new_review r

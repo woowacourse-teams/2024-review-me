@@ -12,7 +12,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.NewReview;
+import reviewme.review.domain.Review;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.template.domain.Section;
@@ -28,7 +28,7 @@ public class NewReviewValidator {
     private final SectionRepository sectionRepository;
     private final QuestionRepository questionRepository;
 
-    public void validate(NewReview review) {
+    public void validate(Review review) {
         validateAnswer(review.getAnswers());
         validateAllAnswersContainedInTemplate(review);
         validateAllRequiredQuestionsAnswered(review);
@@ -41,7 +41,7 @@ public class NewReviewValidator {
         }
     }
 
-    private void validateAllAnswersContainedInTemplate(NewReview review) {
+    private void validateAllAnswersContainedInTemplate(Review review) {
         Set<Long> providedQuestionIds = questionRepository.findAllQuestionIdByTemplateId(review.getTemplateId());
         Set<Long> reviewedQuestionIds = review.getAnsweredQuestionIds();
         if (!providedQuestionIds.containsAll(reviewedQuestionIds)) {
@@ -49,7 +49,7 @@ public class NewReviewValidator {
         }
     }
 
-    private void validateAllRequiredQuestionsAnswered(NewReview review) {
+    private void validateAllRequiredQuestionsAnswered(Review review) {
         Set<Long> displayedQuestionIds = extractDisplayedQuestionIds(review);
         Set<Long> requiredQuestionIds = questionRepository.findAllById(displayedQuestionIds)
                 .stream()
@@ -65,7 +65,7 @@ public class NewReviewValidator {
         }
     }
 
-    private Set<Long> extractDisplayedQuestionIds(NewReview review) {
+    private Set<Long> extractDisplayedQuestionIds(Review review) {
         Set<Long> selectedOptionIds = review.getAnswersByType(CheckboxAnswer.class)
                 .stream()
                 .flatMap(answer -> answer.getSelectedOptionIds().stream())
