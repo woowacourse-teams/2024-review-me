@@ -96,7 +96,7 @@ class TemplateFixture {
         OptionGroupAnswerResponse secondOptionGroupAnswer = new OptionGroupAnswerResponse(2, 1, 3, secondOptionAnswers);
         QuestionAnswerResponse secondQuestionAnswer = new QuestionAnswerResponse(
                 2, true, QuestionType.CHECKBOX, "커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요.", secondOptionGroupAnswer,
-                "아루는 커뮤니케이션과 협업 능력에서 인상깊었어요~"
+                null
         );
         SectionAnswerResponse secondSectionAnswer = new SectionAnswerResponse(
                 2, "커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요.", List.of(secondQuestionAnswer)
