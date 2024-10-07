@@ -1,4 +1,4 @@
-package reviewme.review.service.validator;
+package reviewme.review.service.abstraction.validator;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -12,7 +12,6 @@ import static reviewme.fixture.SectionFixture.조건부로_보이는_섹션;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 import static reviewme.fixture.TemplateFixture.템플릿;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,9 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.Review;
-import reviewme.review.domain.TextAnswer;
+import reviewme.review.domain.abstraction.NewCheckboxAnswer;
+import reviewme.review.domain.abstraction.NewReview;
+import reviewme.review.domain.abstraction.NewTextAnswer;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -36,7 +35,7 @@ import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
-class ReviewValidatorTest {
+class NewReviewValidatorTest {
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -57,7 +56,7 @@ class ReviewValidatorTest {
     private SectionRepository sectionRepository;
 
     @Autowired
-    private ReviewValidator reviewValidator;
+    private NewReviewValidator reviewValidator;
 
     @Test
     void 템플릿에_있는_질문에_대한_답과_필수_질문에_모두_응답하는_경우_예외가_발생하지_않는다() {
@@ -98,17 +97,17 @@ class ReviewValidatorTest {
         ));
 
         // 각 질문에 대한 답변 생성
-        TextAnswer notRequiredTextAnswer = new TextAnswer(notRequiredTextQuestion.getId(), "답변".repeat(30));
-        CheckboxAnswer alwaysRequiredCheckAnswer = new CheckboxAnswer(requiredCheckQuestion.getId(),
+        NewTextAnswer notRequiredTextAnswer = new NewTextAnswer(notRequiredTextQuestion.getId(), "답변".repeat(30));
+        NewCheckboxAnswer alwaysRequiredCheckAnswer = new NewCheckboxAnswer(requiredCheckQuestion.getId(),
                 List.of(requiredOptionItem1.getId()));
-        TextAnswer conditionalTextAnswer1 = new TextAnswer(conditionalTextQuestion1.getId(), "답변".repeat(30));
-        CheckboxAnswer conditionalCheckAnswer1 = new CheckboxAnswer(conditionalCheckQuestion.getId(),
+        NewTextAnswer conditionalTextAnswer1 = new NewTextAnswer(conditionalTextQuestion1.getId(), "답변".repeat(30));
+        NewCheckboxAnswer conditionalCheckAnswer1 = new NewCheckboxAnswer(conditionalCheckQuestion.getId(),
                 List.of(conditionalOptionItem.getId()));
 
         // 리뷰 생성
-        Review review = new Review(template.getId(), reviewGroup.getId(),
-                List.of(notRequiredTextAnswer, conditionalTextAnswer1),
-                List.of(alwaysRequiredCheckAnswer, conditionalCheckAnswer1));
+        NewReview review = new NewReview(template.getId(), reviewGroup.getId(),
+                List.of(notRequiredTextAnswer, conditionalTextAnswer1,
+                        alwaysRequiredCheckAnswer, conditionalCheckAnswer1));
 
         // when, then
         assertThatCode(() -> reviewValidator.validate(review))
@@ -125,8 +124,8 @@ class ReviewValidatorTest {
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
-        TextAnswer textAnswer = new TextAnswer(question2.getId(), "답변".repeat(20));
-        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), new ArrayList<>());
+        NewTextAnswer textAnswer = new NewTextAnswer(question2.getId(), "답변".repeat(20));
+        NewReview review = new NewReview(template.getId(), reviewGroup.getId(), List.of(textAnswer));
 
         // when, then
         assertThatThrownBy(() -> reviewValidator.validate(review))
@@ -144,8 +143,8 @@ class ReviewValidatorTest {
                 항상_보이는_섹션(List.of(requiredQuestion.getId(), optionalQuestion.getId())));
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
-        TextAnswer optionalTextAnswer = new TextAnswer(optionalQuestion.getId(), "답변".repeat(20));
-        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer), List.of());
+        NewTextAnswer optionalTextAnswer = new NewTextAnswer(optionalQuestion.getId(), "답변".repeat(20));
+        NewReview review = new NewReview(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer));
 
         // when, then
         assertThatThrownBy(() -> reviewValidator.validate(review))
