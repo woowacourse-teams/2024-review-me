@@ -50,9 +50,9 @@ class ReviewRepositoryTest {
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         Review review1 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
+                new Review(template.getId(), reviewGroup.getId(), null));
         Review review2 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
+                new Review(template.getId(), reviewGroup.getId(), null));
 
         // when
         List<Review> actual = reviewRepository.findAllByGroupId(reviewGroup.getId());
@@ -70,11 +70,11 @@ class ReviewRepositoryTest {
         private final ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         private final Review review1 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
+                new Review(template.getId(), reviewGroup.getId(), null));
         private final Review review2 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
+                new Review(template.getId(), reviewGroup.getId(), null));
         private final Review review3 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
+                new Review(template.getId(), reviewGroup.getId(), null));
 
         @Test
         void 페이징_크기보다_적은_수의_리뷰가_등록되었으면_그_크기만큼의_리뷰만_반환한다() {
@@ -165,9 +165,9 @@ class ReviewRepositoryTest {
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         Review firstReview = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
+                new Review(template.getId(), reviewGroup.getId(), null));
         Review secondReview = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
+                new Review(template.getId(), reviewGroup.getId(), null));
 
         @Test
         void 주어진_리뷰가_가장_오래된_경우() {

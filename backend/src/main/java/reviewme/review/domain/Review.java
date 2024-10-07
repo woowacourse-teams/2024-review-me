@@ -15,14 +15,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "review")
+@Table(name = "new_review")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
@@ -40,40 +39,33 @@ public class Review {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "review_id", nullable = false, updatable = false)
-    private List<TextAnswer> textAnswers;
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "review_id", nullable = false, updatable = false)
-    private List<CheckboxAnswer> checkboxAnswers;
+    private List<Answer> answers;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Review(long templateId, long reviewGroupId,
-                  List<TextAnswer> textAnswers, List<CheckboxAnswer> checkboxAnswers) {
+    public Review(long templateId, long reviewGroupId, List<Answer> answers) {
         this.templateId = templateId;
         this.reviewGroupId = reviewGroupId;
-        this.textAnswers = textAnswers;
-        this.checkboxAnswers = checkboxAnswers;
+        this.answers = answers;
         this.createdAt = LocalDateTime.now();
     }
 
     public Set<Long> getAnsweredQuestionIds() {
-        return Stream.concat(
-                textAnswers.stream().map(TextAnswer::getQuestionId),
-                checkboxAnswers.stream().map(CheckboxAnswer::getQuestionId)
-        ).collect(Collectors.toSet());
-    }
-
-    public Set<Long> getAllCheckBoxOptionIds() {
-        return checkboxAnswers.stream()
-                .flatMap(answer -> answer.getSelectedOptionIds().stream())
-                .map(CheckBoxAnswerSelectedOption::getSelectedOptionId)
+        return answers.stream()
+                .map(Answer::getQuestionId)
                 .collect(Collectors.toSet());
     }
 
     public boolean hasAnsweredQuestion(long questionId) {
         return getAnsweredQuestionIds().contains(questionId);
+    }
+
+    public <T extends Answer> List<T> getAnswersByType(Class<T> clazz) {
+        return answers.stream()
+                .filter(clazz::isInstance)
+                .map(clazz::cast)
+                .toList();
     }
 
     public LocalDate getCreatedDate() {

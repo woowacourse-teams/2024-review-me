@@ -1,15 +1,15 @@
-package reviewme.review.service.abstraction.mapper;
+package reviewme.review.service.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import reviewme.review.domain.abstraction.NewTextAnswer;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 
-class NewTextAnswerMapperTest {
+class TextAnswerMapperTest {
 
     /*
      TODO: Request를 추상화해야 할까요?
@@ -24,8 +24,8 @@ class NewTextAnswerMapperTest {
         ReviewAnswerRequest request = new ReviewAnswerRequest(1L, null, "text");
 
         // when
-        NewTextAnswerMapper mapper = new NewTextAnswerMapper();
-        NewTextAnswer actual = mapper.mapToAnswer(request);
+        TextAnswerMapper mapper = new TextAnswerMapper();
+        TextAnswer actual = mapper.mapToAnswer(request);
 
         // then
         assertThat(actual.getContent()).isEqualTo("text");
@@ -37,7 +37,7 @@ class NewTextAnswerMapperTest {
         ReviewAnswerRequest request = new ReviewAnswerRequest(1L, List.of(1L), "text");
 
         // when
-        NewTextAnswerMapper mapper = new NewTextAnswerMapper();
+        TextAnswerMapper mapper = new TextAnswerMapper();
 
         // then
         assertThatThrownBy(() -> mapper.mapToAnswer(request))

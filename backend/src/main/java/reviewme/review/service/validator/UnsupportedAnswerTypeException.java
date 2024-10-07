@@ -1,4 +1,4 @@
-package reviewme.review.service.abstraction.validator;
+package reviewme.review.service.validator;
 
 import lombok.extern.slf4j.Slf4j;
 import reviewme.global.exception.DataInconsistencyException;
