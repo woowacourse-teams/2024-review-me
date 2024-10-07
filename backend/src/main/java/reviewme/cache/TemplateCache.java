@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionGroup;
@@ -16,13 +17,14 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
+import reviewme.cache.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
 @Component
+@DependsOn("databaseInitializer")
 @RequiredArgsConstructor
 @Getter
 public class TemplateCache {
