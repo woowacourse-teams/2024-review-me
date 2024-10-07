@@ -6,7 +6,6 @@ export const AccordionContainer = styled.div<{ $isOpened: boolean }>`
   gap: 2rem;
 
   width: 100%;
-  margin-bottom: 1rem;
   padding: 1rem;
 
   background-color: ${({ theme, $isOpened }) => ($isOpened ? theme.colors.white : theme.colors.lightGray)};

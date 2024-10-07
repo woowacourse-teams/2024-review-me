@@ -2,12 +2,9 @@ import styled from '@emotion/styled';
 
 export const DropdownContainer = styled.div`
   position: relative;
-
   display: flex;
   flex-direction: column;
-
   width: 24rem;
-  margin-bottom: 1rem;
 `;
 
 export const DropdownButton = styled.button`
