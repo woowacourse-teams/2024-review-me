@@ -22,6 +22,9 @@ include::create-review.adoc[]
 
 == 리뷰 조회
 
+=== 리뷰 요약 조회
+include::review-summary.adoc[]
+
 === 리뷰 단건 조회
 
 include::review-detail.adoc[]
