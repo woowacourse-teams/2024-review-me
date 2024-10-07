@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
-public class NewCheckboxAnswerSelectedOption {
+public class CheckboxAnswerSelectedOption {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class NewCheckboxAnswerSelectedOption {
     @Column(name = "selected_option_id", nullable = false)
     private long selectedOptionId;
 
-    public NewCheckboxAnswerSelectedOption(long selectedOptionId) {
+    public CheckboxAnswerSelectedOption(long selectedOptionId) {
         this.selectedOptionId = selectedOptionId;
     }
 }

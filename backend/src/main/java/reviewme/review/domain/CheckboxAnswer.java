@@ -22,13 +22,13 @@ public class CheckboxAnswer extends Answer {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "checkbox_answer_id", nullable = false, updatable = false)
-    private List<NewCheckboxAnswerSelectedOption> selectedOptionIds;
+    private List<CheckboxAnswerSelectedOption> selectedOptionIds;
 
     public CheckboxAnswer(long questionId, List<Long> selectedOptionIds) {
         validateSelectedOptionIds(questionId, selectedOptionIds);
         this.questionId = questionId;
         this.selectedOptionIds = selectedOptionIds.stream()
-                .map(NewCheckboxAnswerSelectedOption::new)
+                .map(CheckboxAnswerSelectedOption::new)
                 .toList();
     }
 

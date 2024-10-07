@@ -9,7 +9,7 @@ import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.NewCheckboxAnswerSelectedOption;
+import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.NewReview;
 import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.repository.NewReviewRepository;
@@ -51,7 +51,7 @@ public class ReviewListMapper {
         Set<Long> checkBoxOptionIds = review.getAnswersByType(CheckboxAnswer.class)
                 .stream()
                 .flatMap(answer -> answer.getSelectedOptionIds().stream())
-                .map(NewCheckboxAnswerSelectedOption::getSelectedOptionId)
+                .map(CheckboxAnswerSelectedOption::getSelectedOptionId)
                 .collect(Collectors.toSet());
         return categoryOptionItems.stream()
                 .filter(optionItem -> checkBoxOptionIds.contains(optionItem.getId()))
