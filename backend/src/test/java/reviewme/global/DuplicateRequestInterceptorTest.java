@@ -73,7 +73,7 @@ class DuplicateRequestInterceptorTest {
 
         // then
         assertThat(result).isTrue();
-        verify(valueOperations).set(requestKey, frequency + 1);
+        verify(valueOperations).set(requestKey, frequency + 1, Duration.of(1, ChronoUnit.SECONDS));
     }
 
     @Test

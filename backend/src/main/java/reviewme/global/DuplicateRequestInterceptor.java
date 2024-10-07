@@ -40,10 +40,10 @@ public class DuplicateRequestInterceptor implements HandlerInterceptor {
         }
 
         int frequency = (int) value;
-        if (frequency > MAX_FREQUENCY) {
+        if (frequency >= MAX_FREQUENCY) {
             throw new TooManyDuplicateRequestException(key);
         }
-        redisTemplate.opsForValue().set(key, frequency + 1);
+        redisTemplate.opsForValue().set(key, frequency + 1, DURATION);
         return true;
     }
 
