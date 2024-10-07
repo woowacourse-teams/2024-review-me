@@ -44,11 +44,10 @@ CREATE TABLE new_checkbox_answer_selected_option
 );
 
 -- MYSQL에서는 아래와 같이 초기화합니다.
-ALTER TABLE new_review
-    AUTO_INCREMENT = 1500000;
-ALTER TABLE new_checkbox_answer
-    AUTO_INCREMENT = 1500000;
-ALTER TABLE new_text_answer
-    AUTO_INCREMENT = 1500000;
-ALTER TABLE new_checkbox_answer_selected_option
-    AUTO_INCREMENT = 1500000;
+-- 아래 두 테이블은 Answer의 ID를 따라가므로, 조절할 필요가 없습니다.
+-- ALTER TABLE new_checkbox_answer AUTO_INCREMENT = 1500000;
+-- ALTER TABLE new_text_answer AUTO_INCREMENT = 1500000;
+
+ALTER TABLE answer AUTO_INCREMENT = 1500000;
+ALTER TABLE new_review AUTO_INCREMENT = 1500000;
+ALTER TABLE new_checkbox_answer_selected_option AUTO_INCREMENT = 1500000;
