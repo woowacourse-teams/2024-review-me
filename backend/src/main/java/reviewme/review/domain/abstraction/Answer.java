@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public abstract class Answer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     @Column(name = "question_id", nullable = false)
