@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 class NewReviewTest {
 
-
     @Test
     void 리뷰에_등록된_답변의_모든_질문들을_반환한다() {
         // given
