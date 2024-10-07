@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.system.CapturedOutput;
@@ -30,8 +29,7 @@ class AnswerMapperFactoryTest {
     };
 
     @Test
-    @DisplayName("지원하는 타입에 따른 매퍼를 가져온다.")
-    void getBySupportingType() {
+    void 지원하는_타입에_따른_매퍼를_가져온다() {
         // given
         List<NewAnswerMapper> answerMappers = List.of(answerMapper);
         AnswerMapperFactory factory = new AnswerMapperFactory(answerMappers);
@@ -44,8 +42,7 @@ class AnswerMapperFactoryTest {
     }
 
     @Test
-    @DisplayName("지원하지 않는 타입에 대한 매퍼 요청 시 예외가 발생한다.")
-    void unsupportedQuestionType(CapturedOutput output) {
+    void 지원하지_않는_타입에_대한_매퍼_요청_시_예외가_발생한다(CapturedOutput output) {
         // given
         AnswerMapperFactory factory = new AnswerMapperFactory(List.of());
 

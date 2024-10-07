@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reviewme.review.domain.abstraction.NewTextAnswer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
@@ -20,8 +19,7 @@ class NewTextAnswerMapperTest {
      */
 
     @Test
-    @DisplayName("텍스트 답변을 요청으로부터 매핑한다.")
-    void mapTextAnswerFromRequest() {
+    void 텍스트_답변을_요청으로부터_매핑한다() {
         // given
         ReviewAnswerRequest request = new ReviewAnswerRequest(1L, null, "text");
 
@@ -34,8 +32,7 @@ class NewTextAnswerMapperTest {
     }
 
     @Test
-    @DisplayName("텍스트 답변 요청에 옵션이 포함되어 있으면 예외를 발생시킨다.")
-    void invalidRequestWithOptions() {
+    void 텍스트_답변_요청에_옵션이_포함되어_있으면_예외를_발생시킨다() {
         // given
         ReviewAnswerRequest request = new ReviewAnswerRequest(1L, List.of(1L), "text");
 

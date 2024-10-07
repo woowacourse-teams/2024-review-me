@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reviewme.review.domain.abstraction.Answer;
 import reviewme.review.domain.abstraction.NewCheckboxAnswer;
@@ -24,8 +23,7 @@ class AnswerValidatorFactoryTest {
     };
 
     @Test
-    @DisplayName("지원하는 타입에 따른 밸리데이터를 가져온다.")
-    void getValidatorByAnswerType() {
+    void 지원하는_타입에_따른_밸리데이터를_가져온다() {
         // given
         List<NewAnswerValidator> validators = List.of(validator);
         AnswerValidatorFactory factory = new AnswerValidatorFactory(validators);
@@ -38,8 +36,7 @@ class AnswerValidatorFactoryTest {
     }
 
     @Test
-    @DisplayName("지원하지 않는 타입에 대한 밸리데이터 요청 시 예외가 발생한다.")
-    void unsupportedAnswerType() {
+    void 지원하지_않는_타입에_대한_밸리데이터_요청_시_예외가_발생한다() {
         // given
         AnswerValidatorFactory factory = new AnswerValidatorFactory(List.of());
 
