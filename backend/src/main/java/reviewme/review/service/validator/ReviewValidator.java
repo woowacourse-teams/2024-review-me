@@ -21,7 +21,7 @@ import reviewme.template.repository.SectionRepository;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class NewReviewValidator {
+public class ReviewValidator {
 
     private final AnswerValidatorFactory answerValidatorFactory;
 
@@ -36,7 +36,7 @@ public class NewReviewValidator {
 
     private void validateAnswer(List<Answer> answers) {
         for (Answer answer : answers) {
-            NewAnswerValidator validator = answerValidatorFactory.getAnswerValidator(answer.getClass());
+            AnswerValidator validator = answerValidatorFactory.getAnswerValidator(answer.getClass());
             validator.validate(answer);
         }
     }

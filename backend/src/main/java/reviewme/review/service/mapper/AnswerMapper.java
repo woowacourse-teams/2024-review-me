@@ -4,7 +4,7 @@ import reviewme.question.domain.QuestionType;
 import reviewme.review.domain.Answer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 
-public interface NewAnswerMapper {
+public interface AnswerMapper {
 
     boolean supports(QuestionType questionType);
 

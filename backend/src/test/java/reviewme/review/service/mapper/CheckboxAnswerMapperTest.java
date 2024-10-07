@@ -16,7 +16,7 @@ class CheckboxAnswerMapperTest {
     void 체크박스_답변을_요청으로부터_매핑한다() {
         // given
         ReviewAnswerRequest request = new ReviewAnswerRequest(1L, List.of(1L, 2L, 3L), null);
-        NewCheckboxAnswerMapper mapper = new NewCheckboxAnswerMapper();
+        CheckboxAnswerMapper mapper = new CheckboxAnswerMapper();
 
         // when
         CheckboxAnswer actual = mapper.mapToAnswer(request);
@@ -34,7 +34,7 @@ class CheckboxAnswerMapperTest {
         ReviewAnswerRequest request = new ReviewAnswerRequest(1L, List.of(1L, 2L, 3L), "text");
 
         // when
-        NewCheckboxAnswerMapper mapper = new NewCheckboxAnswerMapper();
+        CheckboxAnswerMapper mapper = new CheckboxAnswerMapper();
 
         // then
         assertThatThrownBy(() -> mapper.mapToAnswer(request))

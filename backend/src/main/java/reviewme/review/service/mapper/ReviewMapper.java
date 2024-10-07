@@ -23,7 +23,7 @@ import reviewme.template.service.exception.TemplateNotFoundByReviewGroupExceptio
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class NewReviewMapper {
+public class ReviewMapper {
 
     private final AnswerMapperFactory answerMapperFactory;
     private final ReviewGroupRepository reviewGroupRepository;
@@ -71,7 +71,7 @@ public class NewReviewMapper {
         }
         // END
 
-        NewAnswerMapper answerMapper = answerMapperFactory.getAnswerMapper(question.getQuestionType());
+        AnswerMapper answerMapper = answerMapperFactory.getAnswerMapper(question.getQuestionType());
         return answerMapper.mapToAnswer(answerRequest);
     }
 }

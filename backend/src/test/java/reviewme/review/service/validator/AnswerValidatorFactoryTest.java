@@ -10,7 +10,7 @@ import reviewme.review.domain.CheckboxAnswer;
 
 class AnswerValidatorFactoryTest {
 
-    private final NewAnswerValidator validator = new NewAnswerValidator() {
+    private final AnswerValidator validator = new AnswerValidator() {
 
         @Override
         public boolean supports(Class<? extends Answer> answerClass) {
@@ -25,11 +25,11 @@ class AnswerValidatorFactoryTest {
     @Test
     void 지원하는_타입에_따른_밸리데이터를_가져온다() {
         // given
-        List<NewAnswerValidator> validators = List.of(validator);
+        List<AnswerValidator> validators = List.of(validator);
         AnswerValidatorFactory factory = new AnswerValidatorFactory(validators);
 
         // when
-        NewAnswerValidator actual = factory.getAnswerValidator(CheckboxAnswer.class);
+        AnswerValidator actual = factory.getAnswerValidator(CheckboxAnswer.class);
 
         // then
         assertThat(actual).isEqualTo(validator);

@@ -56,7 +56,7 @@ class ReviewValidatorTest {
     private SectionRepository sectionRepository;
 
     @Autowired
-    private NewReviewValidator reviewValidator;
+    private ReviewValidator reviewValidator;
 
     @Test
     void 템플릿에_있는_질문에_대한_답과_필수_질문에_모두_응답하는_경우_예외가_발생하지_않는다() {

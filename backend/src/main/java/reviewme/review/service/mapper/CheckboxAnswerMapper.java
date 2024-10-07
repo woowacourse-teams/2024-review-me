@@ -7,7 +7,7 @@ import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
 
 @Component
-public class NewCheckboxAnswerMapper implements NewAnswerMapper {
+public class CheckboxAnswerMapper implements AnswerMapper {
 
     @Override
     public boolean supports(QuestionType questionType) {

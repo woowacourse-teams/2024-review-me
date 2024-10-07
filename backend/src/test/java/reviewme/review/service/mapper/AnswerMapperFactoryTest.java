@@ -15,7 +15,7 @@ import reviewme.review.service.dto.request.ReviewAnswerRequest;
 @ExtendWith(OutputCaptureExtension.class)
 class AnswerMapperFactoryTest {
 
-    private final NewAnswerMapper answerMapper = new NewAnswerMapper() {
+    private final AnswerMapper answerMapper = new AnswerMapper() {
 
         @Override
         public boolean supports(QuestionType questionType) {
@@ -31,11 +31,11 @@ class AnswerMapperFactoryTest {
     @Test
     void 지원하는_타입에_따른_매퍼를_가져온다() {
         // given
-        List<NewAnswerMapper> answerMappers = List.of(answerMapper);
+        List<AnswerMapper> answerMappers = List.of(answerMapper);
         AnswerMapperFactory factory = new AnswerMapperFactory(answerMappers);
 
         // when
-        NewAnswerMapper actual = factory.getAnswerMapper(QuestionType.CHECKBOX);
+        AnswerMapper actual = factory.getAnswerMapper(QuestionType.CHECKBOX);
 
         // then
         assertThat(answerMapper).isEqualTo(actual);

@@ -25,7 +25,7 @@ import reviewme.support.ServiceTest;
 class CheckboxAnswerValidatorTest {
 
     @Autowired
-    private NewCheckboxAnswerValidator checkBoxAnswerValidator;
+    private CheckboxAnswerValidator checkBoxAnswerValidator;
 
     @Autowired
     private QuestionRepository questionRepository;

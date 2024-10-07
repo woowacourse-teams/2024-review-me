@@ -39,7 +39,7 @@ import reviewme.template.repository.TemplateRepository;
 class ReviewMapperTest {
 
     @Autowired
-    private NewReviewMapper reviewMapper;
+    private ReviewMapper reviewMapper;
 
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;

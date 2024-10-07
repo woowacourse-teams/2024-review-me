@@ -9,9 +9,9 @@ import reviewme.question.domain.QuestionType;
 @RequiredArgsConstructor
 public class AnswerMapperFactory {
 
-    private final List<NewAnswerMapper> answerMappers;
+    private final List<AnswerMapper> answerMappers;
 
-    public NewAnswerMapper getAnswerMapper(QuestionType questionType) {
+    public AnswerMapper getAnswerMapper(QuestionType questionType) {
         return answerMappers.stream()
                 .filter(answerMapper -> answerMapper.supports(questionType))
                 .findFirst()

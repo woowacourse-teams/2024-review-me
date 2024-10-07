@@ -12,7 +12,7 @@ import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class NewTextAnswerValidator implements NewAnswerValidator {
+public class TextAnswerValidator implements AnswerValidator {
 
     private static final int ZERO_LENGTH = 0;
     private static final int MIN_LENGTH = 20;

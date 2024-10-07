@@ -2,7 +2,7 @@ package reviewme.review.service.validator;
 
 import reviewme.review.domain.Answer;
 
-public interface NewAnswerValidator {
+public interface AnswerValidator {
 
     boolean supports(Class<? extends Answer> answerClass);
 

@@ -10,9 +10,9 @@ import reviewme.review.domain.Answer;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class AnswerValidatorFactory {
 
-    private final List<NewAnswerValidator> answerValidators;
+    private final List<AnswerValidator> answerValidators;
 
-    public NewAnswerValidator getAnswerValidator(Class<? extends Answer> answerClass) {
+    public AnswerValidator getAnswerValidator(Class<? extends Answer> answerClass) {
         return answerValidators.stream()
                 .filter(validator -> validator.supports(answerClass))
                 .findFirst()

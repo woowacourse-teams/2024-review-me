@@ -24,7 +24,7 @@ class TextAnswerMapperTest {
         ReviewAnswerRequest request = new ReviewAnswerRequest(1L, null, "text");
 
         // when
-        NewTextAnswerMapper mapper = new NewTextAnswerMapper();
+        TextAnswerMapper mapper = new TextAnswerMapper();
         TextAnswer actual = mapper.mapToAnswer(request);
 
         // then
@@ -37,7 +37,7 @@ class TextAnswerMapperTest {
         ReviewAnswerRequest request = new ReviewAnswerRequest(1L, List.of(1L), "text");
 
         // when
-        NewTextAnswerMapper mapper = new NewTextAnswerMapper();
+        TextAnswerMapper mapper = new TextAnswerMapper();
 
         // then
         assertThatThrownBy(() -> mapper.mapToAnswer(request))

@@ -20,7 +20,7 @@ import reviewme.support.ServiceTest;
 class TextAnswerValidatorTest {
 
     @Autowired
-    private NewTextAnswerValidator textAnswerValidator;
+    private TextAnswerValidator textAnswerValidator;
 
     @Autowired
     private QuestionRepository questionRepository;

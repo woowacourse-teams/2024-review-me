@@ -7,7 +7,7 @@ import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 
 @Component
-public class NewTextAnswerMapper implements NewAnswerMapper {
+public class TextAnswerMapper implements AnswerMapper {
 
     @Override
     public boolean supports(QuestionType questionType) {
