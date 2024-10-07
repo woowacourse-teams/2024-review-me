@@ -1,10 +1,23 @@
 import React, { useState } from 'react';
 
-import { EDITOR_BLOCK_CLASS_NAME, HIGHLIGHT_BUTTON_CLASS_NAME } from '@/constants';
-import { useHighlightButtonPosition, useHighlight, useCheckHighlight } from '@/hooks';
+import {
+  EDITOR_BLOCK_CLASS_NAME,
+  HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME,
+  HIGHLIGHT_REMOVER_CLASS_NAME,
+} from '@/constants';
+import {
+  useHighlightToggleButtonPosition,
+  useHighlight,
+  useCheckHighlight,
+  useHighlightRemoverPosition,
+} from '@/hooks';
 import { findSelectionInfo } from '@/utils';
 
+import { Button } from '../common';
+
 import EditorBlock from './EditorBlock';
+import HighlightRemoverWrapper from './HighlightRemoverWrapper';
+import HighlightToggleButtonContainer from './HighlightToggleButtonContainer';
 
 interface HighlightEditorProps {
   text: string;
@@ -12,40 +25,34 @@ interface HighlightEditorProps {
 
 const HighlightEditor = ({ text }: HighlightEditorProps) => {
   const [isAbleEdit, setIsAbleEdit] = useState(false);
-  const {
-    highlightButtonPosition,
-    hideHighlightButton,
-    updateHighlightButtonPosition,
-    removalButtonPosition,
-    hideRemovalButton,
-    updateRemovalButtonPosition,
-  } = useHighlightButtonPosition({
+
+  const { highlightToggleButtonPosition, hideHighlightToggleButton, updateHighlightToggleButtonPosition } =
+    useHighlightToggleButtonPosition({
+      isAbleEdit,
+    });
+
+  const { removerPosition, hideRemover, updateRemoverPosition } = useHighlightRemoverPosition({
     isAbleEdit,
   });
 
-  const {
-    blockList,
-    handleClickHighlight,
-    handleClickHighlightRemover,
-    handleClickBlockList,
-    handleClickRemovalButton,
-    removalTarget,
-  } = useHighlight({
-    isAbleEdit,
-    text,
-    hideHighlightButton,
-    hideRemovalButton,
-    updateRemovalButtonPosition,
-  });
+  const { blockList, addHighlight, removeHighlight, handleClickBlockList, handleClickRemover, removalTarget } =
+    useHighlight({
+      isAbleEdit,
+      text,
+      hideHighlightToggleButton,
+      hideRemover,
+      updateRemoverPosition,
+    });
   const { isAddingHighlight, checkHighlight } = useCheckHighlight();
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!isAbleEdit) return;
 
-    const isInButton = (e.target as HTMLElement).closest(`.${HIGHLIGHT_BUTTON_CLASS_NAME}`);
+    const isInButton = (e.target as HTMLElement).closest(`.${HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME}`);
+    const isNotHighlightRemover = (e.target as HTMLElement).closest(`.${HIGHLIGHT_REMOVER_CLASS_NAME}`);
 
-    if (isInButton) return;
-    hideHighlightButton();
+    if (!isInButton) hideHighlightToggleButton();
+    if (!isNotHighlightRemover) hideRemover();
   };
 
   const handleMouseUp = () => {
@@ -54,37 +61,41 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
     if (!info) return;
 
     checkHighlight(info);
-    updateHighlightButtonPosition(info);
+    updateHighlightToggleButtonPosition(info);
   };
 
-  const handleToggleButton = () => {
+  const handleEditToggleButton = () => {
     setIsAbleEdit((prev) => !prev);
   };
 
   return (
     <div onMouseUp={handleMouseUp} onMouseDown={handleMouseDown}>
-      <div>
-        <p>형광펜 모드:</p>
-        <button onClick={handleToggleButton}> {isAbleEdit ? '끄기' : '켜기'}</button>
+      <div style={{ display: 'flex' }}>
+        <span>형광펜 모드:</span>
+        <Button
+          styleType={isAbleEdit ? 'secondary' : 'primary'}
+          style={{ padding: '0.4rem 1rem' }}
+          onClick={handleEditToggleButton}
+        >
+          {isAbleEdit ? '끄기' : '켜기'}
+        </Button>
       </div>
       <div onClick={handleClickBlockList}>
         {blockList.map((block, index) => (
           <EditorBlock key={`${EDITOR_BLOCK_CLASS_NAME}-${index}`} block={block} blockIndex={index} />
         ))}
       </div>
-      {isAbleEdit && highlightButtonPosition && (
-        <div className={HIGHLIGHT_BUTTON_CLASS_NAME} style={{ position: 'fixed', ...highlightButtonPosition }}>
-          {isAddingHighlight ? (
-            <button onClick={handleClickHighlight}>Add</button>
-          ) : (
-            <button onClick={handleClickHighlightRemover}>Delete</button>
-          )}
-        </div>
+
+      {isAbleEdit && highlightToggleButtonPosition && (
+        <HighlightToggleButtonContainer
+          buttonPosition={highlightToggleButtonPosition}
+          isAddingHighlight={isAddingHighlight}
+          addHighlight={addHighlight}
+          removeHighlight={removeHighlight}
+        />
       )}
-      {isAbleEdit && removalTarget && removalButtonPosition && (
-        <button style={{ position: 'fixed', ...removalButtonPosition }} onClick={handleClickRemovalButton}>
-          removal
-        </button>
+      {isAbleEdit && removalTarget && removerPosition && (
+        <HighlightRemoverWrapper buttonPosition={removerPosition} handleClickRemover={handleClickRemover} />
       )}
     </div>
   );

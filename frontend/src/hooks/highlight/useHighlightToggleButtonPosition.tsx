@@ -1,28 +1,16 @@
 import { useLayoutEffect, useState } from 'react';
 
+import { Position } from '@/types';
 import { EditorSelectionInfo } from '@/utils';
 
 interface UseHighlightButtonPositionProps {
   isAbleEdit: boolean;
 }
-const useHighlightButtonPosition = ({ isAbleEdit }: UseHighlightButtonPositionProps) => {
-  interface Position {
-    top: number;
-    left: number;
-  }
 
-  const [highlightButtonPosition, setHighlightButtonPosition] = useState<Position | null>(null);
-  const hideHighlightButton = () => setHighlightButtonPosition(null);
-  const [removalButtonPosition, setRemovalButtonPosition] = useState<{ top: number; left: number } | null>(null);
+const useHighlightToggleButtonPosition = ({ isAbleEdit }: UseHighlightButtonPositionProps) => {
+  const [highlightToggleButtonPosition, setHighlightToggleButtonPosition] = useState<Position | null>(null);
 
-  const updateRemovalButtonPosition = (rect: DOMRect) => {
-    setRemovalButtonPosition({
-      top: rect.bottom,
-      left: rect.right,
-    });
-  };
-
-  const hideRemovalButton = () => setRemovalButtonPosition(null);
+  const hideHighlightToggleButton = () => setHighlightToggleButtonPosition(null);
 
   const calculateEndPosition = ({ selection, isForwardDrag, startBlock }: EditorSelectionInfo) => {
     const range = selection.getRangeAt(0);
@@ -41,25 +29,22 @@ const useHighlightButtonPosition = ({ isAbleEdit }: UseHighlightButtonPositionPr
     return endPosition;
   };
 
-  const updateHighlightButtonPosition = (info: EditorSelectionInfo) => {
+  const updateHighlightToggleButtonPosition = (info: EditorSelectionInfo) => {
     const endPosition = calculateEndPosition(info);
     if (!endPosition) return console.error('endPosition을 찾을 수 없어요.');
 
-    setHighlightButtonPosition(endPosition);
+    setHighlightToggleButtonPosition(endPosition);
   };
 
   useLayoutEffect(() => {
-    if (!isAbleEdit) hideHighlightButton();
+    if (!isAbleEdit) hideHighlightToggleButton();
   }, [isAbleEdit]);
 
   return {
-    highlightButtonPosition,
-    hideHighlightButton,
-    updateHighlightButtonPosition,
-    updateRemovalButtonPosition,
-    hideRemovalButton,
-    removalButtonPosition,
+    highlightToggleButtonPosition,
+    hideHighlightToggleButton,
+    updateHighlightToggleButtonPosition,
   };
 };
 
-export default useHighlightButtonPosition;
+export default useHighlightToggleButtonPosition;

@@ -14,9 +14,9 @@ import {
 interface UseHighlightProps {
   isAbleEdit: boolean;
   text: string;
-  hideHighlightButton: () => void;
-  updateRemovalButtonPosition: (rect: DOMRect) => void;
-  hideRemovalButton: () => void;
+  hideHighlightToggleButton: () => void;
+  updateRemoverPosition: (rect: DOMRect) => void;
+  hideRemover: () => void;
 }
 
 interface RemovalTarget {
@@ -27,9 +27,9 @@ interface RemovalTarget {
 const useHighlight = ({
   isAbleEdit,
   text,
-  hideHighlightButton,
-  updateRemovalButtonPosition,
-  hideRemovalButton,
+  hideHighlightToggleButton,
+  updateRemoverPosition,
+  hideRemover,
 }: UseHighlightProps) => {
   const [blockList, setBlockList] = useState<EditorBlockData[]>(() =>
     text.split('\n').map((text) => ({
@@ -40,7 +40,7 @@ const useHighlight = ({
   // span 클릭 시, 제공되는 형광펜 삭제 기능 타겟
   const [removalTarget, setRemovalTarget] = useState<RemovalTarget | null>(null);
 
-  const handleClickHighlight = () => {
+  const addHighlight = () => {
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
 
@@ -79,10 +79,10 @@ const useHighlight = ({
     });
     setBlockList(newBlockList);
     removeSelection();
-    hideHighlightButton();
+    hideHighlightToggleButton();
   };
 
-  const handleClickHighlightRemover = () => {
+  const removeHighlight = () => {
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
 
@@ -124,7 +124,7 @@ const useHighlight = ({
 
     setBlockList(newBlockList);
     removeSelection();
-    hideHighlightButton();
+    hideHighlightToggleButton();
   };
 
   const handleClickBlockList = (event: React.MouseEvent) => {
@@ -145,10 +145,10 @@ const useHighlight = ({
 
     setRemovalTarget({ blockIndex: Number(blockIndex), highlightIndex: Number(highlightIndex) });
 
-    updateRemovalButtonPosition(rect);
+    updateRemoverPosition(rect);
   };
 
-  const handleClickRemovalButton = () => {
+  const handleClickRemover = () => {
     if (!removalTarget) return;
 
     const { blockIndex, highlightIndex } = removalTarget;
@@ -162,17 +162,17 @@ const useHighlight = ({
     newBlockList.splice(blockIndex, 1, newTargetBlock);
     setBlockList(newBlockList);
 
-    hideRemovalButton();
+    hideRemover();
     setRemovalTarget(null);
   };
 
   return {
     blockList,
     setBlockList,
-    handleClickHighlight,
-    handleClickHighlightRemover,
+    addHighlight,
+    removeHighlight,
     handleClickBlockList,
-    handleClickRemovalButton,
+    handleClickRemover,
     removalTarget,
   };
 };

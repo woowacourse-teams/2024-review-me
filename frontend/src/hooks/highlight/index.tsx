@@ -1,3 +1,4 @@
 export { default as useHighlight } from './useHighlight';
-export { default as useHighlightButtonPosition } from './useHighlightButtonPosition';
+export { default as useHighlightToggleButtonPosition } from './useHighlightToggleButtonPosition';
 export { default as useCheckHighlight } from './useCheckHighlight';
+export { default as useHighlightRemoverPosition } from './useHighlightRemoverPosition';
