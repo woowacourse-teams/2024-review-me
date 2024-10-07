@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import reviewme.review.domain.NewCheckboxAnswer;
 import reviewme.review.domain.exception.QuestionNotAnsweredException;
 
 class NewCheckboxAnswerTest {

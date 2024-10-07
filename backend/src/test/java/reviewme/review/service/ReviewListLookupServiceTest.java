@@ -19,10 +19,10 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.Review;
-import reviewme.review.domain.TextAnswer;
-import reviewme.review.repository.ReviewRepository;
+import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.NewReview;
+import reviewme.review.domain.NewTextAnswer;
+import reviewme.review.repository.NewReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -58,7 +58,7 @@ class ReviewListLookupServiceTest {
     private TemplateRepository templateRepository;
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    private NewReviewRepository reviewRepository;
 
     @Test
     void 리뷰_요청_코드가_존재하지_않는_경우_예외가_발생한다() {
@@ -83,10 +83,10 @@ class ReviewListLookupServiceTest {
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         // given - 리뷰 답변 저장
-        CheckboxAnswer categoryAnswer = new CheckboxAnswer(question.getId(), List.of(categoryOption.getId()));
-        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(), List.of(categoryAnswer));
-        TextAnswer textAnswer = new TextAnswer(question.getId(), "텍스트형 응답");
-        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
+        NewCheckboxAnswer categoryAnswer = new NewCheckboxAnswer(question.getId(), List.of(categoryOption.getId()));
+        NewReview review1 = new NewReview(template.getId(), reviewGroup.getId(), List.of(categoryAnswer));
+        NewTextAnswer textAnswer = new NewTextAnswer(question.getId(), "텍스트형 응답");
+        NewReview review2 = new NewReview(template.getId(), reviewGroup.getId(), List.of(textAnswer));
         reviewRepository.saveAll(List.of(review1, review2));
 
         // when
@@ -116,10 +116,10 @@ class ReviewListLookupServiceTest {
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         // given - 리뷰 답변 저장
-        TextAnswer textAnswer = new TextAnswer(question.getId(), "텍스트형 응답");
-        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
-        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
-        Review review3 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
+        NewTextAnswer textAnswer = new NewTextAnswer(question.getId(), "텍스트형 응답");
+        NewReview review1 = new NewReview(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        NewReview review2 = new NewReview(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        NewReview review3 = new NewReview(template.getId(), reviewGroup.getId(), List.of(textAnswer));
         reviewRepository.saveAll(List.of(review1, review2, review3));
 
         // when

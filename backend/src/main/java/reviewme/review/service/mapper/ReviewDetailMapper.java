@@ -13,8 +13,10 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.Review;
-import reviewme.review.domain.TextAnswer;
+import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.NewCheckboxAnswerSelectedOption;
+import reviewme.review.domain.NewReview;
+import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
@@ -33,7 +35,7 @@ public class ReviewDetailMapper {
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
-    public ReviewDetailResponse mapToReviewDetailResponse(Review review, ReviewGroup reviewGroup) {
+    public ReviewDetailResponse mapToReviewDetailResponse(NewReview review, ReviewGroup reviewGroup) {
         long templateId = review.getTemplateId();
 
         List<Section> sections = sectionRepository.findAllByTemplateId(templateId);
@@ -63,7 +65,7 @@ public class ReviewDetailMapper {
         );
     }
 
-    private SectionAnswerResponse mapToSectionResponse(Review review, Section section,
+    private SectionAnswerResponse mapToSectionResponse(NewReview review, Section section,
                                                        List<Question> questions,
                                                        Map<Long, OptionGroup> optionGroupsByQuestion,
                                                        Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
@@ -81,7 +83,7 @@ public class ReviewDetailMapper {
         );
     }
 
-    private QuestionAnswerResponse mapToQuestionResponse(Review review, Question question,
+    private QuestionAnswerResponse mapToQuestionResponse(NewReview review, Question question,
                                                          Map<Long, OptionGroup> optionGroupsByQuestion,
                                                          Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
         if (question.isSelectable()) {
@@ -91,13 +93,17 @@ public class ReviewDetailMapper {
         }
     }
 
-    private QuestionAnswerResponse mapToCheckboxQuestionResponse(Review review,
+    private QuestionAnswerResponse mapToCheckboxQuestionResponse(NewReview review,
                                                                  Question question,
                                                                  Map<Long, OptionGroup> optionGroupsByQuestion,
                                                                  Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
         OptionGroup optionGroup = optionGroupsByQuestion.get(question.getId());
         List<OptionItem> optionItems = optionItemsByOptionGroup.get(optionGroup.getId());
-        Set<Long> selectedOptionIds = review.getAllCheckBoxOptionIds();
+        Set<Long> selectedOptionIds = review.getAnswersByType(NewCheckboxAnswer.class)
+                .stream()
+                .flatMap(answer -> answer.getSelectedOptionIds().stream())
+                .map(NewCheckboxAnswerSelectedOption::getSelectedOptionId)
+                .collect(Collectors.toSet());
 
         List<OptionItemAnswerResponse> optionItemResponse = optionItems.stream()
                 .filter(optionItem -> selectedOptionIds.contains(optionItem.getId()))
@@ -121,10 +127,10 @@ public class ReviewDetailMapper {
         );
     }
 
-    private QuestionAnswerResponse mapToTextQuestionResponse(Review review,
+    private QuestionAnswerResponse mapToTextQuestionResponse(NewReview review,
                                                              Question question) {
-        List<TextAnswer> textAnswers = review.getTextAnswers();
-        TextAnswer textAnswer = textAnswers.stream()
+        List<NewTextAnswer> textAnswers = review.getAnswersByType(NewTextAnswer.class);
+        NewTextAnswer textAnswer = textAnswers.stream()
                 .filter(answer -> answer.getQuestionId() == question.getId())
                 .findFirst()
                 .orElseThrow();

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.Test;
+import reviewme.review.domain.NewTextAnswer;
 import reviewme.review.domain.exception.QuestionNotAnsweredException;
 
 class NewTextAnswerTest {

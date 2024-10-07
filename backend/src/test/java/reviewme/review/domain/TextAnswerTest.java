@@ -12,9 +12,9 @@ class TextAnswerTest {
     void 답변이_없는_경우_예외를_발생한다() {
         // given, when, then
         assertAll(
-                () -> assertThatThrownBy(() -> new TextAnswer(1L, null))
+                () -> assertThatThrownBy(() -> new NewTextAnswer(1L, null))
                         .isInstanceOf(QuestionNotAnsweredException.class),
-                () -> assertThatThrownBy(() -> new TextAnswer(1L, ""))
+                () -> assertThatThrownBy(() -> new NewTextAnswer(1L, ""))
                         .isInstanceOf(QuestionNotAnsweredException.class)
         );
     }

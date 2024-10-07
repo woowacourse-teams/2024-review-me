@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.Review;
+import reviewme.review.domain.NewReview;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Section;
@@ -26,7 +26,7 @@ import reviewme.template.repository.TemplateRepository;
 class ReviewRepositoryTest {
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    private NewReviewRepository reviewRepository;
 
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
@@ -49,13 +49,13 @@ class ReviewRepositoryTest {
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
-        Review review1 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
-        Review review2 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
+        NewReview review1 = reviewRepository.save(
+                new NewReview(template.getId(), reviewGroup.getId(), null));
+        NewReview review2 = reviewRepository.save(
+                new NewReview(template.getId(), reviewGroup.getId(), null));
 
         // when
-        List<Review> actual = reviewRepository.findAllByGroupId(reviewGroup.getId());
+        List<NewReview> actual = reviewRepository.findAllByGroupId(reviewGroup.getId());
 
         // then
         assertThat(actual).containsExactly(review2, review1);
@@ -69,12 +69,12 @@ class ReviewRepositoryTest {
         private final Template template = templateRepository.save(템플릿(List.of(section.getId())));
         private final ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
-        private final Review review1 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
-        private final Review review2 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
-        private final Review review3 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
+        private final NewReview review1 = reviewRepository.save(
+                new NewReview(template.getId(), reviewGroup.getId(), null));
+        private final NewReview review2 = reviewRepository.save(
+                new NewReview(template.getId(), reviewGroup.getId(), null));
+        private final NewReview review3 = reviewRepository.save(
+                new NewReview(template.getId(), reviewGroup.getId(), null));
 
         @Test
         void 페이징_크기보다_적은_수의_리뷰가_등록되었으면_그_크기만큼의_리뷰만_반환한다() {
@@ -83,7 +83,7 @@ class ReviewRepositoryTest {
             long lastReviewId = Long.MAX_VALUE;
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
+            List<NewReview> actual = reviewRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -99,7 +99,7 @@ class ReviewRepositoryTest {
             long lastReviewId = Long.MAX_VALUE;
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
+            List<NewReview> actual = reviewRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -115,7 +115,7 @@ class ReviewRepositoryTest {
             Long lastReviewId = null;
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
+            List<NewReview> actual = reviewRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -131,7 +131,7 @@ class ReviewRepositoryTest {
             long lastReviewId = review3.getId();
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
+            List<NewReview> actual = reviewRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -147,7 +147,7 @@ class ReviewRepositoryTest {
             long lastReviewId = review1.getId();
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
+            List<NewReview> actual = reviewRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -164,10 +164,10 @@ class ReviewRepositoryTest {
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
-        Review firstReview = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
-        Review secondReview = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null, null));
+        NewReview firstReview = reviewRepository.save(
+                new NewReview(template.getId(), reviewGroup.getId(), null));
+        NewReview secondReview = reviewRepository.save(
+                new NewReview(template.getId(), reviewGroup.getId(), null));
 
         @Test
         void 주어진_리뷰가_가장_오래된_경우() {

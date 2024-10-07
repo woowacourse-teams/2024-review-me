@@ -21,10 +21,10 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.Review;
-import reviewme.review.domain.TextAnswer;
-import reviewme.review.repository.ReviewRepository;
+import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.NewReview;
+import reviewme.review.domain.NewTextAnswer;
+import reviewme.review.repository.NewReviewRepository;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -57,7 +57,7 @@ class ReviewRegisterServiceTest {
     private TemplateRepository templateRepository;
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    private NewReviewRepository reviewRepository;
 
     @Autowired
     private SectionRepository sectionRepository;
@@ -107,11 +107,12 @@ class ReviewRegisterServiceTest {
         long registeredReviewId = reviewRegisterService.registerReview(reviewRegisterRequest);
 
         // when, then
-        Review review = reviewRepository.findById(registeredReviewId).orElseThrow();
+        NewReview review = reviewRepository.findById(registeredReviewId).orElseThrow();
         assertAll(
-                () -> assertThat(review.getTextAnswers()).extracting(TextAnswer::getQuestionId)
+                () -> assertThat(review.getAnswersByType(NewTextAnswer.class)).extracting(NewTextAnswer::getQuestionId)
                         .containsExactly(requiredTextQuestion.getId()),
-                () -> assertThat(review.getCheckboxAnswers()).extracting(CheckboxAnswer::getQuestionId)
+                () -> assertThat(review.getAnswersByType(NewCheckboxAnswer.class)).extracting(
+                                NewCheckboxAnswer::getQuestionId)
                         .containsAll(List.of(requiredCheckQuestion.getId(), conditionalCheckQuestion.getId()))
         );
     }

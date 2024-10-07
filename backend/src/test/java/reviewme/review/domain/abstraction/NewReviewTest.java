@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
+import reviewme.review.domain.NewCheckboxAnswer;
+import reviewme.review.domain.NewReview;
+import reviewme.review.domain.NewTextAnswer;
 
 class NewReviewTest {
 
