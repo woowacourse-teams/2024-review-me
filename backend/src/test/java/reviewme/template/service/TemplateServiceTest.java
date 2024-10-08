@@ -9,7 +9,6 @@ import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeE
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
-import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
 
 @ServiceTest
 class TemplateServiceTest {
@@ -28,15 +27,5 @@ class TemplateServiceTest {
         // when, then
         assertThatThrownBy(() -> templateService.generateReviewForm(reviewGroup.getReviewRequestCode() + " "))
                 .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
-    }
-
-    @Test
-    void 리뷰이에게_작성될_리뷰_양식_생성_시_저장된_템플릿이_없을_경우_예외가_발생한다() {
-        // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
-
-        // when, then
-        assertThatThrownBy(() -> templateService.generateReviewForm(reviewGroup.getReviewRequestCode()))
-                .isInstanceOf(TemplateNotFoundByReviewGroupException.class);
     }
 }

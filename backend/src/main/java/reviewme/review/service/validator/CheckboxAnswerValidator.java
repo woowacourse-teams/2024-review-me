@@ -2,24 +2,33 @@ package reviewme.review.service.validator;
 
 import java.util.HashSet;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.cache.TemplateCacheRepository;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
-import reviewme.review.domain.CheckBoxAnswerSelectedOption;
+import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
 
 @Component
-@RequiredArgsConstructor
-public class CheckBoxAnswerValidator {
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+public class CheckboxAnswerValidator implements AnswerValidator {
 
     private final TemplateCacheRepository templateCacheRepository;
 
-    public void validate(CheckboxAnswer checkboxAnswer) {
+    @Override
+    public boolean supports(Class<? extends Answer> answerClass) {
+        return CheckboxAnswer.class.isAssignableFrom(answerClass);
+    }
+
+    @Override
+    public void validate(Answer answer) {
+        CheckboxAnswer checkboxAnswer = (CheckboxAnswer) answer;
         Question question = templateCacheRepository.findQuestionById(checkboxAnswer.getQuestionId());
         OptionGroup optionGroup = templateCacheRepository.findOptionGroupByQuestionId(question.getId());
 
@@ -59,7 +68,7 @@ public class CheckBoxAnswerValidator {
     private List<Long> extractAnsweredOptionItemIds(CheckboxAnswer checkboxAnswer) {
         return checkboxAnswer.getSelectedOptionIds()
                 .stream()
-                .map(CheckBoxAnswerSelectedOption::getSelectedOptionId)
+                .map(CheckboxAnswerSelectedOption::getSelectedOptionId)
                 .toList();
     }
 }

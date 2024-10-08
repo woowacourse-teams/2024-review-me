@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionType;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.Review;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
@@ -34,10 +35,16 @@ public class ReviewListMapper {
                 .map(category -> new ReviewCategoryResponse(category.getId(), category.getContent()))
                 .toList();
 
+        List<TextAnswer> textAnswers = review.getAnswers()
+                .stream()
+                .filter(TextAnswer.class::isInstance)
+                .map(TextAnswer.class::cast)
+                .toList();
+
         return new ReviewListElementResponse(
                 review.getId(),
                 review.getCreatedDate(),
-                reviewPreviewGenerator.generatePreview(review.getTextAnswers()),
+                reviewPreviewGenerator.generatePreview(textAnswers),
                 categoryResponses
         );
     }

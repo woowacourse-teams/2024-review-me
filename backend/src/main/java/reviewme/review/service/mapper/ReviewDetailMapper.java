@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 import reviewme.cache.TemplateCacheRepository;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.Question;
-import reviewme.review.domain.abstraction.Answer;
-import reviewme.review.domain.abstraction.NewCheckboxAnswer;
-import reviewme.review.domain.abstraction.NewCheckboxAnswerSelectedOption;
-import reviewme.review.domain.abstraction.NewReview;
-import reviewme.review.domain.abstraction.NewTextAnswer;
+import reviewme.review.domain.Answer;
+import reviewme.review.domain.CheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswerSelectedOption;
+import reviewme.review.domain.Review;
+import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
@@ -28,7 +28,7 @@ public class ReviewDetailMapper {
 
     private final TemplateCacheRepository templateCacheRepository;
 
-    public ReviewDetailResponse mapToReviewDetailResponse(NewReview review, ReviewGroup reviewGroup) {
+    public ReviewDetailResponse mapToReviewDetailResponse(Review review, ReviewGroup reviewGroup) {
         long templateId = review.getTemplateId();
         Map<Long, Answer> questionAnswers = review.getAnswers()
                 .stream()
@@ -66,17 +66,17 @@ public class ReviewDetailMapper {
 
     private QuestionAnswerResponse mapToQuestionResponse(Answer answer, Question question) {
         if (question.isSelectable()) {
-            return mapToCheckboxQuestionResponse((NewCheckboxAnswer) answer, question);
+            return mapToCheckboxQuestionResponse((CheckboxAnswer) answer, question);
 
         } else {
-            return mapToTextQuestionResponse((NewTextAnswer) answer, question);
+            return mapToTextQuestionResponse((TextAnswer) answer, question);
         }
     }
 
-    private QuestionAnswerResponse mapToCheckboxQuestionResponse(NewCheckboxAnswer answer, Question question) {
+    private QuestionAnswerResponse mapToCheckboxQuestionResponse(CheckboxAnswer answer, Question question) {
         List<Long> selectedOptionIds = answer.getSelectedOptionIds()
                 .stream()
-                .map(NewCheckboxAnswerSelectedOption::getSelectedOptionId)
+                .map(CheckboxAnswerSelectedOption::getSelectedOptionId)
                 .toList();
 
         OptionGroup optionGroup = templateCacheRepository.findOptionGroupByQuestionId(question.getId());
@@ -111,7 +111,7 @@ public class ReviewDetailMapper {
         );
     }
 
-    private QuestionAnswerResponse mapToTextQuestionResponse(NewTextAnswer answer, Question question) {
+    private QuestionAnswerResponse mapToTextQuestionResponse(TextAnswer answer, Question question) {
         return new QuestionAnswerResponse(
                 question.getId(),
                 question.isRequired(),

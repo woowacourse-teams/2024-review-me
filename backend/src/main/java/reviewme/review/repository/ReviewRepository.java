@@ -5,21 +5,19 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 import reviewme.review.domain.Review;
 
-@Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query(value = """
-            SELECT r.* FROM review r
+            SELECT r.* FROM new_review r
             WHERE r.review_group_id = :reviewGroupId
-            ORDER BY r.created_at DESC 
+            ORDER BY r.created_at DESC
             """, nativeQuery = true)
     List<Review> findAllByGroupId(long reviewGroupId);
 
     @Query(value = """
-            SELECT r.* FROM review r
+            SELECT r.* FROM new_review r
             WHERE r.review_group_id = :reviewGroupId
             AND (:lastReviewId IS NULL OR r.id < :lastReviewId)
             ORDER BY r.created_at DESC, r.id DESC
@@ -27,10 +25,15 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             """, nativeQuery = true)
     List<Review> findByReviewGroupIdWithLimit(long reviewGroupId, Long lastReviewId, int limit);
 
+    @Query("""
+       SELECT DISTINCT r FROM Review r
+       LEFT JOIN FETCH r.answers a
+       WHERE r.id = :reviewId AND r.reviewGroupId = :reviewGroupId
+       """)
     Optional<Review> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
 
     @Query(value = """
-            SELECT COUNT(r.id) FROM review r
+            SELECT COUNT(r.id) FROM new_review r
             WHERE r.review_group_id = :reviewGroupId
             AND r.id < :reviewId
             AND CAST(r.created_at AS DATE) <= :createdDate

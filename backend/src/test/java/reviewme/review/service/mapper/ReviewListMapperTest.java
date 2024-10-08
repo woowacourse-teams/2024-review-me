@@ -101,12 +101,9 @@ class ReviewListMapperTest {
         Template template = templateRepository.save(템플릿(List.of(categorySection.getId())));
 
         // given - 리뷰 저장
-        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer1, textAnswer2),
-                List.of(checkboxAnswer1, checkboxAnswer2)
-        );
-        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer3),
-                List.of(checkboxAnswer3)
-        );
+        Review review1 = new Review(template.getId(), reviewGroup.getId(),
+                List.of(textAnswer1, textAnswer2, checkboxAnswer1, checkboxAnswer2));
+        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer3, checkboxAnswer3));
 
         long lastReviewId = 8L;
         int size = 5;
@@ -168,7 +165,7 @@ class ReviewListMapperTest {
         Template template = templateRepository.save(템플릿(List.of(categorySection.getId(), nonCategorySection.getId())));
 
         // given - 리뷰 저장
-        reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(),
+        reviewRepository.save(new Review(template.getId(), reviewGroup.getId(),
                 List.of(categoryCheckboxAnswer1, categoryCheckboxAnswer2, nonCategoryCheckboxAnswer3))
         );
 

@@ -3,8 +3,8 @@ package reviewme.review.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.review.domain.abstraction.NewReview;
-import reviewme.review.domain.abstraction.NewReviewRepository;
+import reviewme.review.domain.Review;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.exception.ReviewNotFoundByIdAndGroupException;
@@ -17,7 +17,7 @@ import reviewme.reviewgroup.repository.ReviewGroupRepository;
 @AllArgsConstructor
 public class ReviewDetailLookupService {
 
-    private final NewReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
     private final ReviewGroupRepository reviewGroupRepository;
 
     private final ReviewDetailMapper reviewDetailMapper;
@@ -27,7 +27,7 @@ public class ReviewDetailLookupService {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
-        NewReview review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
+        Review review = reviewRepository.findByIdAndReviewGroupId(reviewId, reviewGroup.getId())
                 .orElseThrow(() -> new ReviewNotFoundByIdAndGroupException(reviewId, reviewGroup.getId()));
 
         return reviewDetailMapper.mapToReviewDetailResponse(review, reviewGroup);

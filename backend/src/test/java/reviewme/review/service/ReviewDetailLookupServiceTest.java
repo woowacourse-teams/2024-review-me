@@ -23,10 +23,10 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.abstraction.NewCheckboxAnswer;
-import reviewme.review.domain.abstraction.NewReview;
-import reviewme.review.domain.abstraction.NewReviewRepository;
-import reviewme.review.domain.abstraction.NewTextAnswer;
+import reviewme.review.domain.CheckboxAnswer;
+import reviewme.review.domain.Review;
+import reviewme.review.domain.TextAnswer;
+import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
@@ -50,7 +50,7 @@ class ReviewDetailLookupServiceTest {
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    private NewReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private TemplateRepository templateRepository;
@@ -76,7 +76,7 @@ class ReviewDetailLookupServiceTest {
         String reviewRequestCode = "hello";
         String groupAccessCode = "goodBye";
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
-        NewReview review = reviewRepository.save(new NewReview(0, reviewGroup.getId(), List.of()));
+        Review review = reviewRepository.save(new Review(0, reviewGroup.getId(), List.of()));
 
         // when, then
         assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(
@@ -94,8 +94,8 @@ class ReviewDetailLookupServiceTest {
         ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode1, groupAccessCode1));
         ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode2, groupAccessCode2));
 
-        NewReview review1 = reviewRepository.save(new NewReview(0, reviewGroup1.getId(), List.of()));
-        NewReview review2 = reviewRepository.save(new NewReview(0, reviewGroup2.getId(), List.of()));
+        Review review1 = reviewRepository.save(new Review(0, reviewGroup1.getId(), List.of()));
+        Review review2 = reviewRepository.save(new Review(0, reviewGroup2.getId(), List.of()));
 
         // when, then
         assertAll(
@@ -133,18 +133,19 @@ class ReviewDetailLookupServiceTest {
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
 
         // given - 리뷰 답변 저장
-        NewCheckboxAnswer checkboxAnswer1 = new NewCheckboxAnswer(question1.getId(),
+        CheckboxAnswer checkboxAnswer1 = new CheckboxAnswer(question1.getId(),
                 List.of(optionItem1.getId(), optionItem2.getId()));
-        NewCheckboxAnswer checkboxAnswer2 = new NewCheckboxAnswer(question2.getId(),
+        CheckboxAnswer checkboxAnswer2 = new CheckboxAnswer(question2.getId(),
                 List.of(optionItem3.getId(), optionItem4.getId()));
-        NewTextAnswer textAnswer = new NewTextAnswer(question3.getId(), "답변".repeat(20));
+        TextAnswer textAnswer = new TextAnswer(question3.getId(), "답변".repeat(20));
 
-        NewReview review = reviewRepository.save(
-                new NewReview(template.getId(), reviewGroup.getId(), List.of(checkboxAnswer1, checkboxAnswer2, textAnswer))
+        Review review = reviewRepository.save(
+                new Review(template.getId(), reviewGroup.getId(), List.of(checkboxAnswer1, checkboxAnswer2, textAnswer))
         );
 
         // when
-        ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId(), reviewRequestCode);
+        ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId(),
+                reviewRequestCode);
 
         // then
         List<SectionAnswerResponse> actual = reviewDetail.sections();
@@ -172,8 +173,8 @@ class ReviewDetailLookupServiceTest {
             ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
 
             // given - 아무것도 응답하지 않은 리뷰 답변 저장
-            NewReview review = reviewRepository.save(
-                    new NewReview(template.getId(), reviewGroup.getId(), null)
+            Review review = reviewRepository.save(
+                    new Review(template.getId(), reviewGroup.getId(), null)
             );
 
             // when
@@ -202,9 +203,9 @@ class ReviewDetailLookupServiceTest {
             ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
 
             // given - 질문 하나에만 응답한 리뷰 답변 저장
-            NewTextAnswer textAnswer = new NewTextAnswer(question1.getId(), "답변".repeat(20));
-            NewReview review = reviewRepository.save(
-                    new NewReview(template.getId(), reviewGroup.getId(), List.of(textAnswer))
+            TextAnswer textAnswer = new TextAnswer(question1.getId(), "답변".repeat(20));
+            Review review = reviewRepository.save(
+                    new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer))
             );
 
             // when

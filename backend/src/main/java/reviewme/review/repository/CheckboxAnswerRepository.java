@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import reviewme.review.domain.CheckboxAnswer;
 
-@Repository
 public interface CheckboxAnswerRepository extends JpaRepository<CheckboxAnswer, Long> {
 
     @Query(value = """

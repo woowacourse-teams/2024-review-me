@@ -20,6 +20,7 @@ import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
 @Component
+//@Profile("local")
 @RequiredArgsConstructor
 public class DatabaseInitializer {
 
