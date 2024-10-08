@@ -8,6 +8,7 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,8 @@ class ReviewRepositoryTest {
     }
 
     @Nested
-    class 리뷰그룹_아이디에_해당하는_리뷰를_생성일_기준_내림차순으로_페이징하여_불러온다 {
+    @DisplayName("리뷰 그룹 아이디에 해당하는 리뷰를 생성일 기준 내림차순으로 페이징하여 불러온다")
+    class findByReviewGroupIdWithLimit {
 
         private final Question question = questionRepository.save(서술형_필수_질문());
         private final Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
@@ -156,7 +158,8 @@ class ReviewRepositoryTest {
     }
 
     @Nested
-    class 주어진_리뷰보다_오래된_리뷰가_있는지_검사한다 {
+    @DisplayName("주어진 리뷰보다 오래된 리뷰가 있는지 검사한다")
+    class existsOlderReviewInReviewGroup {
 
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));

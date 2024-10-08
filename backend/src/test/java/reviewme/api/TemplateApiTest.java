@@ -100,8 +100,8 @@ class TemplateApiTest extends ApiTest {
     @Test
     void 섹션_이름을_반환한다() {
         SectionNamesResponse response = new SectionNamesResponse(List.of(
-                new SectionNameResponse("섹션1 이름", 1),
-                new SectionNameResponse("섹션2 이름", 2)
+                new SectionNameResponse(1, "섹션1 이름"),
+                new SectionNameResponse(2, "섹션2 이름")
         ));
         BDDMockito.given(sectionService.getSectionNames(anyString()))
                 .willReturn(response);
