@@ -6,11 +6,11 @@ import * as S from './styles';
 
 interface AccordionProps {
   title: string;
-  initiallyOpened?: boolean;
+  isInitiallyOpened?: boolean;
 }
 
-const Accordion = ({ title, initiallyOpened = false, children }: EssentialPropsWithChildren<AccordionProps>) => {
-  const { isOpened, handleAccordionButtonClick } = useAccordion({ initiallyOpened });
+const Accordion = ({ title, isInitiallyOpened = false, children }: EssentialPropsWithChildren<AccordionProps>) => {
+  const { isOpened, handleAccordionButtonClick } = useAccordion({ isInitiallyOpened });
 
   return (
     <S.AccordionContainer $isOpened={isOpened}>
