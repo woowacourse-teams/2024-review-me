@@ -27,19 +27,24 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import reviewme.review.controller.ReviewController;
+import reviewme.review.service.GatheredReviewLookupService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
+import reviewme.review.service.ReviewSummaryService;
 import reviewme.reviewgroup.controller.ReviewGroupController;
 import reviewme.reviewgroup.service.ReviewGroupLookupService;
 import reviewme.reviewgroup.service.ReviewGroupService;
+import reviewme.template.controller.SectionController;
 import reviewme.template.controller.TemplateController;
+import reviewme.template.service.SectionService;
 import reviewme.template.service.TemplateService;
 
 @WebMvcTest({
         ReviewGroupController.class,
         ReviewController.class,
-        TemplateController.class
+        TemplateController.class,
+        SectionController.class
 })
 @ExtendWith(RestDocumentationExtension.class)
 public abstract class ApiTest {
@@ -63,6 +68,15 @@ public abstract class ApiTest {
 
     @MockBean
     protected ReviewGroupLookupService reviewGroupLookupService;
+
+    @MockBean
+    protected ReviewSummaryService reviewSummaryService;
+
+    @MockBean
+    protected SectionService sectionService;
+
+    @MockBean
+    protected GatheredReviewLookupService gatheredReviewLookupService;
 
     Filter sessionCookieFilter = (request, response, chain) -> {
         chain.doFilter(request, response);
