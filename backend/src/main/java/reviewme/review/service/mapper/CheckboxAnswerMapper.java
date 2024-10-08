@@ -16,6 +16,10 @@ public class CheckboxAnswerMapper implements AnswerMapper {
 
     @Override
     public CheckboxAnswer mapToAnswer(ReviewAnswerRequest answerRequest) {
+        if (answerRequest.selectedOptionIds() == null || answerRequest.selectedOptionIds().isEmpty()) {
+            return null;
+        }
+
         if (answerRequest.text() != null) {
             throw new CheckBoxAnswerIncludedTextException(answerRequest.questionId());
         }
