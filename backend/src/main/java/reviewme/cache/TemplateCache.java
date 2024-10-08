@@ -1,6 +1,5 @@
 package reviewme.cache;
 
-import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,8 +7,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import reviewme.cache.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.question.domain.OptionGroup;
@@ -24,8 +23,6 @@ import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
 @Component
-@Profile("local")
-@DependsOn("databaseInitializer")
 @RequiredArgsConstructor
 @Getter
 public class TemplateCache {
@@ -47,7 +44,7 @@ public class TemplateCache {
     private Map<Long, OptionGroup> questionOptionGroups = new HashMap<>();
     private Map<Long, List<OptionItem>> optionGroupOptionItems = new HashMap<>();
 
-    @PostConstruct
+    @EventListener(ApplicationReadyEvent.class)
     public void init() {
         this.templates = loadTemplates();
         this.sections = loadSections();
