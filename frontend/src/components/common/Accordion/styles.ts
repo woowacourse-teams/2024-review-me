@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 
-import media from '@/utils/media';
+interface AccordionStyleProps {
+  $isOpened: boolean;
+}
 
-export const AccordionContainer = styled.div<{ $isOpened: boolean }>`
+export const AccordionContainer = styled.div<AccordionStyleProps>`
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -26,11 +28,8 @@ export const AccordionButton = styled.button`
   justify-content: space-between;
 
   width: 100%;
+  height: fit-content;
   min-height: 3rem;
-
-  ${media.small} {
-    height: fit-content;
-  }
 `;
 
 export const AccordionTitle = styled.p`
@@ -39,7 +38,7 @@ export const AccordionTitle = styled.p`
   }
 `;
 
-export const ArrowIcon = styled.img<{ $isOpened: boolean }>`
+export const ArrowIcon = styled.img<AccordionStyleProps>`
   transform: ${({ $isOpened }) => ($isOpened ? 'rotate(180deg)' : 'rotate(0deg)')};
   transition: transform 0.3s ease-in-out;
 `;
