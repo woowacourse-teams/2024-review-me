@@ -24,6 +24,7 @@ const ReviewListPage = lazy(() => import('@/pages/ReviewListPage'));
 const ReviewWritingCompletePage = lazy(() => import('@/pages/ReviewWritingCompletePage'));
 const ReviewWritingPage = lazy(() => import('@/pages/ReviewWritingPage'));
 const ReviewZonePage = lazy(() => import('@/pages/ReviewZonePage'));
+const ReviewCollectionPage = lazy(() => import('@/pages/ReviewCollectionPage'));
 
 const LoadingPage = lazy(() => import('@/pages/LoadingPage'));
 
@@ -99,6 +100,10 @@ const router = createBrowserRouter([
             <ReviewZonePage />
           </ErrorSuspenseContainer>
         ),
+      },
+      {
+        path: `${ROUTE.reviewCollection}/:${ROUTE_PARAM.reviewRequestCode}`,
+        element: <ReviewCollectionPage />,
       },
     ],
   },

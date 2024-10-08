@@ -75,8 +75,9 @@ export const colors: ThemeProperty<CSSProperties['color']> = {
 };
 
 export const zIndex: ThemeProperty<CSSProperties['zIndex']> = {
-  modal: 999,
   main: 1,
+  dropdown: 998,
+  modal: 999,
 };
 
 export const breakpoints = {
