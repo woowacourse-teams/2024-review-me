@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const AccordionContainer = styled.div<{ $isOpened: boolean }>`
   display: flex;
   flex-direction: column;
@@ -24,7 +26,11 @@ export const AccordionButton = styled.button`
   justify-content: space-between;
 
   width: 100%;
-  height: 3rem;
+  min-height: 3rem;
+
+  ${media.small} {
+    height: fit-content;
+  }
 `;
 
 export const AccordionTitle = styled.p`
