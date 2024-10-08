@@ -117,7 +117,7 @@ class ReviewApiTest extends ApiTest {
         };
 
         CookieDescriptor[] cookieDescriptors = {
-                cookieWithName("JSESSIONID").description("세션 쿠키")
+                cookieWithName("JSESSIONID").description("세션 ID")
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
@@ -178,7 +178,7 @@ class ReviewApiTest extends ApiTest {
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
-                cookieWithName("JSESSIONID").description("세션 쿠키")
+                cookieWithName("JSESSIONID").description("세션 ID")
         };
 
         ParameterDescriptor[] queryParameter = {
@@ -227,7 +227,7 @@ class ReviewApiTest extends ApiTest {
                 .willReturn(new ReceivedReviewsSummaryResponse("리뷰미", "산초", 5));
 
         CookieDescriptor[] cookieDescriptors = {
-                cookieWithName("JSESSIONID").description("세션 쿠키")
+                cookieWithName("JSESSIONID").description("세션 ID")
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
@@ -270,7 +270,7 @@ class ReviewApiTest extends ApiTest {
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
-                cookieWithName("JSESSIONID").description("세션 쿠키")
+                cookieWithName("JSESSIONID").description("세션 ID")
         };
         ParameterDescriptor[] queryParameterDescriptors = {
                 parameterWithName("sectionId").description("섹션 ID")

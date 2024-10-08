@@ -107,7 +107,7 @@ class TemplateApiTest extends ApiTest {
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
-                cookieWithName("JSESSIONID").description("세션 쿠키")
+                cookieWithName("JSESSIONID").description("세션 ID")
         };
         FieldDescriptor[] responseFieldDescriptors = {
                 fieldWithPath("sections[]").description("섹션 목록"),
