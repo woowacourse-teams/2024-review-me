@@ -27,7 +27,7 @@ import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.gathered.AnswerContentResponse;
 import reviewme.review.service.dto.response.gathered.GatheredReviewResponse;
 import reviewme.review.service.dto.response.gathered.GatheredReviewsResponse;
-import reviewme.review.service.dto.response.gathered.QuestionResponse;
+import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
@@ -254,13 +254,13 @@ class ReviewApiTest extends ApiTest {
     void 자신이_받은_리뷰의_요약를_섹션별로_조회한다() {
         GatheredReviewsResponse response = new GatheredReviewsResponse(List.of(
                 new GatheredReviewResponse(
-                        new QuestionResponse("서술형 질문", QuestionType.TEXT),
+                        new SimpleQuestionResponse("서술형 질문", QuestionType.TEXT),
                         List.of(
                                 new AnswerContentResponse("산초의 답변"),
                                 new AnswerContentResponse("삼촌의 답변")),
                         null),
                 new GatheredReviewResponse(
-                        new QuestionResponse("선택형 질문", QuestionType.CHECKBOX),
+                        new SimpleQuestionResponse("선택형 질문", QuestionType.CHECKBOX),
                         null,
                         List.of(
                                 new VoteResponse("짜장", 3),

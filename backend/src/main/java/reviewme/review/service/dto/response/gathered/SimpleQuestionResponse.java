@@ -2,7 +2,7 @@ package reviewme.review.service.dto.response.gathered;
 
 import reviewme.question.domain.QuestionType;
 
-public record QuestionResponse(
+public record SimpleQuestionResponse(
         String name,
         QuestionType type
 ) {

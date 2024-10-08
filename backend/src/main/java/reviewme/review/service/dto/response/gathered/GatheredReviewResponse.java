@@ -4,7 +4,7 @@ import jakarta.annotation.Nullable;
 import java.util.List;
 
 public record GatheredReviewResponse(
-        QuestionResponse question,
+        SimpleQuestionResponse question,
 
         @Nullable
         List<AnswerContentResponse> answers,
