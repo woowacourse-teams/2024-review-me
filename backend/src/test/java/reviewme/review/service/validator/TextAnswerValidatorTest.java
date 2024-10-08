@@ -1,7 +1,7 @@
 package reviewme.review.service.validator;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 
@@ -32,7 +32,7 @@ class TextAnswerValidatorTest {
         TextAnswer textAnswer = new TextAnswer(notSavedQuestionId, "텍스트형 응답");
 
         // when, then
-        assertThatCode(() -> textAnswerValidator.validate(textAnswer))
+        assertThatThrownBy(() -> textAnswerValidator.validate(textAnswer))
                 .isInstanceOf(SubmittedQuestionNotFoundException.class);
     }
 
@@ -69,6 +69,6 @@ class TextAnswerValidatorTest {
         TextAnswer textAnswer = new TextAnswer(savedQuestion.getId(), content);
 
         // when, then
-        assertThatCode(() -> textAnswerValidator.validate(textAnswer)).doesNotThrowAnyException();
+        assertDoesNotThrow(() -> textAnswerValidator.validate(textAnswer));
     }
 }

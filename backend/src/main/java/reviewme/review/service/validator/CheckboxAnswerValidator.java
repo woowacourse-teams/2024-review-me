@@ -1,4 +1,4 @@
-package reviewme.review.service.abstraction.validator;
+package reviewme.review.service.validator;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,9 +11,9 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.abstraction.Answer;
-import reviewme.review.domain.abstraction.NewCheckboxAnswerSelectedOption;
-import reviewme.review.domain.abstraction.NewCheckboxAnswer;
+import reviewme.review.domain.Answer;
+import reviewme.review.domain.CheckboxAnswerSelectedOption;
+import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
@@ -21,7 +21,7 @@ import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class NewCheckboxAnswerValidator implements NewAnswerValidator {
+public class CheckboxAnswerValidator implements AnswerValidator {
 
     private final QuestionRepository questionRepository;
     private final OptionGroupRepository optionGroupRepository;
@@ -29,12 +29,12 @@ public class NewCheckboxAnswerValidator implements NewAnswerValidator {
 
     @Override
     public boolean supports(Class<? extends Answer> answerClass) {
-        return NewCheckboxAnswer.class.isAssignableFrom(answerClass);
+        return CheckboxAnswer.class.isAssignableFrom(answerClass);
     }
 
     @Override
     public void validate(Answer answer) {
-        NewCheckboxAnswer checkboxAnswer = (NewCheckboxAnswer) answer;
+        CheckboxAnswer checkboxAnswer = (CheckboxAnswer) answer;
         Question question = questionRepository.findById(checkboxAnswer.getQuestionId())
                 .orElseThrow(() -> new SubmittedQuestionNotFoundException(checkboxAnswer.getQuestionId()));
 
@@ -45,7 +45,7 @@ public class NewCheckboxAnswerValidator implements NewAnswerValidator {
         validateCheckedOptionItemCount(checkboxAnswer, optionGroup);
     }
 
-    private void validateOnlyIncludingProvidedOptionItem(NewCheckboxAnswer checkboxAnswer, OptionGroup optionGroup) {
+    private void validateOnlyIncludingProvidedOptionItem(CheckboxAnswer checkboxAnswer, OptionGroup optionGroup) {
         List<Long> providedOptionItemIds = optionItemRepository.findAllByOptionGroupId(optionGroup.getId())
                 .stream()
                 .map(OptionItem::getId)
@@ -59,7 +59,7 @@ public class NewCheckboxAnswerValidator implements NewAnswerValidator {
         }
     }
 
-    private void validateCheckedOptionItemCount(NewCheckboxAnswer checkboxAnswer, OptionGroup optionGroup) {
+    private void validateCheckedOptionItemCount(CheckboxAnswer checkboxAnswer, OptionGroup optionGroup) {
         int answeredOptionItemCount = extractAnsweredOptionItemIds(checkboxAnswer).size();
 
         if (answeredOptionItemCount < optionGroup.getMinSelectionCount()
@@ -73,10 +73,10 @@ public class NewCheckboxAnswerValidator implements NewAnswerValidator {
         }
     }
 
-    private List<Long> extractAnsweredOptionItemIds(NewCheckboxAnswer checkboxAnswer) {
+    private List<Long> extractAnsweredOptionItemIds(CheckboxAnswer checkboxAnswer) {
         return checkboxAnswer.getSelectedOptionIds()
                 .stream()
-                .map(NewCheckboxAnswerSelectedOption::getSelectedOptionId)
+                .map(CheckboxAnswerSelectedOption::getSelectedOptionId)
                 .toList();
     }
 }

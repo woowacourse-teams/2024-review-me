@@ -1,4 +1,4 @@
-package reviewme.review.service.abstraction.mapper;
+package reviewme.review.service.mapper;
 
 import lombok.extern.slf4j.Slf4j;
 import reviewme.global.exception.DataInconsistencyException;
