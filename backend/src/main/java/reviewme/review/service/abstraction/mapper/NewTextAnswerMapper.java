@@ -16,9 +16,6 @@ public class NewTextAnswerMapper implements NewAnswerMapper {
 
     @Override
     public NewTextAnswer mapToAnswer(ReviewAnswerRequest answerRequest) {
-        if (!answerRequest.hasTextAnswer()) {
-            return null;
-        }
         if (answerRequest.selectedOptionIds() != null) {
             throw new TextAnswerIncludedOptionItemException(answerRequest.questionId());
         }
