@@ -26,8 +26,6 @@ import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 @RequiredArgsConstructor
 public class ReviewController {
 
-    private static final String GROUP_ACCESS_CODE_HEADER = "GroupAccessCode";
-
     private final ReviewRegisterService reviewRegisterService;
     private final ReviewListLookupService reviewListLookupService;
     private final ReviewDetailLookupService reviewDetailLookupService;
