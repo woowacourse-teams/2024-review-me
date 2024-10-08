@@ -1,3 +1,7 @@
-==== 자신이 받은 리뷰 섹션별 모아보기
+==== 섹션 이름 목록 가져오기
+
+operation::get-session-names[snippets="curl-request,request-cookies,http-response,response-fields"]
+
+==== 받은 리뷰 섹션별 모아보기
 
 operation::received-review-by-section[snippets="curl-request,request-cookies,query-parameters,http-response,response-fields"]

@@ -32,3 +32,7 @@ include::review-detail.adoc[]
 === 리뷰 목록 조회
 
 include::review-list.adoc[]
+
+=== 리뷰 모아보기
+
+include::review-gather.adoc[]
