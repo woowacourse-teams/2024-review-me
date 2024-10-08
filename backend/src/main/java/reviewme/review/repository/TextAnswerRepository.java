@@ -7,7 +7,7 @@ import reviewme.review.domain.TextAnswer;
 
 public interface TextAnswerRepository extends JpaRepository<TextAnswer, Long> {
     @Query(value = """
-            select ta.* from text_answer ta
+            select ta.* from new_text_answer ta
             where ta.review_id in (:reviewIds)
             """, nativeQuery = true
     )

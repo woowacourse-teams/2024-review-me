@@ -40,9 +40,9 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             SELECT q.* FROM question q 
             join section_question sq 
             on q.id = sq.question_id 
-            LEFT JOIN text_answer ta 
+            LEFT JOIN new_text_answer ta 
             ON q.id = ta.question_id 
-            LEFT JOIN checkbox_answer ca 
+            LEFT JOIN new_checkbox_answer ca 
             ON q.id = ca.question_id 
             WHERE (ta.review_id = :reviewId 
             OR ca.review_id = :reviewId) 
