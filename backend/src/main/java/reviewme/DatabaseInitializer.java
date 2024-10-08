@@ -3,6 +3,7 @@ package reviewme;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.question.domain.OptionGroup;
@@ -17,10 +18,10 @@ import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.VisibleType;
 import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
+import reviewme.template.repository.TemplateJpaRepository;
 
 @Component
-//@Profile("local")
+@Profile("local")
 @RequiredArgsConstructor
 public class DatabaseInitializer {
 
@@ -33,13 +34,13 @@ public class DatabaseInitializer {
     private final OptionItemRepository optionItemRepository;
     private final OptionGroupRepository optionGroupRepository;
     private final SectionRepository sectionRepository;
-    private final TemplateRepository templateRepository;
+    private final TemplateJpaRepository templateJpaRepository;
 
     @PostConstruct
     @Transactional
     public void setup() {
         // 템플릿이 이미 존재하면 종료
-        if (!templateRepository.findAll().isEmpty()) {
+        if (!templateJpaRepository.findAll().isEmpty()) {
             return;
         }
 
@@ -133,7 +134,7 @@ public class DatabaseInitializer {
         long textCheerUpQuestionId = questionRepository.save(new Question(false, QuestionType.TEXT, "${revieweeName}에게 전하고 싶은 다른 리뷰가 있거나 응원의 말이 있다면 적어주세요.", null, 1)).getId();
         long cheerUpSectionId = sectionRepository.save(new Section(VisibleType.ALWAYS, List.of(textCheerUpQuestionId), null, "추가 리뷰/응원", "리뷰를 더 하고 싶은 리뷰어를 위한 추가 리뷰!", 8)).getId();
 
-        templateRepository.save(new Template(List.of(
+        templateJpaRepository.save(new Template(List.of(
                 categorySectionId,
                 communicationSectionId,
                 problemSolvingSectionId,
