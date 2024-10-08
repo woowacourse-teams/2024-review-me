@@ -280,9 +280,9 @@ class ReviewApiTest extends ApiTest {
                 fieldWithPath("reviews[].question").description("질문 정보"),
                 fieldWithPath("reviews[].question.name").description("질문 이름"),
                 fieldWithPath("reviews[].question.type").description("질문 유형"),
-                fieldWithPath("reviews[].answers").description("서술형 답변 목록").optional(),
+                fieldWithPath("reviews[].answers").description("서술형 답변 목록 - question.type이 TEXT가 아니면 null").optional(),
                 fieldWithPath("reviews[].answers[].content").description("서술형 답변 내용"),
-                fieldWithPath("reviews[].votes").description("객관식 답변 목록").optional(),
+                fieldWithPath("reviews[].votes").description("객관식 답변 목록 - question.type이 CHECKBOX가 아니면 null").optional(),
                 fieldWithPath("reviews[].votes[].content").description("객관식 항목"),
                 fieldWithPath("reviews[].votes[].count").description("선택한 사람 수"),
         };
