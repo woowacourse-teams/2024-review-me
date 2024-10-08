@@ -7,7 +7,7 @@ import reviewme.question.domain.OptionType;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.repository.ReviewRepository;
+import reviewme.review.repository.ReviewJpaRepository;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -16,13 +16,13 @@ import reviewme.reviewgroup.domain.ReviewGroup;
 @RequiredArgsConstructor
 public class ReviewListMapper {
 
-    private final ReviewRepository reviewRepository;
+    private final ReviewJpaRepository reviewJpaRepository;
     private final OptionItemRepository optionItemRepository;
 
     private final ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
 
     public List<ReviewListElementResponse> mapToReviewList(ReviewGroup reviewGroup, Long lastReviewId, int size) {
-        return reviewRepository.findByReviewGroupIdWithLimit(reviewGroup.getId(), lastReviewId, size)
+        return reviewJpaRepository.findByReviewGroupIdWithLimit(reviewGroup.getId(), lastReviewId, size)
                 .stream()
                 .map(this::mapToReviewListElementResponse)
                 .toList();

@@ -20,14 +20,14 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
+import reviewme.template.repository.TemplateJpaRepository;
 
 @Component
 @RequiredArgsConstructor
 @Getter
 public class TemplateCache {
 
-    private final TemplateRepository templateRepository;
+    private final TemplateJpaRepository templateJpaRepository;
     private final SectionRepository sectionRepository;
     private final QuestionRepository questionRepository;
     private final OptionGroupRepository optionGroupRepository;
@@ -58,7 +58,7 @@ public class TemplateCache {
     }
 
     private Map<Long, Template> loadTemplates() {
-        return templateRepository.findAll()
+        return templateJpaRepository.findAll()
                 .stream()
                 .collect(Collectors.toMap(Template::getId, Function.identity()));
     }

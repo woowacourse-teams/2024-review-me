@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import reviewme.template.domain.Template;
 
 @Repository
-public interface TemplateRepository extends JpaRepository<Template, Long> {
+public interface TemplateJpaRepository extends JpaRepository<Template, Long> {
 }
