@@ -25,8 +25,8 @@ import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.question.domain.QuestionType;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.gathered.AnswerContentResponse;
-import reviewme.review.service.dto.response.gathered.GatheredReviewResponse;
-import reviewme.review.service.dto.response.gathered.GatheredReviewsResponse;
+import reviewme.review.service.dto.response.gathered.ReviewsGatherByQuestionResponse;
+import reviewme.review.service.dto.response.gathered.ReviewsGatherBySectionResponse;
 import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
@@ -252,14 +252,14 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 자신이_받은_리뷰의_요약를_섹션별로_조회한다() {
-        GatheredReviewsResponse response = new GatheredReviewsResponse(List.of(
-                new GatheredReviewResponse(
+        ReviewsGatherBySectionResponse response = new ReviewsGatherBySectionResponse(List.of(
+                new ReviewsGatherByQuestionResponse(
                         new SimpleQuestionResponse("서술형 질문", QuestionType.TEXT),
                         List.of(
                                 new AnswerContentResponse("산초의 답변"),
                                 new AnswerContentResponse("삼촌의 답변")),
                         null),
-                new GatheredReviewResponse(
+                new ReviewsGatherByQuestionResponse(
                         new SimpleQuestionResponse("선택형 질문", QuestionType.CHECKBOX),
                         null,
                         List.of(

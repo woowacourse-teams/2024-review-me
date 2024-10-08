@@ -3,7 +3,7 @@ package reviewme.review.service.dto.response.gathered;
 import jakarta.annotation.Nullable;
 import java.util.List;
 
-public record GatheredReviewResponse(
+public record ReviewsGatherByQuestionResponse(
         SimpleQuestionResponse question,
 
         @Nullable

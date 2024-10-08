@@ -18,7 +18,7 @@ import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.ReviewSummaryService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
-import reviewme.review.service.dto.response.gathered.GatheredReviewsResponse;
+import reviewme.review.service.dto.response.gathered.ReviewsGatherBySectionResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 
@@ -69,11 +69,11 @@ public class ReviewController {
     }
 
     @GetMapping("/v2/reviews/gather")
-    public ResponseEntity<GatheredReviewsResponse> getReceivedReviewsBySectionId(
+    public ResponseEntity<ReviewsGatherBySectionResponse> getReceivedReviewsBySectionId(
             @RequestParam("sectionId") Long sectionId,
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
-        GatheredReviewsResponse response = gatheredReviewLookupService.getReceivedReviewsBySectionId(
+        ReviewsGatherBySectionResponse response = gatheredReviewLookupService.getReceivedReviewsBySectionId(
                 reviewRequestCode, sectionId);
         return ResponseEntity.ok(response);
     }
