@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 
 import media from '@/utils/media';
 
+import { OptionSwitchStyleProps } from './index';
+
 export const OptionSwitchContainer = styled.div`
   cursor: pointer;
 
@@ -21,7 +23,7 @@ export const OptionSwitchContainer = styled.div`
   }
 `;
 
-export const CheckboxWrapper = styled.div<{ isChecked: boolean }>`
+export const CheckboxWrapper = styled.div<OptionSwitchStyleProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,14 +31,14 @@ export const CheckboxWrapper = styled.div<{ isChecked: boolean }>`
   width: 50%;
   height: 100%;
 
-  background-color: ${({ isChecked, theme }) => (isChecked ? theme.colors.white : theme.colors.lightGray)};
+  background-color: ${({ $isChecked, theme }) => ($isChecked ? theme.colors.white : theme.colors.lightGray)};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
   transition: background-color 0.2s ease-out;
 `;
 
-export const CheckboxLabel = styled.span<{ isChecked: boolean }>`
+export const CheckboxLabel = styled.span<OptionSwitchStyleProps>`
   user-select: none;
   font-size: 1.2rem;
-  color: ${({ isChecked, theme }) => (isChecked ? theme.colors.primary : theme.colors.black)};
+  color: ${({ $isChecked, theme }) => ($isChecked ? theme.colors.primary : theme.colors.black)};
 `;
