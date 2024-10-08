@@ -76,7 +76,7 @@ const useHighlight = ({
     const newAnswerMap = new Map(answerMap);
     if (!startAnswer || !endAnswer) return;
 
-    newAnswerMap.keys().forEach((answerId) => {
+    newAnswerMap.keys().forEach((answerId, answerIndex) => {
       if (startAnswer.id === answerId) {
         const { blockIndex, offset } = startAnswer;
         const targetAnswer = newAnswerMap.get(answerId);
@@ -85,9 +85,9 @@ const useHighlight = ({
         const { blockList } = targetAnswer;
 
         const newBlockList = blockList.map((block, index) => {
-          if (blockIndex < index) return block;
+          if (index < blockIndex) return block;
 
-          if (blockIndex > index) {
+          if (index > blockIndex) {
             return {
               ...block,
               highlightList: [{ start: 0, end: block.text.length - 1 }],
@@ -105,7 +105,7 @@ const useHighlight = ({
         newAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
       }
 
-      if (startAnswer.id < answerId && endAnswer.id > answerId) {
+      if (startAnswer.index < answerIndex && endAnswer.index > answerIndex) {
         const targetAnswer = newAnswerMap.get(answerId);
 
         if (!targetAnswer) return;
@@ -203,6 +203,14 @@ const useHighlight = ({
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
 
+    selectionInfo.isSameAnswer
+      ? removeSingleAnswerHighlight(selectionInfo)
+      : removeMultipleAnswerHighlight(selectionInfo);
+    removeSelection();
+    hideHighlightToggleButton();
+  };
+
+  const removeSingleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
     const { startBlockIndex, endBlockIndex, startAnswer } = selectionInfo;
     if (!startAnswer) return;
 

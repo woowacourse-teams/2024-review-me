@@ -71,12 +71,12 @@ export const getAnswerInfo = ({ anchorBlockData, focusBlockData, anchorOffset, f
   const isForwardDrag = sortedAnswerData[0].id === anchorAnswerData.id;
 
   const startAnswer = isForwardDrag
-    ? { id: anchorAnswerData.id, blockIndex: Number(anchorBlockData.index), offset: anchorOffset }
-    : { id: focusAnswerData.id, blockIndex: Number(focusBlockData.index), offset: focusOffset };
+    ? { ...anchorAnswerData, blockIndex: Number(anchorBlockData.index), offset: anchorOffset }
+    : { ...focusAnswerData, blockIndex: Number(focusBlockData.index), offset: focusOffset };
 
   const endAnswer = isForwardDrag
-    ? { id: focusAnswerData.id, blockIndex: Number(focusBlockData.index), offset: focusOffset - 1 }
-    : { id: anchorAnswerData.id, blockIndex: Number(anchorBlockData.index), offset: anchorOffset - 1 };
+    ? { ...focusAnswerData, blockIndex: Number(focusBlockData.index), offset: focusOffset - 1 }
+    : { ...anchorAnswerData, blockIndex: Number(anchorBlockData.index), offset: anchorOffset - 1 };
 
   return {
     isSameAnswer,
