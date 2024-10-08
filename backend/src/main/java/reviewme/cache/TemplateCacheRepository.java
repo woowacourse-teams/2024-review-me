@@ -25,9 +25,8 @@ public class TemplateCacheRepository {
 
     private final TemplateCache templateCache;
 
-    public Template findTemplateById(long templateId) {
-        return Optional.ofNullable(templateCache.getTemplates().get(templateId))
-                .orElseThrow(() -> new TemplateNotFoundException(templateId));
+    public Optional<Template> findTemplateById(long templateId) {
+        return Optional.ofNullable(templateCache.getTemplates().get(templateId));
     }
 
     public Section findSectionById(long sectionId) {

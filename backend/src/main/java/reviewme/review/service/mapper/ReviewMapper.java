@@ -15,6 +15,7 @@ import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeE
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Template;
+import reviewme.template.domain.repository.TemplateRepository;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,10 +25,12 @@ public class ReviewMapper {
     private final TemplateCacheRepository templateCacheRepository;
     private final AnswerMapperFactory answerMapperFactory;
 
+    private final TemplateRepository templateRepository;
+
     public Review mapToReview(ReviewRegisterRequest request) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(request.reviewRequestCode())
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(request.reviewRequestCode()));
-        Template template = templateCacheRepository.findTemplateById(reviewGroup.getTemplateId());
+        Template template = templateRepository.findById(reviewGroup.getTemplateId());
 
         List<Answer> answers = getAnswersByQuestionType(request);
         return new Review(template.getId(), reviewGroup.getId(), answers);
