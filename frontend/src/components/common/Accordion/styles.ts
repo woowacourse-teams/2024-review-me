@@ -38,6 +38,7 @@ export const ArrowIcon = styled.img<{ $isOpened: boolean }>`
   transition: transform 0.3s ease-in-out;
 `;
 
-export const AccordionContents = styled.div<{ $isOpened: boolean }>`
+export const AccordionContents = styled.div`
   display: flex;
+  flex-direction: column;
 `;

@@ -18,7 +18,7 @@ const Accordion = ({ title, initiallyOpened = false, children }: EssentialPropsW
         <S.AccordionTitle>{title}</S.AccordionTitle>
         <S.ArrowIcon src={DownArrowIcon} $isOpened={isOpened} alt="" />
       </S.AccordionButton>
-      {isOpened && <S.AccordionContents $isOpened={isOpened}>{children}</S.AccordionContents>}
+      {isOpened && <S.AccordionContents>{children}</S.AccordionContents>}
     </S.AccordionContainer>
   );
 };
