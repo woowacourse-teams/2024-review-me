@@ -35,11 +35,7 @@ public class ReviewListMapper {
                 .map(category -> new ReviewCategoryResponse(category.getId(), category.getContent()))
                 .toList();
 
-        List<TextAnswer> textAnswers = review.getAnswers()
-                .stream()
-                .filter(TextAnswer.class::isInstance)
-                .map(TextAnswer.class::cast)
-                .toList();
+        List<TextAnswer> textAnswers = review.getAnswersByType(TextAnswer.class);
 
         return new ReviewListElementResponse(
                 review.getId(),
