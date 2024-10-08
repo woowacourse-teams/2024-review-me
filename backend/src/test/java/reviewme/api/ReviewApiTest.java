@@ -29,7 +29,7 @@ import reviewme.review.service.dto.response.gathered.GatheredReviewResponse;
 import reviewme.review.service.dto.response.gathered.GatheredReviewsResponse;
 import reviewme.review.service.dto.response.gathered.QuestionResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewSummaryResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
@@ -224,7 +224,7 @@ class ReviewApiTest extends ApiTest {
     @Test
     void 자신이_받은_리뷰의_요약를_조회한다() {
         BDDMockito.given(reviewSummaryService.getReviewSummary(anyString()))
-                .willReturn(new ReceivedReviewSummaryResponse("리뷰미", "산초", 5));
+                .willReturn(new ReceivedReviewsSummaryResponse("리뷰미", "산초", 5));
 
         CookieDescriptor[] cookieDescriptors = {
                 cookieWithName("JSESSIONID").description("세션 쿠키")

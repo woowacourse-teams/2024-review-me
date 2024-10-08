@@ -19,7 +19,7 @@ import reviewme.review.service.ReviewSummaryService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.gathered.GatheredReviewsResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewSummaryResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 
 @RestController
@@ -61,10 +61,10 @@ public class ReviewController {
     }
 
     @GetMapping("/v2/reviews/summary")
-    public ResponseEntity<ReceivedReviewSummaryResponse> findReceivedReviewOverview(
+    public ResponseEntity<ReceivedReviewsSummaryResponse> findReceivedReviewOverview(
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
-        ReceivedReviewSummaryResponse response = reviewSummaryService.getReviewSummary(reviewRequestCode);
+        ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 
