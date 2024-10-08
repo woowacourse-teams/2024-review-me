@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
+  EDITOR_ANSWER_CLASS_NAME,
   EDITOR_BLOCK_CLASS_NAME,
   HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME,
   HIGHLIGHT_REMOVER_CLASS_NAME,
@@ -20,11 +21,15 @@ import HighlightRemoverWrapper from './HighlightRemoverWrapper';
 import HighlightToggleButtonContainer from './HighlightToggleButtonContainer';
 
 interface HighlightEditorProps {
-  text: string;
+  answerList: { id: number; text: string }[];
 }
 
-const HighlightEditor = ({ text }: HighlightEditorProps) => {
+const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
   const [isAbleEdit, setIsAbleEdit] = useState(false);
+
+  const handleEditToggleButton = () => {
+    setIsAbleEdit((prev) => !prev);
+  };
 
   const { highlightToggleButtonPosition, hideHighlightToggleButton, updateHighlightToggleButtonPosition } =
     useHighlightToggleButtonPosition({
@@ -35,10 +40,10 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
     isAbleEdit,
   });
 
-  const { blockList, addHighlight, removeHighlight, handleClickBlockList, handleClickRemover, removalTarget } =
+  const { answerMap, addHighlight, removeHighlight, handleClickBlockList, handleClickRemover, removalTarget } =
     useHighlight({
+      answerList,
       isAbleEdit,
-      text,
       hideHighlightToggleButton,
       hideRemover,
       updateRemoverPosition,
@@ -59,15 +64,13 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
     if (!isAbleEdit) return;
     const info = findSelectionInfo();
     if (!info) return;
-
     checkHighlight(info);
     updateHighlightToggleButtonPosition(info);
   };
 
-  const handleEditToggleButton = () => {
-    setIsAbleEdit((prev) => !prev);
-  };
-
+  useEffect(() => {
+    console.log('answerMap', answerMap.values());
+  }, [answerMap]);
   return (
     <div onMouseUp={handleMouseUp} onMouseDown={handleMouseDown}>
       <div style={{ display: 'flex' }}>
@@ -80,11 +83,19 @@ const HighlightEditor = ({ text }: HighlightEditorProps) => {
           {isAbleEdit ? '끄기' : '켜기'}
         </Button>
       </div>
-      <div onClick={handleClickBlockList}>
-        {blockList.map((block, index) => (
-          <EditorBlock key={`${EDITOR_BLOCK_CLASS_NAME}-${index}`} block={block} blockIndex={index} />
-        ))}
-      </div>
+
+      {[...answerMap.values()].map(({ id, index, blockList }) => (
+        <div
+          className={EDITOR_ANSWER_CLASS_NAME}
+          key={id}
+          data-answer={`${id}-${index}`}
+          onClick={handleClickBlockList}
+        >
+          {blockList.map((block, index) => (
+            <EditorBlock key={`${EDITOR_BLOCK_CLASS_NAME}-${index}`} block={block} blockIndex={index} />
+          ))}
+        </div>
+      ))}
 
       {isAbleEdit && highlightToggleButtonPosition && (
         <HighlightToggleButtonContainer

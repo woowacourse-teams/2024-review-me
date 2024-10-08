@@ -7,7 +7,13 @@ const EditorTestPage = () => {
   return (
     <div>
       <h2>형광펜 기능 테스트 페이지</h2>
-      <HighlightEditor text={MOCK_DATA} />
+
+      <HighlightEditor
+        answerList={[
+          { id: 1234, text: MOCK_DATA },
+          { id: 5678, text: MOCK_DATA },
+        ]}
+      />
     </div>
   );
 };

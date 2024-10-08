@@ -1,4 +1,5 @@
 export const EDITOR_BLOCK_CLASS_NAME = 'editor__block';
+export const EDITOR_ANSWER_CLASS_NAME = 'editor__answer';
 export const HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME = 'highlight__toggle-button';
 export const HIGHLIGHT_SPAN_CLASS_NAME = 'highlighted';
 export const SENTENCE_BASIC_CLASS_NAME = 'sentence';
