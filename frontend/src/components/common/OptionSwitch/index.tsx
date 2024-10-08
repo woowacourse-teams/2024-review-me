@@ -4,7 +4,7 @@ export interface OptionSwitchStyleProps {
   $isChecked: boolean;
 }
 
-interface OptionSwitchProps extends OptionSwitchStyleProps {
+interface OptionSwitchProps  {
   leftLabel: string;
   rightLabel: string;
   isReviewList: boolean;
