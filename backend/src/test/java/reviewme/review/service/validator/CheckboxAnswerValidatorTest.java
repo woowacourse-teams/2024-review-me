@@ -8,7 +8,7 @@ import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.cache.exception.OptionGroupNotFoundByQuestionIdException;
+import reviewme.cache.TemplateCache;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
@@ -18,7 +18,6 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
-import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
@@ -36,27 +35,8 @@ class CheckboxAnswerValidatorTest {
     @Autowired
     private OptionItemRepository optionItemRepository;
 
-    @Test
-    void 저장되지_않은_질문에_대한_답변이면_예외가_발생한다() {
-        // given
-        long notSavedQuestionId = 100L;
-        CheckboxAnswer checkboxAnswer = new CheckboxAnswer(notSavedQuestionId, List.of(1L));
-
-        // when, then
-        assertThatCode(() -> checkBoxAnswerValidator.validate(checkboxAnswer))
-                .isInstanceOf(SubmittedQuestionNotFoundException.class);
-    }
-
-    @Test
-    void 옵션_그룹이_지정되지_않은_질문에_대한_답변이면_예외가_발생한다() {
-        // given
-        Question savedQuestion = questionRepository.save(선택형_필수_질문());
-        CheckboxAnswer checkboxAnswer = new CheckboxAnswer(savedQuestion.getId(), List.of(1L));
-
-        // when, then
-        assertThatCode(() -> checkBoxAnswerValidator.validate(checkboxAnswer))
-                .isInstanceOf(OptionGroupNotFoundByQuestionIdException.class);
-    }
+    @Autowired
+    private TemplateCache templateCache;
 
     @Test
     void 옵션그룹에서_제공하지_않은_옵션아이템을_응답하면_예외가_발생한다() {
@@ -64,6 +44,7 @@ class CheckboxAnswerValidatorTest {
         Question savedQuestion = questionRepository.save(선택형_필수_질문());
         OptionGroup savedOptionGroup = optionGroupRepository.save(선택지_그룹(savedQuestion.getId()));
         OptionItem savedOptionItem = optionItemRepository.save(선택지(savedOptionGroup.getId()));
+        templateCache.init();
 
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(savedQuestion.getId(),
                 List.of(savedOptionItem.getId() + 1L));
@@ -81,6 +62,7 @@ class CheckboxAnswerValidatorTest {
                 new OptionGroup(savedQuestion.getId(), 2, 3)
         );
         OptionItem savedOptionItem1 = optionItemRepository.save(선택지(savedOptionGroup.getId()));
+        templateCache.init();
 
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(savedQuestion.getId(),
                 List.of(savedOptionItem1.getId()));
@@ -99,6 +81,7 @@ class CheckboxAnswerValidatorTest {
         );
         OptionItem savedOptionItem1 = optionItemRepository.save(선택지(savedOptionGroup.getId(), 1));
         OptionItem savedOptionItem2 = optionItemRepository.save(선택지(savedOptionGroup.getId(), 2));
+        templateCache.init();
 
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(
                 savedQuestion.getId(), List.of(savedOptionItem1.getId(), savedOptionItem2.getId()));

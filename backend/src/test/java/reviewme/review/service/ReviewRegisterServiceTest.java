@@ -15,6 +15,7 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.cache.TemplateCache;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
@@ -24,7 +25,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.repository.ReviewRepository;
+import reviewme.review.repository.ReviewJpaRepository;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -33,7 +34,7 @@ import reviewme.support.ServiceTest;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
+import reviewme.template.repository.TemplateJpaRepository;
 
 @ServiceTest
 class ReviewRegisterServiceTest {
@@ -54,13 +55,16 @@ class ReviewRegisterServiceTest {
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    private TemplateRepository templateRepository;
+    private TemplateJpaRepository templateJpaRepository;
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    private ReviewJpaRepository reviewJpaRepository;
 
     @Autowired
     private SectionRepository sectionRepository;
+
+    @Autowired
+    private TemplateCache templateCache;
 
     @Test
     void 요청한_내용으로_리뷰를_등록한다() {
@@ -88,8 +92,9 @@ class ReviewRegisterServiceTest {
                 List.of(optionalTextQuestion.getId()), 3)
         );
 
-        Template template = templateRepository.save(템플릿(
+        Template template = templateJpaRepository.save(템플릿(
                 List.of(visibleSection.getId(), conditionalSection.getId(), visibleOptionalSection.getId())));
+        templateCache.init();
 
         ReviewAnswerRequest requiredCheckQuestionAnswer = new ReviewAnswerRequest(
                 requiredCheckQuestion.getId(), List.of(requiredOptionItem1.getId()), null);
@@ -107,7 +112,7 @@ class ReviewRegisterServiceTest {
         long registeredReviewId = reviewRegisterService.registerReview(reviewRegisterRequest);
 
         // when, then
-        Review review = reviewRepository.findById(registeredReviewId).orElseThrow();
+        Review review = reviewJpaRepository.findById(registeredReviewId).orElseThrow();
         assertAll(
                 () -> assertThat(review.getAnswersByType(TextAnswer.class)).extracting(TextAnswer::getQuestionId)
                         .containsExactly(requiredTextQuestion.getId()),

@@ -14,7 +14,7 @@ import reviewme.question.domain.Question;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
+import reviewme.template.repository.TemplateJpaRepository;
 
 @DataJpaTest
 class QuestionRepositoryTest {
@@ -26,7 +26,7 @@ class QuestionRepositoryTest {
     private SectionRepository sectionRepository;
 
     @Autowired
-    private TemplateRepository templateRepository;
+    private TemplateJpaRepository templateJpaRepository;
 
     @Test
     void 템플릿_아이디로_질문_목록_아이디를_모두_가져온다() {
@@ -41,7 +41,7 @@ class QuestionRepositoryTest {
         Section section1 = sectionRepository.save(항상_보이는_섹션(sectionQuestion1));
         sectionRepository.save(항상_보이는_섹션(sectionQuestion2));
         List<Long> sectionIds = List.of(section1.getId());
-        Template template = templateRepository.save(템플릿(sectionIds));
+        Template template = templateJpaRepository.save(템플릿(sectionIds));
 
         // when
         Set<Long> actual = questionRepository.findAllQuestionIdByTemplateId(template.getId());
@@ -63,7 +63,7 @@ class QuestionRepositoryTest {
         Section section1 = sectionRepository.save(항상_보이는_섹션(sectionQuestion1));
         sectionRepository.save(항상_보이는_섹션(sectionQuestion2));
         List<Long> sectionIds = List.of(section1.getId());
-        Template template = templateRepository.save(템플릿(sectionIds));
+        Template template = templateJpaRepository.save(템플릿(sectionIds));
 
         // when
         List<Question> actual = questionRepository.findAllByTemplatedId(template.getId());

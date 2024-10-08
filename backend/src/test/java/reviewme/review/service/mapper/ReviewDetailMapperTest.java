@@ -21,7 +21,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.repository.ReviewRepository;
+import reviewme.review.repository.ReviewJpaRepository;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
@@ -32,7 +32,7 @@ import reviewme.support.ServiceTest;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
+import reviewme.template.repository.TemplateJpaRepository;
 
 @ServiceTest
 class ReviewDetailMapperTest {
@@ -50,10 +50,10 @@ class ReviewDetailMapperTest {
     private SectionRepository sectionRepository;
 
     @Autowired
-    private TemplateRepository templateRepository;
+    private TemplateJpaRepository templateJpaRepository;
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    private ReviewJpaRepository reviewJpaRepository;
 
     @Autowired
     private OptionItemRepository optionItemRepository;
@@ -79,7 +79,7 @@ class ReviewDetailMapperTest {
                 조건부로_보이는_섹션(List.of(checkBoxquestion.getId(), textQuestion1.getId()), 1)
         );
         Section section2 = sectionRepository.save(조건부로_보이는_섹션(List.of(textQuestion2.getId()), 1));
-        Template template = templateRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
+        Template template = templateJpaRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
         templateCache.init();
 
         // given - 리뷰 그룹
@@ -93,7 +93,7 @@ class ReviewDetailMapperTest {
         // given - 리뷰 저장
         Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer1, checkboxAnswer));
         Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer2));
-        reviewRepository.saveAll(List.of(review1, review2));
+        reviewJpaRepository.saveAll(List.of(review1, review2));
 
         // when
         ReviewDetailResponse response = reviewDetailMapper.mapToReviewDetailResponse(review1, reviewGroup);
@@ -118,7 +118,7 @@ class ReviewDetailMapperTest {
                 조건부로_보이는_섹션(List.of(checkBoxquestion.getId(), textQuestion1.getId()), 1)
         );
         Section section2 = sectionRepository.save(조건부로_보이는_섹션(List.of(textQuestion2.getId()), 1));
-        Template template = templateRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
+        Template template = templateJpaRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
         templateCache.init();
 
         // given - 리뷰 그룹
@@ -130,7 +130,7 @@ class ReviewDetailMapperTest {
         TextAnswer textAnswer2 = new TextAnswer(textQuestion2.getId(), "텍스트형 응답");
 
         // given - 리뷰 저장
-        Review review1 = reviewRepository.save(
+        Review review1 = reviewJpaRepository.save(
                 new Review(template.getId(), reviewGroup.getId(),
                         List.of(textAnswer1, textAnswer2, checkboxAnswer)));
 
@@ -161,7 +161,7 @@ class ReviewDetailMapperTest {
         Section section1 = sectionRepository.save(
                 조건부로_보이는_섹션(List.of(checkBoxQuestion1.getId(), checkBoxQuestion2.getId()), 1)
         );
-        Template template = templateRepository.save(템플릿(List.of(section1.getId())));
+        Template template = templateJpaRepository.save(템플릿(List.of(section1.getId())));
         templateCache.init();
 
         // given - 리뷰 그룹
@@ -172,7 +172,7 @@ class ReviewDetailMapperTest {
         CheckboxAnswer checkboxAnswer2 = new CheckboxAnswer(checkBoxQuestion2.getId(), List.of(optionItemId2));
 
         // given - 리뷰 저장
-        Review review1 = reviewRepository.save(
+        Review review1 = reviewJpaRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), List.of(checkboxAnswer1, checkboxAnswer2)));
 
         // when

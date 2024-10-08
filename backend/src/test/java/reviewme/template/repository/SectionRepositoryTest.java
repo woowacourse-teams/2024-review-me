@@ -18,7 +18,7 @@ class SectionRepositoryTest {
     private SectionRepository sectionRepository;
 
     @Autowired
-    private TemplateRepository templateRepository;
+    private TemplateJpaRepository templateJpaRepository;
 
     @Test
     void 템플릿_아이디로_섹션을_불러온다() {
@@ -30,7 +30,7 @@ class SectionRepositoryTest {
         sectionRepository.save(항상_보이는_섹션(questionIds));
         List<Long> sectionIds = List.of(section1.getId(), section2.getId(), section3.getId());
 
-        Template template = templateRepository.save(템플릿(sectionIds));
+        Template template = templateJpaRepository.save(템플릿(sectionIds));
 
         // when
         List<Section> actual = sectionRepository.findAllByTemplateId(template.getId());

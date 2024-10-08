@@ -13,6 +13,7 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.cache.TemplateCache;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
@@ -22,7 +23,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.repository.ReviewRepository;
+import reviewme.review.repository.ReviewJpaRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -31,7 +32,7 @@ import reviewme.support.ServiceTest;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
+import reviewme.template.repository.TemplateJpaRepository;
 
 @ServiceTest
 class ReviewListLookupServiceTest {
@@ -55,10 +56,13 @@ class ReviewListLookupServiceTest {
     private SectionRepository sectionRepository;
 
     @Autowired
-    private TemplateRepository templateRepository;
+    private TemplateJpaRepository templateJpaRepository;
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    private ReviewJpaRepository reviewJpaRepository;
+
+    @Autowired
+    private TemplateCache templateCache;
 
     @Test
     void 리뷰_요청_코드가_존재하지_않는_경우_예외가_발생한다() {
@@ -80,14 +84,15 @@ class ReviewListLookupServiceTest {
 
         // given - 섹션, 템플릿 저장
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateJpaRepository.save(템플릿(List.of(section.getId())));
+        templateCache.init();
 
         // given - 리뷰 답변 저장
         CheckboxAnswer categoryAnswer = new CheckboxAnswer(question.getId(), List.of(categoryOption.getId()));
         Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(categoryAnswer));
         TextAnswer textAnswer = new TextAnswer(question.getId(), "텍스트형 응답");
         Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
-        reviewRepository.saveAll(List.of(review1, review2));
+        reviewJpaRepository.saveAll(List.of(review1, review2));
 
         // when
         ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(
@@ -110,17 +115,20 @@ class ReviewListLookupServiceTest {
 
         // given - 질문 저장
         Question question = questionRepository.save(선택형_필수_질문());
+        OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question.getId()));
+        OptionItem optionItem = optionItemRepository.save(선택지(optionGroup.getId(), 1));
 
         // given - 섹션, 템플릿 저장
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateJpaRepository.save(템플릿(List.of(section.getId())));
+        templateCache.init();
 
         // given - 리뷰 답변 저장
         TextAnswer textAnswer = new TextAnswer(question.getId(), "텍스트형 응답");
         Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
         Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
         Review review3 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
-        reviewRepository.saveAll(List.of(review1, review2, review3));
+        reviewJpaRepository.saveAll(List.of(review1, review2, review3));
 
         // when
         ReceivedReviewsResponse response

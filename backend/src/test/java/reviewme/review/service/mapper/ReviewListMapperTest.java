@@ -12,6 +12,7 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.cache.TemplateCache;
 import reviewme.fixture.OptionGroupFixture;
 import reviewme.fixture.OptionItemFixture;
 import reviewme.question.domain.OptionGroup;
@@ -24,7 +25,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.repository.ReviewRepository;
+import reviewme.review.repository.ReviewJpaRepository;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -33,7 +34,7 @@ import reviewme.support.ServiceTest;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
+import reviewme.template.repository.TemplateJpaRepository;
 
 @ServiceTest
 class ReviewListMapperTest {
@@ -51,16 +52,19 @@ class ReviewListMapperTest {
     private SectionRepository sectionRepository;
 
     @Autowired
-    private TemplateRepository templateRepository;
+    private TemplateJpaRepository templateJpaRepository;
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    private ReviewJpaRepository reviewJpaRepository;
 
     @Autowired
     private OptionItemRepository optionItemRepository;
 
     @Autowired
     private OptionGroupRepository optionGroupRepository;
+
+    @Autowired
+    private TemplateCache templateCache;
 
     @Test
     void 각_리뷰에_포함된_선택형_서술형_응답만을_반환한다() {
@@ -98,7 +102,8 @@ class ReviewListMapperTest {
 
         // given - 섹션, 템플릿 저장
         Section categorySection = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        Template template = templateRepository.save(템플릿(List.of(categorySection.getId())));
+        Template template = templateJpaRepository.save(템플릿(List.of(categorySection.getId())));
+        templateCache.init();
 
         // given - 리뷰 저장
         Review review1 = new Review(template.getId(), reviewGroup.getId(),
@@ -108,7 +113,7 @@ class ReviewListMapperTest {
         long lastReviewId = 8L;
         int size = 5;
 
-        reviewRepository.saveAll(List.of(review1, review2));
+        reviewJpaRepository.saveAll(List.of(review1, review2));
 
         // when
         List<ReviewListElementResponse> responses = reviewListMapper.mapToReviewList(
@@ -162,10 +167,11 @@ class ReviewListMapperTest {
         // given - 섹션, 템플릿 저장
         Section categorySection = sectionRepository.save(항상_보이는_섹션(List.of(categoryQuestion.getId())));
         Section nonCategorySection = sectionRepository.save(조건부로_보이는_섹션(List.of(nonCategoryQuestion.getId()), 1));
-        Template template = templateRepository.save(템플릿(List.of(categorySection.getId(), nonCategorySection.getId())));
+        Template template = templateJpaRepository.save(템플릿(List.of(categorySection.getId(), nonCategorySection.getId())));
+        templateCache.init();
 
         // given - 리뷰 저장
-        reviewRepository.save(new Review(template.getId(), reviewGroup.getId(),
+        reviewJpaRepository.save(new Review(template.getId(), reviewGroup.getId(),
                 List.of(categoryCheckboxAnswer1, categoryCheckboxAnswer2, nonCategoryCheckboxAnswer3))
         );
 

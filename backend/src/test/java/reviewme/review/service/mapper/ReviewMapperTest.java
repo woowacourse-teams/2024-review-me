@@ -16,6 +16,7 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.cache.TemplateCache;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
@@ -33,7 +34,7 @@ import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
 import reviewme.template.domain.Section;
 import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
+import reviewme.template.repository.TemplateJpaRepository;
 
 @ServiceTest
 class ReviewMapperTest {
@@ -57,7 +58,10 @@ class ReviewMapperTest {
     private SectionRepository sectionRepository;
 
     @Autowired
-    private TemplateRepository templateRepository;
+    private TemplateJpaRepository templateJpaRepository;
+
+    @Autowired
+    private TemplateCache templateCache;
 
     @Test
     void 텍스트가_포함된_리뷰를_생성한다() {
@@ -66,7 +70,7 @@ class ReviewMapperTest {
 
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        templateJpaRepository.save(템플릿(List.of(section.getId())));
 
         String expectedTextAnswer = "답".repeat(20);
         ReviewAnswerRequest reviewAnswerRequest = new ReviewAnswerRequest(question.getId(), null, expectedTextAnswer);
@@ -91,7 +95,8 @@ class ReviewMapperTest {
         OptionItem optionItem2 = optionItemRepository.save(선택지(optionGroup.getId()));
 
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        templateJpaRepository.save(템플릿(List.of(section.getId())));
+        templateCache.init();
 
         ReviewAnswerRequest reviewAnswerRequest = new ReviewAnswerRequest(question.getId(),
                 List.of(optionItem1.getId()), null);
@@ -126,7 +131,8 @@ class ReviewMapperTest {
         Section section = sectionRepository.save(항상_보이는_섹션(
                 List.of(requiredTextQuestion.getId(), optionalTextQuestion.getId(),
                         requeiredCheckBoxQuestion.getId(), optionalCheckBoxQuestion.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        templateJpaRepository.save(템플릿(List.of(section.getId())));
+        templateCache.init();
 
         String textAnswer = "답".repeat(20);
         ReviewAnswerRequest requiredTextAnswerRequest = new ReviewAnswerRequest(
@@ -164,6 +170,8 @@ class ReviewMapperTest {
         // given
         String reviewRequestCode = "notExistCode";
         Question savedQuestion = questionRepository.save(서술형_필수_질문());
+        templateCache.init();
+
         ReviewAnswerRequest emptyTextReviewRequest = new ReviewAnswerRequest(
                 savedQuestion.getId(), null, "");
         ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(

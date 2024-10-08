@@ -15,6 +15,7 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import reviewme.cache.TemplateCache;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
@@ -32,7 +33,7 @@ import reviewme.support.ServiceTest;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
+import reviewme.template.repository.TemplateJpaRepository;
 
 @ServiceTest
 class ReviewValidatorTest {
@@ -50,13 +51,16 @@ class ReviewValidatorTest {
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    private TemplateRepository templateRepository;
+    private TemplateJpaRepository templateJpaRepository;
 
     @Autowired
     private SectionRepository sectionRepository;
 
     @Autowired
     private ReviewValidator reviewValidator;
+
+    @Autowired
+    private TemplateCache templateCache;
 
     @Test
     void 템플릿에_있는_질문에_대한_답과_필수_질문에_모두_응답하는_경우_예외가_발생하지_않는다() {
@@ -91,10 +95,11 @@ class ReviewValidatorTest {
         );
 
         // 템플릿 저장
-        Template template = templateRepository.save(템플릿(
+        Template template = templateJpaRepository.save(템플릿(
                 List.of(visibleSection1.getId(), visibleSection2.getId(),
                         conditionalSection1.getId(), conditionalSection2.getId())
         ));
+        templateCache.init();
 
         // 각 질문에 대한 답변 생성
         TextAnswer notRequiredTextAnswer = new TextAnswer(notRequiredTextQuestion.getId(), "답변".repeat(30));
@@ -122,7 +127,8 @@ class ReviewValidatorTest {
         Question question1 = questionRepository.save(서술형_필수_질문());
         Question question2 = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateJpaRepository.save(템플릿(List.of(section.getId())));
+        templateCache.init();
 
         TextAnswer textAnswer = new TextAnswer(question2.getId(), "답변".repeat(20));
         Review review = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
@@ -141,7 +147,8 @@ class ReviewValidatorTest {
         Question optionalQuestion = questionRepository.save(서술형_옵션_질문());
         Section section = sectionRepository.save(
                 항상_보이는_섹션(List.of(requiredQuestion.getId(), optionalQuestion.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateJpaRepository.save(템플릿(List.of(section.getId())));
+        templateCache.init();
 
         TextAnswer optionalTextAnswer = new TextAnswer(optionalQuestion.getId(), "답변".repeat(20));
         Review review = new Review(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer));

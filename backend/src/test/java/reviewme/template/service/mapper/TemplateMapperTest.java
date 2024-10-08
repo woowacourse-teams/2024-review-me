@@ -23,7 +23,7 @@ import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
 import reviewme.template.domain.Section;
 import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
+import reviewme.template.repository.TemplateJpaRepository;
 import reviewme.template.service.dto.response.QuestionResponse;
 import reviewme.template.service.dto.response.SectionResponse;
 import reviewme.template.service.dto.response.TemplateResponse;
@@ -35,7 +35,7 @@ class TemplateMapperTest {
     private TemplateMapper templateMapper;
 
     @Autowired
-    private TemplateRepository templateRepository;
+    private TemplateJpaRepository templateJpaRepository;
 
     @Autowired
     private SectionRepository sectionRepository;
@@ -67,7 +67,7 @@ class TemplateMapperTest {
         Section section1 = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
         Section section2 = sectionRepository.save(항상_보이는_섹션(List.of(question2.getId())));
 
-        templateRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
+        templateJpaRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
         templateCache.init();
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
@@ -92,7 +92,7 @@ class TemplateMapperTest {
         // given
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        templateJpaRepository.save(템플릿(List.of(section.getId())));
         templateCache.init();
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
@@ -110,7 +110,7 @@ class TemplateMapperTest {
         // given
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        templateJpaRepository.save(템플릿(List.of(section.getId())));
         templateCache.init();
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
@@ -131,7 +131,7 @@ class TemplateMapperTest {
         // given
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        templateJpaRepository.save(템플릿(List.of(section.getId())));
         templateCache.init();
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());

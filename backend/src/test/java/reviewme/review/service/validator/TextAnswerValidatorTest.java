@@ -60,6 +60,7 @@ class TextAnswerValidatorTest {
         // given
         String content = "답".repeat(1);
         Question savedQuestion = questionRepository.save(서술형_옵션_질문());
+        templateCache.init();
         TextAnswer textAnswer = new TextAnswer(savedQuestion.getId(), content);
 
         // when, then

@@ -20,13 +20,13 @@ import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.SectionRepository;
-import reviewme.template.repository.TemplateRepository;
+import reviewme.template.repository.TemplateJpaRepository;
 
 @DataJpaTest
-class ReviewRepositoryTest {
+class ReviewJpaRepositoryTest {
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    private ReviewJpaRepository reviewJpaRepository;
 
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
@@ -38,24 +38,24 @@ class ReviewRepositoryTest {
     private SectionRepository sectionRepository;
 
     @Autowired
-    private TemplateRepository templateRepository;
+    private TemplateJpaRepository templateJpaRepository;
 
     @Test
     void 리뷰_그룹_아이디에_해당하는_모든_리뷰를_생성일_기준_내림차순으로_불러온다() {
         // given
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateJpaRepository.save(템플릿(List.of(section.getId())));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
-        Review review1 = reviewRepository.save(
+        Review review1 = reviewJpaRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), null));
-        Review review2 = reviewRepository.save(
+        Review review2 = reviewJpaRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), null));
 
         // when
-        List<Review> actual = reviewRepository.findAllByGroupId(reviewGroup.getId());
+        List<Review> actual = reviewJpaRepository.findAllByGroupId(reviewGroup.getId());
 
         // then
         assertThat(actual).containsExactly(review2, review1);
@@ -66,14 +66,14 @@ class ReviewRepositoryTest {
 
         private final Question question = questionRepository.save(서술형_필수_질문());
         private final Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        private final Template template = templateRepository.save(템플릿(List.of(section.getId())));
+        private final Template template = templateJpaRepository.save(템플릿(List.of(section.getId())));
         private final ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
-        private final Review review1 = reviewRepository.save(
+        private final Review review1 = reviewJpaRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), null));
-        private final Review review2 = reviewRepository.save(
+        private final Review review2 = reviewJpaRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), null));
-        private final Review review3 = reviewRepository.save(
+        private final Review review3 = reviewJpaRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), null));
 
         @Test
@@ -83,7 +83,7 @@ class ReviewRepositoryTest {
             long lastReviewId = Long.MAX_VALUE;
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
+            List<Review> actual = reviewJpaRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -99,7 +99,7 @@ class ReviewRepositoryTest {
             long lastReviewId = Long.MAX_VALUE;
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
+            List<Review> actual = reviewJpaRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -115,7 +115,7 @@ class ReviewRepositoryTest {
             Long lastReviewId = null;
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
+            List<Review> actual = reviewJpaRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -131,7 +131,7 @@ class ReviewRepositoryTest {
             long lastReviewId = review3.getId();
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
+            List<Review> actual = reviewJpaRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -147,7 +147,7 @@ class ReviewRepositoryTest {
             long lastReviewId = review1.getId();
 
             // when
-            List<Review> actual = reviewRepository.findByReviewGroupIdWithLimit(
+            List<Review> actual = reviewJpaRepository.findByReviewGroupIdWithLimit(
                     reviewGroup.getId(), lastReviewId, limit);
 
             // then
@@ -160,13 +160,13 @@ class ReviewRepositoryTest {
 
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateJpaRepository.save(템플릿(List.of(section.getId())));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
-        Review firstReview = reviewRepository.save(
+        Review firstReview = reviewJpaRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), null));
-        Review secondReview = reviewRepository.save(
+        Review secondReview = reviewJpaRepository.save(
                 new Review(template.getId(), reviewGroup.getId(), null));
 
         @Test
@@ -177,7 +177,7 @@ class ReviewRepositoryTest {
             LocalDate createdAt = firstReview.getCreatedAt().toLocalDate();
 
             // when
-            boolean isOlderExist = reviewRepository.existsOlderReviewInGroup(reviewGroupId, reviewId, createdAt);
+            boolean isOlderExist = reviewJpaRepository.existsOlderReviewInGroup(reviewGroupId, reviewId, createdAt);
 
             // then
             assertThat(isOlderExist).isFalse();
@@ -191,7 +191,7 @@ class ReviewRepositoryTest {
             LocalDate createdAt = secondReview.getCreatedAt().toLocalDate();
 
             // when
-            boolean isOlderExist = reviewRepository.existsOlderReviewInGroup(reviewGroupId, reviewId, createdAt);
+            boolean isOlderExist = reviewJpaRepository.existsOlderReviewInGroup(reviewGroupId, reviewId, createdAt);
 
             // then
             assertThat(isOlderExist).isTrue();
