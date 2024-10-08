@@ -256,8 +256,86 @@ const useHighlight = ({
 
     newAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
     setAnswerMap(newAnswerMap);
-    removeSelection();
-    hideHighlightToggleButton();
+  };
+
+  const removeMultipleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
+    const { startAnswer, endAnswer } = selectionInfo;
+    const newAnswerMap = new Map(answerMap);
+    if (!startAnswer || !endAnswer) return;
+
+    newAnswerMap.keys().forEach((answerId, answerIndex) => {
+      if (answerId === startAnswer.id) {
+        const { blockIndex, offset } = startAnswer;
+        const targetAnswer = newAnswerMap.get(answerId);
+
+        if (!targetAnswer) return;
+        const { blockList } = targetAnswer;
+
+        const newBlockList = blockList.map((block, index) => {
+          if (index < blockIndex) return block;
+
+          if (index > blockIndex) {
+            return {
+              ...block,
+              highlightList: [],
+            };
+          }
+          return {
+            ...block,
+            highlightList: getRemovedHighlightList({
+              blockTextLength: block.text.length,
+              highlightList: block.highlightList,
+              start: offset,
+              end: block.text.length - 1,
+            }),
+          };
+        });
+
+        newAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
+      }
+      if (answerId === endAnswer.id) {
+        const { blockIndex, offset } = endAnswer;
+        const targetAnswer = newAnswerMap.get(answerId);
+
+        if (!targetAnswer) return;
+        const { blockList } = targetAnswer;
+
+        const newBlockList = blockList.map((block, index) => {
+          if (index > blockIndex) return block;
+
+          if (index < blockIndex) {
+            return {
+              ...block,
+              highlightList: [],
+            };
+          }
+          return {
+            ...block,
+            highlightList: getRemovedHighlightList({
+              blockTextLength: block.text.length,
+              highlightList: block.highlightList,
+              start: 0,
+              end: offset,
+            }),
+          };
+        });
+
+        newAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
+      }
+
+      if (answerIndex > startAnswer.index && answerIndex < endAnswer.index) {
+        const targetAnswer = newAnswerMap.get(answerId);
+        if (!targetAnswer) return;
+
+        const newBlockList: EditorBlockData[] = targetAnswer.blockList.map((block) => ({
+          ...block,
+          highlightList: [],
+        }));
+        newAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
+      }
+
+      setAnswerMap(newAnswerMap);
+    });
   };
 
   const handleClickBlockList = (event: React.MouseEvent) => {

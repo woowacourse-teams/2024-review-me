@@ -12,6 +12,7 @@ const EditorTestPage = () => {
         answerList={[
           { id: 1234, text: MOCK_DATA },
           { id: 5678, text: MOCK_DATA },
+          { id: 90123, text: MOCK_DATA },
         ]}
       />
     </div>
