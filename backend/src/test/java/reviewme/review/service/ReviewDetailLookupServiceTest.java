@@ -145,7 +145,7 @@ class ReviewDetailLookupServiceTest {
 
     @Nested
     @DisplayName("필수가 아닌 답변에 응답하지 않았을 때")
-    class notAnsweredOptionalQuestion {
+    class NotAnsweredOptionalQuestion {
 
         @Test
         void 섹션에_필수가_아닌_질문만_있다면_섹션_자체를_반환하지_않는다() {

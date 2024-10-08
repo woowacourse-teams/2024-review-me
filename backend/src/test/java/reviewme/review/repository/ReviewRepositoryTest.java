@@ -64,7 +64,7 @@ class ReviewRepositoryTest {
 
     @Nested
     @DisplayName("리뷰 그룹 아이디에 해당하는 리뷰를 생성일 기준 내림차순으로 페이징하여 불러온다")
-    class findByReviewGroupIdWithLimit {
+    class FindByReviewGroupIdWithLimit {
 
         private final Question question = questionRepository.save(서술형_필수_질문());
         private final Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
@@ -159,7 +159,7 @@ class ReviewRepositoryTest {
 
     @Nested
     @DisplayName("주어진 리뷰보다 오래된 리뷰가 있는지 검사한다")
-    class existsOlderReviewInReviewGroup {
+    class ExistsOlderReviewInReviewGroup {
 
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
