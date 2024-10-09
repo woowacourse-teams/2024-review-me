@@ -3,8 +3,6 @@ package reviewme.template.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
-import static reviewme.fixture.SectionFixture.조건부로_보이는_섹션;
-import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
@@ -15,7 +13,7 @@ import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
 import reviewme.template.domain.Section;
-import reviewme.template.domain.Template;
+import reviewme.template.domain.VisibleType;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.dto.response.SectionNameResponse;
@@ -39,11 +37,14 @@ class SectionServiceTest {
     @Test
     void 템플릿에_있는_섹션_이름_목록을_응답한다() {
         // given
-        Section visibleSection1 = sectionRepository.save(항상_보이는_섹션(List.of(1L), 1));
-        Section visibleSection2 = sectionRepository.save(항상_보이는_섹션(List.of(2L), 2));
-        Section nonVisibleSection = sectionRepository.save(조건부로_보이는_섹션(List.of(3L), 1L, 3));
-        Template template = templateRepository.save(템플릿(
-                List.of(nonVisibleSection.getId(), visibleSection2.getId(), visibleSection1.getId())));
+        Section visibleSection1 = sectionRepository.save(
+                new Section(VisibleType.ALWAYS, List.of(1L), null, "섹션1", "헤더", 1));
+        Section visibleSection2 = sectionRepository.save(
+                new Section(VisibleType.ALWAYS, List.of(2L), null, "섹션2", "헤더", 2));
+        Section nonVisibleSection = sectionRepository.save(
+                new Section(VisibleType.CONDITIONAL, List.of(1L), 1L, "섹션3", "헤더", 3));
+        templateRepository.save(
+                템플릿(List.of(nonVisibleSection.getId(), visibleSection2.getId(), visibleSection1.getId())));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
@@ -51,8 +52,9 @@ class SectionServiceTest {
         SectionNamesResponse actual = sectionService.getSectionNames(reviewGroup.getReviewRequestCode());
 
         // then
-        assertThat(actual.sections()).extracting(SectionNameResponse::id)
-                .containsExactly(visibleSection1.getId(), visibleSection2.getId(), nonVisibleSection.getId());
+        assertThat(actual.sections()).extracting(SectionNameResponse::name)
+                .containsExactly(visibleSection1.getSectionName(), visibleSection2.getSectionName(),
+                        nonVisibleSection.getSectionName());
     }
 
     @Test
