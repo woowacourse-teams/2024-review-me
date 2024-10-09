@@ -9,8 +9,12 @@ export const Button = styled.button`
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
-  -webkit-box-shadow: 0 0 1.6rem -0.5rem #343434;
-  box-shadow: 0 0 1.6rem -0.5rem #343434;
+  -webkit-box-shadow: 0 0 1.2rem -0.5rem #343434;
+  box-shadow: 0 0 1.2rem -0.5rem #343434;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.palePurple};
+  }
 `;
 
 export const ButtonIcon = styled.img`
