@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const DoughnutChartContianer = styled.div`
+export const DoughnutChartContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

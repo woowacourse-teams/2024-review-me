@@ -4,11 +4,10 @@ import * as S from './styles';
 
 interface DoughnutChartDetails {
   reviewVotes: ReviewVotes[];
-  ratios: number[];
   colors: string[];
 }
 
-const DoughnutChartDetails = ({ reviewVotes, ratios, colors }: DoughnutChartDetails) => {
+const DoughnutChartDetails = ({ reviewVotes, colors }: DoughnutChartDetails) => {
   return (
     <S.DoughnutChartDetailList>
       {reviewVotes.map((reviewVote, index) => (
@@ -17,7 +16,7 @@ const DoughnutChartDetails = ({ reviewVotes, ratios, colors }: DoughnutChartDeta
             <S.ChartColor color={colors[index]}></S.ChartColor>
             <S.Description>{reviewVote.content}</S.Description>
           </S.ContentContainer>
-          <span>{Math.floor(ratios[index] * 100)}%</span>
+          <span>{reviewVote.count}표</span>
         </S.DetailItem>
       ))}
     </S.DoughnutChartDetailList>
