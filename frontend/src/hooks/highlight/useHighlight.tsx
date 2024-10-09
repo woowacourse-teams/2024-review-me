@@ -14,7 +14,7 @@ import {
 
 interface UseHighlightProps {
   answerList: EditorAnswerData[];
-  isAbleEdit: boolean;
+  isEditAble: boolean;
   hideHighlightToggleButton: () => void;
   updateRemoverPosition: (rect: DOMRect) => void;
   hideRemover: () => void;
@@ -52,7 +52,7 @@ const makeInitialEditorAnswerMap = (answerList: EditorAnswerData[]) => {
 
 const useHighlight = ({
   answerList,
-  isAbleEdit,
+  isEditAble,
   hideHighlightToggleButton,
   updateRemoverPosition,
   hideRemover,
@@ -354,7 +354,7 @@ const useHighlight = ({
   };
 
   const handleClickBlockList = (event: React.MouseEvent) => {
-    if (!isAbleEdit) return;
+    if (!isEditAble) return;
     const target = event.target as HTMLElement;
     if (!target.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME)) return;
 

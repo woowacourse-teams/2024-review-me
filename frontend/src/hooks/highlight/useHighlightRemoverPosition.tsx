@@ -6,10 +6,10 @@ interface Position {
 }
 
 interface UseHighlightRemoverPositionProps {
-  isAbleEdit: boolean;
+  isEditAble: boolean;
   editorRef: React.RefObject<HTMLDivElement>;
 }
-const useHighlightRemoverPosition = ({ isAbleEdit, editorRef }: UseHighlightRemoverPositionProps) => {
+const useHighlightRemoverPosition = ({ isEditAble, editorRef }: UseHighlightRemoverPositionProps) => {
   const [removerPosition, setRemoverPosition] = useState<Position | null>(null);
 
   const updateRemoverPosition = (rect: DOMRect) => {
@@ -25,8 +25,8 @@ const useHighlightRemoverPosition = ({ isAbleEdit, editorRef }: UseHighlightRemo
   const hideRemover = () => setRemoverPosition(null);
 
   useLayoutEffect(() => {
-    if (!isAbleEdit) hideRemover();
-  }, [isAbleEdit]);
+    if (!isEditAble) hideRemover();
+  }, [isEditAble]);
 
   return {
     removerPosition,
