@@ -58,18 +58,28 @@ const useHighlight = ({
   hideRemover,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
-
   // span 클릭 시, 제공되는 형광펜 삭제 기능 타겟
   const [removalTarget, setRemovalTarget] = useState<RemovalTarget | null>(null);
+
+  /**
+   * 선택사항, 토글 버튼 지우기
+   */
+  const resetSelectionAndButton = () => {
+    removeSelection();
+    hideHighlightToggleButton();
+  };
 
   const addHighlight = () => {
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
+    const newAnswerMap = selectionInfo.isSameAnswer
+      ? addSingleAnswerHighlight(selectionInfo)
+      : addMultipleAnswerHighlight(selectionInfo);
+    if (!newAnswerMap) return;
+    // TODO: 데이터 요청 후, 성공 시 업데이트 하기
+    setEditorAnswerMap(newAnswerMap);
 
-    selectionInfo.isSameAnswer ? addSingleAnswerHighlight(selectionInfo) : addMultipleAnswerHighlight(selectionInfo);
-
-    removeSelection();
-    hideHighlightToggleButton();
+    resetSelectionAndButton();
   };
 
   const addMultipleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
@@ -149,7 +159,7 @@ const useHighlight = ({
       }
     });
 
-    setEditorAnswerMap(newEditorAnswerMap);
+    return newEditorAnswerMap;
   };
 
   const addSingleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
@@ -195,20 +205,24 @@ const useHighlight = ({
     });
 
     newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
-    setEditorAnswerMap(newEditorAnswerMap);
-    removeSelection();
-    hideHighlightToggleButton();
+    return newEditorAnswerMap;
   };
 
   const removeHighlight = () => {
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
 
-    selectionInfo.isSameAnswer
+    const newEditorAnswerMap = selectionInfo.isSameAnswer
       ? removeSingleAnswerHighlight(selectionInfo)
       : removeMultipleAnswerHighlight(selectionInfo);
-    removeSelection();
-    hideHighlightToggleButton();
+
+    if (!newEditorAnswerMap) return;
+
+    // TODO: 서버에 API 요청 보내고 성공 한 후 상태 업데이트
+    setEditorAnswerMap(newEditorAnswerMap);
+
+    // 선택사항, 토글 버튼 지우기
+    resetSelectionAndButton();
   };
 
   const removeSingleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
@@ -256,7 +270,7 @@ const useHighlight = ({
     });
 
     newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
-    setEditorAnswerMap(newEditorAnswerMap);
+    return newEditorAnswerMap;
   };
 
   const removeMultipleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
@@ -334,9 +348,9 @@ const useHighlight = ({
         }));
         newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
       }
-
-      setEditorAnswerMap(newEditorAnswerMap);
     });
+
+    return newEditorAnswerMap;
   };
 
   const handleClickBlockList = (event: React.MouseEvent) => {
@@ -348,7 +362,6 @@ const useHighlight = ({
     if (!answerElement) return;
     const id = answerElement.getAttribute('data-answer')?.split('-')[0];
     if (!id) return;
-    console.log(id);
     const targetAnswer = editorAnswerMap.get(Number(id));
     if (!targetAnswer) return;
 
@@ -362,7 +375,7 @@ const useHighlight = ({
     const highlightIndex = highlightList.findIndex((i) => i.startIndex === Number(start) && i.endIndex === Number(end));
 
     setRemovalTarget({
-      answerId: targetAnswer.id,
+      answerId: targetAnswer.answerId,
       blockIndex: Number(blockIndex),
       highlightIndex: Number(highlightIndex),
     });
@@ -389,7 +402,10 @@ const useHighlight = ({
     newBlockList.splice(blockIndex, 1, newTargetBlock);
     newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
 
+    // TODO: 서버에 API 요청 보내고 성공 한 후 상태 업데이트
     setEditorAnswerMap(newEditorAnswerMap);
+
+    // 초기화
     hideRemover();
     setRemovalTarget(null);
   };
