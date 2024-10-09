@@ -16,7 +16,7 @@ const DoughnutChartDetails = ({ reviewVotes, colors }: DoughnutChartDetails) => 
             <S.ChartColor color={colors[index]}></S.ChartColor>
             <S.Description>{reviewVote.content}</S.Description>
           </S.ContentContainer>
-          <span>{reviewVote.count}표</span>
+          <S.ReviewVoteResult>{reviewVote.count}표</S.ReviewVoteResult>
         </S.DetailItem>
       ))}
     </S.DoughnutChartDetailList>

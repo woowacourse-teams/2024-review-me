@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const DoughnutChartDetailList = styled.div`
   display: flex;
   flex-direction: column;
@@ -7,6 +9,10 @@ export const DoughnutChartDetailList = styled.div`
   gap: 2rem;
 
   margin: 2rem;
+
+  ${media.small} {
+    margin: 0 1rem;
+  }
 `;
 
 export const DetailItem = styled.div`
@@ -31,6 +37,22 @@ export const ChartColor = styled.div<{ color: string }>`
   height: 2rem;
 
   border-radius: 0.5rem;
+  flex-shrink: 0;
+
+  ${media.small} {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
 `;
 
-export const Description = styled.span``;
+export const Description = styled.span`
+  ${media.small} {
+    font-size: ${({ theme }) => theme.fontSize.small};
+  }
+`;
+
+export const ReviewVoteResult = styled.span`
+  ${media.small} {
+    font-size: ${({ theme }) => theme.fontSize.small};
+  }
+`;
