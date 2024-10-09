@@ -15,11 +15,12 @@ import {
 import { EditorAnswerData } from '@/types';
 import { findSelectionInfo } from '@/utils';
 
-import { Button } from '../common';
+import EditorBlock from '../EditorBlock';
+import EditSwitchButton from '../EditSwitchButton';
+import HighlightRemoverWrapper from '../HighlightRemoverWrapper';
+import HighlightToggleButtonContainer from '../HighlightToggleButtonContainer';
 
-import EditorBlock from './EditorBlock';
-import HighlightRemoverWrapper from './HighlightRemoverWrapper';
-import HighlightToggleButtonContainer from './HighlightToggleButtonContainer';
+import * as S from './style';
 
 interface HighlightEditorProps {
   answerList: EditorAnswerData[];
@@ -27,27 +28,27 @@ interface HighlightEditorProps {
 
 const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
-  const [isAbleEdit, setIsAbleEdit] = useState(false);
+  const [isEditAble, setIsEditAble] = useState(false);
 
   const handleEditToggleButton = () => {
-    setIsAbleEdit((prev) => !prev);
+    setIsEditAble((prev) => !prev);
   };
 
   const { highlightToggleButtonPosition, hideHighlightToggleButton, updateHighlightToggleButtonPosition } =
     useHighlightToggleButtonPosition({
-      isAbleEdit,
+      isEditAble,
       editorRef,
     });
 
   const { removerPosition, hideRemover, updateRemoverPosition } = useHighlightRemoverPosition({
-    isAbleEdit,
+    isEditAble,
     editorRef,
   });
 
   const { editorAnswerMap, addHighlight, removeHighlight, handleClickBlockList, handleClickRemover, removalTarget } =
     useHighlight({
       answerList,
-      isAbleEdit,
+      isEditAble,
       hideHighlightToggleButton,
       hideRemover,
       updateRemoverPosition,
@@ -55,7 +56,7 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
   const { isAddingHighlight, checkHighlight } = useCheckHighlight();
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (!isAbleEdit) return;
+    if (!isEditAble) return;
 
     const isInButton = (e.target as HTMLElement).closest(`.${HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME}`);
     const isNotHighlightRemover = (e.target as HTMLElement).closest(`.${HIGHLIGHT_REMOVER_CLASS_NAME}`);
@@ -65,7 +66,7 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
   };
 
   const handleMouseUp = () => {
-    if (!isAbleEdit) return;
+    if (!isEditAble) return;
     const info = findSelectionInfo();
     if (!info) return;
     checkHighlight(info);
@@ -74,17 +75,9 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
 
   return (
     <div ref={editorRef} onMouseUp={handleMouseUp} onMouseDown={handleMouseDown} style={{ position: 'relative' }}>
-      <div style={{ display: 'flex' }}>
-        <span>형광펜 모드:</span>
-        <Button
-          styleType={isAbleEdit ? 'secondary' : 'primary'}
-          style={{ padding: '0.4rem 1rem' }}
-          onClick={handleEditToggleButton}
-        >
-          {isAbleEdit ? '끄기' : '켜기'}
-        </Button>
-      </div>
-
+      <S.SwitchButtonWrapper>
+        <EditSwitchButton isEditAble={isEditAble} handleEditToggleButton={handleEditToggleButton} />
+      </S.SwitchButtonWrapper>
       {[...editorAnswerMap.values()].map(({ answerId, answerIndex, blockList }) => (
         <div
           className={EDITOR_ANSWER_CLASS_NAME}
@@ -98,7 +91,7 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
         </div>
       ))}
 
-      {isAbleEdit && highlightToggleButtonPosition && (
+      {isEditAble && highlightToggleButtonPosition && (
         <HighlightToggleButtonContainer
           buttonPosition={highlightToggleButtonPosition}
           isAddingHighlight={isAddingHighlight}
@@ -106,7 +99,7 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
           removeHighlight={removeHighlight}
         />
       )}
-      {isAbleEdit && removalTarget && removerPosition && (
+      {isEditAble && removalTarget && removerPosition && (
         <HighlightRemoverWrapper buttonPosition={removerPosition} handleClickRemover={handleClickRemover} />
       )}
     </div>
