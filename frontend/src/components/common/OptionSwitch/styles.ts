@@ -4,7 +4,7 @@ import media from '@/utils/media';
 
 import { OptionSwitchStyleProps } from './index';
 
-export const OptionSwitchContainer = styled.div`
+export const OptionSwitchContainer = styled.ul`
   cursor: pointer;
 
   display: flex;
@@ -23,7 +23,7 @@ export const OptionSwitchContainer = styled.div`
   }
 `;
 
-export const CheckboxWrapper = styled.div<OptionSwitchStyleProps>`
+export const CheckboxWrapper = styled.li<OptionSwitchStyleProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,7 +37,7 @@ export const CheckboxWrapper = styled.div<OptionSwitchStyleProps>`
   transition: background-color 0.2s ease-out;
 `;
 
-export const CheckboxLabel = styled.span<OptionSwitchStyleProps>`
+export const CheckboxButton = styled.button<OptionSwitchStyleProps>`
   user-select: none;
   font-size: 1.2rem;
   color: ${({ $isChecked, theme }) => ($isChecked ? theme.colors.primary : theme.colors.black)};
