@@ -35,6 +35,10 @@ export const CheckboxWrapper = styled.li<OptionSwitchStyleProps>`
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
   transition: background-color 0.2s ease-out;
+
+  &:hover {
+    background-color: ${({ $isChecked, theme }) => ($isChecked ? theme.colors.white : theme.colors.lightPurple)};
+  }
 `;
 
 export const CheckboxButton = styled.button<OptionSwitchStyleProps>`
