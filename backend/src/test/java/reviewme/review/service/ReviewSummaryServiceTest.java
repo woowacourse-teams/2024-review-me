@@ -53,21 +53,24 @@ class ReviewSummaryServiceTest {
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹("reReCo", "groupCo"));
 
         List<Review> reviews = List.of(
-                new Review(template.getId(), reviewGroup.getId(), List.of()),
-                new Review(template.getId(), reviewGroup.getId(), List.of()),
-                new Review(template.getId(), reviewGroup.getId(), List.of())
+                new Review(template.getId(), reviewGroup1.getId(), List.of()),
+                new Review(template.getId(), reviewGroup1.getId(), List.of()),
+                new Review(template.getId(), reviewGroup1.getId(), List.of())
         );
         reviewRepository.saveAll(reviews);
+        reviewRepository.save(new Review(template.getId(), reviewGroup2.getId(), List.of()));
+
         // when
         ReceivedReviewsSummaryResponse actual = reviewSummaryService.getReviewSummary(
-                reviewGroup.getReviewRequestCode());
+                reviewGroup1.getReviewRequestCode());
         // then
         assertAll(
-                () -> assertThat(actual.projectName()).isEqualTo(reviewGroup.getProjectName()),
-                () -> assertThat(actual.revieweeName()).isEqualTo(reviewGroup.getReviewee()),
+                () -> assertThat(actual.projectName()).isEqualTo(reviewGroup1.getProjectName()),
+                () -> assertThat(actual.revieweeName()).isEqualTo(reviewGroup1.getReviewee()),
                 () -> assertThat(actual.totalReviewCount()).isEqualTo(reviews.size())
         );
     }
