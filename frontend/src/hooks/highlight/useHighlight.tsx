@@ -353,8 +353,24 @@ const useHighlight = ({
     return newEditorAnswerMap;
   };
 
+  const isSingleCharacterSelected = () => {
+    const selection = document.getSelection();
+
+    if (selection) {
+      const { anchorNode, anchorOffset, focusNode, focusOffset } = selection;
+      const isSameSelectedNode = anchorNode === focusNode && Math.abs(anchorOffset - focusOffset) === 1;
+
+      return isSameSelectedNode;
+    }
+    return false;
+  };
   const handleClickBlockList = (event: React.MouseEvent) => {
     if (!isEditAble) return;
+
+    const isSameSelectedNode = isSingleCharacterSelected();
+
+    if (isSameSelectedNode) return;
+
     const target = event.target as HTMLElement;
     if (!target.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME)) return;
 
