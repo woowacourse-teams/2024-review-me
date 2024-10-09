@@ -11,7 +11,7 @@ interface HighlightRemoverWrapperProps {
  */
 const HighlightRemoverWrapper = ({ buttonPosition, handleClickRemover }: HighlightRemoverWrapperProps) => {
   return (
-    <div style={{ position: 'fixed', ...buttonPosition }}>
+    <div style={{ position: 'absolute', ...buttonPosition }}>
       <HighlightButton.clickRemoval removeHighlightByClick={handleClickRemover} />
     </div>
   );

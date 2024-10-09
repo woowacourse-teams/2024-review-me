@@ -41,6 +41,7 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
 
   const { removerPosition, hideRemover, updateRemoverPosition } = useHighlightRemoverPosition({
     isAbleEdit,
+    editorRef,
   });
 
   const { editorAnswerMap, addHighlight, removeHighlight, handleClickBlockList, handleClickRemover, removalTarget } =

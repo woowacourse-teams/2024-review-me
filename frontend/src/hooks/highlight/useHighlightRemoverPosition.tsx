@@ -7,14 +7,18 @@ interface Position {
 
 interface UseHighlightRemoverPositionProps {
   isAbleEdit: boolean;
+  editorRef: React.RefObject<HTMLDivElement>;
 }
-const useHighlightRemoverPosition = ({ isAbleEdit }: UseHighlightRemoverPositionProps) => {
+const useHighlightRemoverPosition = ({ isAbleEdit, editorRef }: UseHighlightRemoverPositionProps) => {
   const [removerPosition, setRemoverPosition] = useState<Position | null>(null);
 
   const updateRemoverPosition = (rect: DOMRect) => {
+    const editorRect = editorRef.current?.getClientRects()[0];
+    if (!editorRect) return;
+
     setRemoverPosition({
-      top: rect.bottom,
-      left: rect.right,
+      top: rect.bottom - editorRect.top,
+      left: rect.right - editorRect.left,
     });
   };
 

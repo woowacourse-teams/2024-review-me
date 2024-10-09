@@ -68,13 +68,13 @@ export const getAnswerInfo = ({ anchorBlockData, focusBlockData, anchorOffset, f
   const isSameAnswer = anchorAnswerData.id === focusAnswerData.id;
   // 드래그 방향 계산
   const sortedAnswerData = [anchorAnswerData, focusAnswerData].sort((a, b) => a.index - b.index);
-  const isForwardDrag = sortedAnswerData[0].id === anchorAnswerData.id;
+  const isForwardDragAnswer = sortedAnswerData[0].id === anchorAnswerData.id;
 
-  const startAnswer = isForwardDrag
+  const startAnswer = isForwardDragAnswer
     ? { ...anchorAnswerData, blockIndex: Number(anchorBlockData.index), offset: anchorOffset }
     : { ...focusAnswerData, blockIndex: Number(focusBlockData.index), offset: focusOffset };
 
-  const endAnswer = isForwardDrag
+  const endAnswer = isForwardDragAnswer
     ? { ...focusAnswerData, blockIndex: Number(focusBlockData.index), offset: focusOffset - 1 }
     : { ...anchorAnswerData, blockIndex: Number(anchorBlockData.index), offset: anchorOffset - 1 };
 
@@ -82,6 +82,7 @@ export const getAnswerInfo = ({ anchorBlockData, focusBlockData, anchorOffset, f
     isSameAnswer,
     startAnswer,
     endAnswer,
+    isForwardDragAnswer,
   };
 };
 
@@ -142,6 +143,8 @@ interface CalculateDragDirectionParams {
   startBlockIndex: number;
   endBlockIndex: number;
   anchorBlockIndex: number;
+  isSameAnswer: boolean;
+  isForwardDragAnswer: boolean;
 }
 
 export const calculateDragDirection = ({
@@ -149,16 +152,20 @@ export const calculateDragDirection = ({
   startBlockIndex,
   endBlockIndex,
   anchorBlockIndex,
+  isSameAnswer,
+  isForwardDragAnswer,
 }: CalculateDragDirectionParams) => {
   const { anchorOffset, focusOffset } = selection;
   const minOffset = Math.min(anchorOffset, focusOffset);
 
-  const isForwardDrag =
-    startBlockIndex === endBlockIndex ? minOffset === anchorOffset : startBlockIndex === anchorBlockIndex;
+  if (isSameAnswer) {
+    const isForwardDrag =
+      startBlockIndex === endBlockIndex ? minOffset === anchorOffset : startBlockIndex === anchorBlockIndex;
 
-  return {
-    isForwardDrag,
-  };
+    return isForwardDrag;
+  }
+
+  return isForwardDragAnswer;
 };
 
 /**
@@ -171,14 +178,16 @@ export const findSelectionInfo = () => {
 
   const selectedElementInfo = findSelectedElementInfo(selection);
   if (!selectedElementInfo) return;
-
+  const { isSameAnswer } = selectedElementInfo;
   const { startBlock, startBlockIndex, endBlock, endBlockIndex } = calculateStartAndEndBlock(selectedElementInfo);
 
-  const { isForwardDrag } = calculateDragDirection({
+  const isForwardDrag = calculateDragDirection({
     selection,
     startBlockIndex,
     endBlockIndex,
     anchorBlockIndex: selectedElementInfo.anchorBlockIndex,
+    isSameAnswer: !!isSameAnswer,
+    isForwardDragAnswer: !!selectedElementInfo.isForwardDragAnswer,
   });
 
   const isOnlyOneSelectedBlock = startBlockIndex === endBlockIndex;

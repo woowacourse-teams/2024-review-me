@@ -5,25 +5,31 @@ import { EditorSelectionInfo } from '@/utils';
 
 interface UseHighlightButtonPositionProps {
   isAbleEdit: boolean;
+  editorRef: React.RefObject<HTMLDivElement>;
 }
 
-const useHighlightToggleButtonPosition = ({ isAbleEdit }: UseHighlightButtonPositionProps) => {
+const useHighlightToggleButtonPosition = ({ isAbleEdit, editorRef }: UseHighlightButtonPositionProps) => {
   const [highlightToggleButtonPosition, setHighlightToggleButtonPosition] = useState<Position | null>(null);
 
   const hideHighlightToggleButton = () => setHighlightToggleButtonPosition(null);
 
   const calculateEndPosition = ({ selection, isForwardDrag, startBlock }: EditorSelectionInfo) => {
+    if (!editorRef.current) return;
     const range = selection.getRangeAt(0);
     const rects = range.getClientRects();
+    const editorRect = editorRef.current.getClientRects()[0];
 
     if (rects.length === 0) return;
 
     // 드래그 방향에 따른 마지막 rect의 좌표 정보를 가져옴 (마우스가 놓인 최종 지점)
     const lastRect = rects[isForwardDrag ? rects.length - 1 : 0];
+
     const GAP_WIDTH_SELECTION = 10;
     const endPosition = {
-      left: isForwardDrag ? lastRect.right + GAP_WIDTH_SELECTION : lastRect.left - GAP_WIDTH_SELECTION,
-      top: lastRect.top - (isForwardDrag ? 0 : startBlock.clientHeight),
+      left: isForwardDrag
+        ? lastRect.right + GAP_WIDTH_SELECTION - editorRect.left
+        : lastRect.left - GAP_WIDTH_SELECTION - editorRect.left,
+      top: lastRect.top - (isForwardDrag ? 0 : startBlock.clientHeight) - editorRect.top,
     };
 
     return endPosition;
@@ -39,6 +45,8 @@ const useHighlightToggleButtonPosition = ({ isAbleEdit }: UseHighlightButtonPosi
   useLayoutEffect(() => {
     if (!isAbleEdit) hideHighlightToggleButton();
   }, [isAbleEdit]);
+
+  useLayoutEffect(() => {});
 
   return {
     highlightToggleButtonPosition,

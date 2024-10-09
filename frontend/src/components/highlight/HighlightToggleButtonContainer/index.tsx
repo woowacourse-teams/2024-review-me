@@ -19,7 +19,7 @@ const HighlightToggleButtonContainer = ({
   removeHighlight,
 }: HighlightToggleButtonContainerProps) => {
   return (
-    <div className={HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME} style={{ position: 'fixed', ...buttonPosition }}>
+    <div className={HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME} style={{ position: 'absolute', ...buttonPosition }}>
       {isAddingHighlight ? (
         <HighlightButton.highlighter addHighlight={addHighlight} />
       ) : (
