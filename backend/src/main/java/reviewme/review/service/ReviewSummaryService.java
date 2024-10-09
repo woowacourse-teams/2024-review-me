@@ -2,6 +2,7 @@ package reviewme.review.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
@@ -15,6 +16,7 @@ public class ReviewSummaryService {
     private final ReviewGroupRepository reviewGroupRepository;
     private final ReviewRepository reviewRepository;
 
+    @Transactional(readOnly = true)
     public ReceivedReviewsSummaryResponse getReviewSummary(String reviewRequestCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
