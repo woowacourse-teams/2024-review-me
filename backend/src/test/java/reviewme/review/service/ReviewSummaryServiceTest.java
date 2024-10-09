@@ -55,21 +55,20 @@ class ReviewSummaryServiceTest {
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
-        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of());
-        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of());
-        Review review3 = new Review(template.getId(), reviewGroup.getId(), List.of());
-        reviewRepository.saveAll(List.of(review1, review2, review3));
-        long numberOfReviews = reviewRepository.count();
-
+        List<Review> reviews = List.of(
+                new Review(template.getId(), reviewGroup.getId(), List.of()),
+                new Review(template.getId(), reviewGroup.getId(), List.of()),
+                new Review(template.getId(), reviewGroup.getId(), List.of())
+        );
+        reviewRepository.saveAll(reviews);
         // when
         ReceivedReviewsSummaryResponse actual = reviewSummaryService.getReviewSummary(
                 reviewGroup.getReviewRequestCode());
-
         // then
         assertAll(
                 () -> assertThat(actual.projectName()).isEqualTo(reviewGroup.getProjectName()),
                 () -> assertThat(actual.revieweeName()).isEqualTo(reviewGroup.getReviewee()),
-                () -> assertThat(actual.totalReviewCount()).isEqualTo(numberOfReviews)
+                () -> assertThat(actual.totalReviewCount()).isEqualTo(reviews.size())
         );
     }
 
