@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react';
+
 import DownArrowIcon from '@/assets/downArrow.svg';
 import useAccordion from '@/hooks/useAccordion';
 import { EssentialPropsWithChildren } from '@/types';
@@ -11,6 +13,14 @@ interface AccordionProps {
 
 const Accordion = ({ title, isInitiallyOpened = false, children }: EssentialPropsWithChildren<AccordionProps>) => {
   const { isOpened, handleAccordionButtonClick } = useAccordion({ isInitiallyOpened });
+  const [contentHeight, setContentHeight] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setContentHeight(contentRef.current.clientHeight);
+    }
+  }, [isOpened]);
 
   return (
     <S.AccordionContainer $isOpened={isOpened}>
@@ -18,7 +28,11 @@ const Accordion = ({ title, isInitiallyOpened = false, children }: EssentialProp
         <S.AccordionTitle>{title}</S.AccordionTitle>
         <S.ArrowIcon src={DownArrowIcon} $isOpened={isOpened} alt="" />
       </S.AccordionButton>
-      {isOpened && <S.AccordionContents>{children}</S.AccordionContents>}
+      <S.AccordionContentsWrapper>
+        <S.AccordionContents $isOpened={isOpened} $contentHeight={contentHeight} ref={contentRef}>
+          {children}
+        </S.AccordionContents>
+      </S.AccordionContentsWrapper>
     </S.AccordionContainer>
   );
 };
