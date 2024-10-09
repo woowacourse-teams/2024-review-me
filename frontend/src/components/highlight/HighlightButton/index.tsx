@@ -40,7 +40,7 @@ const HighlightClickRemoval = ({ removeHighlightByClick }: HighlightClickRemoval
   return (
     <S.Button className={HIGHLIGHT_REMOVER_CLASS_NAME} onClick={removeHighlightByClick}>
       <span className={SR_ONLY}>하이라이트 추가 버튼</span>
-      <S.ButtonIcon src={TrashIcon} alt="" />x
+      <S.ButtonIcon src={TrashIcon} alt="" />
     </S.Button>
   );
 };
