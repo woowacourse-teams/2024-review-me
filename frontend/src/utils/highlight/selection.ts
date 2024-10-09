@@ -98,8 +98,8 @@ export const findSelectedElementInfo = (selection: Selection) => {
 
   if (!anchorBlock || !focusBlock) return;
 
-  const anchorBlockIndex = parseInt(anchorBlock.getAttribute('data-index') || '-1', 10);
-  const focusBlockIndex = parseInt(focusBlock.getAttribute('data-index') || '-1', 10);
+  const anchorBlockIndex = Number(anchorBlock.getAttribute('data-index') || '-1');
+  const focusBlockIndex = Number(focusBlock.getAttribute('data-index') || '-1');
 
   const answerInfo = getAnswerInfo({
     anchorBlockData: { block: anchorBlock, index: anchorBlockIndex },
