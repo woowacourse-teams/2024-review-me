@@ -1,5 +1,6 @@
 package reviewme.review.repository;
 
+import java.util.List;
 import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,12 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
             WHERE r.reviewGroupId = :reviewGroupId
             """)
     Set<Long> findIdsByReviewGroupId(long reviewGroupId);
+
+    @Query(value = """
+            SELECT a FROM Answer a
+            WHERE a.questionId IN :questionIds
+            """)
+    List<Answer> findAllByQuestions(List<Long> questionIds);
 
     @Query(value = """
             SELECT a FROM Answer a
