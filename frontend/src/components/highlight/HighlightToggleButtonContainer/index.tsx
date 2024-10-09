@@ -1,6 +1,7 @@
-import { Button } from '@/components/common';
 import { HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME } from '@/constants';
 import { Position } from '@/types';
+
+import HighlightButton from '../HighlightButton';
 
 interface HighlightToggleButtonContainerProps {
   buttonPosition: Position;
@@ -20,13 +21,9 @@ const HighlightToggleButtonContainer = ({
   return (
     <div className={HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME} style={{ position: 'fixed', ...buttonPosition }}>
       {isAddingHighlight ? (
-        <Button styleType="secondary" style={{ padding: '0.4rem 1rem' }} onClick={addHighlight}>
-          Add
-        </Button>
+        <HighlightButton.highlighter addHighlight={addHighlight} />
       ) : (
-        <Button styleType="secondary" style={{ padding: '0.4rem 1rem' }} onClick={removeHighlight}>
-          Remove
-        </Button>
+        <HighlightButton.dragRemoval removeHighlightByDrag={removeHighlight} />
       )}
     </div>
   );

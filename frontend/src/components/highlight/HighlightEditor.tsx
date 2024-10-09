@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import {
   EDITOR_ANSWER_CLASS_NAME,
@@ -26,6 +26,7 @@ interface HighlightEditorProps {
 }
 
 const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
+  const editorRef = useRef<HTMLDivElement>(null);
   const [isAbleEdit, setIsAbleEdit] = useState(false);
 
   const handleEditToggleButton = () => {
@@ -35,6 +36,7 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
   const { highlightToggleButtonPosition, hideHighlightToggleButton, updateHighlightToggleButtonPosition } =
     useHighlightToggleButtonPosition({
       isAbleEdit,
+      editorRef,
     });
 
   const { removerPosition, hideRemover, updateRemoverPosition } = useHighlightRemoverPosition({
@@ -70,7 +72,7 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
   };
 
   return (
-    <div onMouseUp={handleMouseUp} onMouseDown={handleMouseDown}>
+    <div ref={editorRef} onMouseUp={handleMouseUp} onMouseDown={handleMouseDown} style={{ position: 'relative' }}>
       <div style={{ display: 'flex' }}>
         <span>형광펜 모드:</span>
         <Button

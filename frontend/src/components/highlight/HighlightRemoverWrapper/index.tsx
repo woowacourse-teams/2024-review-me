@@ -1,6 +1,6 @@
-import { Button } from '@/components/common';
-import { HIGHLIGHT_REMOVER_CLASS_NAME } from '@/constants';
 import { Position } from '@/types';
+
+import HighlightButton from '../HighlightButton';
 
 interface HighlightRemoverWrapperProps {
   buttonPosition: Position;
@@ -12,14 +12,7 @@ interface HighlightRemoverWrapperProps {
 const HighlightRemoverWrapper = ({ buttonPosition, handleClickRemover }: HighlightRemoverWrapperProps) => {
   return (
     <div style={{ position: 'fixed', ...buttonPosition }}>
-      <Button
-        styleType="secondary"
-        className={HIGHLIGHT_REMOVER_CLASS_NAME}
-        style={{ padding: '0.4rem 1rem' }}
-        onClick={handleClickRemover}
-      >
-        x
-      </Button>
+      <HighlightButton.clickRemoval removeHighlightByClick={handleClickRemover} />
     </div>
   );
 };
