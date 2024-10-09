@@ -60,9 +60,9 @@ const EditorBlock = ({ block, blockIndex }: EditorBlockProps) => {
   };
 
   return (
-    <div className={EDITOR_BLOCK_CLASS_NAME} data-index={blockIndex}>
+    <p className={EDITOR_BLOCK_CLASS_NAME} data-index={blockIndex}>
       {renderSentenceList()}
-    </div>
+    </p>
   );
 };
 
