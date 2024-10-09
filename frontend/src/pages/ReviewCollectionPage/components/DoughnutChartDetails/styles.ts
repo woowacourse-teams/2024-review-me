@@ -5,9 +5,19 @@ export const DoughnutChartDetailList = styled.div`
   flex-direction: column;
 
   gap: 2rem;
+
+  margin: 2rem;
 `;
 
 export const DetailItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 1rem;
+`;
+
+export const ContentContainer = styled.div`
   display: flex;
   align-items: center;
 
