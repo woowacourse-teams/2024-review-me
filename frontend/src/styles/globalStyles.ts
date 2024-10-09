@@ -1,5 +1,6 @@
 import { css, Theme } from '@emotion/react';
 
+import { SR_ONLY } from '@/constants';
 import media from '@/utils/media';
 
 import reset from './reset';
@@ -48,6 +49,12 @@ const globalStyles = (theme: Theme) => css`
     ::-webkit-scrollbar-track {
       background: transparent;
     }
+  }
+
+  .sr-only {
+    position: fixed;
+    top: -999rem;
+    left: -999rem;
   }
 `;
 
