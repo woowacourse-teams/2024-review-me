@@ -18,6 +18,7 @@ class HighlightApiTest extends ApiTest {
     void 존재하는_답변에_하이라이트를_생성한다() {
         String request = """
                  {
+                     "questionId": 1,
                      "highlights": [{
                        "answerId": 3,
                        "lines": [{
@@ -36,6 +37,7 @@ class HighlightApiTest extends ApiTest {
         };
 
         FieldDescriptor[] requestFields = {
+                fieldWithPath("questionId").description("질문 ID"),
                 fieldWithPath("highlights").description("하이라이트 목록"),
                 fieldWithPath("highlights[].answerId").description("답변 ID"),
                 fieldWithPath("highlights[].lines[].index").description("개행으로 구분되는 라인 번호, 0-based"),
