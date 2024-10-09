@@ -87,7 +87,7 @@ const useHighlight = ({
     const newEditorAnswerMap = new Map(editorAnswerMap);
     if (!startAnswer || !endAnswer) return;
 
-    newEditorAnswerMap.keys().forEach((answerId, answerIndex) => {
+    [...newEditorAnswerMap.keys()].forEach((answerId, answerIndex) => {
       if (startAnswer.id === answerId) {
         const { blockIndex, offset } = startAnswer;
         const targetAnswer = newEditorAnswerMap.get(answerId);
@@ -278,7 +278,7 @@ const useHighlight = ({
     const newEditorAnswerMap = new Map(editorAnswerMap);
     if (!startAnswer || !endAnswer) return;
 
-    newEditorAnswerMap.keys().forEach((answerId, answerIndex) => {
+    [...newEditorAnswerMap.keys()].forEach((answerId, answerIndex) => {
       if (answerId === startAnswer.id) {
         const { blockIndex, offset } = startAnswer;
         const targetAnswer = newEditorAnswerMap.get(answerId);

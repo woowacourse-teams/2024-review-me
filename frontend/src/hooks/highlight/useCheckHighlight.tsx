@@ -13,12 +13,12 @@ const useCheckHighlight = () => {
     setIsAddingHighlight(isNoneHighlight);
   };
 
-  function getAllSpanInSelection(selection: Selection) {
+  const getAllSpanInSelection = (selection: Selection) => {
     const range = selection.getRangeAt(0);
     const sentenceElList = document.getElementsByClassName(SYNTAX_BASIC_CLASS_NAME);
 
     return [...sentenceElList].filter((el) => range.intersectsNode(el));
-  }
+  };
 
   return {
     isAddingHighlight,
