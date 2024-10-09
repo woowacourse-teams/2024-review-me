@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   EDITOR_ANSWER_CLASS_NAME,
@@ -55,7 +55,7 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
     });
   const { isAddingHighlight, checkHighlight } = useCheckHighlight();
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = (e: MouseEvent) => {
     if (!isEditAble) return;
 
     const isInButton = (e.target as HTMLElement).closest(`.${HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME}`);
@@ -69,12 +69,22 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
     if (!isEditAble) return;
     const info = findSelectionInfo();
     if (!info) return;
+
     checkHighlight(info);
     updateHighlightToggleButtonPosition(info);
   };
 
+  useEffect(() => {
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousedown', handleMouseDown);
+    return () => {
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousedown', handleMouseDown);
+    };
+  }, [isEditAble]);
+
   return (
-    <div ref={editorRef} onMouseUp={handleMouseUp} onMouseDown={handleMouseDown} style={{ position: 'relative' }}>
+    <div ref={editorRef} style={{ position: 'relative' }}>
       <S.SwitchButtonWrapper>
         <EditSwitchButton isEditAble={isEditAble} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
