@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   EDITOR_ANSWER_CLASS_NAME,
@@ -12,6 +12,7 @@ import {
   useCheckHighlight,
   useHighlightRemoverPosition,
 } from '@/hooks';
+import { EditorAnswerData } from '@/types';
 import { findSelectionInfo } from '@/utils';
 
 import { Button } from '../common';
@@ -21,7 +22,7 @@ import HighlightRemoverWrapper from './HighlightRemoverWrapper';
 import HighlightToggleButtonContainer from './HighlightToggleButtonContainer';
 
 interface HighlightEditorProps {
-  answerList: { id: number; text: string }[];
+  answerList: EditorAnswerData[];
 }
 
 const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
@@ -40,7 +41,7 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
     isAbleEdit,
   });
 
-  const { answerMap, addHighlight, removeHighlight, handleClickBlockList, handleClickRemover, removalTarget } =
+  const { editorAnswerMap, addHighlight, removeHighlight, handleClickBlockList, handleClickRemover, removalTarget } =
     useHighlight({
       answerList,
       isAbleEdit,
@@ -68,9 +69,6 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
     updateHighlightToggleButtonPosition(info);
   };
 
-  useEffect(() => {
-    console.log('answerMap', answerMap.values());
-  }, [answerMap]);
   return (
     <div onMouseUp={handleMouseUp} onMouseDown={handleMouseDown}>
       <div style={{ display: 'flex' }}>
@@ -84,11 +82,11 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
         </Button>
       </div>
 
-      {[...answerMap.values()].map(({ id, index, blockList }) => (
+      {[...editorAnswerMap.values()].map(({ answerId, answerIndex, blockList }) => (
         <div
           className={EDITOR_ANSWER_CLASS_NAME}
-          key={id}
-          data-answer={`${id}-${index}`}
+          key={answerId}
+          data-answer={`${answerId}-${answerIndex}`}
           onClick={handleClickBlockList}
         >
           {blockList.map((block, index) => (

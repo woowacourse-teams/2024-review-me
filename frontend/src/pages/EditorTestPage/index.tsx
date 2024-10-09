@@ -10,9 +10,13 @@ const EditorTestPage = () => {
 
       <HighlightEditor
         answerList={[
-          { id: 1234, text: MOCK_DATA },
-          { id: 5678, text: MOCK_DATA },
-          { id: 90123, text: MOCK_DATA },
+          {
+            answerId: 1234,
+            highlightList: [{ lineIndex: 0, rangeList: [{ startIndex: 0, endIndex: 5 }] }],
+            content: MOCK_DATA,
+          },
+          { answerId: 5678, highlightList: [], content: MOCK_DATA },
+          { answerId: 90123, highlightList: [], content: MOCK_DATA },
         ]}
       />
     </div>
