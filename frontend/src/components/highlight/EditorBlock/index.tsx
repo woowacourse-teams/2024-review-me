@@ -1,7 +1,7 @@
 import { EDITOR_BLOCK_CLASS_NAME } from '@/constants';
 import { EditorBlockData, Highlight } from '@/types';
 
-import Sentence from '../Sentence';
+import Syntax from '../Syntax';
 
 interface EditorBlockProps {
   block: EditorBlockData;
@@ -13,7 +13,7 @@ const EditorBlock = ({ block, blockIndex }: EditorBlockProps) => {
 
   const renderSentenceList = () => {
     if (!highlightList.length) {
-      return <Sentence text={text} spanIndex={0} />;
+      return <Syntax text={text} spanIndex={0} />;
     }
     return renderStyledSentenceList();
   };
@@ -26,15 +26,15 @@ const EditorBlock = ({ block, blockIndex }: EditorBlockProps) => {
    * 하이라이트에 따라, 블록의 글자를 하이라이트 적용되는 부분과 그렇지 않은 부분으로 나누는 함수
    */
   const splitTextWithHighlightList = ({ text, highlightList }: SplitTextWithHighlightListParams) => {
-    const result: { text: string; highlightInfo: { start: number; end: number } | undefined }[] = [];
+    const result: { text: string; highlightInfo: Highlight | undefined }[] = [];
     let currentIndex = 0;
 
-    highlightList.forEach(({ start, end }) => {
-      if (currentIndex < start) {
-        result.push({ highlightInfo: undefined, text: text.slice(currentIndex, start) });
+    highlightList.forEach(({ startIndex, endIndex }) => {
+      if (currentIndex < startIndex) {
+        result.push({ highlightInfo: undefined, text: text.slice(currentIndex, startIndex) });
       }
-      result.push({ highlightInfo: { start, end }, text: text.slice(start, end + 1) });
-      currentIndex = end + 1;
+      result.push({ highlightInfo: { startIndex, endIndex }, text: text.slice(startIndex, endIndex + 1) });
+      currentIndex = endIndex + 1;
     });
 
     if (currentIndex < text.length) {
@@ -44,7 +44,7 @@ const EditorBlock = ({ block, blockIndex }: EditorBlockProps) => {
   };
 
   /**
-   * 하이라이트 적용 여부를 반영한 Sentence 컴포넌트를 렌더링하는 함수
+   * 하이라이트 적용 여부를 반영한 Syntax 컴포넌트를 렌더링하는 함수
    */
   const renderStyledSentenceList = () => {
     const highlightedTextList = splitTextWithHighlightList({ text, highlightList });
@@ -53,7 +53,7 @@ const EditorBlock = ({ block, blockIndex }: EditorBlockProps) => {
     return (
       <>
         {highlightedTextList.map(({ text, highlightInfo }, i) => (
-          <Sentence key={`${key}-${i}`} text={text} spanIndex={i} highlightInfo={highlightInfo} />
+          <Syntax key={`${key}-${i}`} text={text} spanIndex={i} highlightInfo={highlightInfo} />
         ))}
       </>
     );

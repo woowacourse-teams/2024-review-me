@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { HIGHLIGHT_SPAN_CLASS_NAME, SENTENCE_BASIC_CLASS_NAME } from '@/constants';
+import { HIGHLIGHT_SPAN_CLASS_NAME, SYNTAX_BASIC_CLASS_NAME } from '@/constants';
 import { EditorSelectionInfo } from '@/utils';
 
 const useCheckHighlight = () => {
@@ -15,7 +15,7 @@ const useCheckHighlight = () => {
 
   function getAllSpanInSelection(selection: Selection) {
     const range = selection.getRangeAt(0);
-    const sentenceElList = document.getElementsByClassName(SENTENCE_BASIC_CLASS_NAME);
+    const sentenceElList = document.getElementsByClassName(SYNTAX_BASIC_CLASS_NAME);
 
     return [...sentenceElList].filter((el) => range.intersectsNode(el));
   }

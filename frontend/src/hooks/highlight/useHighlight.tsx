@@ -84,20 +84,20 @@ const useHighlight = ({
         if (!targetAnswer) return;
         const { blockList } = targetAnswer;
 
-        const newBlockList = blockList.map((block, index) => {
+        const newBlockList: EditorBlockData[] = blockList.map((block, index) => {
           if (index < blockIndex) return block;
 
           if (index > blockIndex) {
             return {
               ...block,
-              highlightList: [{ start: 0, end: block.text.length - 1 }],
+              highlightList: [{ startIndex: 0, endIndex: block.text.length - 1 }],
             };
           }
           return getUpdatedBlockByHighlight({
             blockTextLength: block.text.length,
             blockIndex: index,
-            start: offset,
-            end: block.text.length - 1,
+            startIndex: offset,
+            endIndex: block.text.length - 1,
             blockList,
           });
         });
@@ -113,7 +113,7 @@ const useHighlight = ({
 
         const newBlockList = blockList.map((block) => ({
           ...block,
-          highlightList: [{ start: 0, end: block.text.length - 1 }],
+          highlightList: [{ startIndex: 0, endIndex: block.text.length - 1 }],
         }));
 
         newAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
@@ -131,15 +131,15 @@ const useHighlight = ({
           if (index < blockIndex) {
             return {
               ...block,
-              highlightList: [{ start: 0, end: block.text.length - 1 }],
+              highlightList: [{ startIndex: 0, endIndex: block.text.length - 1 }],
             };
           }
 
           return getUpdatedBlockByHighlight({
             blockTextLength: block.text.length,
             blockIndex: index,
-            start: 0,
-            end: offset,
+            startIndex: 0,
+            endIndex: offset,
             blockList,
           });
         });
@@ -161,35 +161,35 @@ const useHighlight = ({
 
     if (!targetAnswer) return;
 
-    const newBlockList = targetAnswer.blockList.map((block, index, array) => {
+    const newBlockList: EditorBlockData[] = targetAnswer.blockList.map((block, index, array) => {
       if (index < startBlockIndex) return block;
       if (index > endBlockIndex) return block;
       if (index === startBlockIndex) {
-        const { start, end } = getStartBlockOffset(selectionInfo, block);
+        const { startIndex, endIndex } = getStartBlockOffset(selectionInfo, block);
 
         return getUpdatedBlockByHighlight({
           blockTextLength: block.text.length,
           blockIndex: index,
-          start,
-          end,
+          startIndex,
+          endIndex,
           blockList: array,
         });
       }
 
       if (index === endBlockIndex) {
-        const end = getEndBlockOffset(selectionInfo);
+        const endIndex = getEndBlockOffset(selectionInfo);
 
         return getUpdatedBlockByHighlight({
           blockTextLength: block.text.length,
           blockIndex: index,
-          start: 0,
-          end,
+          startIndex: 0,
+          endIndex,
           blockList: array,
         });
       }
       return {
         ...block,
-        highlightList: [{ start: 0, end: block.text.length }],
+        highlightList: [{ startIndex: 0, endIndex: block.text.length }],
       };
     });
 
@@ -224,27 +224,27 @@ const useHighlight = ({
       if (index < startBlockIndex) return block;
       if (index > endBlockIndex) return block;
       if (index === startBlockIndex) {
-        const { start, end } = getStartBlockOffset(selectionInfo, block);
+        const { startIndex, endIndex } = getStartBlockOffset(selectionInfo, block);
 
         return {
           ...block,
           highlightList: getRemovedHighlightList({
             blockTextLength: block.text.length,
             highlightList: block.highlightList,
-            start,
-            end,
+            startIndex,
+            endIndex,
           }),
         };
       }
       if (index === endBlockIndex) {
-        const end = getEndBlockOffset(selectionInfo);
+        const endIndex = getEndBlockOffset(selectionInfo);
         return {
           ...block,
           highlightList: getRemovedHighlightList({
             blockTextLength: block.text.length,
             highlightList: block.highlightList,
-            start: 0,
-            end,
+            startIndex: 0,
+            endIndex,
           }),
         };
       }
@@ -285,8 +285,8 @@ const useHighlight = ({
             highlightList: getRemovedHighlightList({
               blockTextLength: block.text.length,
               highlightList: block.highlightList,
-              start: offset,
-              end: block.text.length - 1,
+              startIndex: offset,
+              endIndex: block.text.length - 1,
             }),
           };
         });
@@ -314,8 +314,8 @@ const useHighlight = ({
             highlightList: getRemovedHighlightList({
               blockTextLength: block.text.length,
               highlightList: block.highlightList,
-              start: 0,
-              end: offset,
+              startIndex: 0,
+              endIndex: offset,
             }),
           };
         });
@@ -358,7 +358,7 @@ const useHighlight = ({
     const end = target.getAttribute('data-highlight-end');
     if (!blockIndex || !start || !end) return;
     const { highlightList } = targetAnswer.blockList[Number(blockIndex)];
-    const highlightIndex = highlightList.findIndex((i) => i.start === Number(start) && i.end === Number(end));
+    const highlightIndex = highlightList.findIndex((i) => i.startIndex === Number(start) && i.endIndex === Number(end));
 
     setRemovalTarget({
       answerId: targetAnswer.id,

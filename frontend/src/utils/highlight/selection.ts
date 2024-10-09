@@ -201,13 +201,13 @@ export const getStartBlockOffset = (infoForOffset: EditorSelectionInfo, block: E
   const { isForwardDrag, startBlock, selection, isOnlyOneSelectedBlock } = infoForOffset;
   const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
 
-  const start = calculateOffsetInBlock({
+  const startIndex = calculateOffsetInBlock({
     selectionTargetNode: isForwardDrag ? anchorNode : focusNode,
     selectionTargetOffset: isForwardDrag ? anchorOffset : focusOffset,
     blockElement: startBlock,
   });
-  // NOTE: end에 -1하는 이유 : 끝나는 포커스위치의 offset이 글자 index보다 1큼
-  const end = isOnlyOneSelectedBlock
+  // NOTE: endIndex에 -1하는 이유 : 끝나는 포커스위치의 offset이 글자 index보다 1큼
+  const endIndex = isOnlyOneSelectedBlock
     ? calculateOffsetInBlock({
         selectionTargetNode: isForwardDrag ? focusNode : anchorNode,
         selectionTargetOffset: isForwardDrag ? focusOffset - 1 : anchorOffset - 1,
@@ -215,20 +215,20 @@ export const getStartBlockOffset = (infoForOffset: EditorSelectionInfo, block: E
       })
     : block.text.length;
 
-  return { start, end };
+  return { startIndex, endIndex };
 };
 
 export const getEndBlockOffset = (infoForOffset: EditorSelectionInfo) => {
   const { isForwardDrag, endBlock, selection } = infoForOffset;
   const { anchorNode, anchorOffset, focusNode, focusOffset } = selection;
 
-  const end = calculateOffsetInBlock({
+  const endIndex = calculateOffsetInBlock({
     selectionTargetNode: isForwardDrag ? focusNode : anchorNode,
     selectionTargetOffset: isForwardDrag ? focusOffset - 1 : anchorOffset - 1,
     blockElement: endBlock,
   });
 
-  return end;
+  return endIndex;
 };
 
 export const removeSelection = () => document.getSelection()?.removeAllRanges();

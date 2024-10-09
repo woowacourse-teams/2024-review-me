@@ -13,8 +13,8 @@ const createHighlightBinaryArray = ({ arrayLength, list }: CreateHighlightBinary
   const array = '0'.repeat(arrayLength).split('');
 
   list.forEach((item) => {
-    const { start, end } = item;
-    for (let i = start; i <= end; i++) {
+    const { startIndex, endIndex } = item;
+    for (let i = startIndex; i <= endIndex; i++) {
       array[i] = '1';
     }
   });
@@ -27,18 +27,18 @@ const createHighlightBinaryArray = ({ arrayLength, list }: CreateHighlightBinary
  * @param array
  */
 const makeHighlightListByConsecutiveOnes = (array: string[]) => {
-  const result = [];
-  let start = -1; // 시작점 초기화 (아직 찾지 못한 상태)
+  const result: Highlight[] = [];
+  let startIndex = -1; // 시작점 초기화 (아직 찾지 못한 상태)
 
   for (let i = 0; i < array.length; i++) {
-    if (array[i] === '1' && start === -1) {
+    if (array[i] === '1' && startIndex === -1) {
       // 1이 시작되는 지점
-      start = i;
-    } else if ((array[i] === '0' || i === array.length - 1) && start !== -1) {
+      startIndex = i;
+    } else if ((array[i] === '0' || i === array.length - 1) && startIndex !== -1) {
       // 1이 끝나는 지점: 0을 만났거나 배열의 끝에 도달했을 때
-      const end = array[i] === '1' ? i : i - 1;
-      result.push({ start, end });
-      start = -1; // 다시 초기화
+      const endIndex = array[i] === '1' ? i : i - 1;
+      result.push({ startIndex, endIndex });
+      startIndex = -1; // 다시 초기화
     }
   }
 
@@ -63,19 +63,19 @@ export const mergeHighlightList = ({
 interface GetUpdatedBlockByHighlightParams {
   blockTextLength: number;
   blockIndex: number;
-  start: number;
-  end: number;
+  startIndex: number;
+  endIndex: number;
   blockList: EditorBlockData[];
 }
 
 export const getUpdatedBlockByHighlight = ({
   blockTextLength,
   blockIndex,
-  start,
-  end,
+  startIndex,
+  endIndex,
   blockList,
 }: GetUpdatedBlockByHighlightParams) => {
-  const newHighlight = { start, end };
+  const newHighlight: Highlight = { startIndex, endIndex };
   const block = blockList[blockIndex];
   const { highlightList } = block;
 
@@ -88,8 +88,8 @@ export const getUpdatedBlockByHighlight = ({
 interface GetRemovedHighlightListParams {
   blockTextLength: number;
   highlightList: Highlight[];
-  start: number; // 지우는 영역 시작점
-  end: number; // 지우는 영역 끝나는 지점
+  startIndex: number; // 지우는 영역 시작점
+  endIndex: number; // 지우는 영역 끝나는 지점
 }
 
 /**
@@ -98,13 +98,13 @@ interface GetRemovedHighlightListParams {
 const getHighlightListAfterPartialRemoval = ({
   blockTextLength,
   highlightList,
-  start,
-  end,
+  startIndex,
+  endIndex,
 }: GetRemovedHighlightListParams) => {
   const array = createHighlightBinaryArray({ arrayLength: blockTextLength, list: highlightList });
 
   //지우기
-  for (let i = start; i <= end; i++) {
+  for (let i = startIndex; i <= endIndex; i++) {
     array[i] = '0';
   }
 
@@ -116,21 +116,23 @@ const getHighlightListAfterPartialRemoval = ({
  */
 const getHighlightListAfterFullyRemoval = ({
   highlightList,
-  start,
-  end,
+  startIndex,
+  endIndex,
 }: Omit<GetRemovedHighlightListParams, 'blockTextLength'>) => {
-  return highlightList.filter(({ start: hStart, end: hEnd }) => {
-    return hEnd <= start || hStart >= end;
+  return highlightList.filter(({ startIndex: hStartIndex, endIndex: hEndIndex }) => {
+    return hEndIndex <= startIndex || hStartIndex >= endIndex;
   });
 };
 
 /*하이라이트 삭제 함수*/
 export const getRemovedHighlightList = (params: GetRemovedHighlightListParams) => {
-  const { highlightList, start, end } = params;
-  const isDeleteHighlightFully = highlightList.find((item) => item.start === start && item.end === end);
+  const { highlightList, startIndex, endIndex } = params;
+  const isDeleteHighlightFully = highlightList.find(
+    (item) => item.startIndex === startIndex && item.endIndex === endIndex,
+  );
   // 이미 있는 하이라이트 영역을 모두 삭제 경우
   if (isDeleteHighlightFully) {
-    return getHighlightListAfterFullyRemoval({ highlightList, start, end });
+    return getHighlightListAfterFullyRemoval({ highlightList, startIndex, endIndex });
   }
 
   return getHighlightListAfterPartialRemoval(params);
