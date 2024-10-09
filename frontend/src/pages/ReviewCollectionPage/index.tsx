@@ -32,7 +32,7 @@ const ReviewCollectionPage = () => {
           <S.ReviewCollection>
             {GROUPED_REVIEWS_MOCK_DATA.reviews.map((review, index) => {
               return (
-                <Accordion title={review.question.name} key={index} initiallyOpened={index === 0 ? true : false}>
+                <Accordion title={review.question.name} key={index} isInitiallyOpened={index === 0 ? true : false}>
                   {review.question.type === 'CHECKBOX' ? (
                     <p>객관식 통계 차트</p>
                   ) : (
