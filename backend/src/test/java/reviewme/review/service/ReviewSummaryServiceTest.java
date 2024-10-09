@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
+import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 import static reviewme.fixture.TemplateFixture.템플릿;
 
@@ -52,12 +53,7 @@ class ReviewSummaryServiceTest {
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
-        ReviewGroup reviewGroup = reviewGroupRepository.save(new ReviewGroup(
-                "ted",
-                "review-me",
-                "reviewRequestCode",
-                "groupAccessCode"
-        ));
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of());
         Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of());
@@ -80,12 +76,7 @@ class ReviewSummaryServiceTest {
     @Test
     void 리뷰_요약_정보_조회시_리뷰_요청_코드가_존재하지_않는_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(new ReviewGroup(
-                "ted",
-                "review-me",
-                "reviewRequestCode",
-                "groupAccessCode"
-        ));
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // when, then
         assertThatThrownBy(() -> reviewSummaryService.getReviewSummary(
