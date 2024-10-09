@@ -24,7 +24,7 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.question.domain.QuestionType;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
-import reviewme.review.service.dto.response.gathered.AnswerContentResponse;
+import reviewme.review.service.dto.response.gathered.TextResponse;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredByQuestionResponse;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
 import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
@@ -256,8 +256,8 @@ class ReviewApiTest extends ApiTest {
                 new ReviewsGatheredByQuestionResponse(
                         new SimpleQuestionResponse("서술형 질문", QuestionType.TEXT),
                         List.of(
-                                new AnswerContentResponse("산초의 답변"),
-                                new AnswerContentResponse("삼촌의 답변")),
+                                new TextResponse("산초의 답변"),
+                                new TextResponse("삼촌의 답변")),
                         null),
                 new ReviewsGatheredByQuestionResponse(
                         new SimpleQuestionResponse("선택형 질문", QuestionType.CHECKBOX),

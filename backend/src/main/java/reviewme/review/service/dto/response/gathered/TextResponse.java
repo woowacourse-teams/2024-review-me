@@ -1,6 +1,6 @@
 package reviewme.review.service.dto.response.gathered;
 
-public record AnswerContentResponse(
+public record TextResponse(
         String content
 ) {
 }
