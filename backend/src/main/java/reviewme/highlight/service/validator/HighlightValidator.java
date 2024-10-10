@@ -1,22 +1,15 @@
 package reviewme.highlight.service.validator;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import reviewme.highlight.domain.HighlightPosition;
 import reviewme.highlight.service.dto.HighlightRequest;
-import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
-import reviewme.highlight.service.exception.HighlightDuplicatedException;
-import reviewme.highlight.service.exception.InvalidHighlightLineIndexException;
 import reviewme.highlight.service.exception.SubmittedAnswerAndProvidedAnswerMismatchException;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.AnswerRepository;
 import reviewme.review.repository.TextAnswerRepository;
-import reviewme.review.service.exception.AnswerNotFoundByIdException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 
 @Component
@@ -31,8 +24,6 @@ public class HighlightValidator {
         validateAnswerByReviewGroup(request, reviewGroupId);
         validateQuestionByReviewGroup(request, reviewGroupId);
         validateAnswerByQuestion(request);
-        validateLineIndex(request);
-        validateDuplicate(request);
     }
 
     private void validateQuestionByReviewGroup(HighlightsRequest request, long reviewGroupId) {
@@ -66,38 +57,5 @@ public class HighlightValidator {
         if (!providedAnswerIds.containsAll(submittedAnswerIds)) {
             throw new SubmittedAnswerAndProvidedAnswerMismatchException(providedAnswerIds, submittedAnswerIds);
         }
-    }
-
-    private void validateLineIndex(HighlightsRequest request) {
-        for (HighlightRequest highlight : request.highlights()) {
-            TextAnswer textAnswer = textAnswerRepository.findById(highlight.answerId())
-                    .orElseThrow(() -> new AnswerNotFoundByIdException(highlight.answerId()));
-            long maxLineIndex = textAnswer.getContent().lines().count();
-
-            for (HighlightedLineRequest line : highlight.lines()) {
-                long submittedLineIndex = line.index();
-                if (maxLineIndex < submittedLineIndex) {
-                    throw new InvalidHighlightLineIndexException(submittedLineIndex, maxLineIndex);
-                }
-            }
-        }
-    }
-
-    private void validateDuplicate(HighlightsRequest request) {
-        Set<HighlightPosition> uniqueHighlights = new HashSet<>();
-
-        request.highlights().forEach(highlight ->
-                highlight.lines().forEach(line ->
-                        line.ranges().forEach(range -> {
-                            HighlightPosition key = new HighlightPosition(line.index(),
-                                    range.startIndex(), range.endIndex());
-                            if (!uniqueHighlights.add(key)) {
-                                throw new HighlightDuplicatedException(
-                                        highlight.answerId(), line.index(), range.startIndex(), range.endIndex()
-                                );
-                            }
-                        })
-                )
-        );
     }
 }

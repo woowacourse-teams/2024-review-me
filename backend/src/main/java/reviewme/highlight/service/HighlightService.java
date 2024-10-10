@@ -1,13 +1,21 @@
 package reviewme.highlight.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.actuate.autoconfigure.condition.ConditionsReportEndpoint;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.highlight.domain.HighLight;
+import reviewme.highlight.domain.HighlightedContent;
 import reviewme.highlight.repository.HighlightRepository;
+import reviewme.highlight.service.dto.HighlightRequest;
+import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
 import reviewme.highlight.service.validator.HighlightValidator;
+import reviewme.review.domain.TextAnswer;
+import reviewme.review.repository.AnswerRepository;
+import reviewme.review.repository.TextAnswerRepository;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -16,9 +24,12 @@ import reviewme.reviewgroup.repository.ReviewGroupRepository;
 public class HighlightService {
 
     private final HighlightRepository highlightRepository;
+    private final TextAnswerRepository textAnswerRepository;
     private final ReviewGroupRepository reviewGroupRepository;
 
     private final HighlightValidator highlightValidator;
+    private final AnswerRepository answerRepository;
+    private final ConditionsReportEndpoint conditionsReportEndpoint;
 
     @Transactional
     public void highlight(HighlightsRequest request, String reviewRequestCode) {
@@ -27,25 +38,29 @@ public class HighlightService {
                 .getId();
 
         highlightValidator.validate(request, reviewGroupId);
-        deleteOldHighlight(request.questionId(), reviewGroupId);
+
+        // Remove old highlights
+        highlightRepository.deleteByReviewGroupIdAndQuestionId(reviewGroupId, request.questionId());
+
+        Map<Long, HighlightedContent> highlightedContents = textAnswerRepository.findAllById(request.answerIds())
+                .stream()
+                .collect(Collectors.toMap(TextAnswer::getId, answer -> new HighlightedContent(answer.getContent())));
+
+        for (HighlightRequest highlightRequest : request.highlights()) {
+            HighlightedContent highlightedContent = highlightedContents.get(highlightRequest.answerId());
+            addLines(highlightedContent, highlightRequest.lines());
+        }
+
         saveNewHighlight(request, reviewGroupId);
     }
 
-    private void deleteOldHighlight(long questionId, long reviewGroupId) {
-        highlightRepository.deleteByReviewGroupIdAndQuestionId(reviewGroupId, questionId);
-    }
-
-    private void saveNewHighlight(HighlightsRequest highlightsRequest, long reviewGroupId) {
-        List<HighLight> highLights = highlightsRequest.highlights()
-                .stream()
-                .flatMap(highlightRequest -> highlightRequest.lines().stream()
-                        .flatMap(line -> line.ranges().stream()
-                                .map(range -> new HighLight(
-                                        reviewGroupId, highlightsRequest.questionId(), highlightRequest.answerId(),
-                                        line.index(), range.startIndex(), range.endIndex()
-                                ))
-                        ))
-                .toList();
-        highlightRepository.saveAll(highLights);
+    private void addLines(HighlightedContent highlightedContent, List<HighlightedLineRequest> lines) {
+        for (HighlightedLineRequest lineRequest : lines) {
+            long lineIndex = lineRequest.index();
+            lineRequest.ranges()
+                    .forEach(range -> highlightedContent.addHighlightPosition(
+                            lineIndex, range.startIndex(), range.endIndex())
+                    );
+        }
     }
 }

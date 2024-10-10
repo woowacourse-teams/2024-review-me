@@ -23,23 +23,18 @@ public class HighLight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "review_group_id", nullable = false)
-    private long reviewGroupId;
-
-    @Column(name = "question_id", nullable = false)
-    private long questionId;
-
     @Column(name = "answer_id", nullable = false)
     private long answerId;
 
-    @Embedded
-    private HighlightPosition highlightPosition;
+    @Column(name = "line_index", nullable = false)
+    private long lineIndex;
 
-    public HighLight(long reviewGroupId, long questionId, long answerId,
-                     long lineIndex, long startIndex, long endIndex) {
-        this.reviewGroupId = reviewGroupId;
-        this.questionId = questionId;
+    @Embedded
+    private HighlightRange highlightRange;
+
+    public HighLight(long answerId, long lineIndex, long startIndex, long endIndex) {
         this.answerId = answerId;
-        this.highlightPosition = new HighlightPosition(lineIndex, startIndex, endIndex);
+        this.lineIndex = lineIndex;
+        this.highlightRange = new HighlightRange(startIndex, endIndex);
     }
 }

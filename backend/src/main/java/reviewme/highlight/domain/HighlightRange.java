@@ -6,15 +6,13 @@ import reviewme.highlight.domain.exception.InvalidHighlightRangeException;
 
 @Getter
 @EqualsAndHashCode
-public class HighlightPosition {
+public class HighlightRange {
 
-    private final long lineIndex;
     private final long startIndex;
     private final long endIndex;
 
-    public HighlightPosition(long lineIndex, long startIndex, long endIndex) {
+    public HighlightRange(long startIndex, long endIndex) {
         validateRange(startIndex, endIndex);
-        this.lineIndex = lineIndex;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
     }

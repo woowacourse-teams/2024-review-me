@@ -16,7 +16,7 @@ import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
 import reviewme.highlight.service.dto.HighlightRequest;
 import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
-import reviewme.highlight.domain.HighlightPosition;
+import reviewme.highlight.domain.HighlightRange;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
@@ -122,10 +122,10 @@ class HighlightServiceTest {
                 () -> assertThat(highLights.get(1).getReviewGroupId()).isEqualTo(reviewGroupId),
                 () -> assertThat(highLights.get(0).getAnswerId()).isEqualTo(textAnswer1.getId()),
                 () -> assertThat(highLights.get(1).getAnswerId()).isEqualTo(textAnswer2.getId()),
-                () -> assertThat(highLights.get(0).getHighlightPosition()).isEqualTo(
-                        new HighlightPosition(lineIndex, startIndex, endIndex)),
-                () -> assertThat(highLights.get(0).getHighlightPosition()).isEqualTo(
-                        new HighlightPosition(lineIndex, startIndex, endIndex))
+                () -> assertThat(highLights.get(0).getHighlightRange()).isEqualTo(
+                        new HighlightRange(lineIndex, startIndex, endIndex)),
+                () -> assertThat(highLights.get(0).getHighlightRange()).isEqualTo(
+                        new HighlightRange(lineIndex, startIndex, endIndex))
         );
     }
 }

@@ -12,4 +12,11 @@ public record HighlightsRequest(
         @Valid @NotNull(message = "하이라이트할 부분을 입력해주세요.")
         List<HighlightRequest> highlights
 ) {
+
+    public List<Long> answerIds() {
+        return highlights.stream()
+                .map(HighlightRequest::answerId)
+                .distinct()
+                .toList();
+    }
 }
