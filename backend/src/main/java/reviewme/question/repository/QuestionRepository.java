@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
 
 @Repository
@@ -41,4 +42,11 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             WHERE sq.section_id = :sectionId AND rg.review_request_code =:reviewRequestCode
             """, nativeQuery = true)
     List<Question> findAllByReviewRequestCodeAndSectionId(String reviewRequestCode, long sectionId);
+
+    @Query("""
+        SELECT o FROM OptionItem o
+        JOIN OptionGroup og ON o.optionGroupId = og.id
+        WHERE og.questionId = :questionId
+        """)
+    List<OptionItem> findAllOptionItemsById(long questionId);
 }

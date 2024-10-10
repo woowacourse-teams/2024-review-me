@@ -2,7 +2,10 @@ package reviewme.question.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
+import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
+import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 import static reviewme.fixture.TemplateFixture.템플릿;
@@ -12,6 +15,8 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import reviewme.question.domain.OptionGroup;
+import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -34,6 +39,12 @@ class QuestionRepositoryTest {
 
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
+
+    @Autowired
+    private OptionGroupRepository optionGroupRepository;
+
+    @Autowired
+    private OptionItemRepository optionItemRepository;
 
     @Test
     void 템플릿_아이디로_질문_목록_아이디를_모두_가져온다() {
@@ -108,6 +119,29 @@ class QuestionRepositoryTest {
         assertAll(
                 () -> assertThat(questionsInSection1).containsOnly(question1, question2),
                 () -> assertThat(questionsInSection2).containsOnly(question3, question4)
+        );
+    }
+
+    @Test
+    void 질문_아이디에_해당하는_모든_옵션_아이템을_불러온다() {
+        // given
+        Question question1 = questionRepository.save(선택형_필수_질문());
+        Question question2 = questionRepository.save(선택형_필수_질문());
+        OptionGroup optionGroup1 = optionGroupRepository.save(선택지_그룹(question1.getId()));
+        OptionGroup optionGroup2 = optionGroupRepository.save(선택지_그룹(question2.getId()));
+
+        OptionItem optionItem1 = optionItemRepository.save(선택지(optionGroup1.getId()));
+        OptionItem optionItem2 = optionItemRepository.save(선택지(optionGroup1.getId()));
+        OptionItem optionItem3 = optionItemRepository.save(선택지(optionGroup2.getId()));
+
+        // when
+        List<OptionItem> optionItemsForQuestion1 = questionRepository.findAllOptionItemsById(question1.getId());
+        List<OptionItem> optionItemsForQuestion2 = questionRepository.findAllOptionItemsById(question2.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(optionItemsForQuestion1).containsOnly(optionItem1, optionItem2),
+                () -> assertThat(optionItemsForQuestion2).containsOnly(optionItem3)
         );
     }
 }

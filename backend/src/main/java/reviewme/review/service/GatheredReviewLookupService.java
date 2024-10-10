@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
-import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswer;
@@ -31,7 +30,6 @@ public class GatheredReviewLookupService {
 
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
-    private final OptionItemRepository optionItemRepository;
 
     @Transactional(readOnly = true)
     public ReviewsGatheredBySectionResponse getReceivedReviewsBySectionId(String reviewRequestCode, long sectionId) {
@@ -88,7 +86,7 @@ public class GatheredReviewLookupService {
                 .collect(Collectors.groupingBy(CheckboxAnswerSelectedOption::getSelectedOptionId,
                         Collectors.counting()));
 
-        List<OptionItem> allOptionItem = optionItemRepository.findAllByQuestionId(question.getId());
+        List<OptionItem> allOptionItem = questionRepository.findAllOptionItemsById(question.getId());
         return allOptionItem.stream()
                 .map(optionItem -> new VoteResponse(
                         optionItem.getContent(),
