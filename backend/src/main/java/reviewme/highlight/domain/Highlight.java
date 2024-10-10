@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "highlight")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode
 @Getter
 public class Highlight {
 
