@@ -40,7 +40,7 @@ public class ReviewGatherMapper {
     }
 
     @Nullable
-    List<TextResponse> mapToTextResponse(Question question, List<Answer> answers) {
+    private List<TextResponse> mapToTextResponse(Question question, List<Answer> answers) {
         if (question.isSelectable()) {
             return null;
         }
@@ -52,7 +52,7 @@ public class ReviewGatherMapper {
     }
 
     @Nullable
-    List<VoteResponse> mapToVoteResponse(Question question, List<Answer> answers) {
+    private List<VoteResponse> mapToVoteResponse(Question question, List<Answer> answers) {
         if (!question.isSelectable()) {
             return null;
         }
