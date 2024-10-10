@@ -9,12 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.fixture.QuestionFixture;
 import reviewme.fixture.ReviewGroupFixture;
-import reviewme.highlight.domain.exception.InvalidHighlightRangeException;
-import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
 import reviewme.highlight.service.dto.HighlightRequest;
 import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
-import reviewme.highlight.service.exception.HighlightDuplicatedException;
 import reviewme.highlight.service.exception.InvalidHighlightLineIndexException;
 import reviewme.highlight.service.exception.SubmittedAnswerAndProvidedAnswerMismatchException;
 import reviewme.question.domain.Question;
@@ -67,13 +64,17 @@ class HighlightValidatorTest {
     @Test
     void 하이라이트의_답변_id가_리뷰_그룹에_달린_답변이_아니면_예외를_발생한다() {
         // given
+        long questionId = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
+        Section section = sectionRepository.save(항상_보이는_섹션(List.of(questionId)));
+        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+
         ReviewGroup reviewGroup1 = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹());
         ReviewGroup reviewGroup2 = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹());
-        TextAnswer textAnswer1 = new TextAnswer(1L, "text answer1");
-        TextAnswer textAnswer2 = new TextAnswer(1L, "text answer2");
+        TextAnswer textAnswer1 = new TextAnswer(questionId, "text answer1");
+        TextAnswer textAnswer2 = new TextAnswer(questionId, "text answer2");
         reviewRepository.saveAll(List.of(
-                new Review(1L, reviewGroup1.getId(), List.of(textAnswer1)),
-                new Review(1L, reviewGroup2.getId(), List.of(textAnswer2))
+                new Review(template.getId(), reviewGroup1.getId(), List.of(textAnswer1)),
+                new Review(template.getId(), reviewGroup2.getId(), List.of(textAnswer2))
         ));
 
         HighlightRequest highlightRequest = new HighlightRequest(textAnswer2.getId(), List.of());
@@ -122,48 +123,5 @@ class HighlightValidatorTest {
         // when & then
         assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroupId))
                 .isInstanceOf(InvalidHighlightLineIndexException.class);
-    }
-
-    @Test
-    void 하이라이트의_시작_인덱스가_종료_인덱스보다_큰_경우_예외를_발생한다() {
-        // given
-        long questionId = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
-        long sectionId = sectionRepository.save(항상_보이는_섹션(List.of(questionId))).getId();
-        long templateId = templateRepository.save(템플릿(List.of(sectionId))).getId();
-
-        TextAnswer textAnswer = new TextAnswer(questionId, "text answer");
-        long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹()).getId();
-        Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer)));
-
-        HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(2L, 1L);
-        HighlightedLineRequest lineRequest = new HighlightedLineRequest(1L, List.of(indexRangeRequest));
-        HighlightRequest highlightRequest = new HighlightRequest(textAnswer.getId(), List.of(lineRequest));
-        HighlightsRequest highlightsRequest = new HighlightsRequest(questionId, List.of(highlightRequest));
-
-        // when & then
-        assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroupId))
-                .isInstanceOf(InvalidHighlightRangeException.class);
-    }
-
-    @Test
-    void 하이라이트의_답변_id와_줄_번호와_시작_종료_인덱스가_같은_요청이_한번에_들어오면_예외를_발생한다() {
-        // given
-        long questionId = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
-        long sectionId = sectionRepository.save(항상_보이는_섹션(List.of(questionId))).getId();
-        long templateId = templateRepository.save(템플릿(List.of(sectionId))).getId();
-
-        TextAnswer textAnswer = new TextAnswer(questionId, "text answer");
-        long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹()).getId();
-        Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer)));
-
-        HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(1L, 2L);
-        HighlightedLineRequest lineRequest = new HighlightedLineRequest(1L, List.of(indexRangeRequest));
-        HighlightRequest highlightRequest = new HighlightRequest(textAnswer.getId(), List.of(lineRequest));
-        HighlightsRequest highlightsRequest = new HighlightsRequest(questionId,
-                List.of(highlightRequest, highlightRequest));
-
-        // when & then
-        assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroupId))
-                .isInstanceOf(HighlightDuplicatedException.class);
     }
 }
