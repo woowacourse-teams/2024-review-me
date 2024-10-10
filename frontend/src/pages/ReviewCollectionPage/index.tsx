@@ -34,8 +34,8 @@ const ReviewCollectionPage = () => {
             {GROUPED_REVIEWS_MOCK_DATA.reviews.map((review, index) => {
               return (
                 <Accordion title={review.question.name} key={index} initiallyOpened={index === 0 ? true : false}>
-                  {review.question.type === 'CHECKBOX' && review.votes !== null ? (
-                    <DoughnutChart reviewVotes={review.votes} />
+                  {review.question.type === 'CHECKBOX' ? (
+                    <DoughnutChart reviewVotes={review.votes!} />
                   ) : (
                     <S.ReviewAnswerContainer>
                       {review.answers?.map((answer, index) => {
