@@ -33,7 +33,7 @@ public class ReviewGatherMapper {
 
     private ReviewsGatheredByQuestionResponse mapToResponseByQuestion(Question question, List<Answer> answers) {
         return new ReviewsGatheredByQuestionResponse(
-                new SimpleQuestionResponse(question.getContent(), question.getQuestionType()),
+                new SimpleQuestionResponse(question.getId(), question.getContent(), question.getQuestionType()),
                 mapToTextResponse(question, answers),
                 mapToVoteResponse(question, answers)
         );
@@ -47,7 +47,7 @@ public class ReviewGatherMapper {
 
         return answers.stream()
                 .map(answer -> (TextAnswer) answer)
-                .map(textAnswer -> new TextResponse(textAnswer.getContent()))
+                .map(textAnswer -> new TextResponse(textAnswer.getId(), textAnswer.getContent(), List.of()))
                 .toList();
     }
 
