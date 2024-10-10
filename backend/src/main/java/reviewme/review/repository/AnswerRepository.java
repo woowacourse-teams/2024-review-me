@@ -11,6 +11,12 @@ import reviewme.review.domain.Answer;
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query(value = """
+            SELECT a FROM Answer a
+            WHERE a.questionId IN :questionIds
+            """)
+    List<Answer> findAllByQuestionIds(List<Long> questionIds);
+
+    @Query(value = """
             SELECT a.id FROM Answer a
             JOIN Review r
             ON a.reviewId = r.id

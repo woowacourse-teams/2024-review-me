@@ -61,7 +61,7 @@ class AnswerRepositoryTest {
         reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer1, answer2, answer3)));
 
         // when
-        List<Answer> actual = answerRepository.findAllByQuestions(List.of(question1.getId(), question2.getId()));
+        List<Answer> actual = answerRepository.findAllByQuestionIds(List.of(question1.getId(), question2.getId()));
 
         // then
         assertThat(actual).containsOnly(answer1, answer2);
