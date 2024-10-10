@@ -1,3 +1,5 @@
+import { ReviewAnswerResponseData } from './highlight';
+
 export interface Keyword {
   id: number;
   content: string;
@@ -110,6 +112,7 @@ export interface GroupedReviews {
 
 export interface GroupedReview {
   question: {
+    id: number;
     name: string;
     type: QuestionType;
   };
@@ -117,7 +120,7 @@ export interface GroupedReview {
    * CollectedReviewAnswer[] : 주관식 질문에서 답변 모아놓은 배열
    * null : 객관식 질문인 경우
    */
-  answers: ReviewAnswer[] | null;
+  answers: ReviewAnswerResponseData[] | null;
   /**
    * CollectedReviewVotes[] : 객관식 질문에서 옵션-득표수 모아놓은 배열
    * null : 주관식 질문인 경우

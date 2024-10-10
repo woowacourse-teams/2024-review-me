@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Accordion, AuthAndServerErrorFallback, Dropdown, ErrorSuspenseContainer, TopButton } from '@/components';
 import { DropdownItem } from '@/components/common/Dropdown';
+import HighlightEditor from '@/components/highlight/HighlightEditor';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 import { useGetReviewList } from '@/hooks';
 
@@ -42,6 +43,9 @@ const ReviewCollectionPage = () => {
                     <DoughnutChart reviewVotes={review.votes!} />
                   ) : (
                     <S.ReviewAnswerContainer>
+                      {review.answers && (
+                        <HighlightEditor questionId={review.question.id} answerList={review.answers} />
+                      )}
                       {review.answers?.map((answer, index) => {
                         return <S.ReviewAnswer key={index}>{answer.content}</S.ReviewAnswer>;
                       })}
