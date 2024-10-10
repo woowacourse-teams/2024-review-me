@@ -4,12 +4,12 @@
 CREATE TABLE highlight
 (
     id              BIGINT AUTO_INCREMENT,
-    questionId      BIGINT NOT NULl,
-    review_group_id BIGINT NOT NULl,
-    answer_id       BIGINT NOT NULl,
-    line_index      BIGINT NOT NULl,
-    start_index     BIGINT NOT NULl,
-    end_index       BIGINT NOT NULl,
+    questionId      BIGINT NOT NULL,
+    review_group_id BIGINT NOT NULL,
+    answer_id       BIGINT NOT NULL,
+    line_index      BIGINT NOT NULL,
+    start_index     BIGINT NOT NULL,
+    end_index       BIGINT NOT NULL,
     PRIMARY KEY (id)
 );
 
