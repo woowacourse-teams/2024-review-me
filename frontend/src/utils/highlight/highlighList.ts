@@ -127,8 +127,10 @@ const getHighlightListAfterFullyRemoval = ({
 /*하이라이트 삭제 함수*/
 export const getRemovedHighlightList = (params: GetRemovedHighlightListParams) => {
   const { highlightList, startIndex, endIndex } = params;
-  // 한 글자 삭제
-  if (startIndex === endIndex)
+  // 한 글자만 하이라이트된 것을 삭제하는 겨우
+  const isRemoveSingleHighlight = highlightList.find((h) => h.endIndex == endIndex && h.startIndex === startIndex);
+
+  if (isRemoveSingleHighlight)
     return highlightList.filter((i) => i.startIndex !== startIndex && i.endIndex !== endIndex);
 
   const isDeleteHighlightFully = highlightList.find(
