@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.fixture.QuestionFixture;
 import reviewme.fixture.ReviewGroupFixture;
+import reviewme.highlight.domain.exception.InvalidHighlightRangeException;
 import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
 import reviewme.highlight.service.dto.HighlightRequest;
 import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
 import reviewme.highlight.service.exception.HighlightDuplicatedException;
 import reviewme.highlight.service.exception.InvalidHighlightLineIndexException;
-import reviewme.highlight.service.exception.InvalidHighlightRangeException;
 import reviewme.highlight.service.exception.SubmittedAnswerAndProvidedAnswerMismatchException;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
@@ -53,6 +53,18 @@ class HighlightValidatorTest {
     TemplateRepository templateRepository;
 
     @Test
+    void 하이라이트의_질문_id가_리뷰_그룹의_템플릿에_속한_질문이_아니면_예외를_발생한다() {
+        // given
+        ReviewGroup reviewGroup = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹());
+        Question question = questionRepository.save(QuestionFixture.서술형_필수_질문());
+        HighlightsRequest highlightsRequest = new HighlightsRequest(question.getId(), List.of());
+
+        // when && then
+        assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroup.getId()))
+                .isInstanceOf(SubmittedQuestionAndProvidedQuestionMismatchException.class);
+    }
+
+    @Test
     void 하이라이트의_답변_id가_리뷰_그룹에_달린_답변이_아니면_예외를_발생한다() {
         // given
         ReviewGroup reviewGroup1 = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹());
@@ -70,18 +82,6 @@ class HighlightValidatorTest {
         // when &&  then
         assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroup1.getId()))
                 .isInstanceOf(SubmittedAnswerAndProvidedAnswerMismatchException.class);
-    }
-
-    @Test
-    void 하이라이트의_질문_id가_리뷰_그룹의_템플릿에_속한_질문이_아니면_예외를_발생한다() {
-        // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹());
-        Question question = questionRepository.save(QuestionFixture.서술형_필수_질문());
-        HighlightsRequest highlightsRequest = new HighlightsRequest(question.getId(), List.of());
-
-        // when && then
-        assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroup.getId()))
-                .isInstanceOf(SubmittedQuestionAndProvidedQuestionMismatchException.class);
     }
 
     @Test

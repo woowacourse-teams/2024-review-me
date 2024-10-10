@@ -10,7 +10,6 @@ import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
 import reviewme.highlight.service.exception.HighlightDuplicatedException;
 import reviewme.highlight.service.exception.InvalidHighlightLineIndexException;
-import reviewme.highlight.service.exception.InvalidHighlightRangeException;
 import reviewme.highlight.service.exception.SubmittedAnswerAndProvidedAnswerMismatchException;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.TextAnswer;
@@ -36,6 +35,15 @@ public class HighlightValidator {
         validateDuplicate(request);
     }
 
+    private void validateQuestionByReviewGroup(HighlightsRequest request, long reviewGroupId) {
+        Set<Long> providedQuestionIds = questionRepository.findIdsByReviewGroupId(reviewGroupId);
+        long submittedQuestionId = request.questionId();
+
+        if (!providedQuestionIds.contains(submittedQuestionId)) {
+            throw new SubmittedQuestionAndProvidedQuestionMismatchException(submittedQuestionId, providedQuestionIds);
+        }
+    }
+
     private void validateAnswerByReviewGroup(HighlightsRequest request, long reviewGroupId) {
         Set<Long> providedAnswerIds = answerRepository.findIdsByReviewGroupId(reviewGroupId);
         List<Long> submittedAnswerIds = request.highlights()
@@ -45,15 +53,6 @@ public class HighlightValidator {
 
         if (!providedAnswerIds.containsAll(submittedAnswerIds)) {
             throw new SubmittedAnswerAndProvidedAnswerMismatchException(providedAnswerIds, submittedAnswerIds);
-        }
-    }
-
-    private void validateQuestionByReviewGroup(HighlightsRequest request, long reviewGroupId) {
-        Set<Long> providedQuestionIds = questionRepository.findIdsByReviewGroupId(reviewGroupId);
-        long submittedQuestionId = request.questionId();
-
-        if (!providedQuestionIds.contains(submittedQuestionId)) {
-            throw new SubmittedQuestionAndProvidedQuestionMismatchException(submittedQuestionId, providedQuestionIds);
         }
     }
 
@@ -104,7 +103,7 @@ public class HighlightValidator {
         request.highlights().forEach(highlight ->
                 highlight.lines().forEach(line ->
                         line.ranges().forEach(range -> {
-                            HighlightKey key = new HighlightKey(
+                            HighlightPosition key = new HighlightPosition(
                                     highlight.answerId(), line.index(), range.startIndex(), range.endIndex()
                             );
                             if (!uniqueHighlights.add(key)) {
