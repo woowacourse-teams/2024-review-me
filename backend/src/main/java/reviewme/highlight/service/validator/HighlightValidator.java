@@ -1,15 +1,12 @@
 package reviewme.highlight.service.validator;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import reviewme.highlight.domain.HighlightPosition;
 import reviewme.highlight.service.dto.HighlightRequest;
 import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
-import reviewme.highlight.service.exception.HighlightDuplicatedException;
 import reviewme.highlight.service.exception.InvalidHighlightLineIndexException;
 import reviewme.highlight.service.exception.SubmittedAnswerAndProvidedAnswerMismatchException;
 import reviewme.question.repository.QuestionRepository;
@@ -34,7 +31,7 @@ public class HighlightValidator {
         validateReviewGroupContainsAnswer(request, reviewGroupId);
         validateQuestionContainsAnswer(request);
         validateLineIndex(request);
-        validateDuplicate(request);
+        // TODO: 중복 내용 요청 검증 추가
     }
 
     private void validateReviewGroupContainsQuestion(HighlightsRequest request, long reviewGroupId) {
@@ -86,23 +83,5 @@ public class HighlightValidator {
                 }
             }
         }
-    }
-
-    private void validateDuplicate(HighlightsRequest request) {
-        Set<HighlightPosition> uniqueHighlights = new HashSet<>();
-
-        request.highlights().forEach(highlight ->
-                highlight.lines().forEach(line ->
-                        line.ranges().forEach(range -> {
-                            HighlightPosition key = new HighlightPosition(line.index(),
-                                    range.startIndex(), range.endIndex());
-                            if (!uniqueHighlights.add(key)) {
-                                throw new HighlightDuplicatedException(
-                                        highlight.answerId(), line.index(), range.startIndex(), range.endIndex()
-                                );
-                            }
-                        })
-                )
-        );
     }
 }
