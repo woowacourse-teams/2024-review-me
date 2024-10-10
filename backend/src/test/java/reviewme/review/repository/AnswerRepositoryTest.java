@@ -8,12 +8,9 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import reviewme.fixture.QuestionFixture;
-import reviewme.fixture.ReviewGroupFixture;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
@@ -52,35 +49,28 @@ class AnswerRepositoryTest {
         // given
         Question question1 = questionRepository.save(서술형_필수_질문());
         Question question2 = questionRepository.save(서술형_필수_질문());
-        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId(), question2.getId())));
+        Question question3 = questionRepository.save(서술형_필수_질문());
+        Section section = sectionRepository.save(항상_보이는_섹션(
+                List.of(question1.getId(), question2.getId(), question3.getId())));
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         TextAnswer answer1 = new TextAnswer(question1.getId(), "답1".repeat(20));
-        TextAnswer answer2 = new TextAnswer(question1.getId(), "답2".repeat(20));
-        TextAnswer answer3 = new TextAnswer(question2.getId(), "답3".repeat(20));
-        Review review1 = reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer1)));
-        Review review2 = reviewRepository.save(new Review(template.getId(), reviewGroup.getId(),
-                List.of(answer2, answer3)));
+        TextAnswer answer2 = new TextAnswer(question2.getId(), "답2".repeat(20));
+        TextAnswer answer3 = new TextAnswer(question3.getId(), "답3".repeat(20));
+        reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer1, answer2, answer3)));
 
         // when
-        List<Answer> answerForQuestion1 = answerRepository.findAllByQuestions(List.of(question1.getId()));
-        List<Answer> answerForQuestion2 = answerRepository.findAllByQuestions(List.of(question2.getId()));
-        List<Answer> answerForAllQuestion = answerRepository.findAllByQuestions(
-                List.of(question1.getId(), question2.getId()));
+        List<Answer> actual = answerRepository.findAllByQuestions(List.of(question1.getId(), question2.getId()));
 
         // then
-        Assertions.assertAll(
-                () -> assertThat(answerForQuestion1).containsOnly(answer1, answer2),
-                () -> assertThat(answerForQuestion2).containsOnly(answer3),
-                () -> assertThat(answerForAllQuestion).containsOnly(answer1, answer2, answer3)
-        );
+        assertThat(actual).containsOnly(answer1, answer2);
     }
 
     @Test
     void 리뷰_그룹_id로_리뷰들을_찾아_id를_반환한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
         TextAnswer answer1 = new TextAnswer(1L, "text answer1");
         TextAnswer answer2 = new TextAnswer(1L, "text answer2");
         Review review = reviewRepository.save(new Review(1L, reviewGroup.getId(), List.of(answer1, answer2)));
@@ -95,9 +85,9 @@ class AnswerRepositoryTest {
     @Test
     void 질문_id로_리뷰들을_찾아_id를_반환한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹());
-        long questionId1 = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
-        long questionId2 = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        long questionId1 = questionRepository.save(서술형_필수_질문()).getId();
+        long questionId2 = questionRepository.save(서술형_필수_질문()).getId();
         TextAnswer textAnswer1_Q1 = new TextAnswer(questionId1, "text answer1 by Q1");
         TextAnswer textAnswer2_Q1 = new TextAnswer(questionId1, "text answer2 by Q1");
         TextAnswer textAnswer1_Q2 = new TextAnswer(questionId2, "text answer1 by Q2");
