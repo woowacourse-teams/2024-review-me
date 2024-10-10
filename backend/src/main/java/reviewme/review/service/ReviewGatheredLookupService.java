@@ -32,6 +32,10 @@ public class ReviewGatheredLookupService {
 
     @Transactional(readOnly = true)
     public ReviewsGatheredBySectionResponse getReceivedReviewsBySectionId(String reviewRequestCode, long sectionId) {
+        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
+        validateSectionId(sectionId, reviewGroup);
+
         Map<Long, Question> questionIdQuestion = questionRepository
                 .findAllByReviewRequestCodeAndSectionId(reviewRequestCode, sectionId)
                 .stream()
@@ -43,6 +47,13 @@ public class ReviewGatheredLookupService {
                 .collect(Collectors.groupingBy(answer -> questionIdQuestion.get(answer.getQuestionId())));
 
         return new ReviewsGatheredBySectionResponse(mapToResponseBySection(questionAnswers));
+    }
+
+    private void validateSectionId(long sectionId, ReviewGroup reviewGroup) {
+        boolean existsByIdAndTemplateId = sectionRepository.existsByIdAndTemplateId(sectionId, reviewGroup.getTemplateId());
+        if (!existsByIdAndTemplateId) {
+            throw new SectionNotFoundInTemplateException(sectionId, reviewGroup.getTemplateId());
+        }
     }
 
     private List<ReviewsGatheredByQuestionResponse> mapToResponseBySection(Map<Question, List<Answer>> questionsToAnswers) {

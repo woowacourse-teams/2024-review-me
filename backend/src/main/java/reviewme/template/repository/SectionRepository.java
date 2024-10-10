@@ -17,4 +17,12 @@ public interface SectionRepository extends JpaRepository<Section, Long> {
             ORDER BY s.position ASC
             """, nativeQuery = true)
     List<Section> findAllByTemplateId(long templateId);
+
+    @Query("""
+            SELECT s FROM Section s
+            JOIN TemplateSection ts ON s.id = ts.sectionId
+            WHERE ts.sectionId = :sectionId
+            AND ts.templateId = :templateId
+            """)
+    boolean existsByIdAndTemplateId(long sectionId, long templateId);
 }
