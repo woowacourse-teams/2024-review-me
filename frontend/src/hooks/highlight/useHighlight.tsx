@@ -89,7 +89,7 @@ const useHighlight = ({
 
       resetSelectionAndButton();
     } catch (error) {
-      // 자세한 에러처리는 나중애
+      // TODO: 자세한 에러처리는 나중애
       console.error(error);
     }
   };
@@ -252,17 +252,17 @@ const useHighlight = ({
 
     if (!targetAnswer) return;
 
-    const newLineList = targetAnswer.lineList.map((block, index) => {
-      if (index < startBlockIndex) return block;
-      if (index > endBlockIndex) return block;
+    const newLineList = targetAnswer.lineList.map((line, index) => {
+      if (index < startBlockIndex) return line;
+      if (index > endBlockIndex) return line;
       if (index === startBlockIndex) {
-        const { startIndex, endIndex } = getStartBlockOffset(selectionInfo, block);
+        const { startIndex, endIndex } = getStartBlockOffset(selectionInfo, line);
 
         return {
-          ...block,
+          ...line,
           highlightList: getRemovedHighlightList({
-            blockTextLength: block.text.length,
-            highlightList: block.highlightList,
+            blockTextLength: line.text.length,
+            highlightList: line.highlightList,
             startIndex,
             endIndex,
           }),
@@ -271,17 +271,17 @@ const useHighlight = ({
       if (index === endBlockIndex) {
         const endIndex = getEndBlockOffset(selectionInfo);
         return {
-          ...block,
+          ...line,
           highlightList: getRemovedHighlightList({
-            blockTextLength: block.text.length,
-            highlightList: block.highlightList,
+            blockTextLength: line.text.length,
+            highlightList: line.highlightList,
             startIndex: 0,
             endIndex,
           }),
         };
       }
       return {
-        ...block,
+        ...line,
         highlightList: [],
       };
     });
@@ -303,22 +303,22 @@ const useHighlight = ({
         if (!targetAnswer) return;
         const { lineList } = targetAnswer;
 
-        const newLineList = lineList.map((block, index) => {
-          if (index < lineIndex) return block;
+        const newLineList = lineList.map((line, index) => {
+          if (index < lineIndex) return line;
 
           if (index > lineIndex) {
             return {
-              ...block,
+              ...line,
               highlightList: [],
             };
           }
           return {
-            ...block,
+            ...line,
             highlightList: getRemovedHighlightList({
-              blockTextLength: block.text.length,
-              highlightList: block.highlightList,
+              blockTextLength: line.text.length,
+              highlightList: line.highlightList,
               startIndex: offset,
-              endIndex: block.text.length - 1,
+              endIndex: line.text.length - 1,
             }),
           };
         });
@@ -332,20 +332,20 @@ const useHighlight = ({
         if (!targetAnswer) return;
         const { lineList } = targetAnswer;
 
-        const newLineList = lineList.map((block, index) => {
-          if (index > lineIndex) return block;
+        const newLineList = lineList.map((line, index) => {
+          if (index > lineIndex) return line;
 
           if (index < lineIndex) {
             return {
-              ...block,
+              ...line,
               highlightList: [],
             };
           }
           return {
-            ...block,
+            ...line,
             highlightList: getRemovedHighlightList({
-              blockTextLength: block.text.length,
-              highlightList: block.highlightList,
+              blockTextLength: line.text.length,
+              highlightList: line.highlightList,
               startIndex: 0,
               endIndex: offset,
             }),
@@ -435,8 +435,6 @@ const useHighlight = ({
     newLineList.splice(lineIndex, 1, newTargetBlock);
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
 
-    // TODO: 서버에 API 요청 보내고 성공 한 후 상태 업데이트
-
     try {
       await postHighlight(newEditorAnswerMap, questionId);
       setEditorAnswerMap(newEditorAnswerMap);
@@ -445,7 +443,7 @@ const useHighlight = ({
       hideRemover();
       setRemovalTarget(null);
     } catch (error) {
-      // 자세한 에러처리는 나중애
+      //TODO: 자세한 에러처리는 나중애
       console.error(error);
     }
   };
