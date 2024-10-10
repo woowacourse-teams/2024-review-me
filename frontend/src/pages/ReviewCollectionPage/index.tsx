@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
 import { Accordion, AuthAndServerErrorFallback, Dropdown, ErrorSuspenseContainer, TopButton } from '@/components';
+import { DropdownItem } from '@/components/common/Dropdown';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 import { useGetReviewList } from '@/hooks';
-import { GROUPED_REVIEWS_MOCK_DATA } from '@/mocks/mockData/reviewCollection';
 
 import DoughnutChart from './components/DoughnutChart';
+import useGetGroupedReviews from './hooks/useGetGroupedReviews';
 import useGetSectionList from './hooks/useGetSectionList';
 import * as S from './styles';
 
@@ -14,12 +15,13 @@ const ReviewCollectionPage = () => {
   const { data } = useGetReviewList();
   const { revieweeName, projectName } = data.pages[0];
 
-  // TODO: react-query 적용 및 드롭다운 아이템 선택 시 요청
   const { data: reviewSectionList } = useGetSectionList();
   const dropdownSectionList = reviewSectionList.sections.map((section) => {
-    return { text: section.name, value: section.name };
+    return { text: section.name, value: section.id };
   });
-  const [reviewSection, setReviewSection] = useState(dropdownSectionList[0].value);
+
+  const [selectedSection, setSelectedSection] = useState<DropdownItem>(dropdownSectionList[0]);
+  const { data: groupedReviews } = useGetGroupedReviews({ sectionId: selectedSection.value as number });
 
   return (
     <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
@@ -28,12 +30,12 @@ const ReviewCollectionPage = () => {
           <S.ReviewSectionDropdown>
             <Dropdown
               items={dropdownSectionList}
-              selectedItem={reviewSection}
-              handleSelect={(item) => setReviewSection(item)}
+              selectedItem={dropdownSectionList.find((section) => section.value === selectedSection.value)!}
+              handleSelect={(item) => setSelectedSection(item)}
             />
           </S.ReviewSectionDropdown>
           <S.ReviewCollection>
-            {GROUPED_REVIEWS_MOCK_DATA.reviews.map((review, index) => {
+            {groupedReviews.reviews.map((review, index) => {
               return (
                 <Accordion title={review.question.name} key={index} isInitiallyOpened={index === 0 ? true : false}>
                   {review.question.type === 'CHECKBOX' ? (

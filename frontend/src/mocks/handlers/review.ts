@@ -16,7 +16,7 @@ import {
   REVIEW_LIST,
   MOCK_AUTH_TOKEN_NAME,
 } from '../mockData';
-import { GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
+import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
 
 export const PAGE = {
   firstPageNumber: 1,
@@ -44,16 +44,19 @@ const getDetailedReview = () =>
   });
 
 const getDataToWriteReview = () =>
-  http.get(new RegExp(`^${REVIEW_WRITING_API_URL}`), async ({ request }) => {
-    //요청 url에서 reviewId, memberId 추출
-    const url = new URL(request.url);
-    const urlRequestCode = url.searchParams.get(REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode);
+  http.get(
+    new RegExp(`^${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}`),
+    async ({ request }) => {
+      //요청 url에서 reviewId, memberId 추출
+      const url = new URL(request.url);
+      const urlRequestCode = url.searchParams.get(REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode);
 
-    if (REVIEW_REQUEST_CODE === urlRequestCode) {
-      return HttpResponse.json(REVIEW_QUESTION_DATA);
-    }
-    return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
-  });
+      if (REVIEW_REQUEST_CODE === urlRequestCode) {
+        return HttpResponse.json(REVIEW_QUESTION_DATA);
+      }
+      return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
+    },
+  );
 
 const getReviewList = (lastReviewId: number | null, size: number) => {
   return http.get(endPoint.gettingReviewList(lastReviewId, size), async ({ request, cookies }) => {
@@ -96,11 +99,17 @@ const getSectionList = () =>
     return HttpResponse.json(GROUPED_SECTION_MOCK_DATA);
   });
 
+const getGroupedReviews = (sectionId: number) =>
+  http.get(endPoint.gettingGroupedReviews(sectionId), async () => {
+    return HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA);
+  });
+
 const reviewHandler = [
   getDetailedReview(),
   getReviewList(null, 10),
   getDataToWriteReview(),
   getSectionList(),
+  getGroupedReviews(1),
   postReview(),
 ];
 
