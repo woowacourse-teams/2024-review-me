@@ -22,6 +22,7 @@ import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question;
+import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
@@ -29,7 +30,10 @@ import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
+import reviewme.review.service.dto.response.gathered.ReviewsGatheredByQuestionResponse;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
+import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
+import reviewme.review.service.dto.response.gathered.TextResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -75,6 +79,95 @@ class ReviewGatheredLookupServiceTest {
     }
 
     @Nested
+    @DisplayName("질문들을 규칙에 맞게 반환한다")
+    class GatherQuestionsBySectionTest {
+
+        Question requiredTextQuestion;
+        Question optionalTextQuestion;
+        Question requiredCheckboxQuestion;
+        Question optionalCheckboxQuestion;
+        Section section;
+
+        @BeforeEach
+        void 질문들을_정해진_규칙에_맞게_반환한다() {
+            // given
+            requiredTextQuestion = questionRepository.save(서술형_필수_질문(1));
+            optionalTextQuestion = questionRepository.save(서술형_옵션_질문(2));
+            requiredCheckboxQuestion = questionRepository.save(선택형_필수_질문(3));
+            optionalCheckboxQuestion = questionRepository.save(선택형_옵션_질문(4));
+            section = sectionRepository.save(항상_보이는_섹션(List.of(
+                    requiredTextQuestion.getId(), optionalTextQuestion.getId(),
+                    requiredCheckboxQuestion.getId(), optionalCheckboxQuestion.getId())));
+            templateRepository.save(템플릿(List.of(section.getId())));
+        }
+
+        @Test
+        void 섹션_하위의_질문_개수만큼_반환한다() {
+            // when
+            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+                    reviewRequestCode, section.getId());
+
+            assertThat(actual.reviews()).hasSize(4);
+        }
+
+        @Test
+        void 섹션_하위의_질문_내용을_순서대로_반환한다() {
+            // when
+            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+                    reviewRequestCode, section.getId());
+
+            // then
+            assertThat(actual.reviews())
+                            .extracting(ReviewsGatheredByQuestionResponse::question)
+                            .extracting(SimpleQuestionResponse::name)
+                            .containsExactly(
+                                    requiredTextQuestion.getContent(),
+                                    optionalTextQuestion.getContent(),
+                                    requiredCheckboxQuestion.getContent(),
+                                    optionalCheckboxQuestion.getContent());
+        }
+
+        @Test
+        void 섹션_하위의_질문_타입을_반환한다() {
+            // when
+            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+                    reviewRequestCode, section.getId());
+
+            // then
+            assertThat(actual.reviews())
+                    .extracting(ReviewsGatheredByQuestionResponse::question)
+                    .extracting(SimpleQuestionResponse::type)
+                    .containsExactly(
+                            QuestionType.TEXT,
+                            QuestionType.TEXT,
+                            QuestionType.CHECKBOX,
+                            QuestionType.CHECKBOX
+                    );
+        }
+
+        @Test
+        void 질문의_타입에_해당하지_않는_응답은_null로_반환한다() {
+            // when
+            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+                    reviewRequestCode, section.getId());
+
+            // then
+            List<ReviewsGatheredByQuestionResponse> textQuestions = actual.reviews().stream()
+                    .filter(review -> review.question().type() == QuestionType.TEXT)
+                    .toList();
+            List<ReviewsGatheredByQuestionResponse> checkboxQuestions = actual.reviews().stream()
+                    .filter(review -> review.question().type() == QuestionType.CHECKBOX)
+                    .toList();
+            assertThat(textQuestions)
+                    .extracting(ReviewsGatheredByQuestionResponse::votes)
+                    .containsOnlyNulls();
+            assertThat(checkboxQuestions)
+                    .extracting(ReviewsGatheredByQuestionResponse::answers)
+                    .containsOnlyNulls();
+        }
+    }
+
+    @Nested
     @DisplayName("섹션에 해당하는 서술형 응답을 질문별로 묶어 반환한다")
     class GatherAnswerByQuestionTest {
 
@@ -98,11 +191,8 @@ class ReviewGatheredLookupServiceTest {
                     reviewRequestCode, section1.getId());
 
             // then
-            assertThat(actual.reviews()).hasSize(1);
-            assertThat(actual.reviews().get(0).question().name()).isEqualTo(question1.getContent());
-            assertThat(actual.reviews().get(0).answers()).extracting("content")
+            assertThat(actual.reviews().get(0).answers()).extracting(TextResponse::content)
                     .containsOnly("커비가 작성한 서술형 답변1", "산초가 작성한 서술형 답변1");
-            assertThat(actual.reviews().get(0).votes()).isNull();
         }
 
         @Test
@@ -128,18 +218,12 @@ class ReviewGatheredLookupServiceTest {
                     reviewRequestCode, section1.getId());
 
             // then
-            assertThat(actual.reviews())
-                    .hasSize(2);
-            assertThat(actual.reviews())
-                    .extracting("question.name")
-                    .containsOnly(question1.getContent(), question2.getContent());
             assertThat(actual.reviews().get(0).answers())
                     .extracting("content")
                     .containsExactlyInAnyOrder("아루가 작성한 서술형 답변1", "테드가 작성한 서술형 답변1");
             assertThat(actual.reviews().get(1).answers())
                     .extracting("content")
                     .containsExactlyInAnyOrder("아루가 작성한 서술형 답변2", "테드가 작성한 서술형 답변2");
-            assertThat(actual.reviews().get(0).votes()).isNull();
         }
 
         @Test
@@ -166,15 +250,9 @@ class ReviewGatheredLookupServiceTest {
                     reviewRequestCode, section1.getId());
 
             // then
-            assertThat(actual.reviews())
-                    .hasSize(1);
-            assertThat(actual.reviews())
-                    .extracting("question.name")
-                    .containsOnly(question1.getContent());
             assertThat(actual.reviews().get(0).answers())
                     .extracting("content")
                     .containsExactlyInAnyOrder("아루가 작성한 서술형 답변1", "테드가 작성한 서술형 답변1");
-            assertThat(actual.reviews().get(0).votes()).isNull();
         }
 
         @Test
@@ -199,18 +277,12 @@ class ReviewGatheredLookupServiceTest {
                     reviewRequestCode, section1.getId());
 
             // then
-            assertThat(actual.reviews())
-                    .hasSize(2);
-            assertThat(actual.reviews())
-                    .extracting("question.name")
-                    .containsOnly(question1.getContent(), question2.getContent());
             assertThat(actual.reviews().get(0).answers())
                     .extracting("content")
                     .containsExactlyInAnyOrder("산초가 작성한 서술형 답변1", "아루가 작성한 서술형 답변");
             assertThat(actual.reviews().get(1).answers())
                     .extracting("content")
                     .containsExactly("산초가 작성한 서술형 답변2");
-            assertThat(actual.reviews().get(0).votes()).isNull();
         }
 
         @Test
@@ -264,15 +336,12 @@ class ReviewGatheredLookupServiceTest {
                     reviewRequestCode, section1.getId());
 
             // then
-            assertThat(actual.reviews()).hasSize(1);
-            assertThat(actual.reviews().get(0).question().name()).isEqualTo(question1.getContent());
             assertThat(actual.reviews().get(0).votes())
                     .extracting("content", "count")
                     .containsExactlyInAnyOrder(
                             tuple("짜장", 2L),
                             tuple("짬뽕", 1L)
                     );
-            assertThat(actual.reviews().get(0).answers()).isNull();
         }
 
         @Test
@@ -301,17 +370,12 @@ class ReviewGatheredLookupServiceTest {
                     reviewRequestCode, section1.getId());
 
             // then
-            assertThat(actual.reviews()).hasSize(2);
-            assertThat(actual.reviews())
-                    .extracting("question.name")
-                    .containsOnly(question1.getContent(), question2.getContent());
             assertThat(actual.reviews().get(0).votes())
                     .extracting("content", "count")
                     .containsOnly(tuple("중식", 1L));
             assertThat(actual.reviews().get(1).votes())
                     .extracting("content", "count")
                     .containsOnly(tuple("분식", 1L));
-            assertThat(actual.reviews().get(0).answers()).isNull();
         }
 
         @Test
@@ -339,15 +403,12 @@ class ReviewGatheredLookupServiceTest {
                     reviewRequestCode, section1.getId());
 
             // then
-            assertThat(actual.reviews()).hasSize(1);
-            assertThat(actual.reviews().get(0).question().name()).isEqualTo(question1.getContent());
             assertThat(actual.reviews().get(0).votes())
                     .extracting("content", "count")
                     .containsExactlyInAnyOrder(
                             tuple("우테코 산초", 2L),
                             tuple("제이든 산초", 0L)
                     );
-            assertThat(actual.reviews().get(0).answers()).isNull();
         }
     }
 
@@ -366,7 +427,8 @@ class ReviewGatheredLookupServiceTest {
 
         // given - 리뷰 답변 저장
         TextAnswer answer1 = new TextAnswer(question1.getId(), "아루가 작성한 서술형 답변");
-        CheckboxAnswer answer2 = new CheckboxAnswer(question2.getId(), List.of(optionItem1.getId(), optionItem2.getId()));
+        CheckboxAnswer answer2 = new CheckboxAnswer(question2.getId(),
+                List.of(optionItem1.getId(), optionItem2.getId()));
         reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer1, answer2)));
 
         // when
