@@ -16,6 +16,7 @@ import {
   REVIEW_LIST,
   MOCK_AUTH_TOKEN_NAME,
 } from '../mockData';
+import { GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
 
 export const PAGE = {
   firstPageNumber: 1,
@@ -90,6 +91,17 @@ const postReview = () =>
     return HttpResponse.json({ message: 'post 성공' }, { status: 201 });
   });
 
-const reviewHandler = [getDetailedReview(), getReviewList(null, 10), getDataToWriteReview(), postReview()];
+const getSectionList = () =>
+  http.get(endPoint.gettingSectionList, async () => {
+    return HttpResponse.json(GROUPED_SECTION_MOCK_DATA);
+  });
+
+const reviewHandler = [
+  getDetailedReview(),
+  getReviewList(null, 10),
+  getDataToWriteReview(),
+  getSectionList(),
+  postReview(),
+];
 
 export default reviewHandler;

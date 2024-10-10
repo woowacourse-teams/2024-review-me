@@ -3,9 +3,10 @@ import { useState } from 'react';
 import { Accordion, AuthAndServerErrorFallback, Dropdown, ErrorSuspenseContainer, TopButton } from '@/components';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 import { useGetReviewList } from '@/hooks';
-import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '@/mocks/mockData/reviewCollection';
+import { GROUPED_REVIEWS_MOCK_DATA } from '@/mocks/mockData/reviewCollection';
 
 import DoughnutChart from './components/DoughnutChart';
+import useGetSectionList from './hooks/useGetSectionList';
 import * as S from './styles';
 
 const ReviewCollectionPage = () => {
@@ -14,10 +15,11 @@ const ReviewCollectionPage = () => {
   const { revieweeName, projectName } = data.pages[0];
 
   // TODO: react-query 적용 및 드롭다운 아이템 선택 시 요청
-  const reviewSectionList = GROUPED_SECTION_MOCK_DATA.sections.map((section) => {
+  const { data: reviewSectionList } = useGetSectionList();
+  const dropdownSectionList = reviewSectionList.sections.map((section) => {
     return { text: section.name, value: section.name };
   });
-  const [reviewSection, setReviewSection] = useState(reviewSectionList[0].value);
+  const [reviewSection, setReviewSection] = useState(dropdownSectionList[0].value);
 
   return (
     <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
@@ -25,7 +27,7 @@ const ReviewCollectionPage = () => {
         <S.ReviewCollectionContainer>
           <S.ReviewSectionDropdown>
             <Dropdown
-              items={reviewSectionList}
+              items={dropdownSectionList}
               selectedItem={reviewSection}
               handleSelect={(item) => setReviewSection(item)}
             />
