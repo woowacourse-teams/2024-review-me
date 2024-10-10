@@ -4,7 +4,6 @@ import jakarta.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -33,33 +32,31 @@ public class GatheredReviewLookupService {
 
     @Transactional(readOnly = true)
     public ReviewsGatheredBySectionResponse getReceivedReviewsBySectionId(String reviewRequestCode, long sectionId) {
-        List<Question> questions = questionRepository
-                .findAllByReviewRequestCodeAndSectionId(reviewRequestCode, sectionId);
-        Map<Long, Question> questionMap = questions.stream()
+        Map<Long, Question> questionIdQuestion = questionRepository
+                .findAllByReviewRequestCodeAndSectionId(reviewRequestCode, sectionId)
+                .stream()
                 .collect(Collectors.toMap(Question::getId, Function.identity()));
-        List<Answer> answers = answerRepository.findAllByQuestions(new ArrayList<>(questionMap.keySet()));
 
-        Map<Question, List<Answer>> questionIdAnswers = questions.stream()
-                .collect(Collectors.toMap(
-                        Function.identity(),
-                        question -> answers.stream()
-                                .filter(answer -> answer.getQuestionId() == question.getId())
-                                .collect(Collectors.toList())
-                ));
-        return new ReviewsGatheredBySectionResponse(mapToResponse(questionIdAnswers));
+        ArrayList<Long> questionIds = new ArrayList<>(questionIdQuestion.keySet());
+        Map<Question, List<Answer>> questionAnswers = answerRepository.findAllByQuestionIds(questionIds)
+                .stream()
+                .collect(Collectors.groupingBy(answer -> questionIdQuestion.get(answer.getQuestionId())));
+
+        return new ReviewsGatheredBySectionResponse(mapToResponseBySection(questionAnswers));
     }
 
-    private List<ReviewsGatheredByQuestionResponse> mapToResponse(Map<Question, List<Answer>> questionsToAnswers) {
-        List<ReviewsGatheredByQuestionResponse> result = new ArrayList<>();
-        for (Entry<Question, List<Answer>> questionAnswers : questionsToAnswers.entrySet()) {
-            Question question = questionAnswers.getKey();
-            result.add(new ReviewsGatheredByQuestionResponse(
-                    new SimpleQuestionResponse(question.getContent(), question.getQuestionType()),
-                    mapToTextResponse(question, questionsToAnswers.get(question)),
-                    mapToVoteResponse(question, questionsToAnswers.get(question))
-            ));
-        }
-        return result;
+    private List<ReviewsGatheredByQuestionResponse> mapToResponseBySection(Map<Question, List<Answer>> questionsToAnswers) {
+        return questionsToAnswers.entrySet().stream()
+                .map(entry -> mapToResponseByQuestion(entry.getKey(), entry.getValue()))
+                .toList();
+    }
+
+    private ReviewsGatheredByQuestionResponse mapToResponseByQuestion(Question question, List<Answer> answers) {
+        return new ReviewsGatheredByQuestionResponse(
+                new SimpleQuestionResponse(question.getContent(), question.getQuestionType()),
+                mapToTextResponse(question, answers),
+                mapToVoteResponse(question, answers)
+        );
     }
 
     @Nullable
