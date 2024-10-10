@@ -95,12 +95,18 @@ const postReview = () =>
   });
 
 const getSectionList = () =>
-  http.get(endPoint.gettingSectionList, async () => {
+  http.get(endPoint.gettingSectionList, async ({ request, cookies }) => {
+    // authToken 쿠키 확인
+    if (!cookies[MOCK_AUTH_TOKEN_NAME]) return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
+
     return HttpResponse.json(GROUPED_SECTION_MOCK_DATA);
   });
 
 const getGroupedReviews = (sectionId: number) =>
-  http.get(endPoint.gettingGroupedReviews(sectionId), async () => {
+  http.get(endPoint.gettingGroupedReviews(sectionId), async ({ request, cookies }) => {
+    // authToken 쿠키 확인
+    if (!cookies[MOCK_AUTH_TOKEN_NAME]) return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
+
     return HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA);
   });
 
