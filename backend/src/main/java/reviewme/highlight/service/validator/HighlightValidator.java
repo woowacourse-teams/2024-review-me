@@ -30,15 +30,14 @@ public class HighlightValidator {
     private final ReviewGroupRepository reviewGroupRepository;
 
     public void validate(HighlightsRequest request, long reviewGroupId) {
-        validateAnswerByReviewGroup(request, reviewGroupId);
-        validateQuestionByReviewGroup(request, reviewGroupId);
-        validateAnswerByQuestion(request);
+        validateReviewGroupContainsQuestion(request, reviewGroupId);
+        validateReviewGroupContainsAnswer(request, reviewGroupId);
+        validateQuestionContainsAnswer(request);
         validateLineIndex(request);
         validateDuplicate(request);
     }
 
-    private void validateQuestionByReviewGroup(HighlightsRequest request, long reviewGroupId) {
-        Set<Long> providedQuestionIds = questionRepository.findIdsByReviewGroupId(reviewGroupId);
+    private void validateReviewGroupContainsQuestion(HighlightsRequest request, long reviewGroupId) {
         long templateId = reviewGroupRepository.findById(reviewGroupId)
                 .orElseThrow()
                 .getTemplateId();
@@ -50,7 +49,7 @@ public class HighlightValidator {
         }
     }
 
-    private void validateAnswerByReviewGroup(HighlightsRequest request, long reviewGroupId) {
+    private void validateReviewGroupContainsAnswer(HighlightsRequest request, long reviewGroupId) {
         Set<Long> providedAnswerIds = answerRepository.findIdsByReviewGroupId(reviewGroupId);
         List<Long> submittedAnswerIds = request.highlights()
                 .stream()
@@ -62,7 +61,7 @@ public class HighlightValidator {
         }
     }
 
-    private void validateAnswerByQuestion(HighlightsRequest request) {
+    private void validateQuestionContainsAnswer(HighlightsRequest request) {
         Set<Long> providedAnswerIds = answerRepository.findIdsByQuestionId(request.questionId());
         List<Long> submittedAnswerIds = request.highlights()
                 .stream()
