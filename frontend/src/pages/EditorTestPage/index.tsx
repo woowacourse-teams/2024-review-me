@@ -9,6 +9,7 @@ const EditorTestPage = () => {
       <h2>형광펜 기능 테스트 페이지</h2>
 
       <HighlightEditor
+        questionId={1234}
         answerList={[
           {
             id: 1234,
