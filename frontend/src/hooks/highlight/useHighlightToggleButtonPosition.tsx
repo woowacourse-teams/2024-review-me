@@ -40,7 +40,7 @@ const useHighlightToggleButtonPosition = ({ isEditAble, editorRef }: UseHighligh
 
     const isOverEditorArea = editorRect.right < rectLeft + buttonWidth;
     const leftOffsetFromParent = isOverEditorArea ? editorRect.width - buttonWidth : left;
-    const topOffsetFromParent = isOverEditorArea ? top + buttonHight + GAP_WIDTH_SELECTION : top;
+    const topOffsetFromParent = isOverEditorArea ? top + buttonHight : top;
 
     const endPosition: Position = {
       left: `${leftOffsetFromParent / 10}rem`,

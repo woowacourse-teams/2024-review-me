@@ -12,11 +12,19 @@ const useHighlightRemoverPosition = ({ isEditAble, editorRef }: UseHighlightRemo
   const updateRemoverPosition = (rect: DOMRect) => {
     const editorRect = editorRef.current?.getClientRects()[0];
     if (!editorRect) return;
+    const top = rect.bottom - editorRect.top;
+    const left = rect.right - editorRect.left;
+    const GAP_WIDTH_SELECTION = 10;
+    const buttonWidth = 31;
+
+    const isOverEditorArea = editorRect.right < rect.right + buttonWidth;
+    const topOffsetFromParent = isOverEditorArea ? top + GAP_WIDTH_SELECTION : top;
+    const leftOffsetFromParent = isOverEditorArea ? editorRect.width - buttonWidth : left;
 
     setRemoverPosition({
       top: `
-      ${(rect.bottom - editorRect.top) / 10}rem`,
-      left: `${(rect.right - editorRect.left) / 10}rem`,
+      ${topOffsetFromParent / 10}rem`,
+      left: `${leftOffsetFromParent / 10}rem`,
     });
   };
 
