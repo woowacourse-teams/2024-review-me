@@ -26,6 +26,8 @@ import org.springframework.restdocs.operation.preprocess.UriModifyingOperationPr
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import reviewme.highlight.controller.HighlightController;
+import reviewme.highlight.service.HighlightService;
 import reviewme.review.controller.ReviewController;
 import reviewme.review.service.GatheredReviewLookupService;
 import reviewme.review.service.ReviewDetailLookupService;
@@ -44,7 +46,8 @@ import reviewme.template.service.TemplateService;
         ReviewGroupController.class,
         ReviewController.class,
         TemplateController.class,
-        SectionController.class
+        SectionController.class,
+        HighlightController.class
 })
 @ExtendWith(RestDocumentationExtension.class)
 public abstract class ApiTest {
@@ -77,6 +80,9 @@ public abstract class ApiTest {
 
     @MockBean
     protected GatheredReviewLookupService gatheredReviewLookupService;
+
+    @MockBean
+    protected HighlightService highlightService;
 
     Filter sessionCookieFilter = (request, response, chain) -> {
         chain.doFilter(request, response);

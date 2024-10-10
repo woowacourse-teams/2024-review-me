@@ -36,3 +36,7 @@ include::review-list.adoc[]
 === 리뷰 모아보기
 
 include::review-gather.adoc[]
+
+=== 답변 하이라이트
+
+include::highlight-answers.adoc[]
