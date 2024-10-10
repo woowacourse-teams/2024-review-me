@@ -77,7 +77,7 @@ class ReviewMapperTest {
         Review review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
-        assertThat(review.getTextAnswers()).hasSize(1);
+        assertThat(review.getAnswersByType(TextAnswer.class)).hasSize(1);
     }
 
     @Test
@@ -102,7 +102,7 @@ class ReviewMapperTest {
         Review review = reviewMapper.mapToReview(reviewRegisterRequest);
 
         // then
-        assertThat(review.getCheckboxAnswers()).hasSize(1);
+        assertThat(review.getAnswersByType(CheckboxAnswer.class)).hasSize(1);
     }
 
     @Test
@@ -130,13 +130,17 @@ class ReviewMapperTest {
 
         String textAnswer = "답".repeat(20);
         ReviewAnswerRequest requiredTextAnswerRequest = new ReviewAnswerRequest(
-                requiredTextQuestion.getId(), null, textAnswer);
+                requiredTextQuestion.getId(), null, textAnswer
+        );
         ReviewAnswerRequest optionalTextAnswerRequest = new ReviewAnswerRequest(
-                optionalTextQuestion.getId(), null, "");
+                optionalTextQuestion.getId(), null, ""
+        );
         ReviewAnswerRequest requiredCheckBoxAnswerRequest = new ReviewAnswerRequest(
-                requeiredCheckBoxQuestion.getId(), List.of(optionItem1.getId()), null);
+                requeiredCheckBoxQuestion.getId(), List.of(optionItem1.getId()), null
+        );
         ReviewAnswerRequest optionalCheckBoxAnswerRequest = new ReviewAnswerRequest(
-                optionalCheckBoxQuestion.getId(), List.of(), null);
+                optionalCheckBoxQuestion.getId(), List.of(), null
+        );
         ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(),
                 List.of(requiredTextAnswerRequest, optionalTextAnswerRequest,
                         requiredCheckBoxAnswerRequest, optionalCheckBoxAnswerRequest));
@@ -146,10 +150,10 @@ class ReviewMapperTest {
 
         // then
         assertAll(
-                () -> assertThat(review.getTextAnswers())
+                () -> assertThat(review.getAnswersByType(TextAnswer.class))
                         .extracting(TextAnswer::getQuestionId)
                         .containsExactly(requiredTextQuestion.getId()),
-                () -> assertThat(review.getCheckboxAnswers())
+                () -> assertThat(review.getAnswersByType(CheckboxAnswer.class))
                         .extracting(CheckboxAnswer::getQuestionId)
                         .containsExactly(requeiredCheckBoxQuestion.getId())
         );
@@ -166,8 +170,7 @@ class ReviewMapperTest {
                 reviewRequestCode, List.of(emptyTextReviewRequest));
 
         // when, then
-        assertThatThrownBy(() -> reviewMapper.mapToReview(
-                reviewRegisterRequest))
+        assertThatThrownBy(() -> reviewMapper.mapToReview(reviewRegisterRequest))
                 .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 }

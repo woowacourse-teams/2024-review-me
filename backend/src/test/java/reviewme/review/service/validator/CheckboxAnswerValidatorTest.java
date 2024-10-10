@@ -15,17 +15,17 @@ import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
+import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
-class CheckBoxAnswerValidatorTest {
+class CheckboxAnswerValidatorTest {
 
     @Autowired
-    private CheckBoxAnswerValidator checkBoxAnswerValidator;
+    private CheckboxAnswerValidator checkBoxAnswerValidator;
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -82,7 +82,8 @@ class CheckBoxAnswerValidatorTest {
         );
         OptionItem savedOptionItem1 = optionItemRepository.save(선택지(savedOptionGroup.getId()));
 
-        CheckboxAnswer checkboxAnswer = new CheckboxAnswer(savedQuestion.getId(), List.of(savedOptionItem1.getId()));
+        CheckboxAnswer checkboxAnswer = new CheckboxAnswer(savedQuestion.getId(),
+                List.of(savedOptionItem1.getId()));
 
         // when, then
         assertThatCode(() -> checkBoxAnswerValidator.validate(checkboxAnswer))

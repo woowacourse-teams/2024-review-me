@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router';
 
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
+import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 import ReviewCard from '@/components/ReviewCard';
 import { ROUTE } from '@/constants/route';
 import { useGetReviewList, useSearchParamAndQuery } from '@/hooks';
 
 import { useInfiniteScroll } from '../../hooks';
 import ReviewEmptySection from '../ReviewEmptySection';
-import ReviewInfoSection from '../ReviewInfoSection';
 
 import * as S from './styles';
 
@@ -36,8 +36,7 @@ const PageContents = () => {
 
   return (
     isSuccess && (
-      <S.Layout>
-        <ReviewInfoSection projectName={projectName} revieweeName={revieweeName} />
+      <ReviewDisplayLayout projectName={projectName} revieweeName={revieweeName} isReviewList={true} reviewCount={5}>
         {reviews.length === 0 ? (
           <ReviewEmptySection />
         ) : (
@@ -59,7 +58,7 @@ const PageContents = () => {
             })}
           </S.ReviewSection>
         )}
-      </S.Layout>
+      </ReviewDisplayLayout>
     )
   );
 };

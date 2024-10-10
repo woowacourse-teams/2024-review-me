@@ -6,3 +6,4 @@ export { default as ReviewListPage } from './ReviewListPage';
 export { default as ReviewWritingPage } from './ReviewWritingPage';
 export { default as ReviewWritingCompletePage } from './ReviewWritingCompletePage';
 export { default as ReviewZonePage } from './ReviewZonePage';
+export { default as ReviewCollectionPage } from './ReviewCollectionPage';

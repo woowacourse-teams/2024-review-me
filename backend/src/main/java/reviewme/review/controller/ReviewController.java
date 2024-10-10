@@ -11,11 +11,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import reviewme.review.service.GatheredReviewLookupService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
+import reviewme.review.service.ReviewSummaryService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
+import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 
 @RestController
@@ -27,6 +31,8 @@ public class ReviewController {
     private final ReviewRegisterService reviewRegisterService;
     private final ReviewListLookupService reviewListLookupService;
     private final ReviewDetailLookupService reviewDetailLookupService;
+    private final ReviewSummaryService reviewSummaryService;
+    private final GatheredReviewLookupService gatheredReviewLookupService;
 
     @PostMapping("/v2/reviews")
     public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRegisterRequest request) {
@@ -51,6 +57,24 @@ public class ReviewController {
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
         ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail(id, reviewRequestCode);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/v2/reviews/summary")
+    public ResponseEntity<ReceivedReviewsSummaryResponse> findReceivedReviewOverview(
+            @SessionAttribute("reviewRequestCode") String reviewRequestCode
+    ) {
+        ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewRequestCode);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/v2/reviews/gather")
+    public ResponseEntity<ReviewsGatheredBySectionResponse> getReceivedReviewsBySectionId(
+            @RequestParam("sectionId") Long sectionId,
+            @SessionAttribute("reviewRequestCode") String reviewRequestCode
+    ) {
+        ReviewsGatheredBySectionResponse response = gatheredReviewLookupService.getReceivedReviewsBySectionId(
+                reviewRequestCode, sectionId);
         return ResponseEntity.ok(response);
     }
 }
