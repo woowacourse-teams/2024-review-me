@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reviewme.highlight.domain.HighLight;
 import reviewme.highlight.repository.HighlightRepository;
 import reviewme.highlight.service.dto.HighlightsRequest;
-import reviewme.review.repository.AnswerRepository;
+import reviewme.highlight.service.validator.HighlightValidator;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -17,20 +17,18 @@ public class HighlightService {
 
     private final HighlightRepository highlightRepository;
     private final ReviewGroupRepository reviewGroupRepository;
-    private final AnswerRepository answerRepository;
+
+    private final HighlightValidator highlightValidator;
 
     @Transactional
     public void highlight(HighlightsRequest request, String reviewRequestCode) {
         long reviewGroupId = reviewGroupRepository.findIdByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
-//        validateHighlihgt(request, reviewGroupId);
+        highlightValidator.validate(request, reviewGroupId);
         deleteOldHighlight(request.questionId(), reviewGroupId);
         saveNewHighlight(request, reviewGroupId);
     }
-
-//    private void validateHighlihgt(HighlightsRequest request, long reviewGroupId) {
-//    }
 
     private void deleteOldHighlight(long questionId, long reviewGroupId) {
         highlightRepository.deleteByReviewGroupIdAndQuestionId(reviewGroupId, questionId);
