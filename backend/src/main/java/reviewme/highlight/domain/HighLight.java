@@ -40,11 +40,11 @@ public class HighLight {
     @Column(name = "end_index", nullable = false)
     private long endIndex;
 
-    public HighLight(long answerId, long questionId, long reviewGroupId,
+    public HighLight(long questionId, long reviewGroupId, long answerId,
                      long lineIndex, long startIndex, long endIndex) {
-        this.answerId = answerId;
         this.questionId = questionId;
         this.reviewGroupId = reviewGroupId;
+        this.answerId = answerId;
         this.lineIndex = lineIndex;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
