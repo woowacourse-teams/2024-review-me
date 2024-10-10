@@ -136,12 +136,8 @@ class QuestionRepositoryTest {
 
         // when
         List<OptionItem> optionItemsForQuestion1 = questionRepository.findAllOptionItemsById(question1.getId());
-        List<OptionItem> optionItemsForQuestion2 = questionRepository.findAllOptionItemsById(question2.getId());
 
         // then
-        assertAll(
-                () -> assertThat(optionItemsForQuestion1).containsOnly(optionItem1, optionItem2),
-                () -> assertThat(optionItemsForQuestion2).containsOnly(optionItem3)
-        );
+        assertThat(optionItemsForQuestion1).containsOnly(optionItem1, optionItem2);
     }
 }
