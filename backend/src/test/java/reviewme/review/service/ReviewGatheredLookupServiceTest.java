@@ -34,6 +34,7 @@ import reviewme.review.service.dto.response.gathered.ReviewsGatheredByQuestionRe
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
 import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
 import reviewme.review.service.dto.response.gathered.TextResponse;
+import reviewme.review.service.dto.response.gathered.VoteResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -219,10 +220,10 @@ class ReviewGatheredLookupServiceTest {
 
             // then
             assertThat(actual.reviews().get(0).answers())
-                    .extracting("content")
+                    .extracting(TextResponse::content)
                     .containsExactlyInAnyOrder("아루가 작성한 서술형 답변1", "테드가 작성한 서술형 답변1");
             assertThat(actual.reviews().get(1).answers())
-                    .extracting("content")
+                    .extracting(TextResponse::content)
                     .containsExactlyInAnyOrder("아루가 작성한 서술형 답변2", "테드가 작성한 서술형 답변2");
         }
 
@@ -251,7 +252,7 @@ class ReviewGatheredLookupServiceTest {
 
             // then
             assertThat(actual.reviews().get(0).answers())
-                    .extracting("content")
+                    .extracting(TextResponse::content)
                     .containsExactlyInAnyOrder("아루가 작성한 서술형 답변1", "테드가 작성한 서술형 답변1");
         }
 
@@ -278,10 +279,10 @@ class ReviewGatheredLookupServiceTest {
 
             // then
             assertThat(actual.reviews().get(0).answers())
-                    .extracting("content")
+                    .extracting(TextResponse::content)
                     .containsExactlyInAnyOrder("산초가 작성한 서술형 답변1", "아루가 작성한 서술형 답변");
             assertThat(actual.reviews().get(1).answers())
-                    .extracting("content")
+                    .extracting(TextResponse::content)
                     .containsExactly("산초가 작성한 서술형 답변2");
         }
 
@@ -337,7 +338,7 @@ class ReviewGatheredLookupServiceTest {
 
             // then
             assertThat(actual.reviews().get(0).votes())
-                    .extracting("content", "count")
+                    .extracting(VoteResponse::content, VoteResponse::count)
                     .containsExactlyInAnyOrder(
                             tuple("짜장", 2L),
                             tuple("짬뽕", 1L)
@@ -371,10 +372,10 @@ class ReviewGatheredLookupServiceTest {
 
             // then
             assertThat(actual.reviews().get(0).votes())
-                    .extracting("content", "count")
+                    .extracting(VoteResponse::content, VoteResponse::count)
                     .containsOnly(tuple("중식", 1L));
             assertThat(actual.reviews().get(1).votes())
-                    .extracting("content", "count")
+                    .extracting(VoteResponse::content, VoteResponse::count)
                     .containsOnly(tuple("분식", 1L));
         }
 
@@ -404,7 +405,7 @@ class ReviewGatheredLookupServiceTest {
 
             // then
             assertThat(actual.reviews().get(0).votes())
-                    .extracting("content", "count")
+                    .extracting(VoteResponse::content, VoteResponse::count)
                     .containsExactlyInAnyOrder(
                             tuple("우테코 산초", 2L),
                             tuple("제이든 산초", 0L)
@@ -438,14 +439,15 @@ class ReviewGatheredLookupServiceTest {
         // then
         assertThat(actual.reviews()).hasSize(2);
         assertThat(actual.reviews())
-                .extracting("question.name")
+                .extracting(ReviewsGatheredByQuestionResponse::question)
+                .extracting(SimpleQuestionResponse::name)
                 .containsOnly(question1.getContent(), question2.getContent());
         assertThat(actual.reviews().get(0).answers())
-                .extracting("content")
+                .extracting(TextResponse::content)
                 .containsExactly("아루가 작성한 서술형 답변");
         assertThat(actual.reviews().get(0).votes()).isNull();
         assertThat(actual.reviews().get(1).votes())
-                .extracting("content", "count")
+                .extracting(VoteResponse::content, VoteResponse::count)
                 .containsExactlyInAnyOrder(
                         tuple(optionItem1.getContent(), 1L),
                         tuple(optionItem2.getContent(), 1L)
