@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import theme from '@/styles/theme';
 import { ReviewVotes } from '@/types';
 
@@ -33,19 +31,6 @@ const DoughnutChart = ({ reviewVotes }: { reviewVotes: ReviewVotes[] }) => {
 
   // 색상 시작 및 끝값 정의
   const colors = generateGradientColors(reviewVotes.length, DOUGHNUT_COLOR.START, DOUGHNUT_COLOR.END);
-
-  // 애니메이션 상태 관리
-  const [animateIndex, setAnimateIndex] = useState(0);
-
-  // 애니메이션 트리거 설정
-  useEffect(() => {
-    if (animateIndex < reviewVotes.length - 1) {
-      const timer = setTimeout(() => {
-        setAnimateIndex(animateIndex + 1); // 다음 애니메이션 트리거
-      }, 40);
-      return () => clearTimeout(timer);
-    }
-  }, [animateIndex, reviewVotes.length]);
 
   // 각 조각의 중심 좌표를 계산하는 함수
   const calculateLabelPosition = (startAngle: number, endAngle: number) => {
@@ -83,22 +68,8 @@ const DoughnutChart = ({ reviewVotes }: { reviewVotes: ReviewVotes[] }) => {
                 strokeWidth="65"
                 strokeDasharray={`${fillSpace} ${emptySpace}`} // 조각의 길이와 나머지 길이 설정
                 strokeDashoffset={-offset} // 시작 위치 설정
-                style={{
-                  transition: 'stroke-dasharray 1s ease', // 애니메이션 추가
-                  opacity: index <= animateIndex ? 1 : 0, // 해당 인덱스까지의 애니메이션만 보여줌
-                }}
               />
-              <text
-                x={x}
-                y={y}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fontSize="14"
-                opacity={index <= animateIndex ? 1 : 0} // 애니메이션과 함께 텍스트 보이기
-                style={{
-                  transition: 'opacity 0.4s ease', // 텍스트의 투명도 애니메이션
-                }}
-              >
+              <text x={x} y={y} textAnchor="middle" dominantBaseline="middle" fontSize="14">
                 {Math.floor(ratios[index] * 100)}%
               </text>
             </g>
