@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { DropdownItem } from '@/components/common/Dropdown';
+
 interface UseDropdownProps {
-  handleSelect: (option: string) => void;
+  handleSelect: (option: DropdownItem) => void;
 }
 
 const useDropdown = ({ handleSelect }: UseDropdownProps) => {
@@ -13,7 +15,7 @@ const useDropdown = ({ handleSelect }: UseDropdownProps) => {
     setIsOpened((prev) => !prev);
   };
 
-  const handleOptionClick = (option: string) => {
+  const handleOptionClick = (option: DropdownItem) => {
     handleSelect(option);
     setIsOpened(false);
   };
