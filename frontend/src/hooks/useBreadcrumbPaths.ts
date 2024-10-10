@@ -32,14 +32,10 @@ const useBreadcrumbPaths = () => {
   }
 
   if (pathname.includes(`/${ROUTE.reviewWritingComplete}`)) {
-<<<<<<< HEAD
-    breadcrumbPathList.push({ pageName: '리뷰 작성', path: -1 }, { pageName: '리뷰 작성 완료 페이지', path: pathname });
-=======
     breadcrumbPathList.push(
       { pageName: '리뷰 작성', path: `${ROUTE.reviewWriting}/${reviewRequestCode}` },
       { pageName: '리뷰 작성 완료 페이지', path: pathname },
     );
->>>>>>> 9b976e65197dc63e588f95028557f79770612a4a
   }
 
   if (pathname.includes(ROUTE.detailedReview)) {
