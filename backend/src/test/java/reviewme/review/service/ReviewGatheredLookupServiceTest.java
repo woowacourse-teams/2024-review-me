@@ -39,7 +39,7 @@ import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
-class GatheredReviewLookupServiceTest {
+class ReviewGatheredLookupServiceTest {
 
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
@@ -63,7 +63,7 @@ class GatheredReviewLookupServiceTest {
     private TemplateRepository templateRepository;
 
     @Autowired
-    private GatheredReviewLookupService reviewLookupService;
+    private ReviewGatheredLookupService reviewLookupService;
 
     private String reviewRequestCode;
     private ReviewGroup reviewGroup;

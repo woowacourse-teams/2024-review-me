@@ -25,7 +25,7 @@ import reviewme.review.service.dto.response.gathered.VoteResponse;
 
 @Service
 @RequiredArgsConstructor
-public class GatheredReviewLookupService {
+public class ReviewGatheredLookupService {
 
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
