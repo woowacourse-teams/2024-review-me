@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import theme from '@/styles/theme';
 import { ReviewVotes } from '@/types';
 
 import generateGradientColors from '../../utils/generateGradientColors';
@@ -8,7 +9,7 @@ import DoughnutChartDetails from '../DoughnutChartDetails';
 import * as S from './styles';
 
 const DOUGHNUT_COLOR = {
-  START: '#7361DF',
+  START: `${theme.colors.primary}`,
   END: '#e7e3f9',
 };
 
