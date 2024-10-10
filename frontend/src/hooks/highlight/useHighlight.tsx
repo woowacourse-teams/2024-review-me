@@ -82,9 +82,16 @@ const useHighlight = ({
       : addMultipleAnswerHighlight(selectionInfo);
     if (!newEditorAnswerMap) return;
     // TODO: 데이터 요청 후, 성공 시 업데이트 하기
-    setEditorAnswerMap(newAnswerMap);
 
-    resetSelectionAndButton();
+    try {
+      await postHighlight(newEditorAnswerMap, questionId);
+      setEditorAnswerMap(newEditorAnswerMap);
+
+      resetSelectionAndButton();
+    } catch (error) {
+      // 자세한 에러처리는 나중애
+      console.error(error);
+    }
   };
 
   const addMultipleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
@@ -223,11 +230,16 @@ const useHighlight = ({
 
     if (!newEditorAnswerMap) return;
 
-    // TODO: 서버에 API 요청 보내고 성공 한 후 상태 업데이트
-    setEditorAnswerMap(newEditorAnswerMap);
+    try {
+      await postHighlight(newEditorAnswerMap, questionId);
 
-    // 선택사항, 토글 버튼 지우기
-    resetSelectionAndButton();
+      setEditorAnswerMap(newEditorAnswerMap);
+      // 선택사항, 토글 버튼 지우기
+      resetSelectionAndButton();
+    } catch (error) {
+      // 자세한 에러처리는 나중애
+      console.error(error);
+    }
   };
 
   const removeSingleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
@@ -424,11 +436,18 @@ const useHighlight = ({
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
 
     // TODO: 서버에 API 요청 보내고 성공 한 후 상태 업데이트
-    setEditorAnswerMap(newEditorAnswerMap);
 
-    // 초기화
-    hideRemover();
-    setRemovalTarget(null);
+    try {
+      await postHighlight(newEditorAnswerMap, questionId);
+      setEditorAnswerMap(newEditorAnswerMap);
+
+      // 초기화
+      hideRemover();
+      setRemovalTarget(null);
+    } catch (error) {
+      // 자세한 에러처리는 나중애
+      console.error(error);
+    }
   };
 
   return {
