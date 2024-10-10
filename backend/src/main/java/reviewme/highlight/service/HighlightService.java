@@ -41,7 +41,7 @@ public class HighlightService {
                 .flatMap(highlightRequest -> highlightRequest.lines().stream()
                         .flatMap(line -> line.ranges().stream()
                                 .map(range -> new HighLight(
-                                        highlightsRequest.questionId(), reviewGroupId, highlightRequest.answerId(),
+                                        reviewGroupId, highlightsRequest.questionId(), highlightRequest.answerId(),
                                         line.index(), range.startIndex(), range.endIndex()
                                 ))
                         ))

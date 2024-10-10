@@ -22,11 +22,11 @@ public class HighLight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "question_id", nullable = false)
-    private long questionId;
-
     @Column(name = "review_group_id", nullable = false)
     private long reviewGroupId;
+
+    @Column(name = "question_id", nullable = false)
+    private long questionId;
 
     @Column(name = "answer_id", nullable = false)
     private long answerId;
@@ -40,10 +40,10 @@ public class HighLight {
     @Column(name = "end_index", nullable = false)
     private long endIndex;
 
-    public HighLight(long questionId, long reviewGroupId, long answerId,
+    public HighLight(long reviewGroupId, long questionId, long answerId,
                      long lineIndex, long startIndex, long endIndex) {
-        this.questionId = questionId;
         this.reviewGroupId = reviewGroupId;
+        this.questionId = questionId;
         this.answerId = answerId;
         this.lineIndex = lineIndex;
         this.startIndex = startIndex;

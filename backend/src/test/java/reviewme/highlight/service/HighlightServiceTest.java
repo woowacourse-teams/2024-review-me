@@ -58,8 +58,8 @@ class HighlightServiceTest {
         String reviewRequestCode = "reviewRequestCode";
         long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹(reviewRequestCode, "groupAccessCode"))
                 .getId();
-        HighLight highLight1 = highlightRepository.save(new HighLight(questionId, reviewGroupId, 1, 1, 1, 1));
-        HighLight highLight2 = highlightRepository.save(new HighLight(questionId, reviewGroupId, 2, 1, 1, 1));
+        HighLight highLight1 = highlightRepository.save(new HighLight(reviewGroupId, questionId, 1, 1, 1, 1));
+        HighLight highLight2 = highlightRepository.save(new HighLight(reviewGroupId, questionId, 2, 1, 1, 1));
 
         TextAnswer textAnswer1 = new TextAnswer(questionId, "text answer1");
         TextAnswer textAnswer2 = new TextAnswer(questionId, "text answer2");
@@ -92,7 +92,7 @@ class HighlightServiceTest {
         String reviewRequestCode = "reviewRequestCode";
         long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹(reviewRequestCode, "groupAccessCode"))
                 .getId();
-        highlightRepository.save(new HighLight(questionId, reviewGroupId, 1, 1, 1, 1));
+        highlightRepository.save(new HighLight(reviewGroupId, questionId, 1, 1, 1, 1));
 
         TextAnswer textAnswer1 = new TextAnswer(questionId, "text answer1");
         TextAnswer textAnswer2 = new TextAnswer(questionId, "text answer2");
