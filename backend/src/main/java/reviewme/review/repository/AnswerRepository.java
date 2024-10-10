@@ -10,18 +10,18 @@ import reviewme.review.domain.Answer;
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query(value = """
-            select a.id from answer a
-            join new_review r
-            on a.review_id = r.id
-            where r.review_group_id = :reviewGroupId
-            """, nativeQuery = true)
+            SELECT a.id FROM Answer a
+            JOIN Review r
+            ON a.reviewId = r.id
+            WHERE r.reviewGroupId = :reviewGroupId
+            """)
     Set<Long> findIdsByReviewGroupId(long reviewGroupId);
 
     @Query(value = """
-            select a.id from answer a
-            join question q
-            on a.question_id = q.id
-            where q.id = :questionId
-            """, nativeQuery = true)
+            SELECT a.id FROM Answer a
+            JOIN Question q
+            ON a.questionId = q.id
+            WHERE q.id = :questionId
+            """)
     Set<Long> findIdsByQuestionId(long questionId);
 }
