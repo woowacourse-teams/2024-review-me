@@ -22,8 +22,9 @@ public class HighlightService {
 
     @Transactional
     public void highlight(HighlightsRequest request, String reviewRequestCode) {
-        long reviewGroupId = reviewGroupRepository.findIdByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
+        long reviewGroupId = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode))
+                .getId();
 
         highlightValidator.validate(request, reviewGroupId);
         deleteOldHighlight(request.questionId(), reviewGroupId);
