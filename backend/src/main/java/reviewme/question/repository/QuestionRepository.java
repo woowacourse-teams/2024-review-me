@@ -35,8 +35,9 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             SELECT q FROM Question q
             JOIN SectionQuestion sq ON q.id = sq.questionId
             WHERE sq.sectionId = :sectionId
+            ORDER BY q.position
             """)
-    List<Question> findAllBySectionId(long sectionId);
+    List<Question> findAllBySectionIdOrderByPosition(long sectionId);
 
     @Query("""
             SELECT o FROM OptionItem o

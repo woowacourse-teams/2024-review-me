@@ -40,7 +40,7 @@ public class ReviewGatheredLookupService {
                 .orElseThrow(() -> new SectionNotFoundInTemplateException(sectionId, reviewGroup.getTemplateId()));
 
         Map<Long, Question> questionIdQuestion = questionRepository
-                .findAllBySectionId(section.getId()).stream()
+                .findAllBySectionIdOrderByPosition(section.getId()).stream()
                 .collect(Collectors.toMap(Question::getId, Function.identity()));
         List<Answer> receivedAnswers = answerRepository.findReceivedAnswersByQuestionIds(
                 reviewGroup.getId(), new ArrayList<>(questionIdQuestion.keySet()));

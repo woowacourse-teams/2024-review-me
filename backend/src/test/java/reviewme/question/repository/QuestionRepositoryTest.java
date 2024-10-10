@@ -89,14 +89,15 @@ class QuestionRepositoryTest {
     }
 
     @Test
-    void 섹션_아이디에_해당하는_질문을_모두_가져온다() {
+    void 섹션_아이디에_해당하는_질문을_순서대로_가져온다() {
         // given
         Question question1 = questionRepository.save(서술형_필수_질문(1));
         Question question2 = questionRepository.save(서술형_필수_질문(2));
-        Question question3 = questionRepository.save(서술형_필수_질문(1));
+        Question question3 = questionRepository.save(서술형_필수_질문(3));
+        Question question4 = questionRepository.save(서술형_필수_질문(1));
 
-        List<Long> sectionQuestion1 = List.of(question1.getId(), question2.getId());
-        List<Long> sectionQuestion2 = List.of(question3.getId());
+        List<Long> sectionQuestion1 = List.of(question1.getId(), question2.getId(), question3.getId());
+        List<Long> sectionQuestion2 = List.of(question4.getId());
         Section section1 = sectionRepository.save(항상_보이는_섹션(sectionQuestion1));
         Section section2 = sectionRepository.save(항상_보이는_섹션(sectionQuestion2));
         Template template = templateRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
@@ -106,10 +107,10 @@ class QuestionRepositoryTest {
         ));
 
         // when
-        List<Question> questionsInSection = questionRepository.findAllBySectionId(section1.getId());
+        List<Question> questionsInSection = questionRepository.findAllBySectionIdOrderByPosition(section1.getId());
 
         // then
-        assertThat(questionsInSection).containsOnly(question1, question2);
+        assertThat(questionsInSection).containsExactly(question1, question2, question3);
     }
 
     @Test
