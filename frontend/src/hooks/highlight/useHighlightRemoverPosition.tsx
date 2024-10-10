@@ -4,10 +4,10 @@ import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_BUTTON_SIZE } from 
 import { Position } from '@/types';
 
 interface UseHighlightRemoverPositionProps {
-  isEditAble: boolean;
+  isEditable: boolean;
   editorRef: React.RefObject<HTMLDivElement>;
 }
-const useHighlightRemoverPosition = ({ isEditAble, editorRef }: UseHighlightRemoverPositionProps) => {
+const useHighlightRemoverPosition = ({ isEditable, editorRef }: UseHighlightRemoverPositionProps) => {
   const [removerPosition, setRemoverPosition] = useState<Position | null>(null);
 
   const updateRemoverPosition = (rect: DOMRect) => {
@@ -32,8 +32,8 @@ const useHighlightRemoverPosition = ({ isEditAble, editorRef }: UseHighlightRemo
   const hideRemover = () => setRemoverPosition(null);
 
   useLayoutEffect(() => {
-    if (!isEditAble) hideRemover();
-  }, [isEditAble]);
+    if (!isEditable) hideRemover();
+  }, [isEditable]);
 
   return {
     removerPosition,

@@ -3,14 +3,14 @@ import React from 'react';
 import * as S from './style';
 
 interface EditSwitchButtonProps {
-  isEditAble: boolean;
+  isEditable: boolean;
   handleEditToggleButton: () => void;
 }
 
-const EditSwitchButton: React.FC<EditSwitchButtonProps> = ({ isEditAble, handleEditToggleButton }) => {
+const EditSwitchButton: React.FC<EditSwitchButtonProps> = ({ isEditable, handleEditToggleButton }) => {
   return (
-    <S.EditSwitchButton $isEditAble={isEditAble} onClick={handleEditToggleButton}>
-      <S.Circle $isEditAble={isEditAble} />
+    <S.EditSwitchButton $isEditable={isEditable} onClick={handleEditToggleButton}>
+      <S.Circle $isEditable={isEditable} />
     </S.EditSwitchButton>
   );
 };

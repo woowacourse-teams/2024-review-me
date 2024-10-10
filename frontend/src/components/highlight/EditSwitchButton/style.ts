@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 interface EditorSwitchProps {
-  $isEditAble: boolean;
+  $isEditable: boolean;
 }
 export const EditSwitchButton = styled.button<EditorSwitchProps>`
   cursor: pointer;
@@ -9,14 +9,14 @@ export const EditSwitchButton = styled.button<EditorSwitchProps>`
   width: 4rem;
   padding: 0.5rem;
 
-  background-color: ${({ theme, $isEditAble }) => ($isEditAble ? theme.colors.primary : theme.colors.gray)};
+  background-color: ${({ theme, $isEditable }) => ($isEditable ? theme.colors.primary : theme.colors.gray)};
   border-radius: 3.4rem;
 
   transition: background-color 0.3s ease;
 `;
 
 export const Circle = styled.div<EditorSwitchProps>`
-  transform: translateX(${({ $isEditAble }) => ($isEditAble ? 0 : '1.5rem')});
+  transform: translateX(${({ $isEditable }) => ($isEditable ? 0 : '1.5rem')});
 
   width: 1.5rem;
   height: 1.5rem;

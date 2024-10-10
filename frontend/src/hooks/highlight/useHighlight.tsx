@@ -16,7 +16,7 @@ import {
 interface UseHighlightProps {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
-  isEditAble: boolean;
+  isEditable: boolean;
   hideHighlightToggleButton: () => void;
   updateRemoverPosition: (rect: DOMRect) => void;
   hideRemover: () => void;
@@ -57,7 +57,7 @@ const makeInitialEditorAnswerMap = (answerList: ReviewAnswerResponseData[]) => {
 const useHighlight = ({
   questionId,
   answerList,
-  isEditAble,
+  isEditable,
   hideHighlightToggleButton,
   updateRemoverPosition,
   hideRemover,
@@ -382,7 +382,7 @@ const useHighlight = ({
     return false;
   };
   const handleClickBlockList = (event: React.MouseEvent) => {
-    if (!isEditAble) return;
+    if (!isEditable) return;
 
     const isSameSelectedNode = isSingleCharacterSelected();
 

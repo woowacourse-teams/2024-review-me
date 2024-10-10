@@ -5,11 +5,11 @@ import { Position } from '@/types';
 import { EditorSelectionInfo } from '@/utils';
 
 interface UseHighlightButtonPositionProps {
-  isEditAble: boolean;
+  isEditable: boolean;
   editorRef: React.RefObject<HTMLDivElement>;
 }
 
-const useHighlightToggleButtonPosition = ({ isEditAble, editorRef }: UseHighlightButtonPositionProps) => {
+const useHighlightToggleButtonPosition = ({ isEditable, editorRef }: UseHighlightButtonPositionProps) => {
   const [highlightToggleButtonPosition, setHighlightToggleButtonPosition] = useState<Position | null>(null);
 
   const hideHighlightToggleButton = () => setHighlightToggleButtonPosition(null);
@@ -60,8 +60,8 @@ const useHighlightToggleButtonPosition = ({ isEditAble, editorRef }: UseHighligh
   };
 
   useLayoutEffect(() => {
-    if (!isEditAble) hideHighlightToggleButton();
-  }, [isEditAble]);
+    if (!isEditable) hideHighlightToggleButton();
+  }, [isEditable]);
 
   useLayoutEffect(() => {});
 

@@ -29,21 +29,21 @@ interface HighlightEditorProps {
 
 const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
-  const [isEditAble, setIsEditAble] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
   const { isAddingHighlight, checkHighlight } = useCheckHighlight();
 
   const handleEditToggleButton = () => {
-    setIsEditAble((prev) => !prev);
+    setIsEditable((prev) => !prev);
   };
 
   const { highlightToggleButtonPosition, hideHighlightToggleButton, updateHighlightToggleButtonPosition } =
     useHighlightToggleButtonPosition({
-      isEditAble,
+      isEditable,
       editorRef,
     });
 
   const { removerPosition, hideRemover, updateRemoverPosition } = useHighlightRemoverPosition({
-    isEditAble,
+    isEditable,
     editorRef,
   });
 
@@ -57,14 +57,14 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
   } = useHighlight({
     questionId,
     answerList,
-    isEditAble,
+    isEditable,
     hideHighlightToggleButton,
     hideRemover,
     updateRemoverPosition,
   });
 
   const handleMouseDown = (e: MouseEvent) => {
-    if (!isEditAble) return;
+    if (!isEditable) return;
 
     const isInButton = (e.target as HTMLElement).closest(`.${HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME}`);
     const isNotHighlightRemover = (e.target as HTMLElement).closest(`.${HIGHLIGHT_REMOVER_CLASS_NAME}`);
@@ -74,7 +74,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
   };
 
   const handleMouseUp = () => {
-    if (!isEditAble) return;
+    if (!isEditable) return;
     const info = findSelectionInfo();
     if (!info) return;
 
@@ -89,12 +89,12 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mousedown', handleMouseDown);
     };
-  }, [isEditAble]);
+  }, [isEditable]);
 
   return (
     <div ref={editorRef} style={{ position: 'relative' }}>
       <S.SwitchButtonWrapper>
-        <EditSwitchButton isEditAble={isEditAble} handleEditToggleButton={handleEditToggleButton} />
+        <EditSwitchButton isEditable={isEditable} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
       {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
         <div
@@ -109,7 +109,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
         </div>
       ))}
 
-      {isEditAble && highlightToggleButtonPosition && (
+      {isEditable && highlightToggleButtonPosition && (
         <HighlightToggleButtonContainer
           buttonPosition={highlightToggleButtonPosition}
           isAddingHighlight={isAddingHighlight}
@@ -117,7 +117,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
           removeHighlightByDrag={removeHighlightByDrag}
         />
       )}
-      {isEditAble && removalTarget && removerPosition && (
+      {isEditable && removalTarget && removerPosition && (
         <HighlightRemoverWrapper buttonPosition={removerPosition} removeHighlightByClick={removeHighlightByClick} />
       )}
     </div>
