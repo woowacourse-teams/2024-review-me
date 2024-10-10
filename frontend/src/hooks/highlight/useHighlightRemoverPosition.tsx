@@ -1,9 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
 
-interface Position {
-  top: number;
-  left: number;
-}
+import { Position } from '@/types';
 
 interface UseHighlightRemoverPositionProps {
   isEditAble: boolean;
@@ -17,8 +14,9 @@ const useHighlightRemoverPosition = ({ isEditAble, editorRef }: UseHighlightRemo
     if (!editorRect) return;
 
     setRemoverPosition({
-      top: rect.bottom - editorRect.top,
-      left: rect.right - editorRect.left,
+      top: `
+      ${(rect.bottom - editorRect.top) / 10}rem`,
+      left: `${(rect.right - editorRect.left) / 10}rem`,
     });
   };
 

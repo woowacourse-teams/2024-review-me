@@ -1,6 +1,12 @@
 import styled from '@emotion/styled';
 
-export const Button = styled.button`
+import { Position } from '@/types';
+
+export const Button = styled.button<{ $position: Position }>`
+  position: absolute;
+  top: ${(props) => props.$position.top};
+  left: ${(props) => props.$position.left};
+
   display: flex;
   gap: 0.8rem;
 

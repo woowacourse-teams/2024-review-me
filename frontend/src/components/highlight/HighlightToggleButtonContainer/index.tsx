@@ -1,4 +1,3 @@
-import { HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME } from '@/constants';
 import { Position } from '@/types';
 
 import HighlightButton from '../HighlightButton';
@@ -19,13 +18,13 @@ const HighlightToggleButtonContainer = ({
   removeHighlightByDrag,
 }: HighlightToggleButtonContainerProps) => {
   return (
-    <div className={HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME} style={{ position: 'absolute', ...buttonPosition }}>
+    <>
       {isAddingHighlight ? (
-        <HighlightButton.highlighter addHighlight={addHighlight} />
+        <HighlightButton.highlighter addHighlight={addHighlight} position={buttonPosition} />
       ) : (
-        <HighlightButton.dragRemoval removeHighlightByDrag={removeHighlightByDrag} />
+        <HighlightButton.dragRemoval removeHighlightByDrag={removeHighlightByDrag} position={buttonPosition} />
       )}
-    </div>
+    </>
   );
 };
 

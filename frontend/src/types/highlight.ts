@@ -59,6 +59,6 @@ export interface EditorLine {
 }
 
 export interface Position {
-  top: number;
-  left: number;
+  top: string;
+  left: string;
 }

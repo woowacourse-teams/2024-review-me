@@ -1,17 +1,19 @@
 import EraserIcon from '@/assets/eraser.svg';
 import HighlighterIcon from '@/assets/highlighter.svg';
 import TrashIcon from '@/assets/trash.svg';
-import { HIGHLIGHT_REMOVER_CLASS_NAME, SR_ONLY } from '@/constants';
+import { HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME, HIGHLIGHT_REMOVER_CLASS_NAME, SR_ONLY } from '@/constants';
+import { Position } from '@/types';
 
 import * as S from './style';
 
 interface HighlighterButtonProps {
+  position: Position;
   addHighlight: () => void;
 }
 
-const HighlighterButton = ({ addHighlight }: HighlighterButtonProps) => {
+const HighlighterButton = ({ addHighlight, position }: HighlighterButtonProps) => {
   return (
-    <S.Button onClick={addHighlight}>
+    <S.Button className={HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME} onClick={addHighlight} $position={position}>
       <span className={SR_ONLY}>하이라이트 추가 버튼</span>
       <S.ButtonIcon src={HighlighterIcon} alt="" />
       <S.Color aria-label="하이라이트 색상" />
@@ -21,11 +23,12 @@ const HighlighterButton = ({ addHighlight }: HighlighterButtonProps) => {
 
 interface HighlightDragRemovalProps {
   removeHighlightByDrag: () => void;
+  position: Position;
 }
 
-const HighlightDragRemoval = ({ removeHighlightByDrag }: HighlightDragRemovalProps) => {
+const HighlightDragRemoval = ({ removeHighlightByDrag, position }: HighlightDragRemovalProps) => {
   return (
-    <S.Button onClick={removeHighlightByDrag} name="">
+    <S.Button className={HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME} onClick={removeHighlightByDrag} $position={position}>
       <span className={SR_ONLY}>하이라이트 삭제 버튼</span>
       <S.ButtonIcon src={EraserIcon} alt="" />
     </S.Button>
@@ -34,11 +37,12 @@ const HighlightDragRemoval = ({ removeHighlightByDrag }: HighlightDragRemovalPro
 
 interface HighlightClickRemovalProps {
   removeHighlightByClick: () => void;
+  position: Position;
 }
 
-const HighlightClickRemoval = ({ removeHighlightByClick }: HighlightClickRemovalProps) => {
+const HighlightClickRemoval = ({ removeHighlightByClick, position }: HighlightClickRemovalProps) => {
   return (
-    <S.Button className={HIGHLIGHT_REMOVER_CLASS_NAME} onClick={removeHighlightByClick}>
+    <S.Button className={HIGHLIGHT_REMOVER_CLASS_NAME} onClick={removeHighlightByClick} $position={position}>
       <span className={SR_ONLY}>하이라이트 삭제 버튼</span>
       <S.ButtonIcon src={TrashIcon} alt="" />
     </S.Button>

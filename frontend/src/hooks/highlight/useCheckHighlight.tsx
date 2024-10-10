@@ -11,6 +11,8 @@ const useCheckHighlight = () => {
     const isNoneHighlight = selectedAllSpanList.some((span) => !span.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME));
 
     setIsAddingHighlight(isNoneHighlight);
+
+    return isNoneHighlight;
   };
 
   const getAllSpanInSelection = (selection: Selection) => {

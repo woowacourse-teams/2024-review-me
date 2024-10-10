@@ -30,6 +30,7 @@ interface HighlightEditorProps {
 const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const [isEditAble, setIsEditAble] = useState(false);
+  const { isAddingHighlight, checkHighlight } = useCheckHighlight();
 
   const handleEditToggleButton = () => {
     setIsEditAble((prev) => !prev);
@@ -61,7 +62,6 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     hideRemover,
     updateRemoverPosition,
   });
-  const { isAddingHighlight, checkHighlight } = useCheckHighlight();
 
   const handleMouseDown = (e: MouseEvent) => {
     if (!isEditAble) return;
@@ -78,8 +78,8 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     const info = findSelectionInfo();
     if (!info) return;
 
-    checkHighlight(info);
-    updateHighlightToggleButtonPosition(info);
+    const isAddingHighlight = checkHighlight(info);
+    updateHighlightToggleButtonPosition({ info, isAddingHighlight });
   };
 
   useEffect(() => {
