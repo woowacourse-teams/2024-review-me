@@ -11,16 +11,16 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query(value = """
             select a.id from answer a
-            join review r
+            join new_review r
             on a.review_id = r.id
             where r.review_group_id = :reviewGroupId
             """, nativeQuery = true)
     Set<Long> findIdsByReviewGroupId(long reviewGroupId);
 
     @Query(value = """
-            select a.id from answer a 
-            join question q 
-            on a.question_id = q.id 
+            select a.id from answer a
+            join question q
+            on a.question_id = q.id
             where q.id = :questionId
             """, nativeQuery = true)
     Set<Long> findIdsByQuestionId(long questionId);
