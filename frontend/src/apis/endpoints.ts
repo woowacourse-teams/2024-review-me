@@ -69,6 +69,7 @@ const endPoint = {
   gettingReviewGroupData: (reviewRequestCode: string) =>
     `${REVIEW_GROUP_DATA_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingSectionList: `${serverUrl}/${VERSION2}/sections`,
+  gettingGroupedReviews: (sectionId: number) => `${serverUrl}/${VERSION2}/reviews/gather?sectionId=${sectionId}`,
 };
 
 export default endPoint;
