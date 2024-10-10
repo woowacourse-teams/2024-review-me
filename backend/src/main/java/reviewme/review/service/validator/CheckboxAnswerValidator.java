@@ -2,6 +2,7 @@ package reviewme.review.service.validator;
 
 import java.util.HashSet;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionGroup;
@@ -10,22 +11,30 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
-import reviewme.review.domain.CheckBoxAnswerSelectedOption;
+import reviewme.review.domain.Answer;
+import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
+import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 
 @Component
-@RequiredArgsConstructor
-public class CheckBoxAnswerValidator {
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+public class CheckboxAnswerValidator implements AnswerValidator {
 
     private final QuestionRepository questionRepository;
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
-    public void validate(CheckboxAnswer checkboxAnswer) {
+    @Override
+    public boolean supports(Class<? extends Answer> answerClass) {
+        return CheckboxAnswer.class.isAssignableFrom(answerClass);
+    }
+
+    @Override
+    public void validate(Answer answer) {
+        CheckboxAnswer checkboxAnswer = (CheckboxAnswer) answer;
         Question question = questionRepository.findById(checkboxAnswer.getQuestionId())
                 .orElseThrow(() -> new SubmittedQuestionNotFoundException(checkboxAnswer.getQuestionId()));
 
@@ -67,7 +76,7 @@ public class CheckBoxAnswerValidator {
     private List<Long> extractAnsweredOptionItemIds(CheckboxAnswer checkboxAnswer) {
         return checkboxAnswer.getSelectedOptionIds()
                 .stream()
-                .map(CheckBoxAnswerSelectedOption::getSelectedOptionId)
+                .map(CheckboxAnswerSelectedOption::getSelectedOptionId)
                 .toList();
     }
 }

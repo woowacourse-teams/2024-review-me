@@ -13,6 +13,8 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
+import reviewme.review.domain.CheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
@@ -97,7 +99,11 @@ public class ReviewDetailMapper {
                                                                  Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
         OptionGroup optionGroup = optionGroupsByQuestion.get(question.getId());
         List<OptionItem> optionItems = optionItemsByOptionGroup.get(optionGroup.getId());
-        Set<Long> selectedOptionIds = review.getAllCheckBoxOptionIds();
+        Set<Long> selectedOptionIds = review.getAnswersByType(CheckboxAnswer.class)
+                .stream()
+                .flatMap(answer -> answer.getSelectedOptionIds().stream())
+                .map(CheckboxAnswerSelectedOption::getSelectedOptionId)
+                .collect(Collectors.toSet());
 
         List<OptionItemAnswerResponse> optionItemResponse = optionItems.stream()
                 .filter(optionItem -> selectedOptionIds.contains(optionItem.getId()))
@@ -123,7 +129,7 @@ public class ReviewDetailMapper {
 
     private QuestionAnswerResponse mapToTextQuestionResponse(Review review,
                                                              Question question) {
-        List<TextAnswer> textAnswers = review.getTextAnswers();
+        List<TextAnswer> textAnswers = review.getAnswersByType(TextAnswer.class);
         TextAnswer textAnswer = textAnswers.stream()
                 .filter(answer -> answer.getQuestionId() == question.getId())
                 .findFirst()

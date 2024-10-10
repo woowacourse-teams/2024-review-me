@@ -1,11 +1,14 @@
 import styled from '@emotion/styled';
 
-import media from '@/utils/media';
+interface AccordionStyleProps {
+  $isOpened: boolean;
+  $contentHeight?: number;
+}
 
-export const AccordionContainer = styled.div<{ $isOpened: boolean }>`
+export const AccordionContainer = styled.div<AccordionStyleProps>`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: ${({ $isOpened }) => ($isOpened ? '2rem' : 0)};
 
   width: 100%;
   padding: 1rem;
@@ -26,25 +29,28 @@ export const AccordionButton = styled.button`
   justify-content: space-between;
 
   width: 100%;
+  height: fit-content;
   min-height: 3rem;
-
-  ${media.small} {
-    height: fit-content;
-  }
 `;
 
 export const AccordionTitle = styled.p`
+  text-align: left;
   ::before {
     content: 'Q. ';
   }
 `;
 
-export const ArrowIcon = styled.img<{ $isOpened: boolean }>`
+export const ArrowIcon = styled.img<AccordionStyleProps>`
   transform: ${({ $isOpened }) => ($isOpened ? 'rotate(180deg)' : 'rotate(0deg)')};
   transition: transform 0.3s ease-in-out;
 `;
 
-export const AccordionContents = styled.div`
-  display: flex;
-  flex-direction: column;
+export const AccordionContentsWrapper = styled.div`
+  overflow: hidden;
+`;
+
+export const AccordionContents = styled.div<AccordionStyleProps>`
+  margin-top: ${({ $isOpened, $contentHeight }) => ($isOpened ? '0' : `-${$contentHeight}px`)};
+  opacity: ${({ $isOpened }) => ($isOpened ? '1' : '0')};
+  transition: 0.3s ease;
 `;

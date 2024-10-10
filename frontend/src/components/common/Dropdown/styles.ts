@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
 
+interface DropdownStyleProps {
+  $isOpened: boolean;
+}
+
 export const DropdownContainer = styled.div`
   position: relative;
   display: flex;
@@ -30,7 +34,7 @@ export const SelectedOption = styled.p`
   white-space: nowrap;
 `;
 
-export const ArrowIcon = styled.img<{ $isOpened: boolean }>`
+export const ArrowIcon = styled.img<DropdownStyleProps>`
   transform: ${({ $isOpened }) => ($isOpened ? 'rotate(180deg)' : 'rotate(0deg)')};
   transition: transform 0.3s ease-in-out;
 `;

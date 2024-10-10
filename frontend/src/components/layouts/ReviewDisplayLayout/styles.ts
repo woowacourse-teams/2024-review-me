@@ -12,7 +12,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  @media screen and (max-width: 50rem) {
+  @media screen and (max-width: 500px) {
     flex-direction: column;
     align-items: flex-start;
     margin-bottom: 2.5rem;

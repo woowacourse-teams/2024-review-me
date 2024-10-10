@@ -59,16 +59,16 @@ class ReviewListMapperTest {
 
         // given - 리뷰 답변 저장
         TextAnswer textAnswer = new TextAnswer(question.getId(), "텍스트형 응답");
-        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
-        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
-        Review review3 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
-        Review review4 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
-        Review review5 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
-        Review review6 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
-        Review review7 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
-        Review review8 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
-        Review review9 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
-        Review review10 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), List.of());
+        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review3 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review4 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review5 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review6 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review7 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review8 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review9 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review10 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
         reviewRepository.saveAll(
                 List.of(review1, review2, review3, review4, review5, review6, review7, review8, review9, review10));
 
