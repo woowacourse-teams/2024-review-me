@@ -22,6 +22,11 @@ import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionRes
 import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
 import reviewme.review.service.dto.response.gathered.TextResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
+import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.review.service.exception.SectionNotFoundInTemplateException;
+import reviewme.reviewgroup.domain.ReviewGroup;
+import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.template.repository.SectionRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +34,8 @@ public class ReviewGatheredLookupService {
 
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    private final ReviewGroupRepository reviewGroupRepository;
+    private final SectionRepository sectionRepository;
 
     @Transactional(readOnly = true)
     public ReviewsGatheredBySectionResponse getReceivedReviewsBySectionId(String reviewRequestCode, long sectionId) {
@@ -44,10 +51,9 @@ public class ReviewGatheredLookupService {
         Map<Long, List<Answer>> questionIdAnswers = receivedAnswers.stream()
                 .collect(Collectors.groupingBy(Answer::getQuestionId));
 
-        ArrayList<Long> questionIds = new ArrayList<>(questionIdQuestion.keySet());
-        Map<Question, List<Answer>> questionAnswers = answerRepository.findAllByQuestionIds(questionIds)
+        Map<Question, List<Answer>> questionAnswers = questionIdQuestion.entrySet()
                 .stream()
-                .collect(Collectors.groupingBy(answer -> questionIdQuestion.get(answer.getQuestionId())));
+                .collect(Collectors.toMap(Map.Entry::getValue, entry -> questionIdAnswers.getOrDefault(entry.getKey(), List.of())));
 
         return new ReviewsGatheredBySectionResponse(mapToResponseBySection(questionAnswers));
     }
