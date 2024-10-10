@@ -1,18 +1,17 @@
 import { TopButton, OptionSwitch } from '@/components/common';
 import { EssentialPropsWithChildren } from '@/types';
 
-import ReviewInfoSection, { ReviewInfoSectionProps } from './components/ReviewInfoSection';
-import useReviewDisplayLayoutOptions from './hooks/useReviewDisplayLayoutOptions';
+import ReviewInfoSection from './components/ReviewInfoSection';
+import { useReviewInfoData, useReviewDisplayLayoutOptions } from './hooks';
 import * as S from './styles';
 
-const ReviewDisplayLayout = ({
-  revieweeName,
-  projectName,
-  reviewCount,
-  isReviewList,
-  children,
-}: EssentialPropsWithChildren<ReviewInfoSectionProps>) => {
+interface ReviewDisplayLayoutProps {
+  isReviewList: boolean;
+}
+
+const ReviewDisplayLayout = ({ isReviewList, children }: EssentialPropsWithChildren<ReviewDisplayLayoutProps>) => {
   const reviewDisplayLayoutOptions = useReviewDisplayLayoutOptions();
+  const { revieweeName, projectName, totalReviewCount } = useReviewInfoData();
 
   return (
     <S.ReviewDisplayLayout>
@@ -20,7 +19,7 @@ const ReviewDisplayLayout = ({
         <ReviewInfoSection
           revieweeName={revieweeName}
           projectName={projectName}
-          reviewCount={reviewCount}
+          totalReviewCount={totalReviewCount}
           isReviewList={isReviewList}
         />
         <OptionSwitch options={reviewDisplayLayoutOptions} />

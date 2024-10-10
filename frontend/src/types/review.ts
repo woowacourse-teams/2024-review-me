@@ -200,3 +200,9 @@ export interface ReviewWritingFormResult {
   reviewRequestCode: string;
   answers: ReviewWritingAnswer[];
 }
+
+export interface ReviewInfoData {
+  projectName: string;
+  revieweeName: string;
+  totalReviewCount: number;
+}

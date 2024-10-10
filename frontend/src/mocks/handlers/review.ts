@@ -15,12 +15,22 @@ import {
   REVIEW_QUESTION_DATA,
   REVIEW_LIST,
   MOCK_AUTH_TOKEN_NAME,
+  MOCK_REVIEW_INFO_DATA,
 } from '../mockData';
 
 export const PAGE = {
   firstPageNumber: 1,
   firstPageStartIndex: 0,
 };
+
+const getReviewInfoData = () =>
+  http.get(endPoint.gettingReviewInfoData, async ({ cookies }) => {
+    if (!cookies[MOCK_AUTH_TOKEN_NAME]) {
+      return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
+    }
+
+    return HttpResponse.json(MOCK_REVIEW_INFO_DATA);
+  });
 
 const getDetailedReview = () =>
   http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), async ({ request, cookies }) => {
@@ -43,17 +53,21 @@ const getDetailedReview = () =>
   });
 
 const getDataToWriteReview = () =>
-  http.get(new RegExp(`^${REVIEW_WRITING_API_URL}`), async ({ request }) => {
-    //요청 url에서 reviewId, memberId 추출
-    const url = new URL(request.url);
-    const urlRequestCode = url.searchParams.get(REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode);
+  http.get(
+    new RegExp(`^${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}`),
+    async ({ request }) => {
+      //요청 url에서 reviewId, memberId 추출
+      const url = new URL(request.url);
+      const urlRequestCode = url.searchParams.get(REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode);
 
-    if (REVIEW_REQUEST_CODE === urlRequestCode) {
-      return HttpResponse.json(REVIEW_QUESTION_DATA);
-    }
-    return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
-  });
+      if (REVIEW_REQUEST_CODE === urlRequestCode) {
+        return HttpResponse.json(REVIEW_QUESTION_DATA);
+      }
+      return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
+    },
+  );
 
+// TODO: 추후 getReviewList API에서 리뷰 정보(이름, 개수...)를 내려주지 않는 경우 핸들러도 수정 필요
 const getReviewList = (lastReviewId: number | null, size: number) => {
   return http.get(endPoint.gettingReviewList(lastReviewId, size), async ({ request, cookies }) => {
     // authToken 쿠키 확인
@@ -90,6 +104,12 @@ const postReview = () =>
     return HttpResponse.json({ message: 'post 성공' }, { status: 201 });
   });
 
-const reviewHandler = [getDetailedReview(), getReviewList(null, 10), getDataToWriteReview(), postReview()];
+const reviewHandler = [
+  getDetailedReview(),
+  getReviewList(null, 10),
+  getDataToWriteReview(),
+  postReview(),
+  getReviewInfoData(),
+];
 
 export default reviewHandler;

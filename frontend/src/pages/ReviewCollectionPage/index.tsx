@@ -21,7 +21,7 @@ const ReviewCollectionPage = () => {
 
   return (
     <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
-      <ReviewDisplayLayout projectName={projectName} revieweeName={revieweeName} isReviewList={false}>
+      <ReviewDisplayLayout isReviewList={false}>
         <S.ReviewCollectionContainer>
           <S.ReviewSectionDropdown>
             <Dropdown

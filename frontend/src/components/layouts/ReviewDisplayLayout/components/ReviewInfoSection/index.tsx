@@ -6,10 +6,10 @@ export interface ReviewInfoSectionProps {
   revieweeName: string;
   isReviewList: boolean;
   projectName: string;
-  reviewCount?: number;
+  totalReviewCount?: number;
 }
 
-const ReviewInfoSection = ({ projectName, revieweeName, reviewCount, isReviewList }: ReviewInfoSectionProps) => {
+const ReviewInfoSection = ({ projectName, revieweeName, totalReviewCount, isReviewList }: ReviewInfoSectionProps) => {
   const revieweeNameWithParticle = calculateParticle({
     target: revieweeName,
     particles: { withFinalConsonant: '이', withoutFinalConsonant: '가' },
@@ -17,7 +17,7 @@ const ReviewInfoSection = ({ projectName, revieweeName, reviewCount, isReviewLis
 
   const getReviewInfoMessage = () => {
     return isReviewList
-      ? `${revieweeNameWithParticle} 받은 ${reviewCount}개의 리뷰 목록이에요`
+      ? `${revieweeNameWithParticle} 받은 ${totalReviewCount}개의 리뷰 목록이에요`
       : `${revieweeNameWithParticle} 받은 리뷰를 질문별로 모아봤어요`;
   };
 
