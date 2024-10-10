@@ -18,6 +18,7 @@ import reviewme.review.repository.AnswerRepository;
 import reviewme.review.repository.TextAnswerRepository;
 import reviewme.review.service.exception.AnswerNotFoundByIdException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
+import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class HighlightValidator {
     private final AnswerRepository answerRepository;
     private final TextAnswerRepository textAnswerRepository;
     private final QuestionRepository questionRepository;
+    private final ReviewGroupRepository reviewGroupRepository;
 
     public void validate(HighlightsRequest request, long reviewGroupId) {
         validateAnswerByReviewGroup(request, reviewGroupId);
@@ -37,6 +39,10 @@ public class HighlightValidator {
 
     private void validateQuestionByReviewGroup(HighlightsRequest request, long reviewGroupId) {
         Set<Long> providedQuestionIds = questionRepository.findIdsByReviewGroupId(reviewGroupId);
+        long templateId = reviewGroupRepository.findById(reviewGroupId)
+                .orElseThrow()
+                .getTemplateId();
+        Set<Long> providedQuestionIds = questionRepository.findAllQuestionIdByTemplateId(templateId);
         long submittedQuestionId = request.questionId();
 
         if (!providedQuestionIds.contains(submittedQuestionId)) {
