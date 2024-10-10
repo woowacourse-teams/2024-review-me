@@ -13,6 +13,7 @@ import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import reviewme.question.domain.Question;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
+import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
@@ -72,7 +74,7 @@ class ReviewDetailLookupServiceTest {
         String reviewRequestCode = "hello";
         String groupAccessCode = "goodBye";
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
-        Review review = reviewRepository.save(new Review(0, reviewGroup.getId(), List.of(), List.of()));
+        Review review = reviewRepository.save(new Review(0, reviewGroup.getId(), List.of()));
 
         // when, then
         assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(
@@ -90,8 +92,8 @@ class ReviewDetailLookupServiceTest {
         ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode1, groupAccessCode1));
         ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode2, groupAccessCode2));
 
-        Review review1 = reviewRepository.save(new Review(0, reviewGroup1.getId(), List.of(), List.of()));
-        Review review2 = reviewRepository.save(new Review(0, reviewGroup2.getId(), List.of(), List.of()));
+        Review review1 = reviewRepository.save(new Review(0, reviewGroup1.getId(), List.of()));
+        Review review2 = reviewRepository.save(new Review(0, reviewGroup2.getId(), List.of()));
 
         // when, then
         assertAll(
@@ -124,12 +126,12 @@ class ReviewDetailLookupServiceTest {
         Template template = templateRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
 
         // given - 리뷰 답변 저장
-        List<TextAnswer> textAnswers = List.of(new TextAnswer(question2.getId(), "답변".repeat(20)));
-        List<CheckboxAnswer> checkboxAnswers = List.of(
+        List<Answer> answers = List.of(
+                new TextAnswer(question2.getId(), "답변".repeat(20)),
                 new CheckboxAnswer(question1.getId(), List.of(optionItem1.getId(), optionItem2.getId()))
         );
         Review review = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), textAnswers, checkboxAnswers)
+                new Review(template.getId(), reviewGroup.getId(), answers)
         );
 
         // when
@@ -142,7 +144,8 @@ class ReviewDetailLookupServiceTest {
     }
 
     @Nested
-    class 필수가_아닌_답변에_응답하지_않았을_때 {
+    @DisplayName("필수가 아닌 답변에 응답하지 않았을 때")
+    class NotAnsweredOptionalQuestion {
 
         @Test
         void 섹션에_필수가_아닌_질문만_있다면_섹션_자체를_반환하지_않는다() {
@@ -158,7 +161,7 @@ class ReviewDetailLookupServiceTest {
 
             // given - 아무것도 응답하지 않은 리뷰 답변 저장
             Review review = reviewRepository.save(
-                    new Review(template.getId(), reviewGroup.getId(), null, null)
+                    new Review(template.getId(), reviewGroup.getId(), null)
             );
 
             // when
@@ -188,7 +191,7 @@ class ReviewDetailLookupServiceTest {
             // given - 질문 하나에만 응답한 리뷰 답변 저장
             TextAnswer textAnswer = new TextAnswer(question1.getId(), "답변".repeat(20));
             Review review = reviewRepository.save(
-                    new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer), null)
+                    new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer))
             );
 
             // when

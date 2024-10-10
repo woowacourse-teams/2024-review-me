@@ -1,12 +1,8 @@
 package reviewme.review.domain;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -18,31 +14,21 @@ import lombok.NoArgsConstructor;
 import reviewme.review.domain.exception.QuestionNotAnsweredException;
 
 @Entity
-@Table(name = "checkbox_answer")
+@Table(name = "new_checkbox_answer")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(callSuper = true)
 @Getter
-public class CheckboxAnswer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "review_id", nullable = false, insertable = false, updatable = false)
-    private long reviewId;
-
-    @Column(name = "question_id", nullable = false)
-    private long questionId;
+public class CheckboxAnswer extends Answer {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "checkbox_answer_id", nullable = false, updatable = false)
-    private List<CheckBoxAnswerSelectedOption> selectedOptionIds;
+    private List<CheckboxAnswerSelectedOption> selectedOptionIds;
 
     public CheckboxAnswer(long questionId, List<Long> selectedOptionIds) {
         validateSelectedOptionIds(questionId, selectedOptionIds);
         this.questionId = questionId;
         this.selectedOptionIds = selectedOptionIds.stream()
-                .map(CheckBoxAnswerSelectedOption::new)
+                .map(CheckboxAnswerSelectedOption::new)
                 .toList();
     }
 

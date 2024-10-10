@@ -1,23 +1,33 @@
 package reviewme.review.service.validator;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
+import reviewme.review.domain.Answer;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.exception.InvalidTextAnswerLengthException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 
 @Component
-@RequiredArgsConstructor
-public class TextAnswerValidator {
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+public class TextAnswerValidator implements AnswerValidator {
 
+    private static final int ZERO_LENGTH = 0;
     private static final int MIN_LENGTH = 20;
     private static final int MAX_LENGTH = 1_000;
 
     private final QuestionRepository questionRepository;
 
-    public void validate(TextAnswer textAnswer) {
+    @Override
+    public boolean supports(Class<? extends Answer> answerClass) {
+        return TextAnswer.class.isAssignableFrom(answerClass);
+    }
+
+    @Override
+    public void validate(Answer answer) {
+        TextAnswer textAnswer = (TextAnswer) answer;
         Question question = questionRepository.findById(textAnswer.getQuestionId())
                 .orElseThrow(() -> new SubmittedQuestionNotFoundException(textAnswer.getQuestionId()));
 

@@ -1,22 +1,34 @@
 import * as S from './styles';
 
-interface OptionSwitchProps {
-  leftLabel: string;
-  rightLabel: string;
-  isReviewList: boolean;
-  handleSwitchClick: () => void;
+export interface OptionSwitchStyleProps {
+  $isChecked: boolean;
 }
 
-const OptionSwitch = ({ leftLabel, rightLabel, isReviewList, handleSwitchClick }: OptionSwitchProps) => {
-  return (
-    <S.OptionSwitchContainer onClick={handleSwitchClick}>
-      <S.CheckboxWrapper isChecked={isReviewList}>
-        <S.CheckboxLabel isChecked={isReviewList}>{leftLabel}</S.CheckboxLabel>
-      </S.CheckboxWrapper>
+export interface OptionSwitchOption {
+  label: string;
+  isChecked: boolean;
+  handleOptionClick: () => void;
+}
 
-      <S.CheckboxWrapper isChecked={!isReviewList}>
-        <S.CheckboxLabel isChecked={!isReviewList}>{rightLabel}</S.CheckboxLabel>
-      </S.CheckboxWrapper>
+interface OptionSwitchProps {
+  options: OptionSwitchOption[];
+}
+
+const OptionSwitch = ({ options }: OptionSwitchProps) => {
+  const handleSwitchClick = (index: number) => {
+    const clickedOption = options[index];
+    if (clickedOption) clickedOption.handleOptionClick();
+  };
+
+  return (
+    <S.OptionSwitchContainer>
+      {options.map((option, index) => (
+        <S.CheckboxWrapper key={option.label} $isChecked={option.isChecked} onClick={() => handleSwitchClick(index)}>
+          <S.CheckboxButton type="button" $isChecked={option.isChecked}>
+            {option.label}
+          </S.CheckboxButton>
+        </S.CheckboxWrapper>
+      ))}
     </S.OptionSwitchContainer>
   );
 };
