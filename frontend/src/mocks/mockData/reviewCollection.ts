@@ -33,7 +33,7 @@ export const GROUPED_REVIEWS_MOCK_DATA: GroupedReviews = {
         { content: '팀의 분위기를 주도해요', count: 3 },
         { content: '주장을 이야기할 때에는 합당한 근거가 뒤따라요', count: 2 },
         { content: '팀에게 필요한 것과 그렇지 않은 것을 잘 구분해요', count: 2 },
-        { content: '팀 내 주어진 요구사항에 우선순위를 잘 매겨요 (커뮤니케이션 능력을 특화하자)', count: 1 },
+        { content: '팀 내 주어진 요구사항에 우선순위를 잘 매겨요', count: 1 },
         { content: '서로 다른 분야간의 소통도 중요하게 생각해요', count: 1 },
       ],
     },

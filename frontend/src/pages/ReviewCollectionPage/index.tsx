@@ -5,6 +5,7 @@ import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 import { useGetReviewList } from '@/hooks';
 import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '@/mocks/mockData/reviewCollection';
 
+import DoughnutChart from './components/DoughnutChart';
 import * as S from './styles';
 
 const ReviewCollectionPage = () => {
@@ -34,7 +35,7 @@ const ReviewCollectionPage = () => {
               return (
                 <Accordion title={review.question.name} key={index} isInitiallyOpened={index === 0 ? true : false}>
                   {review.question.type === 'CHECKBOX' ? (
-                    <p>객관식 통계 차트</p>
+                    <DoughnutChart reviewVotes={review.votes!} />
                   ) : (
                     <S.ReviewAnswerContainer>
                       {review.answers?.map((answer, index) => {
