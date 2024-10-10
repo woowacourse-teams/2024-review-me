@@ -37,8 +37,7 @@ public class ReviewGatheredLookupService {
         validateSectionId(sectionId, reviewGroup);
 
         Map<Long, Question> questionIdQuestion = questionRepository
-                .findAllByReviewRequestCodeAndSectionId(reviewRequestCode, sectionId)
-                .stream()
+                .findAllBySectionId(sectionId).stream()
                 .collect(Collectors.toMap(Question::getId, Function.identity()));
 
         ArrayList<Long> questionIds = new ArrayList<>(questionIdQuestion.keySet());
