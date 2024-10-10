@@ -7,9 +7,9 @@ CREATE TABLE highlight
     questionId      BIGINT NOT NULL,
     review_group_id BIGINT NOT NULL,
     answer_id       BIGINT NOT NULL,
-    line_index      BIGINT NOT NULL,
-    start_index     BIGINT NOT NULL,
-    end_index       BIGINT NOT NULL,
+    line_index      INT NOT NULL,
+    start_index     INT NOT NULL,
+    end_index       INT NOT NULL,
     PRIMARY KEY (id)
 );
 
