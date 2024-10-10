@@ -3,7 +3,6 @@ import { Category } from '@/types';
 import * as S from './styles';
 
 interface ReviewCardProps {
-  projectName: string;
   createdAt: string;
   contentPreview: string;
   categories: Category[];
