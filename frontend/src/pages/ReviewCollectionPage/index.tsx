@@ -4,7 +4,6 @@ import { Accordion, AuthAndServerErrorFallback, Dropdown, ErrorSuspenseContainer
 import { DropdownItem } from '@/components/common/Dropdown';
 import HighlightEditor from '@/components/highlight/HighlightEditor';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
-import { useGetReviewList } from '@/hooks';
 
 import DoughnutChart from './components/DoughnutChart';
 import useGetGroupedReviews from './hooks/useGetGroupedReviews';
@@ -12,10 +11,6 @@ import useGetSectionList from './hooks/useGetSectionList';
 import * as S from './styles';
 
 const ReviewCollectionPage = () => {
-  // TODO: 추후 리뷰 그룹 정보를 받아오는 API로 대체
-  const { data } = useGetReviewList();
-  const { revieweeName, projectName } = data.pages[0];
-
   const { data: reviewSectionList } = useGetSectionList();
   const dropdownSectionList = reviewSectionList.sections.map((section) => {
     return { text: section.name, value: section.id };
