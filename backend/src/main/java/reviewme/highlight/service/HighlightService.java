@@ -1,13 +1,20 @@
 package reviewme.highlight.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.highlight.domain.HighLight;
+import reviewme.highlight.domain.Highlight;
 import reviewme.highlight.repository.HighlightRepository;
+import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
+import reviewme.highlight.service.dto.HighlightRequest;
+import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
 import reviewme.highlight.service.validator.HighlightValidator;
+import reviewme.review.domain.Answer;
+import reviewme.review.repository.AnswerRepository;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -17,6 +24,7 @@ public class HighlightService {
 
     private final HighlightRepository highlightRepository;
     private final ReviewGroupRepository reviewGroupRepository;
+    private final AnswerRepository answerRepository;
 
     private final HighlightValidator highlightValidator;
 
@@ -28,11 +36,17 @@ public class HighlightService {
 
         highlightValidator.validate(request, reviewGroupId);
         deleteOldHighlight(request.questionId(), reviewGroupId);
-        saveNewHighlight(request, reviewGroupId);
+        saveNewHighlight(request);
     }
 
     private void deleteOldHighlight(long questionId, long reviewGroupId) {
-        highlightRepository.deleteByReviewGroupIdAndQuestionId(reviewGroupId, questionId);
+        Set<Answer> answersByReviewGroup = answerRepository.findAllByReviewGroupId(reviewGroupId);
+        List<Long> answersByReviewQuestion = answersByReviewGroup.stream()
+                .filter(answer -> answer.getQuestionId() == questionId)
+                .map(Answer::getId)
+                .toList();
+
+        highlightRepository.deleteAllById(answersByReviewQuestion);
     }
 
     private void saveNewHighlight(HighlightsRequest highlightsRequest) {

@@ -18,6 +18,14 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     Set<Long> findIdsByReviewGroupId(long reviewGroupId);
 
     @Query(value = """
+            SELECT a FROM Answer a
+            JOIN Review r 
+            ON a.reviewId = r.id 
+            WHERE r.reviewGroupId = :reviewGroupId 
+            """)
+    Set<Answer> findAllByReviewGroupId(long reviewGroupId);
+
+    @Query(value = """
             SELECT a.id FROM Answer a
             JOIN Question q
             ON a.questionId = q.id
