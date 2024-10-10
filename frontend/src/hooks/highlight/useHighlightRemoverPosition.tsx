@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
 
+import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_BUTTON_SIZE } from '@/constants';
 import { Position } from '@/types';
 
 interface UseHighlightRemoverPositionProps {
@@ -14,11 +15,11 @@ const useHighlightRemoverPosition = ({ isEditAble, editorRef }: UseHighlightRemo
     if (!editorRect) return;
     const top = rect.bottom - editorRect.top;
     const left = rect.right - editorRect.left;
-    const GAP_WIDTH_SELECTION = 10;
-    const buttonWidth = 31;
+
+    const buttonWidth = HIGHLIGHT_BUTTON_SIZE.width.basic;
 
     const isOverEditorArea = editorRect.right < rect.right + buttonWidth;
-    const topOffsetFromParent = isOverEditorArea ? top + GAP_WIDTH_SELECTION : top;
+    const topOffsetFromParent = isOverEditorArea ? top + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON : top;
     const leftOffsetFromParent = isOverEditorArea ? editorRect.width - buttonWidth : left;
 
     setRemoverPosition({

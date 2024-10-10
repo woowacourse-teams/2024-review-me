@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import { Position } from '@/types';
 
-export const Button = styled.button<{ $position: Position }>`
+export const Button = styled.button<{ $position: Position; $width: number }>`
   position: absolute;
   top: ${(props) => props.$position.top};
   left: ${(props) => props.$position.left};
@@ -10,7 +10,7 @@ export const Button = styled.button<{ $position: Position }>`
   display: flex;
   gap: 0.8rem;
 
-  width: fit-content;
+  width: ${(props) => `${props.$width / 10}rem`};
   padding: 0.5rem 0.8rem;
 
   background-color: ${({ theme }) => theme.colors.white};

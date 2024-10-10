@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
 
+import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_BUTTON_SIZE } from '@/constants';
 import { Position } from '@/types';
 import { EditorSelectionInfo } from '@/utils';
 
@@ -28,20 +29,21 @@ const useHighlightToggleButtonPosition = ({ isEditAble, editorRef }: UseHighligh
 
     // 드래그 방향에 따른 마지막 rect의 좌표 정보를 가져옴 (마우스가 놓인 최종 지점)
     const lastRect = rects[isForwardDrag ? rects.length - 1 : 0];
+    const buttonHight = HIGHLIGHT_BUTTON_SIZE.height;
+    const { basic: buttonBasicWidth, buttonWidthColor: addButtonWidth } = HIGHLIGHT_BUTTON_SIZE.width;
+    const buttonWidth = isAddingHighlight ? addButtonWidth : buttonBasicWidth;
 
-    const GAP_WIDTH_SELECTION = 10;
-    const rectLeft = isForwardDrag ? lastRect.right + GAP_WIDTH_SELECTION : lastRect.left - GAP_WIDTH_SELECTION;
-
+    const rectLeft = isForwardDrag ? lastRect.right : lastRect.left;
     const left = rectLeft - editorRect.left;
-    const top = lastRect.top - (isForwardDrag ? 0 : startBlock.clientHeight) - editorRect.top;
-    // TODO : 리팩토링 시 버튼 width, height 상수화해서 사용하기
-    const buttonWidth = isAddingHighlight ? 54 : 31;
-    const buttonHight = 25;
+    const top =
+      lastRect.top -
+      (isForwardDrag ? 0 : startBlock.clientHeight + buttonHight + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON) -
+      editorRect.top +
+      buttonHight;
 
     const isOverEditorArea = editorRect.right < rectLeft + buttonWidth;
     const leftOffsetFromParent = isOverEditorArea ? editorRect.width - buttonWidth : left;
-    const topOffsetFromParent = isOverEditorArea ? top + buttonHight : top;
-
+    const topOffsetFromParent = top;
     const endPosition: Position = {
       left: `${leftOffsetFromParent / 10}rem`,
       top: `${topOffsetFromParent / 10}rem`,
