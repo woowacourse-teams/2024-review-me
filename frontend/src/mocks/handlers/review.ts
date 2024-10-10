@@ -17,6 +17,7 @@ import {
   MOCK_AUTH_TOKEN_NAME,
   MOCK_REVIEW_INFO_DATA,
 } from '../mockData';
+import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
 
 export const PAGE = {
   firstPageNumber: 1,
@@ -104,12 +105,30 @@ const postReview = () =>
     return HttpResponse.json({ message: 'post 성공' }, { status: 201 });
   });
 
+const getSectionList = () =>
+  http.get(endPoint.gettingSectionList, async ({ request, cookies }) => {
+    // authToken 쿠키 확인
+    if (!cookies[MOCK_AUTH_TOKEN_NAME]) return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
+
+    return HttpResponse.json(GROUPED_SECTION_MOCK_DATA);
+  });
+
+const getGroupedReviews = (sectionId: number) =>
+  http.get(endPoint.gettingGroupedReviews(sectionId), async ({ request, cookies }) => {
+    // authToken 쿠키 확인
+    if (!cookies[MOCK_AUTH_TOKEN_NAME]) return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
+
+    return HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA);
+  });
+
 const reviewHandler = [
   getDetailedReview(),
   getReviewList(null, 10),
   getDataToWriteReview(),
-  postReview(),
+  getSectionList(),
+  getGroupedReviews(1),
   getReviewInfoData(),
+  postReview(),
 ];
 
 export default reviewHandler;

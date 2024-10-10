@@ -23,6 +23,7 @@ export const GROUPED_REVIEWS_MOCK_DATA: GroupedReviews = {
   reviews: [
     {
       question: {
+        id: 1,
         name: '커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요',
         type: 'CHECKBOX',
       },
@@ -39,25 +40,34 @@ export const GROUPED_REVIEWS_MOCK_DATA: GroupedReviews = {
     },
     {
       question: {
+        id: 2,
         name: '위에서 선택한 사항에 대해 조금 더 자세히 설명해주세요',
         type: 'TEXT',
       },
       answers: [
         {
+          id: 1,
           content:
             '장의 시작부분은 짧고 직접적이며, 뒤따라 나올 복잡한 정보를 어떻게 해석해야 할 것인지 프레임을 짜주는 역할을 해야 한다. 그러면 아무리 긴 문장이라도 쉽게 읽힌다.',
+          highlights: [],
         },
         {
+          id: 2,
           content:
             '고액공제건강보험과 건강저축계좌를 만들어 노동자와 고용주가 세금공제를 받을 수 있도록 하면 결과적으로 노동자의 의료보험 부담이 커진다.',
+          highlights: [],
         },
         {
+          id: 3,
           content:
             '장의 시작부분은 짧고 직접적이며, 뒤따라 나올 복잡한 정보를 어떻게 해석해야 할 것인지 프레임을 짜주는 역할을 해야 한다. 그러면 아무리 긴 문장이라도 쉽게 읽힌다.',
+          highlights: [],
         },
         {
+          id: 4,
           content:
             '고액공제건강보험과 건강저축계좌를 만들어 노동자와 고용주가 세금공제를 받을 수 있도록 하면 결과적으로 노동자의 의료보험 부담이 커진다.',
+          highlights: [],
         },
       ],
       votes: null,

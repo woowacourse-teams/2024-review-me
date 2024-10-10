@@ -3,31 +3,31 @@ import useDropdown from '@/hooks/useDropdown';
 
 import * as S from './styles';
 
-interface DropdownItem {
+export interface DropdownItem {
   text: string;
-  value: string;
+  value: string | number;
 }
 
 interface DropdownProps {
   items: DropdownItem[];
-  selectedItem: string;
-  handleSelect: (item: string) => void;
+  selectedItem: DropdownItem;
+  handleSelect: (item: DropdownItem) => void;
 }
 
-const Dropdown = ({ items, selectedItem: selectedOption, handleSelect }: DropdownProps) => {
+const Dropdown = ({ items, selectedItem, handleSelect }: DropdownProps) => {
   const { isOpened, handleDropdownButtonClick, handleOptionClick, dropdownRef } = useDropdown({ handleSelect });
 
   return (
     <S.DropdownContainer ref={dropdownRef}>
       <S.DropdownButton onClick={handleDropdownButtonClick}>
-        <S.SelectedOption>{selectedOption}</S.SelectedOption>
+        <S.SelectedOption>{selectedItem.text}</S.SelectedOption>
         <S.ArrowIcon src={DownArrowIcon} $isOpened={isOpened} alt="" />
       </S.DropdownButton>
       {isOpened && (
         <S.ItemContainer>
           {items.map((item) => {
             return (
-              <S.DropdownItem key={item.value} onClick={() => handleOptionClick(item.value)}>
+              <S.DropdownItem key={item.value} onClick={() => handleOptionClick(item)}>
                 {item.text}
               </S.DropdownItem>
             );

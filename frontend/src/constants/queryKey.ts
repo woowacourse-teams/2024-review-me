@@ -3,6 +3,8 @@ export const REVIEW_QUERY_KEY = {
   reviews: 'reviews',
   writingReviewInfo: 'writingReviewInfo',
   postReview: 'postReview',
+  sectionList: 'sectionList',
+  groupedReviews: 'groupedReviews',
   reviewInfoData: 'reviewInfoData',
 };
 
