@@ -287,7 +287,7 @@ class ReviewGatheredLookupServiceTest {
         }
 
         @Test
-        void 질문에_응답이_없는_경우_질문_내용은_반환되_응답은_빈_배열로_반환한다() {
+        void 질문에_응답이_없는_경우_질문_내용은_반환하되_응답은_빈_배열로_반환한다() {
             // given - 질문 저장
             Question question1 = questionRepository.save(서술형_필수_질문());
 
