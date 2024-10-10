@@ -10,13 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.fixture.QuestionFixture;
 import reviewme.fixture.ReviewGroupFixture;
-import reviewme.highlight.domain.HighLight;
+import reviewme.highlight.domain.Highlight;
+import reviewme.highlight.domain.HighlightPosition;
 import reviewme.highlight.repository.HighlightRepository;
 import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
 import reviewme.highlight.service.dto.HighlightRequest;
 import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
-import reviewme.highlight.domain.HighlightPosition;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
@@ -59,8 +59,8 @@ class HighlightServiceTest {
         String reviewRequestCode = "reviewRequestCode";
         long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹(reviewRequestCode, "groupAccessCode"))
                 .getId();
-        HighLight highLight1 = highlightRepository.save(new HighLight(reviewGroupId, questionId, 1, 1, 1, 1));
-        HighLight highLight2 = highlightRepository.save(new HighLight(reviewGroupId, questionId, 2, 1, 1, 1));
+        Highlight highlight1 = highlightRepository.save(new Highlight(1, 1, 1, 1));
+        Highlight highlight2 = highlightRepository.save(new Highlight(2, 1, 1, 1));
 
         TextAnswer textAnswer1 = new TextAnswer(questionId, "text answer1");
         TextAnswer textAnswer2 = new TextAnswer(questionId, "text answer2");
@@ -79,8 +79,8 @@ class HighlightServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(highlightRepository.existsById(highLight1.getId())).isFalse(),
-                () -> assertThat(highlightRepository.existsById(highLight2.getId())).isFalse()
+                () -> assertThat(highlightRepository.existsById(highlight1.getId())).isFalse(),
+                () -> assertThat(highlightRepository.existsById(highlight2.getId())).isFalse()
         );
     }
 
@@ -93,7 +93,7 @@ class HighlightServiceTest {
         String reviewRequestCode = "reviewRequestCode";
         long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹(reviewRequestCode, "groupAccessCode"))
                 .getId();
-        highlightRepository.save(new HighLight(reviewGroupId, questionId, 1, 1, 1, 1));
+        highlightRepository.save(new Highlight(1, 1, 1, 1));
 
         TextAnswer textAnswer1 = new TextAnswer(questionId, "text answer1");
         TextAnswer textAnswer2 = new TextAnswer(questionId, "text answer2");
@@ -114,17 +114,13 @@ class HighlightServiceTest {
         highlightService.highlight(highlightsRequest, reviewRequestCode);
 
         // then
-        List<HighLight> highLights = highlightRepository.findAll();
+        List<Highlight> highlights = highlightRepository.findAll();
         assertAll(
-                () -> assertThat(highLights.get(0).getQuestionId()).isEqualTo(questionId),
-                () -> assertThat(highLights.get(1).getQuestionId()).isEqualTo(questionId),
-                () -> assertThat(highLights.get(0).getReviewGroupId()).isEqualTo(reviewGroupId),
-                () -> assertThat(highLights.get(1).getReviewGroupId()).isEqualTo(reviewGroupId),
-                () -> assertThat(highLights.get(0).getAnswerId()).isEqualTo(textAnswer1.getId()),
-                () -> assertThat(highLights.get(1).getAnswerId()).isEqualTo(textAnswer2.getId()),
-                () -> assertThat(highLights.get(0).getHighlightPosition()).isEqualTo(
+                () -> assertThat(highlights.get(0).getAnswerId()).isEqualTo(textAnswer1.getId()),
+                () -> assertThat(highlights.get(1).getAnswerId()).isEqualTo(textAnswer2.getId()),
+                () -> assertThat(highlights.get(0).getHighlightPosition()).isEqualTo(
                         new HighlightPosition(lineIndex, startIndex, endIndex)),
-                () -> assertThat(highLights.get(0).getHighlightPosition()).isEqualTo(
+                () -> assertThat(highlights.get(0).getHighlightPosition()).isEqualTo(
                         new HighlightPosition(lineIndex, startIndex, endIndex))
         );
     }

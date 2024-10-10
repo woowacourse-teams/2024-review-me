@@ -35,17 +35,18 @@ public class HighlightService {
         highlightRepository.deleteByReviewGroupIdAndQuestionId(reviewGroupId, questionId);
     }
 
-    private void saveNewHighlight(HighlightsRequest highlightsRequest, long reviewGroupId) {
-        List<HighLight> highLights = highlightsRequest.highlights()
-                .stream()
-                .flatMap(highlightRequest -> highlightRequest.lines().stream()
-                        .flatMap(line -> line.ranges().stream()
-                                .map(range -> new HighLight(
-                                        reviewGroupId, highlightsRequest.questionId(), highlightRequest.answerId(),
-                                        line.index(), range.startIndex(), range.endIndex()
-                                ))
-                        ))
-                .toList();
-        highlightRepository.saveAll(highLights);
+    private void saveNewHighlight(HighlightsRequest highlightsRequest) {
+        List<Highlight> highlights = new ArrayList<>();
+        for (HighlightRequest highlight : highlightsRequest.highlights()) {
+            for (HighlightedLineRequest line : highlight.lines()) {
+                for (HighlightIndexRangeRequest range : line.ranges()) {
+                    Highlight highLight = new Highlight(highlight.answerId(),
+                            line.index(), range.startIndex(), range.endIndex()
+                    );
+                    highlights.add(highLight);
+                }
+            }
+        }
+        highlightRepository.saveAll(highlights);
     }
 }

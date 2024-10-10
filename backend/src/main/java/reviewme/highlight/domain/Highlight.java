@@ -17,17 +17,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
-public class HighLight {
+public class Highlight {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "review_group_id", nullable = false)
-    private long reviewGroupId;
-
-    @Column(name = "question_id", nullable = false)
-    private long questionId;
 
     @Column(name = "answer_id", nullable = false)
     private long answerId;
@@ -35,10 +29,7 @@ public class HighLight {
     @Embedded
     private HighlightPosition highlightPosition;
 
-    public HighLight(long reviewGroupId, long questionId, long answerId,
-                     long lineIndex, long startIndex, long endIndex) {
-        this.reviewGroupId = reviewGroupId;
-        this.questionId = questionId;
+    public Highlight(long answerId, long lineIndex, long startIndex, long endIndex) {
         this.answerId = answerId;
         this.highlightPosition = new HighlightPosition(lineIndex, startIndex, endIndex);
     }
