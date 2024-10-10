@@ -106,22 +106,20 @@ class HighlightServiceTest {
         HighlightedLineRequest lineRequest = new HighlightedLineRequest(lineIndex, List.of(indexRangeRequest));
         HighlightRequest highlightRequest1 = new HighlightRequest(textAnswer1.getId(), List.of(lineRequest));
         HighlightRequest highlightRequest2 = new HighlightRequest(textAnswer2.getId(), List.of(lineRequest));
-        HighlightsRequest highlightsRequest = new HighlightsRequest(
-                questionId, List.of(highlightRequest1, highlightRequest2)
-        );
+        HighlightsRequest highlightsRequest = new HighlightsRequest(questionId,
+                List.of(highlightRequest1, highlightRequest2));
 
         // when
         highlightService.highlight(highlightsRequest, reviewRequestCode);
 
         // then
         List<Highlight> highlights = highlightRepository.findAll();
+        HighlightPosition position = new HighlightPosition(lineIndex, startIndex, endIndex);
         assertAll(
                 () -> assertThat(highlights.get(0).getAnswerId()).isEqualTo(textAnswer1.getId()),
                 () -> assertThat(highlights.get(1).getAnswerId()).isEqualTo(textAnswer2.getId()),
-                () -> assertThat(highlights.get(0).getHighlightPosition()).isEqualTo(
-                        new HighlightPosition(lineIndex, startIndex, endIndex)),
-                () -> assertThat(highlights.get(0).getHighlightPosition()).isEqualTo(
-                        new HighlightPosition(lineIndex, startIndex, endIndex))
+                () -> assertThat(highlights.get(0).getHighlightPosition()).isEqualTo(position),
+                () -> assertThat(highlights.get(0).getHighlightPosition()).isEqualTo(position)
         );
     }
 

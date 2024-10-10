@@ -1,6 +1,6 @@
 package reviewme.highlight.service;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +50,7 @@ public class HighlightService {
     }
 
     private void saveNewHighlight(HighlightsRequest highlightsRequest) {
-        Set<Highlight> highlights = new HashSet<>();
+        Set<Highlight> highlights = new LinkedHashSet<>();
         for (HighlightRequest highlight : highlightsRequest.highlights()) {
             for (HighlightedLineRequest line : highlight.lines()) {
                 for (HighlightIndexRangeRequest range : line.ranges()) {

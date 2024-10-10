@@ -31,7 +31,6 @@ public class HighlightValidator {
         validateReviewGroupContainsAnswer(request, reviewGroupId);
         validateQuestionContainsAnswer(request);
         validateLineIndex(request);
-        // TODO: 중복 내용 요청 검증 추가
     }
 
     private void validateReviewGroupContainsQuestion(HighlightsRequest request, long reviewGroupId) {
