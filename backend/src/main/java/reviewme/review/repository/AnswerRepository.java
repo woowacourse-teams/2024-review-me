@@ -12,6 +12,13 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query(value = """
             SELECT a FROM Answer a
+            JOIN Review r ON a.reviewId = r.id
+            WHERE r.reviewGroupId = :reviewGroupId AND a.questionId IN :questionIds
+            """)
+    List<Answer> findReceivedAnswersByQuestionIds(long reviewGroupId, List<Long> questionIds);
+
+    @Query(value = """
+            SELECT a FROM Answer a
             WHERE a.questionId IN :questionIds
             """)
     List<Answer> findAllByQuestionIds(List<Long> questionIds);
