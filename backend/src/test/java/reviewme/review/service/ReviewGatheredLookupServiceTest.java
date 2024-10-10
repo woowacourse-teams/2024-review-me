@@ -90,7 +90,7 @@ class ReviewGatheredLookupServiceTest {
         Section section;
 
         @BeforeEach
-        void 질문들을_정해진_규칙에_맞게_반환한다() {
+        void setUp() {
             // given
             requiredTextQuestion = questionRepository.save(서술형_필수_질문(1));
             optionalTextQuestion = questionRepository.save(서술형_옵션_질문(2));
@@ -109,6 +109,23 @@ class ReviewGatheredLookupServiceTest {
                     reviewRequestCode, section.getId());
 
             assertThat(actual.reviews()).hasSize(4);
+        }
+
+        @Test
+        void 섹션_하위의_질문ID를_반환한다() {
+            // when
+            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+                    reviewRequestCode, section.getId());
+
+            // then
+            assertThat(actual.reviews())
+                    .extracting(ReviewsGatheredByQuestionResponse::question)
+                    .extracting(SimpleQuestionResponse::id)
+                    .containsExactly(
+                            requiredTextQuestion.getId(),
+                            optionalTextQuestion.getId(),
+                            requiredCheckboxQuestion.getId(),
+                            optionalCheckboxQuestion.getId());
         }
 
         @Test
