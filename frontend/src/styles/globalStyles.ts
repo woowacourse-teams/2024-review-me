@@ -1,6 +1,5 @@
 import { css, Theme } from '@emotion/react';
 
-import { SR_ONLY } from '@/constants';
 import media from '@/utils/media';
 
 import reset from './reset';
