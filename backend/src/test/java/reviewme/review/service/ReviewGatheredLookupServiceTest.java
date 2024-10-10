@@ -119,13 +119,13 @@ class ReviewGatheredLookupServiceTest {
 
             // then
             assertThat(actual.reviews())
-                            .extracting(ReviewsGatheredByQuestionResponse::question)
-                            .extracting(SimpleQuestionResponse::name)
-                            .containsExactly(
-                                    requiredTextQuestion.getContent(),
-                                    optionalTextQuestion.getContent(),
-                                    requiredCheckboxQuestion.getContent(),
-                                    optionalCheckboxQuestion.getContent());
+                    .extracting(ReviewsGatheredByQuestionResponse::question)
+                    .extracting(SimpleQuestionResponse::name)
+                    .containsExactly(
+                            requiredTextQuestion.getContent(),
+                            optionalTextQuestion.getContent(),
+                            requiredCheckboxQuestion.getContent(),
+                            optionalCheckboxQuestion.getContent());
         }
 
         @Test
@@ -453,5 +453,33 @@ class ReviewGatheredLookupServiceTest {
                         tuple(optionItem2.getContent(), 1L)
                 );
         assertThat(actual.reviews().get(1).answers()).isNull();
+    }
+
+    @Test
+    void 다른_사람이_받은_리뷰는_포함하지_않는다() {
+        // given - 질문 저장
+        Question question1 = questionRepository.save(서술형_필수_질문());
+        Section section1 = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section1.getId())));
+
+        String reviewRequestCodeBE = "review_me_be";
+        ReviewGroup reviewGroupBE = new ReviewGroup("reviewee", "projectName",
+                reviewRequestCodeBE, "groupAccessCode", template.getId());
+        ReviewGroup reviewGroupFE = new ReviewGroup("reviewee", "projectName",
+                "reviewRequestCode", "groupAccessCode", template.getId());
+        reviewGroupRepository.saveAll(List.of(reviewGroupFE, reviewGroupBE));
+
+        // given - 리뷰 답변 저장
+        TextAnswer answerFE = new TextAnswer(question1.getId(), "프론트엔드가 작성한 서술형 답변");
+        TextAnswer answerBE = new TextAnswer(question1.getId(), "백엔드가 작성한 서술형 답변");
+        reviewRepository.save(new Review(template.getId(), reviewGroupFE.getId(), List.of(answerFE)));
+        reviewRepository.save(new Review(template.getId(), reviewGroupBE.getId(), List.of(answerBE)));
+
+        // when
+        ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+                reviewRequestCodeBE, section1.getId());
+
+        // then
+        assertThat(actual.reviews()).hasSize(1);
     }
 }
