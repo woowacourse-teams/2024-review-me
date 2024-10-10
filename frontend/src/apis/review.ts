@@ -1,4 +1,4 @@
-import { DetailReviewData, ReviewList, ReviewWritingFormResult, ReviewWritingFormData } from '@/types';
+import { DetailReviewData, ReviewList, ReviewWritingFormResult, ReviewWritingFormData, GroupedSection } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
@@ -73,4 +73,21 @@ export const getReviewListApi = async ({ lastReviewId, size }: GetReviewListApi)
 
   const data = await response.json();
   return data as ReviewList;
+};
+
+export const getSectionList = async () => {
+  const response = await fetch(endPoint.gettingSectionList, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error(createApiErrorMessage(response.status));
+  }
+
+  const data = await response.json();
+  return data as GroupedSection;
 };
