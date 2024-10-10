@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reviewme.highlight.domain.HighlightPosition;
 import reviewme.highlight.service.dto.HighlightRequest;
 import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
@@ -31,7 +32,6 @@ public class HighlightValidator {
         validateQuestionByReviewGroup(request, reviewGroupId);
         validateAnswerByQuestion(request);
         validateLineIndex(request);
-        validateRange(request);
         validateDuplicate(request);
     }
 
@@ -83,29 +83,14 @@ public class HighlightValidator {
         }
     }
 
-    private void validateRange(HighlightsRequest request) {
-        request.highlights()
-                .stream()
-                .flatMap(highlightRequest -> highlightRequest.lines().stream()
-                        .flatMap(highlightedLineRequest -> highlightedLineRequest.ranges().stream()
-                                .filter(range -> range.startIndex() > range.endIndex())
-                        )
-                )
-                .findFirst()
-                .ifPresent(range -> {
-                    throw new InvalidHighlightRangeException(range.startIndex(), range.endIndex());
-                });
-    }
-
     private void validateDuplicate(HighlightsRequest request) {
-        Set<HighlightKey> uniqueHighlights = new HashSet<>();
+        Set<HighlightPosition> uniqueHighlights = new HashSet<>();
 
         request.highlights().forEach(highlight ->
                 highlight.lines().forEach(line ->
                         line.ranges().forEach(range -> {
-                            HighlightPosition key = new HighlightPosition(
-                                    highlight.answerId(), line.index(), range.startIndex(), range.endIndex()
-                            );
+                            HighlightPosition key = new HighlightPosition(line.index(),
+                                    range.startIndex(), range.endIndex());
                             if (!uniqueHighlights.add(key)) {
                                 throw new HighlightDuplicatedException(
                                         highlight.answerId(), line.index(), range.startIndex(), range.endIndex()

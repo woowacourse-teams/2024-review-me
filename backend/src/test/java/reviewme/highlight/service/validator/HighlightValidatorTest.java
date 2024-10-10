@@ -103,7 +103,6 @@ class HighlightValidatorTest {
                 .isInstanceOf(SubmittedAnswerAndProvidedAnswerMismatchException.class);
     }
 
-
     @Test
     void 답변의_줄_수보다_하이라이트의_줄_번호가_더_크면_예외를_발생한다() {
         // given
