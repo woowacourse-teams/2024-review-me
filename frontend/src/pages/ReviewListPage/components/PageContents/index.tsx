@@ -24,7 +24,6 @@ const PageContents = () => {
     navigate(`/${ROUTE.detailedReview}/${reviewRequestCode}/${id}`);
   };
 
-  const { projectName, revieweeName } = data.pages[0];
   const isLastPage = data.pages[data.pages.length - 1].isLastPage;
   const reviews = data.pages.flatMap((page) => page.reviews);
 
@@ -36,7 +35,7 @@ const PageContents = () => {
 
   return (
     isSuccess && (
-      <ReviewDisplayLayout projectName={projectName} revieweeName={revieweeName} isReviewList={true} reviewCount={5}>
+      <ReviewDisplayLayout isReviewList={true}>
         {reviews.length === 0 ? (
           <ReviewEmptySection />
         ) : (
@@ -46,7 +45,6 @@ const PageContents = () => {
               return (
                 <UndraggableWrapper key={review.reviewId}>
                   <ReviewCard
-                    projectName={projectName}
                     createdAt={review.createdAt}
                     contentPreview={review.contentPreview}
                     categories={review.categories}

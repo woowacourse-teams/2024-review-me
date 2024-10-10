@@ -5,6 +5,7 @@ import {
   ReviewWritingFormData,
   GroupedSection,
   GroupedReviews,
+  ReviewInfoData,
 } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
@@ -37,6 +38,24 @@ export const postReviewApi = async (formResult: ReviewWritingFormResult) => {
   }
 
   return;
+};
+
+// 받은 리뷰들에 대한 정보(프로젝트 이름, 리뷰이, 받은 리뷰 개수)
+export const getReviewInfoDataApi = async () => {
+  const response = await fetch(endPoint.gettingReviewInfoData, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error(createApiErrorMessage(response.status));
+  }
+
+  const data = await response.json();
+  return data as ReviewInfoData;
 };
 
 interface GetDetailedReviewApi {

@@ -15,6 +15,7 @@ import {
   REVIEW_QUESTION_DATA,
   REVIEW_LIST,
   MOCK_AUTH_TOKEN_NAME,
+  MOCK_REVIEW_INFO_DATA,
 } from '../mockData';
 import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
 
@@ -22,6 +23,15 @@ export const PAGE = {
   firstPageNumber: 1,
   firstPageStartIndex: 0,
 };
+
+const getReviewInfoData = () =>
+  http.get(endPoint.gettingReviewInfoData, async ({ cookies }) => {
+    if (!cookies[MOCK_AUTH_TOKEN_NAME]) {
+      return HttpResponse.json({ error: '인증 관련 쿠키 없음' }, { status: 401 });
+    }
+
+    return HttpResponse.json(MOCK_REVIEW_INFO_DATA);
+  });
 
 const getDetailedReview = () =>
   http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), async ({ request, cookies }) => {
@@ -58,6 +68,7 @@ const getDataToWriteReview = () =>
     },
   );
 
+// TODO: 추후 getReviewList API에서 리뷰 정보(이름, 개수...)를 내려주지 않는 경우 핸들러도 수정 필요
 const getReviewList = (lastReviewId: number | null, size: number) => {
   return http.get(endPoint.gettingReviewList(lastReviewId, size), async ({ request, cookies }) => {
     // authToken 쿠키 확인
@@ -116,6 +127,7 @@ const reviewHandler = [
   getDataToWriteReview(),
   getSectionList(),
   getGroupedReviews(1),
+  getReviewInfoData(),
   postReview(),
 ];
 
