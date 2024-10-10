@@ -7,7 +7,7 @@ interface HighlightToggleButtonContainerProps {
   buttonPosition: Position;
   isAddingHighlight: boolean;
   addHighlight: () => void;
-  removeHighlight: () => void;
+  removeHighlightByDrag: () => void;
 }
 /**
  *선택된 영역의 하이라이트 적용 여부에 따라 추가 또는 삭제 버튼을 보여주는 컴포넌트
@@ -16,14 +16,14 @@ const HighlightToggleButtonContainer = ({
   buttonPosition,
   isAddingHighlight,
   addHighlight,
-  removeHighlight,
+  removeHighlightByDrag,
 }: HighlightToggleButtonContainerProps) => {
   return (
     <div className={HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME} style={{ position: 'absolute', ...buttonPosition }}>
       {isAddingHighlight ? (
         <HighlightButton.highlighter addHighlight={addHighlight} />
       ) : (
-        <HighlightButton.dragRemoval removeHighlightByDrag={removeHighlight} />
+        <HighlightButton.dragRemoval removeHighlightByDrag={removeHighlightByDrag} />
       )}
     </div>
   );

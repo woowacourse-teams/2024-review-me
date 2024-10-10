@@ -1,24 +1,24 @@
 import { HIGHLIGHT_SPAN_CLASS_NAME, SYNTAX_BASIC_CLASS_NAME } from '@/constants';
-import { Highlight } from '@/types';
+import { HighlightRange } from '@/types';
 
 import * as S from './style';
 interface SyntaxProps {
   text: string;
   spanIndex: number;
-  highlightInfo?: Highlight;
+  highlightRange?: HighlightRange;
 }
 
-const Syntax = ({ text, spanIndex, highlightInfo }: SyntaxProps) => {
-  const className = `${SYNTAX_BASIC_CLASS_NAME} ${highlightInfo ? HIGHLIGHT_SPAN_CLASS_NAME : ''}`;
+const Syntax = ({ text, spanIndex, highlightRange }: SyntaxProps) => {
+  const className = `${SYNTAX_BASIC_CLASS_NAME} ${highlightRange ? HIGHLIGHT_SPAN_CLASS_NAME : ''}`;
   return (
     <>
-      {highlightInfo ? (
+      {highlightRange ? (
         <S.Syntax
           className={className}
           $isHighlight={true}
           data-index={spanIndex}
-          data-highlight-start={highlightInfo.startIndex}
-          data-highlight-end={highlightInfo.endIndex}
+          data-highlight-start={highlightRange.startIndex}
+          data-highlight-end={highlightRange.endIndex}
         >
           {text}
         </S.Syntax>

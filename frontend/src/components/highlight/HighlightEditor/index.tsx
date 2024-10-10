@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import {
   EDITOR_ANSWER_CLASS_NAME,
-  EDITOR_BLOCK_CLASS_NAME,
+  EDITOR_LINE_CLASS_NAME,
   HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME,
   HIGHLIGHT_REMOVER_CLASS_NAME,
 } from '@/constants';
@@ -12,10 +12,10 @@ import {
   useCheckHighlight,
   useHighlightRemoverPosition,
 } from '@/hooks';
-import { EditorAnswerData } from '@/types';
+import { ReviewAnswerResponseData } from '@/types';
 import { findSelectionInfo } from '@/utils';
 
-import EditorBlock from '../EditorBlock';
+import EditorLineBlock from '../EditorLineBlock';
 import EditSwitchButton from '../EditSwitchButton';
 import HighlightRemoverWrapper from '../HighlightRemoverWrapper';
 import HighlightToggleButtonContainer from '../HighlightToggleButtonContainer';
@@ -23,10 +23,11 @@ import HighlightToggleButtonContainer from '../HighlightToggleButtonContainer';
 import * as S from './style';
 
 interface HighlightEditorProps {
-  answerList: EditorAnswerData[];
+  questionId: number;
+  answerList: ReviewAnswerResponseData[];
 }
 
-const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
+const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const [isEditAble, setIsEditAble] = useState(false);
 
@@ -45,14 +46,21 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
     editorRef,
   });
 
-  const { editorAnswerMap, addHighlight, removeHighlight, handleClickBlockList, handleClickRemover, removalTarget } =
-    useHighlight({
-      answerList,
-      isEditAble,
-      hideHighlightToggleButton,
-      hideRemover,
-      updateRemoverPosition,
-    });
+  const {
+    editorAnswerMap,
+    addHighlight,
+    removeHighlightByDrag,
+    handleClickBlockList,
+    removeHighlightByClick,
+    removalTarget,
+  } = useHighlight({
+    questionId,
+    answerList,
+    isEditAble,
+    hideHighlightToggleButton,
+    hideRemover,
+    updateRemoverPosition,
+  });
   const { isAddingHighlight, checkHighlight } = useCheckHighlight();
 
   const handleMouseDown = (e: MouseEvent) => {
@@ -88,15 +96,15 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
       <S.SwitchButtonWrapper>
         <EditSwitchButton isEditAble={isEditAble} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
-      {[...editorAnswerMap.values()].map(({ answerId, answerIndex, blockList }) => (
+      {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
         <div
           className={EDITOR_ANSWER_CLASS_NAME}
           key={answerId}
           data-answer={`${answerId}-${answerIndex}`}
           onClick={handleClickBlockList}
         >
-          {blockList.map((block, index) => (
-            <EditorBlock key={`${EDITOR_BLOCK_CLASS_NAME}-${index}`} block={block} blockIndex={index} />
+          {lineList.map((line, index) => (
+            <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
           ))}
         </div>
       ))}
@@ -106,11 +114,11 @@ const HighlightEditor = ({ answerList }: HighlightEditorProps) => {
           buttonPosition={highlightToggleButtonPosition}
           isAddingHighlight={isAddingHighlight}
           addHighlight={addHighlight}
-          removeHighlight={removeHighlight}
+          removeHighlightByDrag={removeHighlightByDrag}
         />
       )}
       {isEditAble && removalTarget && removerPosition && (
-        <HighlightRemoverWrapper buttonPosition={removerPosition} handleClickRemover={handleClickRemover} />
+        <HighlightRemoverWrapper buttonPosition={removerPosition} removeHighlightByClick={removeHighlightByClick} />
       )}
     </div>
   );

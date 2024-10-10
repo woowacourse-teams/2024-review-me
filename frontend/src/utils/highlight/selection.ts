@@ -1,5 +1,5 @@
-import { EDITOR_ANSWER_CLASS_NAME, EDITOR_BLOCK_CLASS_NAME } from '@/constants';
-import { EditorBlockData } from '@/types';
+import { EDITOR_ANSWER_CLASS_NAME, EDITOR_LINE_CLASS_NAME } from '@/constants';
+import { EditorLine } from '@/types';
 
 interface GetSelectionOffsetInBlockParams {
   selectionTargetNode: Node | null;
@@ -71,12 +71,12 @@ export const getAnswerInfo = ({ anchorBlockData, focusBlockData, anchorOffset, f
   const isForwardDragAnswer = sortedAnswerData[0].id === anchorAnswerData.id;
 
   const startAnswer = isForwardDragAnswer
-    ? { ...anchorAnswerData, blockIndex: Number(anchorBlockData.index), offset: anchorOffset }
-    : { ...focusAnswerData, blockIndex: Number(focusBlockData.index), offset: focusOffset };
+    ? { ...anchorAnswerData, lineIndex: Number(anchorBlockData.index), offset: anchorOffset }
+    : { ...focusAnswerData, lineIndex: Number(focusBlockData.index), offset: focusOffset };
 
   const endAnswer = isForwardDragAnswer
-    ? { ...focusAnswerData, blockIndex: Number(focusBlockData.index), offset: focusOffset - 1 }
-    : { ...anchorAnswerData, blockIndex: Number(anchorBlockData.index), offset: anchorOffset - 1 };
+    ? { ...focusAnswerData, lineIndex: Number(focusBlockData.index), offset: focusOffset - 1 }
+    : { ...anchorAnswerData, lineIndex: Number(anchorBlockData.index), offset: anchorOffset - 1 };
 
   return {
     isSameAnswer,
@@ -93,8 +93,8 @@ export const getAnswerInfo = ({ anchorBlockData, focusBlockData, anchorOffset, f
  */
 export const findSelectedElementInfo = (selection: Selection) => {
   const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
-  const anchorBlock = anchorNode?.parentElement?.closest(`.${EDITOR_BLOCK_CLASS_NAME}`);
-  const focusBlock = focusNode?.parentElement?.closest(`.${EDITOR_BLOCK_CLASS_NAME}`);
+  const anchorBlock = anchorNode?.parentElement?.closest(`.${EDITOR_LINE_CLASS_NAME}`);
+  const focusBlock = focusNode?.parentElement?.closest(`.${EDITOR_LINE_CLASS_NAME}`);
 
   if (!anchorBlock || !focusBlock) return;
 
@@ -206,7 +206,7 @@ export const findSelectionInfo = () => {
 
 export type EditorSelectionInfo = Exclude<ReturnType<typeof findSelectionInfo>, undefined>;
 
-export const getStartBlockOffset = (infoForOffset: EditorSelectionInfo, block: EditorBlockData) => {
+export const getStartBlockOffset = (infoForOffset: EditorSelectionInfo, block: EditorLine) => {
   const { isForwardDrag, startBlock, selection, isOnlyOneSelectedBlock } = infoForOffset;
   const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
 

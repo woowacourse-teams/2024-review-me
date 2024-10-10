@@ -1,15 +1,15 @@
-import { EDITOR_BLOCK_CLASS_NAME } from '@/constants';
-import { EditorBlockData, Highlight } from '@/types';
+import { EDITOR_LINE_CLASS_NAME } from '@/constants';
+import { EditorLine, HighlightRange } from '@/types';
 
 import Syntax from '../Syntax';
 
-interface EditorBlockProps {
-  block: EditorBlockData;
-  blockIndex: number;
+interface EditorLineBlockProps {
+  line: EditorLine;
+  lineIndex: number;
 }
 
-const EditorBlock = ({ block, blockIndex }: EditorBlockProps) => {
-  const { text, highlightList } = block;
+const EditorLineBlock = ({ line, lineIndex }: EditorLineBlockProps) => {
+  const { text, highlightList } = line;
 
   const renderSentenceList = () => {
     if (!highlightList.length) {
@@ -19,26 +19,26 @@ const EditorBlock = ({ block, blockIndex }: EditorBlockProps) => {
   };
   interface SplitTextWithHighlightListParams {
     text: string;
-    highlightList: Highlight[];
+    highlightList: HighlightRange[];
   }
 
   /**
    * 하이라이트에 따라, 블록의 글자를 하이라이트 적용되는 부분과 그렇지 않은 부분으로 나누는 함수
    */
   const splitTextWithHighlightList = ({ text, highlightList }: SplitTextWithHighlightListParams) => {
-    const result: { text: string; highlightInfo: Highlight | undefined }[] = [];
+    const result: { text: string; highlightRange: HighlightRange | undefined }[] = [];
     let currentIndex = 0;
 
     highlightList.forEach(({ startIndex, endIndex }) => {
       if (currentIndex < startIndex) {
-        result.push({ highlightInfo: undefined, text: text.slice(currentIndex, startIndex) });
+        result.push({ highlightRange: undefined, text: text.slice(currentIndex, startIndex) });
       }
-      result.push({ highlightInfo: { startIndex, endIndex }, text: text.slice(startIndex, endIndex + 1) });
+      result.push({ highlightRange: { startIndex, endIndex }, text: text.slice(startIndex, endIndex + 1) });
       currentIndex = endIndex + 1;
     });
 
     if (currentIndex < text.length) {
-      result.push({ highlightInfo: undefined, text: text.slice(currentIndex) });
+      result.push({ highlightRange: undefined, text: text.slice(currentIndex) });
     }
     return result;
   };
@@ -48,22 +48,22 @@ const EditorBlock = ({ block, blockIndex }: EditorBlockProps) => {
    */
   const renderStyledSentenceList = () => {
     const highlightedTextList = splitTextWithHighlightList({ text, highlightList });
-    const key = `${EDITOR_BLOCK_CLASS_NAME}-${blockIndex}__span`;
+    const key = `${EDITOR_LINE_CLASS_NAME}-${lineIndex}__span`;
 
     return (
       <>
-        {highlightedTextList.map(({ text, highlightInfo }, i) => (
-          <Syntax key={`${key}-${i}`} text={text} spanIndex={i} highlightInfo={highlightInfo} />
+        {highlightedTextList.map(({ text, highlightRange }, i) => (
+          <Syntax key={`${key}-${i}`} text={text} spanIndex={i} highlightRange={highlightRange} />
         ))}
       </>
     );
   };
 
   return (
-    <p className={EDITOR_BLOCK_CLASS_NAME} data-index={blockIndex}>
+    <p className={EDITOR_LINE_CLASS_NAME} data-index={lineIndex}>
       {renderSentenceList()}
     </p>
   );
 };
 
-export default EditorBlock;
+export default EditorLineBlock;

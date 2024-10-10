@@ -1,8 +1,8 @@
-import { EditorBlockData, Highlight } from '@/types';
+import { EditorLine, HighlightRange } from '@/types';
 
 interface CreateHighlightBinaryArrayParams {
   arrayLength: number;
-  list: Highlight[];
+  list: HighlightRange[];
 }
 /**
  * 하이라이트 적용 여부를 이진법에 따라 표시하는 배열을 생성하는 함수
@@ -27,7 +27,7 @@ const createHighlightBinaryArray = ({ arrayLength, list }: CreateHighlightBinary
  * @param array
  */
 const makeHighlightListByConsecutiveOnes = (array: string[]) => {
-  const result: Highlight[] = [];
+  const result: HighlightRange[] = [];
   let startIndex = -1; // 시작점 초기화 (아직 찾지 못한 상태)
 
   for (let i = 0; i < array.length; i++) {
@@ -47,14 +47,14 @@ const makeHighlightListByConsecutiveOnes = (array: string[]) => {
 
 interface MergeHighlightListParams {
   blockTextLength: number;
-  highlightList: Highlight[];
-  newHighlight: Highlight;
+  highlightList: HighlightRange[];
+  newHighlight: HighlightRange;
 }
 export const mergeHighlightList = ({
   blockTextLength,
   highlightList,
   newHighlight,
-}: MergeHighlightListParams): Highlight[] => {
+}: MergeHighlightListParams): HighlightRange[] => {
   const array = createHighlightBinaryArray({ arrayLength: blockTextLength, list: highlightList.concat(newHighlight) });
 
   return makeHighlightListByConsecutiveOnes(array);
@@ -62,21 +62,21 @@ export const mergeHighlightList = ({
 
 interface GetUpdatedBlockByHighlightParams {
   blockTextLength: number;
-  blockIndex: number;
+  lineIndex: number;
   startIndex: number;
   endIndex: number;
-  blockList: EditorBlockData[];
+  lineList: EditorLine[];
 }
 
 export const getUpdatedBlockByHighlight = ({
   blockTextLength,
-  blockIndex,
+  lineIndex,
   startIndex,
   endIndex,
-  blockList,
+  lineList,
 }: GetUpdatedBlockByHighlightParams) => {
-  const newHighlight: Highlight = { startIndex, endIndex };
-  const block = blockList[blockIndex];
+  const newHighlight: HighlightRange = { startIndex, endIndex };
+  const block = lineList[lineIndex];
   const { highlightList } = block;
 
   return {
@@ -87,7 +87,7 @@ export const getUpdatedBlockByHighlight = ({
 
 interface GetRemovedHighlightListParams {
   blockTextLength: number;
-  highlightList: Highlight[];
+  highlightList: HighlightRange[];
   startIndex: number; // 지우는 영역 시작점
   endIndex: number; // 지우는 영역 끝나는 지점
 }

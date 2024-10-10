@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
+import { postHighlight } from '@/apis/collection';
 import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
-import { EditorAnswerData, EditorAnswerMap, EditorBlockData, HighlightData } from '@/types';
+import { EditorAnswerMap, EditorLine, Highlight, ReviewAnswerResponseData } from '@/types';
 import {
   getEndBlockOffset,
   getStartBlockOffset,
@@ -13,7 +14,8 @@ import {
 } from '@/utils';
 
 interface UseHighlightProps {
-  answerList: EditorAnswerData[];
+  questionId: number;
+  answerList: ReviewAnswerResponseData[];
   isEditAble: boolean;
   hideHighlightToggleButton: () => void;
   updateRemoverPosition: (rect: DOMRect) => void;
@@ -22,28 +24,30 @@ interface UseHighlightProps {
 
 interface RemovalTarget {
   answerId: number;
-  blockIndex: number;
+  lineIndex: number;
   highlightIndex: number;
 }
 
-const findBlockHighlightListFromAnswer = (answerHighlightList: HighlightData[], blockIndex: number) => {
-  return answerHighlightList.find((i) => i.lineIndex === blockIndex)?.rangeList || [];
+const findBlockHighlightListFromAnswer = (answerHighlightList: Highlight[], lineIndex: number) => {
+  return answerHighlightList.find((i) => i.lineIndex === lineIndex)?.rangeList || [];
 };
-const makeBlockListByText = (content: string, answerHighlightList: HighlightData[]): EditorBlockData[] => {
+const makeBlockListByText = (content: string, answerHighlightList: Highlight[]): EditorLine[] => {
   return content.split('\n').map((text, index) => ({
+    lineIndex: index,
     text,
     highlightList: findBlockHighlightListFromAnswer(answerHighlightList, index),
   }));
 };
 
-const makeInitialEditorAnswerMap = (answerList: EditorAnswerData[]) => {
+const makeInitialEditorAnswerMap = (answerList: ReviewAnswerResponseData[]) => {
   const initialEditorAnswerMap: EditorAnswerMap = new Map();
 
   answerList.forEach((answer, index) => {
-    initialEditorAnswerMap.set(answer.answerId, {
-      ...answer,
+    initialEditorAnswerMap.set(answer.id, {
+      answerId: answer.id,
+      content: answer.content,
       answerIndex: index,
-      blockList: makeBlockListByText(answer.content, answer.highlightList),
+      lineList: makeBlockListByText(answer.content, answer.highlights),
     });
   });
 
@@ -51,6 +55,7 @@ const makeInitialEditorAnswerMap = (answerList: EditorAnswerData[]) => {
 };
 
 const useHighlight = ({
+  questionId,
   answerList,
   isEditAble,
   hideHighlightToggleButton,
@@ -69,13 +74,13 @@ const useHighlight = ({
     hideHighlightToggleButton();
   };
 
-  const addHighlight = () => {
+  const addHighlight = async () => {
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
-    const newAnswerMap = selectionInfo.isSameAnswer
+    const newEditorAnswerMap = selectionInfo.isSameAnswer
       ? addSingleAnswerHighlight(selectionInfo)
       : addMultipleAnswerHighlight(selectionInfo);
-    if (!newAnswerMap) return;
+    if (!newEditorAnswerMap) return;
     // TODO: 데이터 요청 후, 성공 시 업데이트 하기
     setEditorAnswerMap(newAnswerMap);
 
@@ -89,57 +94,57 @@ const useHighlight = ({
 
     [...newEditorAnswerMap.keys()].forEach((answerId, answerIndex) => {
       if (startAnswer.id === answerId) {
-        const { blockIndex, offset } = startAnswer;
+        const { lineIndex, offset } = startAnswer;
         const targetAnswer = newEditorAnswerMap.get(answerId);
 
         if (!targetAnswer) return;
-        const { blockList } = targetAnswer;
+        const { lineList } = targetAnswer;
 
-        const newBlockList: EditorBlockData[] = blockList.map((block, index) => {
-          if (index < blockIndex) return block;
+        const newLineList: EditorLine[] = lineList.map((line, index) => {
+          if (index < lineIndex) return line;
 
-          if (index > blockIndex) {
+          if (index > lineIndex) {
             return {
-              ...block,
-              highlightList: [{ startIndex: 0, endIndex: block.text.length - 1 }],
+              ...line,
+              highlightList: [{ startIndex: 0, endIndex: line.text.length - 1 }],
             };
           }
           return getUpdatedBlockByHighlight({
-            blockTextLength: block.text.length,
-            blockIndex: index,
+            blockTextLength: line.text.length,
+            lineIndex: index,
             startIndex: offset,
-            endIndex: block.text.length - 1,
-            blockList,
+            endIndex: line.text.length - 1,
+            lineList,
           });
         });
 
-        newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
+        newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
       }
 
       if (startAnswer.index < answerIndex && endAnswer.index > answerIndex) {
         const targetAnswer = newEditorAnswerMap.get(answerId);
 
         if (!targetAnswer) return;
-        const { blockList } = targetAnswer;
+        const { lineList } = targetAnswer;
 
-        const newBlockList = blockList.map((block) => ({
+        const newLineList = lineList.map((block) => ({
           ...block,
           highlightList: [{ startIndex: 0, endIndex: block.text.length - 1 }],
         }));
 
-        newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
+        newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
       }
 
       if (endAnswer.id === answerId) {
-        const { blockIndex, offset } = endAnswer;
+        const { lineIndex, offset } = endAnswer;
         const targetAnswer = newEditorAnswerMap.get(answerId);
 
         if (!targetAnswer) return;
-        const { blockList } = targetAnswer;
+        const { lineList } = targetAnswer;
 
-        const newBlockList = blockList.map((block, index) => {
-          if (index > blockIndex) return block;
-          if (index < blockIndex) {
+        const newLineList = lineList.map((block, index) => {
+          if (index > lineIndex) return block;
+          if (index < lineIndex) {
             return {
               ...block,
               highlightList: [{ startIndex: 0, endIndex: block.text.length - 1 }],
@@ -148,14 +153,14 @@ const useHighlight = ({
 
           return getUpdatedBlockByHighlight({
             blockTextLength: block.text.length,
-            blockIndex: index,
+            lineIndex: index,
             startIndex: 0,
             endIndex: offset,
-            blockList,
+            lineList,
           });
         });
 
-        newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
+        newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
       }
     });
 
@@ -172,7 +177,7 @@ const useHighlight = ({
 
     if (!targetAnswer) return;
 
-    const newBlockList: EditorBlockData[] = targetAnswer.blockList.map((block, index, array) => {
+    const newLineList: EditorLine[] = targetAnswer.lineList.map((block, index, array) => {
       if (index < startBlockIndex) return block;
       if (index > endBlockIndex) return block;
       if (index === startBlockIndex) {
@@ -180,10 +185,10 @@ const useHighlight = ({
 
         return getUpdatedBlockByHighlight({
           blockTextLength: block.text.length,
-          blockIndex: index,
+          lineIndex: index,
           startIndex,
           endIndex,
-          blockList: array,
+          lineList: array,
         });
       }
 
@@ -192,10 +197,10 @@ const useHighlight = ({
 
         return getUpdatedBlockByHighlight({
           blockTextLength: block.text.length,
-          blockIndex: index,
+          lineIndex: index,
           startIndex: 0,
           endIndex,
-          blockList: array,
+          lineList: array,
         });
       }
       return {
@@ -204,11 +209,11 @@ const useHighlight = ({
       };
     });
 
-    newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
+    newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
     return newEditorAnswerMap;
   };
 
-  const removeHighlight = () => {
+  const removeHighlightByDrag = async () => {
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
 
@@ -235,7 +240,7 @@ const useHighlight = ({
 
     if (!targetAnswer) return;
 
-    const newBlockList = targetAnswer.blockList.map((block, index) => {
+    const newLineList = targetAnswer.lineList.map((block, index) => {
       if (index < startBlockIndex) return block;
       if (index > endBlockIndex) return block;
       if (index === startBlockIndex) {
@@ -269,7 +274,7 @@ const useHighlight = ({
       };
     });
 
-    newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
+    newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
     return newEditorAnswerMap;
   };
 
@@ -280,16 +285,16 @@ const useHighlight = ({
 
     [...newEditorAnswerMap.keys()].forEach((answerId, answerIndex) => {
       if (answerId === startAnswer.id) {
-        const { blockIndex, offset } = startAnswer;
+        const { lineIndex, offset } = startAnswer;
         const targetAnswer = newEditorAnswerMap.get(answerId);
 
         if (!targetAnswer) return;
-        const { blockList } = targetAnswer;
+        const { lineList } = targetAnswer;
 
-        const newBlockList = blockList.map((block, index) => {
-          if (index < blockIndex) return block;
+        const newLineList = lineList.map((block, index) => {
+          if (index < lineIndex) return block;
 
-          if (index > blockIndex) {
+          if (index > lineIndex) {
             return {
               ...block,
               highlightList: [],
@@ -306,19 +311,19 @@ const useHighlight = ({
           };
         });
 
-        newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
+        newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
       }
       if (answerId === endAnswer.id) {
-        const { blockIndex, offset } = endAnswer;
+        const { lineIndex, offset } = endAnswer;
         const targetAnswer = newEditorAnswerMap.get(answerId);
 
         if (!targetAnswer) return;
-        const { blockList } = targetAnswer;
+        const { lineList } = targetAnswer;
 
-        const newBlockList = blockList.map((block, index) => {
-          if (index > blockIndex) return block;
+        const newLineList = lineList.map((block, index) => {
+          if (index > lineIndex) return block;
 
-          if (index < blockIndex) {
+          if (index < lineIndex) {
             return {
               ...block,
               highlightList: [],
@@ -335,18 +340,18 @@ const useHighlight = ({
           };
         });
 
-        newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
+        newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
       }
 
       if (answerIndex > startAnswer.index && answerIndex < endAnswer.index) {
         const targetAnswer = newEditorAnswerMap.get(answerId);
         if (!targetAnswer) return;
 
-        const newBlockList: EditorBlockData[] = targetAnswer.blockList.map((block) => ({
+        const newLineList: EditorLine[] = targetAnswer.lineList.map((block) => ({
           ...block,
           highlightList: [],
         }));
-        newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
+        newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
       }
     });
 
@@ -383,40 +388,40 @@ const useHighlight = ({
 
     const rect = target.getClientRects()[0];
     if (!target.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME)) return;
-    const blockIndex = target.parentElement?.getAttribute('data-index');
+    const lineIndex = target.parentElement?.getAttribute('data-index');
     const start = target.getAttribute('data-highlight-start');
     const end = target.getAttribute('data-highlight-end');
-    if (!blockIndex || !start || !end) return;
-    const { highlightList } = targetAnswer.blockList[Number(blockIndex)];
+    if (!lineIndex || !start || !end) return;
+    const { highlightList } = targetAnswer.lineList[Number(lineIndex)];
     const highlightIndex = highlightList.findIndex((i) => i.startIndex === Number(start) && i.endIndex === Number(end));
 
     setRemovalTarget({
       answerId: targetAnswer.answerId,
-      blockIndex: Number(blockIndex),
+      lineIndex: Number(lineIndex),
       highlightIndex: Number(highlightIndex),
     });
 
     updateRemoverPosition(rect);
   };
 
-  const handleClickRemover = () => {
+  const removeHighlightByClick = async () => {
     if (!removalTarget) return;
 
-    const { answerId, blockIndex, highlightIndex } = removalTarget;
+    const { answerId, lineIndex, highlightIndex } = removalTarget;
 
     const newEditorAnswerMap = new Map(editorAnswerMap);
     const targetAnswer = newEditorAnswerMap.get(answerId);
     if (!targetAnswer) return;
 
-    const newBlockList = [...targetAnswer.blockList];
-    const targetBlock = newBlockList[blockIndex];
+    const newLineList = [...targetAnswer.lineList];
+    const targetBlock = newLineList[lineIndex];
     const newHighlightList = [...targetBlock.highlightList];
 
     newHighlightList.splice(highlightIndex, 1);
-    const newTargetBlock: EditorBlockData = { ...targetBlock, highlightList: newHighlightList };
+    const newTargetBlock: EditorLine = { ...targetBlock, highlightList: newHighlightList };
 
-    newBlockList.splice(blockIndex, 1, newTargetBlock);
-    newEditorAnswerMap.set(answerId, { ...targetAnswer, blockList: newBlockList });
+    newLineList.splice(lineIndex, 1, newTargetBlock);
+    newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
 
     // TODO: 서버에 API 요청 보내고 성공 한 후 상태 업데이트
     setEditorAnswerMap(newEditorAnswerMap);
@@ -429,9 +434,9 @@ const useHighlight = ({
   return {
     editorAnswerMap,
     addHighlight,
-    removeHighlight,
+    removeHighlightByDrag,
     handleClickBlockList,
-    handleClickRemover,
+    removeHighlightByClick,
     removalTarget,
   };
 };
