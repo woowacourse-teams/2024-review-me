@@ -18,6 +18,7 @@ import reviewme.review.service.exception.SectionNotFoundInTemplateException;
 import reviewme.review.service.mapper.ReviewGatherMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.template.domain.Section;
 import reviewme.template.repository.SectionRepository;
 
 @Service
@@ -35,10 +36,11 @@ public class ReviewGatheredLookupService {
     public ReviewsGatheredBySectionResponse getReceivedReviewsBySectionId(String reviewRequestCode, long sectionId) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
-        validateSectionId(sectionId, reviewGroup);
+        Section section = sectionRepository.findByIdAndTemplateId(sectionId, reviewGroup.getTemplateId())
+                .orElseThrow(() -> new SectionNotFoundInTemplateException(sectionId, reviewGroup.getTemplateId()));
 
         Map<Long, Question> questionIdQuestion = questionRepository
-                .findAllBySectionId(sectionId).stream()
+                .findAllBySectionId(section.getId()).stream()
                 .collect(Collectors.toMap(Question::getId, Function.identity()));
         List<Answer> receivedAnswers = answerRepository.findReceivedAnswersByQuestionIds(
                 reviewGroup.getId(), new ArrayList<>(questionIdQuestion.keySet()));
@@ -50,12 +52,5 @@ public class ReviewGatheredLookupService {
                 .collect(Collectors.toMap(Map.Entry::getValue, entry -> questionIdAnswers.getOrDefault(entry.getKey(), List.of())));
 
         return new ReviewsGatheredBySectionResponse(reviewGatherMapper.mapToResponseBySection(questionAnswers));
-    }
-
-    private void validateSectionId(long sectionId, ReviewGroup reviewGroup) {
-        boolean existsByIdAndTemplateId = sectionRepository.existsByIdAndTemplateId(sectionId, reviewGroup.getTemplateId());
-        if (!existsByIdAndTemplateId) {
-            throw new SectionNotFoundInTemplateException(sectionId, reviewGroup.getTemplateId());
-        }
     }
 }
