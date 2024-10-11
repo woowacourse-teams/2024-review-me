@@ -21,46 +21,12 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     List<Answer> findReceivedAnswersByQuestionIds(long reviewGroupId, Collection<Long> questionIds, int limit);
 
     @Query(value = """
-            SELECT a FROM Answer a
-            JOIN Review r ON a.reviewId = r.id
-            WHERE r.reviewGroupId = :reviewGroupId AND a.questionId IN :questionIds
-            ORDER BY r.createdAt DESC
-            """)
-    List<Answer> findReceivedAnswersByQuestionIdsOrderByCreatedAtDesc(long reviewGroupId, Collection<Long> questionIds);
-
-    @Query(value = """
-            SELECT a FROM Answer a
-            JOIN Review r ON a.reviewId = r.id
-            WHERE r.reviewGroupId = :reviewGroupId AND a.questionId IN :questionIds
-            """)
-    List<Answer> findReceivedAnswersByQuestionIds(long reviewGroupId, Collection<Long> questionIds);
-
-    @Query(value = """
-            SELECT a FROM Answer a
-            JOIN Review r ON a.reviewId = r.id
-            WHERE r.reviewGroupId = :reviewGroupId AND a.questionId IN :questionIds
-            """)
-    List<Answer> findReceivedAnswersByQuestionIds(long reviewGroupId, List<Long> questionIds);
-
-    @Query(value = """
-            SELECT a FROM Answer a
-            WHERE a.questionId IN :questionIds
-            """)
-    List<Answer> findAllByQuestionIds(List<Long> questionIds);
-
-    @Query(value = """
             SELECT a.id FROM Answer a
             JOIN Review r
             ON a.reviewId = r.id
             WHERE r.reviewGroupId = :reviewGroupId
             """)
     Set<Long> findIdsByReviewGroupId(long reviewGroupId);
-
-    @Query(value = """
-            SELECT a FROM Answer a
-            WHERE a.questionId IN :questionIds
-            """)
-    List<Answer> findAllByQuestions(List<Long> questionIds);
 
     @Query(value = """
             SELECT a FROM Answer a
@@ -72,9 +38,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query(value = """
             SELECT a.id FROM Answer a
-            JOIN Question q
-            ON a.questionId = q.id
-            WHERE q.id = :questionId
+            WHERE a.questionId = :questionId
             """)
     Set<Long> findIdsByQuestionId(long questionId);
 }
