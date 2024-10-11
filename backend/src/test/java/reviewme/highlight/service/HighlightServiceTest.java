@@ -122,31 +122,4 @@ class HighlightServiceTest {
                 () -> assertThat(highlights.get(0).getHighlightPosition()).isEqualTo(position)
         );
     }
-
-    @Test
-    void 중복된_하이라이트_요청이_있는_경우_하나만_반영된다() {
-        // given
-        String reviewRequestCode = "reviewRequestCode";
-        long questionId = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
-        long sectionId = sectionRepository.save(항상_보이는_섹션(List.of(questionId))).getId();
-        long templateId = templateRepository.save(템플릿(List.of(sectionId))).getId();
-        long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹(reviewRequestCode, "groupAccessCode"))
-                .getId();
-
-        TextAnswer textAnswer = new TextAnswer(questionId, "text answer1");
-        Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer)));
-
-        HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(1L, 1L);
-        HighlightedLineRequest lineRequest = new HighlightedLineRequest(1L, List.of(indexRangeRequest));
-        HighlightRequest highlightRequest = new HighlightRequest(textAnswer.getId(), List.of(lineRequest));
-        HighlightsRequest highlightsRequest = new HighlightsRequest(questionId,
-                List.of(highlightRequest, highlightRequest));
-
-        // when
-        highlightService.highlight(highlightsRequest, reviewRequestCode);
-
-        // then
-        List<Highlight> highlights = highlightRepository.findAll();
-        assertThat(highlights).hasSize(1);
-    }
 }
