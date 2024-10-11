@@ -46,7 +46,7 @@ public class HighlightService {
                 .map(Answer::getId)
                 .toList();
 
-        highlightRepository.deleteAllById(answersByReviewQuestion);
+        highlightRepository.deleteAllByIds(answersByReviewQuestion);
     }
 
     private void saveNewHighlight(HighlightsRequest highlightsRequest) {
