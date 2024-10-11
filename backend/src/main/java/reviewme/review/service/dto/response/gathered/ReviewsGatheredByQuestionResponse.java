@@ -7,7 +7,7 @@ public record ReviewsGatheredByQuestionResponse(
         SimpleQuestionResponse question,
 
         @Nullable
-        List<AnswerContentResponse> answers,
+        List<TextResponse> answers,
 
         @Nullable
         List<VoteResponse> votes

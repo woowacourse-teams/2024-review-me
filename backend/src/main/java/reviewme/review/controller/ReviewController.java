@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import reviewme.review.service.GatheredReviewLookupService;
+import reviewme.review.service.ReviewGatheredLookupService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
@@ -30,7 +30,7 @@ public class ReviewController {
     private final ReviewListLookupService reviewListLookupService;
     private final ReviewDetailLookupService reviewDetailLookupService;
     private final ReviewSummaryService reviewSummaryService;
-    private final GatheredReviewLookupService gatheredReviewLookupService;
+    private final ReviewGatheredLookupService reviewGatheredLookupService;
 
     @PostMapping("/v2/reviews")
     public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRegisterRequest request) {
@@ -68,10 +68,10 @@ public class ReviewController {
 
     @GetMapping("/v2/reviews/gather")
     public ResponseEntity<ReviewsGatheredBySectionResponse> getReceivedReviewsBySectionId(
-            @RequestParam("sectionId") Long sectionId,
+            @RequestParam("sectionId") long sectionId,
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
-        ReviewsGatheredBySectionResponse response = gatheredReviewLookupService.getReceivedReviewsBySectionId(
+        ReviewsGatheredBySectionResponse response = reviewGatheredLookupService.getReceivedReviewsBySectionId(
                 reviewRequestCode, sectionId);
         return ResponseEntity.ok(response);
     }

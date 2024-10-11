@@ -29,7 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 import reviewme.highlight.controller.HighlightController;
 import reviewme.highlight.service.HighlightService;
 import reviewme.review.controller.ReviewController;
-import reviewme.review.service.GatheredReviewLookupService;
+import reviewme.review.service.ReviewGatheredLookupService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
@@ -79,7 +79,7 @@ public abstract class ApiTest {
     protected SectionService sectionService;
 
     @MockBean
-    protected GatheredReviewLookupService gatheredReviewLookupService;
+    protected ReviewGatheredLookupService reviewGatheredLookupService;
 
     @MockBean
     protected HighlightService highlightService;

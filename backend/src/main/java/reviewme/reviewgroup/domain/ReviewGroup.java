@@ -44,12 +44,17 @@ public class ReviewGroup {
     private long templateId = 1L;
 
     public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode) {
+        this(reviewee, projectName, reviewRequestCode, groupAccessCode, 1L);
+    }
+
+    public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode, long templateId) {
         validateRevieweeLength(reviewee);
         validateProjectNameLength(projectName);
         this.reviewee = reviewee;
         this.projectName = projectName;
         this.reviewRequestCode = reviewRequestCode;
         this.groupAccessCode = new GroupAccessCode(groupAccessCode);
+        this.templateId = templateId;
     }
 
     private void validateRevieweeLength(String reviewee) {
