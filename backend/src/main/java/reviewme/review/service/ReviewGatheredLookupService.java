@@ -52,16 +52,19 @@ public class ReviewGatheredLookupService {
 
     private Map<Question, List<Answer>> getQuestionAnswers(Section section, ReviewGroup reviewGroup) {
         Map<Long, Question> questionIdQuestion = questionRepository
-                .findAllBySectionIdOrderByPosition(section.getId()).stream()
+                .findAllBySectionIdOrderByPosition(section.getId())
+                .stream()
                 .collect(Collectors.toMap(Question::getId, Function.identity()));
 
         Map<Long, List<Answer>> questionIdAnswers = answerRepository
-                .findReceivedAnswersByQuestionIdsOrderByCreatedAtDesc(reviewGroup.getId(), questionIdQuestion.keySet()).stream()
+                .findReceivedAnswersByQuestionIdsOrderByCreatedAtDesc(reviewGroup.getId(), questionIdQuestion.keySet())
+                .stream()
                 .collect(Collectors.groupingBy(Answer::getQuestionId));
 
         return questionIdQuestion.values().stream()
                 .collect(Collectors.toMap(
                         Function.identity(),
-                        question -> questionIdAnswers.getOrDefault(question.getId(), List.of())));
+                        question -> questionIdAnswers.getOrDefault(question.getId(), List.of())
+                ));
     }
 }

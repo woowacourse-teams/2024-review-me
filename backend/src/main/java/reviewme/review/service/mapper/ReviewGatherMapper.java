@@ -27,7 +27,8 @@ public class ReviewGatherMapper {
     private final QuestionRepository questionRepository;
 
     public ReviewsGatheredBySectionResponse mapToReviewsGatheredBySection(Map<Question, List<Answer>> questionAnswers) {
-        List<ReviewsGatheredByQuestionResponse> reviews = questionAnswers.entrySet().stream()
+        List<ReviewsGatheredByQuestionResponse> reviews = questionAnswers.entrySet()
+                .stream()
                 .map(entry -> mapToReviewsGatheredByQuestion(entry.getKey(), entry.getValue()))
                 .toList();
 
