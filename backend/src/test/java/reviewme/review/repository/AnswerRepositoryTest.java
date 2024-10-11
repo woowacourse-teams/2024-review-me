@@ -27,22 +27,22 @@ import reviewme.template.repository.TemplateRepository;
 class AnswerRepositoryTest {
 
     @Autowired
-    AnswerRepository answerRepository;
+    private AnswerRepository answerRepository;
 
     @Autowired
-    QuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
 
     @Autowired
-    SectionRepository sectionRepository;
+    private SectionRepository sectionRepository;
 
     @Autowired
-    TemplateRepository templateRepository;
+    private TemplateRepository templateRepository;
 
     @Autowired
-    ReviewGroupRepository reviewGroupRepository;
+    private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    ReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Test
     void 내가_받은_답변들_중_주어진_질문들에_대한_답변들을_최신_작성순으로_제한된_수만_반환한다() {
