@@ -114,7 +114,7 @@ class QuestionRepositoryTest {
     }
 
     @Test
-    void 질문_아이디에_해당하는_모든_옵션_아이템을_불러온다() {
+    void 질문_아이디에_해당하는_모든_옵션_아이템을_순서대로_불러온다() {
         // given
         Question question1 = questionRepository.save(선택형_필수_질문());
         Question question2 = questionRepository.save(선택형_필수_질문());
@@ -126,9 +126,10 @@ class QuestionRepositoryTest {
         OptionItem optionItem3 = optionItemRepository.save(선택지(optionGroup2.getId()));
 
         // when
-        List<OptionItem> optionItemsForQuestion1 = questionRepository.findAllOptionItemsById(question1.getId());
+        List<OptionItem> optionItemsForQuestion1
+                = questionRepository.findAllOptionItemsByIdOrderByPosition(question1.getId());
 
         // then
-        assertThat(optionItemsForQuestion1).containsOnly(optionItem1, optionItem2);
+        assertThat(optionItemsForQuestion1).containsExactly(optionItem1, optionItem2);
     }
 }

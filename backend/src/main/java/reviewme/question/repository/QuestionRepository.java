@@ -43,6 +43,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             SELECT o FROM OptionItem o
             JOIN OptionGroup og ON o.optionGroupId = og.id
             WHERE og.questionId = :questionId
+            ORDER BY o.position
             """)
-    List<OptionItem> findAllOptionItemsById(long questionId);
+    List<OptionItem> findAllOptionItemsByIdOrderByPosition(long questionId);
 }
