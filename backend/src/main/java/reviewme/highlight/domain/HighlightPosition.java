@@ -25,14 +25,14 @@ public class HighlightPosition {
     private long endIndex;
 
     public HighlightPosition(long lineIndex, long startIndex, long endIndex) {
-        validatePositiveIndexNumber(startIndex, endIndex);
+        validateNonNegativeIndexNumber(startIndex, endIndex);
         validateEndIndexOverStartIndex(startIndex, endIndex);
         this.lineIndex = lineIndex;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
     }
 
-    private void validatePositiveIndexNumber(long startIndex, long endIndex) {
+    private void validateNonNegativeIndexNumber(long startIndex, long endIndex) {
         if (startIndex < 0 || endIndex < 0) {
             throw new NegativeHighlightIndexException(startIndex, endIndex);
         }
