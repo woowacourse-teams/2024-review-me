@@ -45,7 +45,7 @@ class AnswerRepositoryTest {
     ReviewRepository reviewRepository;
 
     @Test
-    void 내가_받은_답변들_중_주어진_질문들에_대한_답변들을_반환한다() {
+    void 내가_받은_답변들_중_주어진_질문들에_대한_답변들을_최신_작성순으로_반환한다() {
         // given
         Question question1 = questionRepository.save(서술형_필수_질문());
         Question question2 = questionRepository.save(서술형_필수_질문());
@@ -61,7 +61,7 @@ class AnswerRepositoryTest {
         reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer1, answer2, answer3)));
 
         // when
-        List<Answer> actual = answerRepository.findReceivedAnswersByQuestionIds(
+        List<Answer> actual = answerRepository.findReceivedAnswersByQuestionIdsOrderByCreatedAtDesc(
                 reviewGroup.getId(), List.of(question1.getId(), question2.getId()));
 
         // then
