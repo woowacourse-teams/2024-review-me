@@ -1,6 +1,5 @@
 package reviewme.review.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -43,7 +42,7 @@ public class ReviewGatheredLookupService {
                 .findAllBySectionIdOrderByPosition(section.getId()).stream()
                 .collect(Collectors.toMap(Question::getId, Function.identity()));
         List<Answer> receivedAnswers = answerRepository.findReceivedAnswersByQuestionIds(
-                reviewGroup.getId(), new ArrayList<>(questionIdQuestion.keySet()));
+                reviewGroup.getId(), questionIdQuestion.keySet());
         Map<Long, List<Answer>> questionIdAnswers = receivedAnswers.stream()
                 .collect(Collectors.groupingBy(Answer::getQuestionId));
 

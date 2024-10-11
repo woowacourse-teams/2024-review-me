@@ -1,5 +1,6 @@
 package reviewme.review.repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,13 @@ import reviewme.review.domain.Answer;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
+
+    @Query(value = """
+            SELECT a FROM Answer a
+            JOIN Review r ON a.reviewId = r.id
+            WHERE r.reviewGroupId = :reviewGroupId AND a.questionId IN :questionIds
+            """)
+    List<Answer> findReceivedAnswersByQuestionIds(long reviewGroupId, Collection<Long> questionIds);
 
     @Query(value = """
             SELECT a FROM Answer a
@@ -39,9 +47,9 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query(value = """
             SELECT a FROM Answer a
-            JOIN Review r 
-            ON a.reviewId = r.id 
-            WHERE r.reviewGroupId = :reviewGroupId 
+            JOIN Review r
+            ON a.reviewId = r.id
+            WHERE r.reviewGroupId = :reviewGroupId
             """)
     Set<Answer> findAllByReviewGroupId(long reviewGroupId);
 
