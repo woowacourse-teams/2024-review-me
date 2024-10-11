@@ -17,9 +17,11 @@ public class HighlightController {
     private final HighlightService highlightService;
 
     @PostMapping("/v2/highlight")
-    public ResponseEntity<Void> highlight(@Valid @RequestBody HighlightsRequest request,
-                                          @SessionAttribute("reviewRequestCode") String reviewRequestCode) {
-        highlightService.highlight(request);
+    public ResponseEntity<Void> highlight(
+            @Valid @RequestBody HighlightsRequest request,
+            @SessionAttribute("reviewRequestCode") String reviewRequestCode
+    ) {
+        highlightService.highlight(request, reviewRequestCode);
         return ResponseEntity.ok().build();
     }
 }
