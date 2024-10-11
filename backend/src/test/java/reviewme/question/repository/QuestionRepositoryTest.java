@@ -89,7 +89,7 @@ class QuestionRepositoryTest {
     }
 
     @Test
-    void 섹션_아이디에_해당하는_질문을_순서대로_가져온다() {
+    void 섹션_아이디에_해당하는_질문을_가져온다() {
         // given
         Question question1 = questionRepository.save(서술형_필수_질문(1));
         Question question2 = questionRepository.save(서술형_필수_질문(2));
@@ -107,10 +107,10 @@ class QuestionRepositoryTest {
         ));
 
         // when
-        List<Question> questionsInSection = questionRepository.findAllBySectionIdOrderByPosition(section1.getId());
+        List<Question> questionsInSection = questionRepository.findAllBySectionId(section1.getId());
 
         // then
-        assertThat(questionsInSection).containsExactly(question1, question2, question3);
+        assertThat(questionsInSection).containsExactlyInAnyOrder(question1, question2, question3);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package reviewme.review.service.mapper;
 
 import jakarta.annotation.Nullable;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,9 +28,13 @@ public class ReviewGatherMapper {
     private final QuestionRepository questionRepository;
 
     public ReviewsGatheredBySectionResponse mapToReviewsGatheredBySection(Map<Question, List<Answer>> questionAnswers) {
-        List<ReviewsGatheredByQuestionResponse> reviews = questionAnswers.entrySet()
+        List<Question> questions = questionAnswers.keySet()
                 .stream()
-                .map(entry -> mapToReviewsGatheredByQuestion(entry.getKey(), entry.getValue()))
+                .sorted(Comparator.comparing(Question::getPosition))
+                .toList();
+
+        List<ReviewsGatheredByQuestionResponse> reviews = questions.stream()
+                .map(question -> mapToReviewsGatheredByQuestion(question, questionAnswers.get(question)))
                 .toList();
 
         return new ReviewsGatheredBySectionResponse(reviews);

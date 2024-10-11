@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
+import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
@@ -28,16 +29,12 @@ import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
 import reviewme.review.service.dto.response.gathered.TextResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
 import reviewme.support.ServiceTest;
-import reviewme.template.repository.SectionRepository;
 
 @ServiceTest
 class ReviewGatherMapperTest {
 
     @Autowired
     private ReviewGatherMapper reviewGatherMapper;
-
-    @Autowired
-    private SectionRepository sectionRepository;
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -133,5 +130,29 @@ class ReviewGatherMapperTest {
         assertThat(voteResponses)
                 .extracting(VoteResponse::content, VoteResponse::count)
                 .containsExactly(expectedVotes);
+    }
+
+    @Test
+    void 질문을_position_순서대로_반환한다() {
+        // given
+        Question question1 = new Question(false, QuestionType.TEXT, "1", null, 1);
+        Question question2 = new Question(false, QuestionType.TEXT, "2", null, 2);
+        Question question3 = new Question(false, QuestionType.TEXT, "3", null, 3);
+        Question question4 = new Question(false, QuestionType.TEXT, "4", null, 4);
+        questionRepository.saveAll(List.of(question1, question2, question3, question4));
+
+        // when
+        ReviewsGatheredBySectionResponse actual = reviewGatherMapper.mapToReviewsGatheredBySection(Map.of(
+                question3, List.of(),
+                question1, List.of(),
+                question2, List.of(),
+                question4, List.of()
+        ));
+
+        // then
+        assertThat(actual.reviews())
+                .extracting(ReviewsGatheredByQuestionResponse::question)
+                .extracting(SimpleQuestionResponse::name)
+                .containsExactly("1", "2", "3", "4");
     }
 }
