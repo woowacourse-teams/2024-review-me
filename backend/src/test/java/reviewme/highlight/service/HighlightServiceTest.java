@@ -30,25 +30,25 @@ import reviewme.template.repository.TemplateRepository;
 class HighlightServiceTest {
 
     @Autowired
-    HighlightService highlightService;
+    private HighlightService highlightService;
 
     @Autowired
-    HighlightRepository highlightRepository;
+    private HighlightRepository highlightRepository;
 
     @Autowired
-    ReviewGroupRepository reviewGroupRepository;
+    private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    ReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
-    QuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
 
     @Autowired
-    SectionRepository sectionRepository;
+    private SectionRepository sectionRepository;
 
     @Autowired
-    TemplateRepository templateRepository;
+    private TemplateRepository templateRepository;
 
     @Test
     void 하이라이트_반영을_요청하면_리뷰_그룹과_질문에_해당하는_기존_하이라이트를_모두_삭제한다() {

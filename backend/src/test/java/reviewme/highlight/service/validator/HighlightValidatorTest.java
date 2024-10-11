@@ -32,22 +32,22 @@ import reviewme.template.repository.TemplateRepository;
 class HighlightValidatorTest {
 
     @Autowired
-    HighlightValidator highlightValidator;
+    private HighlightValidator highlightValidator;
 
     @Autowired
-    ReviewGroupRepository reviewGroupRepository;
+    private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
-    ReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
-    QuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
 
     @Autowired
-    SectionRepository sectionRepository;
+    private SectionRepository sectionRepository;
 
     @Autowired
-    TemplateRepository templateRepository;
+    private TemplateRepository templateRepository;
 
     @Test
     void 하이라이트의_질문_id가_리뷰_그룹의_템플릿에_속한_질문이_아니면_예외를_발생한다() {
