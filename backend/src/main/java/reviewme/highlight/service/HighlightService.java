@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.highlight.domain.Highlight;
-import reviewme.highlight.domain.HighlightPosition;
 import reviewme.highlight.repository.HighlightRepository;
 import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
 import reviewme.highlight.service.dto.HighlightRequest;
@@ -55,10 +54,8 @@ public class HighlightService {
         for (HighlightRequest highlight : highlightsRequest.highlights()) {
             for (HighlightedLineRequest line : highlight.lines()) {
                 for (HighlightIndexRangeRequest range : line.ranges()) {
-                    Highlight highLight = new Highlight(
-                            highlight.answerId(),
-                            new HighlightPosition(line.index(), range.startIndex(), range.endIndex())
-                    );
+                    Highlight highLight = new Highlight(highlight.answerId(),
+                            line.index(), range.startIndex(), range.endIndex());
                     highlights.add(highLight);
                 }
             }

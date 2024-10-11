@@ -29,8 +29,8 @@ public class Highlight {
     @Embedded
     private HighlightPosition highlightPosition;
 
-    public Highlight(long answerId, HighlightPosition highlightPosition) {
+    public Highlight(long answerId, long lineIndex, long startIndex, long endIndex) {
         this.answerId = answerId;
-        this.highlightPosition = highlightPosition;
+        this.highlightPosition = new HighlightPosition(lineIndex, startIndex, endIndex);
     }
 }
