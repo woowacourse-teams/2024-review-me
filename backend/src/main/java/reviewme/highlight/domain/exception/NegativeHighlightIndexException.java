@@ -7,7 +7,7 @@ import reviewme.global.exception.BadRequestException;
 public class NegativeHighlightIndexException extends BadRequestException {
 
     public NegativeHighlightIndexException(long startIndex, long endIndex) {
-        super("하이라이트 위치는 1 이상의 수이어야 해요.");
+        super("하이라이트 위치는 0 이상의 수이어야 해요.");
         log.info("Highlight index is a negative number - startIndex: {}, endIndex: {}", startIndex, endIndex);
     }
 }
