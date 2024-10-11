@@ -68,7 +68,7 @@ public class ReviewController {
 
     @GetMapping("/v2/reviews/gather")
     public ResponseEntity<ReviewsGatheredBySectionResponse> getReceivedReviewsBySectionId(
-            @RequestParam("sectionId") Long sectionId,
+            @RequestParam("sectionId") long sectionId,
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
         ReviewsGatheredBySectionResponse response = reviewGatheredLookupService.getReceivedReviewsBySectionId(
