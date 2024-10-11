@@ -57,7 +57,7 @@ public class ReviewGatherMapper {
             return null;
         }
 
-        Map<Long, Long> voteCountByOptionItemId = answers.stream()
+        Map<Long, Long> optionItemIdVoteCount = answers.stream()
                 .map(answer -> (CheckboxAnswer) answer)
                 .flatMap(checkboxAnswer -> checkboxAnswer.getSelectedOptionIds().stream())
                 .collect(Collectors.groupingBy(CheckboxAnswerSelectedOption::getSelectedOptionId,
@@ -67,7 +67,7 @@ public class ReviewGatherMapper {
         return allOptionItem.stream()
                 .map(optionItem -> new VoteResponse(
                         optionItem.getContent(),
-                        voteCountByOptionItemId.getOrDefault(optionItem.getId(), 0L)))
+                        optionItemIdVoteCount.getOrDefault(optionItem.getId(), 0L)))
                 .toList();
     }
 }
