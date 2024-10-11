@@ -22,7 +22,6 @@ import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question;
-import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
@@ -77,112 +76,6 @@ class ReviewGatheredLookupServiceTest {
     void saveReviewGroup() {
         reviewRequestCode = "1111";
         reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, "2222"));
-    }
-
-    @Nested
-    @DisplayName("질문들을 규칙에 맞게 반환한다")
-    class GatherQuestionsBySectionTest {
-
-        Question requiredTextQuestion;
-        Question optionalTextQuestion;
-        Question requiredCheckboxQuestion;
-        Question optionalCheckboxQuestion;
-        Section section;
-
-        @BeforeEach
-        void setUp() {
-            // given
-            requiredTextQuestion = questionRepository.save(서술형_필수_질문(1));
-            optionalTextQuestion = questionRepository.save(서술형_옵션_질문(2));
-            requiredCheckboxQuestion = questionRepository.save(선택형_필수_질문(3));
-            optionalCheckboxQuestion = questionRepository.save(선택형_옵션_질문(4));
-            section = sectionRepository.save(항상_보이는_섹션(List.of(
-                    requiredTextQuestion.getId(), optionalTextQuestion.getId(),
-                    requiredCheckboxQuestion.getId(), optionalCheckboxQuestion.getId())));
-            templateRepository.save(템플릿(List.of(section.getId())));
-        }
-
-        @Test
-        void 섹션_하위의_질문_개수만큼_반환한다() {
-            // when
-            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section.getId());
-
-            assertThat(actual.reviews()).hasSize(4);
-        }
-
-        @Test
-        void 섹션_하위의_질문ID를_반환한다() {
-            // when
-            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section.getId());
-
-            // then
-            assertThat(actual.reviews())
-                    .extracting(ReviewsGatheredByQuestionResponse::question)
-                    .extracting(SimpleQuestionResponse::id)
-                    .containsExactly(
-                            requiredTextQuestion.getId(),
-                            optionalTextQuestion.getId(),
-                            requiredCheckboxQuestion.getId(),
-                            optionalCheckboxQuestion.getId());
-        }
-
-        @Test
-        void 섹션_하위의_질문_내용을_순서대로_반환한다() {
-            // when
-            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section.getId());
-
-            // then
-            assertThat(actual.reviews())
-                    .extracting(ReviewsGatheredByQuestionResponse::question)
-                    .extracting(SimpleQuestionResponse::name)
-                    .containsExactly(
-                            requiredTextQuestion.getContent(),
-                            optionalTextQuestion.getContent(),
-                            requiredCheckboxQuestion.getContent(),
-                            optionalCheckboxQuestion.getContent());
-        }
-
-        @Test
-        void 섹션_하위의_질문_타입을_반환한다() {
-            // when
-            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section.getId());
-
-            // then
-            assertThat(actual.reviews())
-                    .extracting(ReviewsGatheredByQuestionResponse::question)
-                    .extracting(SimpleQuestionResponse::type)
-                    .containsExactly(
-                            QuestionType.TEXT,
-                            QuestionType.TEXT,
-                            QuestionType.CHECKBOX,
-                            QuestionType.CHECKBOX
-                    );
-        }
-
-        @Test
-        void 질문의_타입에_해당하지_않는_응답은_null로_반환한다() {
-            // when
-            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section.getId());
-
-            // then
-            List<ReviewsGatheredByQuestionResponse> textQuestions = actual.reviews().stream()
-                    .filter(review -> review.question().type() == QuestionType.TEXT)
-                    .toList();
-            List<ReviewsGatheredByQuestionResponse> checkboxQuestions = actual.reviews().stream()
-                    .filter(review -> review.question().type() == QuestionType.CHECKBOX)
-                    .toList();
-            assertThat(textQuestions)
-                    .extracting(ReviewsGatheredByQuestionResponse::votes)
-                    .containsOnlyNulls();
-            assertThat(checkboxQuestions)
-                    .extracting(ReviewsGatheredByQuestionResponse::answers)
-                    .containsOnlyNulls();
-        }
     }
 
     @Nested

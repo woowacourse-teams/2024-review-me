@@ -56,7 +56,7 @@ public class ReviewGatheredLookupService {
                 .collect(Collectors.toMap(Question::getId, Function.identity()));
 
         Map<Long, List<Answer>> questionIdAnswers = answerRepository
-                .findReceivedAnswersByQuestionIds(reviewGroup.getId(), questionIdQuestion.keySet()).stream()
+                .findReceivedAnswersByQuestionIdsOrderByCreatedAtDesc(reviewGroup.getId(), questionIdQuestion.keySet()).stream()
                 .collect(Collectors.groupingBy(Answer::getQuestionId));
 
         return questionIdQuestion.values().stream()

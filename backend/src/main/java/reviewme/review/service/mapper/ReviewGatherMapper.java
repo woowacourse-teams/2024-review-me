@@ -66,7 +66,7 @@ public class ReviewGatherMapper {
                 .collect(Collectors.groupingBy(CheckboxAnswerSelectedOption::getSelectedOptionId,
                         Collectors.counting()));
 
-        List<OptionItem> allOptionItem = questionRepository.findAllOptionItemsById(question.getId());
+        List<OptionItem> allOptionItem = questionRepository.findAllOptionItemsByIdOrderByPosition(question.getId());
         return allOptionItem.stream()
                 .map(optionItem -> new VoteResponse(
                         optionItem.getContent(),
