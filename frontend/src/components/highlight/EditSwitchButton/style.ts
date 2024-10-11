@@ -6,7 +6,8 @@ interface EditorSwitchProps {
 export const EditSwitchButton = styled.button<EditorSwitchProps>`
   cursor: pointer;
 
-  width: 4rem;
+  width: 3.5rem;
+  height: 2rem;
   padding: 0.5rem;
 
   background-color: ${({ theme, $isEditable }) => ($isEditable ? theme.colors.primary : theme.colors.gray)};
@@ -18,8 +19,8 @@ export const EditSwitchButton = styled.button<EditorSwitchProps>`
 export const Circle = styled.div<EditorSwitchProps>`
   transform: translateX(${({ $isEditable }) => ($isEditable ? 0 : '1.5rem')});
 
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1rem;
+  height: 1rem;
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 50%;
