@@ -38,4 +38,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     default boolean existsOlderReviewInGroup(long reviewGroupId, long reviewId, LocalDate createdDate) {
         return existsOlderReviewInGroupInLong(reviewGroupId, reviewId, createdDate) > 0;
     }
+
+    int countByReviewGroupId(long reviewGroupId);
 }
