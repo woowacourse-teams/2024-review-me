@@ -74,12 +74,12 @@ public class HighlightValidator {
         for (HighlightRequest highlight : request.highlights()) {
             TextAnswer textAnswer = textAnswerRepository.findById(highlight.answerId())
                     .orElseThrow(() -> new AnswerNotFoundByIdException(highlight.answerId()));
-            long maxLineIndex = textAnswer.getContent().lines().count();
+            long providedMaxLineIndex = textAnswer.getContent().lines().count() - 1;
 
             for (HighlightedLineRequest line : highlight.lines()) {
                 long submittedLineIndex = line.index();
-                if (maxLineIndex < submittedLineIndex) {
-                    throw new InvalidHighlightLineIndexException(submittedLineIndex, maxLineIndex);
+                if (providedMaxLineIndex < submittedLineIndex) {
+                    throw new InvalidHighlightLineIndexException(submittedLineIndex, providedMaxLineIndex);
                 }
             }
         }

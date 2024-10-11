@@ -67,7 +67,7 @@ class HighlightServiceTest {
         Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer1, textAnswer2)));
 
         HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(1L, 1L);
-        HighlightedLineRequest lineRequest = new HighlightedLineRequest(1L, List.of(indexRangeRequest));
+        HighlightedLineRequest lineRequest = new HighlightedLineRequest(0L, List.of(indexRangeRequest));
         HighlightRequest highlightRequest1 = new HighlightRequest(textAnswer1.getId(), List.of(lineRequest));
         HighlightRequest highlightRequest2 = new HighlightRequest(textAnswer2.getId(), List.of(lineRequest));
         HighlightsRequest highlightsRequest = new HighlightsRequest(
@@ -101,11 +101,12 @@ class HighlightServiceTest {
 
         long startIndex = 2L;
         long endIndex = 2L;
-        long lineIndex = 1L;
+        long lineIndex = 0;
         HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(startIndex, endIndex);
-        HighlightedLineRequest lineRequest = new HighlightedLineRequest(lineIndex, List.of(indexRangeRequest));
-        HighlightRequest highlightRequest1 = new HighlightRequest(textAnswer1.getId(), List.of(lineRequest));
-        HighlightRequest highlightRequest2 = new HighlightRequest(textAnswer2.getId(), List.of(lineRequest));
+        HighlightedLineRequest lineRequest1 = new HighlightedLineRequest(lineIndex, List.of(indexRangeRequest));
+        HighlightedLineRequest lineRequest2 = new HighlightedLineRequest(lineIndex, List.of(indexRangeRequest));
+        HighlightRequest highlightRequest1 = new HighlightRequest(textAnswer1.getId(), List.of(lineRequest1));
+        HighlightRequest highlightRequest2 = new HighlightRequest(textAnswer2.getId(), List.of(lineRequest2));
         HighlightsRequest highlightsRequest = new HighlightsRequest(questionId,
                 List.of(highlightRequest1, highlightRequest2));
 
