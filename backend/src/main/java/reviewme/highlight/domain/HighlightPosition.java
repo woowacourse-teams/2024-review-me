@@ -6,8 +6,8 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import reviewme.highlight.domain.exception.InvalidHighlightRangeException;
 import reviewme.highlight.domain.exception.HighlightStartIndexExceedEndIndexException;
+import reviewme.highlight.domain.exception.NegativeHighlightIndexException;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,14 +25,20 @@ public class HighlightPosition {
     private long endIndex;
 
     public HighlightPosition(long lineIndex, long startIndex, long endIndex) {
-        validateRange(startIndex, endIndex);
+        validatePositiveIndexNumber(startIndex, endIndex);
         validateEndIndexOverStartIndex(startIndex, endIndex);
         this.lineIndex = lineIndex;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
     }
 
-    private void validateRange(long startIndex, long endIndex) {
+    private void validatePositiveIndexNumber(long startIndex, long endIndex) {
+        if (startIndex < 0 || endIndex < 0) {
+            throw new NegativeHighlightIndexException(startIndex, endIndex);
+        }
+    }
+
+    private void validateEndIndexOverStartIndex(long startIndex, long endIndex) {
         if (startIndex > endIndex) {
             throw new HighlightStartIndexExceedEndIndexException(startIndex, endIndex);
         }
