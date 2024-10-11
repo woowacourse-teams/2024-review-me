@@ -67,6 +67,7 @@ class ReviewSummaryServiceTest {
         // when
         ReceivedReviewsSummaryResponse actual = reviewSummaryService.getReviewSummary(
                 reviewGroup1.getReviewRequestCode());
+
         // then
         assertAll(
                 () -> assertThat(actual.projectName()).isEqualTo(reviewGroup1.getProjectName()),
