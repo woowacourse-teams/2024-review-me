@@ -14,6 +14,7 @@ import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredByQuestionResponse;
+import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
 import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
 import reviewme.review.service.dto.response.gathered.TextResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
@@ -24,14 +25,15 @@ public class ReviewGatherMapper {
 
     private final QuestionRepository questionRepository;
 
-    public List<ReviewsGatheredByQuestionResponse> mapToResponseBySection(
-            Map<Question, List<Answer>> questionsToAnswers) {
-        return questionsToAnswers.entrySet().stream()
-                .map(entry -> mapToResponseByQuestion(entry.getKey(), entry.getValue()))
+    public ReviewsGatheredBySectionResponse mapToReviewsGatheredBySection(Map<Question, List<Answer>> questionAnswers) {
+        List<ReviewsGatheredByQuestionResponse> reviews = questionAnswers.entrySet().stream()
+                .map(entry -> mapToReviewsGatheredByQuestion(entry.getKey(), entry.getValue()))
                 .toList();
+
+        return new ReviewsGatheredBySectionResponse(reviews);
     }
 
-    private ReviewsGatheredByQuestionResponse mapToResponseByQuestion(Question question, List<Answer> answers) {
+    private ReviewsGatheredByQuestionResponse mapToReviewsGatheredByQuestion(Question question, List<Answer> answers) {
         return new ReviewsGatheredByQuestionResponse(
                 new SimpleQuestionResponse(question.getId(), question.getContent(), question.getQuestionType()),
                 mapToTextResponse(question, answers),

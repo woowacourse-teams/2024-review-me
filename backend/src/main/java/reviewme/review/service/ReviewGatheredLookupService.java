@@ -33,23 +33,35 @@ public class ReviewGatheredLookupService {
 
     @Transactional(readOnly = true)
     public ReviewsGatheredBySectionResponse getReceivedReviewsBySectionId(String reviewRequestCode, long sectionId) {
-        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
-        Section section = sectionRepository.findByIdAndTemplateId(sectionId, reviewGroup.getTemplateId())
-                .orElseThrow(() -> new SectionNotFoundInTemplateException(sectionId, reviewGroup.getTemplateId()));
+        ReviewGroup reviewGroup = getReviewGroupOrThrow(reviewRequestCode);
+        Section section = getSectionOrThrow(sectionId, reviewGroup);
+        Map<Question, List<Answer>> questionAnswers = getQuestionAnswers(section, reviewGroup);
 
+        return reviewGatherMapper.mapToReviewsGatheredBySection(questionAnswers);
+    }
+
+    private ReviewGroup getReviewGroupOrThrow(String reviewRequestCode) {
+        return reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
+    }
+
+    private Section getSectionOrThrow(long sectionId, ReviewGroup reviewGroup) {
+        return sectionRepository.findByIdAndTemplateId(sectionId, reviewGroup.getTemplateId())
+                .orElseThrow(() -> new SectionNotFoundInTemplateException(sectionId, reviewGroup.getTemplateId()));
+    }
+
+    private Map<Question, List<Answer>> getQuestionAnswers(Section section, ReviewGroup reviewGroup) {
         Map<Long, Question> questionIdQuestion = questionRepository
                 .findAllBySectionIdOrderByPosition(section.getId()).stream()
                 .collect(Collectors.toMap(Question::getId, Function.identity()));
-        List<Answer> receivedAnswers = answerRepository.findReceivedAnswersByQuestionIds(
-                reviewGroup.getId(), questionIdQuestion.keySet());
-        Map<Long, List<Answer>> questionIdAnswers = receivedAnswers.stream()
+
+        Map<Long, List<Answer>> questionIdAnswers = answerRepository
+                .findReceivedAnswersByQuestionIds(reviewGroup.getId(), questionIdQuestion.keySet()).stream()
                 .collect(Collectors.groupingBy(Answer::getQuestionId));
 
-        Map<Question, List<Answer>> questionAnswers = questionIdQuestion.entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getValue, entry -> questionIdAnswers.getOrDefault(entry.getKey(), List.of())));
-
-        return new ReviewsGatheredBySectionResponse(reviewGatherMapper.mapToResponseBySection(questionAnswers));
+        return questionIdQuestion.values().stream()
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        question -> questionIdAnswers.getOrDefault(question.getId(), List.of())));
     }
 }
