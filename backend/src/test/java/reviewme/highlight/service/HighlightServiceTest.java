@@ -115,7 +115,7 @@ class HighlightServiceTest {
 
         // then
         List<Highlight> highlights = highlightRepository.findAll();
-        HighlightPosition position = new HighlightPosition((int) lineIndex, (int) startIndex, (int) endIndex);
+        HighlightPosition position = new HighlightPosition(lineIndex, startIndex, endIndex);
         assertAll(
                 () -> assertThat(highlights.get(0).getAnswerId()).isEqualTo(textAnswer1.getId()),
                 () -> assertThat(highlights.get(1).getAnswerId()).isEqualTo(textAnswer2.getId()),
