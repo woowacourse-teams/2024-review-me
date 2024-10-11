@@ -55,7 +55,7 @@ public class HighlightService {
             for (HighlightedLineRequest line : highlight.lines()) {
                 for (HighlightIndexRangeRequest range : line.ranges()) {
                     Highlight highLight = new Highlight(highlight.answerId(),
-                            line.index().intValue(), range.startIndex().intValue(), range.endIndex().intValue());
+                            line.index(), range.startIndex(), range.endIndex());
                     highlights.add(highLight);
                 }
             }

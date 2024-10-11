@@ -116,7 +116,7 @@ class HighlightValidatorTest {
         Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer)));
 
         long answerLineCount = textAnswer.getContent().lines().count();
-        HighlightedLineRequest highlightedLineRequest = new HighlightedLineRequest(answerLineCount, List.of());
+        HighlightedLineRequest highlightedLineRequest = new HighlightedLineRequest((int) answerLineCount, List.of());
         HighlightRequest highlightRequest = new HighlightRequest(textAnswer.getId(), List.of(highlightedLineRequest));
         HighlightsRequest highlightsRequest = new HighlightsRequest(questionId, List.of(highlightRequest));
 
