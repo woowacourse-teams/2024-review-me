@@ -41,9 +41,6 @@ const ReviewCollectionPage = () => {
                       {review.answers && (
                         <HighlightEditor questionId={review.question.id} answerList={review.answers} />
                       )}
-                      {review.answers?.map((answer, index) => {
-                        return <S.ReviewAnswer key={index}>{answer.content}</S.ReviewAnswer>;
-                      })}
                     </S.ReviewAnswerContainer>
                   )}
                 </Accordion>

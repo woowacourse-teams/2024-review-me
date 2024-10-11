@@ -92,7 +92,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
   }, [isEditable]);
 
   return (
-    <div ref={editorRef} style={{ position: 'relative' }}>
+    <S.HighlightEditorContainer ref={editorRef}>
       <S.SwitchButtonWrapper>
         <EditSwitchButton isEditable={isEditable} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
@@ -120,7 +120,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
       {isEditable && removalTarget && removerPosition && (
         <HighlightRemoverWrapper buttonPosition={removerPosition} removeHighlightByClick={removeHighlightByClick} />
       )}
-    </div>
+    </S.HighlightEditorContainer>
   );
 };
 
