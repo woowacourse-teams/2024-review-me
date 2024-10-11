@@ -16,15 +16,15 @@ import reviewme.highlight.domain.exception.NegativeHighlightIndexException;
 public class HighlightPosition {
 
     @Column(name = "line_index", nullable = false)
-    private long lineIndex;
+    private int lineIndex;
 
     @Column(name = "start_index", nullable = false)
-    private long startIndex;
+    private int startIndex;
 
     @Column(name = "end_index", nullable = false)
-    private long endIndex;
+    private int endIndex;
 
-    public HighlightPosition(long lineIndex, long startIndex, long endIndex) {
+    public HighlightPosition(int lineIndex, int startIndex, int endIndex) {
         validateNonNegativeIndexNumber(startIndex, endIndex);
         validateEndIndexOverStartIndex(startIndex, endIndex);
         this.lineIndex = lineIndex;

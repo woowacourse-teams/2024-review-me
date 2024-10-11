@@ -29,7 +29,7 @@ public class Highlight {
     @Embedded
     private HighlightPosition highlightPosition;
 
-    public Highlight(long answerId, long lineIndex, long startIndex, long endIndex) {
+    public Highlight(long answerId, int lineIndex, int startIndex, int endIndex) {
         this.answerId = answerId;
         this.highlightPosition = new HighlightPosition(lineIndex, startIndex, endIndex);
     }

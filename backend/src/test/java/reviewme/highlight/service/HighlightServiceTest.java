@@ -66,8 +66,8 @@ class HighlightServiceTest {
         TextAnswer textAnswer2 = new TextAnswer(questionId, "text answer2");
         Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer1, textAnswer2)));
 
-        HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(1L, 1L);
-        HighlightedLineRequest lineRequest = new HighlightedLineRequest(0L, List.of(indexRangeRequest));
+        HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(1, 1);
+        HighlightedLineRequest lineRequest = new HighlightedLineRequest(0, List.of(indexRangeRequest));
         HighlightRequest highlightRequest1 = new HighlightRequest(textAnswer1.getId(), List.of(lineRequest));
         HighlightRequest highlightRequest2 = new HighlightRequest(textAnswer2.getId(), List.of(lineRequest));
         HighlightsRequest highlightsRequest = new HighlightsRequest(
@@ -99,9 +99,9 @@ class HighlightServiceTest {
         TextAnswer textAnswer2 = new TextAnswer(questionId, "text answer2");
         Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer1, textAnswer2)));
 
-        long startIndex = 2L;
-        long endIndex = 2L;
-        long lineIndex = 0;
+        int startIndex = 2;
+        int endIndex = 2;
+        int lineIndex = 0;
         HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(startIndex, endIndex);
         HighlightedLineRequest lineRequest1 = new HighlightedLineRequest(lineIndex, List.of(indexRangeRequest));
         HighlightedLineRequest lineRequest2 = new HighlightedLineRequest(lineIndex, List.of(indexRangeRequest));
