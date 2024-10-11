@@ -16,6 +16,15 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
             JOIN Review r ON a.reviewId = r.id
             WHERE r.reviewGroupId = :reviewGroupId AND a.questionId IN :questionIds
             ORDER BY r.createdAt DESC
+            LIMIT :limit
+            """)
+    List<Answer> findReceivedAnswersByQuestionIds(long reviewGroupId, Collection<Long> questionIds, int limit);
+
+    @Query(value = """
+            SELECT a FROM Answer a
+            JOIN Review r ON a.reviewId = r.id
+            WHERE r.reviewGroupId = :reviewGroupId AND a.questionId IN :questionIds
+            ORDER BY r.createdAt DESC
             """)
     List<Answer> findReceivedAnswersByQuestionIdsOrderByCreatedAtDesc(long reviewGroupId, Collection<Long> questionIds);
 

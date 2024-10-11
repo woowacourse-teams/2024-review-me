@@ -24,6 +24,8 @@ import reviewme.template.repository.SectionRepository;
 @RequiredArgsConstructor
 public class ReviewGatheredLookupService {
 
+    private static final int MAX_ANSWER_LENGTH = 100;
+
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
     private final ReviewGroupRepository reviewGroupRepository;
@@ -57,7 +59,7 @@ public class ReviewGatheredLookupService {
                 .collect(Collectors.toMap(Question::getId, Function.identity()));
 
         Map<Long, List<Answer>> questionIdAnswers = answerRepository
-                .findReceivedAnswersByQuestionIdsOrderByCreatedAtDesc(reviewGroup.getId(), questionIdQuestion.keySet())
+                .findReceivedAnswersByQuestionIds(reviewGroup.getId(), questionIdQuestion.keySet(), MAX_ANSWER_LENGTH)
                 .stream()
                 .collect(Collectors.groupingBy(Answer::getQuestionId));
 

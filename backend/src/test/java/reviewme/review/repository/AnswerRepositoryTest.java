@@ -45,7 +45,7 @@ class AnswerRepositoryTest {
     ReviewRepository reviewRepository;
 
     @Test
-    void 내가_받은_답변들_중_주어진_질문들에_대한_답변들을_최신_작성순으로_반환한다() {
+    void 내가_받은_답변들_중_주어진_질문들에_대한_답변들을_최신_작성순으로_제한된_수만_반환한다() {
         // given
         Question question1 = questionRepository.save(서술형_필수_질문());
         Question question2 = questionRepository.save(서술형_필수_질문());
@@ -57,15 +57,18 @@ class AnswerRepositoryTest {
 
         TextAnswer answer1 = new TextAnswer(question1.getId(), "답1".repeat(20));
         TextAnswer answer2 = new TextAnswer(question2.getId(), "답2".repeat(20));
-        TextAnswer answer3 = new TextAnswer(question3.getId(), "답3".repeat(20));
-        reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer1, answer2, answer3)));
+        TextAnswer answer3 = new TextAnswer(question2.getId(), "답3".repeat(20));
+        TextAnswer answer4 = new TextAnswer(question3.getId(), "답4".repeat(20));
+        reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer1)));
+        reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer2)));
+        reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer3)));
 
         // when
-        List<Answer> actual = answerRepository.findReceivedAnswersByQuestionIdsOrderByCreatedAtDesc(
-                reviewGroup.getId(), List.of(question1.getId(), question2.getId()));
+        List<Answer> actual = answerRepository.findReceivedAnswersByQuestionIds(
+                reviewGroup.getId(), List.of(question1.getId(), question2.getId()), 2);
 
         // then
-        assertThat(actual).containsOnly(answer1, answer2);
+        assertThat(actual).containsExactly(answer3, answer2);
     }
 
     @Test
