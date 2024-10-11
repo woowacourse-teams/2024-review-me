@@ -18,6 +18,7 @@ import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionRes
 import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
 import reviewme.review.service.dto.response.gathered.TextResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
+import reviewme.review.service.exception.GatheredAnswersTypeNonUniformException;
 
 @Component
 @RequiredArgsConstructor
@@ -47,8 +48,8 @@ public class ReviewGatherMapper {
             return null;
         }
 
-        return answers.stream()
-                .map(answer -> (TextAnswer) answer)
+        List<TextAnswer> textAnswers = castAllOrThrow(answers, TextAnswer.class);
+        return textAnswers.stream()
                 .map(textAnswer -> new TextResponse(textAnswer.getId(), textAnswer.getContent(), List.of()))
                 .toList();
     }
@@ -59,8 +60,8 @@ public class ReviewGatherMapper {
             return null;
         }
 
-        Map<Long, Long> optionItemIdVoteCount = answers.stream()
-                .map(answer -> (CheckboxAnswer) answer)
+        List<CheckboxAnswer> checkboxAnswers = castAllOrThrow(answers, CheckboxAnswer.class);
+        Map<Long, Long> optionItemIdVoteCount = checkboxAnswers.stream()
                 .flatMap(checkboxAnswer -> checkboxAnswer.getSelectedOptionIds().stream())
                 .collect(Collectors.groupingBy(CheckboxAnswerSelectedOption::getSelectedOptionId,
                         Collectors.counting()));
@@ -71,5 +72,13 @@ public class ReviewGatherMapper {
                         optionItem.getContent(),
                         optionItemIdVoteCount.getOrDefault(optionItem.getId(), 0L)))
                 .toList();
+    }
+
+    private <T extends Answer> List<T> castAllOrThrow(List<Answer> answers, Class<T> clazz) {
+        try {
+            return answers.stream().map(clazz::cast).toList();
+        } catch (Exception ex) {
+            throw new GatheredAnswersTypeNonUniformException(ex);
+        }
     }
 }
