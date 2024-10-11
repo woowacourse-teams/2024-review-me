@@ -11,7 +11,7 @@ import reviewme.review.domain.Answer;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
-    @Query(value = """
+    @Query("""
             SELECT a FROM Answer a
             JOIN Review r ON a.reviewId = r.id
             WHERE r.reviewGroupId = :reviewGroupId AND a.questionId IN :questionIds
@@ -20,7 +20,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
             """)
     List<Answer> findReceivedAnswersByQuestionIds(long reviewGroupId, Collection<Long> questionIds, int limit);
 
-    @Query(value = """
+    @Query("""
             SELECT a.id FROM Answer a
             JOIN Review r
             ON a.reviewId = r.id
@@ -28,7 +28,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
             """)
     Set<Long> findIdsByReviewGroupId(long reviewGroupId);
 
-    @Query(value = """
+    @Query("""
             SELECT a FROM Answer a
             JOIN Review r
             ON a.reviewId = r.id
@@ -36,7 +36,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
             """)
     Set<Answer> findAllByReviewGroupId(long reviewGroupId);
 
-    @Query(value = """
+    @Query("""
             SELECT a.id FROM Answer a
             WHERE a.questionId = :questionId
             """)

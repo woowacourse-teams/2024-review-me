@@ -11,27 +11,27 @@ import reviewme.question.domain.Question;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    @Query(value = """
-            SELECT q.id FROM question q
-            JOIN section_question sq
-            ON q.id = sq.question_id
-            JOIN template_section ts
-            ON sq.section_id = ts.section_id
-            WHERE ts.template_id = :templateId
-            """, nativeQuery = true)
+    @Query("""
+            SELECT q.id FROM Question q
+            JOIN SectionQuestion sq
+            ON q.id = sq.questionId
+            JOIN TemplateSection ts
+            ON sq.sectionId = ts.sectionId
+            WHERE ts.templateId = :templateId
+            """)
     Set<Long> findAllQuestionIdByTemplateId(long templateId);
 
-    @Query(value = """
-            SELECT q.* FROM question q
-            JOIN section_question sq
-            ON q.id = sq.question_id
-            JOIN template_section ts
-            ON sq.section_id = ts.section_id
-            WHERE ts.template_id = :templateId
-            """, nativeQuery = true)
+    @Query("""
+            SELECT q FROM Question q
+            JOIN SectionQuestion sq
+            ON q.id = sq.questionId
+            JOIN TemplateSection ts
+            ON sq.sectionId = ts.sectionId
+            WHERE ts.templateId = :templateId
+            """)
     List<Question> findAllByTemplatedId(long templateId);
 
-    @Query(value = """
+    @Query("""
             SELECT q FROM Question q
             JOIN SectionQuestion sq ON q.id = sq.questionId
             WHERE sq.sectionId = :sectionId
