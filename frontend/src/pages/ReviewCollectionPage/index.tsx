@@ -19,6 +19,10 @@ const ReviewCollectionPage = () => {
   const [selectedSection, setSelectedSection] = useState<DropdownItem>(dropdownSectionList[0]);
   const { data: groupedReviews } = useGetGroupedReviews({ sectionId: selectedSection.value as number });
 
+  groupedReviews.reviews.forEach((review) => {
+    review.votes?.sort((voteA, voteB) => voteB.count - voteA.count);
+  });
+
   return (
     <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
       <ReviewDisplayLayout isReviewList={false}>
