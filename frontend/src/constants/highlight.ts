@@ -12,4 +12,4 @@ export const HIGHLIGHT_BUTTON_SIZE = {
     basic: 31,
   },
 };
-export const GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON = 10;
+export const GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON = 5;

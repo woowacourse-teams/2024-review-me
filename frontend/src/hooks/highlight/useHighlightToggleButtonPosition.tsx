@@ -19,7 +19,7 @@ const useHighlightToggleButtonPosition = ({ isEditable, editorRef }: UseHighligh
     isAddingHighlight: boolean;
   }
   const calculateEndPosition = ({ info, isAddingHighlight }: CalculateEndPositionParams) => {
-    const { selection, isForwardDrag, startBlock } = info;
+    const { selection, isForwardDrag } = info;
     if (!editorRef.current) return;
     const range = selection.getRangeAt(0);
     const rects = range.getClientRects();
@@ -34,16 +34,28 @@ const useHighlightToggleButtonPosition = ({ isEditable, editorRef }: UseHighligh
     const buttonWidth = isAddingHighlight ? addButtonWidth : buttonBasicWidth;
 
     const rectLeft = isForwardDrag ? lastRect.right : lastRect.left;
+    const rectTop = isForwardDrag
+      ? lastRect.bottom + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON
+      : lastRect.top - buttonHight - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON;
+    // editor 기준으로 위치
     const left = rectLeft - editorRect.left;
-    const top =
-      lastRect.top -
-      (isForwardDrag ? 0 : startBlock.clientHeight + buttonHight + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON) -
-      editorRect.top +
-      buttonHight;
+    const top = rectTop - editorRect.top;
+    // const top =
+    //   lastRect.top -
+    //   (isForwardDrag ? 0 : startBlock.clientHeight + buttonHight + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON) -
+    //   editorRect.top +
+    //   buttonHight;
 
-    const isOverEditorArea = editorRect.right < rectLeft + buttonWidth;
-    const leftOffsetFromParent = isOverEditorArea ? editorRect.width - buttonWidth : left;
-    const topOffsetFromParent = top;
+    // top, left가 editorArea 영역을 벗어나는 지 여부 판단
+    const isOverflowingHorizontally = editorRect.right < rectLeft + buttonWidth;
+    const isOverflowingVertically = editorRect.bottom < rectTop + buttonHight;
+
+    // position 값
+    const leftOffsetFromParent = isOverflowingHorizontally ? editorRect.width - buttonWidth : left;
+    const topOffsetFromParent = isOverflowingVertically
+      ? top - lastRect.height - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON * 2 - buttonHight
+      : top;
+
     const endPosition: Position = {
       left: `${leftOffsetFromParent / 10}rem`,
       top: `${topOffsetFromParent / 10}rem`,
