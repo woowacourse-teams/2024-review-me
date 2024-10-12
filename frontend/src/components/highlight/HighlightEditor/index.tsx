@@ -16,7 +16,7 @@ import {
 } from '@/hooks';
 import useLongPress from '@/hooks/highlight/useLongPress';
 import { ReviewAnswerResponseData } from '@/types';
-import { findSelectionInfo } from '@/utils';
+import { findSelectionInfo, isTouchDevice } from '@/utils';
 
 import DragHighlightButtonContainer from '../DragHighlightButtonContainer';
 import EditorLineBlock from '../EditorLineBlock';
@@ -99,6 +99,28 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     updateDragHighlightButtonPosition({ selectionInfo, isAddingHighlight });
   };
 
+  /**
+   * document에 형광펜 이벤트 적용
+   */
+  const addHighlightEvent = () => {
+    document.addEventListener('mousedown', hideHighlightButton);
+    document.addEventListener('mouseup', showHighlightButton);
+    // NOTE: 터치가 가능한 기기에서는 touchstart, touchend 보다 selectionchange를 사요앟는 게 오류가 없음
+    if (isTouchDevice()) {
+      document.addEventListener('selectionchange', showHighlightButton);
+    }
+  };
+  /**
+   * document에 형광펜 이벤트 삭제
+   */
+  const removeHighlightEvent = () => {
+    document.removeEventListener('mouseup', showHighlightButton);
+    document.removeEventListener('mousedown', hideHighlightButton);
+    if (isTouchDevice()) {
+      document.removeEventListener('selectionChange', showHighlightButton);
+    }
+  };
+
   useEffect(() => {
     addHighlightEvent();
     return () => {
@@ -124,9 +146,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
           onMouseDown={startPressTimer}
           onMouseUp={clearPressTimer}
           onMouseMove={clearPressTimer}
-          onTouchStart={startPressTimer}
-          onTouchEnd={clearPressTimer}
-          onTouchMove={clearPressTimer}
+          onTouchMove={handleLongPressLine}
         >
           {lineList.map((line, index) => (
             <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
