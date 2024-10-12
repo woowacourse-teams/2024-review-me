@@ -72,7 +72,7 @@ const DoughnutChart = ({ reviewVotes }: { reviewVotes: ReviewVotes[] }) => {
                 strokeDashoffset={-offset} // 시작 위치 설정
               />
               <text x={x} y={y} textAnchor="middle" dominantBaseline="middle" fontSize="14">
-                {Math.floor(reviewVoteRatios[index] * 100)}%
+                {(reviewVoteRatios[index] * 100).toFixed(1)}%
               </text>
             </g>
           );
