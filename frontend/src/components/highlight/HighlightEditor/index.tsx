@@ -8,19 +8,14 @@ import {
   HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME,
   HIGHLIGHT_REMOVER_CLASS_NAME,
 } from '@/constants';
-import {
-  useHighlightToggleButtonPosition,
-  useHighlight,
-  useCheckHighlight,
-  useHighlightRemoverPosition,
-} from '@/hooks';
+import { useDragHighlightButtonPosition, useHighlight, useCheckHighlight, useHighlightRemoverPosition } from '@/hooks';
 import { ReviewAnswerResponseData } from '@/types';
 import { findSelectionInfo } from '@/utils';
 
+import DragHighlightButtonContainer from '../DragHighlightButtonContainer';
 import EditorLineBlock from '../EditorLineBlock';
 import EditSwitchButton from '../EditSwitchButton';
 import HighlightRemoverWrapper from '../HighlightRemoverWrapper';
-import HighlightToggleButtonContainer from '../HighlightToggleButtonContainer';
 
 import * as S from './style';
 
@@ -48,8 +43,8 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     setIsEditable((prev) => !prev);
   };
 
-  const { highlightToggleButtonPosition, hideHighlightToggleButton, updateHighlightToggleButtonPosition } =
-    useHighlightToggleButtonPosition({
+  const { dragHighlightButtonPosition, hideDragHighlightButton, updateDragHighlightButtonPosition } =
+    useDragHighlightButtonPosition({
       isEditable,
       editorRef,
     });
@@ -61,7 +56,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
 
   const {
     editorAnswerMap,
-    addHighlight,
+    addHighlightByDrag,
     removeHighlightByDrag,
     handleClickBlockList,
     removeHighlightByClick,
@@ -70,7 +65,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     questionId,
     answerList,
     isEditable,
-    hideHighlightToggleButton,
+    hideDragHighlightButton,
     hideRemover,
     updateRemoverPosition,
   });
@@ -81,17 +76,17 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     const isInButton = (e.target as HTMLElement).closest(`.${HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME}`);
     const isNotHighlightRemover = (e.target as HTMLElement).closest(`.${HIGHLIGHT_REMOVER_CLASS_NAME}`);
 
-    if (!isInButton) hideHighlightToggleButton();
+    if (!isInButton) hideDragHighlightButton();
     if (!isNotHighlightRemover) hideRemover();
   };
 
   const handleMouseUp = () => {
     if (!isEditable) return;
-    const info = findSelectionInfo();
-    if (!info) return;
+    const selectionInfo = findSelectionInfo();
+    if (!selectionInfo) return;
 
-    const isAddingHighlight = checkHighlight(info);
-    updateHighlightToggleButtonPosition({ info, isAddingHighlight });
+    const isAddingHighlight = checkHighlight(selectionInfo);
+    updateDragHighlightButtonPosition({ selectionInfo, isAddingHighlight });
   };
 
   useEffect(() => {
@@ -126,11 +121,11 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
         </div>
       ))}
 
-      {isEditable && highlightToggleButtonPosition && (
-        <HighlightToggleButtonContainer
-          buttonPosition={highlightToggleButtonPosition}
+      {isEditable && dragHighlightButtonPosition && (
+        <DragHighlightButtonContainer
+          buttonPosition={dragHighlightButtonPosition}
           isAddingHighlight={isAddingHighlight}
-          addHighlight={addHighlight}
+          addHighlightByDrag={addHighlightByDrag}
           removeHighlightByDrag={removeHighlightByDrag}
         />
       )}
