@@ -11,5 +11,6 @@ export const HIGHLIGHT_BUTTON_SIZE = {
     buttonWidthColor: 52,
     basic: 31,
   },
+  shadow: 10,
 };
 export const GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON = 5;

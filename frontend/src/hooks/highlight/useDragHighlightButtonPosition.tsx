@@ -81,14 +81,9 @@ const useDragHighlightButtonPosition = ({
    * @param buttonWidth  토글 버튼의 width
    * @param editorRect  editor DOMRect
    */
-  const checkOverflow = (
-    rectLeft: number,
-    rectTop: number,
-    buttonWidth: number,
-    buttonHeight: number,
-    editorRect: DOMRect,
-  ) => {
-    const isOverflowingHorizontally = editorRect.right < rectLeft + buttonWidth;
+  const checkOverflow = (rectLeft: number, rectTop: number, buttonWidth: number, editorRect: DOMRect) => {
+    const { shadow: shadowWidth, height: buttonHeight } = HIGHLIGHT_BUTTON_SIZE;
+    const isOverflowingHorizontally = editorRect.right < rectLeft + buttonWidth + shadowWidth;
     const isOverflowingVertically = editorRect.bottom < rectTop + buttonHeight;
 
     return { isOverflowingHorizontally, isOverflowingVertically };
@@ -107,13 +102,14 @@ const useDragHighlightButtonPosition = ({
     leftOffsetFromEditor,
     topOffsetFromEditor,
     buttonWidth,
-    buttonHeight,
     isOverflowingHorizontally,
     isOverflowingVertically,
     editorRect,
     lastRect,
   }: CalculateDragHighlightButtonPosition) => {
-    const left = isOverflowingHorizontally ? editorRect.width - buttonWidth : leftOffsetFromEditor;
+    const { height: buttonHeight, shadow: shadowWidth } = HIGHLIGHT_BUTTON_SIZE;
+
+    const left = isOverflowingHorizontally ? editorRect.width - buttonWidth - shadowWidth : leftOffsetFromEditor;
     const top = isOverflowingVertically
       ? topOffsetFromEditor - lastRect.height - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON * 2 - buttonHeight
       : topOffsetFromEditor;
