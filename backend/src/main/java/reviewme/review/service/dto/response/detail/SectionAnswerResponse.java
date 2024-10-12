@@ -7,8 +7,4 @@ public record SectionAnswerResponse(
         String header,
         List<QuestionAnswerResponse> questions
 ) {
-
-    public boolean hasAnsweredQuestion() {
-        return !questions.isEmpty();
-    }
 }
