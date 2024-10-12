@@ -7,9 +7,14 @@ import { SelectionInfo } from '@/utils';
 interface UseDragButtonPositionProps {
   isEditable: boolean;
   editorRef: React.RefObject<HTMLDivElement>;
+  hideLongPressHighlightButton: () => void;
 }
 
-const useDragHighlightButtonPosition = ({ isEditable, editorRef }: UseDragButtonPositionProps) => {
+const useDragHighlightButtonPosition = ({
+  isEditable,
+  editorRef,
+  hideLongPressHighlightButton,
+}: UseDragButtonPositionProps) => {
   const [dragHighlightButtonPosition, setDragHighlightButtonPosition] = useState<Position | null>(null);
 
   const hideDragHighlightButton = () => setDragHighlightButtonPosition(null);
@@ -176,6 +181,7 @@ const useDragHighlightButtonPosition = ({ isEditable, editorRef }: UseDragButton
     if (!position) return console.error('endPosition을 찾을 수 없어요.');
 
     setDragHighlightButtonPosition(position);
+    hideLongPressHighlightButton();
   };
 
   useLayoutEffect(() => {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import GrayHighlighterIcon from '@/assets/grayHighlighter.svg';
 import PrimaryHighlighterIcon from '@/assets/primaryHighlighter.svg';
@@ -8,14 +8,20 @@ import {
   HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME,
   HIGHLIGHT_REMOVER_CLASS_NAME,
 } from '@/constants';
-import { useDragHighlightButtonPosition, useHighlight, useCheckHighlight, useHighlightRemoverPosition } from '@/hooks';
+import {
+  useDragHighlightButtonPosition,
+  useHighlight,
+  useCheckHighlight,
+  useLongPressHighlightButtonPosition,
+} from '@/hooks';
+import useLongPress from '@/hooks/highlight/useLongPress';
 import { ReviewAnswerResponseData } from '@/types';
 import { findSelectionInfo } from '@/utils';
 
 import DragHighlightButtonContainer from '../DragHighlightButtonContainer';
 import EditorLineBlock from '../EditorLineBlock';
 import EditSwitchButton from '../EditSwitchButton';
-import HighlightRemoverWrapper from '../HighlightRemoverWrapper';
+import LongPressHighlightButtonWrapper from '../LongPressHighlightButtonWrapper';
 
 import * as S from './style';
 
@@ -43,44 +49,48 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     setIsEditable((prev) => !prev);
   };
 
-  const { dragHighlightButtonPosition, hideDragHighlightButton, updateDragHighlightButtonPosition } =
-    useDragHighlightButtonPosition({
+  const { longPressHighlightButtonPosition, hideLongPressHighlightButton, updateLongPressHighlightButtonPosition } =
+    useLongPressHighlightButtonPosition({
       isEditable,
       editorRef,
     });
 
-  const { removerPosition, hideRemover, updateRemoverPosition } = useHighlightRemoverPosition({
-    isEditable,
-    editorRef,
-  });
+  const { dragHighlightButtonPosition, hideDragHighlightButton, updateDragHighlightButtonPosition } =
+    useDragHighlightButtonPosition({
+      isEditable,
+      editorRef,
+      hideLongPressHighlightButton,
+    });
 
   const {
     editorAnswerMap,
     addHighlightByDrag,
     removeHighlightByDrag,
-    handleClickBlockList,
-    removeHighlightByClick,
+    handleLongPressLine,
+    removeHighlightByLongPress,
     removalTarget,
   } = useHighlight({
     questionId,
     answerList,
     isEditable,
     hideDragHighlightButton,
-    hideRemover,
-    updateRemoverPosition,
+    hideLongPressHighlightButton,
+    updateLongPressHighlightButtonPosition,
   });
 
-  const handleMouseDown = (e: MouseEvent) => {
+  const { startPressTimer, clearPressTimer } = useLongPress({ handleLongPress: handleLongPressLine });
+
+  const hideHighlightButton = (e: MouseEvent | TouchEvent) => {
     if (!isEditable) return;
 
     const isInButton = (e.target as HTMLElement).closest(`.${HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME}`);
     const isNotHighlightRemover = (e.target as HTMLElement).closest(`.${HIGHLIGHT_REMOVER_CLASS_NAME}`);
 
     if (!isInButton) hideDragHighlightButton();
-    if (!isNotHighlightRemover) hideRemover();
+    if (!isNotHighlightRemover) hideLongPressHighlightButton();
   };
 
-  const handleMouseUp = () => {
+  const showHighlightButton = () => {
     if (!isEditable) return;
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
@@ -90,11 +100,9 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
   };
 
   useEffect(() => {
-    document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('mousedown', handleMouseDown);
+    addHighlightEvent();
     return () => {
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('mousedown', handleMouseDown);
+      removeHighlightEvent();
     };
   }, [isEditable]);
 
@@ -113,7 +121,12 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
           className={EDITOR_ANSWER_CLASS_NAME}
           key={answerId}
           data-answer={`${answerId}-${answerIndex}`}
-          onClick={handleClickBlockList}
+          onMouseDown={startPressTimer}
+          onMouseUp={clearPressTimer}
+          onMouseMove={clearPressTimer}
+          onTouchStart={startPressTimer}
+          onTouchEnd={clearPressTimer}
+          onTouchMove={clearPressTimer}
         >
           {lineList.map((line, index) => (
             <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
@@ -129,8 +142,11 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
           removeHighlightByDrag={removeHighlightByDrag}
         />
       )}
-      {isEditable && removalTarget && removerPosition && (
-        <HighlightRemoverWrapper buttonPosition={removerPosition} removeHighlightByClick={removeHighlightByClick} />
+      {isEditable && removalTarget && longPressHighlightButtonPosition && (
+        <LongPressHighlightButtonWrapper
+          buttonPosition={longPressHighlightButtonPosition}
+          removeHighlightByLongPress={removeHighlightByLongPress}
+        />
       )}
     </S.HighlightEditorContainer>
   );

@@ -18,8 +18,8 @@ interface UseHighlightProps {
   answerList: ReviewAnswerResponseData[];
   isEditable: boolean;
   hideDragHighlightButton: () => void;
-  updateRemoverPosition: (rect: DOMRect) => void;
-  hideRemover: () => void;
+  updateLongPressHighlightButtonPosition: (rect: DOMRect) => void;
+  hideLongPressHighlightButton: () => void;
 }
 
 interface RemovalTarget {
@@ -59,8 +59,8 @@ const useHighlight = ({
   answerList,
   isEditable,
   hideDragHighlightButton,
-  updateRemoverPosition,
-  hideRemover,
+  updateLongPressHighlightButtonPosition,
+  hideLongPressHighlightButton,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
   // span 클릭 시, 제공되는 형광펜 삭제 기능 타겟
@@ -381,16 +381,12 @@ const useHighlight = ({
     }
     return false;
   };
-  const handleClickBlockList = (event: React.MouseEvent) => {
+  const handleLongPressLine = (event: React.MouseEvent | React.TouchEvent) => {
     if (!isEditable) return;
-
-    const isSameSelectedNode = isSingleCharacterSelected();
-
-    if (isSameSelectedNode) return;
+    if (isSingleCharacterSelected()) return;
 
     const target = event.target as HTMLElement;
     if (!target.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME)) return;
-
     const answerElement = target.closest(`.${EDITOR_ANSWER_CLASS_NAME}`);
     if (!answerElement) return;
     const id = answerElement.getAttribute('data-answer')?.split('-')[0];
@@ -413,10 +409,10 @@ const useHighlight = ({
       highlightIndex: Number(highlightIndex),
     });
 
-    updateRemoverPosition(rect);
+    updateLongPressHighlightButtonPosition(rect);
   };
 
-  const removeHighlightByClick = async () => {
+  const removeHighlightByLongPress = async () => {
     if (!removalTarget) return;
 
     const { answerId, lineIndex, highlightIndex } = removalTarget;
@@ -440,7 +436,7 @@ const useHighlight = ({
       setEditorAnswerMap(newEditorAnswerMap);
 
       // 초기화
-      hideRemover();
+      hideLongPressHighlightButton();
       setRemovalTarget(null);
     } catch (error) {
       //TODO: 자세한 에러처리는 나중애
@@ -452,8 +448,8 @@ const useHighlight = ({
     editorAnswerMap,
     addHighlightByDrag,
     removeHighlightByDrag,
-    handleClickBlockList,
-    removeHighlightByClick,
+    handleLongPressLine,
+    removeHighlightByLongPress,
     removalTarget,
   };
 };

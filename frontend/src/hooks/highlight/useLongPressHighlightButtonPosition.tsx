@@ -3,14 +3,14 @@ import { useLayoutEffect, useState } from 'react';
 import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_BUTTON_SIZE } from '@/constants';
 import { Position } from '@/types';
 
-interface UseHighlightRemoverPositionProps {
+interface UseLongPressHighlightButtonPositionProps {
   isEditable: boolean;
   editorRef: React.RefObject<HTMLDivElement>;
 }
-const useHighlightRemoverPosition = ({ isEditable, editorRef }: UseHighlightRemoverPositionProps) => {
-  const [removerPosition, setRemoverPosition] = useState<Position | null>(null);
+const useLongPressHighlightButtonPosition = ({ isEditable, editorRef }: UseLongPressHighlightButtonPositionProps) => {
+  const [longPressHighlightButtonPosition, setLongPressHighlightButtonPosition] = useState<Position | null>(null);
 
-  const updateRemoverPosition = (rect: DOMRect) => {
+  const updateLongPressHighlightButtonPosition = (rect: DOMRect) => {
     const editorRect = editorRef.current?.getClientRects()[0];
     if (!editorRect) return;
     const top = rect.bottom - editorRect.top;
@@ -22,24 +22,24 @@ const useHighlightRemoverPosition = ({ isEditable, editorRef }: UseHighlightRemo
     const topOffsetFromParent = isOverEditorArea ? top + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON : top;
     const leftOffsetFromParent = isOverEditorArea ? editorRect.width - buttonWidth : left;
 
-    setRemoverPosition({
+    setLongPressHighlightButtonPosition({
       top: `
       ${topOffsetFromParent / 10}rem`,
       left: `${leftOffsetFromParent / 10}rem`,
     });
   };
 
-  const hideRemover = () => setRemoverPosition(null);
+  const hideLongPressHighlightButton = () => setLongPressHighlightButtonPosition(null);
 
   useLayoutEffect(() => {
-    if (!isEditable) hideRemover();
+    if (!isEditable) hideLongPressHighlightButton();
   }, [isEditable]);
 
   return {
-    removerPosition,
-    updateRemoverPosition,
-    hideRemover,
+    longPressHighlightButtonPosition,
+    updateLongPressHighlightButtonPosition,
+    hideLongPressHighlightButton,
   };
 };
 
-export default useHighlightRemoverPosition;
+export default useLongPressHighlightButtonPosition;

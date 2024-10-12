@@ -50,16 +50,19 @@ const DragHighlightRemoveButton = ({ removeHighlightByDrag, position }: DragHigh
   );
 };
 
-interface HighlightClickRemovalProps {
-  removeHighlightByClick: () => void;
+interface LongPressHighlightRemoveButtonProps {
+  removeHighlightByLongPress: () => void;
   position: Position;
 }
 
-const HighlightClickRemoval = ({ removeHighlightByClick, position }: HighlightClickRemovalProps) => {
+const LongPressHighlightRemoveButton = ({
+  removeHighlightByLongPress,
+  position,
+}: LongPressHighlightRemoveButtonProps) => {
   return (
     <S.Button
       className={HIGHLIGHT_REMOVER_CLASS_NAME}
-      onClick={removeHighlightByClick}
+      onClick={removeHighlightByLongPress}
       $position={position}
       $width={HIGHLIGHT_BUTTON_SIZE.width.basic}
     >
@@ -72,6 +75,7 @@ const HighlightClickRemoval = ({ removeHighlightByClick, position }: HighlightCl
 const HighlightButton = {
   dragHighlightAdd: DragHighlightAddButton,
   dragHighlightRemove: DragHighlightRemoveButton,
+  longPressHighlightRemove: LongPressHighlightRemoveButton,
 };
 
 export default HighlightButton;
