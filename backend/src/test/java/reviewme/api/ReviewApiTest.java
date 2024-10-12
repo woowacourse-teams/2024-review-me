@@ -138,15 +138,9 @@ class ReviewApiTest extends ApiTest {
                 fieldWithPath("sections[].questions[].content").description("질문 내용"),
                 fieldWithPath("sections[].questions[].questionType").description("질문 타입"),
 
-                fieldWithPath("sections[].questions[].optionGroup").description("옵션 그룹").optional(),
-                fieldWithPath("sections[].questions[].optionGroup.optionGroupId").description("옵션 그룹 ID"),
-                fieldWithPath("sections[].questions[].optionGroup.minCount").description("최소 선택 개수"),
-                fieldWithPath("sections[].questions[].optionGroup.maxCount").description("최대 선택 개수"),
-
-                fieldWithPath("sections[].questions[].optionGroup.options[]").description("선택 항목 목록"),
-                fieldWithPath("sections[].questions[].optionGroup.options[].optionId").description("선택 항목 ID"),
-                fieldWithPath("sections[].questions[].optionGroup.options[].content").description("선택 항목 내용"),
-                fieldWithPath("sections[].questions[].optionGroup.options[].isChecked").description("선택 여부"),
+                fieldWithPath("sections[].questions[].options[]").description("선택 항목 목록"),
+                fieldWithPath("sections[].questions[].options[].optionId").description("선택 항목 ID"),
+                fieldWithPath("sections[].questions[].options[].content").description("선택 항목 내용"),
                 fieldWithPath("sections[].questions[].answer").description("서술형 답변").optional(),
         };
 
