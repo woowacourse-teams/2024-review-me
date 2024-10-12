@@ -10,7 +10,6 @@ import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
@@ -112,19 +111,12 @@ public class ReviewDetailMapper {
                 .toList();
         SelectionRange selectionRange = optionGroup.getSelectionRange();
 
-        OptionGroupAnswerResponse optionGroupAnswerResponse = new OptionGroupAnswerResponse(
-                optionGroup.getId(),
-                selectionRange.getMinSelectionCount(),
-                selectionRange.getMaxSelectionCount(),
-                optionItemResponse
-        );
-
         return new QuestionAnswerResponse(
                 question.getId(),
                 question.isRequired(),
                 question.getQuestionType(),
                 question.getContent(),
-                optionGroupAnswerResponse,
+                optionItemResponse,
                 null
         );
     }
