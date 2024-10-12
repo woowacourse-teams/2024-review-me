@@ -18,7 +18,6 @@ export const Layout = styled.div`
 `;
 
 export const LeftLineBorder = styled.div`
-  flex-shrink: 0;
   width: 2.5rem;
   background-color: ${({ theme }) => theme.colors.lightGray};
   border-radius: 1rem 0 0 1rem;
