@@ -2,7 +2,7 @@ import { useLayoutEffect, useState } from 'react';
 
 import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_BUTTON_SIZE } from '@/constants';
 import { Position } from '@/types';
-import { SelectionInfo } from '@/utils';
+import { isTouchDevice, SelectionInfo } from '@/utils';
 
 interface UseDragButtonPositionProps {
   isEditable: boolean;
@@ -50,19 +50,22 @@ const useDragHighlightButtonPosition = ({
    * @param lastRect  드래그 시 마지막으로 선택된 Node의 DOMRect
    * @param editorRect editor DOMRect
    * @param isForwardDrag 드래그가 정방향인지 여부
-   * @param buttonHeight  화면에 보이는 하이라이터 토글 버튼 높이
    */
   const calculateRectOffsets = (
     lastRect: DOMRect,
     editorRect: DOMRect,
     isForwardDrag: boolean,
-    buttonHeight: number,
+    buttonWidth: number,
   ) => {
+    const { height: buttonHeight } = HIGHLIGHT_BUTTON_SIZE;
+    const isTouch = isTouchDevice();
     //뷰포트 기준 위치
-    const rectLeft = isForwardDrag ? lastRect.right : lastRect.left;
+    const rectLeft = isForwardDrag ? lastRect.right - (isTouch ? buttonWidth : 0) : lastRect.left;
     const rectTop = isForwardDrag
       ? lastRect.bottom + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON
-      : lastRect.top - buttonHeight - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON;
+      : isTouch
+        ? lastRect.bottom + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON
+        : lastRect.top - buttonHeight - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON;
 
     // 에디터 기준 위치
     const leftOffsetFromEditor = rectLeft - editorRect.left;
@@ -76,7 +79,6 @@ const useDragHighlightButtonPosition = ({
    * @param rectLeft 토글 버튼의 뷰기준 left 위치
    * @param rectTop  토클 버튼의 뷰기준 top 위치
    * @param buttonWidth  토글 버튼의 width
-   * @param buttonHeight  토글 버튼의 height
    * @param editorRect  editor DOMRect
    */
   const checkOverflow = (
@@ -96,7 +98,6 @@ const useDragHighlightButtonPosition = ({
     leftOffsetFromEditor: number;
     topOffsetFromEditor: number;
     buttonWidth: number;
-    buttonHeight: number;
     isOverflowingHorizontally: boolean;
     isOverflowingVertically: boolean;
     editorRect: DOMRect;
@@ -120,13 +121,11 @@ const useDragHighlightButtonPosition = ({
     return { left, top };
   };
 
-  const getButtonSize = (isAddingHighlight: boolean) => {
-    const buttonHeight = HIGHLIGHT_BUTTON_SIZE.height;
+  const getButtonWidth = (isAddingHighlight: boolean) => {
     const { basic: buttonBasicWidth, buttonWidthColor: addButtonWidth } = HIGHLIGHT_BUTTON_SIZE.width;
     const buttonWidth = isAddingHighlight ? addButtonWidth : buttonBasicWidth;
 
     return {
-      buttonHeight,
       buttonWidth,
     };
   };
@@ -142,26 +141,25 @@ const useDragHighlightButtonPosition = ({
     if (!rects) return;
 
     const { lastRect, editorRect } = rects;
-    const { buttonHeight, buttonWidth } = getButtonSize(isAddingHighlight);
+    const { buttonWidth } = getButtonWidth(isAddingHighlight);
 
     const { leftOffsetFromEditor, topOffsetFromEditor, rectLeft, rectTop } = calculateRectOffsets(
       lastRect,
       editorRect,
       isForwardDrag,
-      buttonHeight,
+      buttonWidth,
     );
     const { isOverflowingHorizontally, isOverflowingVertically } = checkOverflow(
       rectLeft,
       rectTop,
       buttonWidth,
-      buttonHeight,
+
       editorRect,
     );
     const { left, top } = calculateDragHighlightButtonPosition({
       leftOffsetFromEditor,
       topOffsetFromEditor,
       buttonWidth,
-      buttonHeight,
       isOverflowingHorizontally,
       isOverflowingVertically,
       editorRect,
