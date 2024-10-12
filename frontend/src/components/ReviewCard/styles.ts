@@ -60,8 +60,17 @@ export const Main = styled.div`
 `;
 
 export const ContentPreview = styled.p`
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+
   height: 6rem;
   padding-right: 2rem;
+
+  line-height: 2rem;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
 `;
 
 export const Footer = styled.div`
