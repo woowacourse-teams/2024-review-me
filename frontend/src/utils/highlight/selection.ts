@@ -204,7 +204,7 @@ export const findSelectionInfo = () => {
   };
 };
 
-export type EditorSelectionInfo = Exclude<ReturnType<typeof findSelectionInfo>, undefined>;
+export type SelectionInfo = Exclude<ReturnType<typeof findSelectionInfo>, undefined>;
 
 export const getStartBlockOffset = (infoForOffset: EditorSelectionInfo, block: EditorLine) => {
   const { isForwardDrag, startBlock, selection, isOnlyOneSelectedBlock } = infoForOffset;
