@@ -6,13 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewSummaryService {
 
-    private final ReviewGroupRepository reviewGroupRepository;
     private final ReviewRepository reviewRepository;
 
     @Transactional(readOnly = true)

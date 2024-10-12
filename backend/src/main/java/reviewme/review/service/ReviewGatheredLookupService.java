@@ -15,7 +15,6 @@ import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionRes
 import reviewme.review.service.exception.SectionNotFoundInTemplateException;
 import reviewme.review.service.mapper.ReviewGatherMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Section;
 import reviewme.template.repository.SectionRepository;
 
@@ -27,7 +26,6 @@ public class ReviewGatheredLookupService {
 
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
-    private final ReviewGroupRepository reviewGroupRepository;
     private final SectionRepository sectionRepository;
 
     private final ReviewGatherMapper reviewGatherMapper;

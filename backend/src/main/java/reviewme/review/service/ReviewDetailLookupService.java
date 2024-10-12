@@ -9,7 +9,6 @@ import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.exception.ReviewNotFoundByIdAndGroupException;
 import reviewme.review.service.mapper.ReviewDetailMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
 @Service
 @Transactional(readOnly = true)
@@ -17,8 +16,6 @@ import reviewme.reviewgroup.repository.ReviewGroupRepository;
 public class ReviewDetailLookupService {
 
     private final ReviewRepository reviewRepository;
-    private final ReviewGroupRepository reviewGroupRepository;
-
     private final ReviewDetailMapper reviewDetailMapper;
 
     @Transactional(readOnly = true)

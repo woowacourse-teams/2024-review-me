@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.service.dto.response.SectionNameResponse;
 import reviewme.template.service.dto.response.SectionNamesResponse;
@@ -14,7 +13,6 @@ import reviewme.template.service.dto.response.SectionNamesResponse;
 @RequiredArgsConstructor
 public class SectionService {
 
-    private final ReviewGroupRepository reviewGroupRepository;
     private final SectionRepository sectionRepository;
 
     @Transactional(readOnly = true)

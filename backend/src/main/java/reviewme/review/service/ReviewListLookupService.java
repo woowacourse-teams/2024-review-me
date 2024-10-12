@@ -9,13 +9,11 @@ import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.review.service.mapper.ReviewListMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewListLookupService {
 
-    private final ReviewGroupRepository reviewGroupRepository;
     private final ReviewRepository reviewRepository;
     private final ReviewListMapper reviewListMapper;
 

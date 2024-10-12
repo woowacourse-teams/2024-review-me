@@ -16,14 +16,12 @@ import reviewme.highlight.service.validator.HighlightValidator;
 import reviewme.review.domain.Answer;
 import reviewme.review.repository.AnswerRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
 @Service
 @RequiredArgsConstructor
 public class HighlightService {
 
     private final HighlightRepository highlightRepository;
-    private final ReviewGroupRepository reviewGroupRepository;
     private final AnswerRepository answerRepository;
 
     private final HighlightValidator highlightValidator;
