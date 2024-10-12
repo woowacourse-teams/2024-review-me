@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
@@ -17,10 +16,7 @@ public class ReviewSummaryService {
     private final ReviewRepository reviewRepository;
 
     @Transactional(readOnly = true)
-    public ReceivedReviewsSummaryResponse getReviewSummary(String reviewRequestCode) {
-        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
-
+    public ReceivedReviewsSummaryResponse getReviewSummary(ReviewGroup reviewGroup) {
         int totalReviewCount = reviewRepository.countByReviewGroupId(reviewGroup.getId());
 
         return new ReceivedReviewsSummaryResponse(
