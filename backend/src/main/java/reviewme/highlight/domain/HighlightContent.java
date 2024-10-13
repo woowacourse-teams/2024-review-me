@@ -3,18 +3,28 @@ package reviewme.highlight.domain;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
+import reviewme.highlight.service.exception.HighlightDuplicatedException;
 import reviewme.highlight.service.exception.InvalidHighlightLineIndexException;
 import reviewme.review.domain.TextAnswer;
 
 @Getter
-public class HighlightWithAnswer {
+public class HighlightContent {
 
     private long answerId;
     private List<HighlightLine> lines;
 
-    public HighlightWithAnswer(TextAnswer answer, List<Integer> lineIndex) {
+    public HighlightContent(TextAnswer answer, List<Integer> lineIndex) {
         this.answerId = answer.getId();
         lines = mapLines(answer, lineIndex);
+    }
+
+    public void addRange(int lineIndex, int startIndex, int endIndex) {
+        validateDuplicate(lineIndex, startIndex, endIndex);
+        for (HighlightLine line : lines) { // TODO: Lines 분리 필요성
+            if (line.getLineIndex() == lineIndex) {
+                line.addRange(startIndex, endIndex);
+            }
+        }
     }
 
     private List<HighlightLine> mapLines(TextAnswer answer, List<Integer> lineIndexs) {
@@ -36,11 +46,10 @@ public class HighlightWithAnswer {
         }
     }
 
-    public void addRange(int lineIndex, int startIndex, int endIndex) {
-        for (HighlightLine line : lines) { // TODO: Lines 분리 필요성
-            if (line.getLineIndex() == lineIndex) {
-                line.addRange(startIndex, endIndex);
-            }
+    private void validateDuplicate(int lineIndex, int startIndex, int endIndex) {
+        HighlightLine targetLine = lines.get(lineIndex);
+        if (targetLine.hasDuplicatedRange(startIndex, endIndex)) {
+            throw new HighlightDuplicatedException(answerId, lineIndex, startIndex, endIndex);
         }
     }
 }
