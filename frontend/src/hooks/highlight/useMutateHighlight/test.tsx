@@ -1,6 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react';
 
+import { isValidPayload, transformHighlightData } from '@/apis/highlight';
 import { MOCK_AUTH_TOKEN_NAME } from '@/mocks/mockData';
 import QueryClientWrapper from '@/queryTestSetup/QueryClientWrapper';
 import { EditorAnswer, EditorAnswerMap } from '@/types';
@@ -8,7 +9,7 @@ import { EditorAnswer, EditorAnswerMap } from '@/types';
 import useMutateHighlight, { UseMutateHighlightProps } from '.';
 
 describe('하이라이트 요청 테스트', () => {
-  test('하이라이트 오쳥을 성공한다.', async () => {
+  test('API 요청 보내는 데이터가 유효하면(= 하이라이트가 적용된 답변만 보낸다), 하이라이트 요청을 성공한다.', async () => {
     const ANSWER: EditorAnswer = {
       content: '테스',
       answerId: 123,
@@ -17,9 +18,10 @@ describe('하이라이트 요청 테스트', () => {
     };
 
     const EDITOR_ANSWER_MAP: EditorAnswerMap = new Map([[1, ANSWER]]);
+    const QUESTION_ID = 1;
 
     const props: UseMutateHighlightProps = {
-      questionId: 1,
+      questionId: QUESTION_ID,
       updateEditorAnswerMap: () => {},
       resetHighlightButton: () => {},
       handleErrorModal: () => {},
@@ -28,13 +30,16 @@ describe('하이라이트 요청 테스트', () => {
     //쿠키 생성
     document.cookie = `${MOCK_AUTH_TOKEN_NAME}=2024-review-me`;
 
+    const data = transformHighlightData(EDITOR_ANSWER_MAP, QUESTION_ID);
+    expect(isValidPayload(data)).toBeTruthy();
+
     const { result } = renderHook(() => useMutateHighlight(props), {
       wrapper: QueryClientWrapper,
     });
 
     await act(async () => {
       await result.current.mutateAsync(EDITOR_ANSWER_MAP);
-      waitFor(() => expect(result.current.status).toBe('success'));
+      waitFor(() => expect(result.current.isSuccess).toBeTruthy());
     });
 
     // 쿠키 삭제
