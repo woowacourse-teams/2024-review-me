@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import reviewme.review.domain.exception.MissingTextAnswerForQuestionException;
+import reviewme.review.service.exception.AnswerNotFoundByIdException;
 
 @Slf4j
 public class TextAnswers {
@@ -14,21 +14,13 @@ public class TextAnswers {
 
     public TextAnswers(List<TextAnswer> textAnswers) {
         this.textAnswers = textAnswers.stream()
-                .collect(Collectors.toMap(TextAnswer::getQuestionId, Function.identity()));
-    }
-
-    public TextAnswer getAnswerByQuestionId(long questionId) {
-        if (!textAnswers.containsKey(questionId)) {
-            throw new MissingTextAnswerForQuestionException(questionId);
-        }
-        return textAnswers.get(questionId);
-    }
-
-    public boolean hasAnswerByQuestionId(long questionId) {
-        return textAnswers.containsKey(questionId);
+                .collect(Collectors.toMap(TextAnswer::getId, Function.identity()));
     }
 
     public TextAnswer get(long answerId) {
+        if (!textAnswers.containsKey(answerId)) {
+            throw new AnswerNotFoundByIdException(answerId);
+        }
         return textAnswers.get(answerId);
     }
 }
