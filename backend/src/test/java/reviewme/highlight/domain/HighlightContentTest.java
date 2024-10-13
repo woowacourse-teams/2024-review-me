@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import reviewme.highlight.service.exception.HighlightDuplicatedException;
 import reviewme.highlight.service.exception.InvalidHighlightLineIndexException;
 import reviewme.review.domain.TextAnswer;
 
@@ -53,5 +54,20 @@ class HighlightContentTest {
                 () -> assertThat(lines.get(0).getRanges()).containsExactly(new HighlightRange(1, 1)),
                 () -> assertThat(lines.get(1).getRanges()).containsExactly(new HighlightRange(0, 1), new HighlightRange(3, 3))
         );
+    }
+
+
+    @Test
+    void 중복된_하이라이트를_추가하는_경우_예외를_발생한다() {
+        // given
+        TextAnswer answer = new TextAnswer(1L, 1L, "123\n4567");
+        HighlightContent highlightContent = new HighlightContent(answer, List.of(0, 1));
+
+        // when
+        highlightContent.addRange(0, 1, 1);
+
+        // then
+        assertThatCode(() -> highlightContent.addRange(0, 1, 1))
+                .isInstanceOf(HighlightDuplicatedException.class);
     }
 }

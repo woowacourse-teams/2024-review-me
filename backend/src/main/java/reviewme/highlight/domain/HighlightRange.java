@@ -39,4 +39,8 @@ public class HighlightRange {
             throw new HighlightStartIndexExceedEndIndexException(startIndex, endIndex);
         }
     }
+
+    public boolean isSameRange(int startIndex, int endIndex) {
+        return this.startIndex == startIndex && this.endIndex == endIndex;
+    }
 }
