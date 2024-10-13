@@ -75,7 +75,7 @@ class HighlightServiceTest {
         );
 
         // when
-        highlightService.highlight(highlightsRequest, reviewRequestCode);
+        highlightService.editHighlight(highlightsRequest, reviewRequestCode);
 
         // then
         assertAll(
@@ -111,7 +111,7 @@ class HighlightServiceTest {
                 List.of(highlightRequest1, highlightRequest2));
 
         // when
-        highlightService.highlight(highlightsRequest, reviewRequestCode);
+        highlightService.editHighlight(highlightsRequest, reviewRequestCode);
 
         // then
         List<Highlight> highlights = highlightRepository.findAll();

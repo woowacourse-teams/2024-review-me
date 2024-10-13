@@ -34,7 +34,7 @@ public class HighlightService {
     private final HighlightValidator highlightValidator;
 
     @Transactional
-    public void highlight(HighlightsRequest highlightsRequest, String reviewRequestCode) {
+    public void editHighlight(HighlightsRequest highlightsRequest, String reviewRequestCode) {
         long reviewGroupId = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode))
                 .getId();

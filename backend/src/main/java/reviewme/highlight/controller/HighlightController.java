@@ -21,7 +21,7 @@ public class HighlightController {
             @Valid @RequestBody HighlightsRequest request,
             @SessionAttribute("reviewRequestCode") String reviewRequestCode
     ) {
-        highlightService.highlight(request, reviewRequestCode);
+        highlightService.editHighlight(request, reviewRequestCode);
         return ResponseEntity.ok().build();
     }
 }
