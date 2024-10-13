@@ -6,6 +6,7 @@ export const REVIEW_QUERY_KEY = {
   sectionList: 'sectionList',
   groupedReviews: 'groupedReviews',
   reviewInfoData: 'reviewInfoData',
+  highlight: 'highlight',
 };
 
 export const GROUP_QUERY_KEY = {
