@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { postHighlight } from '@/apis/collection';
+import { postHighlight } from '@/apis/highlight';
 import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
 import { EditorAnswerMap, EditorLine, Highlight, ReviewAnswerResponseData } from '@/types';
 import {

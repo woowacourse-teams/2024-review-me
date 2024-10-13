@@ -7,5 +7,5 @@ const postMockHighlight = () =>
     return HttpResponse.json({ status: 200 });
   });
 
-const collectionHandler = [postMockHighlight()];
-export default collectionHandler;
+const highlightHandler = [postMockHighlight()];
+export default highlightHandler;
