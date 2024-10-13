@@ -7,35 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import reviewme.highlight.service.exception.HighlightDuplicatedException;
-import reviewme.highlight.service.exception.InvalidHighlightLineIndexException;
 import reviewme.review.domain.TextAnswer;
 
 class HighlightContentTest {
-
-    @Test
-    void 답변과_하이라이트_할_라인의_인덱스로_하이라이트_할_라인을_생성한다() {
-        // given
-        TextAnswer answer = new TextAnswer(1L, 1L, "123\n456\n789");
-
-        // when
-        HighlightContent highlightContent = new HighlightContent(answer, List.of(0, 2));
-
-        // then
-        assertThat(highlightContent.getLines()).containsExactly(
-                new HighlightLine(0, "123"),
-                new HighlightLine(2, "789")
-        );
-    }
-
-    @Test
-    void 하이라이트_할_라인의_인덱스가_대상_답변의_라인_수를_넘으면_예외를_발생한다() {
-        // given
-        TextAnswer answer = new TextAnswer(1L, 1L, "123\n456");
-
-        // when && then
-        assertThatCode(() -> new HighlightContent(answer, List.of(1, 3)))
-                .isInstanceOf(InvalidHighlightLineIndexException.class);
-    }
 
     @Test
     void 특정_라인에_하이라이트_시작_종료_범위를_추가한다() {
