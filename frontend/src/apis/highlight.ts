@@ -1,3 +1,4 @@
+import { ERROR_BOUNDARY_IGNORE_ERROR } from '@/constants';
 import { EditorAnswerMap, HighlightPostPayload } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
@@ -23,16 +24,21 @@ const transformHighlightData = (editorAnswerMap: EditorAnswerMap, questionId: nu
 
 export const postHighlight = async (editorAnswerMap: EditorAnswerMap, questionId: number) => {
   const postingData = transformHighlightData(editorAnswerMap, questionId);
-  const response = await fetch(endPoint.postingHighlight, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(postingData),
-  });
 
-  if (!response.ok) {
-    throw new Error(createApiErrorMessage(response.status));
+  try {
+    const response = await fetch(endPoint.postingHighlight, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // 인증 정보를 포함
+      body: JSON.stringify(postingData),
+    });
+
+    if (!response.ok) {
+      throw new Error(ERROR_BOUNDARY_IGNORE_ERROR + createApiErrorMessage(response.status));
+    }
+  } catch (error) {
+    throw new Error(`${ERROR_BOUNDARY_IGNORE_ERROR}-형광펜 API 요청 실패`);
   }
 };
