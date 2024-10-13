@@ -75,8 +75,8 @@ public class HighlightService {
     }
 
     private void deleteBeforeHighlight(long questionId, TextAnswers textAnswers) {
-        List<Long> answersByReviewQuestion = textAnswers.getIdsByQuestionId(questionId);
-        highlightRepository.deleteAllById(answersByReviewQuestion);
+        List<Long> answerIds = textAnswers.getIdsByQuestionId(questionId);
+        highlightRepository.deleteAllByIds(answerIds);
     }
 
     private void saveHighlight(List<HighlightContent> highlightContents) {
