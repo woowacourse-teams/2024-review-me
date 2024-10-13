@@ -10,8 +10,8 @@ import reviewme.review.domain.TextAnswer;
 @Getter
 public class HighlightContent {
 
-    private long answerId;
-    private List<HighlightLine> lines;
+    private final long answerId;
+    private final List<HighlightLine> lines;
 
     public HighlightContent(TextAnswer answer, List<Integer> lineIndex) {
         this.answerId = answer.getId();

@@ -11,7 +11,7 @@ public class HighlightLine {
 
     private final int lineIndex;
     private final String lineContent;
-    private List<HighlightRange> ranges;
+    private final List<HighlightRange> ranges;
 
     public HighlightLine(int lineIndex, String lineContent) {
         this.lineIndex = lineIndex;
