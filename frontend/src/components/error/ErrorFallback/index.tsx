@@ -1,6 +1,6 @@
-import { FallbackProps } from 'react-error-boundary';
 import { useNavigate } from 'react-router';
 
+import { FallbackProps } from '../ErrorBoundary';
 import ErrorSection from '../ErrorSection';
 
 const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
