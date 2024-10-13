@@ -1,9 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 import { postHighlight } from '@/apis/highlight';
 import { EditorAnswerMap } from '@/types';
 
-interface UseMutateHighlightProps {
+export interface UseMutateHighlightProps {
   questionId: number;
   updateEditorAnswerMap: (editorAnswerMap: EditorAnswerMap) => void;
   resetHighlightButton: () => void;
@@ -18,6 +19,7 @@ const useMutateHighlight = ({
 }: UseMutateHighlightProps) => {
   const mutation = useMutation({
     mutationFn: (newEditorAnswerMap: EditorAnswerMap) => postHighlight(newEditorAnswerMap, questionId),
+
     onSuccess: (_, variables: EditorAnswerMap) => {
       updateEditorAnswerMap(variables);
       resetHighlightButton();
