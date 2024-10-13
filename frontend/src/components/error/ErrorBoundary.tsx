@@ -44,15 +44,12 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     const { children, fallback: FallbackComponent } = this.props;
 
     // 에러가 IgnoredError를 포함하면 children을 그대로 보여줌
-    if (error?.message.includes(ERROR_BOUNDARY_IGNORE_ERROR)) {
-      return children;
-    }
+    const isHandledError = !error?.message.includes(ERROR_BOUNDARY_IGNORE_ERROR);
 
     // 에러가 발생했을 때 fallback 컴포넌트로 대체
-    if (hasError && error) {
+    if (hasError && error && isHandledError) {
       return <FallbackComponent error={error} resetErrorBoundary={this.resetErrorBoundary} />;
     }
-
     return children;
   }
 }
