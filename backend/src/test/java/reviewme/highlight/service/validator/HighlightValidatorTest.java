@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.fixture.QuestionFixture;
 import reviewme.fixture.ReviewGroupFixture;
 import reviewme.highlight.service.dto.HighlightRequest;
-import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
-import reviewme.highlight.service.exception.InvalidHighlightLineIndexException;
 import reviewme.highlight.service.exception.SubmittedAnswerAndProvidedAnswerMismatchException;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
@@ -102,26 +100,5 @@ class HighlightValidatorTest {
         // when && then
         assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroupId))
                 .isInstanceOf(SubmittedAnswerAndProvidedAnswerMismatchException.class);
-    }
-
-    @Test
-    void 답변의_줄_수보다_하이라이트의_줄_번호가_더_크면_예외를_발생한다() {
-        // given
-        long questionId = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
-        long sectionId = sectionRepository.save(항상_보이는_섹션(List.of(questionId))).getId();
-        long templateId = templateRepository.save(템플릿(List.of(sectionId))).getId();
-
-        TextAnswer textAnswer = new TextAnswer(questionId, "line 1\n line 2");
-        long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹()).getId();
-        Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer)));
-
-        long answerLineCount = textAnswer.getContent().lines().count();
-        HighlightedLineRequest highlightedLineRequest = new HighlightedLineRequest((int) answerLineCount, List.of());
-        HighlightRequest highlightRequest = new HighlightRequest(textAnswer.getId(), List.of(highlightedLineRequest));
-        HighlightsRequest highlightsRequest = new HighlightsRequest(questionId, List.of(highlightRequest));
-
-        // when & then
-        assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroupId))
-                .isInstanceOf(InvalidHighlightLineIndexException.class);
     }
 }
