@@ -13,10 +13,7 @@ import reviewme.highlight.domain.exception.NegativeHighlightIndexException;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode
-public class HighlightPosition {
-
-    @Column(name = "line_index", nullable = false)
-    private int lineIndex;
+public class HighlightRange {
 
     @Column(name = "start_index", nullable = false)
     private int startIndex;
@@ -24,10 +21,9 @@ public class HighlightPosition {
     @Column(name = "end_index", nullable = false)
     private int endIndex;
 
-    public HighlightPosition(int lineIndex, int startIndex, int endIndex) {
+    public HighlightRange(int startIndex, int endIndex) {
         validateNonNegativeIndexNumber(startIndex, endIndex);
         validateEndIndexOverStartIndex(startIndex, endIndex);
-        this.lineIndex = lineIndex;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
     }
