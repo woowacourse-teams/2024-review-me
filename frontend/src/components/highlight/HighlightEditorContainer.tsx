@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { ErrorSuspenseContainer } from '../error';
+import { ErrorBoundary } from '../error';
+import ErrorFallback from '../error/ErrorFallback';
 
 import HighlightEditor, { HighlightEditorProps } from './HighlightEditor';
 
@@ -9,9 +10,9 @@ const HighlightEditorContainer = (props: Omit<HighlightEditorProps, 'handleError
   const handleErrorModal = (isError: boolean) => setErrorModal(isError);
   return (
     <>
-      <ErrorSuspenseContainer>
+      <ErrorBoundary fallback={ErrorFallback}>
         <HighlightEditor {...props} handleErrorModal={handleErrorModal} />
-      </ErrorSuspenseContainer>
+      </ErrorBoundary>
       {openErrorModal && <div>오류</div>}
     </>
   );
