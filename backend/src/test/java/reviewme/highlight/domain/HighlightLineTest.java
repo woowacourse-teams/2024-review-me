@@ -5,6 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import reviewme.highlight.domain.exception.HighlightIndexExceedLineLengthException;
 
 class HighlightLineTest {
 
@@ -15,7 +16,7 @@ class HighlightLineTest {
 
         // when && then
         assertThatCode(() -> highlightLine.addRange(4, 5))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(HighlightIndexExceedLineLengthException.class);
     }
 
     @Test

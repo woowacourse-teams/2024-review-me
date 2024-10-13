@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import reviewme.highlight.domain.exception.HighlightIndexExceedLineLengthException;
 
 @Getter
 @EqualsAndHashCode
@@ -27,9 +28,8 @@ public class HighlightLine {
     private void validateRangeByContentLength(long startIndex, long endIndex) {
         int providedEndIndex = lineContent.length() - 1;
         if (startIndex > providedEndIndex || endIndex > providedEndIndex) {
-            throw new IllegalArgumentException(); // TODO: 예외 구체화
+            throw new HighlightIndexExceedLineLengthException(lineContent.length(), startIndex, endIndex);
         }
-
     }
 
     public boolean hasDuplicatedRange(int startIndex, int endIndex) {
