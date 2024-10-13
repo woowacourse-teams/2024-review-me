@@ -10,7 +10,7 @@ export interface FallbackProps {
 interface ErrorBoundaryProps {
   fallback: React.ComponentType<FallbackProps>;
   children: ReactNode;
-  resetQueryError: () => void;
+  resetQueryError?: () => void;
 }
 
 interface ErrorBoundaryState {
@@ -35,7 +35,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   resetErrorBoundary = () => {
-    this.props.resetQueryError();
+    const { resetQueryError } = this.props;
+    if (resetQueryError) resetQueryError();
     this.setState({ hasError: false, error: null });
   };
 
