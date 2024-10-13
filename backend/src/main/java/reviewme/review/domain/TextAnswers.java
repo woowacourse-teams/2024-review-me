@@ -2,6 +2,7 @@ package reviewme.review.domain;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -22,5 +23,13 @@ public class TextAnswers {
             throw new AnswerNotFoundByIdException(answerId);
         }
         return textAnswers.get(answerId);
+    }
+
+    public List<Long> getIdsByQuestionId(long questionId) {
+        return textAnswers.entrySet()
+                .stream()
+                .filter(textAnswer -> textAnswer.getValue().questionId == questionId)
+                .map(Entry::getKey)
+                .toList();
     }
 }
