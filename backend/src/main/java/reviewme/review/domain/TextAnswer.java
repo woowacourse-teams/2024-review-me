@@ -25,6 +25,11 @@ public class TextAnswer extends Answer {
         this.content = content;
     }
 
+    public TextAnswer(long id, long questionId, String content) {
+        this(questionId, content);
+        this.id = id;
+    }
+
     private void validateContent(long questionId, String content) {
         if (content == null || content.isEmpty()) {
             throw new QuestionNotAnsweredException(questionId);
