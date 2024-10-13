@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query';
-import { useEffect } from 'react';
 
 import { postHighlight } from '@/apis/highlight';
 import { EditorAnswerMap } from '@/types';
