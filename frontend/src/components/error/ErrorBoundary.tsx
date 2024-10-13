@@ -25,12 +25,12 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    // 에러가 발생하면 상태를 업데이트하여 fallback을 표시하게 함
+    // 에러가 발생하면 상태를 업데이트하여 fallback을 표시
     return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // 에러를 로깅하거나 다른 작업을 수행할 수 있음
+    // 에러를 로깅
     console.error('ErrorBoundary caught an error', error, errorInfo);
   }
 
