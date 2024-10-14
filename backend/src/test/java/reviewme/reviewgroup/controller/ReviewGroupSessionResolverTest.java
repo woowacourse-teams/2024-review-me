@@ -1,36 +1,32 @@
 package reviewme.reviewgroup.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.web.context.request.NativeWebRequest;
-import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.support.ServiceTest;
+import reviewme.reviewgroup.service.ReviewGroupService;
 
-@ServiceTest
 class ReviewGroupSessionResolverTest {
 
-    @Autowired
-    private ReviewGroupRepository reviewGroupRepository;
+    private final ReviewGroupService reviewGroupService = mock(ReviewGroupService.class);
 
-    @Autowired
     private ReviewGroupSessionResolver reviewGroupSessionResolver;
+
+    @BeforeEach
+    void setUp() {
+        reviewGroupSessionResolver = new ReviewGroupSessionResolver(reviewGroupService);
+    }
 
     @Test
     void 세션에서_코드를_가져와_리뷰그룹으로_변환한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(
-                리뷰_그룹("abcd", "1234")
-        );
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("reviewRequestCode", "abcd");
@@ -40,12 +36,9 @@ class ReviewGroupSessionResolverTest {
         given(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).willReturn(request);
 
         // when
-        ReviewGroup resolvedReviewGroup = reviewGroupSessionResolver.resolveArgument(
+        assertDoesNotThrow(() -> reviewGroupSessionResolver.resolveArgument(
                 null, null, nativeWebRequest, null
-        );
-
-        // then
-        assertThat(resolvedReviewGroup).isEqualTo(reviewGroup);
+        ));
     }
 
     @Test

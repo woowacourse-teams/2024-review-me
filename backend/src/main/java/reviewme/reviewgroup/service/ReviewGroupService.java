@@ -52,4 +52,10 @@ public class ReviewGroupService {
             throw new ReviewGroupUnauthorizedException(reviewGroup.getId());
         }
     }
+
+    @Transactional(readOnly = true)
+    public ReviewGroup getReviewGroupByReviewRequestCode(String reviewRequestCode) {
+        return reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
+    }
 }
