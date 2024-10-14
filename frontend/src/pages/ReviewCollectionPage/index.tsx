@@ -4,6 +4,9 @@ import { Accordion, AuthAndServerErrorFallback, Dropdown, ErrorSuspenseContainer
 import { DropdownItem } from '@/components/common/Dropdown';
 import HighlightEditor from '@/components/highlight/HighlightEditor';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
+import { useReviewInfoData } from '@/components/layouts/ReviewDisplayLayout/hooks';
+
+import ReviewEmptySection from '../ReviewListPage/components/ReviewEmptySection';
 
 import DoughnutChart from './components/DoughnutChart';
 import useGetGroupedReviews from './hooks/useGetGroupedReviews';
@@ -18,6 +21,18 @@ const ReviewCollectionPage = () => {
 
   const [selectedSection, setSelectedSection] = useState<DropdownItem>(dropdownSectionList[0]);
   const { data: groupedReviews } = useGetGroupedReviews({ sectionId: selectedSection.value as number });
+
+  const { revieweeName, projectName, totalReviewCount } = useReviewInfoData();
+
+  if (totalReviewCount === 0) {
+    return (
+      <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
+        <ReviewDisplayLayout isReviewList={false}>
+          <ReviewEmptySection />
+        </ReviewDisplayLayout>
+      </ErrorSuspenseContainer>
+    );
+  }
 
   return (
     <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
