@@ -46,10 +46,8 @@ public class ReviewGatheredLookupService {
 
     private Map<Question, List<Answer>> getQuestionAnswers(Section section, ReviewGroup reviewGroup) {
         List<Question> questions = questionRepository.findAllBySectionIdOrderByPosition(section.getId());
-        LinkedHashMap<Long, Question> questionIdQuestion = new LinkedHashMap<>();
-        for (Question question : questions) {
-            questionIdQuestion.put(question.getId(), question);
-        }
+        Map<Long, Question> questionIdQuestion = new LinkedHashMap<>();
+        questions.forEach(question -> questionIdQuestion.put(question.getId(), question));
 
         Map<Long, List<Answer>> questionIdAnswers = answerRepository
                 .findReceivedAnswersByQuestionIds(reviewGroup.getId(), questionIdQuestion.keySet(),
