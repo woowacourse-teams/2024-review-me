@@ -40,7 +40,7 @@ public class ReviewGroupController {
 
     @PostMapping("/v2/groups/check")
     public ResponseEntity<Void> checkGroupAccessCode(
-            @RequestBody @Valid CheckValidAccessRequest request,
+            @Valid @RequestBody CheckValidAccessRequest request,
             HttpServletRequest httpRequest
     ) {
         reviewGroupService.checkGroupAccessCode(request);
