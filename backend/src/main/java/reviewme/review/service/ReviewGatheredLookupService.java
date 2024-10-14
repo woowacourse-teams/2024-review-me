@@ -45,7 +45,7 @@ public class ReviewGatheredLookupService {
 
     private Map<Question, List<Answer>> getQuestionAnswers(Section section, ReviewGroup reviewGroup) {
         Map<Long, Question> questionIdQuestion = questionRepository
-                .findAllBySectionId(section.getId())
+                .findAllBySectionIdOrderByPosition(section.getId())
                 .stream()
                 .collect(Collectors.toMap(Question::getId, Function.identity()));
 
