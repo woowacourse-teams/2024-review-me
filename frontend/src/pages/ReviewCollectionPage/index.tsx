@@ -7,6 +7,7 @@ import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 import { useReviewInfoData } from '@/components/layouts/ReviewDisplayLayout/hooks';
 import { REVIEW_EMPTY } from '@/constants';
 import { GroupedReview } from '@/types';
+import { substituteString } from '@/utils';
 
 import ReviewEmptySection from '../../components/common/ReviewEmptySection';
 
@@ -68,8 +69,13 @@ const ReviewCollectionPage = () => {
           </S.ReviewSectionDropdown>
           <S.ReviewCollection>
             {groupedReviews.reviews.map((review, index) => {
+              const parsedQuestionName = substituteString({
+                content: review.question.name,
+                variables: { revieweeName, projectName },
+              });
+
               return (
-                <Accordion title={review.question.name} key={index} isInitiallyOpened={index === 0 ? true : false}>
+                <Accordion title={parsedQuestionName} key={index} isInitiallyOpened={index === 0 ? true : false}>
                   {renderContent(review)}
                 </Accordion>
               );
