@@ -41,8 +41,9 @@ public class HighlightService {
 
         highlightValidator.validate(highlightsRequest, reviewGroupId);
         Map<Long, HighlightLines> highlightLines = mapHighlightLines(highlightsRequest, textAnswers);
+
         deleteBeforeHighlight(highlightsRequest.questionId(), textAnswers);
-        saveHighlight(highlightLines);
+        saveHighlights(highlightLines);
     }
 
     private Map<Long, HighlightLines> mapHighlightLines(HighlightsRequest highlightsRequest, TextAnswers textAnswers) {
@@ -76,10 +77,11 @@ public class HighlightService {
         highlightRepository.deleteAllByIds(answerIds);
     }
 
-    private void saveHighlight(Map<Long, HighlightLines> highlightContents) {
-        List<Highlight> highlights = highlightContents.entrySet()
+    private void saveHighlights(Map<Long, HighlightLines> highlightLines) {
+        List<Highlight> highlights = highlightLines.entrySet()
                 .stream()
-                .flatMap(entry -> createHighlight(entry.getKey(), entry.getValue()).stream())
+                .flatMap(highlightLinesByAnswer ->
+                        createHighlight(highlightLinesByAnswer.getKey(), highlightLinesByAnswer.getValue()).stream())
                 .collect(Collectors.toList());
         highlightRepository.saveAll(highlights);
     }
