@@ -138,6 +138,7 @@ class ReviewApiTest extends ApiTest {
                 fieldWithPath("sections[].reviews[].questionContents").description("질문 내용"),
                 fieldWithPath("sections[].reviews[].questionType").description("질문 타입"),
 
+                fieldWithPath("sections[].reviews[].options").description("선택 항목 목록").optional(),
                 fieldWithPath("sections[].reviews[].options[]").description("선택 항목 목록"),
                 fieldWithPath("sections[].reviews[].options[].optionId").description("선택 항목 ID"),
                 fieldWithPath("sections[].reviews[].options[].content").description("선택 항목 내용"),

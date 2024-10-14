@@ -73,34 +73,41 @@ class TemplateFixture {
 
     public static ReviewDetailResponse templateAnswerResponse() {
         // Section 1
-        List<OptionItemAnswerResponse> firstOptionAnswers = List.of(
+        List<OptionItemAnswerResponse> optionAnswer = List.of(
                 new OptionItemAnswerResponse(1, "커뮤니케이션, 협업 능력 (ex: 팀원간의 원활한 정보 공유, 명확한 의사소통)"),
                 new OptionItemAnswerResponse(2, "문제 해결 능력 (ex: 프로젝트 중 만난 버그/오류를 분석하고 이를 해결하는 능력)"),
                 new OptionItemAnswerResponse(3, "시간 관리 능력 (ex: 일정과 마감 기한 준수, 업무의 우선 순위 분배)")
         );
         QuestionAnswerResponse firstQuestionAnswer = new QuestionAnswerResponse(
-                1, true, QuestionType.CHECKBOX, "프로젝트 기간 동안, 아루의 강점이 드러났던 순간을 선택해주세요.", firstOptionAnswers, null
-        );
-        SectionAnswerResponse firstSectionAnswer = new SectionAnswerResponse(
-                1, "프로젝트 기간 동안, 아루의 강점이 드러났던 순간을 선택해주세요.", List.of(firstQuestionAnswer)
+                1, true, QuestionType.CHECKBOX, "프로젝트 기간 동안, 아루의 강점이 드러났던 순간을 선택해주세요.", optionAnswer, null
         );
 
-        // Section 2
-        List<OptionItemAnswerResponse> secondOptionAnswers = List.of(
-                new OptionItemAnswerResponse(4, "반대 의견을 내더라도 듣는 사람이 기분 나쁘지 않게 이야기해요."),
-                new OptionItemAnswerResponse(5, "팀원들의 의견을 잘 모아서 회의가 매끄럽게 진행되도록 해요."),
-                new OptionItemAnswerResponse(6, "팀의 분위기를 주도해요.")
-        );
-        QuestionAnswerResponse secondQuestionAnswer = new QuestionAnswerResponse(
-                2, true, QuestionType.CHECKBOX, "커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요.", secondOptionAnswers,
-                null
-        );
-        SectionAnswerResponse secondSectionAnswer = new SectionAnswerResponse(
-                2, "커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요.", List.of(secondQuestionAnswer)
+        QuestionAnswerResponse secondQuestionAnswer = new QuestionAnswerResponse(2, true, QuestionType.TEXT, "위에서 선택한 사항에 대해 조금 더 자세히 설명해주세요.", null, "나산초의 답변");
+
+        SectionAnswerResponse sectionAnswer = new SectionAnswerResponse(
+                1, "프로젝트 기간 동안, 아루의 강점이 드러났던 순간을 선택해주세요.", List.of(firstQuestionAnswer, secondQuestionAnswer)
         );
 
         return new ReviewDetailResponse(
-                1, "아루", "리뷰미", LocalDate.of(2024, 8, 1), List.of(firstSectionAnswer, secondSectionAnswer)
+                1, "아루", "리뷰미", LocalDate.of(2024, 8, 1), List.of(sectionAnswer)
         );
+
+        // Section 2
+//        List<OptionItemAnswerResponse> secondOptionAnswers = List.of(
+//                new OptionItemAnswerResponse(4, "반대 의견을 내더라도 듣는 사람이 기분 나쁘지 않게 이야기해요."),
+//                new OptionItemAnswerResponse(5, "팀원들의 의견을 잘 모아서 회의가 매끄럽게 진행되도록 해요."),
+//                new OptionItemAnswerResponse(6, "팀의 분위기를 주도해요.")
+//        );
+//        QuestionAnswerResponse secondQuestionAnswer = new QuestionAnswerResponse(
+//                2, true, QuestionType.CHECKBOX, "커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요.", secondOptionAnswers,
+//                null
+//        );
+//        SectionAnswerResponse secondSectionAnswer = new SectionAnswerResponse(
+//                2, "커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요.", List.of(secondQuestionAnswer)
+//        );
+
+//        return new ReviewDetailResponse(
+//                1, "아루", "리뷰미", LocalDate.of(2024, 8, 1), List.of(sectionAnswer, secondSectionAnswer)
+//        );
     }
 }
