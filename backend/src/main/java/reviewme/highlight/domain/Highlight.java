@@ -32,9 +32,9 @@ public class Highlight {
     @Embedded
     private HighlightRange highlightRange;
 
-    public Highlight(long answerId, int lineIndex, int startIndex, int endIndex) {
+    public Highlight(long answerId, int lineIndex, HighlightRange range) {
         this.answerId = answerId;
         this.lineIndex = lineIndex;
-        this.highlightRange = new HighlightRange(startIndex, endIndex);
+        this.highlightRange = range;
     }
 }
