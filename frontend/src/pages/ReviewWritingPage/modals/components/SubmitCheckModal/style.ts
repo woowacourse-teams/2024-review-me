@@ -6,12 +6,11 @@ export const Message = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  align-items: start;
+  align-items: center;
 
   min-width: 30rem;
 
   p {
-    width: inherit;
     margin: 0;
   }
 

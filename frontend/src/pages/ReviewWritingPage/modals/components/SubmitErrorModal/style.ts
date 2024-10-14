@@ -4,11 +4,10 @@ export const Message = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  align-items: start;
+  align-items: center;
 
   width: fit-content;
   p {
-    width: max-content;
     margin: 0;
   }
 `;

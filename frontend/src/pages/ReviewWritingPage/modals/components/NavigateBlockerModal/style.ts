@@ -6,19 +6,15 @@ export const ConfirmModalMessage = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  align-items: start;
 
   p {
-    width: max-content;
+    width: 100%;
     margin: 0;
+    text-align: center;
   }
 
   ${media.xSmall} {
     width: 100%;
     min-width: 70vw;
-
-    p {
-      width: inherit;
-    }
   }
 `;

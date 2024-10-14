@@ -8,11 +8,13 @@ export const Contents = styled.div`
   gap: 1rem;
   width: max-content;
 
+  p {
+    width: 100%;
+    text-align: center;
+  }
+
   ${media.xSmall} {
-    min-width: ${({ theme }) => {
-      const { maxWidth, padding } = theme.confirmModalSize;
-      return `calc(${maxWidth} - (${padding} * 2))`;
-    }};
+    width: 23rem;
   }
 `;
 
