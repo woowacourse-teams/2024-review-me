@@ -1,6 +1,6 @@
 package reviewme.highlight.service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -8,9 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.highlight.domain.Highlight;
-import reviewme.highlight.domain.HighlightContent;
-import reviewme.highlight.domain.HighlightLine;
-import reviewme.highlight.domain.HighlightRange;
+import reviewme.highlight.domain.HighlightLines;
 import reviewme.highlight.repository.HighlightRepository;
 import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
 import reviewme.highlight.service.dto.HighlightRequest;
@@ -42,36 +40,35 @@ public class HighlightService {
         TextAnswers textAnswers = new TextAnswers(textAnswersByIds);
 
         highlightValidator.validate(highlightsRequest, reviewGroupId);
-        List<HighlightContent> highlights = mapHighlights(highlightsRequest, textAnswers);
+        Map<Long, HighlightLines> highlightLines = mapHighlightLines(highlightsRequest, textAnswers);
         deleteBeforeHighlight(highlightsRequest.questionId(), textAnswers);
-        saveHighlight(highlights);
+        saveHighlight(highlightLines);
     }
 
-    private List<HighlightContent> mapHighlights(HighlightsRequest highlightsRequest, TextAnswers textAnswers) {
-
+    private Map<Long, HighlightLines> mapHighlightLines(HighlightsRequest highlightsRequest, TextAnswers textAnswers) {
         Map<Long, List<Integer>> answerLineIndexes = highlightsRequest.highlights()
                 .stream()
                 .collect(Collectors.toMap(HighlightRequest::answerId, HighlightRequest::getLineIndexes));
 
-        List<HighlightContent> highlightContents = new ArrayList<>();
+        Map<Long, HighlightLines> highlightLinesByAnswerId = new HashMap<>();
         for (HighlightRequest highlightRequest : highlightsRequest.highlights()) {
             long answerId = highlightRequest.answerId();
-            highlightContents.add(
-                    mapContent(highlightRequest, textAnswers.get(answerId), answerLineIndexes.get(answerId))
+            highlightLinesByAnswerId.put(answerId,
+                    mapHighlightLine(highlightRequest, textAnswers.get(answerId), answerLineIndexes.get(answerId))
             );
         }
-        return highlightContents;
+        return highlightLinesByAnswerId;
     }
 
-    private HighlightContent mapContent(HighlightRequest highlightRequest,
-                                        TextAnswer answer, List<Integer> answerLineIndex) {
-        HighlightContent highlightContent = new HighlightContent(answer, answerLineIndex);
+    private HighlightLines mapHighlightLine(HighlightRequest highlightRequest,
+                                       TextAnswer answer, List<Integer> answerLineIndex) {
+        HighlightLines highlightLines = new HighlightLines(answer.getContent(), answerLineIndex);
         for (HighlightedLineRequest lineRequest : highlightRequest.lines()) {
             for (HighlightIndexRangeRequest rangeRequest : lineRequest.ranges()) {
-                highlightContent.addRange(lineRequest.index(), rangeRequest.startIndex(), rangeRequest.endIndex());
+                highlightLines.addRange(lineRequest.index(), rangeRequest.startIndex(), rangeRequest.endIndex());
             }
         }
-        return highlightContent;
+        return highlightLines;
     }
 
     private void deleteBeforeHighlight(long questionId, TextAnswers textAnswers) {
@@ -79,20 +76,19 @@ public class HighlightService {
         highlightRepository.deleteAllByIds(answerIds);
     }
 
-    private void saveHighlight(List<HighlightContent> highlightContents) {
-        List<Highlight> highlights = new ArrayList<>();
-        highlightContents.forEach(highlightContent -> addHighlight(highlightContent, highlights));
+    private void saveHighlight(Map<Long, HighlightLines> highlightContents) {
+        List<Highlight> highlights = highlightContents.entrySet()
+                .stream()
+                .flatMap(entry -> createHighlight(entry.getKey(), entry.getValue()).stream())
+                .collect(Collectors.toList());
         highlightRepository.saveAll(highlights);
     }
 
-    private void addHighlight(HighlightContent highlightContent, List<Highlight> highlights) {
-        for (HighlightLine line : highlightContent.getLines()) {
-            for (HighlightRange range : line.getRanges()) {
-                Highlight highlight = new Highlight(
-                        highlightContent.getAnswerId(), line.getLineIndex(), range.getStartIndex(), range.getEndIndex()
-                );
-                highlights.add(highlight);
-            }
-        }
+    private List<Highlight> createHighlight(long answerId, HighlightLines lines) {
+        return lines.getLines()
+                .stream()
+                .flatMap(line -> line.getRanges().stream()
+                        .map(range -> new Highlight(answerId, line.getLineIndex(), range)))
+                .toList();
     }
 }
