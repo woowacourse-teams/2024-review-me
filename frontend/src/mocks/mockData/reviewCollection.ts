@@ -35,7 +35,7 @@ export const GROUPED_REVIEWS_MOCK_DATA: GroupedReviews = {
     {
       question: {
         id: 2,
-        name: '\n\n위에서 선택한 사항에 대해 조금 더 자세히 설명해주세요',
+        name: '위에서 선택한 사항에 대해 조금 더 자세히 설명해주세요',
         type: 'TEXT',
       },
       answers: [
