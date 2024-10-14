@@ -33,6 +33,7 @@ public class HighlightLine {
     }
 
     public boolean hasDuplicatedRange(int startIndex, int endIndex) {
-        return ranges.stream().anyMatch(range -> range.isSameRange(startIndex, endIndex));
+        return ranges.stream()
+                .anyMatch(range -> range.isSameRange(startIndex, endIndex));
     }
 }

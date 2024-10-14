@@ -49,15 +49,15 @@ public class HighlightService {
 
     private List<HighlightContent> mapHighlights(HighlightsRequest highlightsRequest, TextAnswers textAnswers) {
 
-        Map<Long, List<Integer>> answerLineIndexs = highlightsRequest.highlights()
+        Map<Long, List<Integer>> answerLineIndexes = highlightsRequest.highlights()
                 .stream()
-                .collect(Collectors.toMap(HighlightRequest::answerId, HighlightRequest::getLineIndexs));
+                .collect(Collectors.toMap(HighlightRequest::answerId, HighlightRequest::getLineIndexes));
 
         List<HighlightContent> highlightContents = new ArrayList<>();
         for (HighlightRequest highlightRequest : highlightsRequest.highlights()) {
             long answerId = highlightRequest.answerId();
             highlightContents.add(
-                    mapContent(highlightRequest, textAnswers.get(answerId), answerLineIndexs.get(answerId))
+                    mapContent(highlightRequest, textAnswers.get(answerId), answerLineIndexes.get(answerId))
             );
         }
         return highlightContents;
