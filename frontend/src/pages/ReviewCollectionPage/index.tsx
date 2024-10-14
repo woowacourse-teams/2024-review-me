@@ -5,8 +5,9 @@ import { DropdownItem } from '@/components/common/Dropdown';
 import HighlightEditor from '@/components/highlight/HighlightEditor';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 import { useReviewInfoData } from '@/components/layouts/ReviewDisplayLayout/hooks';
+import { REVIEW_EMPTY } from '@/constants';
 
-import ReviewEmptySection from '../ReviewListPage/components/ReviewEmptySection';
+import ReviewEmptySection from '../../components/common/ReviewEmptySection';
 
 import DoughnutChart from './components/DoughnutChart';
 import useGetGroupedReviews from './hooks/useGetGroupedReviews';
@@ -28,7 +29,7 @@ const ReviewCollectionPage = () => {
     return (
       <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
         <ReviewDisplayLayout isReviewList={false}>
-          <ReviewEmptySection />
+          <ReviewEmptySection content={REVIEW_EMPTY.noReviewInTotal} />
         </ReviewDisplayLayout>
       </ErrorSuspenseContainer>
     );

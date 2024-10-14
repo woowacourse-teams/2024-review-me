@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router';
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 import ReviewCard from '@/components/ReviewCard';
+import { REVIEW_EMPTY } from '@/constants';
 import { ROUTE } from '@/constants/route';
 import { useGetReviewList, useSearchParamAndQuery } from '@/hooks';
 
+import ReviewEmptySection from '../../../../components/common/ReviewEmptySection';
 import { useInfiniteScroll } from '../../hooks';
-import ReviewEmptySection from '../ReviewEmptySection';
 
 import * as S from './styles';
 
@@ -37,7 +38,7 @@ const PageContents = () => {
     isSuccess && (
       <ReviewDisplayLayout isReviewList={true}>
         {reviews.length === 0 ? (
-          <ReviewEmptySection />
+          <ReviewEmptySection content={REVIEW_EMPTY.noReviewInTotal} />
         ) : (
           <S.ReviewSection>
             {reviews.map((review, index) => {
