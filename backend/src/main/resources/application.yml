@@ -29,6 +29,9 @@ server:
         same-site: strict
         http-only: true
         secure: true
+    encoding:
+      charset: UTF-8
+      force: true
 
 cors:
   allowed-origins:
