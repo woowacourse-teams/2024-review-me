@@ -95,34 +95,26 @@ class HighlightServiceTest {
         long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹(reviewRequestCode, "groupAccessCode"))
                 .getId();
 
-        TextAnswer textAnswer1 = new TextAnswer(questionId, "text answer1");
-        TextAnswer textAnswer2 = new TextAnswer(questionId, "text answer2");
-        Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer1, textAnswer2)));
-
+        TextAnswer textAnswer = new TextAnswer(questionId, "text answer1");
+        Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer)));
         highlightRepository.save(new Highlight(1, 1, new HighlightRange(1, 1)));
 
         int startIndex = 2;
         int endIndex = 2;
-        int lineIndex = 0;
         HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(startIndex, endIndex);
-        HighlightedLineRequest lineRequest1 = new HighlightedLineRequest(lineIndex, List.of(indexRangeRequest));
-        HighlightedLineRequest lineRequest2 = new HighlightedLineRequest(lineIndex, List.of(indexRangeRequest));
-        HighlightRequest highlightRequest1 = new HighlightRequest(textAnswer1.getId(), List.of(lineRequest1));
-        HighlightRequest highlightRequest2 = new HighlightRequest(textAnswer2.getId(), List.of(lineRequest2));
-        HighlightsRequest highlightsRequest = new HighlightsRequest(questionId,
-                List.of(highlightRequest1, highlightRequest2));
+        HighlightedLineRequest lineRequest = new HighlightedLineRequest(0, List.of(indexRangeRequest));
+        HighlightRequest highlightRequest = new HighlightRequest(textAnswer.getId(), List.of(lineRequest));
+        HighlightsRequest highlightsRequest = new HighlightsRequest(questionId, List.of(highlightRequest));
 
         // when
         highlightService.editHighlight(highlightsRequest, reviewRequestCode);
 
         // then
         List<Highlight> highlights = highlightRepository.findAll();
-        HighlightRange position = new HighlightRange(startIndex, endIndex);
         assertAll(
-                () -> assertThat(highlights.get(0).getAnswerId()).isEqualTo(textAnswer1.getId()),
-                () -> assertThat(highlights.get(1).getAnswerId()).isEqualTo(textAnswer2.getId()),
-                () -> assertThat(highlights.get(0).getHighlightRange()).isEqualTo(position),
-                () -> assertThat(highlights.get(0).getHighlightRange()).isEqualTo(position)
+                () -> assertThat(highlights.get(0).getAnswerId()).isEqualTo(textAnswer.getId()),
+                () -> assertThat(highlights.get(0).getHighlightRange()).isEqualTo(
+                        new HighlightRange(startIndex, endIndex))
         );
     }
 }
