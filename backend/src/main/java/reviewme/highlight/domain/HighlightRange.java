@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import reviewme.highlight.domain.exception.HighlightStartIndexExceedEndIndexException;
-import reviewme.highlight.domain.exception.NegativeHighlightIndexException;
+import reviewme.highlight.domain.exception.NegativeHighlightIndexRangeException;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,13 +28,13 @@ public class HighlightRange {
         this.endIndex = endIndex;
     }
 
-    private void validateNonNegativeIndexNumber(long startIndex, long endIndex) {
+    private void validateNonNegativeIndexNumber(int startIndex, int endIndex) {
         if (startIndex < 0 || endIndex < 0) {
-            throw new NegativeHighlightIndexException(startIndex, endIndex);
+            throw new NegativeHighlightIndexRangeException(startIndex, endIndex);
         }
     }
 
-    private void validateEndIndexOverStartIndex(long startIndex, long endIndex) {
+    private void validateEndIndexOverStartIndex(int startIndex, int endIndex) {
         if (startIndex > endIndex) {
             throw new HighlightStartIndexExceedEndIndexException(startIndex, endIndex);
         }

@@ -20,12 +20,12 @@ public class HighlightLine {
         this.ranges = new HashSet<>();
     }
 
-    public void addRange(int startIndex, int endIndex) {
+    public void setRange(int startIndex, int endIndex) {
         validateRangeByContentLength(startIndex, endIndex);
         ranges.add(new HighlightRange(startIndex, endIndex));
     }
 
-    private void validateRangeByContentLength(long startIndex, long endIndex) {
+    private void validateRangeByContentLength(int startIndex, int endIndex) {
         int providedEndIndex = lineContent.length() - 1;
         if (startIndex > providedEndIndex || endIndex > providedEndIndex) {
             throw new HighlightIndexExceedLineLengthException(lineContent.length(), startIndex, endIndex);

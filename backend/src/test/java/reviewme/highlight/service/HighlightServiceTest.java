@@ -63,26 +63,18 @@ class HighlightServiceTest {
         TextAnswer textAnswer1 = new TextAnswer(questionId, "text answer1");
         TextAnswer textAnswer2 = new TextAnswer(questionId, "text answer2");
         Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer1, textAnswer2)));
-
-        Highlight highlight1 = highlightRepository.save(new Highlight(1, 1, new HighlightRange(1, 1)));
-        Highlight highlight2 = highlightRepository.save(new Highlight(2, 1, new HighlightRange(1, 1)));
+        Highlight highlight1 = highlightRepository.save(new Highlight(textAnswer1.getId(), 1, new HighlightRange(1, 1)));
 
         HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(1, 1);
         HighlightedLineRequest lineRequest = new HighlightedLineRequest(0, List.of(indexRangeRequest));
-        HighlightRequest highlightRequest1 = new HighlightRequest(textAnswer1.getId(), List.of(lineRequest));
-        HighlightRequest highlightRequest2 = new HighlightRequest(textAnswer2.getId(), List.of(lineRequest));
-        HighlightsRequest highlightsRequest = new HighlightsRequest(
-                questionId, List.of(highlightRequest1, highlightRequest2)
-        );
+        HighlightRequest highlightRequest1 = new HighlightRequest(textAnswer2.getId(), List.of(lineRequest));
+        HighlightsRequest highlightsRequest = new HighlightsRequest(questionId, List.of(highlightRequest1));
 
         // when
         highlightService.editHighlight(highlightsRequest, reviewRequestCode);
 
         // then
-        assertAll(
-                () -> assertThat(highlightRepository.existsById(highlight1.getId())).isFalse(),
-                () -> assertThat(highlightRepository.existsById(highlight2.getId())).isFalse()
-        );
+        assertAll(() -> assertThat(highlightRepository.existsById(highlight1.getId())).isFalse());
     }
 
     @Test

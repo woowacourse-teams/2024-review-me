@@ -12,10 +12,11 @@ class HighlightLineTest {
     @Test
     void 하이라이트_대상_라인의_글자수보다_큰_시작_종료_인덱스_범위를_추가하려고_하면_예외를_발생한다() {
         // given
-        HighlightLine highlightLine = new HighlightLine(1, "12345");
+        String content = "12345";
+        HighlightLine highlightLine = new HighlightLine(1, content);
 
         // when && then
-        assertThatCode(() -> highlightLine.addRange(4, 5))
+        assertThatCode(() -> highlightLine.setRange(content.length() - 1, content.length()))
                 .isInstanceOf(HighlightIndexExceedLineLengthException.class);
     }
 
@@ -25,8 +26,8 @@ class HighlightLineTest {
         HighlightLine highlightLine = new HighlightLine(1, "12345");
 
         // when
-        highlightLine.addRange(2, 4);
-        highlightLine.addRange(0, 1);
+        highlightLine.setRange(2, 4);
+        highlightLine.setRange(0, 1);
 
         // then
         Set<HighlightRange> ranges = highlightLine.getRanges();

@@ -3,6 +3,7 @@ package reviewme.highlight.domain;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import reviewme.highlight.domain.exception.NegativeHighlightLineIndexException;
 import reviewme.highlight.service.exception.InvalidHighlightLineIndexException;
 
 @Getter
@@ -16,10 +17,17 @@ public class HighlightLines {
         this.lines = mapLines(content);
     }
 
-    public void addRange(int lineIndex, int startIndex, int endIndex) {
+    public void setRange(int lineIndex, int startIndex, int endIndex) {
+        validateNonNegativeLineIndexNumber(lineIndex);
         validateLineIndexRange(lineIndex);
         HighlightLine line = lines.get(lineIndex);
-        line.addRange(startIndex, endIndex);
+        line.setRange(startIndex, endIndex);
+    }
+
+    private void validateNonNegativeLineIndexNumber(int lineIndex) {
+        if (lineIndex < 0) {
+            throw new NegativeHighlightLineIndexException(lineIndex);
+        }
     }
 
     private void validateLineIndexRange(int lineIndex) {

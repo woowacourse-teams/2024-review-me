@@ -16,41 +16,50 @@ import reviewme.highlight.service.dto.HighlightRequest;
 import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
 import reviewme.review.domain.Answer;
-import reviewme.review.domain.TextAnswer;
+import reviewme.review.repository.TextAnswerRepository;
 
 @Component
 @RequiredArgsConstructor
 public class HighlightMapper {
 
-    public List<Highlight> mapToHighlights(HighlightsRequest highlightsRequest, List<TextAnswer> textAnswers) {
-        Map<Long, HighlightLines> answerHighlightLines = textAnswers.stream()
+    private final TextAnswerRepository textAnswerRepository;
+
+    public List<Highlight> mapToHighlights(HighlightsRequest highlightsRequest) {
+        Map<Long, HighlightLines> answerHighlightLines = textAnswerRepository
+                .findAllById(highlightsRequest.getUniqueAnswerIds())
+                .stream()
                 .collect(Collectors.toMap(Answer::getId, answer -> new HighlightLines(answer.getContent())));
-
-        for (HighlightRequest highlightRequest : highlightsRequest.highlights()) {
-            HighlightLines highlightLines = answerHighlightLines.get(highlightRequest.answerId());
-            addLine(highlightRequest, highlightLines);
-        }
-
-        List<Highlight> highlights = new ArrayList<>();
-        for (Entry<Long, HighlightLines> answerHighlightLine : answerHighlightLines.entrySet()) {
-            addHighlight(answerHighlightLine, highlights);
-        }
-        return highlights;
+        setIndexRanges(highlightsRequest, answerHighlightLines);
+        return  mapLinesToHighlights(answerHighlightLines);
     }
 
-    private void addLine(HighlightRequest highlightRequest, HighlightLines highlightLines) {
+    private void setIndexRanges(HighlightsRequest highlightsRequest, Map<Long, HighlightLines> answerHighlightLines) {
+        for (HighlightRequest highlightRequest : highlightsRequest.highlights()) {
+            HighlightLines highlightLines = answerHighlightLines.get(highlightRequest.answerId());
+            setIndexRangesForAnswer(highlightRequest, highlightLines);
+        }
+    }
+
+    private void setIndexRangesForAnswer(HighlightRequest highlightRequest, HighlightLines highlightLines) {
         for (HighlightedLineRequest lineRequest : highlightRequest.lines()) {
             int lineIndex = lineRequest.index();
             for (HighlightIndexRangeRequest rangeRequest : lineRequest.ranges()) {
-                highlightLines.addRange(lineIndex, rangeRequest.startIndex(), rangeRequest.endIndex());
+                highlightLines.setRange(lineIndex, rangeRequest.startIndex(), rangeRequest.endIndex());
             }
         }
     }
 
-    private void addHighlight(Entry<Long, HighlightLines> answerHighlightLine, List<Highlight> highlights) {
+    private List<Highlight> mapLinesToHighlights(Map<Long, HighlightLines> answerHighlightLines) {
+        List<Highlight> highlights = new ArrayList<>();
+        for (Entry<Long, HighlightLines> answerHighlightLine : answerHighlightLines.entrySet()) {
+            createHighlightsForAnswer(answerHighlightLine, highlights);
+        }
+        return highlights;
+    }
+
+    private void createHighlightsForAnswer(Entry<Long, HighlightLines> answerHighlightLine, List<Highlight> highlights) {
         long answerId = answerHighlightLine.getKey();
         HighlightLines highlightLines = answerHighlightLine.getValue();
-
         for (HighlightLine line : highlightLines.getLines()) {
             for (HighlightRange range : line.getRanges()) {
                 Highlight highlight = new Highlight(answerId, line.getLineIndex(), range);

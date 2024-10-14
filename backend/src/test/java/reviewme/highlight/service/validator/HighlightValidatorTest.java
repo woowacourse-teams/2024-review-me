@@ -12,12 +12,10 @@ import reviewme.fixture.ReviewGroupFixture;
 import reviewme.highlight.service.dto.HighlightRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
 import reviewme.highlight.service.exception.SubmittedAnswerAndProvidedAnswerMismatchException;
-import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
-import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -48,15 +46,22 @@ class HighlightValidatorTest {
     private TemplateRepository templateRepository;
 
     @Test
-    void 하이라이트의_질문_id가_리뷰_그룹의_템플릿에_속한_질문이_아니면_예외를_발생한다() {
+    void 하이라이트의_답변_id가_하이라이트의_질문_id에_해당하는_답변이_아니면_예외를_발생한다() {
         // given
+        long questionId1 = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
+        long questionId2 = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
+        Section section = sectionRepository.save(항상_보이는_섹션(List.of(questionId1, questionId2)));
+        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+
         ReviewGroup reviewGroup = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹());
-        Question question = questionRepository.save(QuestionFixture.서술형_필수_질문());
-        HighlightsRequest highlightsRequest = new HighlightsRequest(question.getId(), List.of());
+        TextAnswer textAnswer_Q1 = new TextAnswer(questionId1, "text answer 1");
+
+        HighlightRequest highlightRequest = new HighlightRequest(textAnswer_Q1.getId(), List.of());
+        HighlightsRequest highlightsRequest = new HighlightsRequest(questionId2, List.of(highlightRequest));
 
         // when && then
-        assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroup.getId()))
-                .isInstanceOf(SubmittedQuestionAndProvidedQuestionMismatchException.class);
+        assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroup))
+                .isInstanceOf(SubmittedAnswerAndProvidedAnswerMismatchException.class);
     }
 
     @Test
@@ -79,26 +84,26 @@ class HighlightValidatorTest {
         HighlightsRequest highlightsRequest = new HighlightsRequest(1L, List.of(highlightRequest));
 
         // when &&  then
-        assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroup1.getId()))
+        assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroup1))
                 .isInstanceOf(SubmittedAnswerAndProvidedAnswerMismatchException.class);
     }
 
     @Test
-    void 하이라이트의_답변_id가_하이라이트의_질문_id에_해당하는_답변이_아니면_예외를_발생한다() {
+    void 하이라이트의_질문_id가_리뷰_그룹의_템플릿에_속한_질문이_아니면_예외를_발생한다() {
         // given
         long questionId1 = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
         long questionId2 = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
-        Section section = sectionRepository.save(항상_보이는_섹션(List.of(questionId1, questionId2)));
+        Section section = sectionRepository.save(항상_보이는_섹션(List.of(questionId1)));
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
-        long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹()).getId();
+        ReviewGroup reviewGroup = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹());
         TextAnswer textAnswer_Q1 = new TextAnswer(questionId1, "text answer 1");
 
         HighlightRequest highlightRequest = new HighlightRequest(textAnswer_Q1.getId(), List.of());
         HighlightsRequest highlightsRequest = new HighlightsRequest(questionId2, List.of(highlightRequest));
 
         // when && then
-        assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroupId))
+        assertThatCode(() -> highlightValidator.validate(highlightsRequest, reviewGroup))
                 .isInstanceOf(SubmittedAnswerAndProvidedAnswerMismatchException.class);
     }
 }

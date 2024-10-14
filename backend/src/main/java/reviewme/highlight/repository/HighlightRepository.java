@@ -1,6 +1,6 @@
 package reviewme.highlight.repository;
 
-import java.util.List;
+import java.util.Collection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,5 +13,5 @@ public interface HighlightRepository extends JpaRepository<Highlight, Long> {
             DELETE FROM Highlight h
             WHERE h.answerId IN :answerIds
             """)
-    void deleteAllByIds(List<Long> answerIds);
+    void deleteAllByAnswerIds(Collection<Long> answerIds);
 }

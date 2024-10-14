@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 import org.junit.jupiter.api.Test;
 import reviewme.highlight.domain.exception.HighlightStartIndexExceedEndIndexException;
-import reviewme.highlight.domain.exception.NegativeHighlightIndexException;
+import reviewme.highlight.domain.exception.NegativeHighlightIndexRangeException;
 
 class HighlightRangeTest {
 
@@ -17,6 +17,6 @@ class HighlightRangeTest {
     @Test
     void 하이라이트의_인덱스들이_0보다_작은_경우_예외를_발생한다() {
         assertThatCode(() -> new HighlightRange(-2, -1))
-                .isInstanceOf(NegativeHighlightIndexException.class);
+                .isInstanceOf(NegativeHighlightIndexRangeException.class);
     }
 }

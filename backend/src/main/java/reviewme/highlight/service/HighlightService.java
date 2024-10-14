@@ -1,6 +1,7 @@
 package reviewme.highlight.service;
 
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,10 +10,9 @@ import reviewme.highlight.repository.HighlightRepository;
 import reviewme.highlight.service.dto.HighlightsRequest;
 import reviewme.highlight.service.mapper.HighlightMapper;
 import reviewme.highlight.service.validator.HighlightValidator;
-import reviewme.review.domain.TextAnswer;
-import reviewme.review.domain.TextAnswers;
-import reviewme.review.repository.TextAnswerRepository;
+import reviewme.review.repository.AnswerRepository;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
 @Service
@@ -21,24 +21,21 @@ public class HighlightService {
 
     private final HighlightRepository highlightRepository;
     private final ReviewGroupRepository reviewGroupRepository;
-    private final TextAnswerRepository textAnswerRepository;
+    private final AnswerRepository answerRepository;
 
     private final HighlightValidator highlightValidator;
     private final HighlightMapper highlightMapper;
 
     @Transactional
     public void editHighlight(HighlightsRequest highlightsRequest, String reviewRequestCode) {
-        long reviewGroupId = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode))
-                .getId();
-        List<TextAnswer> textAnswersByIds = textAnswerRepository.findAllById(highlightsRequest.getUniqueAnswerIds());
+        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
-        highlightValidator.validate(highlightsRequest, reviewGroupId);
-        List<Highlight> highlights = highlightMapper.mapToHighlights(highlightsRequest, textAnswersByIds);
+        highlightValidator.validate(highlightsRequest, reviewGroup);
+        List<Highlight> highlights = highlightMapper.mapToHighlights(highlightsRequest);
 
-        TextAnswers textAnswers = new TextAnswers(textAnswersByIds);
-        List<Long> answerIds = textAnswers.getIdsByQuestionId(highlightsRequest.questionId());
-        highlightRepository.deleteAllByIds(answerIds);
+        Set<Long> allAnswerIds = answerRepository.findIdsByQuestionId(highlightsRequest.questionId());
+        highlightRepository.deleteAllByAnswerIds(allAnswerIds);
 
         highlightRepository.saveAll(highlights);
     }

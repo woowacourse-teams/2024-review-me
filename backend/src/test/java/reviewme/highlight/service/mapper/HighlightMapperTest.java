@@ -78,8 +78,7 @@ class HighlightMapperTest {
                 List.of(highlightRequest1, highlightRequest2));
 
         // when
-        List<Highlight> highlights = highlightMapper.mapToHighlights(highlightsRequest,
-                List.of(textAnswer1, textAnswer2));
+        List<Highlight> highlights = highlightMapper.mapToHighlights(highlightsRequest);
 
         // then
         HighlightRange range = new HighlightRange(startIndex, endIndex);
