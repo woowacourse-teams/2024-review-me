@@ -1,6 +1,6 @@
 package reviewme.highlight.domain;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import reviewme.highlight.service.exception.InvalidHighlightLineIndexException;
@@ -9,33 +9,31 @@ import reviewme.highlight.service.exception.InvalidHighlightLineIndexException;
 public class HighlightLines {
 
     public static final String LINE_SEPARATOR = "\n";
+
     private final List<HighlightLine> lines;
 
-    public HighlightLines(String content, List<Integer> lineIndexes) {
-        validateLineIndexRange(lineIndexes, content.lines().count());
-        this.lines = mapLines(content, lineIndexes);
+    public HighlightLines(String content) {
+        this.lines = mapLines(content);
     }
 
     public void addRange(int lineIndex, int startIndex, int endIndex) {
-        HighlightLine highlightLine = lines.stream()
-                .filter(line -> line.getLineIndex() == lineIndex)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException()); // TODO: 예외 구체화
-        highlightLine.addRange(startIndex, endIndex);
+        validateLineIndexRange(lineIndex);
+        HighlightLine line = lines.get(lineIndex);
+        line.addRange(startIndex, endIndex);
     }
 
-    private void validateLineIndexRange(List<Integer> lineIndexes, long lineCount) {
-        for (long submittedLineIndex : lineIndexes) {
-            if (submittedLineIndex > lineCount - 1) {
-                throw new InvalidHighlightLineIndexException(submittedLineIndex, lineCount);
-            }
+    private void validateLineIndexRange(int lineIndex) {
+        if (lineIndex >= lines.size()) {
+            throw new InvalidHighlightLineIndexException(lineIndex, lines.size());
         }
     }
 
-    private List<HighlightLine> mapLines(String content, List<Integer> lineIndexes) {
-        List<String> lineGroup = Arrays.asList(content.split(LINE_SEPARATOR));
-        return lineIndexes.stream()
-                .map(lineIndex -> new HighlightLine(lineIndex, lineGroup.get(lineIndex)))
-                .toList();
+    private List<HighlightLine> mapLines(String content) {
+        List<HighlightLine> mappedLines = new ArrayList<>();
+        String[] lineContents = content.split(LINE_SEPARATOR);
+        for (int i = 0; i < lineContents.length; i++) {
+            mappedLines.add(new HighlightLine(i , lineContents[i]));
+        }
+        return mappedLines;
     }
 }
