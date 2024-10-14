@@ -8,7 +8,7 @@ public record QuestionAnswerResponse(
         long questionId,
         boolean required,
         QuestionType questionType,
-        String content,
+        String questionContents,
         @Nullable List<OptionItemAnswerResponse> options,
         @Nullable String answer
 ) {
