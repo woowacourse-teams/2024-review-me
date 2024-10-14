@@ -6,10 +6,11 @@ export const Contents = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: max-content;
+  align-items: center;
 
+  width: max-content;
   p {
-    width: 100%;
+    width: fit-content;
     text-align: center;
   }
 

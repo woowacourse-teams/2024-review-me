@@ -9,5 +9,6 @@ export const Message = styled.div`
   width: fit-content;
   p {
     margin: 0;
+    text-align: center;
   }
 `;

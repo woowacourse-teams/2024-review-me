@@ -12,9 +12,14 @@ export const Message = styled.div`
 
   p {
     margin: 0;
+    text-align: center;
   }
 
   ${media.xSmall} {
     min-width: 27rem;
+  }
+
+  ${media.xxSmall} {
+    min-width: 60vw;
   }
 `;
