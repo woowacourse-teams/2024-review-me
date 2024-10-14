@@ -15,7 +15,7 @@ const ReviewCard = ({ createdAt, contentPreview, categories, handleClick }: Revi
       <S.LeftLineBorder />
 
       <S.Main>
-        <span>{contentPreview}</span>
+        <S.ContentPreview>{contentPreview}</S.ContentPreview>
         <S.Footer>
           <S.Keyword>
             {categories.map((category) => (
