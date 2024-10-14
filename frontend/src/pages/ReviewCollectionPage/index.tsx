@@ -6,6 +6,7 @@ import HighlightEditor from '@/components/highlight/HighlightEditor';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 import { useReviewInfoData } from '@/components/layouts/ReviewDisplayLayout/hooks';
 import { REVIEW_EMPTY } from '@/constants';
+import { GroupedReview } from '@/types';
 
 import ReviewEmptySection from '../../components/common/ReviewEmptySection';
 
@@ -24,6 +25,24 @@ const ReviewCollectionPage = () => {
   const { data: groupedReviews } = useGetGroupedReviews({ sectionId: selectedSection.value as number });
 
   const { revieweeName, projectName, totalReviewCount } = useReviewInfoData();
+
+  const renderContent = (review: GroupedReview) => {
+    if (review.question.type === 'CHECKBOX') {
+      const hasNoAnswer = review.votes?.every((vote) => vote.count === 0);
+
+      return hasNoAnswer ? (
+        <ReviewEmptySection content={REVIEW_EMPTY.noReviewInQuestion} />
+      ) : (
+        <DoughnutChart reviewVotes={review.votes!} />
+      );
+    }
+
+    if (review.answers?.length === 0) {
+      return <ReviewEmptySection content={REVIEW_EMPTY.noReviewInQuestion} />;
+    }
+
+    return <HighlightEditor questionId={review.question.id} answerList={review.answers!} />;
+  };
 
   if (totalReviewCount === 0) {
     return (
@@ -50,15 +69,7 @@ const ReviewCollectionPage = () => {
             {groupedReviews.reviews.map((review, index) => {
               return (
                 <Accordion title={review.question.name} key={index} isInitiallyOpened={index === 0 ? true : false}>
-                  {review.question.type === 'CHECKBOX' ? (
-                    <DoughnutChart reviewVotes={review.votes!} />
-                  ) : (
-                    <S.ReviewAnswerContainer>
-                      {review.answers && (
-                        <HighlightEditor questionId={review.question.id} answerList={review.answers} />
-                      )}
-                    </S.ReviewAnswerContainer>
-                  )}
+                  {renderContent(review)}
                 </Accordion>
               );
             })}
