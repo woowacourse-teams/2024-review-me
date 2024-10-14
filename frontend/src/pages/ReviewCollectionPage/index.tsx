@@ -28,9 +28,9 @@ const ReviewCollectionPage = () => {
 
   const renderContent = (review: GroupedReview) => {
     if (review.question.type === 'CHECKBOX') {
-      const hasNoAnswer = review.votes?.every((vote) => vote.count === 0);
+      const hasNoCheckboxAnswer = review.votes?.every((vote) => vote.count === 0);
 
-      return hasNoAnswer ? (
+      return hasNoCheckboxAnswer ? (
         <ReviewEmptySection content={REVIEW_EMPTY.noReviewInQuestion} />
       ) : (
         <DoughnutChart reviewVotes={review.votes!} />
@@ -44,6 +44,7 @@ const ReviewCollectionPage = () => {
     return <HighlightEditor questionId={review.question.id} answerList={review.answers!} />;
   };
 
+  // 전체 받은 리뷰가 없는 경우
   if (totalReviewCount === 0) {
     return (
       <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
