@@ -41,13 +41,10 @@ public class ReviewGroup {
     private GroupAccessCode groupAccessCode;
 
     @Column(name = "template_id", nullable = false)
-    private long templateId = 1L;
+    private long templateId;
 
-    public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode) {
-        this(reviewee, projectName, reviewRequestCode, groupAccessCode, 1L);
-    }
-
-    public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode, long templateId) {
+    public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode,
+                       long templateId) {
         validateRevieweeLength(reviewee);
         validateProjectNameLength(projectName);
         this.reviewee = reviewee;
