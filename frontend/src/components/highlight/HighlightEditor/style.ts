@@ -29,3 +29,9 @@ export const HighlightText = styled.span<{ $isEditable: boolean }>`
   display: inline-block;
   color: ${({ $isEditable, theme }) => ($isEditable ? theme.colors.primary : theme.colors.gray)};
 `;
+
+export const LineListWrapper = styled.div`
+  display: list-item;
+  margin-left: 3rem;
+  list-style-type: disc;
+`;
