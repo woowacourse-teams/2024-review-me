@@ -52,7 +52,7 @@ public class ReviewDetailMapper {
         List<SectionAnswerResponse> sectionResponses = sections.stream()
                 .map(section -> mapToSectionResponse(review, section, questions,
                         optionGroupsByQuestion, optionItemsByOptionGroup))
-                .filter(sectionResponse -> !sectionResponse.questions().isEmpty())
+                .filter(sectionResponse -> !sectionResponse.reviews().isEmpty())
                 .toList();
 
         return new ReviewDetailResponse(
