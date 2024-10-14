@@ -24,11 +24,6 @@ public class HighlightLines {
         highlightLine.addRange(startIndex, endIndex);
     }
 
-    public boolean hasDuplicatedRange(int lineIndex, int startIndex, int endIndex) {
-        HighlightLine line = lines.get(lineIndex);
-        return line.hasDuplicatedRange(startIndex, endIndex);
-    }
-
     private void validateLineIndexRange(List<Integer> lineIndexes, long lineCount) {
         for (long submittedLineIndex : lineIndexes) {
             if (submittedLineIndex > lineCount - 1) {

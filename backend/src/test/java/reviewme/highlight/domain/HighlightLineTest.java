@@ -3,7 +3,7 @@ package reviewme.highlight.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
-import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import reviewme.highlight.domain.exception.HighlightIndexExceedLineLengthException;
 
@@ -29,7 +29,7 @@ class HighlightLineTest {
         highlightLine.addRange(0, 1);
 
         // then
-        List<HighlightRange> ranges = highlightLine.getRanges();
+        Set<HighlightRange> ranges = highlightLine.getRanges();
         assertThat(ranges).containsExactly(new HighlightRange(2, 4), new HighlightRange(0, 1));
     }
 }

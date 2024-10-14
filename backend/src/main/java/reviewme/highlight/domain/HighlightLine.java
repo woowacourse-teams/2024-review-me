@@ -1,7 +1,7 @@
 package reviewme.highlight.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import reviewme.highlight.domain.exception.HighlightIndexExceedLineLengthException;
@@ -12,12 +12,12 @@ public class HighlightLine {
 
     private final int lineIndex;
     private final String lineContent;
-    private final List<HighlightRange> ranges;
+    private final Set<HighlightRange> ranges;
 
     public HighlightLine(int lineIndex, String lineContent) {
         this.lineIndex = lineIndex;
         this.lineContent = lineContent;
-        this.ranges = new ArrayList<>();
+        this.ranges = new HashSet<>();
     }
 
     public void addRange(int startIndex, int endIndex) {
@@ -30,10 +30,5 @@ public class HighlightLine {
         if (startIndex > providedEndIndex || endIndex > providedEndIndex) {
             throw new HighlightIndexExceedLineLengthException(lineContent.length(), startIndex, endIndex);
         }
-    }
-
-    public boolean hasDuplicatedRange(int startIndex, int endIndex) {
-        return ranges.stream()
-                .anyMatch(range -> range.equals(new HighlightRange(startIndex, endIndex)));
     }
 }
