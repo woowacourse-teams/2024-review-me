@@ -1,5 +1,6 @@
 package reviewme.review.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -44,10 +45,11 @@ public class ReviewGatheredLookupService {
     }
 
     private Map<Question, List<Answer>> getQuestionAnswers(Section section, ReviewGroup reviewGroup) {
-        Map<Long, Question> questionIdQuestion = questionRepository
-                .findAllBySectionIdOrderByPosition(section.getId())
-                .stream()
-                .collect(Collectors.toMap(Question::getId, Function.identity()));
+        List<Question> questions = questionRepository.findAllBySectionIdOrderByPosition(section.getId());
+        LinkedHashMap<Long, Question> questionIdQuestion = new LinkedHashMap<>();
+        for (Question question : questions) {
+            questionIdQuestion.put(question.getId(), question);
+        }
 
         Map<Long, List<Answer>> questionIdAnswers = answerRepository
                 .findReceivedAnswersByQuestionIds(reviewGroup.getId(), questionIdQuestion.keySet(),

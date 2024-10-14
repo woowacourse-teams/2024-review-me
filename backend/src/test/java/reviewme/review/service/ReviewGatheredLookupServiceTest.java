@@ -401,4 +401,26 @@ class ReviewGatheredLookupServiceTest {
         // then
         assertThat(actual.reviews()).hasSize(1);
     }
+
+    @Test
+    void 질문을_position순서대로_반환한다() {
+        // given
+        Question question1 = questionRepository.save(선택형_옵션_질문(3));
+        Question question2 = questionRepository.save(서술형_필수_질문(2));
+        Question question3 = questionRepository.save(서술형_옵션_질문(1));
+
+        Section section1 = sectionRepository.save(항상_보이는_섹션(
+                List.of(question1.getId(), question2.getId(), question3.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section1.getId())));
+
+        // when
+        ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+                reviewRequestCode, section1.getId());
+
+        // then
+        assertThat(actual.reviews())
+                .extracting(ReviewsGatheredByQuestionResponse::question)
+                .extracting(SimpleQuestionResponse::name)
+                .containsExactly(question3.getContent(), question2.getContent(), question1.getContent());
+    }
 }
