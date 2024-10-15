@@ -29,9 +29,8 @@ public class DuplicateRequestInterceptor implements HandlerInterceptor {
 
         String key = generateRequestKey(request);
         redisTemplate.opsForValue().setIfAbsent(key, 0L, DURATION_SECOND);
-        redisTemplate.opsForValue().increment(key);
+        long frequency = redisTemplate.opsForValue().increment(key);
 
-        long frequency = redisTemplate.opsForValue().get(key);
         if (frequency >= MAX_FREQUENCY) {
             throw new TooManyDuplicateRequestException(key);
         }

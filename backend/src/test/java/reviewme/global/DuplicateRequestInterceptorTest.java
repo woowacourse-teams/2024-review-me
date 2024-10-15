@@ -65,7 +65,7 @@ class DuplicateRequestInterceptorTest {
     void 특정_POST_요청이_처음이_아니며_최대_빈도보다_클_경우_예외를_발생시킨다() {
         // given
         long maxFrequency = 3;
-        given(valueOperations.get(anyString())).willReturn(maxFrequency + 1);
+        given(valueOperations.increment(anyString())).willReturn(maxFrequency + 1);
 
         // when & then
         assertThatThrownBy(() -> interceptor.preHandle(request, null, null))
