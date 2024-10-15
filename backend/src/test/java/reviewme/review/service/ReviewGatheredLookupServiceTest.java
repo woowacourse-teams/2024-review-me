@@ -22,6 +22,7 @@ import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question;
+import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
@@ -405,12 +406,13 @@ class ReviewGatheredLookupServiceTest {
     @Test
     void 질문을_position순서대로_반환한다() {
         // given
-        Question question1 = questionRepository.save(선택형_옵션_질문(3));
-        Question question2 = questionRepository.save(서술형_필수_질문(2));
-        Question question3 = questionRepository.save(서술형_옵션_질문(1));
+        Question question1 = questionRepository.save(new Question(false, QuestionType.TEXT, "질문1", null, 3));
+        Question question2 = questionRepository.save(new Question(false, QuestionType.TEXT, "질문2", null, 4));
+        Question question3 = questionRepository.save(new Question(false, QuestionType.TEXT, "질문3", null, 1));
+        Question question4 = questionRepository.save(new Question(false, QuestionType.TEXT, "질문4", null, 2));
 
         Section section1 = sectionRepository.save(항상_보이는_섹션(
-                List.of(question1.getId(), question2.getId(), question3.getId())));
+                List.of(question1.getId(), question2.getId(), question3.getId(), question4.getId())));
         Template template = templateRepository.save(템플릿(List.of(section1.getId())));
 
         // when
@@ -421,6 +423,7 @@ class ReviewGatheredLookupServiceTest {
         assertThat(actual.reviews())
                 .extracting(ReviewsGatheredByQuestionResponse::question)
                 .extracting(SimpleQuestionResponse::name)
-                .containsExactly(question3.getContent(), question2.getContent(), question1.getContent());
+                .containsExactly(question3.getContent(), question4.getContent(),
+                        question1.getContent(), question2.getContent());
     }
 }

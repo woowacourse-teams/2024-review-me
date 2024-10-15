@@ -3,7 +3,6 @@ package reviewme.review.service;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,16 +48,14 @@ public class ReviewGatheredLookupService {
         Map<Long, Question> questionIdQuestion = new LinkedHashMap<>();
         questions.forEach(question -> questionIdQuestion.put(question.getId(), question));
 
-        Map<Long, List<Answer>> questionIdAnswers = answerRepository
-                .findReceivedAnswersByQuestionIds(reviewGroup.getId(), questionIdQuestion.keySet(),
-                        ANSWER_RESPONSE_LIMIT)
+        Map<Long, List<Answer>> questionIdAnswers = answerRepository.findReceivedAnswersByQuestionIds(
+                        reviewGroup.getId(), questionIdQuestion.keySet(), ANSWER_RESPONSE_LIMIT)
                 .stream()
                 .collect(Collectors.groupingBy(Answer::getQuestionId));
 
-        return questionIdQuestion.values().stream()
-                .collect(Collectors.toMap(
-                        Function.identity(),
-                        question -> questionIdAnswers.getOrDefault(question.getId(), List.of())
-                ));
+        Map<Question, List<Answer>> questionAnswers = new LinkedHashMap<>();
+        questionIdQuestion.values().forEach(
+                question -> questionAnswers.put(question, questionIdAnswers.getOrDefault(question.getId(), List.of())));
+        return questionAnswers;
     }
 }
