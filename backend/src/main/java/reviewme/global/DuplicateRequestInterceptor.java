@@ -28,17 +28,13 @@ public class DuplicateRequestInterceptor implements HandlerInterceptor {
         }
 
         String key = generateRequestKey(request);
-        Long frequency = redisTemplate.opsForValue().get(key);
-        if (frequency == null) {
-            redisTemplate.opsForValue().set(key, 1L, DURATION_SECOND);
-            return true;
-        }
+        redisTemplate.opsForValue().setIfAbsent(key, 0L, DURATION_SECOND);
+        redisTemplate.opsForValue().increment(key);
 
+        long frequency = redisTemplate.opsForValue().get(key);
         if (frequency >= MAX_FREQUENCY) {
             throw new TooManyDuplicateRequestException(key);
         }
-
-        redisTemplate.opsForValue().increment(key);
         return true;
     }
 
