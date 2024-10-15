@@ -13,10 +13,4 @@ public record HighlightRequest(
         @Valid @NotEmpty(message = "하이라이트 된 라인을 입력해주세요.")
         List<HighlightedLineRequest> lines
 ) {
-    public List<Integer> getLineIndexes() {
-        return lines()
-                .stream()
-                .map(HighlightedLineRequest::index)
-                .toList();
-    }
 }
