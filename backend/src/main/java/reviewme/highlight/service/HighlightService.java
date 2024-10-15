@@ -15,25 +15,20 @@ import reviewme.highlight.service.dto.HighlightsRequest;
 import reviewme.highlight.service.validator.HighlightValidator;
 import reviewme.review.domain.Answer;
 import reviewme.review.repository.AnswerRepository;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
-import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.reviewgroup.domain.ReviewGroup;
 
 @Service
 @RequiredArgsConstructor
 public class HighlightService {
 
     private final HighlightRepository highlightRepository;
-    private final ReviewGroupRepository reviewGroupRepository;
     private final AnswerRepository answerRepository;
 
     private final HighlightValidator highlightValidator;
 
     @Transactional
-    public void highlight(HighlightsRequest request, String reviewRequestCode) {
-        long reviewGroupId = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode))
-                .getId();
-
+    public void highlight(HighlightsRequest request, ReviewGroup reviewGroup) {
+        long reviewGroupId = reviewGroup.getId();
         highlightValidator.validate(request, reviewGroupId);
         deleteOldHighlight(request.questionId(), reviewGroupId);
         saveNewHighlight(request);

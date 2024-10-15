@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import reviewme.review.domain.exception.InvalidProjectNameLengthException;
@@ -16,6 +17,7 @@ import reviewme.review.domain.exception.InvalidRevieweeNameLengthException;
 @Entity
 @Table(name = "review_group")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = "id")
 @Getter
 public class ReviewGroup {
 

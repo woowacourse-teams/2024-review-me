@@ -12,11 +12,9 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
 import reviewme.review.repository.AnswerRepository;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.exception.SectionNotFoundInTemplateException;
 import reviewme.review.service.mapper.ReviewGatherMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Section;
 import reviewme.template.repository.SectionRepository;
 
@@ -28,23 +26,16 @@ public class ReviewGatheredLookupService {
 
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
-    private final ReviewGroupRepository reviewGroupRepository;
     private final SectionRepository sectionRepository;
 
     private final ReviewGatherMapper reviewGatherMapper;
 
     @Transactional(readOnly = true)
-    public ReviewsGatheredBySectionResponse getReceivedReviewsBySectionId(String reviewRequestCode, long sectionId) {
-        ReviewGroup reviewGroup = getReviewGroupOrThrow(reviewRequestCode);
+    public ReviewsGatheredBySectionResponse getReceivedReviewsBySectionId(ReviewGroup reviewGroup, long sectionId) {
         Section section = getSectionOrThrow(sectionId, reviewGroup);
         Map<Question, List<Answer>> questionAnswers = getQuestionAnswers(section, reviewGroup);
 
         return reviewGatherMapper.mapToReviewsGatheredBySection(questionAnswers);
-    }
-
-    private ReviewGroup getReviewGroupOrThrow(String reviewRequestCode) {
-        return reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
     }
 
     private Section getSectionOrThrow(long sectionId, ReviewGroup reviewGroup) {
