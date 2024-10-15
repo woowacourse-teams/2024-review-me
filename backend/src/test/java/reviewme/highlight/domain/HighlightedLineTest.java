@@ -17,7 +17,7 @@ class HighlightedLineTest {
         HighlightedLine highlightedLine = new HighlightedLine(1, content);
 
         // when && then
-        assertThatCode(() -> highlightedLine.setRange(content.length() - 1, content.length()))
+        assertThatCode(() -> highlightedLine.addRange(content.length() - 1, content.length()))
                 .isInstanceOf(HighlightIndexExceedLineLengthException.class);
     }
 
@@ -27,8 +27,8 @@ class HighlightedLineTest {
         HighlightedLine highlightedLine = new HighlightedLine(1, "12345");
 
         // when
-        highlightedLine.setRange(2, 4);
-        highlightedLine.setRange(0, 1);
+        highlightedLine.addRange(2, 4);
+        highlightedLine.addRange(0, 1);
 
         // then
         Set<HighlightRange> ranges = highlightedLine.getRanges();

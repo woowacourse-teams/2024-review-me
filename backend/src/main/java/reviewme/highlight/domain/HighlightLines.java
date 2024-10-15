@@ -17,11 +17,20 @@ public class HighlightLines {
         this.lines = mapLines(content);
     }
 
-    public void setRange(int lineIndex, int startIndex, int endIndex) {
+    public void addRange(int lineIndex, int startIndex, int endIndex) {
         validateNonNegativeLineIndexNumber(lineIndex);
         validateLineIndexRange(lineIndex);
         HighlightedLine line = lines.get(lineIndex);
-        line.setRange(startIndex, endIndex);
+        line.addRange(startIndex, endIndex);
+    }
+
+    private List<HighlightedLine> mapLines(String content) {
+        List<HighlightedLine> mappedLines = new ArrayList<>();
+        String[] lineContents = content.split(LINE_SEPARATOR);
+        for (int i = 0; i < lineContents.length; i++) {
+            mappedLines.add(new HighlightedLine(i , lineContents[i]));
+        }
+        return mappedLines;
     }
 
     private void validateNonNegativeLineIndexNumber(int lineIndex) {
@@ -34,14 +43,5 @@ public class HighlightLines {
         if (lineIndex >= lines.size()) {
             throw new InvalidHighlightLineIndexException(lineIndex, lines.size());
         }
-    }
-
-    private List<HighlightedLine> mapLines(String content) {
-        List<HighlightedLine> mappedLines = new ArrayList<>();
-        String[] lineContents = content.split(LINE_SEPARATOR);
-        for (int i = 0; i < lineContents.length; i++) {
-            mappedLines.add(new HighlightedLine(i , lineContents[i]));
-        }
-        return mappedLines;
     }
 }

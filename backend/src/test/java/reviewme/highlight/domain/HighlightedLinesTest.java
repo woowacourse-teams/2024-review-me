@@ -46,9 +46,9 @@ class HighlightedLinesTest {
         HighlightLines highlightLines = new HighlightLines(answer.getContent());
 
         // when
-        highlightLines.setRange(0, 1, 1);
-        highlightLines.setRange(2, 0, 1);
-        highlightLines.setRange(2, 3, 4);
+        highlightLines.addRange(0, 1, 1);
+        highlightLines.addRange(2, 0, 1);
+        highlightLines.addRange(2, 3, 4);
 
         // then
         List<HighlightedLine> lines = highlightLines.getLines();
@@ -67,7 +67,7 @@ class HighlightedLinesTest {
         int negativeLineIndex = -1;
 
         // when && then
-        assertThatCode(() -> highlightLines.setRange(negativeLineIndex, 0, 1))
+        assertThatCode(() -> highlightLines.addRange(negativeLineIndex, 0, 1))
                 .isInstanceOf(NegativeHighlightLineIndexException.class);
     }
 
@@ -82,7 +82,7 @@ class HighlightedLinesTest {
         System.out.println(invalidLineIndex);
 
         // when && then
-        assertThatCode(() -> highlightLines.setRange(invalidLineIndex, 0, 1))
+        assertThatCode(() -> highlightLines.addRange(invalidLineIndex, 0, 1))
                 .isInstanceOf(InvalidHighlightLineIndexException.class);
     }
 }

@@ -29,22 +29,22 @@ public class HighlightMapper {
                 .findAllById(highlightsRequest.getUniqueAnswerIds())
                 .stream()
                 .collect(Collectors.toMap(Answer::getId, answer -> new HighlightLines(answer.getContent())));
-        setIndexRanges(highlightsRequest, answerHighlightLines);
+        addIndexRanges(highlightsRequest, answerHighlightLines);
         return  mapLinesToHighlights(answerHighlightLines);
     }
 
-    private void setIndexRanges(HighlightsRequest highlightsRequest, Map<Long, HighlightLines> answerHighlightLines) {
+    private void addIndexRanges(HighlightsRequest highlightsRequest, Map<Long, HighlightLines> answerHighlightLines) {
         for (HighlightRequest highlightRequest : highlightsRequest.highlights()) {
             HighlightLines highlightLines = answerHighlightLines.get(highlightRequest.answerId());
-            setIndexRangesForAnswer(highlightRequest, highlightLines);
+            addIndexRangesForAnswer(highlightRequest, highlightLines);
         }
     }
 
-    private void setIndexRangesForAnswer(HighlightRequest highlightRequest, HighlightLines highlightLines) {
+    private void addIndexRangesForAnswer(HighlightRequest highlightRequest, HighlightLines highlightLines) {
         for (HighlightedLineRequest lineRequest : highlightRequest.lines()) {
             int lineIndex = lineRequest.index();
             for (HighlightIndexRangeRequest rangeRequest : lineRequest.ranges()) {
-                highlightLines.setRange(lineIndex, rangeRequest.startIndex(), rangeRequest.endIndex());
+                highlightLines.addRange(lineIndex, rangeRequest.startIndex(), rangeRequest.endIndex());
             }
         }
     }
