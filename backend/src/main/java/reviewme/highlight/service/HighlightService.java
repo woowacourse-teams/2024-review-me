@@ -11,9 +11,6 @@ import reviewme.highlight.service.dto.HighlightsRequest;
 import reviewme.highlight.service.mapper.HighlightMapper;
 import reviewme.highlight.service.validator.HighlightValidator;
 import reviewme.review.repository.AnswerRepository;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
-import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 
 @Service
@@ -27,10 +24,7 @@ public class HighlightService {
     private final HighlightMapper highlightMapper;
 
     @Transactional
-    public void editHighlight(HighlightsRequest highlightsRequest, String reviewRequestCode) {
-        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
-
+    public void editHighlight(HighlightsRequest highlightsRequest, ReviewGroup reviewGroup) {
         highlightValidator.validate(highlightsRequest, reviewGroup);
         List<Highlight> highlights = highlightMapper.mapToHighlights(highlightsRequest);
 

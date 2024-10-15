@@ -22,7 +22,7 @@ public class HighlightController {
             @Valid @RequestBody HighlightsRequest request,
             @ReviewGroupSession ReviewGroup reviewGroup
     ) {
-        highlightService.editHighlight(request, reviewRequestCode);
+        highlightService.editHighlight(request, reviewGroup);
         return ResponseEntity.ok().build();
     }
 }

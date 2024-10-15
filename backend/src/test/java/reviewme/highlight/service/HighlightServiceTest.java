@@ -11,11 +11,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.fixture.QuestionFixture;
-import reviewme.fixture.ReviewGroupFixture;
 import reviewme.highlight.entity.Highlight;
 import reviewme.highlight.entity.HighlightRange;
-import reviewme.highlight.domain.Highlight;
-import reviewme.highlight.domain.HighlightRange;
 import reviewme.highlight.repository.HighlightRepository;
 import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
 import reviewme.highlight.service.dto.HighlightRequest;
@@ -25,6 +22,7 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
+import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
 import reviewme.template.repository.SectionRepository;
@@ -57,17 +55,16 @@ class HighlightServiceTest {
     @Test
     void 하이라이트_반영을_요청하면_리뷰_그룹과_질문에_해당하는_기존_하이라이트를_모두_삭제한다() {
         // given
-        long questionId = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
+        long questionId = questionRepository.save(서술형_필수_질문()).getId();
         long sectionId = sectionRepository.save(항상_보이는_섹션(List.of(questionId))).getId();
         long templateId = templateRepository.save(템플릿(List.of(sectionId))).getId();
         String reviewRequestCode = "reviewRequestCode";
-        long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹(reviewRequestCode, "groupAccessCode"))
-                .getId();
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, "groupAccessCode"));
 
         TextAnswer textAnswer1 = new TextAnswer(questionId, "text answer1");
         TextAnswer textAnswer2 = new TextAnswer(questionId, "text answer2");
-        Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer1, textAnswer2)));
-        Highlight highlight1 = highlightRepository.save(new Highlight(textAnswer1.getId(), 1, new HighlightRange(1, 1)));
+        Review review = reviewRepository.save(new Review(templateId, reviewGroup.getId(), List.of(textAnswer1, textAnswer2)));
+        Highlight highlight = highlightRepository.save(new Highlight(textAnswer1.getId(), 1, new HighlightRange(1, 1)));
 
         HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(1, 1);
         HighlightedLineRequest lineRequest = new HighlightedLineRequest(0, List.of(indexRangeRequest));
@@ -75,10 +72,10 @@ class HighlightServiceTest {
         HighlightsRequest highlightsRequest = new HighlightsRequest(questionId, List.of(highlightRequest1));
 
         // when
-        highlightService.editHighlight(highlightsRequest, reviewRequestCode);
+        highlightService.editHighlight(highlightsRequest, reviewGroup);
 
         // then
-        assertAll(() -> assertThat(highlightRepository.existsById(highlight1.getId())).isFalse());
+        assertAll(() -> assertThat(highlightRepository.existsById(highlight.getId())).isFalse());
     }
 
     @Test
@@ -88,11 +85,11 @@ class HighlightServiceTest {
         long sectionId = sectionRepository.save(항상_보이는_섹션(List.of(questionId))).getId();
         long templateId = templateRepository.save(템플릿(List.of(sectionId))).getId();
         String reviewRequestCode = "reviewRequestCode";
-        long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹(reviewRequestCode, "groupAccessCode"))
-                .getId();
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, "groupAccessCode"));
+
 
         TextAnswer textAnswer = new TextAnswer(questionId, "text answer1");
-        Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer)));
+        Review review = reviewRepository.save(new Review(templateId, reviewGroup.getId(), List.of(textAnswer)));
         highlightRepository.save(new Highlight(1, 1, new HighlightRange(1, 1)));
 
         int startIndex = 2;
@@ -103,7 +100,7 @@ class HighlightServiceTest {
         HighlightsRequest highlightsRequest = new HighlightsRequest(questionId, List.of(highlightRequest));
 
         // when
-        highlightService.editHighlight(highlightsRequest, reviewRequestCode);
+        highlightService.editHighlight(highlightsRequest, reviewGroup);
 
         // then
         List<Highlight> highlights = highlightRepository.findAll();
