@@ -28,8 +28,8 @@ public class HighlightService {
         highlightValidator.validate(highlightsRequest, reviewGroup);
         List<Highlight> highlights = highlightMapper.mapToHighlights(highlightsRequest);
 
-        Set<Long> allAnswerIds = answerRepository.findIdsByQuestionId(highlightsRequest.questionId());
-        highlightRepository.deleteAllByAnswerIds(allAnswerIds);
+        Set<Long> answerIds = answerRepository.findIdsByQuestionId(highlightsRequest.questionId());
+        highlightRepository.deleteAllByAnswerIds(answerIds);
 
         highlightRepository.saveAll(highlights);
     }

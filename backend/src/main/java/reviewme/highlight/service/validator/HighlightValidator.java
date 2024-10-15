@@ -17,8 +17,8 @@ public class HighlightValidator {
     private final AnswerRepository answerRepository;
 
     public void validate(HighlightsRequest request, ReviewGroup reviewGroup) {
-        validateReviewGroupContainsAnswer(request, reviewGroup);
         validateQuestionContainsAnswer(request);
+        validateReviewGroupContainsAnswer(request, reviewGroup);
     }
 
     private void validateQuestionContainsAnswer(HighlightsRequest request) {
