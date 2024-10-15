@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import reviewme.global.RequestLimitInterceptor;
 import reviewme.reviewgroup.controller.ReviewGroupSessionResolver;
 import reviewme.reviewgroup.service.ReviewGroupService;
-import reviewme.global.HeaderPropertyArgumentResolver;
 
 @Configuration
 @RequiredArgsConstructor
