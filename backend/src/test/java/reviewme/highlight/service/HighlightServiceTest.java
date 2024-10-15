@@ -110,4 +110,26 @@ class HighlightServiceTest {
                         new HighlightRange(startIndex, endIndex))
         );
     }
+
+    @Test
+    void 하이라이트_할_내용이_없는_요청이_오면_기존에_있던_내용을_삭제하고_아무것도_저장하지_않는다() {
+        // given
+        long questionId = questionRepository.save(서술형_필수_질문()).getId();
+        long sectionId = sectionRepository.save(항상_보이는_섹션(List.of(questionId))).getId();
+        long templateId = templateRepository.save(템플릿(List.of(sectionId))).getId();
+        String reviewRequestCode = "reviewRequestCode";
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, "groupAccessCode"));
+
+        TextAnswer textAnswer = new TextAnswer(questionId, "text answer1");
+        Review review = reviewRepository.save(new Review(templateId, reviewGroup.getId(), List.of(textAnswer)));
+        Highlight highlight = highlightRepository.save(new Highlight(textAnswer.getId(), 1, new HighlightRange(1, 1)));
+
+        HighlightsRequest highlightsRequest = new HighlightsRequest(questionId, List.of());
+
+        // when
+        highlightService.editHighlight(highlightsRequest, reviewGroup);
+
+        // then
+        assertAll(() -> assertThat(highlightRepository.existsById(highlight.getId())).isFalse());
+    }
 }

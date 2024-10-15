@@ -89,4 +89,16 @@ class HighlightMapperTest {
                 () -> assertThat(highlights.get(1).getHighlightRange()).isEqualTo(range)
         );
     }
+
+    @Test
+    void 하이라이트_할_내용이_없는_요청이_오면_매핑_결과_빈_리스트를_반환한다() {
+        // given
+        HighlightsRequest highlightsRequest = new HighlightsRequest(1L, List.of());
+
+        // when
+        List<Highlight> highlights = highlightMapper.mapToHighlights(highlightsRequest);
+
+        // then
+        assertThat(highlights).isEmpty();
+    }
 }
