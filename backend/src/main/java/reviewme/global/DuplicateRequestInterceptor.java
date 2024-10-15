@@ -1,5 +1,7 @@
 package reviewme.global;
 
+import static org.springframework.http.HttpHeaders.USER_AGENT;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.Duration;
@@ -8,7 +10,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import reviewme.global.exception.RequestFrequencyNonNumericException;
 import reviewme.global.exception.TooManyDuplicateRequestException;
 
 @Component
@@ -18,7 +19,7 @@ public class DuplicateRequestInterceptor implements HandlerInterceptor {
     private static final int MAX_FREQUENCY = 3;
     private static final Duration DURATION_SECOND = Duration.ofSeconds(1);
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Long> redisTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -27,20 +28,17 @@ public class DuplicateRequestInterceptor implements HandlerInterceptor {
         }
 
         String key = generateRequestKey(request);
-        Object value = redisTemplate.opsForValue().get(key);
-        if (value == null) {
-            redisTemplate.opsForValue().set(key, 1, DURATION_SECOND);
+        Long frequency = redisTemplate.opsForValue().get(key);
+        if (frequency == null) {
+            redisTemplate.opsForValue().set(key, 1L, DURATION_SECOND);
             return true;
         }
 
-        if (!(value instanceof Integer)) {
-            throw new RequestFrequencyNonNumericException(value);
-        }
-        int frequency = (int) value;
         if (frequency >= MAX_FREQUENCY) {
             throw new TooManyDuplicateRequestException(key);
         }
-        redisTemplate.opsForValue().set(key, frequency + 1, DURATION_SECOND);
+
+        redisTemplate.opsForValue().increment(key);
         return true;
     }
 
