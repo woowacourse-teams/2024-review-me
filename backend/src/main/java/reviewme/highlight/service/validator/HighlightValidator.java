@@ -1,6 +1,7 @@
 
 package reviewme.highlight.service.validator;
 
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class HighlightValidator {
 
     private void validateQuestionContainsAnswer(HighlightsRequest request) {
         Set<Long> providedAnswerIds = answerRepository.findIdsByQuestionId(request.questionId());
-        Set<Long> submittedAnswerIds = request.getUniqueAnswerIds();
+        List<Long> submittedAnswerIds = request.getUniqueAnswerIds();
 
         if (!providedAnswerIds.containsAll(submittedAnswerIds)) {
             throw new SubmittedAnswerAndProvidedAnswerMismatchException(providedAnswerIds, submittedAnswerIds);
@@ -31,7 +32,7 @@ public class HighlightValidator {
 
     private void validateReviewGroupContainsAnswer(HighlightsRequest request, ReviewGroup reviewGroup) {
         Set<Long> providedAnswerIds = answerRepository.findIdsByReviewGroupId(reviewGroup.getId());
-        Set<Long> submittedAnswerIds = request.getUniqueAnswerIds();
+        List<Long> submittedAnswerIds = request.getUniqueAnswerIds();
 
         if (!providedAnswerIds.containsAll(submittedAnswerIds)) {
             throw new SubmittedAnswerAndProvidedAnswerMismatchException(providedAnswerIds, submittedAnswerIds);
