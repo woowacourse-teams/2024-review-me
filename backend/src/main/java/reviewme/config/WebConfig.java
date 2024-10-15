@@ -16,8 +16,8 @@ import reviewme.global.HeaderPropertyArgumentResolver;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
+    private final RedisTemplate<String, Long> redisTemplate;
     private final ReviewGroupService reviewGroupService;
-    private final RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {

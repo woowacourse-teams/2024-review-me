@@ -6,22 +6,21 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.springframework.http.HttpHeaders.USER_AGENT;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import reviewme.global.exception.RequestFrequencyNonNumericException;
 import reviewme.global.exception.TooManyDuplicateRequestException;
 
 class DuplicateRequestInterceptorTest {
 
     private final HttpServletRequest request = mock(HttpServletRequest.class);
-    private final RedisTemplate<String, Object> redisTemplate = mock(RedisTemplate.class);
-    private final ValueOperations<String, Object> valueOperations = mock(ValueOperations.class);
+    private final RedisTemplate<String, Long> redisTemplate = mock(RedisTemplate.class);
+    private final ValueOperations<String, Long> valueOperations = mock(ValueOperations.class);
     private final DuplicateRequestInterceptor interceptor = new DuplicateRequestInterceptor(redisTemplate);
     private final String requestKey = "RequestURI: /api/v2/reviews, RemoteAddr: localhost, UserAgent: Postman";
 
@@ -31,7 +30,7 @@ class DuplicateRequestInterceptorTest {
 
         given(request.getRequestURI()).willReturn("/api/v2/reviews");
         given(request.getRemoteAddr()).willReturn("localhost");
-        given(request.getHeader("User-Agent")).willReturn("Postman");
+        given(request.getHeader(USER_AGENT)).willReturn("Postman");
 
         given(redisTemplate.opsForValue()).willReturn(valueOperations);
     }
@@ -59,13 +58,13 @@ class DuplicateRequestInterceptorTest {
 
         // then
         assertThat(result).isTrue();
-        verify(valueOperations).set(requestKey, 1, Duration.of(1, ChronoUnit.SECONDS));
+        verify(valueOperations).set(requestKey, 1L, Duration.ofSeconds(1));
     }
 
     @Test
     void 특정_POST_요청이_처음이_아니며_최대_빈도보다_작을_경우_빈도를_1증가시킨다() {
         // given
-        int frequency = 1;
+        long frequency = 1;
         given(valueOperations.get(anyString())).willReturn(frequency);
 
         // when
@@ -73,13 +72,13 @@ class DuplicateRequestInterceptorTest {
 
         // then
         assertThat(result).isTrue();
-        verify(valueOperations).set(requestKey, frequency + 1, Duration.of(1, ChronoUnit.SECONDS));
+        verify(valueOperations).increment(requestKey);
     }
 
     @Test
     void 특정_POST_요청이_처음이_아니며_최대_빈도보다_클_경우_예외를_발생시킨다() {
         // given
-        int maxFrequency = 3;
+        long maxFrequency = 3;
         given(valueOperations.get(anyString())).willReturn(maxFrequency + 1);
 
         // when & then
