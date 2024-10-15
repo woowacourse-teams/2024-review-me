@@ -11,7 +11,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.highlight.domain.Highlight;
-import reviewme.highlight.domain.HighlightPosition;
+import reviewme.highlight.domain.HighlightRange;
 import reviewme.highlight.repository.HighlightRepository;
 import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
 import reviewme.highlight.service.dto.HighlightRequest;
@@ -115,12 +115,12 @@ class HighlightServiceTest {
 
         // then
         List<Highlight> highlights = highlightRepository.findAll();
-        HighlightPosition position = new HighlightPosition(lineIndex, startIndex, endIndex);
+        HighlightRange position = new HighlightRange(startIndex, endIndex);
         assertAll(
                 () -> assertThat(highlights.get(0).getAnswerId()).isEqualTo(textAnswer1.getId()),
                 () -> assertThat(highlights.get(1).getAnswerId()).isEqualTo(textAnswer2.getId()),
-                () -> assertThat(highlights.get(0).getHighlightPosition()).isEqualTo(position),
-                () -> assertThat(highlights.get(0).getHighlightPosition()).isEqualTo(position)
+                () -> assertThat(highlights.get(0).getHighlightRange()).isEqualTo(position),
+                () -> assertThat(highlights.get(0).getHighlightRange()).isEqualTo(position)
         );
     }
 }
