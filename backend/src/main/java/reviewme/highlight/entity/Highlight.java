@@ -37,8 +37,4 @@ public class Highlight {
         this.lineIndex = lineIndex;
         this.highlightRange = range;
     }
-
-    public Highlight(long answerId, int lineIndex, int startIndex, int endIndex) {
-        this(answerId, lineIndex, new HighlightRange(startIndex, endIndex));
-    }
 }
