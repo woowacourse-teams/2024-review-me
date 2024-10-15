@@ -47,7 +47,7 @@ public class DuplicateRequestInterceptor implements HandlerInterceptor {
     private String generateRequestKey(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         String remoteAddr = request.getRemoteAddr();
-        String userAgent = request.getHeader("User-Agent");
+        String userAgent = request.getHeader(USER_AGENT);
 
         return String.format("RequestURI: %s, RemoteAddr: %s, UserAgent: %s", requestURI, remoteAddr, userAgent);
     }
