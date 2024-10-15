@@ -63,10 +63,15 @@ public class HighlightMapper {
         List<HighlightedLine> highlightedLines = answerHighlightLine.getValue().getLines();
 
         for (int lineIndex = 0; lineIndex < highlightedLines.size(); lineIndex++) {
-            for (HighlightRange range : highlightedLines.get(lineIndex).getRanges()) {
-                Highlight highlight = new Highlight(answerId, lineIndex, range);
-                highlights.add(highlight);
-            }
+            createHighlightForLine(highlightedLines, lineIndex, answerId, highlights);
+        }
+    }
+
+    private void createHighlightForLine(List<HighlightedLine> highlightedLines, int lineIndex, long answerId,
+                                        List<Highlight> highlights) {
+        for (HighlightRange range : highlightedLines.get(lineIndex).getRanges()) {
+            Highlight highlight = new Highlight(answerId, lineIndex, range);
+            highlights.add(highlight);
         }
     }
 }
