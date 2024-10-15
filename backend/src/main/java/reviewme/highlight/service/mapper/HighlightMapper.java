@@ -7,9 +7,9 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reviewme.highlight.domain.HighlightLines;
 import reviewme.highlight.domain.HighlightedLine;
 import reviewme.highlight.entity.Highlight;
-import reviewme.highlight.domain.HighlightLines;
 import reviewme.highlight.entity.HighlightRange;
 import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
 import reviewme.highlight.service.dto.HighlightRequest;
@@ -30,7 +30,7 @@ public class HighlightMapper {
                 .stream()
                 .collect(Collectors.toMap(Answer::getId, answer -> new HighlightLines(answer.getContent())));
         addIndexRanges(highlightsRequest, answerHighlightLines);
-        return  mapLinesToHighlights(answerHighlightLines);
+        return mapLinesToHighlights(answerHighlightLines);
     }
 
     private void addIndexRanges(HighlightsRequest highlightsRequest, Map<Long, HighlightLines> answerHighlightLines) {
@@ -57,12 +57,14 @@ public class HighlightMapper {
         return highlights;
     }
 
-    private void createHighlightsForAnswer(Entry<Long, HighlightLines> answerHighlightLine, List<Highlight> highlights) {
+    private void createHighlightsForAnswer(Entry<Long, HighlightLines> answerHighlightLine,
+                                           List<Highlight> highlights) {
         long answerId = answerHighlightLine.getKey();
-        HighlightLines highlightLines = answerHighlightLine.getValue();
-        for (HighlightedLine line : highlightLines.getLines()) {
-            for (HighlightRange range : line.getRanges()) {
-                Highlight highlight = new Highlight(answerId, line.getIndex(), range);
+        List<HighlightedLine> highlightedLines = answerHighlightLine.getValue().getLines();
+
+        for (int lineIndex = 0; lineIndex < highlightedLines.size(); lineIndex++) {
+            for (HighlightRange range : highlightedLines.get(lineIndex).getRanges()) {
+                Highlight highlight = new Highlight(answerId, lineIndex, range);
                 highlights.add(highlight);
             }
         }

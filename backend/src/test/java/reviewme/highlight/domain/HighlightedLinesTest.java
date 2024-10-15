@@ -8,8 +8,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import reviewme.highlight.domain.exception.NegativeHighlightLineIndexException;
 import reviewme.highlight.domain.exception.InvalidHighlightLineIndexException;
+import reviewme.highlight.domain.exception.NegativeHighlightLineIndexException;
 import reviewme.highlight.entity.HighlightRange;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
@@ -32,9 +32,9 @@ class HighlightedLinesTest {
 
         // then
         assertThat(highlightLines.getLines()).containsExactly(
-                new HighlightedLine(0, "123"),
-                new HighlightedLine(1, "456"),
-                new HighlightedLine(2, "789")
+                new HighlightedLine("123"),
+                new HighlightedLine("456"),
+                new HighlightedLine("789")
         );
     }
 

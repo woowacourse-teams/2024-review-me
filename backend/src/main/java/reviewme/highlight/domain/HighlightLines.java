@@ -1,6 +1,6 @@
 package reviewme.highlight.domain;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import reviewme.highlight.domain.exception.InvalidHighlightLineIndexException;
@@ -14,7 +14,9 @@ public class HighlightLines {
     private final List<HighlightedLine> lines;
 
     public HighlightLines(String content) {
-        this.lines = mapLines(content);
+        this.lines = Arrays.stream(content.split(LINE_SEPARATOR))
+                .map(HighlightedLine::new)
+                .toList();
     }
 
     public void addRange(int lineIndex, int startIndex, int endIndex) {
@@ -22,15 +24,6 @@ public class HighlightLines {
         validateLineIndexRange(lineIndex);
         HighlightedLine line = lines.get(lineIndex);
         line.addRange(startIndex, endIndex);
-    }
-
-    private List<HighlightedLine> mapLines(String content) {
-        List<HighlightedLine> mappedLines = new ArrayList<>();
-        String[] lineContents = content.split(LINE_SEPARATOR);
-        for (int i = 0; i < lineContents.length; i++) {
-            mappedLines.add(new HighlightedLine(i, lineContents[i]));
-        }
-        return mappedLines;
     }
 
     private void validateNonNegativeLineIndexNumber(int lineIndex) {
