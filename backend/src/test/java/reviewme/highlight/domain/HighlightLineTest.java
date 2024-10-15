@@ -6,6 +6,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import reviewme.highlight.domain.exception.HighlightIndexExceedLineLengthException;
+import reviewme.highlight.entity.HighlightRange;
 
 class HighlightLineTest {
 

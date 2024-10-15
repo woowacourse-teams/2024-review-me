@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import reviewme.highlight.domain.exception.NegativeHighlightLineIndexException;
 import reviewme.highlight.domain.exception.InvalidHighlightLineIndexException;
+import reviewme.highlight.entity.HighlightRange;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;

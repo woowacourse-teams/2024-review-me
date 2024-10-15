@@ -5,6 +5,7 @@ import java.util.Set;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import reviewme.highlight.domain.exception.HighlightIndexExceedLineLengthException;
+import reviewme.highlight.entity.HighlightRange;
 
 @Getter
 @EqualsAndHashCode

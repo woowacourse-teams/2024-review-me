@@ -1,4 +1,4 @@
-package reviewme.highlight.domain;
+package reviewme.highlight.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;

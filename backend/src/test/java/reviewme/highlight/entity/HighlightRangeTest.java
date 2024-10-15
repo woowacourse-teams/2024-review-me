@@ -1,4 +1,4 @@
-package reviewme.highlight.domain;
+package reviewme.highlight.entity;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
