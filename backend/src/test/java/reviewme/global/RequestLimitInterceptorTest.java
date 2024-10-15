@@ -35,7 +35,7 @@ class RequestLimitInterceptorTest {
 
         given(redisTemplate.opsForValue()).willReturn(valueOperations);
         given(requestLimitProperties.duration()).willReturn(Duration.ofSeconds(1));
-        given(requestLimitProperties.maxFrequency()).willReturn(3L);
+        given(requestLimitProperties.threshold()).willReturn(3L);
     }
 
     @Test

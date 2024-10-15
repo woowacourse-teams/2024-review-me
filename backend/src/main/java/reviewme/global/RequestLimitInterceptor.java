@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -28,10 +29,12 @@ public class RequestLimitInterceptor implements HandlerInterceptor {
         }
 
         String key = generateRequestKey(request);
-        redisTemplate.opsForValue().setIfAbsent(key, 0L, requestLimitProperties.duration());
-        long frequency = redisTemplate.opsForValue().increment(key);
+        ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
+        valueOperations.setIfAbsent(key, 0L, requestLimitProperties.duration());
+        redisTemplate.expire(key, requestLimitProperties.duration());
 
-        if (frequency >= requestLimitProperties.maxFrequency()) {
+        long requestCount = valueOperations.increment(key);
+        if (requestCount > requestLimitProperties.threshold()) {
             throw new TooManyRequestException(key);
         }
         return true;

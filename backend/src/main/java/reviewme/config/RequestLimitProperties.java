@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "request-limit")
 public record RequestLimitProperties(
-        long maxFrequency,
+        long threshold,
         Duration duration,
         String host,
         int port
