@@ -2,11 +2,11 @@ import { http, HttpResponse } from 'msw';
 
 import endPoint from '@/apis/endpoints';
 
-import { withAuthCookie } from './cookies';
+import { authorizeWithCookie } from './cookies';
 
 const postMockHighlight = () =>
   http.post(endPoint.postingHighlight, ({ cookies }) => {
-    return withAuthCookie(cookies, () => HttpResponse.json({ status: 200 }));
+    return authorizeWithCookie(cookies, () => HttpResponse.json({ status: 200 }));
   });
 
 const highlightHandler = [postMockHighlight()];

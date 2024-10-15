@@ -6,14 +6,14 @@ import ErrorFallback from '../error/ErrorFallback';
 import HighlightEditor, { HighlightEditorProps } from './HighlightEditor';
 
 const HighlightEditorContainer = (props: Omit<HighlightEditorProps, 'handleErrorModal'>) => {
-  const [openErrorModal, setErrorModal] = useState(false);
-  const handleErrorModal = (isError: boolean) => setErrorModal(isError);
+  const [isOpenErrorModal, setIsOpenErrorModal] = useState(false);
+  const handleErrorModal = (isError: boolean) => setIsOpenErrorModal(isError);
   return (
     <>
       <ErrorBoundary fallback={ErrorFallback}>
         <HighlightEditor {...props} handleErrorModal={handleErrorModal} />
       </ErrorBoundary>
-      {openErrorModal && <div>오류</div>}
+      {isOpenErrorModal && <div>오류</div>}
     </>
   );
 };

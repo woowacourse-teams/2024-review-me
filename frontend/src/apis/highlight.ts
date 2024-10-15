@@ -37,7 +37,7 @@ export const postHighlight = async (editorAnswerMap: EditorAnswerMap, questionId
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include', // 인증 정보를 포함
+      credentials: 'include',
       body: JSON.stringify(postingData),
     });
 
