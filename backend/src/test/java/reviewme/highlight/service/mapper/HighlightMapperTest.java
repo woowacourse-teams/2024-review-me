@@ -2,14 +2,14 @@ package reviewme.highlight.service.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
+import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.fixture.QuestionFixture;
-import reviewme.fixture.ReviewGroupFixture;
 import reviewme.highlight.domain.Highlight;
 import reviewme.highlight.domain.HighlightRange;
 import reviewme.highlight.repository.HighlightRepository;
@@ -30,7 +30,7 @@ import reviewme.template.repository.TemplateRepository;
 class HighlightMapperTest {
 
     @Autowired
-    HighlightMapper highlightMapper;
+    private HighlightMapper highlightMapper;
 
     @Autowired
     private HighlightRepository highlightRepository;
@@ -53,11 +53,11 @@ class HighlightMapperTest {
     @Test
     void 하이라이트_요청과_기존_서술형_답변으로_하이라이트를_매핑한다() {
         // given
-        long questionId = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
+        long questionId = questionRepository.save(서술형_필수_질문()).getId();
         long sectionId = sectionRepository.save(항상_보이는_섹션(List.of(questionId))).getId();
         long templateId = templateRepository.save(템플릿(List.of(sectionId))).getId();
         String reviewRequestCode = "reviewRequestCode";
-        long reviewGroupId = reviewGroupRepository.save(ReviewGroupFixture.리뷰_그룹(reviewRequestCode, "groupAccessCode"))
+        long reviewGroupId = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, "groupAccessCode"))
                 .getId();
 
         TextAnswer textAnswer1 = new TextAnswer(questionId, "text answer1");

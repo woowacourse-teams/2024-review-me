@@ -18,7 +18,7 @@ import reviewme.review.repository.ReviewRepository;
 class HighlightedLinesTest {
 
     @Autowired
-    ReviewRepository reviewRepository;
+    private ReviewRepository reviewRepository;
 
     @Test
     void 답변_내용으로_하이라이트에_사용될_라인을_생성한다() {

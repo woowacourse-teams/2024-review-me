@@ -10,7 +10,6 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.fixture.QuestionFixture;
 import reviewme.highlight.domain.Highlight;
 import reviewme.highlight.domain.HighlightRange;
 import reviewme.highlight.repository.HighlightRepository;
@@ -81,7 +80,7 @@ class HighlightServiceTest {
     @Test
     void 하이라이트_반영을_요청하면_새로운_하이라이트가_저장된다() {
         // given
-        long questionId = questionRepository.save(QuestionFixture.서술형_필수_질문()).getId();
+        long questionId = questionRepository.save(서술형_필수_질문()).getId();
         long sectionId = sectionRepository.save(항상_보이는_섹션(List.of(questionId))).getId();
         long templateId = templateRepository.save(템플릿(List.of(sectionId))).getId();
         String reviewRequestCode = "reviewRequestCode";
