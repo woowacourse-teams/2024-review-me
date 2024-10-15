@@ -24,7 +24,7 @@ public class RequestLimitRedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, Long> requestFrequencyRedisTemplate() {
+    public RedisTemplate<String, Long> requestLimitRedisTemplate() {
         RedisTemplate<String, Long> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setValueSerializer(new GenericToStringSerializer<>(Long.class));

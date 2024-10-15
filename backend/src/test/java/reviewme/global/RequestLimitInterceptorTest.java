@@ -54,8 +54,8 @@ class RequestLimitInterceptorTest {
     @Test
     void 특정_POST_요청이_처음이_아니며_최대_빈도보다_작을_경우_빈도를_1증가시킨다() {
         // given
-        long frequency = 1;
-        given(valueOperations.get(anyString())).willReturn(frequency);
+        long requestCount = 1;
+        given(valueOperations.get(anyString())).willReturn(requestCount);
 
         // when
         boolean result = interceptor.preHandle(request, null, null);
@@ -68,8 +68,8 @@ class RequestLimitInterceptorTest {
     @Test
     void 특정_POST_요청이_처음이_아니며_최대_빈도보다_클_경우_예외를_발생시킨다() {
         // given
-        long maxFrequency = 2;
-        given(valueOperations.increment(anyString())).willReturn(maxFrequency + 1);
+        long maxRequestCount = 3;
+        given(valueOperations.increment(anyString())).willReturn(maxRequestCount + 1);
 
         // when & then
         assertThatThrownBy(() -> interceptor.preHandle(request, null, null))
