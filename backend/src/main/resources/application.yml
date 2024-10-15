@@ -38,6 +38,8 @@ cors:
     - http://localhost
     - https://localhost
 
-redis:
+request-limit:
+  max-frequency: 3
+  duration: 1s
   host: localhost
   port: 6379

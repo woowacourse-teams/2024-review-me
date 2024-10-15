@@ -39,7 +39,8 @@ cors:
   allowed-origins:
     - https://allowed-domain.com
 
-# todo: 이게 맞는걸까..?
-redis:
+request-limit:
+  max-frequency: 3
+  duration: 1s
   host: localhost
   port: 6379

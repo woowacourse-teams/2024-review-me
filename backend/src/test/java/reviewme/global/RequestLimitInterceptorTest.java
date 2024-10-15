@@ -9,29 +9,33 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.http.HttpHeaders.USER_AGENT;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.Duration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import reviewme.config.RequestLimitProperties;
 import reviewme.global.exception.TooManyRequestException;
 
-class DuplicateRequestInterceptorTest {
+class RequestLimitInterceptorTest {
 
     private final HttpServletRequest request = mock(HttpServletRequest.class);
     private final RedisTemplate<String, Long> redisTemplate = mock(RedisTemplate.class);
     private final ValueOperations<String, Long> valueOperations = mock(ValueOperations.class);
-    private final DuplicateRequestInterceptor interceptor = new DuplicateRequestInterceptor(redisTemplate);
+    private final RequestLimitProperties requestLimitProperties = mock(RequestLimitProperties.class);
+    private final RequestLimitInterceptor interceptor = new RequestLimitInterceptor(redisTemplate, requestLimitProperties);
     private final String requestKey = "RequestURI: /api/v2/reviews, RemoteAddr: localhost, UserAgent: Postman";
 
     @BeforeEach
     void setUp() {
         given(request.getMethod()).willReturn("POST");
-
         given(request.getRequestURI()).willReturn("/api/v2/reviews");
         given(request.getRemoteAddr()).willReturn("localhost");
         given(request.getHeader(USER_AGENT)).willReturn("Postman");
 
         given(redisTemplate.opsForValue()).willReturn(valueOperations);
+        given(requestLimitProperties.duration()).willReturn(Duration.ofSeconds(1));
+        given(requestLimitProperties.maxFrequency()).willReturn(3L);
     }
 
     @Test

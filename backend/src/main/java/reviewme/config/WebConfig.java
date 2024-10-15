@@ -7,17 +7,18 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import reviewme.global.RequestLimitInterceptor;
 import reviewme.reviewgroup.controller.ReviewGroupSessionResolver;
 import reviewme.reviewgroup.service.ReviewGroupService;
-import reviewme.global.DuplicateRequestInterceptor;
 import reviewme.global.HeaderPropertyArgumentResolver;
 
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-    private final RedisTemplate<String, Long> redisTemplate;
     private final ReviewGroupService reviewGroupService;
+    private final RedisTemplate<String, Long> redisTemplate;
+    private final RequestLimitProperties requestLimitProperties;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
@@ -26,6 +27,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new DuplicateRequestInterceptor(redisTemplate));
+        registry.addInterceptor(new RequestLimitInterceptor(redisTemplate, requestLimitProperties));
     }
 }

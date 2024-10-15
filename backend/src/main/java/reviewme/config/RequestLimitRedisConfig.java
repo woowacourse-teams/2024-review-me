@@ -7,23 +7,27 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericToStringSerializer;
 
 @Configuration
-@EnableConfigurationProperties(RedisProperties.class)
+@EnableConfigurationProperties(RequestLimitProperties.class)
 @RequiredArgsConstructor
-public class RedisConfig {
+public class RequestLimitRedisConfig {
 
-    private final RedisProperties redisProperties;
+    private final RequestLimitProperties requestLimitProperties;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(redisProperties.host(), redisProperties.port());
+        return new LettuceConnectionFactory(
+                requestLimitProperties.host(), requestLimitProperties.port()
+        );
     }
 
     @Bean
     public RedisTemplate<String, Long> requestFrequencyRedisTemplate() {
         RedisTemplate<String, Long> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setValueSerializer(new GenericToStringSerializer<>(Long.class));
 
         return redisTemplate;
     }

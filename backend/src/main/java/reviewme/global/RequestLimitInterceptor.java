@@ -4,22 +4,22 @@ import static org.springframework.http.HttpHeaders.USER_AGENT;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.Duration;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import reviewme.config.RequestLimitProperties;
 import reviewme.global.exception.TooManyRequestException;
 
 @Component
+@EnableConfigurationProperties(RequestLimitProperties.class)
 @RequiredArgsConstructor
-public class DuplicateRequestInterceptor implements HandlerInterceptor {
-
-    private static final int MAX_FREQUENCY = 3;
-    private static final Duration DURATION_SECOND = Duration.ofSeconds(1);
+public class RequestLimitInterceptor implements HandlerInterceptor {
 
     private final RedisTemplate<String, Long> redisTemplate;
+    private final RequestLimitProperties requestLimitProperties;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -28,10 +28,10 @@ public class DuplicateRequestInterceptor implements HandlerInterceptor {
         }
 
         String key = generateRequestKey(request);
-        redisTemplate.opsForValue().setIfAbsent(key, 0L, DURATION_SECOND);
+        redisTemplate.opsForValue().setIfAbsent(key, 0L, requestLimitProperties.duration());
         long frequency = redisTemplate.opsForValue().increment(key);
 
-        if (frequency >= MAX_FREQUENCY) {
+        if (frequency >= requestLimitProperties.maxFrequency()) {
             throw new TooManyRequestException(key);
         }
         return true;
