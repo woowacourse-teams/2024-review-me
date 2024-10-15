@@ -3,8 +3,8 @@ package reviewme.highlight.domain;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
-import reviewme.highlight.domain.exception.NegativeHighlightLineIndexException;
 import reviewme.highlight.domain.exception.InvalidHighlightLineIndexException;
+import reviewme.highlight.domain.exception.NegativeHighlightLineIndexException;
 
 @Getter
 public class HighlightLines {
@@ -28,7 +28,7 @@ public class HighlightLines {
         List<HighlightedLine> mappedLines = new ArrayList<>();
         String[] lineContents = content.split(LINE_SEPARATOR);
         for (int i = 0; i < lineContents.length; i++) {
-            mappedLines.add(new HighlightedLine(i , lineContents[i]));
+            mappedLines.add(new HighlightedLine(i, lineContents[i]));
         }
         return mappedLines;
     }

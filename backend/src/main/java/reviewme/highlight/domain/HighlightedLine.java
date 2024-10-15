@@ -12,12 +12,12 @@ import reviewme.highlight.entity.HighlightRange;
 public class HighlightedLine {
 
     private final int index;
-    private final String lineContent;
+    private final String content;
     private final Set<HighlightRange> ranges;
 
-    public HighlightedLine(int index, String lineContent) {
+    public HighlightedLine(int index, String content) {
         this.index = index;
-        this.lineContent = lineContent;
+        this.content = content;
         this.ranges = new HashSet<>();
     }
 
@@ -27,9 +27,9 @@ public class HighlightedLine {
     }
 
     private void validateRangeByContentLength(int startIndex, int endIndex) {
-        int contentLength = lineContent.length();
+        int contentLength = content.length();
         if (startIndex >= contentLength || endIndex >= contentLength) {
-            throw new HighlightIndexExceedLineLengthException(lineContent.length(), startIndex, endIndex);
+            throw new HighlightIndexExceedLineLengthException(content.length(), startIndex, endIndex);
         }
     }
 }
