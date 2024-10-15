@@ -7,9 +7,9 @@ interface GetSelectionOffsetInBlockParams {
   blockElement: Element;
 }
 /*
- *선택된 텍스트의 block 기준 offset을 계산하는 함수
+ *선택된 텍스트의 Line 기준 offset을 계산하는 함수
  */
-export const calculateOffsetInBlock = ({
+export const calculateOffsetInLine = ({
   selectionTargetNode,
   selectionTargetOffset,
   blockElement,
@@ -54,6 +54,7 @@ interface GetAnswerInfoParams {
   anchorOffset: number;
   focusOffset: number;
 }
+
 export const getAnswerInfo = ({ anchorLineData, focusLineData, anchorOffset, focusOffset }: GetAnswerInfoParams) => {
   const anchorAnswerElement = anchorLineData.block.closest(`.${EDITOR_ANSWER_CLASS_NAME}`);
   const focusAnswerElement = focusLineData.block.closest(`.${EDITOR_ANSWER_CLASS_NAME}`);
@@ -210,14 +211,14 @@ export const getStartLineOffset = (infoForOffset: SelectionInfo, block: EditorLi
   const { isForwardDrag, startLine, selection, isOnlyOneSelectedBlock } = infoForOffset;
   const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
 
-  const startIndex = calculateOffsetInBlock({
+  const startIndex = calculateOffsetInLine({
     selectionTargetNode: isForwardDrag ? anchorNode : focusNode,
     selectionTargetOffset: isForwardDrag ? anchorOffset : focusOffset,
     blockElement: startLine,
   });
   // NOTE: endIndex에 -1하는 이유 : 끝나는 포커스위치의 offset이 글자 index보다 1큼
   const endIndex = isOnlyOneSelectedBlock
-    ? calculateOffsetInBlock({
+    ? calculateOffsetInLine({
         selectionTargetNode: isForwardDrag ? focusNode : anchorNode,
         selectionTargetOffset: isForwardDrag ? focusOffset - 1 : anchorOffset - 1,
         blockElement: startLine,
@@ -231,7 +232,7 @@ export const getEndLineOffset = (infoForOffset: SelectionInfo) => {
   const { isForwardDrag, endLine, selection } = infoForOffset;
   const { anchorNode, anchorOffset, focusNode, focusOffset } = selection;
 
-  const endIndex = calculateOffsetInBlock({
+  const endIndex = calculateOffsetInLine({
     selectionTargetNode: isForwardDrag ? focusNode : anchorNode,
     selectionTargetOffset: isForwardDrag ? focusOffset - 1 : anchorOffset - 1,
     blockElement: endLine,
