@@ -5,7 +5,7 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.highlight.entity.Highlight;
+import reviewme.highlight.domain.Highlight;
 import reviewme.highlight.repository.HighlightRepository;
 import reviewme.highlight.service.dto.HighlightsRequest;
 import reviewme.highlight.service.mapper.HighlightMapper;

@@ -4,7 +4,7 @@ import java.util.Collection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import reviewme.highlight.entity.Highlight;
+import reviewme.highlight.domain.Highlight;
 
 public interface HighlightRepository extends JpaRepository<Highlight, Long> {
 
