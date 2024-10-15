@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import reviewme.global.exception.TooManyDuplicateRequestException;
+import reviewme.global.exception.TooManyRequestException;
 
 class DuplicateRequestInterceptorTest {
 
@@ -69,6 +69,6 @@ class DuplicateRequestInterceptorTest {
 
         // when & then
         assertThatThrownBy(() -> interceptor.preHandle(request, null, null))
-                .isInstanceOf(TooManyDuplicateRequestException.class);
+                .isInstanceOf(TooManyRequestException.class);
     }
 }

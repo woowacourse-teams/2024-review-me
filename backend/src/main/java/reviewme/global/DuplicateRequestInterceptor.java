@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import reviewme.global.exception.TooManyDuplicateRequestException;
+import reviewme.global.exception.TooManyRequestException;
 
 @Component
 @RequiredArgsConstructor
@@ -32,7 +32,7 @@ public class DuplicateRequestInterceptor implements HandlerInterceptor {
         long frequency = redisTemplate.opsForValue().increment(key);
 
         if (frequency >= MAX_FREQUENCY) {
-            throw new TooManyDuplicateRequestException(key);
+            throw new TooManyRequestException(key);
         }
         return true;
     }
