@@ -70,13 +70,11 @@ class ReviewGatheredLookupServiceTest {
     @Autowired
     private ReviewGatheredLookupService reviewLookupService;
 
-    private String reviewRequestCode;
     private ReviewGroup reviewGroup;
 
     @BeforeEach
     void saveReviewGroup() {
-        reviewRequestCode = "1111";
-        reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, "2222"));
+        reviewGroup = reviewGroupRepository.save(리뷰_그룹("1111", "2222"));
     }
 
     @Nested
@@ -417,7 +415,7 @@ class ReviewGatheredLookupServiceTest {
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewRequestCode, section1.getId());
+                reviewGroup, section1.getId());
 
         // then
         assertThat(actual.reviews())
