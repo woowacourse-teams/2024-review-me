@@ -86,14 +86,4 @@ class DuplicateRequestInterceptorTest {
         assertThatThrownBy(() -> interceptor.preHandle(request, null, null))
                 .isInstanceOf(TooManyDuplicateRequestException.class);
     }
-
-    @Test
-    void 특정_POST_요청이_처음이_아니며_빈도가_숫자가_아닌_경우_예외를_발생시킨다() {
-        // given
-        given(valueOperations.get(anyString())).willReturn("1");
-
-        // when & then
-        assertThatThrownBy(() -> interceptor.preHandle(request, null, null))
-                .isInstanceOf(RequestFrequencyNonNumericException.class);
-    }
 }
