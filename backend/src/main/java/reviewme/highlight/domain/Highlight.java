@@ -37,4 +37,10 @@ public class Highlight {
         this.lineIndex = lineIndex;
         this.highlightRange = new HighlightRange(startIndex, endIndex);
     }
+
+    public Highlight(long answerId, int lineIndex, HighlightRange range) {
+        this.answerId = answerId;
+        this.lineIndex = lineIndex;
+        this.highlightRange = range;
+    }
 }
