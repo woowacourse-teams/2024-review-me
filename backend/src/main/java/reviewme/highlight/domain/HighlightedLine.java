@@ -9,13 +9,13 @@ import reviewme.highlight.entity.HighlightRange;
 
 @Getter
 @EqualsAndHashCode
-public class HighlightLine {
+public class HighlightedLine {
 
     private final int lineIndex;
     private final String lineContent;
     private final Set<HighlightRange> ranges;
 
-    public HighlightLine(int lineIndex, String lineContent) {
+    public HighlightedLine(int lineIndex, String lineContent) {
         this.lineIndex = lineIndex;
         this.lineContent = lineContent;
         this.ranges = new HashSet<>();

@@ -7,8 +7,8 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reviewme.highlight.domain.HighlightedLine;
 import reviewme.highlight.entity.Highlight;
-import reviewme.highlight.domain.HighlightLine;
 import reviewme.highlight.domain.HighlightLines;
 import reviewme.highlight.entity.HighlightRange;
 import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
@@ -60,7 +60,7 @@ public class HighlightMapper {
     private void createHighlightsForAnswer(Entry<Long, HighlightLines> answerHighlightLine, List<Highlight> highlights) {
         long answerId = answerHighlightLine.getKey();
         HighlightLines highlightLines = answerHighlightLine.getValue();
-        for (HighlightLine line : highlightLines.getLines()) {
+        for (HighlightedLine line : highlightLines.getLines()) {
             for (HighlightRange range : line.getRanges()) {
                 Highlight highlight = new Highlight(answerId, line.getLineIndex(), range);
                 highlights.add(highlight);

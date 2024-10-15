@@ -16,7 +16,7 @@ import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
 
 @DataJpaTest
-class HighlightLinesTest {
+class HighlightedLinesTest {
 
     @Autowired
     ReviewRepository reviewRepository;
@@ -32,9 +32,9 @@ class HighlightLinesTest {
 
         // then
         assertThat(highlightLines.getLines()).containsExactly(
-                new HighlightLine(0, "123"),
-                new HighlightLine(1, "456"),
-                new HighlightLine(2, "789")
+                new HighlightedLine(0, "123"),
+                new HighlightedLine(1, "456"),
+                new HighlightedLine(2, "789")
         );
     }
 
@@ -51,7 +51,7 @@ class HighlightLinesTest {
         highlightLines.setRange(2, 3, 4);
 
         // then
-        List<HighlightLine> lines = highlightLines.getLines();
+        List<HighlightedLine> lines = highlightLines.getLines();
         assertAll(
                 () -> assertThat(lines.get(0).getRanges())
                         .containsExactly(new HighlightRange(1, 1)),
