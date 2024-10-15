@@ -62,7 +62,7 @@ public class HighlightMapper {
         HighlightLines highlightLines = answerHighlightLine.getValue();
         for (HighlightedLine line : highlightLines.getLines()) {
             for (HighlightRange range : line.getRanges()) {
-                Highlight highlight = new Highlight(answerId, line.getLineIndex(), range);
+                Highlight highlight = new Highlight(answerId, line.getIndex(), range);
                 highlights.add(highlight);
             }
         }

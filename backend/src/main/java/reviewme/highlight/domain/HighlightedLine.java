@@ -11,12 +11,12 @@ import reviewme.highlight.entity.HighlightRange;
 @EqualsAndHashCode
 public class HighlightedLine {
 
-    private final int lineIndex;
+    private final int index;
     private final String lineContent;
     private final Set<HighlightRange> ranges;
 
-    public HighlightedLine(int lineIndex, String lineContent) {
-        this.lineIndex = lineIndex;
+    public HighlightedLine(int index, String lineContent) {
+        this.index = index;
         this.lineContent = lineContent;
         this.ranges = new HashSet<>();
     }
