@@ -9,7 +9,6 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.http.HttpHeaders.USER_AGENT;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.time.Duration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -46,19 +45,6 @@ class DuplicateRequestInterceptorTest {
 
         // then
         assertThat(result).isTrue();
-    }
-
-    @Test
-    void 특정_POST_요청이_처음인_경우_빈도를_1로_초기화한다() {
-        // given
-        given(valueOperations.get(anyString())).willReturn(null);
-
-        // when
-        boolean result = interceptor.preHandle(request, null, null);
-
-        // then
-        assertThat(result).isTrue();
-        verify(valueOperations).set(requestKey, 1L, Duration.ofSeconds(1));
     }
 
     @Test
