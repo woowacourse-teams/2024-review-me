@@ -85,7 +85,7 @@ class ReviewApiTest extends ApiTest {
     @Test
     void 리뷰_그룹_코드가_올바르지_않은_경우_예외가_발생한다() {
         BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
-                .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException(anyString()));
+                .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException("ABCD1234"));
 
         FieldDescriptor[] requestFieldDescriptors = {
                 fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
