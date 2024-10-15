@@ -28,10 +28,10 @@ class HighlightedLinesTest {
         reviewRepository.save(new Review(1L, 1L, List.of(answer)));
 
         // when
-        HighlightLines highlightLines = new HighlightLines(answer.getContent());
+        HighlightedLines highlightedLines = new HighlightedLines(answer.getContent());
 
         // then
-        assertThat(highlightLines.getLines()).containsExactly(
+        assertThat(highlightedLines.getLines()).containsExactly(
                 new HighlightedLine("123"),
                 new HighlightedLine("456"),
                 new HighlightedLine("789")
@@ -43,15 +43,15 @@ class HighlightedLinesTest {
         // given
         TextAnswer answer = new TextAnswer(1L, "123\n456\n78910");
         reviewRepository.save(new Review(1L, 1L, List.of(answer)));
-        HighlightLines highlightLines = new HighlightLines(answer.getContent());
+        HighlightedLines highlightedLines = new HighlightedLines(answer.getContent());
 
         // when
-        highlightLines.addRange(0, 1, 1);
-        highlightLines.addRange(2, 0, 1);
-        highlightLines.addRange(2, 3, 4);
+        highlightedLines.addRange(0, 1, 1);
+        highlightedLines.addRange(2, 0, 1);
+        highlightedLines.addRange(2, 3, 4);
 
         // then
-        List<HighlightedLine> lines = highlightLines.getLines();
+        List<HighlightedLine> lines = highlightedLines.getLines();
         assertAll(
                 () -> assertThat(lines.get(0).getRanges())
                         .containsExactly(new HighlightRange(1, 1)),
@@ -63,11 +63,11 @@ class HighlightedLinesTest {
     @Test
     void 하이라이트에_추가할_라인의_인덱스가_0보다_작을_경우_예외를_발생한다() {
         // given
-        HighlightLines highlightLines = new HighlightLines("123\n456");
+        HighlightedLines highlightedLines = new HighlightedLines("123\n456");
         int negativeLineIndex = -1;
 
         // when && then
-        assertThatCode(() -> highlightLines.addRange(negativeLineIndex, 0, 1))
+        assertThatCode(() -> highlightedLines.addRange(negativeLineIndex, 0, 1))
                 .isInstanceOf(NegativeHighlightLineIndexException.class);
     }
 
@@ -77,12 +77,12 @@ class HighlightedLinesTest {
         String content = "123\n456";
         TextAnswer answer = new TextAnswer(1L, content);
         reviewRepository.save(new Review(1L, 1L, List.of(answer)));
-        HighlightLines highlightLines = new HighlightLines(answer.getContent());
+        HighlightedLines highlightedLines = new HighlightedLines(answer.getContent());
         int invalidLineIndex = (int) content.lines().count();
         System.out.println(invalidLineIndex);
 
         // when && then
-        assertThatCode(() -> highlightLines.addRange(invalidLineIndex, 0, 1))
+        assertThatCode(() -> highlightedLines.addRange(invalidLineIndex, 0, 1))
                 .isInstanceOf(InvalidHighlightLineIndexException.class);
     }
 }

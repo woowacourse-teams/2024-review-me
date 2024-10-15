@@ -7,13 +7,13 @@ import reviewme.highlight.domain.exception.InvalidHighlightLineIndexException;
 import reviewme.highlight.domain.exception.NegativeHighlightLineIndexException;
 
 @Getter
-public class HighlightLines {
+public class HighlightedLines {
 
     public static final String LINE_SEPARATOR = "\n";
 
     private final List<HighlightedLine> lines;
 
-    public HighlightLines(String content) {
+    public HighlightedLines(String content) {
         this.lines = Arrays.stream(content.split(LINE_SEPARATOR))
                 .map(HighlightedLine::new)
                 .toList();
