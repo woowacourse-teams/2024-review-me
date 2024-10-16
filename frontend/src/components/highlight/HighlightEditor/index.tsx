@@ -114,7 +114,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
         <EditSwitchButton isEditable={isEditable} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
       {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
-        <div
+        <S.LineListWrapper
           className={EDITOR_ANSWER_CLASS_NAME}
           key={answerId}
           data-answer={`${answerId}-${answerIndex}`}
@@ -123,7 +123,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
           {lineList.map((line, index) => (
             <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
           ))}
-        </div>
+        </S.LineListWrapper>
       ))}
 
       {isEditable && highlightToggleButtonPosition && (

@@ -1,10 +1,4 @@
-import { GroupedReviews, GroupedSection, ReviewSummary } from '@/types';
-
-export const REVIEW_SUMMARY_MOCK_DATA: ReviewSummary = {
-  projectName: '리뷰미',
-  revieweeName: '에프이',
-  reviewCount: 5,
-};
+import { GroupedReviews, GroupedSection } from '@/types';
 
 export const GROUPED_SECTION_MOCK_DATA: GroupedSection = {
   sections: [

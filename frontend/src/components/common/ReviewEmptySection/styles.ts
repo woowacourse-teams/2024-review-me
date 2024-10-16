@@ -14,15 +14,15 @@ export const NullText = styled.span`
   color: #e0e1e3;
 
   ${media.small} {
-    font-size: 20rem;
+    font-size: 16rem;
   }
 
   ${media.xSmall} {
-    font-size: 18rem;
+    font-size: 15rem;
   }
 
   ${media.xxSmall} {
-    font-size: 16rem;
+    font-size: 14rem;
   }
 `;
 
