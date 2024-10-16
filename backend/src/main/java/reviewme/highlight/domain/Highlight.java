@@ -26,11 +26,15 @@ public class Highlight {
     @Column(name = "answer_id", nullable = false)
     private long answerId;
 
-    @Embedded
-    private HighlightPosition highlightPosition;
+    @Column(name = "line_index", nullable = false)
+    private int lineIndex;
 
-    public Highlight(long answerId, int lineIndex, int startIndex, int endIndex) {
+    @Embedded
+    private HighlightRange highlightRange;
+
+    public Highlight(long answerId, int lineIndex, HighlightRange range) {
         this.answerId = answerId;
-        this.highlightPosition = new HighlightPosition(lineIndex, startIndex, endIndex);
+        this.lineIndex = lineIndex;
+        this.highlightRange = range;
     }
 }

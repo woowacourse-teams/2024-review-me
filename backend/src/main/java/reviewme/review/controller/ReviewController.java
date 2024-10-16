@@ -10,17 +10,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import reviewme.review.service.ReviewGatheredLookupService;
 import reviewme.review.service.ReviewDetailLookupService;
+import reviewme.review.service.ReviewGatheredLookupService;
 import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.ReviewSummaryService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
+import reviewme.reviewgroup.controller.ReviewGroupSession;
+import reviewme.reviewgroup.domain.ReviewGroup;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,37 +43,36 @@ public class ReviewController {
     public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
             @RequestParam(required = false) Long lastReviewId,
             @RequestParam(required = false) Integer size,
-            @SessionAttribute("reviewRequestCode") String reviewRequestCode
+            @ReviewGroupSession ReviewGroup reviewGroup
     ) {
-        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(
-                lastReviewId, size, reviewRequestCode);
+        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(lastReviewId, size, reviewGroup);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/v2/reviews/{id}")
     public ResponseEntity<ReviewDetailResponse> findReceivedReviewDetail(
             @PathVariable long id,
-            @SessionAttribute("reviewRequestCode") String reviewRequestCode
+            @ReviewGroupSession ReviewGroup reviewGroup
     ) {
-        ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail(id, reviewRequestCode);
+        ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail(id, reviewGroup);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/v2/reviews/summary")
     public ResponseEntity<ReceivedReviewsSummaryResponse> findReceivedReviewOverview(
-            @SessionAttribute("reviewRequestCode") String reviewRequestCode
+            @ReviewGroupSession ReviewGroup reviewGroup
     ) {
-        ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewRequestCode);
+        ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewGroup);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/v2/reviews/gather")
     public ResponseEntity<ReviewsGatheredBySectionResponse> getReceivedReviewsBySectionId(
             @RequestParam("sectionId") long sectionId,
-            @SessionAttribute("reviewRequestCode") String reviewRequestCode
+            @ReviewGroupSession ReviewGroup reviewGroup
     ) {
-        ReviewsGatheredBySectionResponse response = reviewGatheredLookupService.getReceivedReviewsBySectionId(
-                reviewRequestCode, sectionId);
+        ReviewsGatheredBySectionResponse response =
+                reviewGatheredLookupService.getReceivedReviewsBySectionId(reviewGroup, sectionId);
         return ResponseEntity.ok(response);
     }
 }

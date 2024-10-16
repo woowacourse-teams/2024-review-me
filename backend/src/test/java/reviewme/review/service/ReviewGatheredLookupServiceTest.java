@@ -22,6 +22,7 @@ import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.OptionType;
 import reviewme.question.domain.Question;
+import reviewme.question.domain.QuestionType;
 import reviewme.question.repository.OptionGroupRepository;
 import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
@@ -69,13 +70,11 @@ class ReviewGatheredLookupServiceTest {
     @Autowired
     private ReviewGatheredLookupService reviewLookupService;
 
-    private String reviewRequestCode;
     private ReviewGroup reviewGroup;
 
     @BeforeEach
     void saveReviewGroup() {
-        reviewRequestCode = "1111";
-        reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, "2222"));
+        reviewGroup = reviewGroupRepository.save(리뷰_그룹("1111", "2222"));
     }
 
     @Nested
@@ -99,7 +98,8 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section1.getId());
+                    reviewGroup, section1.getId()
+            );
 
             // then
             assertThat(actual.reviews().get(0).answers()).extracting(TextResponse::content)
@@ -126,7 +126,8 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section1.getId());
+                    reviewGroup, section1.getId()
+            );
 
             // then
             assertThat(actual.reviews().get(0).answers())
@@ -158,7 +159,8 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section1.getId());
+                    reviewGroup, section1.getId()
+            );
 
             // then
             assertThat(actual.reviews().get(0).answers())
@@ -185,7 +187,8 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section1.getId());
+                    reviewGroup, section1.getId()
+            );
 
             // then
             assertThat(actual.reviews().get(0).answers())
@@ -207,7 +210,8 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section1.getId());
+                    reviewGroup, section1.getId()
+            );
 
             // then
             assertThat(actual.reviews()).hasSize(1);
@@ -244,7 +248,8 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section1.getId());
+                    reviewGroup, section1.getId()
+            );
 
             // then
             assertThat(actual.reviews().get(0).votes())
@@ -278,7 +283,8 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section1.getId());
+                    reviewGroup, section1.getId()
+            );
 
             // then
             assertThat(actual.reviews().get(0).votes())
@@ -311,7 +317,8 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewRequestCode, section1.getId());
+                    reviewGroup, section1.getId()
+            );
 
             // then
             assertThat(actual.reviews().get(0).votes())
@@ -344,7 +351,8 @@ class ReviewGatheredLookupServiceTest {
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewRequestCode, section1.getId());
+                reviewGroup, section1.getId()
+        );
 
         // then
         assertThat(actual.reviews()).hasSize(2);
@@ -387,9 +395,33 @@ class ReviewGatheredLookupServiceTest {
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewRequestCodeBE, section1.getId());
+                reviewGroupBE, section1.getId());
 
         // then
         assertThat(actual.reviews()).hasSize(1);
+    }
+
+    @Test
+    void 질문을_position순서대로_반환한다() {
+        // given
+        Question question1 = questionRepository.save(new Question(false, QuestionType.TEXT, "질문1", null, 3));
+        Question question2 = questionRepository.save(new Question(false, QuestionType.TEXT, "질문2", null, 4));
+        Question question3 = questionRepository.save(new Question(false, QuestionType.TEXT, "질문3", null, 1));
+        Question question4 = questionRepository.save(new Question(false, QuestionType.TEXT, "질문4", null, 2));
+
+        Section section1 = sectionRepository.save(항상_보이는_섹션(
+                List.of(question1.getId(), question2.getId(), question3.getId(), question4.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section1.getId())));
+
+        // when
+        ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+                reviewGroup, section1.getId());
+
+        // then
+        assertThat(actual.reviews())
+                .extracting(ReviewsGatheredByQuestionResponse::question)
+                .extracting(SimpleQuestionResponse::name)
+                .containsExactly(question3.getContent(), question4.getContent(),
+                        question1.getContent(), question2.getContent());
     }
 }

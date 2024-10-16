@@ -6,13 +6,16 @@ export const Contents = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  align-items: center;
+
   width: max-content;
+  p {
+    width: fit-content;
+    text-align: center;
+  }
 
   ${media.xSmall} {
-    min-width: ${({ theme }) => {
-      const { maxWidth, padding } = theme.confirmModalSize;
-      return `calc(${maxWidth} - (${padding} * 2))`;
-    }};
+    width: 23rem;
   }
 `;
 

@@ -29,8 +29,17 @@ server:
         same-site: strict
         http-only: true
         secure: true
+    encoding:
+      charset: UTF-8
+      force: true
 
 cors:
   allowed-origins:
     - http://localhost
     - https://localhost
+
+request-limit:
+  threshold: 3
+  duration: 1s
+  host: localhost
+  port: 6379
