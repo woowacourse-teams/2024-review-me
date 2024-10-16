@@ -11,7 +11,6 @@ import App from '@/App';
 import { ErrorSuspenseContainer } from './components';
 import { API_ERROR_MESSAGE, ROUTE_PARAM } from './constants';
 import { ROUTE } from './constants/route';
-import EditorTestPage from './pages/EditorTestPage';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
@@ -97,10 +96,6 @@ const router = createBrowserRouter([
             <ReviewZonePage />
           </ErrorSuspenseContainer>
         ),
-      },
-      {
-        path: `/editor-test`,
-        element: <EditorTestPage />,
       },
       { path: `${ROUTE.reviewCollection}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewCollectionPage /> },
     ],
