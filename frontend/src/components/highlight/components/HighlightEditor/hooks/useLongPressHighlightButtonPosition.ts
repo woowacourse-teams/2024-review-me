@@ -13,14 +13,19 @@ const useLongPressHighlightButtonPosition = ({ isEditable, editorRef }: UseLongP
   const updateLongPressHighlightButtonPosition = (rect: DOMRect) => {
     const editorRect = editorRef.current?.getClientRects()[0];
     if (!editorRect) return;
-    const top = rect.bottom - editorRect.top;
-    const left = rect.right - editorRect.left;
 
-    const buttonWidth = HIGHLIGHT_BUTTON_SIZE.width.basic;
+    const top = rect.bottom + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON;
+    const left = rect.left + rect.width / 2 - editorRect.left;
 
-    const isOverEditorArea = editorRect.right < rect.right + buttonWidth;
-    const topOffsetFromParent = isOverEditorArea ? top + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON : top;
-    const leftOffsetFromParent = isOverEditorArea ? editorRect.width - buttonWidth : left;
+    const buttonTotalHeight = HIGHLIGHT_BUTTON_SIZE.height + HIGHLIGHT_BUTTON_SIZE.shadow;
+    const isOverflowingVertically =
+      rect.bottom + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON + buttonTotalHeight >= editorRect.bottom;
+
+    const topOffsetFromParent =
+      (isOverflowingVertically ? rect.top - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON - buttonTotalHeight : top) -
+      editorRect.top;
+
+    const leftOffsetFromParent = left;
 
     setLongPressHighlightButtonPosition({
       top: `
