@@ -105,7 +105,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
   const addHighlightEvent = () => {
     document.addEventListener('mousedown', hideHighlightButton);
     document.addEventListener('mouseup', showHighlightButton);
-    // NOTE: 터치가 가능한 기기에서는 touchstart, touchend 보다 selectionchange를 사요앟는 게 오류가 없음
+    // NOTE: 터치가 가능한 기기에서는 touchstart, touchend 보다 selectionchange를 사용하는 게 오류가 없음
     if (isTouchDevice()) {
       document.addEventListener('selectionchange', showHighlightButton);
     }
