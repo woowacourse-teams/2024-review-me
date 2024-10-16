@@ -1,8 +1,14 @@
 import { useState } from 'react';
 
-import { Accordion, AuthAndServerErrorFallback, Dropdown, ErrorSuspenseContainer, TopButton } from '@/components';
+import {
+  Accordion,
+  AuthAndServerErrorFallback,
+  Dropdown,
+  ErrorSuspenseContainer,
+  TopButton,
+  HighlightEditorContainer,
+} from '@/components';
 import { DropdownItem } from '@/components/common/Dropdown';
-import {HighlightEditorContainer} from '@/components/highlight';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 
 import DoughnutChart from './components/DoughnutChart';

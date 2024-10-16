@@ -15,13 +15,13 @@ import EditorLineBlock from '../EditorLineBlock';
 import EditSwitchButton from '../EditSwitchButton';
 import HighlightRemoverWrapper from '../HighlightRemoverWrapper';
 import HighlightToggleButtonContainer from '../HighlightToggleButtonContainer';
+
 import {
   useHighlightToggleButtonPosition,
   useHighlight,
   useCheckHighlight,
   useHighlightRemoverPosition,
-} from '../hooks';
-
+} from './hooks';
 import * as S from './style';
 
 const MODE_ICON = {
