@@ -1,6 +1,13 @@
 import { useState } from 'react';
 
-import { Accordion, AuthAndServerErrorFallback, Dropdown, ErrorSuspenseContainer, TopButton } from '@/components';
+import {
+  Accordion,
+  AuthAndServerErrorFallback,
+  Dropdown,
+  ErrorSuspenseContainer,
+  ReviewEmptySection,
+  TopButton,
+} from '@/components';
 import { DropdownItem } from '@/components/common/Dropdown';
 import HighlightEditor from '@/components/highlight/HighlightEditor';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
@@ -8,8 +15,6 @@ import { useReviewInfoData } from '@/components/layouts/ReviewDisplayLayout/hook
 import { REVIEW_EMPTY } from '@/constants';
 import { GroupedReview } from '@/types';
 import { substituteString } from '@/utils';
-
-import ReviewEmptySection from '../../components/common/ReviewEmptySection';
 
 import DoughnutChart from './components/DoughnutChart';
 import useGetGroupedReviews from './hooks/useGetGroupedReviews';
