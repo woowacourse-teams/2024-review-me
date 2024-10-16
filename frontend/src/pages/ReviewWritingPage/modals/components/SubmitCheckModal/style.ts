@@ -19,7 +19,7 @@ export const Message = styled.div`
     min-width: 27rem;
   }
 
-  ${media.xxSmall} {
+  @media screen and (max-width: 375px) {
     min-width: 60vw;
   }
 `;
