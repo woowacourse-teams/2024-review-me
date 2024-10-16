@@ -7,8 +7,8 @@ import DoughnutChartDetails from '../DoughnutChartDetails';
 import * as S from './styles';
 
 const DOUGHNUT_COLOR = {
-  START: `${theme.colors.primary}`,
-  END: '#e7e3f9',
+  start: `${theme.colors.primary}`,
+  end: '#e7e3f9',
 };
 
 const CHART_RADIUS = 90;
@@ -38,8 +38,8 @@ const DoughnutChart = ({ reviewVotes }: { reviewVotes: ReviewVotes[] }) => {
   // 색상 시작 및 끝값 정의
   const chartColors = generateGradientColors({
     length: reviewVotes.length,
-    startHex: DOUGHNUT_COLOR.START,
-    endHex: DOUGHNUT_COLOR.END,
+    startHex: DOUGHNUT_COLOR.start,
+    endHex: DOUGHNUT_COLOR.end,
   });
 
   // 각 조각의 중심 좌표를 계산하는 함수
