@@ -63,9 +63,7 @@ const useDragHighlightButtonPosition = ({
     const rectLeft = isForwardDrag ? lastRect.right - (isTouch ? buttonWidth : 0) : lastRect.left;
     const rectTop = isForwardDrag
       ? lastRect.bottom + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON
-      : isTouch
-        ? lastRect.bottom + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON
-        : lastRect.top - buttonHeight - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON;
+      : lastRect.top - buttonHeight - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON;
 
     // 에디터 기준 위치
     const leftOffsetFromEditor = rectLeft - editorRect.left;
