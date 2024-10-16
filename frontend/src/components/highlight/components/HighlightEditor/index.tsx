@@ -11,18 +11,18 @@ import {
 import { ReviewAnswerResponseData } from '@/types';
 import { findSelectionInfo, isTouchDevice } from '@/utils';
 
+import DragHighlightButtonContainer from '../DragHighlightButtonContainer';
+import EditorLineBlock from '../EditorLineBlock';
+import EditSwitchButton from '../EditSwitchButton';
+import LongPressHighlightButtonWrapper from '../LongPressHighlightButtonWrapper';
+
 import {
   useDragHighlightButtonPosition,
   useHighlight,
   useCheckHighlight,
   useLongPressHighlightButtonPosition,
   useLongPress,
-} from '../../hooks';
-import DragHighlightButtonContainer from '../DragHighlightButtonContainer';
-import EditorLineBlock from '../EditorLineBlock';
-import EditSwitchButton from '../EditSwitchButton';
-import LongPressHighlightButtonWrapper from '../LongPressHighlightButtonWrapper';
-
+} from './hooks';
 import * as S from './style';
 
 const MODE_ICON = {
