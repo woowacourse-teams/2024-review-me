@@ -36,19 +36,17 @@ const CardForm = () => {
   useUpdateDefaultAnswers();
 
   // 모달
-  const { handleOpenModal, closeModal, isOpen, isOpenModalDisablingBlocker } = useCardFormModal();
+  const { handleOpenModal, closeModal, isOpen, isUnblocked } = useCardFormModal();
 
   const handleNavigateConfirmButtonClick = () => {
     closeModal(CARD_FORM_MODAL_KEY.navigateConfirm);
 
-    if (blocker.proceed) {
-      blocker.proceed();
-    }
+    if (blocker.proceed) blocker.proceed();
   };
 
   // 작성 중인 답변이 있는 경우 페이지 이동을 막는 기능
   const { blocker } = useNavigateBlocker({
-    isOpenModalDisablingBlocker,
+    isUnblocked,
     openNavigateConfirmModal: () => handleOpenModal('navigateConfirm'),
   });
 
