@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 
 import PrimaryHomeIcon from '@/assets/primaryHome.svg';
 import SmileIcon from '@/assets/smile.svg';
@@ -8,6 +9,13 @@ import * as S from './styles';
 
 const ReviewWritingCompletePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!location.state || !location.state.isValidAccess) {
+      navigate('/');
+    }
+  }, [location, navigate]);
 
   const handleClickHomeButton = () => {
     navigate('/', { replace: true });
