@@ -113,18 +113,20 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
         />
         <EditSwitchButton isEditable={isEditable} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
-      {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
-        <S.LineListWrapper
-          className={EDITOR_ANSWER_CLASS_NAME}
-          key={answerId}
-          data-answer={`${answerId}-${answerIndex}`}
-          onClick={handleClickBlockList}
-        >
-          {lineList.map((line, index) => (
-            <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
-          ))}
-        </S.LineListWrapper>
-      ))}
+      <S.EditorAnswerContainer>
+        {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
+          <S.EditorAnswerItem
+            className={EDITOR_ANSWER_CLASS_NAME}
+            key={answerId}
+            data-answer={`${answerId}-${answerIndex}`}
+            onClick={handleClickBlockList}
+          >
+            {lineList.map((line, index) => (
+              <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
+            ))}
+          </S.EditorAnswerItem>
+        ))}
+      </S.EditorAnswerContainer>
 
       {isEditable && highlightToggleButtonPosition && (
         <HighlightToggleButtonContainer
