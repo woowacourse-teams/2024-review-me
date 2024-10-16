@@ -108,7 +108,15 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     // NOTE: 터치가 가능한 기기에서는 touchstart, touchend 보다 selectionchange를 사용하는 게 오류가 없음
     if (isTouchDevice()) {
       document.addEventListener('selectionchange', showHighlightButton);
+      document.addEventListener('contextmenu', hideContextMenuInTouch);
     }
+  };
+  /**
+   * 터치 브라우저에서, 글자 길게 선택 시 나오는 브라우저 기본 컨텍스트 메뉴 보이지 않게 처리하는 핸들러
+   * @param event
+   */
+  const hideContextMenuInTouch = (event: MouseEvent) => {
+    event.preventDefault();
   };
   /**
    * document에 형광펜 이벤트 삭제
@@ -117,12 +125,14 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     document.removeEventListener('mouseup', showHighlightButton);
     document.removeEventListener('mousedown', hideHighlightButton);
     if (isTouchDevice()) {
+      document.removeEventListener('contextmenu', hideContextMenuInTouch);
       document.removeEventListener('selectionChange', showHighlightButton);
     }
   };
 
   useEffect(() => {
-    addHighlightEvent();
+    isEditable ? addHighlightEvent() : removeHighlightEvent();
+
     return () => {
       removeHighlightEvent();
     };
