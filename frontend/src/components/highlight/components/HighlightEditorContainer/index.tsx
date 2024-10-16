@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
-import { ErrorBoundary } from '../error';
-import ErrorFallback from '../error/ErrorFallback';
-
-import HighlightEditor, { HighlightEditorProps } from './HighlightEditor';
+import { ErrorBoundary } from '../../../error';
+import ErrorFallback from '../../../error/ErrorFallback';
+import HighlightEditor, { HighlightEditorProps } from '../HighlightEditor';
 
 const HighlightEditorContainer = (props: Omit<HighlightEditorProps, 'handleErrorModal'>) => {
   const [isOpenErrorModal, setIsOpenErrorModal] = useState(false);

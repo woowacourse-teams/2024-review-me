@@ -1,1 +1,1 @@
-export { default as HighlightEditorContainer } from './HighlightEditorContainer';
+export { default as HighlightEditorContainer } from './components/HighlightEditorContainer';

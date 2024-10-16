@@ -8,12 +8,6 @@ import {
   HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME,
   HIGHLIGHT_REMOVER_CLASS_NAME,
 } from '@/constants';
-import {
-  useHighlightToggleButtonPosition,
-  useHighlight,
-  useCheckHighlight,
-  useHighlightRemoverPosition,
-} from '@/hooks';
 import { ReviewAnswerResponseData } from '@/types';
 import { findSelectionInfo } from '@/utils';
 
@@ -21,6 +15,12 @@ import EditorLineBlock from '../EditorLineBlock';
 import EditSwitchButton from '../EditSwitchButton';
 import HighlightRemoverWrapper from '../HighlightRemoverWrapper';
 import HighlightToggleButtonContainer from '../HighlightToggleButtonContainer';
+import {
+  useHighlightToggleButtonPosition,
+  useHighlight,
+  useCheckHighlight,
+  useHighlightRemoverPosition,
+} from '../hooks';
 
 import * as S from './style';
 
