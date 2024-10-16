@@ -8,16 +8,16 @@ import {
   HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME,
   HIGHLIGHT_REMOVER_CLASS_NAME,
 } from '@/constants';
+import { ReviewAnswerResponseData } from '@/types';
+import { findSelectionInfo, isTouchDevice } from '@/utils';
+
 import {
   useDragHighlightButtonPosition,
   useHighlight,
   useCheckHighlight,
   useLongPressHighlightButtonPosition,
-} from '@/hooks';
-import useLongPress from '@/hooks/highlight/useLongPress';
-import { ReviewAnswerResponseData } from '@/types';
-import { findSelectionInfo, isTouchDevice } from '@/utils';
-
+  useLongPress,
+} from '../../hooks';
 import DragHighlightButtonContainer from '../DragHighlightButtonContainer';
 import EditorLineBlock from '../EditorLineBlock';
 import EditSwitchButton from '../EditSwitchButton';
