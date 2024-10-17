@@ -6,7 +6,7 @@ import { authorizeWithCookie } from './cookies';
 
 const postMockHighlight = () =>
   http.post(endPoint.postingHighlight, ({ cookies }) => {
-    return authorizeWithCookie(cookies, () => HttpResponse.json({ error: 'error' }, { status: 400 }));
+    return authorizeWithCookie(cookies, () => HttpResponse.json({ error: 'error' }, { status: 200 }));
   });
 
 const highlightHandler = [postMockHighlight()];
