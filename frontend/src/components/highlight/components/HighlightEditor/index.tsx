@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import GrayHighlighterIcon from '@/assets/grayHighlighter.svg';
 import PrimaryHighlighterIcon from '@/assets/primaryHighlighter.svg';
