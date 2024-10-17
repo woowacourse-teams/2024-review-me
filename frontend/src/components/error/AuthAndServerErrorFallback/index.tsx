@@ -1,10 +1,10 @@
-import { FallbackProps } from 'react-error-boundary';
 import { useNavigate } from 'react-router';
 
 import { ROUTE } from '@/constants/route';
 import { useSearchParamAndQuery } from '@/hooks';
 
 import AuthAndServerErrorSection from '../AuthAndServerErrorSection';
+import { FallbackProps } from '../ErrorBoundary';
 
 const AuthAndServerErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
   const navigate = useNavigate();

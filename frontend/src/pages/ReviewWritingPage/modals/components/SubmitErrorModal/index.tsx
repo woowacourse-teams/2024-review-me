@@ -1,7 +1,6 @@
-import { FallbackProps } from 'react-error-boundary';
-
 import { ErrorAlertModal } from '@/components';
 import { ErrorAlertModalCloseButton } from '@/components/common/modals/ErrorAlertModal';
+import { FallbackProps } from '@/components/error/ErrorBoundary';
 
 import * as S from './style';
 

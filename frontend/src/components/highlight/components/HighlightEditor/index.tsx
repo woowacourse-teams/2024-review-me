@@ -38,9 +38,10 @@ const MODE_ICON = {
 interface HighlightEditorProps {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
+  handleErrorModal: (isError: boolean) => void;
 }
 
-const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
+const HighlightEditor = ({ questionId, answerList, handleErrorModal }: HighlightEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const [isEditable, setIsEditable] = useState(false);
   const { isAddingHighlight, checkHighlight } = useCheckHighlight();
@@ -76,6 +77,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     hideDragHighlightButton,
     hideLongPressHighlightButton,
     updateLongPressHighlightButtonPosition,
+    handleErrorModal,
   });
 
   const { startPressTimer, clearPressTimer } = useLongPress({ handleLongPress: handleLongPressLine });
@@ -139,7 +141,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
   }, [isEditable]);
 
   return (
-    <S.HighlightEditorContainer ref={editorRef}>
+    <S.HighlightEditor ref={editorRef}>
       <S.SwitchButtonWrapper>
         <S.HighlightText $isEditable={isEditable}>형광펜</S.HighlightText>
         <S.SwitchModIcon
@@ -178,7 +180,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
           removeHighlightByLongPress={removeHighlightByLongPress}
         />
       )}
-    </S.HighlightEditorContainer>
+    </S.HighlightEditor>
   );
 };
 

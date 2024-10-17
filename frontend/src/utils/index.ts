@@ -8,3 +8,4 @@ export { default as isTouchDevice } from './touchDevice';
 export * from './date';
 export * from './media';
 export * from './highlight/index';
+export * from './testUtils';

@@ -1,9 +1,10 @@
+import { ERROR_BOUNDARY_IGNORE_ERROR } from '@/constants';
 import { EditorAnswerMap, HighlightPostPayload } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
-const transformHighlightData = (editorAnswerMap: EditorAnswerMap, questionId: number): HighlightPostPayload => {
+export const transformHighlightData = (editorAnswerMap: EditorAnswerMap, questionId: number): HighlightPostPayload => {
   // NOTE: 하이라이트가 있는 답변만 서버에 보내줌
   return {
     questionId,
@@ -21,18 +22,29 @@ const transformHighlightData = (editorAnswerMap: EditorAnswerMap, questionId: nu
   };
 };
 
+export const isValidPayload = (payload: HighlightPostPayload) => {
+  return payload.highlights.every((highlight) => highlight.lines.every((line) => line.ranges.length > 0));
+};
+
 export const postHighlight = async (editorAnswerMap: EditorAnswerMap, questionId: number) => {
   const postingData = transformHighlightData(editorAnswerMap, questionId);
-  const response = await fetch(endPoint.postingHighlight, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(postingData),
-  });
 
-  if (!response.ok) {
-    throw new Error(createApiErrorMessage(response.status));
+  if (!isValidPayload(postingData)) return console.error('유효하지 않은 형광펜 데이터입니다');
+
+  try {
+    const response = await fetch(endPoint.postingHighlight, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(postingData),
+    });
+
+    if (!response.ok) {
+      throw new Error(ERROR_BOUNDARY_IGNORE_ERROR + createApiErrorMessage(response.status));
+    }
+  } catch (error) {
+    throw new Error(`${ERROR_BOUNDARY_IGNORE_ERROR}-형광펜 API 요청 실패`);
   }
 };

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const HighlightEditorContainer = styled.div`
+export const HighlightEditor = styled.div`
   position: relative;
 
   display: flex;

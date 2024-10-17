@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { postHighlight } from '@/apis/highlight';
 import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
 import { EditorAnswerMap, EditorLine, Highlight, ReviewAnswerResponseData } from '@/types';
 import {
@@ -13,6 +12,8 @@ import {
   SelectionInfo,
 } from '@/utils';
 
+import useMutateHighlight from './useMutateHighlight';
+
 interface UseHighlightProps {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
@@ -20,6 +21,7 @@ interface UseHighlightProps {
   hideDragHighlightButton: () => void;
   updateLongPressHighlightButtonPosition: (rect: DOMRect) => void;
   hideLongPressHighlightButton: () => void;
+  handleErrorModal: (isError: boolean) => void;
 }
 
 interface RemovalTarget {
@@ -61,37 +63,36 @@ const useHighlight = ({
   hideDragHighlightButton,
   updateLongPressHighlightButtonPosition,
   hideLongPressHighlightButton,
+  handleErrorModal,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
+
   // span 클릭 시, 제공되는 형광펜 삭제 기능 타겟
   const [removalTarget, setRemovalTarget] = useState<RemovalTarget | null>(null);
 
-  /**
-   * 선택사항, 토글 버튼 지우기
-   */
-  const resetSelectionAndButton = () => {
+  const updateEditorAnswerMap = (newEditorAnswerMap: EditorAnswerMap) => setEditorAnswerMap(newEditorAnswerMap);
+
+  const resetHighlightButton = () => {
     removeSelection();
     hideDragHighlightButton();
   };
 
-  const addHighlightByDrag = async () => {
+  const { mutate: mutateHighlight } = useMutateHighlight({
+    questionId,
+    updateEditorAnswerMap,
+    resetHighlightButton,
+    handleErrorModal,
+  });
+
+  const addHighlightByDrag = () => {
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
-    const newEditorAnswerMap = selectionInfo.isSameAnswer
+    const newEditorAnswerMap: EditorAnswerMap | undefined = selectionInfo.isSameAnswer
       ? addSingleAnswerHighlight(selectionInfo)
       : addMultipleAnswerHighlight(selectionInfo);
     if (!newEditorAnswerMap) return;
-    // TODO: 데이터 요청 후, 성공 시 업데이트 하기
 
-    try {
-      await postHighlight(newEditorAnswerMap, questionId);
-      setEditorAnswerMap(newEditorAnswerMap);
-
-      resetSelectionAndButton();
-    } catch (error) {
-      // TODO: 자세한 에러처리는 나중애
-      console.error(error);
-    }
+    mutateHighlight(newEditorAnswerMap);
   };
 
   const addMultipleAnswerHighlight = (selectionInfo: SelectionInfo) => {
@@ -220,26 +221,17 @@ const useHighlight = ({
     return newEditorAnswerMap;
   };
 
-  const removeHighlightByDrag = async () => {
+  const removeHighlightByDrag = () => {
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
 
-    const newEditorAnswerMap = selectionInfo.isSameAnswer
+    const newEditorAnswerMap: EditorAnswerMap | undefined = selectionInfo.isSameAnswer
       ? removeSingleAnswerHighlight(selectionInfo)
       : removeMultipleAnswerHighlight(selectionInfo);
 
     if (!newEditorAnswerMap) return;
 
-    try {
-      await postHighlight(newEditorAnswerMap, questionId);
-
-      setEditorAnswerMap(newEditorAnswerMap);
-      // 선택사항, 토글 버튼 지우기
-      resetSelectionAndButton();
-    } catch (error) {
-      // 자세한 에러처리는 나중애
-      console.error(error);
-    }
+    mutateHighlight(newEditorAnswerMap);
   };
 
   const removeSingleAnswerHighlight = (selectionInfo: SelectionInfo) => {
@@ -417,7 +409,7 @@ const useHighlight = ({
 
     const { answerId, lineIndex, highlightIndex } = removalTarget;
 
-    const newEditorAnswerMap = new Map(editorAnswerMap);
+    const newEditorAnswerMap: EditorAnswerMap = new Map(editorAnswerMap);
     const targetAnswer = newEditorAnswerMap.get(answerId);
     if (!targetAnswer) return;
 
@@ -431,17 +423,8 @@ const useHighlight = ({
     newLineList.splice(lineIndex, 1, newTargetBlock);
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
 
-    try {
-      await postHighlight(newEditorAnswerMap, questionId);
-      setEditorAnswerMap(newEditorAnswerMap);
-
-      // 초기화
-      hideLongPressHighlightButton();
-      setRemovalTarget(null);
-    } catch (error) {
-      //TODO: 자세한 에러처리는 나중애
-      console.error(error);
-    }
+    mutateHighlight(newEditorAnswerMap);
+    hideLongPressHighlightButton();
   };
 
   return {
