@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import GrayHighlighterIcon from '@/assets/grayHighlighter.svg';
 import PrimaryHighlighterIcon from '@/assets/primaryHighlighter.svg';
@@ -22,6 +22,7 @@ import {
   useCheckHighlight,
   useLongPressHighlightButtonPosition,
   useLongPress,
+  useEditableState,
 } from './hooks';
 import * as S from './style';
 
@@ -35,7 +36,7 @@ const MODE_ICON = {
     alt: '형광펜 기능 꺼짐',
   },
 };
-interface HighlightEditorProps {
+export interface HighlightEditorProps {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
   handleErrorModal: (isError: boolean) => void;
@@ -43,12 +44,10 @@ interface HighlightEditorProps {
 
 const HighlightEditor = ({ questionId, answerList, handleErrorModal }: HighlightEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
-  const [isEditable, setIsEditable] = useState(false);
-  const { isAddingHighlight, checkHighlight } = useCheckHighlight();
 
-  const handleEditToggleButton = () => {
-    setIsEditable((prev) => !prev);
-  };
+  const { isEditable, handleEditToggleButton } = useEditableState();
+
+  const { isAddingHighlight, checkHighlight } = useCheckHighlight();
 
   const { longPressHighlightButtonPosition, hideLongPressHighlightButton, updateLongPressHighlightButtonPosition } =
     useLongPressHighlightButtonPosition({
