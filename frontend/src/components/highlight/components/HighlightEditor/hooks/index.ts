@@ -5,3 +5,4 @@ export { default as useLongPressHighlightButtonPosition } from './useLongPressHi
 export { default as useLongPress } from './useLongPress';
 export { default as useMutateHighlight } from './useMutateHighlight';
 export { default as useEditableState } from './useEditableState';
+export { default as useHighlightEventListener } from './useHighlightEventListener';

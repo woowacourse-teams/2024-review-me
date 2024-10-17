@@ -10,6 +10,11 @@ interface UseDragButtonPositionProps {
   hideLongPressHighlightButton: () => void;
 }
 
+export interface getDragHighlightButtonParams {
+  selectionInfo: SelectionInfo;
+  isAddingHighlight: boolean;
+}
+
 const useDragHighlightButtonPosition = ({
   isEditable,
   editorRef,
@@ -123,10 +128,6 @@ const useDragHighlightButtonPosition = ({
       buttonWidth,
     };
   };
-  interface getDragHighlightButtonParams {
-    selectionInfo: SelectionInfo;
-    isAddingHighlight: boolean;
-  }
 
   const getDragHighlightButtonPosition = ({ selectionInfo, isAddingHighlight }: getDragHighlightButtonParams) => {
     const { isForwardDrag } = selectionInfo;
