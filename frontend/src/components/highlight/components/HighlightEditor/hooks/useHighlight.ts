@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
 import { EditorAnswerMap, EditorLine, Highlight, ReviewAnswerResponseData } from '@/types';
 import {
-  getEndBlockOffset,
-  getStartBlockOffset,
+  getEndLineOffset,
+  getStartLineOffset,
   getRemovedHighlightList,
   findSelectionInfo,
   getUpdatedBlockByHighlight,
   removeSelection,
-  EditorSelectionInfo,
+  SelectionInfo,
 } from '@/utils';
 
 import useMutateHighlight from './useMutateHighlight';
@@ -18,9 +18,9 @@ interface UseHighlightProps {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
   isEditable: boolean;
-  hideHighlightToggleButton: () => void;
-  updateRemoverPosition: (rect: DOMRect) => void;
-  hideRemover: () => void;
+  hideDragHighlightButton: () => void;
+  updateLongPressHighlightButtonPosition: (rect: DOMRect) => void;
+  hideLongPressHighlightButton: () => void;
   handleErrorModal: (isError: boolean) => void;
 }
 
@@ -60,9 +60,9 @@ const useHighlight = ({
   questionId,
   answerList,
   isEditable,
-  hideHighlightToggleButton,
-  updateRemoverPosition,
-  hideRemover,
+  hideDragHighlightButton,
+  updateLongPressHighlightButtonPosition,
+  hideLongPressHighlightButton,
   handleErrorModal,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
@@ -74,9 +74,7 @@ const useHighlight = ({
 
   const resetHighlightButton = () => {
     removeSelection();
-    hideHighlightToggleButton();
-    hideRemover();
-    setRemovalTarget(null);
+    hideDragHighlightButton();
   };
 
   const { mutate: mutateHighlight } = useMutateHighlight({
@@ -86,7 +84,7 @@ const useHighlight = ({
     handleErrorModal,
   });
 
-  const addHighlight = () => {
+  const addHighlightByDrag = () => {
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
     const newEditorAnswerMap: EditorAnswerMap | undefined = selectionInfo.isSameAnswer
@@ -97,7 +95,7 @@ const useHighlight = ({
     mutateHighlight(newEditorAnswerMap);
   };
 
-  const addMultipleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
+  const addMultipleAnswerHighlight = (selectionInfo: SelectionInfo) => {
     const { startAnswer, endAnswer } = selectionInfo;
     const newEditorAnswerMap = new Map(editorAnswerMap);
     if (!startAnswer || !endAnswer) return;
@@ -177,8 +175,8 @@ const useHighlight = ({
     return newEditorAnswerMap;
   };
 
-  const addSingleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
-    const { startBlockIndex, endBlockIndex, startAnswer } = selectionInfo;
+  const addSingleAnswerHighlight = (selectionInfo: SelectionInfo) => {
+    const { startLineIndex, endLineIndex, startAnswer } = selectionInfo;
     if (!startAnswer) return;
 
     const newEditorAnswerMap = new Map(editorAnswerMap);
@@ -188,10 +186,10 @@ const useHighlight = ({
     if (!targetAnswer) return;
 
     const newLineList: EditorLine[] = targetAnswer.lineList.map((block, index, array) => {
-      if (index < startBlockIndex) return block;
-      if (index > endBlockIndex) return block;
-      if (index === startBlockIndex) {
-        const { startIndex, endIndex } = getStartBlockOffset(selectionInfo, block);
+      if (index < startLineIndex) return block;
+      if (index > endLineIndex) return block;
+      if (index === startLineIndex) {
+        const { startIndex, endIndex } = getStartLineOffset(selectionInfo, block);
 
         return getUpdatedBlockByHighlight({
           blockTextLength: block.text.length,
@@ -202,8 +200,8 @@ const useHighlight = ({
         });
       }
 
-      if (index === endBlockIndex) {
-        const endIndex = getEndBlockOffset(selectionInfo);
+      if (index === endLineIndex) {
+        const endIndex = getEndLineOffset(selectionInfo);
 
         return getUpdatedBlockByHighlight({
           blockTextLength: block.text.length,
@@ -236,8 +234,8 @@ const useHighlight = ({
     mutateHighlight(newEditorAnswerMap);
   };
 
-  const removeSingleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
-    const { startBlockIndex, endBlockIndex, startAnswer } = selectionInfo;
+  const removeSingleAnswerHighlight = (selectionInfo: SelectionInfo) => {
+    const { startLineIndex, endLineIndex, startAnswer } = selectionInfo;
     if (!startAnswer) return;
 
     const newEditorAnswerMap = new Map(editorAnswerMap);
@@ -247,10 +245,10 @@ const useHighlight = ({
     if (!targetAnswer) return;
 
     const newLineList = targetAnswer.lineList.map((line, index) => {
-      if (index < startBlockIndex) return line;
-      if (index > endBlockIndex) return line;
-      if (index === startBlockIndex) {
-        const { startIndex, endIndex } = getStartBlockOffset(selectionInfo, line);
+      if (index < startLineIndex) return line;
+      if (index > endLineIndex) return line;
+      if (index === startLineIndex) {
+        const { startIndex, endIndex } = getStartLineOffset(selectionInfo, line);
 
         return {
           ...line,
@@ -262,8 +260,8 @@ const useHighlight = ({
           }),
         };
       }
-      if (index === endBlockIndex) {
-        const endIndex = getEndBlockOffset(selectionInfo);
+      if (index === endLineIndex) {
+        const endIndex = getEndLineOffset(selectionInfo);
         return {
           ...line,
           highlightList: getRemovedHighlightList({
@@ -284,7 +282,7 @@ const useHighlight = ({
     return newEditorAnswerMap;
   };
 
-  const removeMultipleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
+  const removeMultipleAnswerHighlight = (selectionInfo: SelectionInfo) => {
     const { startAnswer, endAnswer } = selectionInfo;
     const newEditorAnswerMap = new Map(editorAnswerMap);
     if (!startAnswer || !endAnswer) return;
@@ -375,16 +373,12 @@ const useHighlight = ({
     }
     return false;
   };
-  const handleClickBlockList = (event: React.MouseEvent) => {
+  const handleLongPressLine = (event: React.MouseEvent | React.TouchEvent) => {
     if (!isEditable) return;
-
-    const isSameSelectedNode = isSingleCharacterSelected();
-
-    if (isSameSelectedNode) return;
+    if (isSingleCharacterSelected()) return;
 
     const target = event.target as HTMLElement;
     if (!target.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME)) return;
-
     const answerElement = target.closest(`.${EDITOR_ANSWER_CLASS_NAME}`);
     if (!answerElement) return;
     const id = answerElement.getAttribute('data-answer')?.split('-')[0];
@@ -407,10 +401,10 @@ const useHighlight = ({
       highlightIndex: Number(highlightIndex),
     });
 
-    updateRemoverPosition(rect);
+    updateLongPressHighlightButtonPosition(rect);
   };
 
-  const removeHighlightByClick = () => {
+  const removeHighlightByLongPress = async () => {
     if (!removalTarget) return;
 
     const { answerId, lineIndex, highlightIndex } = removalTarget;
@@ -430,14 +424,15 @@ const useHighlight = ({
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
 
     mutateHighlight(newEditorAnswerMap);
+    hideLongPressHighlightButton();
   };
 
   return {
     editorAnswerMap,
-    addHighlight,
+    addHighlightByDrag,
     removeHighlightByDrag,
-    handleClickBlockList,
-    removeHighlightByClick,
+    handleLongPressLine,
+    removeHighlightByLongPress,
     removalTarget,
   };
 };

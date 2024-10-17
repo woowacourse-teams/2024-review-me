@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
 import { HIGHLIGHT_SPAN_CLASS_NAME, SYNTAX_BASIC_CLASS_NAME } from '@/constants';
-import { EditorSelectionInfo } from '@/utils';
+import { SelectionInfo } from '@/utils';
 
 const useCheckHighlight = () => {
   const [isAddingHighlight, setIsAddingHighlight] = useState(false);
 
-  const checkHighlight = (info: EditorSelectionInfo) => {
+  const checkHighlight = (info: SelectionInfo) => {
     const selectedAllSpanList = getAllSpanInSelection(info.selection);
     const isNoneHighlight = selectedAllSpanList.some((span) => !span.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME));
 

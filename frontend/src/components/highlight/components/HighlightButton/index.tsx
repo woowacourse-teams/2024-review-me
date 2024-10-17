@@ -11,16 +11,16 @@ import { Position } from '@/types';
 
 import * as S from './style';
 
-interface HighlighterButtonProps {
+interface DragHighlightAddButtonProps {
   position: Position;
-  addHighlight: () => void;
+  addHighlightByDrag: () => void;
 }
 
-const HighlighterButton = ({ addHighlight, position }: HighlighterButtonProps) => {
+const DragHighlightAddButton = ({ addHighlightByDrag, position }: DragHighlightAddButtonProps) => {
   return (
     <S.Button
       className={HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME}
-      onClick={addHighlight}
+      onClick={addHighlightByDrag}
       $position={position}
       $width={HIGHLIGHT_BUTTON_SIZE.width.buttonWidthColor}
     >
@@ -31,12 +31,12 @@ const HighlighterButton = ({ addHighlight, position }: HighlighterButtonProps) =
   );
 };
 
-interface HighlightDragRemovalProps {
+interface DragHighlightRemoveButtonProps {
   removeHighlightByDrag: () => void;
   position: Position;
 }
 
-const HighlightDragRemoval = ({ removeHighlightByDrag, position }: HighlightDragRemovalProps) => {
+const DragHighlightRemoveButton = ({ removeHighlightByDrag, position }: DragHighlightRemoveButtonProps) => {
   return (
     <S.Button
       className={HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME}
@@ -50,16 +50,19 @@ const HighlightDragRemoval = ({ removeHighlightByDrag, position }: HighlightDrag
   );
 };
 
-interface HighlightClickRemovalProps {
-  removeHighlightByClick: () => void;
+interface LongPressHighlightRemoveButtonProps {
+  removeHighlightByLongPress: () => void;
   position: Position;
 }
 
-const HighlightClickRemoval = ({ removeHighlightByClick, position }: HighlightClickRemovalProps) => {
+const LongPressHighlightRemoveButton = ({
+  removeHighlightByLongPress,
+  position,
+}: LongPressHighlightRemoveButtonProps) => {
   return (
     <S.Button
       className={HIGHLIGHT_REMOVER_CLASS_NAME}
-      onClick={removeHighlightByClick}
+      onClick={removeHighlightByLongPress}
       $position={position}
       $width={HIGHLIGHT_BUTTON_SIZE.width.basic}
     >
@@ -70,9 +73,9 @@ const HighlightClickRemoval = ({ removeHighlightByClick, position }: HighlightCl
 };
 
 const HighlightButton = {
-  highlighter: HighlighterButton,
-  dragRemoval: HighlightDragRemoval,
-  clickRemoval: HighlightClickRemoval,
+  dragHighlightAdd: DragHighlightAddButton,
+  dragHighlightRemove: DragHighlightRemoveButton,
+  longPressHighlightRemove: LongPressHighlightRemoveButton,
 };
 
 export default HighlightButton;
