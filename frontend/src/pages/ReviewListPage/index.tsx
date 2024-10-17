@@ -1,11 +1,11 @@
 import { ErrorSuspenseContainer, AuthAndServerErrorFallback, TopButton } from '@/components';
 
-import PageContents from './components/PageContents';
+import ReviewListPageContents from './components/PageContents';
 
 const ReviewListPage = () => {
   return (
     <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
-      <PageContents />
+      <ReviewListPageContents />
       <TopButton />
     </ErrorSuspenseContainer>
   );
