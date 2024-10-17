@@ -1,7 +1,7 @@
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
-import { ErrorBoundary } from 'react-error-boundary';
 import { useRecoilValue } from 'recoil';
 
+import { ErrorBoundary } from '@/components';
 import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
 import {
   AnswerListRecheckModal,
@@ -31,13 +31,13 @@ const CardFormModalContainer = ({
       <QueryErrorResetBoundary>
         {({ reset }) => (
           <ErrorBoundary
-            FallbackComponent={(fallbackProps) => (
+            fallback={(fallbackProps) => (
               <SubmitErrorModal
                 closeSubmitCheckModal={() => closeModal(CARD_FORM_MODAL_KEY.submitConfirm)}
                 {...fallbackProps}
               />
             )}
-            onReset={reset}
+            resetQueryError={reset}
           >
             {isOpen(CARD_FORM_MODAL_KEY.submitConfirm) && (
               <SubmitCheckModal

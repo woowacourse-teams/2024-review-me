@@ -9,6 +9,6 @@ public class ReviewGroupFixture {
     }
 
     public static ReviewGroup 리뷰_그룹(String reviewRequestCode, String groupAccessCode) {
-        return new ReviewGroup("revieweeName", "projectName", reviewRequestCode, groupAccessCode);
+        return new ReviewGroup("revieweeName", "projectName", reviewRequestCode, groupAccessCode, 1L);
     }
 }

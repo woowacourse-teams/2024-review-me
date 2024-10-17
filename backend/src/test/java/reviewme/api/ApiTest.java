@@ -1,5 +1,7 @@
 package reviewme.api;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyHeaders;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris;
@@ -15,8 +17,11 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.http.HttpHeaders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -35,6 +40,7 @@ import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.ReviewSummaryService;
 import reviewme.reviewgroup.controller.ReviewGroupController;
+import reviewme.reviewgroup.controller.ReviewGroupSessionResolver;
 import reviewme.reviewgroup.service.ReviewGroupLookupService;
 import reviewme.reviewgroup.service.ReviewGroupService;
 import reviewme.template.controller.SectionController;
@@ -73,6 +79,12 @@ public abstract class ApiTest {
     protected ReviewGroupLookupService reviewGroupLookupService;
 
     @MockBean
+    protected RedisTemplate<String, Long> redisTemplate;
+
+    @Mock
+    protected ValueOperations<String, Long> valueOperations;
+
+    @MockBean
     protected ReviewSummaryService reviewSummaryService;
 
     @MockBean
@@ -83,6 +95,9 @@ public abstract class ApiTest {
 
     @MockBean
     protected HighlightService highlightService;
+
+    @MockBean
+    private ReviewGroupSessionResolver reviewGroupSessionResolver;
 
     Filter sessionCookieFilter = (request, response, chain) -> {
         chain.doFilter(request, response);
@@ -95,6 +110,12 @@ public abstract class ApiTest {
             ((HttpServletResponse) response).addCookie(sessionCookie);
         }
     };
+
+    @BeforeEach
+    void setUpRedisConfig() {
+        given(redisTemplate.opsForValue()).willReturn(valueOperations);
+        given(valueOperations.increment(anyString())).willReturn(1L);
+    }
 
     @BeforeEach
     void setUpRestDocs(WebApplicationContext context, RestDocumentationContextProvider provider) {

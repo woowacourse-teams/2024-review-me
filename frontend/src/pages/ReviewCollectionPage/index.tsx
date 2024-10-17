@@ -1,8 +1,14 @@
 import { useState } from 'react';
 
-import { Accordion, AuthAndServerErrorFallback, Dropdown, ErrorSuspenseContainer, TopButton } from '@/components';
+import {
+  Accordion,
+  AuthAndServerErrorFallback,
+  Dropdown,
+  ErrorSuspenseContainer,
+  TopButton,
+  HighlightEditorContainer,
+} from '@/components';
 import { DropdownItem } from '@/components/common/Dropdown';
-import HighlightEditor from '@/components/highlight/HighlightEditor';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 
 import DoughnutChart from './components/DoughnutChart';
@@ -18,6 +24,10 @@ const ReviewCollectionPage = () => {
 
   const [selectedSection, setSelectedSection] = useState<DropdownItem>(dropdownSectionList[0]);
   const { data: groupedReviews } = useGetGroupedReviews({ sectionId: selectedSection.value as number });
+
+  groupedReviews.reviews.forEach((review) => {
+    review.votes?.sort((voteA, voteB) => voteB.count - voteA.count);
+  });
 
   return (
     <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
@@ -39,7 +49,7 @@ const ReviewCollectionPage = () => {
                   ) : (
                     <S.ReviewAnswerContainer>
                       {review.answers && (
-                        <HighlightEditor questionId={review.question.id} answerList={review.answers} />
+                        <HighlightEditorContainer questionId={review.question.id} answerList={review.answers} />
                       )}
                     </S.ReviewAnswerContainer>
                   )}
