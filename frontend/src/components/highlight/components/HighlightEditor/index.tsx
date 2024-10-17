@@ -8,12 +8,6 @@ import {
   HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME,
   HIGHLIGHT_REMOVER_CLASS_NAME,
 } from '@/constants';
-import {
-  useHighlightToggleButtonPosition,
-  useHighlight,
-  useCheckHighlight,
-  useHighlightRemoverPosition,
-} from '@/hooks';
 import { ReviewAnswerResponseData } from '@/types';
 import { findSelectionInfo } from '@/utils';
 
@@ -22,6 +16,12 @@ import EditSwitchButton from '../EditSwitchButton';
 import HighlightRemoverWrapper from '../HighlightRemoverWrapper';
 import HighlightToggleButtonContainer from '../HighlightToggleButtonContainer';
 
+import {
+  useHighlightToggleButtonPosition,
+  useHighlight,
+  useCheckHighlight,
+  useHighlightRemoverPosition,
+} from './hooks';
 import * as S from './style';
 
 const MODE_ICON = {
@@ -34,12 +34,13 @@ const MODE_ICON = {
     alt: '형광펜 기능 꺼짐',
   },
 };
-interface HighlightEditorProps {
+export interface HighlightEditorProps {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
+  handleErrorModal: (isError: boolean) => void;
 }
 
-const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
+const HighlightEditor = ({ questionId, answerList, handleErrorModal }: HighlightEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const [isEditable, setIsEditable] = useState(false);
   const { isAddingHighlight, checkHighlight } = useCheckHighlight();
@@ -73,6 +74,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     hideHighlightToggleButton,
     hideRemover,
     updateRemoverPosition,
+    handleErrorModal,
   });
 
   const handleMouseDown = (e: MouseEvent) => {
@@ -104,7 +106,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
   }, [isEditable]);
 
   return (
-    <S.HighlightEditorContainer ref={editorRef}>
+    <S.HighlightEditor ref={editorRef}>
       <S.SwitchButtonWrapper>
         <S.HighlightText $isEditable={isEditable}>형광펜</S.HighlightText>
         <S.SwitchModIcon
@@ -137,7 +139,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
       {isEditable && removalTarget && removerPosition && (
         <HighlightRemoverWrapper buttonPosition={removerPosition} removeHighlightByClick={removeHighlightByClick} />
       )}
-    </S.HighlightEditorContainer>
+    </S.HighlightEditor>
   );
 };
 

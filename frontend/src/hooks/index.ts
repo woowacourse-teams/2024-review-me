@@ -9,4 +9,3 @@ export { default as useTopButton } from './useTopButton';
 export * from './review';
 export * from './reviewGroup';
 export * from './modal';
-export * from './highlight';

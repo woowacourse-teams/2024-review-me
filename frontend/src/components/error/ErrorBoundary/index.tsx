@@ -37,7 +37,6 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   resetErrorBoundary = () => {
     const { resetQueryError } = this.props;
     if (resetQueryError) resetQueryError();
-
     this.setState({ hasError: false, error: null });
   };
 

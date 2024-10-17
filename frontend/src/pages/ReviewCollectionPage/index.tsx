@@ -1,8 +1,14 @@
 import { useState } from 'react';
 
-import { Accordion, AuthAndServerErrorFallback, Dropdown, ErrorSuspenseContainer, TopButton } from '@/components';
+import {
+  Accordion,
+  AuthAndServerErrorFallback,
+  Dropdown,
+  ErrorSuspenseContainer,
+  TopButton,
+  HighlightEditorContainer,
+} from '@/components';
 import { DropdownItem } from '@/components/common/Dropdown';
-import HighlightEditor from '@/components/highlight/HighlightEditor';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 
 import DoughnutChart from './components/DoughnutChart';
@@ -43,7 +49,7 @@ const ReviewCollectionPage = () => {
                   ) : (
                     <S.ReviewAnswerContainer>
                       {review.answers && (
-                        <HighlightEditor questionId={review.question.id} answerList={review.answers} />
+                        <HighlightEditorContainer questionId={review.question.id} answerList={review.answers} />
                       )}
                     </S.ReviewAnswerContainer>
                   )}

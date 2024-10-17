@@ -7,3 +7,4 @@ export { default as substituteString } from './substituteString';
 export { default as calculateParticle } from './calculateParticle';
 export * from './media';
 export * from './highlight/index';
+export * from './testUtils';
