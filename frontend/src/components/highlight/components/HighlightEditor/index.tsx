@@ -1,29 +1,18 @@
 import { useRef } from 'react';
 
 import DotIcon from '@/assets/dot.svg';
-import GrayHighlighterIcon from '@/assets/grayHighlighter.svg';
-import PrimaryHighlighterIcon from '@/assets/primaryHighlighter.svg';
 import { EDITOR_ANSWER_CLASS_NAME, EDITOR_LINE_CLASS_NAME } from '@/constants';
 import { ReviewAnswerResponseData } from '@/types';
 
 import EditorLineBlock from '../EditorLineBlock';
 import EditSwitchButton from '../EditSwitchButton';
 import HighlightMenu from '../HighlightMenu';
+import Tooltip from '../Tooltip';
 
 import { useHighlight, useCheckHighlight, useLongPress, useEditableState, useHighlightEventListener } from './hooks';
 import useHighlightMenuPosition from './hooks/useHighlightMenuPosition';
 import * as S from './style';
 
-const MODE_ICON = {
-  on: {
-    icon: PrimaryHighlighterIcon,
-    alt: '형광펜 기능 켜짐',
-  },
-  off: {
-    icon: GrayHighlighterIcon,
-    alt: '형광펜 기능 꺼짐',
-  },
-};
 export interface HighlightEditorProps {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
@@ -77,11 +66,8 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
   return (
     <S.HighlightEditor ref={editorRef}>
       <S.SwitchButtonWrapper>
-        <S.HighlightText $isEditable={isEditable}>형광펜</S.HighlightText>
-        <S.SwitchModIcon
-          src={MODE_ICON[isEditable ? 'on' : 'off'].icon}
-          alt={MODE_ICON[isEditable ? 'on' : 'off'].alt}
-        />
+        <S.HighlightText>형광펜</S.HighlightText>
+        <Tooltip />
         <EditSwitchButton isEditable={isEditable} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
       <ul>
