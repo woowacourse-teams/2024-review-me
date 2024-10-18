@@ -24,10 +24,15 @@ const Accordion = ({ title, isInitiallyOpened = false, children }: EssentialProp
 
   return (
     <S.AccordionContainer $isOpened={isOpened}>
-      <S.AccordionButton onClick={handleAccordionButtonClick}>
-        <S.AccordionTitle>{title}</S.AccordionTitle>
-        <S.ArrowIcon src={DownArrowIcon} $isOpened={isOpened} alt="" />
-      </S.AccordionButton>
+      <S.AccordionHeader $isOpened={isOpened}>
+        <S.AccordionButton onClick={handleAccordionButtonClick}>
+          <S.AccordionTitle>
+            <S.QuestionMark>Q. </S.QuestionMark>
+            {title}
+          </S.AccordionTitle>
+          <S.ArrowIcon src={DownArrowIcon} $isOpened={isOpened} alt="" />
+        </S.AccordionButton>
+      </S.AccordionHeader>
       <S.AccordionContentsWrapper>
         <S.AccordionContents $isOpened={isOpened} $contentHeight={contentHeight} ref={contentRef}>
           {children}
