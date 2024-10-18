@@ -12,16 +12,15 @@ import {
   SelectionInfo,
 } from '@/utils';
 
+import { UseLongPressHighlightPositionReturn } from './useLongPressHighlightPosition';
 import useMutateHighlight from './useMutateHighlight';
 
-interface UseHighlightProps {
+interface UseHighlightProps extends UseLongPressHighlightPositionReturn {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
   isEditable: boolean;
-  hideDragHighlightButton: () => void;
-  updateLongPressHighlightButtonPosition: (rect: DOMRect) => void;
-  hideLongPressHighlightButton: () => void;
   handleErrorModal: (isError: boolean) => void;
+  hideHighlightMenu: () => void;
 }
 
 interface RemovalTarget {
@@ -60,9 +59,8 @@ const useHighlight = ({
   questionId,
   answerList,
   isEditable,
-  hideDragHighlightButton,
-  updateLongPressHighlightButtonPosition,
-  hideLongPressHighlightButton,
+  updateHighlightMenuPositionByLongPress,
+  hideHighlightMenu,
   handleErrorModal,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
@@ -74,7 +72,7 @@ const useHighlight = ({
 
   const resetHighlightButton = () => {
     removeSelection();
-    hideDragHighlightButton();
+    hideHighlightMenu();
   };
 
   const { mutate: mutateHighlight } = useMutateHighlight({
@@ -190,7 +188,7 @@ const useHighlight = ({
       if (index > endLineIndex) return block;
       if (index === startLineIndex) {
         const { startIndex, endIndex } = getStartLineOffset(selectionInfo, block);
-
+        console.log(startIndex, endIndex);
         return getUpdatedBlockByHighlight({
           blockTextLength: block.text.length,
           lineIndex: index,
@@ -249,7 +247,7 @@ const useHighlight = ({
       if (index > endLineIndex) return line;
       if (index === startLineIndex) {
         const { startIndex, endIndex } = getStartLineOffset(selectionInfo, line);
-
+        console.log(startIndex, endIndex);
         return {
           ...line,
           highlightList: getRemovedHighlightList({
@@ -373,6 +371,7 @@ const useHighlight = ({
     }
     return false;
   };
+
   const handleLongPressLine = (event: React.MouseEvent | React.TouchEvent) => {
     if (!isEditable) return;
     if (isSingleCharacterSelected()) return;
@@ -401,7 +400,7 @@ const useHighlight = ({
       highlightIndex: Number(highlightIndex),
     });
 
-    updateLongPressHighlightButtonPosition(rect);
+    updateHighlightMenuPositionByLongPress(rect);
   };
 
   const removeHighlightByLongPress = async () => {
@@ -424,7 +423,7 @@ const useHighlight = ({
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
 
     mutateHighlight(newEditorAnswerMap);
-    hideLongPressHighlightButton();
+    hideHighlightMenu();
   };
 
   return {

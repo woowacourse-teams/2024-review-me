@@ -1,16 +1,15 @@
 import { useEffect } from 'react';
 
-import { HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME, HIGHLIGHT_REMOVER_CLASS_NAME } from '@/constants';
+import { HIGHLIGHT_MENU_CLASS_NAME } from '@/constants';
 import { findSelectionInfo, isTouchDevice, SelectionInfo } from '@/utils';
 
-import { getDragHighlightButtonParams } from './useDragHighlightButtonPosition';
+import { HighlightArea } from './useCheckHighlight';
+import { UseDragHighlightPositionReturn } from './useDragHighlightPosition';
 
-interface UseHighlightEventListenerProps {
+interface UseHighlightEventListenerProps extends UseDragHighlightPositionReturn {
   isEditable: boolean;
-  updateDragHighlightButtonPosition: ({ selectionInfo, isAddingHighlight }: getDragHighlightButtonParams) => void;
-  hideDragHighlightButton: () => void;
-  hideLongPressHighlightButton: () => void;
-  checkHighlight: (info: SelectionInfo) => boolean;
+  hideHighlightMenu: () => void;
+  checkHighlight: (info: SelectionInfo) => HighlightArea;
 }
 
 /**
@@ -18,19 +17,15 @@ interface UseHighlightEventListenerProps {
  */
 const useHighlightEventListener = ({
   isEditable,
-  updateDragHighlightButtonPosition,
-  hideDragHighlightButton,
-  hideLongPressHighlightButton,
+  updateHighlightMenuPositionByDrag,
+  hideHighlightMenu,
   checkHighlight,
 }: UseHighlightEventListenerProps) => {
   const hideHighlightButton = (e: MouseEvent | TouchEvent) => {
     if (!isEditable) return;
 
-    const isInButton = (e.target as HTMLElement).closest(`.${HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME}`);
-    const isNotHighlightRemover = (e.target as HTMLElement).closest(`.${HIGHLIGHT_REMOVER_CLASS_NAME}`);
-
-    if (!isInButton) hideDragHighlightButton();
-    if (!isNotHighlightRemover) hideLongPressHighlightButton();
+    const isInHighlightMenu = (e.target as HTMLElement).closest(`.${HIGHLIGHT_MENU_CLASS_NAME}`);
+    if (!isInHighlightMenu) hideHighlightMenu();
   };
 
   const showHighlightButton = () => {
@@ -38,8 +33,8 @@ const useHighlightEventListener = ({
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
 
-    const isAddingHighlight = checkHighlight(selectionInfo);
-    updateDragHighlightButtonPosition({ selectionInfo, isAddingHighlight });
+    const highlightArea = checkHighlight(selectionInfo);
+    updateHighlightMenuPositionByDrag({ selectionInfo, highlightArea });
   };
 
   /**

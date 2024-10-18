@@ -5,20 +5,12 @@ import PrimaryHighlighterIcon from '@/assets/primaryHighlighter.svg';
 import { EDITOR_ANSWER_CLASS_NAME, EDITOR_LINE_CLASS_NAME } from '@/constants';
 import { ReviewAnswerResponseData } from '@/types';
 
-import DragHighlightButtonContainer from '../DragHighlightButtonContainer';
 import EditorLineBlock from '../EditorLineBlock';
 import EditSwitchButton from '../EditSwitchButton';
-import LongPressHighlightButtonWrapper from '../LongPressHighlightButtonWrapper';
+import HighlightMenu from '../HighlightMenu';
 
-import {
-  useDragHighlightButtonPosition,
-  useHighlight,
-  useCheckHighlight,
-  useLongPressHighlightButtonPosition,
-  useLongPress,
-  useEditableState,
-  useHighlightEventListener,
-} from './hooks';
+import { useHighlight, useCheckHighlight, useLongPress, useEditableState, useHighlightEventListener } from './hooks';
+import useHighlightMenuPosition from './hooks/useHighlightMenuPosition';
 import * as S from './style';
 
 const MODE_ICON = {
@@ -42,19 +34,12 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
 
   const { isEditable, handleEditToggleButton } = useEditableState();
 
-  const { isAddingHighlight, checkHighlight } = useCheckHighlight();
+  const { highlightArea, checkHighlight } = useCheckHighlight();
 
-  const { longPressHighlightButtonPosition, hideLongPressHighlightButton, updateLongPressHighlightButtonPosition } =
-    useLongPressHighlightButtonPosition({
-      isEditable,
+  const { menuPosition, updateHighlightMenuPositionByDrag, updateHighlightMenuPositionByLongPress, hideHighlightMenu } =
+    useHighlightMenuPosition({
       editorRef,
-    });
-
-  const { dragHighlightButtonPosition, hideDragHighlightButton, updateDragHighlightButtonPosition } =
-    useDragHighlightButtonPosition({
       isEditable,
-      editorRef,
-      hideLongPressHighlightButton,
     });
 
   const {
@@ -63,14 +48,12 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
     removeHighlightByDrag,
     handleLongPressLine,
     removeHighlightByLongPress,
-    removalTarget,
   } = useHighlight({
     questionId,
     answerList,
     isEditable,
-    hideDragHighlightButton,
-    hideLongPressHighlightButton,
-    updateLongPressHighlightButtonPosition,
+    hideHighlightMenu,
+    updateHighlightMenuPositionByLongPress,
     handleErrorModal,
   });
 
@@ -78,9 +61,8 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
 
   useHighlightEventListener({
     isEditable,
-    updateDragHighlightButtonPosition,
-    hideDragHighlightButton,
-    hideLongPressHighlightButton,
+    updateHighlightMenuPositionByDrag,
+    hideHighlightMenu,
     checkHighlight,
   });
 
@@ -109,18 +91,13 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
           ))}
         </div>
       ))}
-
-      {isEditable && dragHighlightButtonPosition && (
-        <DragHighlightButtonContainer
-          buttonPosition={dragHighlightButtonPosition}
-          isAddingHighlight={isAddingHighlight}
+      {isEditable && menuPosition && (
+        <HighlightMenu
+          position={menuPosition}
+          highlightArea={highlightArea}
+          isOpenLongPressRemove={false}
           addHighlightByDrag={addHighlightByDrag}
           removeHighlightByDrag={removeHighlightByDrag}
-        />
-      )}
-      {isEditable && removalTarget && longPressHighlightButtonPosition && (
-        <LongPressHighlightButtonWrapper
-          buttonPosition={longPressHighlightButtonPosition}
           removeHighlightByLongPress={removeHighlightByLongPress}
         />
       )}

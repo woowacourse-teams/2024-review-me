@@ -1,16 +1,21 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect } from 'react';
 
 import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_BUTTON_SIZE } from '@/constants';
 import { Position } from '@/types';
 
-interface UseLongPressHighlightButtonPositionProps {
+import { useLongPressHighlightButtonPosition } from '.';
+
+interface UseLongPressHighlightPositionProps {
   isEditable: boolean;
   editorRef: React.RefObject<HTMLDivElement>;
+  updateHighlightMenuPosition: (position: Position | null) => void;
 }
-const useLongPressHighlightButtonPosition = ({ isEditable, editorRef }: UseLongPressHighlightButtonPositionProps) => {
-  const [longPressHighlightButtonPosition, setLongPressHighlightButtonPosition] = useState<Position | null>(null);
-
-  const updateLongPressHighlightButtonPosition = (rect: DOMRect) => {
+const useLongPressHighlightPosition = ({
+  isEditable,
+  editorRef,
+  updateHighlightMenuPosition,
+}: UseLongPressHighlightPositionProps) => {
+  const updateHighlightMenuPositionByLongPress = (rect: DOMRect) => {
     const editorRect = editorRef.current?.getClientRects()[0];
     if (!editorRect) return;
 
@@ -27,24 +32,22 @@ const useLongPressHighlightButtonPosition = ({ isEditable, editorRef }: UseLongP
 
     const leftOffsetFromParent = left;
 
-    setLongPressHighlightButtonPosition({
+    updateHighlightMenuPosition({
       top: `
       ${topOffsetFromParent / 10}rem`,
       left: `${leftOffsetFromParent / 10}rem`,
     });
   };
 
-  const hideLongPressHighlightButton = () => setLongPressHighlightButtonPosition(null);
-
   useLayoutEffect(() => {
-    if (!isEditable) hideLongPressHighlightButton();
+    if (!isEditable) updateHighlightMenuPosition(null);
   }, [isEditable]);
 
   return {
-    longPressHighlightButtonPosition,
-    updateLongPressHighlightButtonPosition,
-    hideLongPressHighlightButton,
+    updateHighlightMenuPositionByLongPress,
   };
 };
 
-export default useLongPressHighlightButtonPosition;
+export default useLongPressHighlightPosition;
+
+export type UseLongPressHighlightPositionReturn = ReturnType<typeof useLongPressHighlightButtonPosition>;
