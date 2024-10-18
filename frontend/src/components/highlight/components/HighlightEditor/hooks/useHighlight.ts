@@ -66,14 +66,16 @@ const useHighlight = ({
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
 
   // span 클릭 시, 제공되는 형광펜 삭제 기능 타겟
-  const [removalTarget, setRemovalTarget] = useState<RemovalTarget | null>(null);
+  const [longPressRemovalTarget, setLongPressRemovalTarget] = useState<RemovalTarget | null>(null);
+
+  const resetLongPressRemovalTarget = () => setLongPressRemovalTarget(null);
 
   const updateEditorAnswerMap = (newEditorAnswerMap: EditorAnswerMap) => setEditorAnswerMap(newEditorAnswerMap);
 
   const resetHighlightMenu = () => {
     removeSelection();
     resetHighlightMenuPosition();
-    resetRemovalTarget();
+    resetLongPressRemovalTarget();
   };
 
   const { mutate: mutateHighlight } = useMutateHighlight({
@@ -395,7 +397,7 @@ const useHighlight = ({
     const { highlightList } = targetAnswer.lineList[Number(lineIndex)];
     const highlightIndex = highlightList.findIndex((i) => i.startIndex === Number(start) && i.endIndex === Number(end));
 
-    setRemovalTarget({
+    setLongPressRemovalTarget({
       answerId: targetAnswer.answerId,
       lineIndex: Number(lineIndex),
       highlightIndex: Number(highlightIndex),
@@ -405,9 +407,9 @@ const useHighlight = ({
   };
 
   const removeHighlightByLongPress = async () => {
-    if (!removalTarget) return;
+    if (!longPressRemovalTarget) return;
 
-    const { answerId, lineIndex, highlightIndex } = removalTarget;
+    const { answerId, lineIndex, highlightIndex } = longPressRemovalTarget;
 
     const newEditorAnswerMap: EditorAnswerMap = new Map(editorAnswerMap);
     const targetAnswer = newEditorAnswerMap.get(answerId);
@@ -432,7 +434,8 @@ const useHighlight = ({
     removeHighlightByDrag,
     handleLongPressLine,
     removeHighlightByLongPress,
-    removalTarget,
+    longPressRemovalTarget,
+    resetLongPressRemovalTarget,
   };
 };
 

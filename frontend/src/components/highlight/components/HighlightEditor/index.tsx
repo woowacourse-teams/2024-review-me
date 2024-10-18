@@ -49,10 +49,12 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
 
   const {
     editorAnswerMap,
+    longPressRemovalTarget,
     addHighlightByDrag,
     removeHighlightByDrag,
     handleLongPressLine,
     removeHighlightByLongPress,
+    resetLongPressRemovalTarget,
   } = useHighlight({
     questionId,
     answerList,
@@ -68,6 +70,7 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
     isEditable,
     updateHighlightMenuPositionByDrag,
     resetHighlightMenuPosition,
+    resetLongPressRemovalTarget,
     checkHighlight,
   });
 
@@ -105,7 +108,7 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
         <HighlightMenu
           position={menuPosition}
           highlightArea={highlightArea}
-          isOpenLongPressRemove={false}
+          isOpenLongPressRemove={!!longPressRemovalTarget}
           addHighlightByDrag={addHighlightByDrag}
           removeHighlightByDrag={removeHighlightByDrag}
           removeHighlightByLongPress={removeHighlightByLongPress}

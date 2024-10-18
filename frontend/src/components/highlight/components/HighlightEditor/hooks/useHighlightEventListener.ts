@@ -10,7 +10,7 @@ interface UseHighlightEventListenerProps extends UseDragHighlightPositionReturn 
   isEditable: boolean;
   resetHighlightMenuPosition: () => void;
   checkHighlight: (info: SelectionInfo) => HighlightArea;
-  resetRemovalTarget: () => void;
+  resetLongPressRemovalTarget: () => void;
 }
 
 /**
@@ -21,7 +21,7 @@ const useHighlightEventListener = ({
   updateHighlightMenuPositionByDrag,
   resetHighlightMenuPosition,
   checkHighlight,
-  resetRemovalTarget,
+  resetLongPressRemovalTarget,
 }: UseHighlightEventListenerProps) => {
   const hideHighlightMenu = (e: MouseEvent | TouchEvent) => {
     if (!isEditable) return;
@@ -29,7 +29,7 @@ const useHighlightEventListener = ({
     const isInHighlightMenu = (e.target as HTMLElement).closest(`.${HIGHLIGHT_MENU_CLASS_NAME}`);
     if (!isInHighlightMenu) {
       resetHighlightMenuPosition();
-      resetRemovalTarget();
+      resetLongPressRemovalTarget();
     }
   };
 
