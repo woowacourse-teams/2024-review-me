@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 
+import DotIcon from '@/assets/dot.svg';
 import GrayHighlighterIcon from '@/assets/grayHighlighter.svg';
 import PrimaryHighlighterIcon from '@/assets/primaryHighlighter.svg';
 import { EDITOR_ANSWER_CLASS_NAME, EDITOR_LINE_CLASS_NAME } from '@/constants';
@@ -76,21 +77,26 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
         />
         <EditSwitchButton isEditable={isEditable} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
-      {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
-        <div
-          className={EDITOR_ANSWER_CLASS_NAME}
-          key={answerId}
-          data-answer={`${answerId}-${answerIndex}`}
-          onMouseDown={startPressTimer}
-          onMouseUp={clearPressTimer}
-          onMouseMove={clearPressTimer}
-          onTouchMove={handleLongPressLine}
-        >
-          {lineList.map((line, index) => (
-            <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
-          ))}
-        </div>
-      ))}
+      <ul>
+        {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
+          <S.AnswerListItem
+            className={EDITOR_ANSWER_CLASS_NAME}
+            key={answerId}
+            data-answer={`${answerId}-${answerIndex}`}
+            onMouseDown={startPressTimer}
+            onMouseUp={clearPressTimer}
+            onMouseMove={clearPressTimer}
+            onTouchMove={handleLongPressLine}
+          >
+            <S.Marker src={DotIcon} alt="점" />
+            <S.AnswerText>
+              {lineList.map((line, index) => (
+                <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
+              ))}
+            </S.AnswerText>
+          </S.AnswerListItem>
+        ))}
+      </ul>
       {isEditable && menuPosition && (
         <HighlightMenu
           position={menuPosition}
