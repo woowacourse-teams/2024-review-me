@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 interface AccordionStyleProps {
   $isOpened: boolean;
   $contentHeight?: number;
+  $isFirstRender?: boolean;
 }
 
 export const AccordionContainer = styled.div<AccordionStyleProps>`
@@ -24,7 +25,7 @@ export const AccordionContainer = styled.div<AccordionStyleProps>`
 export const AccordionHeader = styled.div<AccordionStyleProps>`
   display: flex;
   padding: 1rem;
-  border-bottom: ${({ $isOpened, theme }) => ($isOpened ? `0.1rem solid ${theme.colors.placeholder}` : '')};
+  border-bottom: ${({ $isOpened, theme }) => $isOpened && `0.1rem solid ${theme.colors.placeholder}`};
 `;
 
 export const AccordionButton = styled.button`
@@ -58,7 +59,7 @@ export const AccordionContentsWrapper = styled.div`
 `;
 
 export const AccordionContents = styled.div<AccordionStyleProps>`
-  margin-top: ${({ $isOpened, $contentHeight }) => ($isOpened ? '0' : `-${$contentHeight! / 10}rem`)};
-  opacity: ${({ $isOpened }) => ($isOpened ? '1' : '0')};
-  transition: 0.3s ease;
+  margin-top: ${({ $isOpened, $contentHeight }) => ($isOpened ? 0 : `-${$contentHeight! * 0.1}rem`)};
+  opacity: ${({ $isOpened }) => ($isOpened ? 1 : 0)};
+  transition: ${({ $isFirstRender }) => ($isFirstRender === true ? 'none' : '0.3s ease-in')};
 `;
