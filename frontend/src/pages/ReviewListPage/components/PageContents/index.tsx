@@ -1,17 +1,18 @@
 import { useNavigate } from 'react-router';
 
+import { ReviewEmptySection } from '@/components';
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 import ReviewCard from '@/components/ReviewCard';
+import { REVIEW_EMPTY } from '@/constants';
 import { ROUTE } from '@/constants/route';
 import { useGetReviewList, useSearchParamAndQuery } from '@/hooks';
 
 import { useInfiniteScroll } from '../../hooks';
-import ReviewEmptySection from '../ReviewEmptySection';
 
 import * as S from './styles';
 
-const PageContents = () => {
+const ReviewListPageContents = () => {
   const navigate = useNavigate();
 
   const { data, fetchNextPage, isLoading, isSuccess } = useGetReviewList();
@@ -33,32 +34,32 @@ const PageContents = () => {
     isLastPage,
   });
 
+  if (!isSuccess) return null;
+
   return (
-    isSuccess && (
-      <ReviewDisplayLayout isReviewList={true}>
-        {reviews.length === 0 ? (
-          <ReviewEmptySection />
-        ) : (
-          <S.ReviewSection>
-            {reviews.map((review, index) => {
-              const isLastReview = reviews.length === index + 1;
-              return (
-                <UndraggableWrapper key={review.reviewId}>
-                  <ReviewCard
-                    createdAt={review.createdAt}
-                    contentPreview={review.contentPreview}
-                    categories={review.categories}
-                    handleClick={() => handleReviewClick(review.reviewId)}
-                  />
-                  <div ref={isLastReview ? lastReviewElementRef : null} style={{ height: '0.1rem' }} />
-                </UndraggableWrapper>
-              );
-            })}
-          </S.ReviewSection>
-        )}
-      </ReviewDisplayLayout>
-    )
+    <ReviewDisplayLayout isReviewList={true}>
+      {reviews.length === 0 ? (
+        <ReviewEmptySection content={REVIEW_EMPTY.noReviewInTotal} />
+      ) : (
+        <S.ReviewSection>
+          {reviews.map((review, index) => {
+            const isLastReview = reviews.length === index + 1;
+            return (
+              <UndraggableWrapper key={review.reviewId}>
+                <ReviewCard
+                  createdAt={review.createdAt}
+                  contentPreview={review.contentPreview}
+                  categories={review.categories}
+                  handleClick={() => handleReviewClick(review.reviewId)}
+                />
+                <div ref={isLastReview ? lastReviewElementRef : null} style={{ height: '0.1rem' }} />
+              </UndraggableWrapper>
+            );
+          })}
+        </S.ReviewSection>
+      )}
+    </ReviewDisplayLayout>
   );
 };
 
-export default PageContents;
+export default ReviewListPageContents;
