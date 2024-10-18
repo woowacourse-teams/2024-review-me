@@ -12,17 +12,17 @@ interface ReviewCardProps {
 const ReviewCard = ({ createdAt, contentPreview, categories, handleClick }: ReviewCardProps) => {
   return (
     <S.Layout onClick={handleClick}>
-      <S.LeftLineBorder />
-
+      <S.Header>
+        <S.Date>{createdAt}</S.Date>
+      </S.Header>
       <S.Main>
-        <span>{contentPreview}</span>
+        <S.ContentPreview>{contentPreview}</S.ContentPreview>
         <S.Footer>
           <S.Keyword>
             {categories.map((category) => (
               <div key={category.optionId}>{category.content}</div>
             ))}
           </S.Keyword>
-          <S.Date>{createdAt}</S.Date>
         </S.Footer>
       </S.Main>
     </S.Layout>

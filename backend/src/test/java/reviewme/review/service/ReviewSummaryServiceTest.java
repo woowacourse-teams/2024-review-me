@@ -1,7 +1,6 @@
 package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
@@ -16,7 +15,6 @@ import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -65,8 +63,7 @@ class ReviewSummaryServiceTest {
         reviewRepository.save(new Review(template.getId(), reviewGroup2.getId(), List.of()));
 
         // when
-        ReceivedReviewsSummaryResponse actual = reviewSummaryService.getReviewSummary(
-                reviewGroup1.getReviewRequestCode());
+        ReceivedReviewsSummaryResponse actual = reviewSummaryService.getReviewSummary(reviewGroup1);
 
         // then
         assertAll(
@@ -74,16 +71,5 @@ class ReviewSummaryServiceTest {
                 () -> assertThat(actual.revieweeName()).isEqualTo(reviewGroup1.getReviewee()),
                 () -> assertThat(actual.totalReviewCount()).isEqualTo(reviews.size())
         );
-    }
-
-    @Test
-    void 리뷰_요약_정보_조회시_리뷰_요청_코드가_존재하지_않는_경우_예외가_발생한다() {
-        // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
-
-        // when, then
-        assertThatThrownBy(() -> reviewSummaryService.getReviewSummary(
-                reviewGroup.getReviewRequestCode() + "wrong"))
-                .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 }
