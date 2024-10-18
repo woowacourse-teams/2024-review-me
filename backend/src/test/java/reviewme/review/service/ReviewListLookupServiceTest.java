@@ -1,7 +1,6 @@
 package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
 import static reviewme.fixture.OptionItemFixture.선택지;
@@ -24,7 +23,6 @@ import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -61,12 +59,6 @@ class ReviewListLookupServiceTest {
     private ReviewRepository reviewRepository;
 
     @Test
-    void 리뷰_요청_코드가_존재하지_않는_경우_예외가_발생한다() {
-        assertThatThrownBy(() -> reviewListLookupService.getReceivedReviews(Long.MAX_VALUE, 5, "abc"))
-                .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
-    }
-
-    @Test
     void 확인_코드에_해당하는_그룹이_존재하면_내가_받은_리뷰_목록을_반환한다() {
         // given - 리뷰 그룹 저장
         String reviewRequestCode = "reviewRequestCode";
@@ -91,7 +83,8 @@ class ReviewListLookupServiceTest {
 
         // when
         ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(
-                Long.MAX_VALUE, 5, reviewRequestCode);
+                Long.MAX_VALUE, 5, reviewGroup
+        );
 
         // then
         assertAll(
@@ -124,7 +117,7 @@ class ReviewListLookupServiceTest {
 
         // when
         ReceivedReviewsResponse response
-                = reviewListLookupService.getReceivedReviews(Long.MAX_VALUE, 2, reviewRequestCode);
+                = reviewListLookupService.getReceivedReviews(Long.MAX_VALUE, 2, reviewGroup);
 
         // then
         assertAll(

@@ -20,9 +20,9 @@ class ReviewGroupTest {
 
         // when, then
         assertAll(
-                () -> assertThatCode(() -> new ReviewGroup(minLengthName, "project", "reviewCode", "groupCode"))
+                () -> assertThatCode(() -> new ReviewGroup(minLengthName, "project", "reviewCode", "groupCode", 1L))
                         .doesNotThrowAnyException(),
-                () -> assertThatCode(() -> new ReviewGroup(maxLengthName, "project", "reviewCode", "groupCode"))
+                () -> assertThatCode(() -> new ReviewGroup(maxLengthName, "project", "reviewCode", "groupCode", 1L))
                         .doesNotThrowAnyException()
         );
     }
@@ -37,9 +37,9 @@ class ReviewGroupTest {
 
         // when, then
         assertAll(
-                () -> assertThatCode(() -> new ReviewGroup(insufficientName, "project", "reviewCode", "groupCode"))
+                () -> assertThatCode(() -> new ReviewGroup(insufficientName, "project", "reviewCode", "groupCode", 1L))
                         .isInstanceOf(BadRequestException.class),
-                () -> assertThatThrownBy(() -> new ReviewGroup(exceedName, "project", "reviewCode", "groupCode"))
+                () -> assertThatThrownBy(() -> new ReviewGroup(exceedName, "project", "reviewCode", "groupCode", 1L))
                         .isInstanceOf(BadRequestException.class)
         );
     }
@@ -54,9 +54,9 @@ class ReviewGroupTest {
 
         // when, then
         assertAll(
-                () -> assertThatThrownBy(() -> new ReviewGroup("reviwee", insufficientName, "reviewCode", "groupCode"))
+                () -> assertThatThrownBy(() -> new ReviewGroup("reviwee", insufficientName, "reviewCode", "groupCode", 1L))
                         .isInstanceOf(BadRequestException.class),
-                () -> assertThatThrownBy(() -> new ReviewGroup("reviwee", exceedName, "reviewCode", "groupCode"))
+                () -> assertThatThrownBy(() -> new ReviewGroup("reviwee", exceedName, "reviewCode", "groupCode", 1L))
                         .isInstanceOf(BadRequestException.class)
         );
     }

@@ -85,7 +85,7 @@ class ReviewApiTest extends ApiTest {
     @Test
     void 리뷰_그룹_코드가_올바르지_않은_경우_예외가_발생한다() {
         BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
-                .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException(anyString()));
+                .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException("ABCD1234"));
 
         FieldDescriptor[] requestFieldDescriptors = {
                 fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
@@ -111,7 +111,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 자신이_받은_리뷰_한_개를_조회한다() {
-        BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyLong(), anyString()))
+        BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyLong(), any()))
                 .willReturn(TemplateFixture.templateAnswerResponse());
 
         ParameterDescriptor[] requestPathDescriptors = {
@@ -176,7 +176,7 @@ class ReviewApiTest extends ApiTest {
         );
         ReceivedReviewsResponse response = new ReceivedReviewsResponse(
                 "아루3", "리뷰미", 1L, true, receivedReviews);
-        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyLong(), anyInt(), anyString()))
+        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyLong(), anyInt(), any()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
@@ -225,7 +225,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 자신이_받은_리뷰의_요약를_조회한다() {
-        BDDMockito.given(reviewSummaryService.getReviewSummary(anyString()))
+        BDDMockito.given(reviewSummaryService.getReviewSummary(any()))
                 .willReturn(new ReceivedReviewsSummaryResponse("리뷰미", "산초", 5));
 
         CookieDescriptor[] cookieDescriptors = {
@@ -271,7 +271,7 @@ class ReviewApiTest extends ApiTest {
                                 new VoteResponse("짜장", 3),
                                 new VoteResponse("짬뽕", 5))))
         );
-        BDDMockito.given(reviewGatheredLookupService.getReceivedReviewsBySectionId(anyString(), anyLong()))
+        BDDMockito.given(reviewGatheredLookupService.getReceivedReviewsBySectionId(any(), anyLong()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {

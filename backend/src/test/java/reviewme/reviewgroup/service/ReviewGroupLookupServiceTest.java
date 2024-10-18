@@ -28,7 +28,8 @@ class ReviewGroupLookupServiceTest {
                 "ted",
                 "review-me",
                 "reviewRequestCode",
-                "groupAccessCode"
+                "groupAccessCode",
+                1L
         ));
 
         // when

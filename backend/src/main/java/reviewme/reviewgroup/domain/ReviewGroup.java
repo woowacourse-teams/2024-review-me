@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import reviewme.review.domain.exception.InvalidProjectNameLengthException;
@@ -16,6 +17,7 @@ import reviewme.review.domain.exception.InvalidRevieweeNameLengthException;
 @Entity
 @Table(name = "review_group")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = "id")
 @Getter
 public class ReviewGroup {
 
@@ -41,13 +43,10 @@ public class ReviewGroup {
     private GroupAccessCode groupAccessCode;
 
     @Column(name = "template_id", nullable = false)
-    private long templateId = 1L;
+    private long templateId;
 
-    public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode) {
-        this(reviewee, projectName, reviewRequestCode, groupAccessCode, 1L);
-    }
-
-    public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode, long templateId) {
+    public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode,
+                       long templateId) {
         validateRevieweeLength(reviewee);
         validateProjectNameLength(projectName);
         this.reviewee = reviewee;
