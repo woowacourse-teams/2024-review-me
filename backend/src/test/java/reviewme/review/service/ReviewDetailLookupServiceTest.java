@@ -182,7 +182,7 @@ class ReviewDetailLookupServiceTest {
                             .extracting(SectionAnswerResponse::sectionId)
                             .containsExactly(section.getId()),
                     () -> assertThat(reviewDetail.sections())
-                            .flatExtracting(SectionAnswerResponse::questions)
+                            .flatExtracting(SectionAnswerResponse::reviews)
                             .extracting(QuestionAnswerResponse::questionId)
                             .containsExactly(question1.getId())
             );

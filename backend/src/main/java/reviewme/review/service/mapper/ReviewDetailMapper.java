@@ -17,7 +17,6 @@ import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
@@ -53,7 +52,7 @@ public class ReviewDetailMapper {
         List<SectionAnswerResponse> sectionResponses = sections.stream()
                 .map(section -> mapToSectionResponse(review, section, questions,
                         optionGroupsByQuestion, optionItemsByOptionGroup))
-                .filter(sectionResponse -> !sectionResponse.questions().isEmpty())
+                .filter(sectionResponse -> !sectionResponse.reviews().isEmpty())
                 .toList();
 
         return new ReviewDetailResponse(
@@ -107,22 +106,15 @@ public class ReviewDetailMapper {
 
         List<OptionItemAnswerResponse> optionItemResponse = optionItems.stream()
                 .filter(optionItem -> selectedOptionIds.contains(optionItem.getId()))
-                .map(optionItem -> new OptionItemAnswerResponse(optionItem.getId(), optionItem.getContent(), true))
+                .map(optionItem -> new OptionItemAnswerResponse(optionItem.getId(), optionItem.getContent()))
                 .toList();
-
-        OptionGroupAnswerResponse optionGroupAnswerResponse = new OptionGroupAnswerResponse(
-                optionGroup.getId(),
-                optionGroup.getMinSelectionCount(),
-                optionGroup.getMaxSelectionCount(),
-                optionItemResponse
-        );
 
         return new QuestionAnswerResponse(
                 question.getId(),
                 question.isRequired(),
                 question.getQuestionType(),
                 question.getContent(),
-                optionGroupAnswerResponse,
+                optionItemResponse,
                 null
         );
     }
