@@ -69,8 +69,10 @@ class ReviewGatherMapperTest {
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewGatherMapper.mapToReviewsGatheredBySection(Map.of(
-                question1, List.of(textAnswer1, textAnswer2),
-                question2, List.of(checkboxAnswer)));
+                        question1, List.of(textAnswer1, textAnswer2),
+                        question2, List.of(checkboxAnswer)),
+                List.of()
+        );
 
         // then
         assertAll(
@@ -90,9 +92,13 @@ class ReviewGatherMapperTest {
         Question question2 = questionRepository.save(서술형_옵션_질문(2));
 
         // when
-        ReviewsGatheredBySectionResponse actual = reviewGatherMapper.mapToReviewsGatheredBySection(Map.of(
-                question1, List.of(),
-                question2, List.of()));
+        ReviewsGatheredBySectionResponse actual = reviewGatherMapper.mapToReviewsGatheredBySection(
+                Map.of(
+                        question1, List.of(),
+                        question2, List.of()
+                ),
+                List.of()
+        );
 
         // then
         assertAll(
