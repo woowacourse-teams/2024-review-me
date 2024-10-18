@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 
-import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_BUTTON_SIZE, HIGHLIGHT_MENU_WIDTH } from '@/constants';
+import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_MENU_STYLE_SIZE, HIGHLIGHT_MENU_WIDTH } from '@/constants';
 import { Position } from '@/types';
 import { isTouchDevice, SelectionInfo } from '@/utils';
 
@@ -60,7 +60,7 @@ const useDragHighlightPosition = ({
     isForwardDrag: boolean,
     buttonWidth: number,
   ) => {
-    const { height: buttonHeight } = HIGHLIGHT_BUTTON_SIZE;
+    const { height: buttonHeight } = HIGHLIGHT_MENU_STYLE_SIZE;
     const isTouch = isTouchDevice();
     //뷰포트 기준 위치
     const rectLeft = isForwardDrag ? lastRect.right - (isTouch ? buttonWidth : 0) : lastRect.left;
@@ -83,7 +83,7 @@ const useDragHighlightPosition = ({
    * @param editorRect  editor DOMRect
    */
   const checkOverflow = (rectLeft: number, rectTop: number, buttonWidth: number, editorRect: DOMRect) => {
-    const { shadow: shadowWidth, height: buttonHeight } = HIGHLIGHT_BUTTON_SIZE;
+    const { shadow: shadowWidth, height: buttonHeight } = HIGHLIGHT_MENU_STYLE_SIZE;
     const isOverflowingHorizontally = editorRect.right < rectLeft + buttonWidth + shadowWidth;
     const isOverflowingVertically = editorRect.bottom < rectTop + buttonHeight;
 
@@ -108,7 +108,7 @@ const useDragHighlightPosition = ({
     editorRect,
     lastRect,
   }: CalculateDragHighlightMenuPosition) => {
-    const { height: buttonHeight, shadow: shadowWidth } = HIGHLIGHT_BUTTON_SIZE;
+    const { height: buttonHeight, shadow: shadowWidth } = HIGHLIGHT_MENU_STYLE_SIZE;
 
     const left = isOverflowingHorizontally ? editorRect.width - buttonWidth - shadowWidth : leftOffsetFromEditor;
     const top = isOverflowingVertically

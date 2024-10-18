@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 
-import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_BUTTON_SIZE } from '@/constants';
+import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_MENU_STYLE_SIZE } from '@/constants';
 import { Position } from '@/types';
 
 import { useLongPressHighlightButtonPosition } from '.';
@@ -22,7 +22,7 @@ const useLongPressHighlightPosition = ({
     const top = rect.bottom + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON;
     const left = rect.left + rect.width / 2 - editorRect.left;
 
-    const buttonTotalHeight = HIGHLIGHT_BUTTON_SIZE.height + HIGHLIGHT_BUTTON_SIZE.shadow;
+    const buttonTotalHeight = HIGHLIGHT_MENU_STYLE_SIZE.height + HIGHLIGHT_MENU_STYLE_SIZE.shadow;
     const isOverflowingVertically =
       rect.bottom + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON + buttonTotalHeight >= editorRect.bottom;
 
