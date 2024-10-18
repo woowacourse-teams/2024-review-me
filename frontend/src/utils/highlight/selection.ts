@@ -97,7 +97,6 @@ export const findSelectedLineInfo = (selection: Selection) => {
   const anchorLineElement = anchorNode?.parentElement?.closest(`.${EDITOR_LINE_CLASS_NAME}`);
   const focusLineElement = focusNode?.parentElement?.closest(`.${EDITOR_LINE_CLASS_NAME}`);
 
-  if (!anchorLine || !focusLine) return;
   if (!anchorLineElement || !focusLineElement) return;
 
   const anchorLineIndex = Number(anchorLineElement.getAttribute('data-index') || '-1');
@@ -109,12 +108,26 @@ export const findSelectedLineInfo = (selection: Selection) => {
     anchorOffset,
     focusOffset,
   });
+  // 줄 기준 Offset 비교
+  const anchorIndexInLine = calculateOffsetInLine({
+    selectionTargetNode: anchorNode,
+    selectionTargetOffset: anchorOffset,
+    lineElement: anchorLineElement,
+  });
+
+  const focusIndexInLine = calculateOffsetInLine({
+    selectionTargetNode: focusNode,
+    selectionTargetOffset: focusOffset,
+    lineElement: focusLineElement,
+  });
 
   return {
     anchorLineElement,
     anchorLineIndex,
     focusLineElement,
     focusLineIndex,
+    anchorIndexInLine,
+    focusIndexInLine,
     ...answerInfo,
   };
 };
@@ -141,33 +154,33 @@ export const calculateStartAndEndLine = ({
 };
 
 interface CalculateDragDirectionParams {
-  selection: Selection;
   startLineIndex: number;
   endLineIndex: number;
-  anchorLineIndex: number;
+  anchorIndexInLine: number;
+  focusIndexInLine: number;
   isSameAnswer: boolean;
   isForwardDragAnswer: boolean;
 }
 
 export const calculateDragDirection = ({
-  selection,
   startLineIndex,
   endLineIndex,
-  anchorLineIndex,
+  anchorIndexInLine,
+  focusIndexInLine,
   isSameAnswer,
   isForwardDragAnswer,
 }: CalculateDragDirectionParams) => {
-  const { anchorOffset, focusOffset } = selection;
-  const minOffset = Math.min(anchorOffset, focusOffset);
+  // 하이라이트 영역의 시작과 끝이 다른 답변일 경우
+  if (!isSameAnswer) return isForwardDragAnswer;
 
-  if (isSameAnswer) {
-    const isForwardDrag =
-      startLineIndex === endLineIndex ? minOffset === anchorOffset : startLineIndex === anchorLineIndex;
+  // 하이라이트 영역의 시작과 끝이 같은 답변의 같은 줄인 경우
+  const isSameLine = startLineIndex === endLineIndex;
 
-    return isForwardDrag;
-  }
+  // 같은 답변의 같은 줄
+  if (isSameLine) return anchorIndexInLine < focusIndexInLine;
 
-  return isForwardDragAnswer;
+  // 같은 답변의 다른 줄
+  return startLineIndex < endLineIndex;
 };
 
 /**
@@ -180,15 +193,15 @@ export const findSelectionInfo = () => {
 
   const selectedElementInfo = findSelectedLineInfo(selection);
   if (!selectedElementInfo) return;
-  const { isSameAnswer } = selectedElementInfo;
+  const { isSameAnswer, anchorIndexInLine, focusIndexInLine } = selectedElementInfo;
   const { startLineElement, startLineIndex, endLineElement, endLineIndex } =
     calculateStartAndEndLine(selectedElementInfo);
 
   const isForwardDrag = calculateDragDirection({
-    selection,
     startLineIndex,
     endLineIndex,
-    anchorLineIndex: selectedElementInfo.anchorLineIndex,
+    focusIndexInLine,
+    anchorIndexInLine,
     isSameAnswer: !!isSameAnswer,
     isForwardDragAnswer: !!selectedElementInfo.isForwardDragAnswer,
   });
