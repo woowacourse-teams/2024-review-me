@@ -12,16 +12,15 @@ import {
   SelectionInfo,
 } from '@/utils';
 
+import { UseLongPressHighlightPositionReturn } from './useLongPressHighlightPosition';
 import useMutateHighlight from './useMutateHighlight';
 
-interface UseHighlightProps {
+interface UseHighlightProps extends UseLongPressHighlightPositionReturn {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
   isEditable: boolean;
-  hideDragHighlightButton: () => void;
-  updateLongPressHighlightButtonPosition: (rect: DOMRect) => void;
-  hideLongPressHighlightButton: () => void;
   handleErrorModal: (isError: boolean) => void;
+  resetHighlightMenuPosition: () => void;
 }
 
 interface RemovalTarget {
@@ -60,27 +59,29 @@ const useHighlight = ({
   questionId,
   answerList,
   isEditable,
-  hideDragHighlightButton,
-  updateLongPressHighlightButtonPosition,
-  hideLongPressHighlightButton,
+  updateHighlightMenuPositionByLongPress,
+  resetHighlightMenuPosition,
   handleErrorModal,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
 
   // span 클릭 시, 제공되는 형광펜 삭제 기능 타겟
-  const [removalTarget, setRemovalTarget] = useState<RemovalTarget | null>(null);
+  const [longPressRemovalTarget, setLongPressRemovalTarget] = useState<RemovalTarget | null>(null);
+
+  const resetLongPressRemovalTarget = () => setLongPressRemovalTarget(null);
 
   const updateEditorAnswerMap = (newEditorAnswerMap: EditorAnswerMap) => setEditorAnswerMap(newEditorAnswerMap);
 
-  const resetHighlightButton = () => {
+  const resetHighlightMenu = () => {
     removeSelection();
-    hideDragHighlightButton();
+    resetHighlightMenuPosition();
+    resetLongPressRemovalTarget();
   };
 
   const { mutate: mutateHighlight } = useMutateHighlight({
     questionId,
     updateEditorAnswerMap,
-    resetHighlightButton,
+    resetHighlightMenu,
     handleErrorModal,
   });
 
@@ -249,7 +250,7 @@ const useHighlight = ({
       if (index > endLineIndex) return line;
       if (index === startLineIndex) {
         const { startIndex, endIndex } = getStartLineOffset(selectionInfo, line);
-
+        console.log(startIndex, endIndex);
         return {
           ...line,
           highlightList: getRemovedHighlightList({
@@ -373,6 +374,7 @@ const useHighlight = ({
     }
     return false;
   };
+
   const handleLongPressLine = (event: React.MouseEvent | React.TouchEvent) => {
     if (!isEditable) return;
     if (isSingleCharacterSelected()) return;
@@ -395,19 +397,19 @@ const useHighlight = ({
     const { highlightList } = targetAnswer.lineList[Number(lineIndex)];
     const highlightIndex = highlightList.findIndex((i) => i.startIndex === Number(start) && i.endIndex === Number(end));
 
-    setRemovalTarget({
+    setLongPressRemovalTarget({
       answerId: targetAnswer.answerId,
       lineIndex: Number(lineIndex),
       highlightIndex: Number(highlightIndex),
     });
 
-    updateLongPressHighlightButtonPosition(rect);
+    updateHighlightMenuPositionByLongPress(rect);
   };
 
   const removeHighlightByLongPress = async () => {
-    if (!removalTarget) return;
+    if (!longPressRemovalTarget) return;
 
-    const { answerId, lineIndex, highlightIndex } = removalTarget;
+    const { answerId, lineIndex, highlightIndex } = longPressRemovalTarget;
 
     const newEditorAnswerMap: EditorAnswerMap = new Map(editorAnswerMap);
     const targetAnswer = newEditorAnswerMap.get(answerId);
@@ -424,7 +426,6 @@ const useHighlight = ({
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
 
     mutateHighlight(newEditorAnswerMap);
-    hideLongPressHighlightButton();
   };
 
   return {
@@ -433,7 +434,8 @@ const useHighlight = ({
     removeHighlightByDrag,
     handleLongPressLine,
     removeHighlightByLongPress,
-    removalTarget,
+    longPressRemovalTarget,
+    resetLongPressRemovalTarget,
   };
 };
 
