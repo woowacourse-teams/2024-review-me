@@ -8,8 +8,9 @@ import { UseDragHighlightPositionReturn } from './useDragHighlightPosition';
 
 interface UseHighlightEventListenerProps extends UseDragHighlightPositionReturn {
   isEditable: boolean;
-  hideHighlightMenu: () => void;
+  resetHighlightMenuPosition: () => void;
   checkHighlight: (info: SelectionInfo) => HighlightArea;
+  resetRemovalTarget: () => void;
 }
 
 /**
@@ -18,17 +19,21 @@ interface UseHighlightEventListenerProps extends UseDragHighlightPositionReturn 
 const useHighlightEventListener = ({
   isEditable,
   updateHighlightMenuPositionByDrag,
-  hideHighlightMenu,
+  resetHighlightMenuPosition,
   checkHighlight,
+  resetRemovalTarget,
 }: UseHighlightEventListenerProps) => {
-  const hideHighlightButton = (e: MouseEvent | TouchEvent) => {
+  const hideHighlightMenu = (e: MouseEvent | TouchEvent) => {
     if (!isEditable) return;
 
     const isInHighlightMenu = (e.target as HTMLElement).closest(`.${HIGHLIGHT_MENU_CLASS_NAME}`);
-    if (!isInHighlightMenu) hideHighlightMenu();
+    if (!isInHighlightMenu) {
+      resetHighlightMenuPosition();
+      resetRemovalTarget();
+    }
   };
 
-  const showHighlightButton = () => {
+  const showHighlightMenu = () => {
     if (!isEditable) return;
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
@@ -41,11 +46,11 @@ const useHighlightEventListener = ({
    * document에 형광펜 이벤트 적용
    */
   const addHighlightEvent = () => {
-    document.addEventListener('mousedown', hideHighlightButton);
-    document.addEventListener('mouseup', showHighlightButton);
+    document.addEventListener('mousedown', hideHighlightMenu);
+    document.addEventListener('mouseup', showHighlightMenu);
     // NOTE: 터치가 가능한 기기에서는 touchstart, touchend 보다 selectionchange를 사용하는 게 오류가 없음
     if (isTouchDevice()) {
-      document.addEventListener('selectionchange', showHighlightButton);
+      document.addEventListener('selectionchange', showHighlightMenu);
       document.addEventListener('contextmenu', hideContextMenuInTouch);
     }
   };
@@ -60,11 +65,11 @@ const useHighlightEventListener = ({
    * document에 형광펜 이벤트 삭제
    */
   const removeHighlightEvent = () => {
-    document.removeEventListener('mouseup', showHighlightButton);
-    document.removeEventListener('mousedown', hideHighlightButton);
+    document.removeEventListener('mouseup', showHighlightMenu);
+    document.removeEventListener('mousedown', hideHighlightMenu);
     if (isTouchDevice()) {
       document.removeEventListener('contextmenu', hideContextMenuInTouch);
-      document.removeEventListener('selectionChange', showHighlightButton);
+      document.removeEventListener('selectionChange', showHighlightMenu);
     }
   };
 

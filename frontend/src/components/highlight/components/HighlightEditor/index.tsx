@@ -37,11 +37,15 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
 
   const { highlightArea, checkHighlight } = useCheckHighlight();
 
-  const { menuPosition, updateHighlightMenuPositionByDrag, updateHighlightMenuPositionByLongPress, hideHighlightMenu } =
-    useHighlightMenuPosition({
-      editorRef,
-      isEditable,
-    });
+  const {
+    menuPosition,
+    updateHighlightMenuPositionByDrag,
+    updateHighlightMenuPositionByLongPress,
+    resetHighlightMenuPosition,
+  } = useHighlightMenuPosition({
+    editorRef,
+    isEditable,
+  });
 
   const {
     editorAnswerMap,
@@ -53,7 +57,7 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
     questionId,
     answerList,
     isEditable,
-    hideHighlightMenu,
+    resetHighlightMenuPosition,
     updateHighlightMenuPositionByLongPress,
     handleErrorModal,
   });
@@ -63,7 +67,7 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
   useHighlightEventListener({
     isEditable,
     updateHighlightMenuPositionByDrag,
-    hideHighlightMenu,
+    resetHighlightMenuPosition,
     checkHighlight,
   });
 

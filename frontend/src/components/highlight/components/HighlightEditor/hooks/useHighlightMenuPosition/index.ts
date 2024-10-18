@@ -15,7 +15,7 @@ const useHighlightMenuPosition = ({ isEditable, editorRef }: UseHighlightMenuPos
 
   const updateHighlightMenuPosition = (position: Position | null) => setMenuPosition(position);
 
-  const hideHighlightMenu = () => {
+  const resetHighlightMenuPosition = () => {
     setMenuPosition(null);
   };
 
@@ -35,7 +35,7 @@ const useHighlightMenuPosition = ({ isEditable, editorRef }: UseHighlightMenuPos
     menuPosition,
     updateHighlightMenuPositionByDrag,
     updateHighlightMenuPositionByLongPress,
-    hideHighlightMenu,
+    resetHighlightMenuPosition,
   };
 };
 

@@ -20,7 +20,7 @@ interface UseHighlightProps extends UseLongPressHighlightPositionReturn {
   answerList: ReviewAnswerResponseData[];
   isEditable: boolean;
   handleErrorModal: (isError: boolean) => void;
-  hideHighlightMenu: () => void;
+  resetHighlightMenuPosition: () => void;
 }
 
 interface RemovalTarget {
@@ -60,7 +60,7 @@ const useHighlight = ({
   answerList,
   isEditable,
   updateHighlightMenuPositionByLongPress,
-  hideHighlightMenu,
+  resetHighlightMenuPosition,
   handleErrorModal,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
@@ -70,15 +70,16 @@ const useHighlight = ({
 
   const updateEditorAnswerMap = (newEditorAnswerMap: EditorAnswerMap) => setEditorAnswerMap(newEditorAnswerMap);
 
-  const resetHighlightButton = () => {
+  const resetHighlightMenu = () => {
     removeSelection();
-    hideHighlightMenu();
+    resetHighlightMenuPosition();
+    resetRemovalTarget();
   };
 
   const { mutate: mutateHighlight } = useMutateHighlight({
     questionId,
     updateEditorAnswerMap,
-    resetHighlightButton,
+    resetHighlightMenu,
     handleErrorModal,
   });
 
@@ -423,7 +424,6 @@ const useHighlight = ({
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
 
     mutateHighlight(newEditorAnswerMap);
-    hideHighlightMenu();
   };
 
   return {
