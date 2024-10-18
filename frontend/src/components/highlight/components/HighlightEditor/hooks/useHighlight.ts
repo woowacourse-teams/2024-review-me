@@ -191,7 +191,7 @@ const useHighlight = ({
       if (index > endLineIndex) return block;
       if (index === startLineIndex) {
         const { startIndex, endIndex } = getStartLineOffset(selectionInfo, block);
-        console.log(startIndex, endIndex);
+
         return getUpdatedBlockByHighlight({
           blockTextLength: block.text.length,
           lineIndex: index,
