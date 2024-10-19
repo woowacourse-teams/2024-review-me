@@ -28,6 +28,7 @@ const HighlightEditorContainer = (props: Omit<HighlightEditorProps, 'handleError
             duration={5}
             position="top"
             handleOpenModal={handleErrorModal}
+            handleModalMessage={handleModalMessage}
           />,
           document.body,
         )}

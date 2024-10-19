@@ -103,9 +103,6 @@ const useHighlight = ({
 
     console.log('new', newEditorAnswerMap.get(2));
     mutateHighlight(newEditorAnswerMap, {
-      onSuccess: () => {
-        handleModalMessage('');
-      },
       onError: () => {
         handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.addFailure);
       },
@@ -442,9 +439,6 @@ const useHighlight = ({
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
 
     mutateHighlight(newEditorAnswerMap, {
-      onSuccess: () => {
-        handleModalMessage('');
-      },
       onError: () => {
         handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.deleteFailure);
       },

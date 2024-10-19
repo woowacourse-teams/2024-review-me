@@ -15,16 +15,18 @@ interface ToastModalProps {
   duration: number;
   position: ToastPositionType;
   handleOpenModal: (isOpen: boolean) => void;
+  handleModalMessage: (message: string) => void;
 }
 
-const Toast = ({ icon, message, duration, position, handleOpenModal }: ToastModalProps) => {
+const Toast = ({ icon, message, duration, position, handleOpenModal, handleModalMessage }: ToastModalProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       handleOpenModal(false);
+      handleModalMessage('');
     }, duration * 1000);
 
     return () => clearTimeout(timer);
-  }, [duration, handleOpenModal]);
+  }, [handleOpenModal]);
 
   return (
     <S.ToastModalContainer duration={duration} position={position}>
