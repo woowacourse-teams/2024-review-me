@@ -1,39 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
-import GrayHighlighterIcon from '@/assets/grayHighlighter.svg';
-import PrimaryHighlighterIcon from '@/assets/primaryHighlighter.svg';
-import {
-  EDITOR_ANSWER_CLASS_NAME,
-  EDITOR_LINE_CLASS_NAME,
-  HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME,
-  HIGHLIGHT_REMOVER_CLASS_NAME,
-} from '@/constants';
+import DotIcon from '@/assets/dot.svg';
+import { EDITOR_ANSWER_CLASS_NAME, EDITOR_LINE_CLASS_NAME } from '@/constants';
 import { ReviewAnswerResponseData } from '@/types';
-import { findSelectionInfo } from '@/utils';
 
 import EditorLineBlock from '../EditorLineBlock';
 import EditSwitchButton from '../EditSwitchButton';
-import HighlightRemoverWrapper from '../HighlightRemoverWrapper';
-import HighlightToggleButtonContainer from '../HighlightToggleButtonContainer';
+import HighlightMenu from '../HighlightMenu';
+import Tooltip from '../Tooltip';
 
-import {
-  useHighlightToggleButtonPosition,
-  useHighlight,
-  useCheckHighlight,
-  useHighlightRemoverPosition,
-} from './hooks';
+import { useHighlight, useCheckHighlight, useLongPress, useEditableState, useHighlightEventListener } from './hooks';
+import useHighlightMenuPosition from './hooks/useHighlightMenuPosition';
 import * as S from './style';
 
-const MODE_ICON = {
-  on: {
-    icon: PrimaryHighlighterIcon,
-    alt: '형광펜 기능 켜짐',
-  },
-  off: {
-    icon: GrayHighlighterIcon,
-    alt: '형광펜 기능 꺼짐',
-  },
-};
 export interface HighlightEditorProps {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
@@ -43,103 +22,85 @@ export interface HighlightEditorProps {
 
 const HighlightEditor = ({ questionId, answerList, handleErrorModal, handleModalMessage }: HighlightEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
-  const [isEditable, setIsEditable] = useState(false);
-  const { isAddingHighlight, checkHighlight } = useCheckHighlight();
 
-  const handleEditToggleButton = () => {
-    setIsEditable((prev) => !prev);
-  };
+  const { isEditable, handleEditToggleButton } = useEditableState();
 
-  const { highlightToggleButtonPosition, hideHighlightToggleButton, updateHighlightToggleButtonPosition } =
-    useHighlightToggleButtonPosition({
-      isEditable,
-      editorRef,
-    });
+  const { highlightArea, checkHighlight } = useCheckHighlight();
 
-  const { removerPosition, hideRemover, updateRemoverPosition } = useHighlightRemoverPosition({
-    isEditable,
+  const {
+    menuPosition,
+    updateHighlightMenuPositionByDrag,
+    updateHighlightMenuPositionByLongPress,
+    resetHighlightMenuPosition,
+  } = useHighlightMenuPosition({
     editorRef,
+    isEditable,
   });
 
   const {
     editorAnswerMap,
-    addHighlight,
+    longPressRemovalTarget,
+    addHighlightByDrag,
     removeHighlightByDrag,
-    handleClickBlockList,
-    removeHighlightByClick,
-    removalTarget,
+    handleLongPressLine,
+    removeHighlightByLongPress,
+    resetLongPressRemovalTarget,
   } = useHighlight({
     questionId,
     answerList,
     isEditable,
-    hideHighlightToggleButton,
-    hideRemover,
-    updateRemoverPosition,
+    resetHighlightMenuPosition,
+    updateHighlightMenuPositionByLongPress,
     handleErrorModal,
     handleModalMessage,
   });
 
-  const handleMouseDown = (e: MouseEvent) => {
-    if (!isEditable) return;
+  const { startPressTimer, clearPressTimer } = useLongPress({ handleLongPress: handleLongPressLine });
 
-    const isInButton = (e.target as HTMLElement).closest(`.${HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME}`);
-    const isNotHighlightRemover = (e.target as HTMLElement).closest(`.${HIGHLIGHT_REMOVER_CLASS_NAME}`);
-
-    if (!isInButton) hideHighlightToggleButton();
-    if (!isNotHighlightRemover) hideRemover();
-  };
-
-  const handleMouseUp = () => {
-    if (!isEditable) return;
-    const info = findSelectionInfo();
-    if (!info) return;
-
-    const isAddingHighlight = checkHighlight(info);
-    updateHighlightToggleButtonPosition({ info, isAddingHighlight });
-  };
-
-  useEffect(() => {
-    document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('mousedown', handleMouseDown);
-    return () => {
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('mousedown', handleMouseDown);
-    };
-  }, [isEditable]);
+  useHighlightEventListener({
+    isEditable,
+    updateHighlightMenuPositionByDrag,
+    resetHighlightMenuPosition,
+    resetLongPressRemovalTarget,
+    checkHighlight,
+  });
 
   return (
     <S.HighlightEditor ref={editorRef}>
       <S.SwitchButtonWrapper>
-        <S.HighlightText $isEditable={isEditable}>형광펜</S.HighlightText>
-        <S.SwitchModIcon
-          src={MODE_ICON[isEditable ? 'on' : 'off'].icon}
-          alt={MODE_ICON[isEditable ? 'on' : 'off'].alt}
-        />
+        <S.HighlightText>형광펜</S.HighlightText>
+        <Tooltip />
         <EditSwitchButton isEditable={isEditable} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
-      {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
-        <div
-          className={EDITOR_ANSWER_CLASS_NAME}
-          key={answerId}
-          data-answer={`${answerId}-${answerIndex}`}
-          onClick={handleClickBlockList}
-        >
-          {lineList.map((line, index) => (
-            <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
-          ))}
-        </div>
-      ))}
-
-      {isEditable && highlightToggleButtonPosition && (
-        <HighlightToggleButtonContainer
-          buttonPosition={highlightToggleButtonPosition}
-          isAddingHighlight={isAddingHighlight}
-          addHighlight={addHighlight}
+      <ul>
+        {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
+          <S.AnswerListItem
+            className={EDITOR_ANSWER_CLASS_NAME}
+            key={answerId}
+            data-answer={`${answerId}-${answerIndex}`}
+            onMouseDown={startPressTimer}
+            onMouseUp={clearPressTimer}
+            onMouseMove={clearPressTimer}
+            onTouchMove={handleLongPressLine}
+          >
+            <S.Marker src={DotIcon} alt="점" />
+            <S.AnswerText>
+              {lineList.map((line, index) => (
+                <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
+              ))}
+            </S.AnswerText>
+          </S.AnswerListItem>
+        ))}
+      </ul>
+      {isEditable && menuPosition && (
+        <HighlightMenu
+          position={menuPosition}
+          highlightArea={highlightArea}
+          isOpenLongPressRemove={!!longPressRemovalTarget}
+          addHighlightByDrag={addHighlightByDrag}
           removeHighlightByDrag={removeHighlightByDrag}
+          removeHighlightByLongPress={removeHighlightByLongPress}
         />
-      )}
-      {isEditable && removalTarget && removerPosition && (
-        <HighlightRemoverWrapper buttonPosition={removerPosition} removeHighlightByClick={removeHighlightByClick} />
       )}
     </S.HighlightEditor>
   );

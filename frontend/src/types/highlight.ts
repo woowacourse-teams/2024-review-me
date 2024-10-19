@@ -17,12 +17,16 @@ export interface Highlight {
   // 서버에서는 ranges로 줌
   rangeList: HighlightRange[];
 }
-
+// 서버에서 보내주는 리뷰 모아보기 데이터 속 하이라이트 타입
+export interface HighlightResponseData {
+  lineIndex: number;
+  ranges: HighlightRange[];
+}
 // 서버에서 보내주는 리뷰 모아보기 데이터
 export interface ReviewAnswerResponseData {
   id: number;
   content: string;
-  highlights: Highlight[];
+  highlights: HighlightResponseData[];
 }
 
 /**

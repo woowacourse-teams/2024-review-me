@@ -4,6 +4,7 @@ import media from '@/utils/media';
 
 export const Layout = styled.div`
   display: flex;
+  flex-direction: column;
   border: 0.1rem solid ${({ theme }) => theme.colors.lightGray};
   border-radius: 1rem;
 
@@ -17,34 +18,21 @@ export const Layout = styled.div`
   }
 `;
 
-export const LeftLineBorder = styled.div`
-  width: 2.5rem;
-  background-color: ${({ theme }) => theme.colors.lightGray};
-  border-radius: 1rem 0 0 1rem;
-`;
+export const Header = styled.div`
+  display: flex;
+  align-items: center;
 
-export const Title = styled.div`
-  font-size: 1.6rem;
-  font-weight: 700;
+  width: 100%;
+  height: 3.8rem;
+
+  background-color: ${({ theme }) => theme.colors.lightGray};
+  border-radius: 1rem 1rem 0 0;
 `;
 
 export const Date = styled.p`
   height: fit-content;
-  padding: 0 1rem;
+  padding: 0 3rem;
   font-size: 1.3rem;
-`;
-
-export const Visibility = styled.div`
-  display: flex;
-  gap: 0.6rem;
-  align-items: center;
-
-  font-size: 1.6rem;
-  font-weight: 700;
-
-  img {
-    width: 2rem;
-  }
 `;
 
 export const Main = styled.div`

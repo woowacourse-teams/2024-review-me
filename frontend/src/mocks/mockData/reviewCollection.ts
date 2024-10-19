@@ -48,14 +48,25 @@ export const GROUPED_REVIEWS_MOCK_DATA: GroupedReviews = {
         {
           id: 1,
           content:
-            '장의 시작부분은 짧고 직접적이며, 뒤따라 나올 복잡한 정보를 어떻게 해석해야 할 것인지 프레임을 짜주는 역할을 해야 한다. 그러면 아무리 긴 문장이라도 쉽게 읽힌다.',
+            '장의 시작부분은 짧고 직접적이며, 뒤따라 나올 복잡한 정보를 어떻게 해석해야 할 것인지 프레임을 짜주는 역할을 해야 한다. 그러면 아무리 긴 문장이라도 쉽게 읽힌다.\n  프레임을 짜주는 역할을 해야 한다. 그러면 아무리 긴 문장이라도 쉽게 읽힌다. \n  프레임을 짜주는 역할을 해야 한다. 그러면 아무리 긴 문장이라도 쉽게 읽힌다.',
           highlights: [],
         },
         {
           id: 2,
           content:
-            '고액공제건강보험과 건강저축계좌를 만들어 노동자와 고용주가 세금공제를 받을 수 있도록 하면 결과적으로 노동자의 의료보험 부담이 커진다.',
-          highlights: [],
+            'http://localhost:3000/user/review-zone/5WkYQLqW1http://localhost:3000/user/review-zone/5WkYQLqW2http://localhost:3000/user/review-zone/5WkYQLqW3http://localhost:3000/user/review-zone/5WkYQLqW4http://localhost:3000/user/review-zone/5WkYQLqW5http://localhost:3000/user/review-zone/5WkYQLqW6http://localhost:3000/user/review-zone/5WkYQLqW7http://localhost:3000/user/review-zone/5WkYQLqW8http://localhost:3000/user/review-zone/5WkYQLqW9http://localhost:3000/user/review-zone/5WkYQLqW10',
+          highlights: [
+            {
+              lineIndex: 0,
+              ranges: [
+                { startIndex: 17, endIndex: 20 },
+                { startIndex: 64, endIndex: 67 },
+                { startIndex: 205, endIndex: 208 },
+                { startIndex: 252, endIndex: 255 },
+                { startIndex: 346, endIndex: 349 },
+              ],
+            },
+          ],
         },
         {
           id: 3,

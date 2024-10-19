@@ -1,18 +1,30 @@
 import { useState } from 'react';
 
 import { HIGHLIGHT_SPAN_CLASS_NAME, SYNTAX_BASIC_CLASS_NAME } from '@/constants';
-import { EditorSelectionInfo } from '@/utils';
+import { SelectionInfo } from '@/utils';
+
+export type HighlightArea = 'full' | 'partial' | 'none';
 
 const useCheckHighlight = () => {
-  const [isAddingHighlight, setIsAddingHighlight] = useState(false);
+  const [highlightArea, setHighlightArea] = useState<HighlightArea>('none');
 
-  const checkHighlight = (info: EditorSelectionInfo) => {
+  const checkHighlight = (info: SelectionInfo) => {
     const selectedAllSpanList = getAllSpanInSelection(info.selection);
-    const isNoneHighlight = selectedAllSpanList.some((span) => !span.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME));
+    let highlightedSpanLength = 0;
 
-    setIsAddingHighlight(isNoneHighlight);
+    selectedAllSpanList.forEach((span) => {
+      if (span.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME)) highlightedSpanLength += 1;
+    });
 
-    return isNoneHighlight;
+    const newHighlightArea: HighlightArea = highlightedSpanLength
+      ? selectedAllSpanList.length === highlightedSpanLength
+        ? 'full'
+        : 'partial'
+      : 'none';
+
+    setHighlightArea(newHighlightArea);
+
+    return newHighlightArea;
   };
 
   const getAllSpanInSelection = (selection: Selection) => {
@@ -23,7 +35,7 @@ const useCheckHighlight = () => {
   };
 
   return {
-    isAddingHighlight,
+    highlightArea,
     checkHighlight,
   };
 };

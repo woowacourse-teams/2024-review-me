@@ -6,7 +6,7 @@ import { EditorAnswerMap } from '@/types';
 export interface UseMutateHighlightProps {
   questionId: number;
   updateEditorAnswerMap: (editorAnswerMap: EditorAnswerMap) => void;
-  resetHighlightButton: () => void;
+  resetHighlightMenu: () => void;
   handleErrorModal: (isError: boolean) => void;
 }
 
@@ -14,14 +14,14 @@ const useMutateHighlight = ({
   questionId,
   handleErrorModal,
   updateEditorAnswerMap,
-  resetHighlightButton,
+  resetHighlightMenu,
 }: UseMutateHighlightProps) => {
   const mutation = useMutation({
     mutationFn: (newEditorAnswerMap: EditorAnswerMap) => postHighlight(newEditorAnswerMap, questionId),
 
     onSuccess: (_, variables: EditorAnswerMap) => {
       updateEditorAnswerMap(variables);
-      resetHighlightButton();
+      resetHighlightMenu();
       // 토스트 모달 지우기
       handleErrorModal(false);
     },
