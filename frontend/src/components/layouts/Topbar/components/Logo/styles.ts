@@ -13,7 +13,7 @@ export const Logo = styled.div`
   }
 `;
 
-export const LogoText = styled.div`
+export const LogoText = styled.button`
   cursor: pointer;
 
   display: flex;
