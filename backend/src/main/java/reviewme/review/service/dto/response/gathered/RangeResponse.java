@@ -6,6 +6,7 @@ public record RangeResponse(
         long startIndex,
         long endIndex
 ) {
+
     public static RangeResponse from(HighlightRange range) {
         return new RangeResponse(range.getStartIndex(), range.getEndIndex());
     }
