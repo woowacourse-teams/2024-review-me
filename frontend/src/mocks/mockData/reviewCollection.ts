@@ -54,8 +54,19 @@ export const GROUPED_REVIEWS_MOCK_DATA: GroupedReviews = {
         {
           id: 2,
           content:
-            '고액공제건강보험과 건강저축계좌를 만들어 노동자와 고용주가 세금공제를 받을 수 있도록 하면 결과적으로 노동자의 의료보험 부담이 커진다.',
-          highlights: [],
+            'http://localhost:3000/user/review-zone/5WkYQLqW1http://localhost:3000/user/review-zone/5WkYQLqW2http://localhost:3000/user/review-zone/5WkYQLqW3http://localhost:3000/user/review-zone/5WkYQLqW4http://localhost:3000/user/review-zone/5WkYQLqW5http://localhost:3000/user/review-zone/5WkYQLqW6http://localhost:3000/user/review-zone/5WkYQLqW7http://localhost:3000/user/review-zone/5WkYQLqW8http://localhost:3000/user/review-zone/5WkYQLqW9http://localhost:3000/user/review-zone/5WkYQLqW10',
+          highlights: [
+            {
+              lineIndex: 0,
+              ranges: [
+                { startIndex: 17, endIndex: 20 },
+                { startIndex: 64, endIndex: 67 },
+                { startIndex: 205, endIndex: 208 },
+                { startIndex: 252, endIndex: 255 },
+                { startIndex: 346, endIndex: 349 },
+              ],
+            },
+          ],
         },
         {
           id: 3,
