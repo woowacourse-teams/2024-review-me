@@ -10,7 +10,7 @@ interface ReviewDisplayLayoutProps extends EssentialPropsWithChildren {
   isReviewList: boolean;
 }
 
-const ReviewDisplayLayout = ({ isReviewList, children }: ReviewDisplayLayoutProps) => {
+const ReviewDisplayLayoutContent = ({ isReviewList, children }: ReviewDisplayLayoutProps) => {
   const reviewDisplayLayoutOptions = useReviewDisplayLayoutOptions();
 
   return (
@@ -25,12 +25,12 @@ const ReviewDisplayLayout = ({ isReviewList, children }: ReviewDisplayLayoutProp
   );
 };
 
-const ReviewDisplayLayoutWithProvider = ({ isReviewList, children }: ReviewDisplayLayoutProps) => {
+const ReviewDisplayLayout = ({ isReviewList, children }: ReviewDisplayLayoutProps) => {
   return (
     <ReviewInfoDataProvider>
-      <ReviewDisplayLayout isReviewList={isReviewList}>{children}</ReviewDisplayLayout>
+      <ReviewDisplayLayoutContent isReviewList={isReviewList}>{children}</ReviewDisplayLayoutContent>
     </ReviewInfoDataProvider>
   );
 };
 
-export default ReviewDisplayLayoutWithProvider;
+export default ReviewDisplayLayout;
