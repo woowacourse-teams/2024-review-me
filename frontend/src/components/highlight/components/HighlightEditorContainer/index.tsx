@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import WarningIcon from '@/assets/warning.svg';
-import Toast from '@/components/common/modals/Toast';
+import Toast from '@/components/common/Toast';
 
 import { ErrorBoundary } from '../../../error';
 import ErrorFallback from '../../../error/ErrorFallback';
