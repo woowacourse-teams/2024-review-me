@@ -20,6 +20,7 @@ public interface HighlightRepository extends JpaRepository<Highlight, Long> {
             SELECT h
             FROM Highlight h
             WHERE h.answerId IN :answerIds
+            ORDER BY h.lineIndex, h.highlightRange.startIndex ASC
             """)
-    List<Highlight> findAllByAnswerIds(Collection<Long> answerIds);
+    List<Highlight> findAllByAnswerIdsOrderedAsc(Collection<Long> answerIds);
 }

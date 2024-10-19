@@ -43,7 +43,7 @@ public class ReviewGatheredLookupService {
                 .flatMap(List::stream)
                 .map(Answer::getId)
                 .toList();
-        List<Highlight> highlights = highlightRepository.findAllByAnswerIds(answerIds);
+        List<Highlight> highlights = highlightRepository.findAllByAnswerIdsOrderedAsc(answerIds);
 
         return reviewGatherMapper.mapToReviewsGatheredBySection(questionAnswers, highlights);
     }
