@@ -21,11 +21,7 @@ const Breadcrumb = ({ pathList }: BreadcrumbProps) => {
   const location = useLocation();
 
   const handleNavigation = (path: string) => {
-    if (typeof path === 'number') {
-      navigate(path);
-    } else {
-      navigate(path, { replace: location.pathname.includes(`/${ROUTE.reviewWritingComplete}`) });
-    }
+    navigate(path, { replace: location.pathname.includes(`/${ROUTE.reviewWritingComplete}`) });
   };
 
   return (
