@@ -38,9 +38,10 @@ export interface HighlightEditorProps {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
   handleErrorModal: (isError: boolean) => void;
+  handleModalMessage: (message: string) => void;
 }
 
-const HighlightEditor = ({ questionId, answerList, handleErrorModal }: HighlightEditorProps) => {
+const HighlightEditor = ({ questionId, answerList, handleErrorModal, handleModalMessage }: HighlightEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const [isEditable, setIsEditable] = useState(false);
   const { isAddingHighlight, checkHighlight } = useCheckHighlight();
@@ -75,6 +76,7 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
     hideRemover,
     updateRemoverPosition,
     handleErrorModal,
+    handleModalMessage,
   });
 
   const handleMouseDown = (e: MouseEvent) => {

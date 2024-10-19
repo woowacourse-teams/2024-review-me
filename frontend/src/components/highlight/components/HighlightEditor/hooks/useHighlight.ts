@@ -22,6 +22,7 @@ interface UseHighlightProps {
   updateRemoverPosition: (rect: DOMRect) => void;
   hideRemover: () => void;
   handleErrorModal: (isError: boolean) => void;
+  handleModalMessage: (message: string) => void;
 }
 
 interface RemovalTarget {
@@ -29,6 +30,11 @@ interface RemovalTarget {
   lineIndex: number;
   highlightIndex: number;
 }
+
+const HIGHLIGHT_ERROR_MESSAGES = {
+  addFailure: '형광펜 추가에 실패했어요. 다시 시도해주세요.',
+  deleteFailure: '형광펜 삭제에 실패했어요. 다시 시도해주세요.',
+};
 
 const findBlockHighlightListFromAnswer = (answerHighlightList: Highlight[], lineIndex: number) => {
   return answerHighlightList.find((i) => i.lineIndex === lineIndex)?.rangeList || [];
@@ -64,6 +70,7 @@ const useHighlight = ({
   updateRemoverPosition,
   hideRemover,
   handleErrorModal,
+  handleModalMessage,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
 
@@ -94,7 +101,14 @@ const useHighlight = ({
       : addMultipleAnswerHighlight(selectionInfo);
     if (!newEditorAnswerMap) return;
 
-    mutateHighlight(newEditorAnswerMap);
+    mutateHighlight(newEditorAnswerMap, {
+      onSuccess: () => {
+        handleModalMessage('');
+      },
+      onError: () => {
+        handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.addFailure);
+      },
+    });
   };
 
   const addMultipleAnswerHighlight = (selectionInfo: EditorSelectionInfo) => {
@@ -429,7 +443,14 @@ const useHighlight = ({
     newLineList.splice(lineIndex, 1, newTargetBlock);
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
 
-    mutateHighlight(newEditorAnswerMap);
+    mutateHighlight(newEditorAnswerMap, {
+      onSuccess: () => {
+        handleModalMessage('');
+      },
+      onError: () => {
+        handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.deleteFailure);
+      },
+    });
   };
 
   return {
