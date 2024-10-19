@@ -1,25 +1,34 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
 import PrimaryHomeIcon from '@/assets/primaryHome.svg';
 import SmileIcon from '@/assets/smile.svg';
-import { Button } from '@/components';
+import { Button, ErrorSection } from '@/components';
 
 import * as S from './styles';
 
 const ReviewWritingCompletePage = () => {
+  const [isValid, setIsValid] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    if (!location.state || !location.state.isValidAccess) {
-      navigate('/');
-    }
-  }, [location, navigate]);
+    if (!location.state || !location.state.isValidAccess) setIsValid(false);
+  }, [location]);
 
   const handleClickHomeButton = () => {
     navigate('/', { replace: true });
   };
+
+  if (!isValid) {
+    return (
+      <ErrorSection
+        errorMessage="유효하지 않은 접근이에요"
+        handleReload={() => navigate(0)}
+        handleGoOtherPage={() => navigate('/', { replace: true })}
+      />
+    );
+  }
 
   return (
     <S.Layout>
