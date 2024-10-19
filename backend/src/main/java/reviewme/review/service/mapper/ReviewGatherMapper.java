@@ -30,7 +30,6 @@ import reviewme.review.service.exception.GatheredAnswersTypeNonUniformException;
 public class ReviewGatherMapper {
 
     private final QuestionRepository questionRepository;
-    private final HighlightRepository highlightRepository;
 
     public ReviewsGatheredBySectionResponse mapToReviewsGatheredBySection(Map<Question, List<Answer>> questionAnswers,
                                                                           List<Highlight> highlights) {
