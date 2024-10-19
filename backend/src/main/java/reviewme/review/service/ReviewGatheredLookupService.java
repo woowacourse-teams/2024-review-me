@@ -42,6 +42,7 @@ public class ReviewGatheredLookupService {
                 .stream()
                 .flatMap(List::stream)
                 .map(Answer::getId)
+                .distinct()
                 .toList();
         List<Highlight> highlights = highlightRepository.findAllByAnswerIdsOrderedAsc(answerIds);
 
