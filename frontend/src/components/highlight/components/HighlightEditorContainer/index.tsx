@@ -25,7 +25,7 @@ const HighlightEditorContainer = (props: Omit<HighlightEditorProps, 'handleError
           <Toast
             icon={{ src: WarningIcon, alt: '경고 아이콘' }}
             message={modalMessage}
-            duration={10}
+            duration={5}
             position="top"
             handleOpenModal={handleErrorModal}
           />,
