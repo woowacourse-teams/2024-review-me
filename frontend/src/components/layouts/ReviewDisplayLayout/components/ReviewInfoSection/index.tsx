@@ -11,11 +11,7 @@ export interface ReviewInfoSectionProps {
 }
 
 const ReviewInfoSection = ({ isReviewList }: ReviewInfoSectionProps) => {
-  const { revieweeName, projectName, totalReviewCount } = useContext(ReviewInfoDataContext) || {
-    revieweeName: '',
-    projectName: '',
-    totalReviewCount: 0,
-  };
+  const { revieweeName, projectName, totalReviewCount } = useContext(ReviewInfoDataContext);
 
   const revieweeNameWithParticle = calculateParticle({
     target: revieweeName,

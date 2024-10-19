@@ -17,11 +17,7 @@ import DoughnutChart from '../DoughnutChart';
 import * as S from './styles';
 
 const ReviewCollectionPageContents = () => {
-  const { revieweeName, projectName, totalReviewCount } = useContext(ReviewInfoDataContext) || {
-    revieweeName: '',
-    projectName: '',
-    totalReviewCount: 0,
-  };
+  const { revieweeName, projectName, totalReviewCount } = useContext(ReviewInfoDataContext);
 
   const { data: reviewSectionList } = useGetSectionList();
   const dropdownSectionList = reviewSectionList.sections.map((section) => {

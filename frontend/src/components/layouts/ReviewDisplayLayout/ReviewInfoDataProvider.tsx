@@ -8,7 +8,6 @@ interface ReviewInfoData {
   totalReviewCount: number;
 }
 
-// export const ReviewInfoDataContext = createContext<ReviewInfoData | null>(null);
 export const ReviewInfoDataContext = createContext<ReviewInfoData>({
   revieweeName: '',
   projectName: '',
