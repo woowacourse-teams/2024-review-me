@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
-import { EditorAnswerMap, EditorLine, Highlight, ReviewAnswerResponseData } from '@/types';
+import { EditorAnswerMap, EditorLine, HighlightResponseData, ReviewAnswerResponseData } from '@/types';
 import {
   getEndLineOffset,
   getStartLineOffset,
@@ -29,10 +29,10 @@ interface RemovalTarget {
   highlightIndex: number;
 }
 
-const findBlockHighlightListFromAnswer = (answerHighlightList: Highlight[], lineIndex: number) => {
-  return answerHighlightList.find((i) => i.lineIndex === lineIndex)?.rangeList || [];
+const findBlockHighlightListFromAnswer = (answerHighlightList: HighlightResponseData[], lineIndex: number) => {
+  return answerHighlightList.find((i) => i.lineIndex === lineIndex)?.ranges || [];
 };
-const makeBlockListByText = (content: string, answerHighlightList: Highlight[]): EditorLine[] => {
+const makeBlockListByText = (content: string, answerHighlightList: HighlightResponseData[]): EditorLine[] => {
   return content.split('\n').map((text, index) => ({
     lineIndex: index,
     text,
