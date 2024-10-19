@@ -3,12 +3,10 @@ package reviewme.review.service.mapper;
 import jakarta.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.highlight.domain.Highlight;
-import reviewme.highlight.repository.HighlightRepository;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
@@ -69,12 +67,14 @@ public class ReviewGatherMapper {
 
     private List<HighlightResponse> mapToHighlightResponse(List<Highlight> highlights) {
         // Line index를 기준으로 묶되, 묶은 것들은 mapping 함수를 통해 List로 변환
-        Collector<Highlight, ?, Map<Integer, List<RangeResponse>>> highlightMapCollector = Collectors.groupingBy(
-                Highlight::getLineIndex,
-                Collectors.mapping(highlight -> RangeResponse.from(highlight.getHighlightRange()), Collectors.toList())
-        );
         Map<Integer, List<RangeResponse>> lineIndexRangeResponses = highlights.stream()
-                .collect(highlightMapCollector);
+                .collect(Collectors.groupingBy(
+                        Highlight::getLineIndex,
+                        Collectors.mapping(
+                                highlight -> RangeResponse.from(highlight.getHighlightRange()),
+                                Collectors.toList()
+                        )
+                ));
 
         return lineIndexRangeResponses.entrySet()
                 .stream()
