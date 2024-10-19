@@ -92,7 +92,7 @@ const useHighlight = ({
       ? addSingleAnswerHighlight(selectionInfo)
       : addMultipleAnswerHighlight(selectionInfo);
     if (!newEditorAnswerMap) return;
-
+    console.log('new', newEditorAnswerMap.get(2));
     mutateHighlight(newEditorAnswerMap);
   };
 
