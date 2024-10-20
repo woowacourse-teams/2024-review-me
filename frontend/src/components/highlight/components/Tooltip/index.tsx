@@ -6,10 +6,9 @@ import { isTouchDevice } from '@/utils';
 import * as S from './style';
 
 const Tooltip = () => {
-  const [isOpenMessage, setIsOpenMessage] = useState(true);
-  //onMouseOver={() => setIsOpenMessage(true)} onMouseOut={() => setIsOpenMessage(false)}
+  const [isOpenMessage, setIsOpenMessage] = useState(false);
   return (
-    <S.TooltipButton>
+    <S.TooltipButton onMouseOver={() => setIsOpenMessage(true)} onMouseOut={() => setIsOpenMessage(false)}>
       <S.HelperIcon src={HelperIcon} alt="도움말 아이콘" />
       {isOpenMessage && (
         <S.Message role="tooltip">
