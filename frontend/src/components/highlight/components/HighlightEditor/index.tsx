@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 
 import DotIcon from '@/assets/dot.svg';
+import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import { EDITOR_ANSWER_CLASS_NAME, EDITOR_LINE_CLASS_NAME } from '@/constants';
 import { ReviewAnswerResponseData } from '@/types';
 
@@ -81,7 +82,9 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
             onMouseMove={clearPressTimer}
             onTouchMove={handleLongPressLine}
           >
-            <S.Marker src={DotIcon} alt="점" />
+            <UndraggableWrapper>
+              <S.Marker src={DotIcon} alt="점" />
+            </UndraggableWrapper>
             <S.AnswerText>
               {lineList.map((line, index) => (
                 <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />

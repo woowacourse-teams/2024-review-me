@@ -35,7 +35,6 @@ export const AnswerListItem = styled.li`
   list-style: none;
 `;
 export const AnswerText = styled.div`
-  display: inline-block;
   margin-left: 8px;
 `;
 
