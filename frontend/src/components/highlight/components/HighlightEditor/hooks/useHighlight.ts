@@ -22,7 +22,6 @@ interface UseHighlightProps extends UseLongPressHighlightPositionReturn {
   handleErrorModal: (isError: boolean) => void;
   resetHighlightMenuPosition: () => void;
 }
-
 interface RemovalTarget {
   answerId: number;
   lineIndex: number;
@@ -92,7 +91,7 @@ const useHighlight = ({
       ? addSingleAnswerHighlight(selectionInfo)
       : addMultipleAnswerHighlight(selectionInfo);
     if (!newEditorAnswerMap) return;
-    console.log('new', newEditorAnswerMap.get(2));
+
     mutateHighlight(newEditorAnswerMap);
   };
 
@@ -250,7 +249,7 @@ const useHighlight = ({
       if (index > endLineIndex) return line;
       if (index === startLineIndex) {
         const { startIndex, endIndex } = getStartLineOffset(selectionInfo, line);
-        console.log(startIndex, endIndex);
+
         return {
           ...line,
           highlightList: getRemovedHighlightList({
@@ -282,7 +281,6 @@ const useHighlight = ({
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
     return newEditorAnswerMap;
   };
-
   const removeMultipleAnswerHighlight = (selectionInfo: SelectionInfo) => {
     const { startAnswer, endAnswer } = selectionInfo;
     const newEditorAnswerMap = new Map(editorAnswerMap);
