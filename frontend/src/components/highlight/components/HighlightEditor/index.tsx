@@ -94,9 +94,9 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
         />
         <EditSwitchButton isEditable={isEditable} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
-      <S.EditorAnswerContainer>
+      <S.AnswerList>
         {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
-          <S.EditorAnswerItem
+          <S.AnswerListItem
             className={EDITOR_ANSWER_CLASS_NAME}
             key={answerId}
             data-answer={`${answerId}-${answerIndex}`}
@@ -108,9 +108,9 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
             {lineList.map((line, index) => (
               <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
             ))}
-          </S.EditorAnswerItem>
+          </S.AnswerListItem>
         ))}
-      </S.EditorAnswerContainer>
+      </S.AnswerList>
 
       {isEditable && dragHighlightButtonPosition && (
         <DragHighlightButtonContainer

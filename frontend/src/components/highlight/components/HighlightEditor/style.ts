@@ -30,14 +30,15 @@ export const HighlightText = styled.span<{ $isEditable: boolean }>`
   color: ${({ $isEditable, theme }) => ($isEditable ? theme.colors.primary : theme.colors.gray)};
 `;
 
-export const EditorAnswerContainer = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+export const AnswerList = styled.ul`
+  list-style: disc;
+  list-style-position: outside;
 `;
 
-export const EditorAnswerItem = styled.li`
-  display: list-item;
-  margin-left: 3rem;
-  list-style-type: disc;
+export const AnswerListItem = styled.li`
+  margin-bottom: 1rem;
+  margin-left: 2rem;
+  &::marker {
+    margin: 0;
+  }
 `;

@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react';
 
-import { Accordion, Dropdown } from '@/components';
+import { Accordion, Dropdown, HighlightEditorContainer } from '@/components';
 import { DropdownItem } from '@/components/common/Dropdown';
 import ReviewEmptySection from '@/components/common/ReviewEmptySection';
-import HighlightEditor from '@/components/highlight/components/HighlightEditor';
 import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
 import { REVIEW_EMPTY } from '@/constants';
@@ -42,7 +41,7 @@ const ReviewCollectionPageContents = () => {
       return <ReviewEmptySection content={REVIEW_EMPTY.noReviewInQuestion} />;
     }
 
-    return <HighlightEditor questionId={review.question.id} answerList={review.answers!} handleErrorModal={() => {}} />;
+    return <HighlightEditorContainer questionId={review.question.id} answerList={review.answers!} />;
   };
 
   if (totalReviewCount === 0) {
