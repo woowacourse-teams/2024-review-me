@@ -212,6 +212,7 @@ const useHighlight = ({
       }
       return {
         ...line,
+        highlightList: [{ startIndex: 0, endIndex: line.text.length - 1 }],
       };
     });
 

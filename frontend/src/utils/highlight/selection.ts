@@ -237,7 +237,7 @@ export const getStartLineOffset = (infoForOffset: SelectionInfo, block: EditorLi
         selectionTargetOffset: isForwardDrag ? focusOffset - 1 : anchorOffset - 1,
         lineElement: startLineElement,
       })
-    : block.text.length;
+    : block.text.length - 1;
 
   return { startIndex, endIndex };
 };
