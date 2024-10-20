@@ -83,7 +83,7 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
             onTouchMove={handleLongPressLine}
           >
             <UndraggableWrapper>
-              <S.Marker src={DotIcon} alt="점" />
+              <S.Marker src={DotIcon} alt="" />
             </UndraggableWrapper>
             <S.AnswerText>
               {lineList.map((line, index) => (
