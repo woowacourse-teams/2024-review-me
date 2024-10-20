@@ -135,9 +135,9 @@ const useHighlight = ({
         if (!targetAnswer) return;
         const { lineList } = targetAnswer;
 
-        const newLineList = lineList.map((block) => ({
-          ...block,
-          highlightList: [{ startIndex: 0, endIndex: block.text.length - 1 }],
+        const newLineList = lineList.map((line) => ({
+          ...line,
+          highlightList: [{ startIndex: 0, endIndex: line.text.length - 1 }],
         }));
 
         newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
@@ -150,17 +150,17 @@ const useHighlight = ({
         if (!targetAnswer) return;
         const { lineList } = targetAnswer;
 
-        const newLineList = lineList.map((block, index) => {
-          if (index > lineIndex) return block;
+        const newLineList = lineList.map((line, index) => {
+          if (index > lineIndex) return line;
           if (index < lineIndex) {
             return {
-              ...block,
-              highlightList: [{ startIndex: 0, endIndex: block.text.length - 1 }],
+              ...line,
+              highlightList: [{ startIndex: 0, endIndex: line.text.length - 1 }],
             };
           }
 
           return getUpdatedBlockByHighlight({
-            blockTextLength: block.text.length,
+            blockTextLength: line.text.length,
             lineIndex: index,
             startIndex: 0,
             endIndex: offset,
@@ -185,14 +185,13 @@ const useHighlight = ({
 
     if (!targetAnswer) return;
 
-    const newLineList: EditorLine[] = targetAnswer.lineList.map((block, index, array) => {
-      if (index < startLineIndex) return block;
-      if (index > endLineIndex) return block;
+    const newLineList: EditorLine[] = targetAnswer.lineList.map((line, index, array) => {
+      if (index < startLineIndex) return line;
+      if (index > endLineIndex) return line;
       if (index === startLineIndex) {
-        const { startIndex, endIndex } = getStartLineOffset(selectionInfo, block);
-
+        const { startIndex, endIndex } = getStartLineOffset(selectionInfo, line);
         return getUpdatedBlockByHighlight({
-          blockTextLength: block.text.length,
+          blockTextLength: line.text.length,
           lineIndex: index,
           startIndex,
           endIndex,
@@ -204,7 +203,7 @@ const useHighlight = ({
         const endIndex = getEndLineOffset(selectionInfo);
 
         return getUpdatedBlockByHighlight({
-          blockTextLength: block.text.length,
+          blockTextLength: line.text.length,
           lineIndex: index,
           startIndex: 0,
           endIndex,
@@ -212,8 +211,7 @@ const useHighlight = ({
         });
       }
       return {
-        ...block,
-        highlightList: [{ startIndex: 0, endIndex: block.text.length }],
+        ...line,
       };
     });
 
