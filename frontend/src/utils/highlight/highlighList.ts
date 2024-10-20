@@ -42,6 +42,10 @@ const makeHighlightListByConsecutiveOnes = (array: string[]) => {
     }
   }
 
+  if (startIndex !== -1) {
+    result.push({ startIndex, endIndex: array.length - 1 });
+  }
+
   return result;
 };
 
