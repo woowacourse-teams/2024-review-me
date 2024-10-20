@@ -29,13 +29,17 @@ export const HighlightText = styled.span`
   display: inline-block;
 `;
 
-export const AnswerListItem = styled.li`
-  display: flex;
-  margin-bottom: 1rem;
-  list-style: none;
+export const AnswerList = styled.ul`
+  list-style: disc;
+  list-style-position: outside;
 `;
-export const AnswerText = styled.div`
-  margin-left: 8px;
+
+export const AnswerListItem = styled.li`
+  margin-bottom: 1rem;
+  margin-left: 0.8rem;
+  &::marker {
+    margin: 0;
+  }
 `;
 
 export const Marker = styled.img`

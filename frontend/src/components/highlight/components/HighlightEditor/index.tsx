@@ -1,7 +1,5 @@
 import { useRef } from 'react';
 
-import DotIcon from '@/assets/dot.svg';
-import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import { EDITOR_ANSWER_CLASS_NAME, EDITOR_LINE_CLASS_NAME } from '@/constants';
 import { ReviewAnswerResponseData } from '@/types';
 
@@ -71,7 +69,7 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
         <Tooltip />
         <EditSwitchButton isEditable={isEditable} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
-      <ul>
+      <S.AnswerList>
         {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
           <S.AnswerListItem
             className={EDITOR_ANSWER_CLASS_NAME}
@@ -82,17 +80,14 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
             onMouseMove={clearPressTimer}
             onTouchMove={handleLongPressLine}
           >
-            <UndraggableWrapper>
-              <S.Marker src={DotIcon} alt="" />
-            </UndraggableWrapper>
-            <S.AnswerText>
+            <>
               {lineList.map((line, index) => (
                 <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
               ))}
-            </S.AnswerText>
+            </>
           </S.AnswerListItem>
         ))}
-      </ul>
+      </S.AnswerList>
       {isEditable && menuPosition && (
         <HighlightMenu
           position={menuPosition}

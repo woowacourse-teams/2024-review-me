@@ -47,11 +47,9 @@ const ReviewCollectionPage = () => {
                   {review.question.type === 'CHECKBOX' ? (
                     <DoughnutChart reviewVotes={review.votes!} />
                   ) : (
-                    <S.ReviewAnswerContainer>
-                      {review.answers && (
-                        <HighlightEditorContainer questionId={review.question.id} answerList={review.answers} />
-                      )}
-                    </S.ReviewAnswerContainer>
+                    review.answers && (
+                      <HighlightEditorContainer questionId={review.question.id} answerList={review.answers} />
+                    )
                   )}
                 </Accordion>
               );
