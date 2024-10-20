@@ -1,6 +1,5 @@
 import { useLayoutEffect, useRef } from 'react';
 
-import NavigateNextIcon from '@/assets/navigateNext.svg';
 import useStepList from '@/pages/ReviewWritingPage/progressBar/hooks/useStepList';
 import { Direction } from '@/pages/ReviewWritingPage/types';
 
