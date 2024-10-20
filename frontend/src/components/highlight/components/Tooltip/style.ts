@@ -27,7 +27,7 @@ export const Message = styled.aside`
   background-color: ${({ theme }) => theme.colors.palePurple};
   border: 1px solid ${({ theme }) => theme.colors.lightPurple};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
-  box-shadow: 0px 2px 5px 2px #dbdbdb;
+  box-shadow: 0px 2px 5px 1px #dbdbdb;
 
   &:before {
     content: '';
