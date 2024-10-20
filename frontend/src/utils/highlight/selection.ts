@@ -45,13 +45,13 @@ const getAnswerElementInfo = (element: Element) => {
   return info;
 };
 
-interface BlockData {
-  block: Element;
+interface LineData {
+  line: Element;
   index: number;
 }
 interface GetAnswerInfoParams {
-  anchorLineData: BlockData;
-  focusLineData: BlockData;
+  anchorLineData: LineData;
+  focusLineData: LineData;
   anchorIndexInLine: number;
   focusIndexInLine: number;
 }
@@ -62,8 +62,8 @@ export const getAnswerInfo = ({
   anchorIndexInLine,
   focusIndexInLine,
 }: GetAnswerInfoParams) => {
-  const anchorAnswerElement = anchorLineData.block.closest(`.${EDITOR_ANSWER_CLASS_NAME}`);
-  const focusAnswerElement = focusLineData.block.closest(`.${EDITOR_ANSWER_CLASS_NAME}`);
+  const anchorAnswerElement = anchorLineData.line.closest(`.${EDITOR_ANSWER_CLASS_NAME}`);
+  const focusAnswerElement = focusLineData.line.closest(`.${EDITOR_ANSWER_CLASS_NAME}`);
 
   if (!anchorAnswerElement || !focusAnswerElement) return;
 
@@ -121,8 +121,8 @@ export const findSelectedLineInfo = (selection: Selection) => {
   });
 
   const answerInfo = getAnswerInfo({
-    anchorLineData: { block: anchorLineElement, index: anchorLineIndex },
-    focusLineData: { block: focusLineElement, index: focusLineIndex },
+    anchorLineData: { line: anchorLineElement, index: anchorLineIndex },
+    focusLineData: { line: focusLineElement, index: focusLineIndex },
     anchorIndexInLine,
     focusIndexInLine,
   });
@@ -228,7 +228,7 @@ export const findSelectionInfo = () => {
 
 export type SelectionInfo = Exclude<ReturnType<typeof findSelectionInfo>, undefined>;
 
-export const getStartLineOffset = (infoForOffset: SelectionInfo, block: EditorLine) => {
+export const getStartLineOffset = (infoForOffset: SelectionInfo, line: EditorLine) => {
   const { isForwardDrag, startLineElement, selection, isOnlyOneSelectedBlock } = infoForOffset;
   const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
   const startIndex = calculateOffsetInLine({
@@ -243,7 +243,7 @@ export const getStartLineOffset = (infoForOffset: SelectionInfo, block: EditorLi
         selectionTargetOffset: isForwardDrag ? focusOffset - 1 : anchorOffset - 1,
         lineElement: startLineElement,
       })
-    : block.text.length - 1;
+    : line.text.length - 1;
 
   return { startIndex, endIndex };
 };

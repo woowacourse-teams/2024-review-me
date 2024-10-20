@@ -10,7 +10,7 @@ export interface HighlightRange {
 
 // 서버에서 내려주고, 받는 데이터 타입
 /**
- * 하이라이트가 적용된 block(=문장)의 index, 하이라이트 범위 배열을 가진 타입
+ * 하이라이트가 적용된 line(=문장)의 index, 하이라이트 범위 배열을 가진 타입
  */
 export interface Highlight {
   lineIndex: number; // 하이라이트가 적용된 문장 index

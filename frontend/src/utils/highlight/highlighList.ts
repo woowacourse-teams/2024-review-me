@@ -80,11 +80,11 @@ export const getUpdatedBlockByHighlight = ({
   lineList,
 }: GetUpdatedBlockByHighlightParams) => {
   const newHighlight: HighlightRange = { startIndex, endIndex };
-  const block = lineList[lineIndex];
-  const { highlightList } = block;
+  const line = lineList[lineIndex];
+  const { highlightList } = line;
 
   return {
-    ...block,
+    ...line,
     highlightList: mergeHighlightList({ blockTextLength, highlightList, newHighlight }),
   };
 };

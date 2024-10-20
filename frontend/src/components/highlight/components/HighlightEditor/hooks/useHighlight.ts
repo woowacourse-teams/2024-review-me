@@ -349,8 +349,8 @@ const useHighlight = ({
         const targetAnswer = newEditorAnswerMap.get(answerId);
         if (!targetAnswer) return;
 
-        const newLineList: EditorLine[] = targetAnswer.lineList.map((block) => ({
-          ...block,
+        const newLineList: EditorLine[] = targetAnswer.lineList.map((line) => ({
+          ...line,
           highlightList: [],
         }));
         newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
