@@ -1,6 +1,6 @@
 import { AuthAndServerErrorFallback, ErrorSuspenseContainer, TopButton } from '@/components';
 
-import ReviewCollectionPageContents from './components/PageContents';
+import ReviewCollectionPageContents from './components/ReviewCollectionPageContents';
 
 const ReviewCollectionPage = () => {
   return (
