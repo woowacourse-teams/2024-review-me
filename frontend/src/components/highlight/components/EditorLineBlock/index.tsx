@@ -2,6 +2,8 @@ import { EDITOR_LINE_CLASS_NAME } from '@/constants';
 import { EditorLine, HighlightRange } from '@/types';
 
 import Syntax from '../Syntax';
+
+import * as S from './style';
 interface EditorLineBlockProps {
   line: EditorLine;
   lineIndex: number;
@@ -59,9 +61,9 @@ const EditorLineBlock = ({ line, lineIndex }: EditorLineBlockProps) => {
   };
 
   return (
-    <p className={EDITOR_LINE_CLASS_NAME} data-index={lineIndex}>
+    <S.Line className={EDITOR_LINE_CLASS_NAME} data-index={lineIndex}>
       {renderSentenceList()}
-    </p>
+    </S.Line>
   );
 };
 
