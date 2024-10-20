@@ -51,6 +51,7 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
               $isCurrentStep={step.isCurrentStep}
               onClick={() => handleClick(index)}
               type="button"
+              aria-label={`전체 ${stepList.length}개 섹션 중 ${index + 1}번째 섹션, ${step.sectionName}`}
             >
               {step.sectionName}
             </S.StepButton>
