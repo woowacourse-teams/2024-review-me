@@ -84,8 +84,17 @@ const useDragHighlightPosition = ({
    */
   const checkOverflow = (rectLeft: number, rectTop: number, buttonWidth: number, editorRect: DOMRect) => {
     const { shadow: shadowWidth, height: buttonHeight } = HIGHLIGHT_MENU_STYLE_SIZE;
-    const isOverflowingHorizontally = editorRect.right < rectLeft + buttonWidth + shadowWidth;
-    const isOverflowingVertically = editorRect.bottom < rectTop + buttonHeight;
+    const buttonTotalHeight = buttonHeight + shadowWidth;
+    const buttonTotalWidth = buttonWidth + shadowWidth;
+
+    const isOverflowingHorizontally = {
+      right: editorRect.right < rectLeft + buttonTotalWidth,
+      left: rectLeft - buttonTotalWidth < editorRect.left,
+    };
+    const isOverflowingVertically = {
+      top: rectTop - buttonTotalHeight - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON <= editorRect.top,
+      bottom: editorRect.bottom <= rectTop + buttonTotalHeight + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON,
+    };
 
     return { isOverflowingHorizontally, isOverflowingVertically };
   };
@@ -94,11 +103,12 @@ const useDragHighlightPosition = ({
     leftOffsetFromEditor: number;
     topOffsetFromEditor: number;
     buttonWidth: number;
-    isOverflowingHorizontally: boolean;
-    isOverflowingVertically: boolean;
+    isOverflowingHorizontally: { left: boolean; right: boolean };
+    isOverflowingVertically: { top: boolean; bottom: boolean };
     editorRect: DOMRect;
     lastRect: DOMRect;
   }
+
   const calculateDragHighlightMenuPosition = ({
     leftOffsetFromEditor,
     topOffsetFromEditor,
@@ -109,11 +119,27 @@ const useDragHighlightPosition = ({
     lastRect,
   }: CalculateDragHighlightMenuPosition) => {
     const { height: buttonHeight, shadow: shadowWidth } = HIGHLIGHT_MENU_STYLE_SIZE;
+    const buttonTotalHeight = buttonHeight + shadowWidth;
+    const buttonTotalWidth = buttonWidth + shadowWidth;
 
-    const left = isOverflowingHorizontally ? editorRect.width - buttonWidth - shadowWidth : leftOffsetFromEditor;
-    const top = isOverflowingVertically
-      ? topOffsetFromEditor - lastRect.height - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON * 2 - buttonHeight
-      : topOffsetFromEditor;
+    let left = leftOffsetFromEditor;
+    let top = topOffsetFromEditor;
+
+    // left 계산
+    if (isOverflowingHorizontally.right) {
+      left = editorRect.width - buttonTotalWidth;
+    }
+    if (isOverflowingHorizontally.left) {
+      left = shadowWidth;
+    }
+
+    // top 계산
+    if (isOverflowingVertically.bottom) {
+      top = topOffsetFromEditor - lastRect.height - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON - buttonTotalHeight;
+    }
+    if (isOverflowingVertically.top) {
+      top = shadowWidth;
+    }
 
     return { left, top };
   };
