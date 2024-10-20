@@ -9,7 +9,7 @@ interface AccordionStyleProps {
 export const AccordionContainer = styled.div<AccordionStyleProps>`
   display: flex;
   flex-direction: column;
-  gap: ${({ $isOpened }) => ($isOpened ? '2rem' : 0)};
+  gap: ${({ $isOpened }) => ($isOpened ? '1rem' : 0)};
 
   width: 100%;
 
@@ -60,6 +60,7 @@ export const AccordionContentsWrapper = styled.div`
 
 export const AccordionContents = styled.div<AccordionStyleProps>`
   margin-top: ${({ $isOpened, $contentHeight }) => ($isOpened ? 0 : `-${$contentHeight! * 0.1}rem`)};
+  padding: 1rem;
   opacity: ${({ $isOpened }) => ($isOpened ? 1 : 0)};
   transition: ${({ $isFirstRender }) => ($isFirstRender === true ? 'none' : '0.3s ease-in')};
 `;
