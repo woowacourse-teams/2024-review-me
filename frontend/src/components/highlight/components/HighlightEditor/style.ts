@@ -25,9 +25,8 @@ export const SwitchModIcon = styled.img`
   height: 1.6rem;
 `;
 
-export const HighlightText = styled.span<{ $isEditable: boolean }>`
+export const HighlightText = styled.span`
   display: inline-block;
-  color: ${({ $isEditable, theme }) => ($isEditable ? theme.colors.primary : theme.colors.gray)};
 `;
 
 export const AnswerList = styled.ul`
@@ -37,8 +36,14 @@ export const AnswerList = styled.ul`
 
 export const AnswerListItem = styled.li`
   margin-bottom: 1rem;
-  margin-left: 2rem;
+  margin-left: 0.8rem;
   &::marker {
     margin: 0;
   }
+`;
+
+export const Marker = styled.img`
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.5rem;
 `;
