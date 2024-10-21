@@ -26,6 +26,7 @@ const ReviewWritingCompletePage = () => {
         errorMessage="유효하지 않은 접근이에요"
         handleReload={() => navigate(0)}
         handleGoOtherPage={() => navigate('/', { replace: true })}
+        errorType="invalidAccess"
       />
     );
   }
