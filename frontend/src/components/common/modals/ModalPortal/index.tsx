@@ -5,9 +5,10 @@ import * as S from './styles';
 
 interface ModalPortalProps {
   id?: string;
+  disableScroll?: boolean;
 }
 
-const ModalPortal: React.FC<PropsWithChildren<ModalPortalProps>> = ({ children: Modal, id }) => {
+const ModalPortal: React.FC<PropsWithChildren<ModalPortalProps>> = ({ children: Modal, id, disableScroll = true }) => {
   const preventBodyScroll = () => {
     document.body.style.overflow = 'hidden';
   };
@@ -17,10 +18,10 @@ const ModalPortal: React.FC<PropsWithChildren<ModalPortalProps>> = ({ children: 
   };
 
   useEffect(() => {
-    preventBodyScroll();
+    if (disableScroll) preventBodyScroll();
 
     return () => {
-      allowBodyScroll();
+      if (disableScroll) allowBodyScroll();
     };
   });
 

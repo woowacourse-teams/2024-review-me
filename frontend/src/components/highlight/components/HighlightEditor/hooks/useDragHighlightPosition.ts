@@ -108,7 +108,6 @@ const useDragHighlightPosition = ({
     editorRect: DOMRect;
     lastRect: DOMRect;
   }
-
   const calculateDragHighlightMenuPosition = ({
     leftOffsetFromEditor,
     topOffsetFromEditor,
