@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import ModalPortal from '../modals/ModalPortal';
+
 import * as S from './styles';
 
 export type ToastPositionType = 'top' | 'bottom';
@@ -29,10 +31,12 @@ const Toast = ({ icon, message, duration, position, handleOpenModal, handleModal
   }, [handleOpenModal]);
 
   return (
-    <S.ToastModalContainer duration={duration} position={position}>
-      {icon && <S.WarningIcon src={icon.src} alt={icon.alt} />}
-      <S.ErrorMessage>{message}</S.ErrorMessage>
-    </S.ToastModalContainer>
+    <ModalPortal disableScroll={false}>
+      <S.ToastModalContainer duration={duration} position={position}>
+        {icon && <S.WarningIcon src={icon.src} alt={icon.alt} />}
+        <S.ErrorMessage>{message}</S.ErrorMessage>
+      </S.ToastModalContainer>
+    </ModalPortal>
   );
 };
 

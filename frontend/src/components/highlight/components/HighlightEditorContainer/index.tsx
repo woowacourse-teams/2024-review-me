@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
 
 import WarningIcon from '@/assets/warning.svg';
 import Toast from '@/components/common/Toast';
@@ -20,18 +19,16 @@ const HighlightEditorContainer = (props: Omit<HighlightEditorProps, 'handleError
       <ErrorBoundary fallback={ErrorFallback}>
         <HighlightEditor {...props} handleErrorModal={handleErrorModal} handleModalMessage={handleModalMessage} />
       </ErrorBoundary>
-      {isOpenErrorModal &&
-        createPortal(
-          <Toast
-            icon={{ src: WarningIcon, alt: '경고 아이콘' }}
-            message={modalMessage}
-            duration={5}
-            position="bottom"
-            handleOpenModal={handleErrorModal}
-            handleModalMessage={handleModalMessage}
-          />,
-          document.body,
-        )}
+      {isOpenErrorModal && (
+        <Toast
+          icon={{ src: WarningIcon, alt: '경고 아이콘' }}
+          message={modalMessage}
+          duration={5}
+          position="bottom"
+          handleOpenModal={handleErrorModal}
+          handleModalMessage={handleModalMessage}
+        />
+      )}
     </>
   );
 };
