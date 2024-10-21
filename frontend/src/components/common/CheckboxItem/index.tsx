@@ -26,8 +26,8 @@ const CheckboxItem = ({
         currentTarget: {
           id: id,
           checked: !isChecked,
-        },
-      } as unknown as ChangeEvent<HTMLInputElement>);
+        } as Partial<HTMLInputElement>, 
+      } as ChangeEvent<HTMLInputElement>); 
     }
   };
 
