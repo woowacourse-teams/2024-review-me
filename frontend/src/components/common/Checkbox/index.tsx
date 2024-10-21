@@ -31,7 +31,14 @@ const Checkbox = ({ id, isChecked, handleChange, isDisabled, $style, $isReadonly
           onChange={handleChange}
           {...rest}
         />
-        <img src={isChecked ? CheckedIcon : UncheckedIcon} alt="체크박스" />
+        <img
+          src={isChecked ? CheckedIcon : UncheckedIcon}
+          role="checkbox"
+          aria-checked={isChecked}
+          aria-readonly={$isReadonly}
+          alt=""
+        />
+        {$isReadonly && <span className="sr-only">{isChecked ? '선택됨' : '선택 안 됨'}</span>}
       </S.CheckboxLabel>
     </S.CheckboxContainer>
   );
