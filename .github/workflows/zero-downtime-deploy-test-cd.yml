@@ -1,4 +1,4 @@
-name: "무중단 배포 테스트!!!"
+name: "[test] Zero Downtime Deploy Test CD"
 
 on:
   workflow_dispatch:
