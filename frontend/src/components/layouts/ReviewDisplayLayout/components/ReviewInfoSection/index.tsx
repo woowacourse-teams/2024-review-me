@@ -1,15 +1,18 @@
+import { useContext } from 'react';
+
 import { calculateParticle } from '@/utils';
+
+import { ReviewInfoDataContext } from '../../ReviewInfoDataProvider';
 
 import * as S from './styles';
 
 export interface ReviewInfoSectionProps {
-  revieweeName: string;
   isReviewList: boolean;
-  projectName: string;
-  totalReviewCount?: number;
 }
 
-const ReviewInfoSection = ({ projectName, revieweeName, totalReviewCount, isReviewList }: ReviewInfoSectionProps) => {
+const ReviewInfoSection = ({ isReviewList }: ReviewInfoSectionProps) => {
+  const { revieweeName, projectName, totalReviewCount } = useContext(ReviewInfoDataContext);
+
   const revieweeNameWithParticle = calculateParticle({
     target: revieweeName,
     particles: { withFinalConsonant: '이', withoutFinalConsonant: '가' },

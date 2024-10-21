@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reviewme.highlight.domain.Highlight;
+import reviewme.highlight.repository.HighlightRepository;
 import reviewme.question.domain.Question;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
@@ -27,6 +29,7 @@ public class ReviewGatheredLookupService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
     private final SectionRepository sectionRepository;
+    private final HighlightRepository highlightRepository;
 
     private final ReviewGatherMapper reviewGatherMapper;
 
@@ -35,7 +38,15 @@ public class ReviewGatheredLookupService {
         Section section = getSectionOrThrow(sectionId, reviewGroup);
         Map<Question, List<Answer>> questionAnswers = getQuestionAnswers(section, reviewGroup);
 
-        return reviewGatherMapper.mapToReviewsGatheredBySection(questionAnswers);
+        List<Long> answerIds = questionAnswers.values()
+                .stream()
+                .flatMap(List::stream)
+                .map(Answer::getId)
+                .distinct()
+                .toList();
+        List<Highlight> highlights = highlightRepository.findAllByAnswerIdsOrderedAsc(answerIds);
+
+        return reviewGatherMapper.mapToReviewsGatheredBySection(questionAnswers, highlights);
     }
 
     private Section getSectionOrThrow(long sectionId, ReviewGroup reviewGroup) {

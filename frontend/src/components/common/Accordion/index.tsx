@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
-
 import DownArrowIcon from '@/assets/downArrow.svg';
 import useAccordion from '@/hooks/useAccordion';
 import { EssentialPropsWithChildren } from '@/types';
@@ -12,24 +10,28 @@ interface AccordionProps {
 }
 
 const Accordion = ({ title, isInitiallyOpened = false, children }: EssentialPropsWithChildren<AccordionProps>) => {
-  const { isOpened, handleAccordionButtonClick } = useAccordion({ isInitiallyOpened });
-  const [contentHeight, setContentHeight] = useState(0);
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (contentRef.current) {
-      setContentHeight(contentRef.current.clientHeight);
-    }
-  }, [isOpened]);
+  const { isOpened, contentHeight, contentRef, isFirstRender, handleAccordionButtonClick } = useAccordion({
+    isInitiallyOpened,
+  });
 
   return (
     <S.AccordionContainer $isOpened={isOpened}>
-      <S.AccordionButton onClick={handleAccordionButtonClick}>
-        <S.AccordionTitle>{title}</S.AccordionTitle>
-        <S.ArrowIcon src={DownArrowIcon} $isOpened={isOpened} alt="" />
-      </S.AccordionButton>
+      <S.AccordionHeader $isOpened={isOpened}>
+        <S.AccordionButton onClick={handleAccordionButtonClick}>
+          <S.AccordionTitle>
+            <S.QuestionMark>Q. </S.QuestionMark>
+            {title}
+          </S.AccordionTitle>
+          <S.ArrowIcon src={DownArrowIcon} $isOpened={isOpened} alt="" />
+        </S.AccordionButton>
+      </S.AccordionHeader>
       <S.AccordionContentsWrapper>
-        <S.AccordionContents $isOpened={isOpened} $contentHeight={contentHeight} ref={contentRef}>
+        <S.AccordionContents
+          $isOpened={isOpened}
+          $contentHeight={contentHeight}
+          $isFirstRender={isFirstRender}
+          ref={contentRef}
+        >
           {children}
         </S.AccordionContents>
       </S.AccordionContentsWrapper>

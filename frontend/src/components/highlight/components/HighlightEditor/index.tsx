@@ -80,11 +80,9 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
             onMouseMove={clearPressTimer}
             onTouchMove={handleLongPressLine}
           >
-            <>
-              {lineList.map((line, index) => (
-                <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
-              ))}
-            </>
+            {lineList.map((line, index) => (
+              <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
+            ))}
           </S.AnswerListItem>
         ))}
       </S.AnswerList>
