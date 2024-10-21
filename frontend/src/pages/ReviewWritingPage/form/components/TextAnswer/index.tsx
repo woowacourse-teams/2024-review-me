@@ -1,4 +1,4 @@
-import { useTextAnswer } from '@/pages/ReviewWritingPage/form/hooks';
+import { useFocusMessage, useTextAnswer } from '@/pages/ReviewWritingPage/form/hooks';
 import { ReviewWritingCardQuestion } from '@/types';
 
 import * as S from './styles';
@@ -12,6 +12,8 @@ const TextAnswer = ({ question }: TextAnswerProps) => {
     question,
   });
 
+  const { messageRef } = useFocusMessage<HTMLParagraphElement>({ isMessageShown: errorMessage !== '' });
+
   const textLength = `${text.length} / ${maxLength}`;
 
   return (
@@ -24,7 +26,9 @@ const TextAnswer = ({ question }: TextAnswerProps) => {
         onBlur={handleTextAnswerBlur}
       />
       <S.TextareaInfoContainer>
-        <S.ReviewTextareaError>{errorMessage}</S.ReviewTextareaError>
+        <S.ReviewTextareaError tabIndex={-1} ref={messageRef} aria-live="assertive">
+          {errorMessage}
+        </S.ReviewTextareaError>
         <S.ReviewTextLength>{textLength}</S.ReviewTextLength>
       </S.TextareaInfoContainer>
     </S.TextareaContainer>
