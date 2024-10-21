@@ -1,8 +1,9 @@
+import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 
 import { ReviewEmptySection } from '@/components';
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
-import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
+import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
 import ReviewCard from '@/components/ReviewCard';
 import { REVIEW_EMPTY } from '@/constants';
 import { ROUTE } from '@/constants/route';
@@ -16,6 +17,7 @@ const ReviewListPageContents = () => {
   const navigate = useNavigate();
 
   const { data, fetchNextPage, isLoading, isSuccess } = useGetReviewList();
+  const { totalReviewCount } = useContext(ReviewInfoDataContext);
 
   const { param: reviewRequestCode } = useSearchParamAndQuery({
     paramKey: 'reviewRequestCode',
@@ -37,8 +39,8 @@ const ReviewListPageContents = () => {
   if (!isSuccess) return null;
 
   return (
-    <ReviewDisplayLayout isReviewList={true}>
-      {reviews.length === 0 ? (
+    <>
+      {totalReviewCount === 0 ? (
         <ReviewEmptySection content={REVIEW_EMPTY.noReviewInTotal} />
       ) : (
         <S.ReviewSection>
@@ -58,7 +60,7 @@ const ReviewListPageContents = () => {
           })}
         </S.ReviewSection>
       )}
-    </ReviewDisplayLayout>
+    </>
   );
 };
 

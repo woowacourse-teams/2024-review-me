@@ -1,12 +1,15 @@
 import { AuthAndServerErrorFallback, ErrorSuspenseContainer, TopButton } from '@/components';
+import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 
 import ReviewCollectionPageContents from './components/ReviewCollectionPageContents';
 
 const ReviewCollectionPage = () => {
   return (
     <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
-      <ReviewCollectionPageContents />
-      <TopButton />
+      <ReviewDisplayLayout isReviewList={false}>
+        <ReviewCollectionPageContents />
+        <TopButton />
+      </ReviewDisplayLayout>
     </ErrorSuspenseContainer>
   );
 };

@@ -3,7 +3,6 @@ import React, { useContext, useState } from 'react';
 import { Accordion, Dropdown, HighlightEditorContainer } from '@/components';
 import { DropdownItem } from '@/components/common/Dropdown';
 import ReviewEmptySection from '@/components/common/ReviewEmptySection';
-import ReviewDisplayLayout from '@/components/layouts/ReviewDisplayLayout';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
 import { REVIEW_EMPTY } from '@/constants';
 import { GroupedReview } from '@/types';
@@ -45,41 +44,37 @@ const ReviewCollectionPageContents = () => {
   };
 
   if (totalReviewCount === 0) {
-    <ReviewDisplayLayout isReviewList={false}>
-      <ReviewEmptySection content={REVIEW_EMPTY.noReviewInTotal} />
-    </ReviewDisplayLayout>;
+    return <ReviewEmptySection content={REVIEW_EMPTY.noReviewInTotal} />;
   }
 
   return (
-    <ReviewDisplayLayout isReviewList={false}>
-      <S.ReviewCollectionContainer>
-        <S.ReviewSectionDropdown>
-          <Dropdown
-            items={dropdownSectionList}
-            selectedItem={dropdownSectionList.find((section) => section.value === selectedSection.value)!}
-            handleSelect={(item) => setSelectedSection(item)}
-          />
-        </S.ReviewSectionDropdown>
-        <S.ReviewCollection>
-          {groupedReviews.reviews.map((review, index) => {
-            const parsedQuestionName = substituteString({
-              content: review.question.name,
-              variables: { revieweeName, projectName },
-            });
+    <S.ReviewCollectionContainer>
+      <S.ReviewSectionDropdown>
+        <Dropdown
+          items={dropdownSectionList}
+          selectedItem={dropdownSectionList.find((section) => section.value === selectedSection.value)!}
+          handleSelect={(item) => setSelectedSection(item)}
+        />
+      </S.ReviewSectionDropdown>
+      <S.ReviewCollection>
+        {groupedReviews.reviews.map((review, index) => {
+          const parsedQuestionName = substituteString({
+            content: review.question.name,
+            variables: { revieweeName, projectName },
+          });
 
-            return (
-              <Accordion
-                title={parsedQuestionName}
-                key={`${selectedSection.value}-${index}`}
-                isInitiallyOpened={index === 0}
-              >
-                {renderContent(review)}
-              </Accordion>
-            );
-          })}
-        </S.ReviewCollection>
-      </S.ReviewCollectionContainer>
-    </ReviewDisplayLayout>
+          return (
+            <Accordion
+              title={parsedQuestionName}
+              key={`${selectedSection.value}-${index}`}
+              isInitiallyOpened={index === 0}
+            >
+              {renderContent(review)}
+            </Accordion>
+          );
+        })}
+      </S.ReviewCollection>
+    </S.ReviewCollectionContainer>
   );
 };
 
