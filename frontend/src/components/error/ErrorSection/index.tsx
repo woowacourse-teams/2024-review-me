@@ -13,6 +13,7 @@ export interface ErrorSectionProps {
   errorMessage: string;
   handleReload: () => void;
   handleGoOtherPage: () => void;
+  errorType?: 'notFound' | 'invalidAccess';
 }
 
 export interface ErrorSectionButton {
@@ -25,27 +26,30 @@ export interface ErrorSectionButton {
   onClick: () => void;
 }
 
-const ErrorSection = ({ errorMessage, handleReload, handleGoOtherPage }: ErrorSectionProps) => {
+const ErrorSection = ({ errorMessage, handleReload, handleGoOtherPage, errorType = 'notFound' }: ErrorSectionProps) => {
   const isGoHomeButtonFirst = errorMessage === ROUTE_ERROR_MESSAGE;
   // errorMessage에 따른 커스텀
-  const buttonList: ErrorSectionButton[] = [
-    {
+  const buttonList: ErrorSectionButton[] = [];
+
+  if (errorType === 'notFound') {
+    buttonList.push({
       buttonType: isGoHomeButtonFirst ? 'secondary' : 'primary',
       key: 'refreshButton',
       text: '새로고침하기',
       imageSrc: isGoHomeButtonFirst ? PrimaryReloadIcon : WhiteReloadIcon,
       imageDescription: '새로고침 이미지',
       onClick: handleReload,
-    },
-    {
-      buttonType: isGoHomeButtonFirst ? 'primary' : 'secondary',
-      key: 'homeButton',
-      text: '홈으로 이동하기',
-      imageSrc: isGoHomeButtonFirst ? WhiteHomeIcon : PrimaryHomeIcon,
-      imageDescription: '홈 이미지',
-      onClick: handleGoOtherPage,
-    },
-  ];
+    });
+  }
+
+  buttonList.push({
+    buttonType: errorType === 'invalidAccess' ? 'primary' : isGoHomeButtonFirst ? 'primary' : 'secondary',
+    key: 'homeButton',
+    text: '홈으로 이동하기',
+    imageSrc: errorType === 'invalidAccess' ? WhiteHomeIcon : isGoHomeButtonFirst ? WhiteHomeIcon : PrimaryHomeIcon,
+    imageDescription: '홈 이미지',
+    onClick: handleGoOtherPage,
+  });
 
   const errorSectionButtonList = isGoHomeButtonFirst ? buttonList.reverse() : buttonList;
 
