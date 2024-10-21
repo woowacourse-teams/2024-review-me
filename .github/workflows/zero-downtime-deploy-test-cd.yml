@@ -77,6 +77,6 @@ jobs:
           PROFILE_VAR: "dev"
         run: |
           chmod +x ./deploy.sh
-          sudo ./deploy.sh
+          sudo -E ./deploy.sh
 
         working-directory: ${{ env.APPLICATION_DIRECTORY }}/app
