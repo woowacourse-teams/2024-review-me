@@ -186,7 +186,7 @@ export const calculateDragDirection = ({
   if (isSameLine) return anchorIndexInLine < focusIndexInLine;
 
   // 같은 답변의 다른 줄
-  return startLineIndex < endLineIndex;
+  return startLineIndex === anchorIndexInLine;
 };
 
 /**
