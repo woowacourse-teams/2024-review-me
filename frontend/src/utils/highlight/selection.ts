@@ -162,6 +162,7 @@ export const calculateStartAndEndLine = ({
 interface CalculateDragDirectionParams {
   startLineIndex: number;
   endLineIndex: number;
+  anchorLineIndex: number;
   anchorIndexInLine: number;
   focusIndexInLine: number;
   isSameAnswer: boolean;
@@ -171,6 +172,7 @@ interface CalculateDragDirectionParams {
 export const calculateDragDirection = ({
   startLineIndex,
   endLineIndex,
+  anchorLineIndex,
   anchorIndexInLine,
   focusIndexInLine,
   isSameAnswer,
@@ -184,9 +186,8 @@ export const calculateDragDirection = ({
 
   // 같은 답변의 같은 줄
   if (isSameLine) return anchorIndexInLine < focusIndexInLine;
-
   // 같은 답변의 다른 줄
-  return startLineIndex === anchorIndexInLine;
+  return startLineIndex === anchorLineIndex;
 };
 
 /**
@@ -199,13 +200,14 @@ export const findSelectionInfo = () => {
 
   const selectedElementInfo = findSelectedLineInfo(selection);
   if (!selectedElementInfo) return;
-  const { isSameAnswer, anchorIndexInLine, focusIndexInLine } = selectedElementInfo;
+  const { isSameAnswer, anchorIndexInLine, focusIndexInLine, anchorLineIndex } = selectedElementInfo;
   const { startLineElement, startLineIndex, endLineElement, endLineIndex } =
     calculateStartAndEndLine(selectedElementInfo);
 
   const isForwardDrag = calculateDragDirection({
     startLineIndex,
     endLineIndex,
+    anchorLineIndex,
     focusIndexInLine,
     anchorIndexInLine,
     isSameAnswer: !!isSameAnswer,
