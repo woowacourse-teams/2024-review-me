@@ -1,6 +1,5 @@
 import { useRef } from 'react';
 
-import DotIcon from '@/assets/dot.svg';
 import { EDITOR_ANSWER_CLASS_NAME, EDITOR_LINE_CLASS_NAME } from '@/constants';
 import { ReviewAnswerResponseData } from '@/types';
 
@@ -72,7 +71,7 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal, handleModal
         <Tooltip />
         <EditSwitchButton isEditable={isEditable} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
-      <ul>
+      <S.AnswerList>
         {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
           <S.AnswerListItem
             className={EDITOR_ANSWER_CLASS_NAME}
@@ -83,15 +82,12 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal, handleModal
             onMouseMove={clearPressTimer}
             onTouchMove={handleLongPressLine}
           >
-            <S.Marker src={DotIcon} alt="점" />
-            <S.AnswerText>
-              {lineList.map((line, index) => (
-                <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
-              ))}
-            </S.AnswerText>
+            {lineList.map((line, index) => (
+              <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
+            ))}
           </S.AnswerListItem>
         ))}
-      </ul>
+      </S.AnswerList>
       {isEditable && menuPosition && (
         <HighlightMenu
           position={menuPosition}

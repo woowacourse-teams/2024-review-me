@@ -1,10 +1,4 @@
-import { GroupedReviews, GroupedSection, ReviewSummary } from '@/types';
-
-export const REVIEW_SUMMARY_MOCK_DATA: ReviewSummary = {
-  projectName: '리뷰미',
-  revieweeName: '에프이',
-  reviewCount: 5,
-};
+import { GroupedReviews, GroupedSection } from '@/types';
 
 export const GROUPED_SECTION_MOCK_DATA: GroupedSection = {
   sections: [
@@ -48,8 +42,8 @@ export const GROUPED_REVIEWS_MOCK_DATA: GroupedReviews = {
         {
           id: 1,
           content:
-            '장의 시작부분은 짧고 직접적이며, 뒤따라 나올 복잡한 정보를 어떻게 해석해야 할 것인지 프레임을 짜주는 역할을 해야 한다. 그러면 아무리 긴 문장이라도 쉽게 읽힌다.\n  프레임을 짜주는 역할을 해야 한다. 그러면 아무리 긴 문장이라도 쉽게 읽힌다. \n  프레임을 짜주는 역할을 해야 한다. 그러면 아무리 긴 문장이라도 쉽게 읽힌다.',
-          highlights: [],
+            '장의 시작부분은 짧고 직접적이며, 뒤따라 나올 복잡한 정보를 어떻게 해석해야 할 것인지 프레임을 짜주는 역할을 해야 한다. 그러면 아무리 긴 문장이라도 쉽게 읽힌다.\n프레임을 짜주는 역할을 해야 한다. 그러면 아무리 긴 문장이라도 쉽게 읽힌다.\n프레임을 짜주는 역할을 해야 한다. 그러면 아무리 긴 문장이라도 쉽게 읽힌다.',
+          highlights: [{ lineIndex: 0, ranges: [{ startIndex: 0, endIndex: 0 }] }],
         },
         {
           id: 2,

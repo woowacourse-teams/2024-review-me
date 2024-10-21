@@ -1,7 +1,6 @@
 import EraserIcon from '@/assets/eraser.svg';
 import HighlighterIcon from '@/assets/highlighter.svg';
 import TrashIcon from '@/assets/trash.svg';
-import { SR_ONLY } from '@/constants';
 
 import * as S from './style';
 
@@ -11,8 +10,7 @@ interface DragHighlightAddButtonProps {
 
 const DragHighlightAddButton = ({ addHighlightByDrag }: DragHighlightAddButtonProps) => {
   return (
-    <S.Button onClick={addHighlightByDrag}>
-      <span className={SR_ONLY}>하이라이트 추가 버튼</span>
+    <S.Button onClick={addHighlightByDrag} aria-label="하이하이트 추가 버튼">
       <S.ButtonIcon src={HighlighterIcon} alt="" />
     </S.Button>
   );
@@ -24,8 +22,7 @@ interface DragHighlightRemoveButtonProps {
 
 const DragHighlightRemoveButton = ({ removeHighlightByDrag }: DragHighlightRemoveButtonProps) => {
   return (
-    <S.Button onClick={removeHighlightByDrag}>
-      <span className={SR_ONLY}>하이라이트 삭제 버튼</span>
+    <S.Button onClick={removeHighlightByDrag} aria-label="하이라이트 삭제 버튼">
       <S.ButtonIcon src={EraserIcon} alt="" />
     </S.Button>
   );
@@ -37,8 +34,7 @@ interface LongPressHighlightRemoveButtonProps {
 
 const LongPressHighlightRemoveButton = ({ removeHighlightByLongPress }: LongPressHighlightRemoveButtonProps) => {
   return (
-    <S.Button onClick={removeHighlightByLongPress}>
-      <span className={SR_ONLY}>하이라이트 삭제 버튼</span>
+    <S.Button onClick={removeHighlightByLongPress} aria-label="하이라이트 삭제 버튼">
       <S.ButtonIcon src={TrashIcon} alt="" />
     </S.Button>
   );

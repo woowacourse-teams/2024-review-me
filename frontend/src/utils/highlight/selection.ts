@@ -25,6 +25,7 @@ export const calculateOffsetInLine = ({
   const offset =
     spanList.slice(0, Number(spanIndex)).reduce((acc, cur) => acc + (cur.textContent?.length || 0), 0) +
     selectionTargetOffset;
+
   return offset;
 };
 
@@ -44,20 +45,25 @@ const getAnswerElementInfo = (element: Element) => {
   return info;
 };
 
-interface BlockData {
-  block: Element;
+interface LineData {
+  line: Element;
   index: number;
 }
 interface GetAnswerInfoParams {
-  anchorLineData: BlockData;
-  focusLineData: BlockData;
-  anchorOffset: number;
-  focusOffset: number;
+  anchorLineData: LineData;
+  focusLineData: LineData;
+  anchorIndexInLine: number;
+  focusIndexInLine: number;
 }
 
-export const getAnswerInfo = ({ anchorLineData, focusLineData, anchorOffset, focusOffset }: GetAnswerInfoParams) => {
-  const anchorAnswerElement = anchorLineData.block.closest(`.${EDITOR_ANSWER_CLASS_NAME}`);
-  const focusAnswerElement = focusLineData.block.closest(`.${EDITOR_ANSWER_CLASS_NAME}`);
+export const getAnswerInfo = ({
+  anchorLineData,
+  focusLineData,
+  anchorIndexInLine,
+  focusIndexInLine,
+}: GetAnswerInfoParams) => {
+  const anchorAnswerElement = anchorLineData.line.closest(`.${EDITOR_ANSWER_CLASS_NAME}`);
+  const focusAnswerElement = focusLineData.line.closest(`.${EDITOR_ANSWER_CLASS_NAME}`);
 
   if (!anchorAnswerElement || !focusAnswerElement) return;
 
@@ -72,12 +78,12 @@ export const getAnswerInfo = ({ anchorLineData, focusLineData, anchorOffset, foc
   const isForwardDragAnswer = sortedAnswerData[0].id === anchorAnswerData.id;
 
   const startAnswer = isForwardDragAnswer
-    ? { ...anchorAnswerData, lineIndex: Number(anchorLineData.index), offset: anchorOffset }
-    : { ...focusAnswerData, lineIndex: Number(focusLineData.index), offset: focusOffset };
+    ? { ...anchorAnswerData, lineIndex: Number(anchorLineData.index), offset: anchorIndexInLine }
+    : { ...focusAnswerData, lineIndex: Number(focusLineData.index), offset: focusIndexInLine };
 
   const endAnswer = isForwardDragAnswer
-    ? { ...focusAnswerData, lineIndex: Number(focusLineData.index), offset: focusOffset - 1 }
-    : { ...anchorAnswerData, lineIndex: Number(anchorLineData.index), offset: anchorOffset - 1 };
+    ? { ...focusAnswerData, lineIndex: Number(focusLineData.index), offset: focusIndexInLine - 1 }
+    : { ...anchorAnswerData, lineIndex: Number(anchorLineData.index), offset: anchorIndexInLine - 1 };
 
   return {
     isSameAnswer,
@@ -90,7 +96,6 @@ export const getAnswerInfo = ({ anchorLineData, focusLineData, anchorOffset, foc
 /**
  * anchorNode, focusNode가 있는 element(Line) 정보를 찾는 함수
  * @param selection
- * @returns
  */
 export const findSelectedLineInfo = (selection: Selection) => {
   const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
@@ -102,11 +107,24 @@ export const findSelectedLineInfo = (selection: Selection) => {
   const anchorLineIndex = Number(anchorLineElement.getAttribute('data-index') || '-1');
   const focusLineIndex = Number(focusLineElement.getAttribute('data-index') || '-1');
 
+  // 줄 기준 Offset 비교
+  const anchorIndexInLine = calculateOffsetInLine({
+    selectionTargetNode: anchorNode,
+    selectionTargetOffset: anchorOffset,
+    lineElement: anchorLineElement,
+  });
+
+  const focusIndexInLine = calculateOffsetInLine({
+    selectionTargetNode: focusNode,
+    selectionTargetOffset: focusOffset,
+    lineElement: focusLineElement,
+  });
+
   const answerInfo = getAnswerInfo({
-    anchorLineData: { block: anchorLineElement, index: anchorLineIndex },
-    focusLineData: { block: focusLineElement, index: focusLineIndex },
-    anchorOffset,
-    focusOffset,
+    anchorLineData: { line: anchorLineElement, index: anchorLineIndex },
+    focusLineData: { line: focusLineElement, index: focusLineIndex },
+    anchorIndexInLine,
+    focusIndexInLine,
   });
   // 줄 기준 Offset 비교
   const anchorIndexInLine = calculateOffsetInLine({
@@ -156,6 +174,7 @@ export const calculateStartAndEndLine = ({
 interface CalculateDragDirectionParams {
   startLineIndex: number;
   endLineIndex: number;
+  anchorLineIndex: number;
   anchorIndexInLine: number;
   focusIndexInLine: number;
   isSameAnswer: boolean;
@@ -165,6 +184,7 @@ interface CalculateDragDirectionParams {
 export const calculateDragDirection = ({
   startLineIndex,
   endLineIndex,
+  anchorLineIndex,
   anchorIndexInLine,
   focusIndexInLine,
   isSameAnswer,
@@ -178,9 +198,8 @@ export const calculateDragDirection = ({
 
   // 같은 답변의 같은 줄
   if (isSameLine) return anchorIndexInLine < focusIndexInLine;
-
   // 같은 답변의 다른 줄
-  return startLineIndex < endLineIndex;
+  return startLineIndex === anchorLineIndex;
 };
 
 /**
@@ -193,13 +212,14 @@ export const findSelectionInfo = () => {
 
   const selectedElementInfo = findSelectedLineInfo(selection);
   if (!selectedElementInfo) return;
-  const { isSameAnswer, anchorIndexInLine, focusIndexInLine } = selectedElementInfo;
+  const { isSameAnswer, anchorIndexInLine, focusIndexInLine, anchorLineIndex } = selectedElementInfo;
   const { startLineElement, startLineIndex, endLineElement, endLineIndex } =
     calculateStartAndEndLine(selectedElementInfo);
 
   const isForwardDrag = calculateDragDirection({
     startLineIndex,
     endLineIndex,
+    anchorLineIndex,
     focusIndexInLine,
     anchorIndexInLine,
     isSameAnswer: !!isSameAnswer,
@@ -222,7 +242,7 @@ export const findSelectionInfo = () => {
 
 export type SelectionInfo = Exclude<ReturnType<typeof findSelectionInfo>, undefined>;
 
-export const getStartLineOffset = (infoForOffset: SelectionInfo, block: EditorLine) => {
+export const getStartLineOffset = (infoForOffset: SelectionInfo, line: EditorLine) => {
   const { isForwardDrag, startLineElement, selection, isOnlyOneSelectedBlock } = infoForOffset;
   const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
   const startIndex = calculateOffsetInLine({
@@ -237,7 +257,7 @@ export const getStartLineOffset = (infoForOffset: SelectionInfo, block: EditorLi
         selectionTargetOffset: isForwardDrag ? focusOffset - 1 : anchorOffset - 1,
         lineElement: startLineElement,
       })
-    : block.text.length;
+    : line.text.length - 1;
 
   return { startIndex, endIndex };
 };
