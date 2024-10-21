@@ -62,7 +62,7 @@ const getToastPositionStyles = (position: ToastPositionType, duration: number) =
   return css`
     ${position === 'top' &&
     css`
-      top: 2rem;
+      top: 5%;
       animation:
         ${fadeInDown} 0.5s ease-out forwards,
         ${fadeOutUp} 0.5s ease-out forwards;
@@ -71,7 +71,7 @@ const getToastPositionStyles = (position: ToastPositionType, duration: number) =
 
     ${position === 'bottom' &&
     css`
-      bottom: 2rem;
+      bottom: 5%;
       animation:
         ${fadeInUp} 0.5s ease-out forwards,
         ${fadeOutDown} 0.5s ease-out forwards;
@@ -102,7 +102,7 @@ export const ToastModalContainer = styled.div<ToastModalProps>`
   font-size: ${({ theme }) => theme.fontSize.small};
 
   border-radius: ${({ theme }) => theme.borderRadius.basic};
-  box-shadow: 0.8rem 0.8rem 1.6rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0.4rem 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
 
   border: none;
 
