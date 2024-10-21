@@ -112,6 +112,15 @@ const reset = () => css`
     background-color: transparent;
     border: none;
   }
+
+  a,
+  a:active,
+  a:focus,
+  a:visited,
+  a:hover {
+    color: inherit;
+    text-decoration: none;
+  }
 `;
 
 export default reset;
