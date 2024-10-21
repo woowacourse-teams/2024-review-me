@@ -11,7 +11,7 @@ interface IconProps {
   alt: string;
 }
 
-interface ToastModalProps {
+interface ToastProps {
   icon?: IconProps;
   message: string;
   duration: number;
@@ -20,7 +20,7 @@ interface ToastModalProps {
   handleModalMessage: (message: string) => void;
 }
 
-const Toast = ({ icon, message, duration, position, handleOpenModal, handleModalMessage }: ToastModalProps) => {
+const Toast = ({ icon, message, duration, position, handleOpenModal, handleModalMessage }: ToastProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       handleOpenModal(false);
