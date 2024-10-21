@@ -21,7 +21,7 @@ const ProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: ProgressBarPr
 
   return (
     <S.ProgressBarContainer>
-      <S.ProgressBar>
+      <S.ProgressBar role="status" aria-live="polite">
         {stepList.map((step, index) => {
           return (
             <React.Fragment key={step.sectionId}>
@@ -31,6 +31,11 @@ const ProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: ProgressBarPr
                 $isCurrentStep={step.isCurrentStep}
                 onClick={() => handleClick(index)}
                 type="button"
+                aria-label={
+                  step.isCurrentStep
+                    ? `현재 섹션은. 전체 ${stepList.length}개 섹션 중. ${index + 1}번째 섹션입니다. ${step.sectionName}`
+                    : `${step.sectionName}`
+                }
               >
                 {step.sectionName}
               </S.StepButton>

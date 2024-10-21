@@ -7,7 +7,13 @@ interface PrevButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 
 const PrevButton = ({ handleCurrentCardIndex, ...rest }: PrevButtonProps) => {
   return (
-    <Button styleType={'secondary'} type={'button'} onClick={() => handleCurrentCardIndex('prev')} {...rest}>
+    <Button
+      styleType={'secondary'}
+      type={'button'}
+      onClick={() => handleCurrentCardIndex('prev')}
+      aria-label={`이전`}
+      {...rest}
+    >
       이전
     </Button>
   );
@@ -27,6 +33,7 @@ const NextButton = ({ isAbleNextStep, handleCurrentCardIndex, ...rest }: NextBut
       styleType={styledType}
       type={'button'}
       onClick={() => handleCurrentCardIndex('next')}
+      aria-label={isAbleNextStep ? `활성화된 다음` : `비활성화된 다음`}
       {...rest}
     >
       다음
@@ -50,6 +57,7 @@ const ConfirmModalOpenButton = ({
       styleType={styleType}
       type={'button'}
       onClick={handleSubmitConfirmModalOpenButtonClick}
+      aria-label="제출"
       {...rest}
     >
       제출
@@ -69,6 +77,7 @@ const RecheckButton = ({ isAbleNextStep, handleRecheckButtonClick, ...rest }: Re
       styleType={styledType}
       type={'button'}
       onClick={handleRecheckButtonClick}
+      aria-label="작성 내용 확인"
       {...rest}
     >
       작성 내용 확인
