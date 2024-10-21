@@ -29,3 +29,16 @@ export const HighlightText = styled.span<{ $isEditable: boolean }>`
   display: inline-block;
   color: ${({ $isEditable, theme }) => ($isEditable ? theme.colors.primary : theme.colors.gray)};
 `;
+
+export const AnswerList = styled.ul`
+  list-style: disc;
+  list-style-position: outside;
+`;
+
+export const AnswerListItem = styled.li`
+  margin-bottom: 1rem;
+  margin-left: 2rem;
+  &::marker {
+    margin: 0;
+  }
+`;

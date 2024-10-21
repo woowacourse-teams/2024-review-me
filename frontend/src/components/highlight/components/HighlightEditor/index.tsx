@@ -94,21 +94,23 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
         />
         <EditSwitchButton isEditable={isEditable} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
-      {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
-        <div
-          className={EDITOR_ANSWER_CLASS_NAME}
-          key={answerId}
-          data-answer={`${answerId}-${answerIndex}`}
-          onMouseDown={startPressTimer}
-          onMouseUp={clearPressTimer}
-          onMouseMove={clearPressTimer}
-          onTouchMove={handleLongPressLine}
-        >
-          {lineList.map((line, index) => (
-            <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
-          ))}
-        </div>
-      ))}
+      <S.AnswerList>
+        {[...editorAnswerMap.values()].map(({ answerId, answerIndex, lineList }) => (
+          <S.AnswerListItem
+            className={EDITOR_ANSWER_CLASS_NAME}
+            key={answerId}
+            data-answer={`${answerId}-${answerIndex}`}
+            onMouseDown={startPressTimer}
+            onMouseUp={clearPressTimer}
+            onMouseMove={clearPressTimer}
+            onTouchMove={handleLongPressLine}
+          >
+            {lineList.map((line, index) => (
+              <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
+            ))}
+          </S.AnswerListItem>
+        ))}
+      </S.AnswerList>
 
       {isEditable && dragHighlightButtonPosition && (
         <DragHighlightButtonContainer

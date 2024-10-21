@@ -3,15 +3,15 @@ import styled from '@emotion/styled';
 interface AccordionStyleProps {
   $isOpened: boolean;
   $contentHeight?: number;
+  $isFirstRender?: boolean;
 }
 
 export const AccordionContainer = styled.div<AccordionStyleProps>`
   display: flex;
   flex-direction: column;
-  gap: ${({ $isOpened }) => ($isOpened ? '2rem' : 0)};
+  gap: ${({ $isOpened }) => ($isOpened ? '1rem' : 0)};
 
   width: 100%;
-  padding: 1rem;
 
   background-color: ${({ theme, $isOpened }) => ($isOpened ? theme.colors.white : theme.colors.lightGray)};
   border: 0.1rem solid ${({ theme }) => theme.colors.placeholder};
@@ -20,6 +20,12 @@ export const AccordionContainer = styled.div<AccordionStyleProps>`
   &:hover {
     border: 0.1rem solid ${({ theme }) => theme.colors.primaryHover};
   }
+`;
+
+export const AccordionHeader = styled.div<AccordionStyleProps>`
+  display: flex;
+  padding: 1rem;
+  border-bottom: ${({ $isOpened, theme }) => $isOpened && `0.1rem solid ${theme.colors.placeholder}`};
 `;
 
 export const AccordionButton = styled.button`
@@ -34,10 +40,13 @@ export const AccordionButton = styled.button`
 `;
 
 export const AccordionTitle = styled.p`
+  display: flex;
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   text-align: left;
-  ::before {
-    content: 'Q. ';
-  }
+`;
+
+export const QuestionMark = styled.p`
+  margin-right: 0.5rem;
 `;
 
 export const ArrowIcon = styled.img<AccordionStyleProps>`
@@ -50,7 +59,8 @@ export const AccordionContentsWrapper = styled.div`
 `;
 
 export const AccordionContents = styled.div<AccordionStyleProps>`
-  margin-top: ${({ $isOpened, $contentHeight }) => ($isOpened ? '0' : `-${$contentHeight}px`)};
-  opacity: ${({ $isOpened }) => ($isOpened ? '1' : '0')};
-  transition: 0.3s ease;
+  margin-top: ${({ $isOpened, $contentHeight }) => ($isOpened ? 0 : `-${$contentHeight! * 0.1}rem`)};
+  padding: 1rem;
+  opacity: ${({ $isOpened }) => ($isOpened ? 1 : 0)};
+  transition: ${({ $isFirstRender }) => ($isFirstRender === true ? 'none' : '0.3s ease-in')};
 `;
