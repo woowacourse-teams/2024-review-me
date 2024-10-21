@@ -31,7 +31,7 @@ const useTabNavigationOnValidity = ({ cardId }: UseTabNavigationOnValidityProps)
 
     //카드 속에서 마지막 탭 요소에 focus되어있고, tab키 누를 경우
     event.preventDefault();
-    (document.querySelector('footer a') as HTMLElement | undefined)?.focus();
+    (document.querySelector('footer a') as HTMLElement | null)?.focus();
   };
 
   useEffect(() => {
