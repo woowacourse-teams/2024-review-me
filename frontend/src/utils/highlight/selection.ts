@@ -126,18 +126,6 @@ export const findSelectedLineInfo = (selection: Selection) => {
     anchorIndexInLine,
     focusIndexInLine,
   });
-  // 줄 기준 Offset 비교
-  const anchorIndexInLine = calculateOffsetInLine({
-    selectionTargetNode: anchorNode,
-    selectionTargetOffset: anchorOffset,
-    lineElement: anchorLineElement,
-  });
-
-  const focusIndexInLine = calculateOffsetInLine({
-    selectionTargetNode: focusNode,
-    selectionTargetOffset: focusOffset,
-    lineElement: focusLineElement,
-  });
 
   return {
     anchorLineElement,
