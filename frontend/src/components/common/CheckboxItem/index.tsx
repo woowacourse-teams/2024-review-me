@@ -18,6 +18,8 @@ const CheckboxItem = ({
   isTabAccessible = false,
   ...rest
 }: CheckboxItemProps) => {
+  const isCheckedLabel = `${label}, ${isChecked ? '선택됨' : '선택 안 됨'}`;
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter' && handleChange) {
       handleChange({
@@ -30,10 +32,16 @@ const CheckboxItem = ({
   };
 
   return (
-    <S.CheckboxItem tabIndex={$isReadonly ? -1 : 0} onKeyDown={handleKeyDown}>
+    <S.CheckboxItem tabIndex={$isReadonly ? -1 : 0} aria-label={isCheckedLabel} onKeyDown={handleKeyDown}>
       <S.CheckboxLabel>
         <UndraggableWrapper>
-          <Checkbox id={id} isChecked={isChecked} isTabAccessible={isTabAccessible} handleChange={handleChange} {...rest} />
+          <Checkbox
+            id={id}
+            isChecked={isChecked}
+            isTabAccessible={isTabAccessible}
+            handleChange={handleChange}
+            {...rest}
+          />
         </UndraggableWrapper>
         {label}
       </S.CheckboxLabel>
