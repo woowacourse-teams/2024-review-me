@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
 
-import { HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME, HIGHLIGHT_REMOVER_CLASS_NAME } from '@/constants';
+import { HIGHLIGHT_MENU_CLASS_NAME } from '@/constants';
 import { findSelectionInfo, isTouchDevice, SelectionInfo } from '@/utils';
 
-import { getDragHighlightButtonParams } from './useDragHighlightButtonPosition';
+import { HighlightArea } from './useCheckHighlight';
+import { UseDragHighlightPositionReturn } from './useDragHighlightPosition';
 
-interface UseHighlightEventListenerProps {
+interface UseHighlightEventListenerProps extends UseDragHighlightPositionReturn {
   isEditable: boolean;
-  updateDragHighlightButtonPosition: ({ selectionInfo, isAddingHighlight }: getDragHighlightButtonParams) => void;
-  hideDragHighlightButton: () => void;
-  hideLongPressHighlightButton: () => void;
-  checkHighlight: (info: SelectionInfo) => boolean;
+  resetHighlightMenuPosition: () => void;
+  checkHighlight: (info: SelectionInfo) => HighlightArea;
+  resetLongPressRemovalTarget: () => void;
 }
 
 /**
@@ -18,39 +18,39 @@ interface UseHighlightEventListenerProps {
  */
 const useHighlightEventListener = ({
   isEditable,
-  updateDragHighlightButtonPosition,
-  hideDragHighlightButton,
-  hideLongPressHighlightButton,
+  updateHighlightMenuPositionByDrag,
+  resetHighlightMenuPosition,
   checkHighlight,
+  resetLongPressRemovalTarget,
 }: UseHighlightEventListenerProps) => {
-  const hideHighlightButton = (e: MouseEvent | TouchEvent) => {
+  const hideHighlightMenu = (e: MouseEvent | TouchEvent) => {
     if (!isEditable) return;
 
-    const isInButton = (e.target as HTMLElement).closest(`.${HIGHLIGHT__TOGGLE_BUTTON_CLASS_NAME}`);
-    const isNotHighlightRemover = (e.target as HTMLElement).closest(`.${HIGHLIGHT_REMOVER_CLASS_NAME}`);
-
-    if (!isInButton) hideDragHighlightButton();
-    if (!isNotHighlightRemover) hideLongPressHighlightButton();
+    const isInHighlightMenu = (e.target as HTMLElement).closest(`.${HIGHLIGHT_MENU_CLASS_NAME}`);
+    if (!isInHighlightMenu) {
+      resetHighlightMenuPosition();
+      resetLongPressRemovalTarget();
+    }
   };
 
-  const showHighlightButton = () => {
+  const showHighlightMenu = () => {
     if (!isEditable) return;
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
 
-    const isAddingHighlight = checkHighlight(selectionInfo);
-    updateDragHighlightButtonPosition({ selectionInfo, isAddingHighlight });
+    const highlightArea = checkHighlight(selectionInfo);
+    updateHighlightMenuPositionByDrag({ selectionInfo, highlightArea });
   };
 
   /**
    * document에 형광펜 이벤트 적용
    */
   const addHighlightEvent = () => {
-    document.addEventListener('mousedown', hideHighlightButton);
-    document.addEventListener('mouseup', showHighlightButton);
+    document.addEventListener('mousedown', hideHighlightMenu);
+    document.addEventListener('mouseup', showHighlightMenu);
     // NOTE: 터치가 가능한 기기에서는 touchstart, touchend 보다 selectionchange를 사용하는 게 오류가 없음
     if (isTouchDevice()) {
-      document.addEventListener('selectionchange', showHighlightButton);
+      document.addEventListener('selectionchange', showHighlightMenu);
       document.addEventListener('contextmenu', hideContextMenuInTouch);
     }
   };
@@ -65,11 +65,11 @@ const useHighlightEventListener = ({
    * document에 형광펜 이벤트 삭제
    */
   const removeHighlightEvent = () => {
-    document.removeEventListener('mouseup', showHighlightButton);
-    document.removeEventListener('mousedown', hideHighlightButton);
+    document.removeEventListener('mouseup', showHighlightMenu);
+    document.removeEventListener('mousedown', hideHighlightMenu);
     if (isTouchDevice()) {
       document.removeEventListener('contextmenu', hideContextMenuInTouch);
-      document.removeEventListener('selectionChange', showHighlightButton);
+      document.removeEventListener('selectionChange', showHighlightMenu);
     }
   };
 
