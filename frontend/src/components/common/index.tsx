@@ -11,4 +11,5 @@ export { default as Accordion } from './Accordion';
 export { default as Dropdown } from './Dropdown';
 
 export { default as OptionSwitch } from './OptionSwitch';
+export { default as ReviewEmptySection } from './ReviewEmptySection';
 export * from './modals';
