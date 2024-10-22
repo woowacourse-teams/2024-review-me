@@ -1,5 +1,4 @@
 import { Global, ThemeProvider } from '@emotion/react';
-import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -9,9 +8,10 @@ import { RecoilRoot } from 'recoil';
 import router from './router';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
-import { initializeSentry, retryQuery, startMockWorker } from './utils';
+import { initializeSentry, retryQuery, startAmplitude, startMockWorker } from './utils';
 
 initializeSentry();
+startAmplitude();
 
 const queryClient = new QueryClient({
   defaultOptions: {

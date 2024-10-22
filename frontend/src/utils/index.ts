@@ -11,4 +11,4 @@ export * from './date';
 export * from './media';
 export * from './highlight/index';
 export * from './testUtils';
-export { default as initializeSentry } from './analytics/sentry';
+export * from './analytics';
