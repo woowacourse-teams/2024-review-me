@@ -19,7 +19,9 @@ const useMutateHighlight = ({
 }: UseMutateHighlightProps) => {
   const mutation = useMutation({
     mutationFn: (newEditorAnswerMap: EditorAnswerMap) => postHighlight(newEditorAnswerMap, questionId),
-
+    onMutate: () => {
+      if (mutation.isPending) return;
+    },
     onSuccess: (_, variables: EditorAnswerMap) => {
       updateEditorAnswerMap(variables);
       resetHighlightMenu();
