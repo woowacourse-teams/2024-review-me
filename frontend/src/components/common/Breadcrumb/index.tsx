@@ -15,15 +15,17 @@ interface BreadcrumbProps {
 
 const Breadcrumb = ({ pathList }: BreadcrumbProps) => {
   return (
-    <S.BreadcrumbList>
-      {pathList.map(({ pageName, path }, index) => (
-        <S.BreadcrumbItem key={index}>
-          <UndraggableWrapper>
-            <Link to={{ pathname: path }}>{pageName}</Link>
-          </UndraggableWrapper>
-        </S.BreadcrumbItem>
-      ))}
-    </S.BreadcrumbList>
+    <nav>
+      <S.BreadcrumbList>
+        {pathList.map(({ pageName, path }, index) => (
+          <S.BreadcrumbItem key={index}>
+            <UndraggableWrapper>
+              <Link to={{ pathname: path }}>{pageName}</Link>
+            </UndraggableWrapper>
+          </S.BreadcrumbItem>
+        ))}
+      </S.BreadcrumbList>
+    </nav>
   );
 };
 
