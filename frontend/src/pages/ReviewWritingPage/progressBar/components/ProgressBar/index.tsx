@@ -41,6 +41,7 @@ const ProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: ProgressBarPr
                 $isCurrentStep={step.isCurrentStep}
                 onClick={() => handleClick(index)}
                 type="button"
+                aria-label={step.isMovingAvailable ? `활성화된 ${step.sectionName}` : `비활성화된 ${step.sectionName}`}
               >
                 {step.sectionName}
               </S.StepButton>
