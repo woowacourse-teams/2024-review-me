@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const ReviewDisplayLayout = styled.div`
+export const ReviewDisplayLayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 90%;

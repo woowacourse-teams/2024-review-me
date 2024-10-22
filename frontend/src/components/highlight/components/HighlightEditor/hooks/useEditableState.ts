@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { SESSION_STORAGE_KEY } from '@/constants';
+import { HIGHLIGHT_EVENT_NAME, SESSION_STORAGE_KEY } from '@/constants';
+import { trackEventInAmplitude } from '@/utils';
 
 const useEditableState = () => {
   const [isEditable, setIsEditable] = useState(false);
@@ -17,7 +18,10 @@ const useEditableState = () => {
 
   const handleEditToggleButton = () => {
     setIsEditable((prev) => {
+      if (!prev) trackEventInAmplitude(HIGHLIGHT_EVENT_NAME.openHighlightEditor);
+
       prev ? removeHighlightEditorStateFromStorage() : saveHighlightEditorStateInStorage();
+
       return !prev;
     });
   };
@@ -27,6 +31,9 @@ const useEditableState = () => {
     if (storageItem) setIsEditable(true);
 
     return () => {
+      if (sessionStorage.getItem(SESSION_STORAGE_KEY.isHighlightError)) {
+        return sessionStorage.removeItem(SESSION_STORAGE_KEY.isHighlightError);
+      }
       removeHighlightEditorStateFromStorage();
     };
   }, []);

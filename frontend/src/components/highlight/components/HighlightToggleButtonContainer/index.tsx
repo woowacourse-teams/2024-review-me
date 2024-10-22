@@ -2,30 +2,30 @@ import { Position } from '@/types';
 
 import HighlightButton from '../HighlightButton';
 
-interface DragHighlightButtonContainerProps {
+interface HighlightToggleButtonContainerProps {
   buttonPosition: Position;
   isAddingHighlight: boolean;
-  addHighlightByDrag: () => void;
+  addHighlight: () => void;
   removeHighlightByDrag: () => void;
 }
 /**
  *선택된 영역의 하이라이트 적용 여부에 따라 추가 또는 삭제 버튼을 보여주는 컴포넌트
  */
-const DragHighlightButtonContainer = ({
+const HighlightToggleButtonContainer = ({
   buttonPosition,
   isAddingHighlight,
-  addHighlightByDrag,
+  addHighlight,
   removeHighlightByDrag,
-}: DragHighlightButtonContainerProps) => {
+}: HighlightToggleButtonContainerProps) => {
   return (
     <>
       {isAddingHighlight ? (
-        <HighlightButton.dragHighlightAdd addHighlightByDrag={addHighlightByDrag} position={buttonPosition} />
+        <HighlightButton.highlighter addHighlight={addHighlight} position={buttonPosition} />
       ) : (
-        <HighlightButton.dragHighlightRemove removeHighlightByDrag={removeHighlightByDrag} position={buttonPosition} />
+        <HighlightButton.dragRemoval removeHighlightByDrag={removeHighlightByDrag} position={buttonPosition} />
       )}
     </>
   );
 };
 
-export default DragHighlightButtonContainer;
+export default HighlightToggleButtonContainer;

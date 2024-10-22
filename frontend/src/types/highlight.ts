@@ -8,21 +8,17 @@ export interface HighlightRange {
 
 // NOTE: 서버에서는 하이라이트가 적용된 문장에 대한 하이라이트 정보만 보내주지만, 클라이언트는 뷰에 하이라이트 적용여부를 보여주는 편의성을 위핸 모든 문장 index를 가지지만, highlightList가 빈배열이면 하이아리트 적용이 안되어있고 빈배열이 아니면 하이라이트가 있습니다
 
-// 서버에서 내려주고, 받는 데이터 타입
-/**
- * 하이라이트가 적용된 block(=문장)의 index, 하이라이트 범위 배열을 가진 타입
- */
-export interface Highlight {
-  lineIndex: number; // 하이라이트가 적용된 문장 index
-  // 서버에서는 ranges로 줌
-  rangeList: HighlightRange[];
+// 서버에서 보내주는 리뷰 모아보기 데이터 속 하이라이트 타입
+export interface HighlightResponseData {
+  lineIndex: number;
+  ranges: HighlightRange[];
 }
 
 // 서버에서 보내주는 리뷰 모아보기 데이터
 export interface ReviewAnswerResponseData {
   id: number;
   content: string;
-  highlights: Highlight[];
+  highlights: HighlightResponseData[];
 }
 
 /**
