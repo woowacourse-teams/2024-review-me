@@ -88,8 +88,6 @@ export const ToastModalContainer = styled.div<ToastModalProps>`
   align-items: center;
   gap: 0.8rem;
 
-  z-index: ${({ theme }) => theme.zIndex.modal};
-
   position: fixed;
 
   ${({ position, duration }) => getToastPositionStyles(position, duration)}

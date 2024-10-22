@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 
-export const Portal = styled.div`
+import { PortalProps } from '.';
+
+export const Portal = styled.div<PortalProps>`
   position: fixed;
   z-index: ${({ theme }) => theme.zIndex.modal};
   top: 0;
@@ -10,4 +12,6 @@ export const Portal = styled.div`
 
   width: 100%;
   height: 100%;
+
+  pointer-events: ${({ disableScroll }) => (disableScroll ? 'auto' : 'none')};
 `;
