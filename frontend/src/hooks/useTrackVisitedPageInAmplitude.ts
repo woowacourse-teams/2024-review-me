@@ -10,11 +10,12 @@ const useTrackVisitedPageInAmplitude = () => {
   const location = useLocation();
 
   const getPageName = useCallback((): PageName => {
-    if (location.pathname === ROUTE.home) return 'home';
+    const { home, reviewWritingComplete, ...rest } = ROUTE;
 
-    const pageName = Object.entries(ROUTE).find(
-      ([key, value]) => key !== 'home' && location.pathname.includes(value),
-    )?.[0] as PageName;
+    if (location.pathname === home) return 'home';
+    if (location.pathname.includes(reviewWritingComplete)) return 'reviewWritingComplete';
+
+    const pageName = Object.entries(rest).find(([key, value]) => location.pathname.includes(value))?.[0] as PageName;
 
     return pageName;
   }, [location.pathname]);
