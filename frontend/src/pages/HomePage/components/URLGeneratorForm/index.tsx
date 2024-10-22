@@ -44,8 +44,9 @@ const URLGeneratorForm = () => {
     isValidPasswordInput(password);
 
   const postDataForURL = () => {
-    const dataForReviewRequestCode: DataForReviewRequestCode = { revieweeName, projectName, groupAccessCode: password };
+    trackEventInAmplitude(HOM_EVENT_NAME.generateReviewURL);
 
+    const dataForReviewRequestCode: DataForReviewRequestCode = { revieweeName, projectName, groupAccessCode: password };
     mutation.mutate(dataForReviewRequestCode, {
       onSuccess: (data) => {
         const completeReviewZoneURL = getCompleteReviewZoneURL(data.reviewRequestCode);
@@ -54,8 +55,6 @@ const URLGeneratorForm = () => {
         resetForm();
       },
     });
-
-    trackEventInAmplitude(HOM_EVENT_NAME.generateReviewURL);
   };
 
   const resetForm = () => {
