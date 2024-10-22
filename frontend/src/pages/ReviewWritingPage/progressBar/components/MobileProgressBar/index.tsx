@@ -56,7 +56,8 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
               $isCurrentStep={step.isCurrentStep}
               onClick={() => handleClick(index)}
               type="button"
-              aria-label={step.isMovingAvailable ? `활성화된 ${step.sectionName}` : `비활성화된 ${step.sectionName}`}
+              aria-label={step.isCurrentStep ? `현재 질문 카드는, ${step.sectionName}입니다` : `${step.sectionName}`}
+              disabled={!step.isMovingAvailable}
             >
               {step.sectionName}
             </S.StepButton>
