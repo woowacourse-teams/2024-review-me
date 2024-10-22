@@ -27,7 +27,8 @@ const NextButton = ({ isAbleNextStep, handleCurrentCardIndex, ...rest }: NextBut
       styleType={styledType}
       type={'button'}
       onClick={() => handleCurrentCardIndex('next')}
-      aria-label={isAbleNextStep ? '활성화된 다음' : '비활성화된 다음'}
+      aria-live="assertive"
+      aria-label={isAbleNextStep ? '다음 버튼이 활성화되었습니다' : '다음 버튼이 비활성화되었습니다.'}
       {...rest}
     >
       다음
@@ -51,7 +52,7 @@ const ConfirmModalOpenButton = ({
       styleType={styleType}
       type={'button'}
       onClick={handleSubmitConfirmModalOpenButtonClick}
-      aria-label="제출 버튼, 클릭 시 작성한 내용을 제출합니다"
+      aria-label="제출 버튼입니다, 클릭 시 작성한 내용을 제출합니다"
       {...rest}
     >
       제출
@@ -71,7 +72,7 @@ const RecheckButton = ({ isAbleNextStep, handleRecheckButtonClick, ...rest }: Re
       styleType={styledType}
       type={'button'}
       onClick={handleRecheckButtonClick}
-      aria-label="작성 내용 확인 버튼, 클릭 시 작성한 내용을 한눈에 볼 수 있는 모달이 열립니다"
+      aria-label="작성 내용 확인 버튼입니다, 클릭 시 작성한 내용을 한눈에 볼 수 있는 모달이 열립니다"
       {...rest}
     >
       작성 내용 확인
