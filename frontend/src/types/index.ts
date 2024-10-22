@@ -5,3 +5,4 @@ export * from './styles';
 export * from './essentialPropsWithChildren';
 export * from './reviewGroup';
 export * from './highlight';
+export * from './amplitude';
