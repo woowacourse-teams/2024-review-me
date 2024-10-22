@@ -3,6 +3,7 @@ import React from 'react';
 import { ButtonStyleType } from '@/types';
 
 import Button from '../../Button';
+import FocusTrap from '../../FocusTrap';
 import ModalBackground from '../ModalBackground';
 import ModalPortal from '../ModalPortal';
 
@@ -34,16 +35,18 @@ const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
   return (
     <ModalPortal>
       <ModalBackground closeModal={isClosableOnBackground ? handleClose : null}>
-        <S.ConfirmModalContainer>
-          <S.Contents>{children}</S.Contents>
-          <S.ButtonContainer>
-            {buttonList.map(({ styleType, type, text, handleClick }) => (
-              <Button key={text} styleType={styleType} type={type} onClick={handleClick}>
-                {text}
-              </Button>
-            ))}
-          </S.ButtonContainer>
-        </S.ConfirmModalContainer>
+        <FocusTrap>
+          <S.ConfirmModalContainer>
+            <S.Contents>{children}</S.Contents>
+            <S.ButtonContainer>
+              {buttonList.map(({ styleType, type, text, handleClick }) => (
+                <Button key={text} styleType={styleType} type={type} onClick={handleClick}>
+                  {text}
+                </Button>
+              ))}
+            </S.ButtonContainer>
+          </S.ConfirmModalContainer>
+        </FocusTrap>
       </ModalBackground>
     </ModalPortal>
   );
