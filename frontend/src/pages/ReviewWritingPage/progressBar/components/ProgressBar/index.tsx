@@ -22,7 +22,7 @@ const ProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: ProgressBarPr
         `현재 질문 카드는, 전체 ${stepList.length}개 카드 중, ${currentCardIndex + 1}번째 카드입니다. ${stepList[currentCardIndex].sectionName}`,
       );
     }
-  }, [currentCardIndex, stepList]);
+  }, [currentCardIndex]);
 
   const handleClick = (index: number) => {
     const { isMovingAvailable } = stepList[index];

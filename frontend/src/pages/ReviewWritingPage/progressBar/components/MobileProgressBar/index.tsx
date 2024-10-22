@@ -29,15 +29,15 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
     const scrollProgressBar = () => {
       setTimeout(() => {
         stepRefs.current[currentCardIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'center' });
-
-        setCurrentCardIndexDescription(
-          `현재 질문 카드는, 전체 ${stepList.length}개 카드 중, ${currentCardIndex + 1}번째 카드입니다. ${stepList[currentCardIndex].sectionName}`,
-        );
       }, 250);
     };
 
+    setCurrentCardIndexDescription(
+      `현재 질문 카드는, 전체 ${stepList.length}개 카드 중, ${currentCardIndex + 1}번째 카드입니다. ${stepList[currentCardIndex].sectionName}`,
+    );
+
     animationFrameId.current = requestAnimationFrame(scrollProgressBar);
-  }, [currentCardIndex, stepList]);
+  }, [currentCardIndex]);
 
   const handleClick = (index: number) => {
     const { isMovingAvailable } = stepList[index];
