@@ -29,3 +29,7 @@ export const PAGE_VISITED_EVENT_NAME: { [key in Exclude<PageName, undefined>]: s
 export const REVIEW_WRITING_EVENT_NAME = {
   submitReview: '리뷰 제출',
 };
+
+export const HOM_EVENT_NAME = {
+  generateReviewURL: '리뷰 URL 생성',
+};

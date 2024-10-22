@@ -2,10 +2,11 @@ import { useId, useState } from 'react';
 
 import { DataForReviewRequestCode } from '@/apis/group';
 import { Button } from '@/components';
+import { HOM_EVENT_NAME } from '@/constants';
 import { ROUTE } from '@/constants/route';
 import { useModals } from '@/hooks';
 import { isValidPasswordInput, isValidReviewGroupDataInput } from '@/pages/HomePage/utils/validateInput';
-import { debounce } from '@/utils';
+import { debounce, trackEventInAmplitude } from '@/utils';
 
 import usePostDataForReviewRequestCode from '../../hooks/usePostDataForReviewRequestCode';
 import { FormLayout, ReviewZoneURLModal } from '../index';
@@ -53,6 +54,8 @@ const URLGeneratorForm = () => {
         resetForm();
       },
     });
+
+    trackEventInAmplitude(HOM_EVENT_NAME.generateReviewURL);
   };
 
   const resetForm = () => {
