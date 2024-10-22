@@ -1,9 +1,9 @@
 import * as amplitude from '@amplitude/analytics-browser';
 
 export const startAmplitude = () => {
-  if (!process.env.APMLITUDE_KEY) return;
+  if (!process.env.AMPLITUDE_KEY) return;
 
-  amplitude.init(process.env.APMLITUDE_KEY, { autocapture: false });
+  amplitude.init(process.env.AMPLITUDE_KEY, { autocapture: false });
 };
 
 /**
@@ -12,7 +12,7 @@ export const startAmplitude = () => {
  * @param eventProps 사용자 행동 데이터에 추가적으로 들어갈 내용들
  */
 export const trackEventInAmplitude = (eventName: string, eventProps: Record<string, any> = {}) => {
-  if (!process.env.APMLITUDE_KEY) return;
+  if (!process.env.AMPLITUDE_KEY) return;
 
   const PATHNAME = {
     release: 'review-me.page',
