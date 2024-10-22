@@ -27,7 +27,6 @@ const NextButton = ({ isAbleNextStep, handleCurrentCardIndex, ...rest }: NextBut
       styleType={styledType}
       type={'button'}
       onClick={() => handleCurrentCardIndex('next')}
-      aria-live="assertive"
       aria-label={isAbleNextStep ? '다음 버튼이 활성화되었습니다' : '다음 버튼이 비활성화되었습니다.'}
       {...rest}
     >
