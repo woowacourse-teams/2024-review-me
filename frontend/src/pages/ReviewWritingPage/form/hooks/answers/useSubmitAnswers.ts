@@ -21,7 +21,7 @@ const useSubmitAnswers = ({ closeSubmitConfirmModal }: UseSubmitAnswersProps) =>
   const navigate = useNavigate();
 
   const executeAfterMutateSuccess = () => {
-    navigate(`/${ROUTE.reviewWritingComplete}/${reviewRequestCode}`);
+    navigate(`/${ROUTE.reviewWritingComplete}/${reviewRequestCode}`, { state: { isValidAccess: true } });
     closeSubmitConfirmModal();
   };
 
