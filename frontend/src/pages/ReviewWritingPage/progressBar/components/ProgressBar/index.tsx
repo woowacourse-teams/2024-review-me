@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import NavigateNextIcon from '@/assets/navigateNext.svg';
 import useStepList from '@/pages/ReviewWritingPage/progressBar/hooks/useStepList';
@@ -14,6 +14,16 @@ interface ProgressBarProps {
 const ProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: ProgressBarProps) => {
   const { stepList } = useStepList({ currentCardIndex });
 
+  const [currentCardIndexDescription, setCurrentCardIndexDescription] = useState('');
+
+  useEffect(() => {
+    if (stepList.length > 0 && stepList[currentCardIndex]) {
+      setCurrentCardIndexDescription(
+        `현재 질문 카드는, 전체 ${stepList.length}개 카드 중, ${currentCardIndex + 1}번째 카드입니다. ${stepList[currentCardIndex].sectionName}`,
+      );
+    }
+  }, [currentCardIndex, stepList]);
+
   const handleClick = (index: number) => {
     const { isMovingAvailable } = stepList[index];
     if (isMovingAvailable) handleCurrentCardIndex(index);
@@ -21,7 +31,7 @@ const ProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: ProgressBarPr
 
   return (
     <S.ProgressBarContainer>
-      <S.ProgressBar role="status" aria-live="polite">
+      <S.ProgressBar>
         {stepList.map((step, index) => {
           return (
             <React.Fragment key={step.sectionId}>
@@ -31,11 +41,6 @@ const ProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: ProgressBarPr
                 $isCurrentStep={step.isCurrentStep}
                 onClick={() => handleClick(index)}
                 type="button"
-                aria-label={
-                  step.isCurrentStep
-                    ? `현재 섹션은. 전체 ${stepList.length}개 섹션 중. ${index + 1}번째 섹션입니다. ${step.sectionName}`
-                    : `${step.sectionName}`
-                }
               >
                 {step.sectionName}
               </S.StepButton>
@@ -44,6 +49,9 @@ const ProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: ProgressBarPr
           );
         })}
       </S.ProgressBar>
+      <span className="sr-only" aria-live="polite">
+        {currentCardIndexDescription}
+      </span>
     </S.ProgressBarContainer>
   );
 };
