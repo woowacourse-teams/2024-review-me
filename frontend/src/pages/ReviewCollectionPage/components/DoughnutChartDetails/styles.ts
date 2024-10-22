@@ -5,9 +5,7 @@ import media from '@/utils/media';
 export const DoughnutChartDetailList = styled.div`
   display: flex;
   flex-direction: column;
-
   gap: 2rem;
-
   margin: 2rem;
 
   ${media.small} {
@@ -17,27 +15,25 @@ export const DoughnutChartDetailList = styled.div`
 
 export const DetailItem = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-
   gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const ContentContainer = styled.div`
   display: flex;
-  align-items: center;
-
   gap: 1rem;
+  align-items: center;
 `;
 
 export const ChartColor = styled.div<{ color: string }>`
-  background-color: ${({ color }) => color};
+  flex-shrink: 0;
 
   width: 2rem;
   height: 2rem;
 
+  background-color: ${({ color }) => color};
   border-radius: 0.5rem;
-  flex-shrink: 0;
 
   ${media.small} {
     width: 1.6rem;
