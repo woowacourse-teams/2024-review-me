@@ -53,7 +53,6 @@ jobs:
     name: Deploy via self-hosted runner
     needs: build
     strategy:
-      max-parallel: 1
       matrix:
         runner: [prod-a, prod-b]
     runs-on: [ self-hosted, "${{ matrix.runner }}" ]
