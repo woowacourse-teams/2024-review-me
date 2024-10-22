@@ -3,12 +3,12 @@ import { createPortal } from 'react-dom';
 
 import * as S from './styles';
 
-interface ModalPortalProps {
+interface PortalProps {
   id?: string;
   disableScroll?: boolean;
 }
 
-const ModalPortal: React.FC<PropsWithChildren<ModalPortalProps>> = ({ children: Modal, id, disableScroll = true }) => {
+const Portal: React.FC<PropsWithChildren<PortalProps>> = ({ children: Modal, id, disableScroll = true }) => {
   const preventBodyScroll = () => {
     document.body.style.overflow = 'hidden';
   };
@@ -25,7 +25,7 @@ const ModalPortal: React.FC<PropsWithChildren<ModalPortalProps>> = ({ children: 
     };
   });
 
-  return createPortal(<S.ModalPortal id={id || 'modal-portal'}>{Modal}</S.ModalPortal>, document.body);
+  return createPortal(<S.Portal id={id || 'portal'}>{Modal}</S.Portal>, document.body);
 };
 
-export default ModalPortal;
+export default Portal;
