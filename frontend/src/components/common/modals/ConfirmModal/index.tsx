@@ -4,8 +4,8 @@ import { ButtonStyleType } from '@/types';
 
 import Button from '../../Button';
 import FocusTrap from '../../FocusTrap';
+import Portal from '../../Portal';
 import ModalBackground from '../ModalBackground';
-import ModalPortal from '../ModalPortal';
 
 import * as S from './styles';
 
@@ -33,7 +33,7 @@ const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
 }) => {
   const buttonList = [cancelButton, confirmButton];
   return (
-    <ModalPortal>
+    <Portal>
       <ModalBackground closeModal={isClosableOnBackground ? handleClose : null}>
         <FocusTrap>
           <S.ConfirmModalContainer>
@@ -48,7 +48,7 @@ const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
           </S.ConfirmModalContainer>
         </FocusTrap>
       </ModalBackground>
-    </ModalPortal>
+    </Portal>
   );
 };
 

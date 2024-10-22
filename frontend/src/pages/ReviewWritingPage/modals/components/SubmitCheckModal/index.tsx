@@ -1,5 +1,7 @@
 import { ConfirmModal } from '@/components';
+import { REVIEW_WRITING_EVENT_NAME } from '@/constants';
 import { useSubmitAnswers } from '@/pages/ReviewWritingPage/form/hooks';
+import { trackEventInAmplitude } from '@/utils';
 
 import * as S from './style';
 
@@ -11,9 +13,14 @@ interface SubmitCheckModalProps {
 const SubmitCheckModal = ({ handleCancelButtonClick, handleCloseModal }: SubmitCheckModalProps) => {
   const { submitAnswers } = useSubmitAnswers({ closeSubmitConfirmModal: handleCloseModal });
 
+  const handleConfirmButtonClick = (event: React.MouseEvent) => {
+    trackEventInAmplitude(REVIEW_WRITING_EVENT_NAME.submitReview);
+    submitAnswers(event);
+  };
+
   return (
     <ConfirmModal
-      confirmButton={{ styleType: 'primary', type: 'submit', text: '제출', handleClick: submitAnswers }}
+      confirmButton={{ styleType: 'primary', type: 'submit', text: '제출', handleClick: handleConfirmButtonClick }}
       cancelButton={{
         styleType: 'secondary',
         text: '취소',

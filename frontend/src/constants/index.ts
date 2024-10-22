@@ -5,3 +5,4 @@ export * from './queryKey';
 export * from './routerParam';
 export * from './highlight';
 export * from './sessionStorageKey';
+export * from './amplitudeEventName';

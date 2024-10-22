@@ -2,8 +2,8 @@ import CloseIcon from '@/assets/x.svg';
 import { EssentialPropsWithChildren } from '@/types';
 
 import FocusTrap from '../../FocusTrap';
+import Portal from '../../Portal';
 import ModalBackground from '../ModalBackground';
-import ModalPortal from '../ModalPortal';
 
 import * as S from './styles';
 
@@ -25,7 +25,7 @@ const ContentModal = ({
   isClosableOnBackground = true,
 }: EssentialPropsWithChildren<ContentModalProps>) => {
   return (
-    <ModalPortal>
+    <Portal>
       <ModalBackground closeModal={isClosableOnBackground ? handleClose : null}>
         <FocusTrap>
           <S.ContentModalContainer style={$style}>
@@ -39,7 +39,7 @@ const ContentModal = ({
           </S.ContentModalContainer>
         </FocusTrap>
       </ModalBackground>
-    </ModalPortal>
+    </Portal>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
+import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_EVENT_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
 import { EditorAnswerMap, EditorLine, HighlightResponseData, ReviewAnswerResponseData } from '@/types';
 import {
   getEndLineOffset,
@@ -10,6 +10,7 @@ import {
   getUpdatedBlockByHighlight,
   removeSelection,
   SelectionInfo,
+  trackEventInAmplitude,
 } from '@/utils';
 
 import { UseLongPressHighlightPositionReturn } from './useLongPressHighlightPosition';
@@ -20,6 +21,7 @@ interface UseHighlightProps extends UseLongPressHighlightPositionReturn {
   answerList: ReviewAnswerResponseData[];
   isEditable: boolean;
   handleErrorModal: (isError: boolean) => void;
+  handleModalMessage: (message: string) => void;
   resetHighlightMenuPosition: () => void;
 }
 interface RemovalTarget {
@@ -28,9 +30,15 @@ interface RemovalTarget {
   highlightIndex: number;
 }
 
+const HIGHLIGHT_ERROR_MESSAGES = {
+  addFailure: '형광펜 추가에 실패했어요. 다시 시도해주세요.',
+  deleteFailure: '형광펜 삭제에 실패했어요. 다시 시도해주세요.',
+};
+
 const findBlockHighlightListFromAnswer = (answerHighlightList: HighlightResponseData[], lineIndex: number) => {
   return answerHighlightList.find((i) => i.lineIndex === lineIndex)?.ranges || [];
 };
+
 const makeBlockListByText = (content: string, answerHighlightList: HighlightResponseData[]): EditorLine[] => {
   return content.split('\n').map((text, index) => ({
     lineIndex: index,
@@ -61,6 +69,7 @@ const useHighlight = ({
   updateHighlightMenuPositionByLongPress,
   resetHighlightMenuPosition,
   handleErrorModal,
+  handleModalMessage,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
 
@@ -85,6 +94,8 @@ const useHighlight = ({
   });
 
   const addHighlightByDrag = () => {
+    trackEventInAmplitude(HIGHLIGHT_EVENT_NAME.addHighlightByDrag);
+
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
     const newEditorAnswerMap: EditorAnswerMap | undefined = selectionInfo.isSameAnswer
@@ -92,7 +103,12 @@ const useHighlight = ({
       : addMultipleAnswerHighlight(selectionInfo);
     if (!newEditorAnswerMap) return;
 
-    mutateHighlight(newEditorAnswerMap);
+    console.log('new', newEditorAnswerMap.get(2));
+    mutateHighlight(newEditorAnswerMap, {
+      onError: () => {
+        handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.addFailure);
+      },
+    });
   };
 
   const addMultipleAnswerHighlight = (selectionInfo: SelectionInfo) => {
@@ -221,6 +237,8 @@ const useHighlight = ({
   };
 
   const removeHighlightByDrag = () => {
+    trackEventInAmplitude(HIGHLIGHT_EVENT_NAME.removeHighlightByDrag);
+
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
 
@@ -248,7 +266,7 @@ const useHighlight = ({
       if (index > endLineIndex) return line;
       if (index === startLineIndex) {
         const { startIndex, endIndex } = getStartLineOffset(selectionInfo, line);
-
+        console.log(startIndex, endIndex);
         return {
           ...line,
           highlightList: getRemovedHighlightList({
@@ -404,6 +422,8 @@ const useHighlight = ({
   };
 
   const removeHighlightByLongPress = async () => {
+    trackEventInAmplitude(HIGHLIGHT_EVENT_NAME.removeHighlightByLongPress);
+
     if (!longPressRemovalTarget) return;
 
     const { answerId, lineIndex, highlightIndex } = longPressRemovalTarget;
@@ -422,7 +442,11 @@ const useHighlight = ({
     newLineList.splice(lineIndex, 1, newTargetBlock);
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
 
-    mutateHighlight(newEditorAnswerMap);
+    mutateHighlight(newEditorAnswerMap, {
+      onError: () => {
+        handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.deleteFailure);
+      },
+    });
   };
 
   return {
