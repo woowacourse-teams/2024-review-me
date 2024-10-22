@@ -1,36 +1,17 @@
 import { useRef } from 'react';
 
-import GrayHighlighterIcon from '@/assets/grayHighlighter.svg';
-import PrimaryHighlighterIcon from '@/assets/primaryHighlighter.svg';
 import { EDITOR_ANSWER_CLASS_NAME, EDITOR_LINE_CLASS_NAME } from '@/constants';
 import { ReviewAnswerResponseData } from '@/types';
 
-import DragHighlightButtonContainer from '../DragHighlightButtonContainer';
 import EditorLineBlock from '../EditorLineBlock';
 import EditSwitchButton from '../EditSwitchButton';
-import LongPressHighlightButtonWrapper from '../LongPressHighlightButtonWrapper';
+import HighlightMenu from '../HighlightMenu';
+import Tooltip from '../Tooltip';
 
-import {
-  useDragHighlightButtonPosition,
-  useHighlight,
-  useCheckHighlight,
-  useLongPressHighlightButtonPosition,
-  useLongPress,
-  useEditableState,
-  useHighlightEventListener,
-} from './hooks';
+import { useHighlight, useCheckHighlight, useLongPress, useEditableState, useHighlightEventListener } from './hooks';
+import useHighlightMenuPosition from './hooks/useHighlightMenuPosition';
 import * as S from './style';
 
-const MODE_ICON = {
-  on: {
-    icon: PrimaryHighlighterIcon,
-    alt: '형광펜 기능 켜짐',
-  },
-  off: {
-    icon: GrayHighlighterIcon,
-    alt: '형광펜 기능 꺼짐',
-  },
-};
 export interface HighlightEditorProps {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
@@ -42,35 +23,32 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
 
   const { isEditable, handleEditToggleButton } = useEditableState();
 
-  const { isAddingHighlight, checkHighlight } = useCheckHighlight();
+  const { highlightArea, checkHighlight } = useCheckHighlight();
 
-  const { longPressHighlightButtonPosition, hideLongPressHighlightButton, updateLongPressHighlightButtonPosition } =
-    useLongPressHighlightButtonPosition({
-      isEditable,
-      editorRef,
-    });
-
-  const { dragHighlightButtonPosition, hideDragHighlightButton, updateDragHighlightButtonPosition } =
-    useDragHighlightButtonPosition({
-      isEditable,
-      editorRef,
-      hideLongPressHighlightButton,
-    });
+  const {
+    menuPosition,
+    updateHighlightMenuPositionByDrag,
+    updateHighlightMenuPositionByLongPress,
+    resetHighlightMenuPosition,
+  } = useHighlightMenuPosition({
+    editorRef,
+    isEditable,
+  });
 
   const {
     editorAnswerMap,
+    longPressRemovalTarget,
     addHighlightByDrag,
     removeHighlightByDrag,
     handleLongPressLine,
     removeHighlightByLongPress,
-    removalTarget,
+    resetLongPressRemovalTarget,
   } = useHighlight({
     questionId,
     answerList,
     isEditable,
-    hideDragHighlightButton,
-    hideLongPressHighlightButton,
-    updateLongPressHighlightButtonPosition,
+    resetHighlightMenuPosition,
+    updateHighlightMenuPositionByLongPress,
     handleErrorModal,
   });
 
@@ -78,20 +56,17 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
 
   useHighlightEventListener({
     isEditable,
-    updateDragHighlightButtonPosition,
-    hideDragHighlightButton,
-    hideLongPressHighlightButton,
+    updateHighlightMenuPositionByDrag,
+    resetHighlightMenuPosition,
+    resetLongPressRemovalTarget,
     checkHighlight,
   });
 
   return (
     <S.HighlightEditor ref={editorRef}>
       <S.SwitchButtonWrapper>
-        <S.HighlightText $isEditable={isEditable}>형광펜</S.HighlightText>
-        <S.SwitchModIcon
-          src={MODE_ICON[isEditable ? 'on' : 'off'].icon}
-          alt={MODE_ICON[isEditable ? 'on' : 'off'].alt}
-        />
+        <S.HighlightText>형광펜</S.HighlightText>
+        <Tooltip />
         <EditSwitchButton isEditable={isEditable} handleEditToggleButton={handleEditToggleButton} />
       </S.SwitchButtonWrapper>
       <S.AnswerList>
@@ -111,18 +86,13 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal }: Highlight
           </S.AnswerListItem>
         ))}
       </S.AnswerList>
-
-      {isEditable && dragHighlightButtonPosition && (
-        <DragHighlightButtonContainer
-          buttonPosition={dragHighlightButtonPosition}
-          isAddingHighlight={isAddingHighlight}
+      {isEditable && menuPosition && (
+        <HighlightMenu
+          position={menuPosition}
+          highlightArea={highlightArea}
+          isOpenLongPressRemove={!!longPressRemovalTarget}
           addHighlightByDrag={addHighlightByDrag}
           removeHighlightByDrag={removeHighlightByDrag}
-        />
-      )}
-      {isEditable && removalTarget && longPressHighlightButtonPosition && (
-        <LongPressHighlightButtonWrapper
-          buttonPosition={longPressHighlightButtonPosition}
           removeHighlightByLongPress={removeHighlightByLongPress}
         />
       )}

@@ -31,6 +31,9 @@ const useEditableState = () => {
     if (storageItem) setIsEditable(true);
 
     return () => {
+      if (sessionStorage.getItem(SESSION_STORAGE_KEY.isHighlightError)) {
+        return sessionStorage.removeItem(SESSION_STORAGE_KEY.isHighlightError);
+      }
       removeHighlightEditorStateFromStorage();
     };
   }, []);

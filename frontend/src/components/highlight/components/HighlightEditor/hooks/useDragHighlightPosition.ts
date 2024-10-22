@@ -1,29 +1,27 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect } from 'react';
 
-import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_BUTTON_SIZE } from '@/constants';
+import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_MENU_STYLE_SIZE, HIGHLIGHT_MENU_WIDTH } from '@/constants';
 import { Position } from '@/types';
 import { isTouchDevice, SelectionInfo } from '@/utils';
 
-interface UseDragButtonPositionProps {
+import { HighlightArea } from './useCheckHighlight';
+
+interface UseDragHighlightPositionProps {
   isEditable: boolean;
   editorRef: React.RefObject<HTMLDivElement>;
-  hideLongPressHighlightButton: () => void;
+  updateHighlightMenuPosition: (position: Position | null) => void;
 }
 
-export interface getDragHighlightButtonParams {
+export interface getDragHighlightParams {
   selectionInfo: SelectionInfo;
-  isAddingHighlight: boolean;
+  highlightArea: HighlightArea;
 }
 
-const useDragHighlightButtonPosition = ({
+const useDragHighlightPosition = ({
   isEditable,
   editorRef,
-  hideLongPressHighlightButton,
-}: UseDragButtonPositionProps) => {
-  const [dragHighlightButtonPosition, setDragHighlightButtonPosition] = useState<Position | null>(null);
-
-  const hideDragHighlightButton = () => setDragHighlightButtonPosition(null);
-
+  updateHighlightMenuPosition,
+}: UseDragHighlightPositionProps) => {
   //위치 계산
   interface GetRectsParams {
     selectionInfo: SelectionInfo;
@@ -62,7 +60,7 @@ const useDragHighlightButtonPosition = ({
     isForwardDrag: boolean,
     buttonWidth: number,
   ) => {
-    const { height: buttonHeight } = HIGHLIGHT_BUTTON_SIZE;
+    const { height: buttonHeight } = HIGHLIGHT_MENU_STYLE_SIZE;
     const isTouch = isTouchDevice();
     //뷰포트 기준 위치
     const rectLeft = isForwardDrag ? lastRect.right - (isTouch ? buttonWidth : 0) : lastRect.left;
@@ -85,23 +83,33 @@ const useDragHighlightButtonPosition = ({
    * @param editorRect  editor DOMRect
    */
   const checkOverflow = (rectLeft: number, rectTop: number, buttonWidth: number, editorRect: DOMRect) => {
-    const { shadow: shadowWidth, height: buttonHeight } = HIGHLIGHT_BUTTON_SIZE;
-    const isOverflowingHorizontally = editorRect.right < rectLeft + buttonWidth + shadowWidth;
-    const isOverflowingVertically = editorRect.bottom < rectTop + buttonHeight;
+    const { shadow: shadowWidth, height: buttonHeight } = HIGHLIGHT_MENU_STYLE_SIZE;
+    const buttonTotalHeight = buttonHeight + shadowWidth;
+    const buttonTotalWidth = buttonWidth + shadowWidth;
+
+    const isOverflowingHorizontally = {
+      right: editorRect.right < rectLeft + buttonTotalWidth,
+      left: rectLeft - buttonTotalWidth < editorRect.left,
+    };
+    const isOverflowingVertically = {
+      top: rectTop - buttonTotalHeight - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON <= editorRect.top,
+      bottom: editorRect.bottom <= rectTop + buttonTotalHeight + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON,
+    };
 
     return { isOverflowingHorizontally, isOverflowingVertically };
   };
 
-  interface CalculateDragHighlightButtonPosition {
+  interface CalculateDragHighlightMenuPosition {
     leftOffsetFromEditor: number;
     topOffsetFromEditor: number;
     buttonWidth: number;
-    isOverflowingHorizontally: boolean;
-    isOverflowingVertically: boolean;
+    isOverflowingHorizontally: { left: boolean; right: boolean };
+    isOverflowingVertically: { top: boolean; bottom: boolean };
     editorRect: DOMRect;
     lastRect: DOMRect;
   }
-  const calculateDragHighlightButtonPosition = ({
+
+  const calculateDragHighlightMenuPosition = ({
     leftOffsetFromEditor,
     topOffsetFromEditor,
     buttonWidth,
@@ -109,34 +117,41 @@ const useDragHighlightButtonPosition = ({
     isOverflowingVertically,
     editorRect,
     lastRect,
-  }: CalculateDragHighlightButtonPosition) => {
-    const { height: buttonHeight, shadow: shadowWidth } = HIGHLIGHT_BUTTON_SIZE;
+  }: CalculateDragHighlightMenuPosition) => {
+    const { height: buttonHeight, shadow: shadowWidth } = HIGHLIGHT_MENU_STYLE_SIZE;
+    const buttonTotalHeight = buttonHeight + shadowWidth;
+    const buttonTotalWidth = buttonWidth + shadowWidth;
 
-    const left = isOverflowingHorizontally ? editorRect.width - buttonWidth - shadowWidth : leftOffsetFromEditor;
-    const top = isOverflowingVertically
-      ? topOffsetFromEditor - lastRect.height - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON * 2 - buttonHeight
-      : topOffsetFromEditor;
+    let left = leftOffsetFromEditor;
+    let top = topOffsetFromEditor;
+
+    // left 계산
+    if (isOverflowingHorizontally.right) {
+      left = editorRect.width - buttonTotalWidth;
+    }
+    if (isOverflowingHorizontally.left) {
+      left = shadowWidth;
+    }
+
+    // top 계산
+    if (isOverflowingVertically.bottom) {
+      top = topOffsetFromEditor - lastRect.height - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON - buttonTotalHeight;
+    }
+    if (isOverflowingVertically.top) {
+      top = shadowWidth;
+    }
 
     return { left, top };
   };
 
-  const getButtonWidth = (isAddingHighlight: boolean) => {
-    const { basic: buttonBasicWidth, buttonWidthColor: addButtonWidth } = HIGHLIGHT_BUTTON_SIZE.width;
-    const buttonWidth = isAddingHighlight ? addButtonWidth : buttonBasicWidth;
-
-    return {
-      buttonWidth,
-    };
-  };
-
-  const getDragHighlightButtonPosition = ({ selectionInfo, isAddingHighlight }: getDragHighlightButtonParams) => {
+  const getDragHighlightPosition = ({ selectionInfo, highlightArea }: getDragHighlightParams) => {
     const { isForwardDrag } = selectionInfo;
 
     const rects = getRects({ selectionInfo, editorRef });
     if (!rects) return;
 
     const { lastRect, editorRect } = rects;
-    const { buttonWidth } = getButtonWidth(isAddingHighlight);
+    const buttonWidth = HIGHLIGHT_MENU_WIDTH[highlightArea];
 
     const { leftOffsetFromEditor, topOffsetFromEditor, rectLeft, rectTop } = calculateRectOffsets(
       lastRect,
@@ -151,7 +166,7 @@ const useDragHighlightButtonPosition = ({
 
       editorRect,
     );
-    const { left, top } = calculateDragHighlightButtonPosition({
+    const { left, top } = calculateDragHighlightMenuPosition({
       leftOffsetFromEditor,
       topOffsetFromEditor,
       buttonWidth,
@@ -169,25 +184,22 @@ const useDragHighlightButtonPosition = ({
     return position;
   };
 
-  const updateDragHighlightButtonPosition = ({ selectionInfo, isAddingHighlight }: getDragHighlightButtonParams) => {
-    const position = getDragHighlightButtonPosition({ selectionInfo, isAddingHighlight });
+  const updateHighlightMenuPositionByDrag = ({ selectionInfo, highlightArea }: getDragHighlightParams) => {
+    const position = getDragHighlightPosition({ selectionInfo, highlightArea });
     if (!position) return console.error('endPosition을 찾을 수 없어요.');
 
-    setDragHighlightButtonPosition(position);
-    hideLongPressHighlightButton();
+    updateHighlightMenuPosition(position);
   };
 
   useLayoutEffect(() => {
-    if (!isEditable) hideDragHighlightButton();
+    if (!isEditable) updateHighlightMenuPosition(null);
   }, [isEditable]);
 
-  useLayoutEffect(() => {});
-
   return {
-    dragHighlightButtonPosition,
-    hideDragHighlightButton,
-    updateDragHighlightButtonPosition,
+    updateHighlightMenuPositionByDrag,
   };
 };
 
-export default useDragHighlightButtonPosition;
+export default useDragHighlightPosition;
+
+export type UseDragHighlightPositionReturn = ReturnType<typeof useDragHighlightPosition>;
