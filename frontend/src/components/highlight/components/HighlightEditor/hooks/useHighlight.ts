@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
+import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_EVENT_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
 import { EditorAnswerMap, EditorLine, HighlightResponseData, ReviewAnswerResponseData } from '@/types';
 import {
   getEndLineOffset,
@@ -10,6 +10,7 @@ import {
   getUpdatedBlockByHighlight,
   removeSelection,
   SelectionInfo,
+  trackEventInAmplitude,
 } from '@/utils';
 
 import { UseLongPressHighlightPositionReturn } from './useLongPressHighlightPosition';
@@ -85,6 +86,8 @@ const useHighlight = ({
   });
 
   const addHighlightByDrag = () => {
+    trackEventInAmplitude(HIGHLIGHT_EVENT_NAME.addHighlightByDrag);
+
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
     const newEditorAnswerMap: EditorAnswerMap | undefined = selectionInfo.isSameAnswer
@@ -221,6 +224,8 @@ const useHighlight = ({
   };
 
   const removeHighlightByDrag = () => {
+    trackEventInAmplitude(HIGHLIGHT_EVENT_NAME.removeHighlightByDrag);
+
     const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
 
@@ -404,6 +409,8 @@ const useHighlight = ({
   };
 
   const removeHighlightByLongPress = async () => {
+    trackEventInAmplitude(HIGHLIGHT_EVENT_NAME.removeHighlightByLongPress);
+
     if (!longPressRemovalTarget) return;
 
     const { answerId, lineIndex, highlightIndex } = longPressRemovalTarget;
