@@ -13,6 +13,7 @@ export interface HighlightResponseData {
   lineIndex: number;
   ranges: HighlightRange[];
 }
+
 // 서버에서 보내주는 리뷰 모아보기 데이터
 export interface ReviewAnswerResponseData {
   id: number;

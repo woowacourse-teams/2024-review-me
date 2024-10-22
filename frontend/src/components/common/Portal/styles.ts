@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const ModalPortal = styled.div`
+export const Portal = styled.div`
   position: fixed;
   z-index: ${({ theme }) => theme.zIndex.modal};
   top: 0;
