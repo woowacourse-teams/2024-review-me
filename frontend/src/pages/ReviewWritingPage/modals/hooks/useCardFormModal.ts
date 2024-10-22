@@ -13,8 +13,6 @@ const useCardFormModal = () => {
     handleOpenModal,
     closeModal,
     isOpen,
-    isOpenModalDisablingBlocker:
-      isOpen(CARD_FORM_MODAL_KEY.navigateConfirm) || isOpen(CARD_FORM_MODAL_KEY.submitConfirm),
   };
 };
 

@@ -49,12 +49,6 @@ const globalStyles = (theme: Theme) => css`
       background: transparent;
     }
   }
-
-  .sr-only {
-    position: fixed;
-    top: -999rem;
-    left: -999rem;
-  }
 `;
 
 export default globalStyles;

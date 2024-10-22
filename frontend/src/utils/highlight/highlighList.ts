@@ -7,7 +7,7 @@ interface CreateHighlightBinaryArrayParams {
 /**
  * 하이라이트 적용 여부를 이진법에 따라 표시하는 배열을 생성하는 함수
  * @param list 배열에 표시할 하이라이트 배열
- * @param arrayLength 이진법 배열의 length이자 하이라이트 적용 대상인 block의 글자 수
+ * @param arrayLength 이진법 배열의 length이자 하이라이트 적용 대상인 line의 글자 수
  */
 const createHighlightBinaryArray = ({ arrayLength, list }: CreateHighlightBinaryArrayParams) => {
   const array = '0'.repeat(arrayLength).split('');
@@ -40,6 +40,10 @@ const makeHighlightListByConsecutiveOnes = (array: string[]) => {
       result.push({ startIndex, endIndex });
       startIndex = -1; // 다시 초기화
     }
+  }
+
+  if (startIndex !== -1) {
+    result.push({ startIndex, endIndex: array.length - 1 });
   }
 
   return result;
@@ -76,11 +80,11 @@ export const getUpdatedBlockByHighlight = ({
   lineList,
 }: GetUpdatedBlockByHighlightParams) => {
   const newHighlight: HighlightRange = { startIndex, endIndex };
-  const block = lineList[lineIndex];
-  const { highlightList } = block;
+  const line = lineList[lineIndex];
+  const { highlightList } = line;
 
   return {
-    ...block,
+    ...line,
     highlightList: mergeHighlightList({ blockTextLength, highlightList, newHighlight }),
   };
 };
@@ -127,7 +131,7 @@ const getHighlightListAfterFullyRemoval = ({
 /*하이라이트 삭제 함수*/
 export const getRemovedHighlightList = (params: GetRemovedHighlightListParams) => {
   const { highlightList, startIndex, endIndex } = params;
-  // 한 글자만 하이라이트된 것을 삭제하는 겨우
+  // 한 글자만 하이라이트된 것을 삭제하는 경우
   const isRemoveSingleHighlight = highlightList.find((h) => h.endIndex == endIndex && h.startIndex === startIndex);
 
   if (isRemoveSingleHighlight)
