@@ -1,7 +1,4 @@
-import React from 'react';
-import { useLocation, useNavigate } from 'react-router';
-
-import { ROUTE } from '@/constants/route';
+import { Link } from 'react-router-dom';
 
 import UndraggableWrapper from '../UndraggableWrapper';
 
@@ -17,21 +14,18 @@ interface BreadcrumbProps {
 }
 
 const Breadcrumb = ({ pathList }: BreadcrumbProps) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleNavigation = (path: string) => {
-    navigate(path, { replace: location.pathname.includes(`/${ROUTE.reviewWritingComplete}`) });
-  };
-
   return (
-    <S.BreadcrumbList>
-      {pathList.map(({ pageName, path }, index) => (
-        <S.BreadcrumbItem key={index} onClick={() => handleNavigation(path)}>
-          <UndraggableWrapper>{pageName}</UndraggableWrapper>
-        </S.BreadcrumbItem>
-      ))}
-    </S.BreadcrumbList>
+    <nav>
+      <S.BreadcrumbList>
+        {pathList.map(({ pageName, path }, index) => (
+          <S.BreadcrumbItem key={index}>
+            <UndraggableWrapper>
+              <Link to={{ pathname: path }}>{pageName}</Link>
+            </UndraggableWrapper>
+          </S.BreadcrumbItem>
+        ))}
+      </S.BreadcrumbList>
+    </nav>
   );
 };
 
