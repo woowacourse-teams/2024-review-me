@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import Portal from '../modals/Portal';
+import Portal from '../Portal';
 
 import * as S from './styles';
 

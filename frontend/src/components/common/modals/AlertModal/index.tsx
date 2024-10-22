@@ -1,8 +1,8 @@
 import { ButtonStyleType, EssentialPropsWithChildren } from '@/types';
 
 import Button from '../../Button';
+import Portal from '../../Portal';
 import ModalBackground from '../ModalBackground';
-import Portal from '../Portal';
 
 import * as S from './styles';
 

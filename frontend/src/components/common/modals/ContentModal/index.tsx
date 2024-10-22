@@ -1,8 +1,8 @@
 import CloseIcon from '@/assets/x.svg';
 import { EssentialPropsWithChildren } from '@/types';
 
+import Portal from '../../Portal';
 import ModalBackground from '../ModalBackground';
-import Portal from '../Portal';
 
 import * as S from './styles';
 
