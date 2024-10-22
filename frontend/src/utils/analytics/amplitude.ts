@@ -43,8 +43,18 @@ const getBrowserInfo = () => {
 export const trackEventInAmplitude = (eventName: string, eventProps: Record<string, any> = {}) => {
   if (!process.env.APMLITUDE_KEY) return;
 
+  const PATHNAME = {
+    release: 'review-me.page',
+    dev: 'dev.review-me.page',
+  };
+  const DOMAIN_MAPPING = {
+    [PATHNAME.release]: 'release',
+    [PATHNAME.dev]: 'dev',
+  };
+
   const { hostname } = window.location;
-  const domainName = hostname === 'review-me.page' ? 'release' : 'dev';
+  const domainName = DOMAIN_MAPPING[hostname] || 'local';
+
   const { browserName, browserVersion } = getBrowserInfo();
 
   amplitude.track(eventName, {
