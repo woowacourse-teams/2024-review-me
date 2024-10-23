@@ -248,7 +248,11 @@ const useHighlight = ({
 
     if (!newEditorAnswerMap) return;
 
-    mutateHighlight(newEditorAnswerMap);
+    mutateHighlight(newEditorAnswerMap, {
+      onError: () => {
+        handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.deleteFailure);
+      },
+    });
   };
 
   const removeSingleAnswerHighlight = (selectionInfo: SelectionInfo) => {
