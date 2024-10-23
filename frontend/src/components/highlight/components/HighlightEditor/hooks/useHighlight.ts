@@ -196,8 +196,6 @@ const useHighlight = ({
   const addSingleAnswerHighlight = (selectionInfo: SelectionInfo) => {
     const { startLineIndex, endLineIndex, startAnswer } = selectionInfo;
 
-    const selectionInfoEl = document.getElementById('debug');
-
     if (!startAnswer) return;
 
     const newEditorAnswerMap = new Map(editorAnswerMap);
@@ -213,11 +211,6 @@ const useHighlight = ({
 
       if (index === startLineIndex) {
         const { startIndex, endIndex } = getStartLineOffset(selectionInfo, line);
-        if (selectionInfoEl) {
-          selectionInfoEl.innerText = JSON.stringify(
-            `debug:   ${startIndex} ${endIndex} ${selectionInfo.selection.anchorOffset} ${selectionInfo.selection.focusOffset}, `,
-          );
-        }
 
         return getUpdatedBlockByHighlight({
           blockTextLength: line.text.length,
