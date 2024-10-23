@@ -233,6 +233,7 @@ export type SelectionInfo = Exclude<ReturnType<typeof findSelectionInfo>, undefi
 export const getStartLineOffset = (infoForOffset: SelectionInfo, line: EditorLine) => {
   const { isForwardDrag, startLineElement, selection, isOnlyOneSelectedBlock } = infoForOffset;
   const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
+
   const startIndex = calculateOffsetInLine({
     selectionTargetNode: isForwardDrag ? anchorNode : focusNode,
     selectionTargetOffset: isForwardDrag ? anchorOffset : focusOffset,
