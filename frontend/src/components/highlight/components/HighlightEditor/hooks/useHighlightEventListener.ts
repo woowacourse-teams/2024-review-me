@@ -47,7 +47,11 @@ const useHighlightEventListener = ({
    */
   const addHighlightEvent = () => {
     document.addEventListener('mousedown', hideHighlightMenu);
-    document.addEventListener('mouseup', showHighlightMenu);
+
+    if (!isTouchDevice()) {
+      document.addEventListener('mouseup', showHighlightMenu);
+    }
+
     // NOTE: 터치가 가능한 기기에서는 touchstart, touchend 보다 selectionchange를 사용하는 게 오류가 없음
     if (isTouchDevice()) {
       document.addEventListener('selectionchange', showHighlightMenu);
