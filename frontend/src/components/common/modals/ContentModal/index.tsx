@@ -1,6 +1,7 @@
 import CloseIcon from '@/assets/x.svg';
 import { EssentialPropsWithChildren } from '@/types';
 
+import FocusTrap from '../../FocusTrap';
 import Portal from '../../Portal';
 import ModalBackground from '../ModalBackground';
 
@@ -26,15 +27,17 @@ const ContentModal = ({
   return (
     <Portal>
       <ModalBackground closeModal={isClosableOnBackground ? handleClose : null}>
-        <S.ContentModalContainer style={$style}>
-          <S.ContentModalHeader>
-            <S.Title>{title}</S.Title>
-            <S.CloseButton onClick={handleClose}>
-              <img src={CloseIcon} alt="모달 닫기" />
-            </S.CloseButton>
-          </S.ContentModalHeader>
-          <S.Contents>{children}</S.Contents>
-        </S.ContentModalContainer>
+        <FocusTrap>
+          <S.ContentModalContainer style={$style}>
+            <S.ContentModalHeader>
+              <S.Title>{title}</S.Title>
+              <S.CloseButton onClick={handleClose}>
+                <img src={CloseIcon} alt="모달 닫기" />
+              </S.CloseButton>
+            </S.ContentModalHeader>
+            <S.Contents>{children}</S.Contents>
+          </S.ContentModalContainer>
+        </FocusTrap>
       </ModalBackground>
     </Portal>
   );
