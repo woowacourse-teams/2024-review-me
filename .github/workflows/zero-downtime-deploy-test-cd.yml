@@ -1,0 +1,82 @@
+name: "[test] Zero Downtime Deploy Test CD"
+
+on:
+  workflow_dispatch:
+
+env:
+  APPLICATION_DIRECTORY: /home/ubuntu/review-me
+
+jobs:
+  build:
+    name: Build Dockerfile and push to DockerHub
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to current repository
+        uses: actions/checkout@v4
+
+      - name: Setup JDK Corretto using cached gradle dependencies
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.8
+
+      - name: Build and test with gradle
+        run: |
+          cd ./backend
+          ./gradlew clean bootJar
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_ID }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ secrets.DOCKERHUB_ID }}/review-me-app:develop
+
+  deploy:
+    name: Deploy via self-hosted runner
+    needs: build
+    runs-on: [self-hosted, dev]
+
+    steps:
+      - name: Checkout to secret repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.PRIVATE_REPOSITORY_URL }}
+          token: ${{ secrets.PRIVATE_REPOSITORY_TOKEN }}
+
+      - name: Move application-related files to local
+        run: |
+          mkdir -p ${{ env.APPLICATION_DIRECTORY }}/app
+          mv ./app/* ./app/.* ${{ env.APPLICATION_DIRECTORY }}/app
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_ID }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Deploy new version # 변경 부분
+        env:
+          PROFILE_VAR: "dev"
+        run: |
+          chmod +x ./deploy.sh
+          sudo -E ./deploy.sh
+
+        working-directory: ${{ env.APPLICATION_DIRECTORY }}/app

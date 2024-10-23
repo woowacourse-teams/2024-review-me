@@ -1,3 +1,5 @@
+import { ReviewAnswerResponseData } from './highlight';
+
 export interface Keyword {
   id: number;
   content: string;
@@ -90,6 +92,51 @@ export interface Category {
   content: string;
 }
 
+// 목록보기, 모아보기에서 공통적으로 사용되는 정보
+export interface ReviewSummary {
+  projectName: string;
+  revieweeName: string;
+  reviewCount: number;
+}
+
+export interface GroupedSection {
+  sections: {
+    id: number;
+    name: string;
+  }[];
+}
+
+export interface GroupedReviews {
+  reviews: GroupedReview[];
+}
+
+export interface GroupedReview {
+  question: {
+    id: number;
+    name: string;
+    type: QuestionType;
+  };
+  /**
+   * CollectedReviewAnswer[] : 주관식 질문에서 답변 모아놓은 배열
+   * null : 객관식 질문인 경우
+   */
+  answers: ReviewAnswerResponseData[] | null;
+  /**
+   * CollectedReviewVotes[] : 객관식 질문에서 옵션-득표수 모아놓은 배열
+   * null : 주관식 질문인 경우
+   */
+  votes: ReviewVotes[] | null;
+}
+
+export interface ReviewAnswer {
+  content: string;
+}
+
+export interface ReviewVotes {
+  content: string;
+  count: number;
+}
+
 // 리뷰 작성 카드 관련 타입들
 export interface ReviewWritingFormData {
   formId: number;
@@ -155,4 +202,10 @@ export interface ReviewWritingAnswer {
 export interface ReviewWritingFormResult {
   reviewRequestCode: string;
   answers: ReviewWritingAnswer[];
+}
+
+export interface ReviewInfoData {
+  projectName: string;
+  revieweeName: string;
+  totalReviewCount: number;
 }

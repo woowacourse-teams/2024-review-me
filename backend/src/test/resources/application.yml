@@ -38,3 +38,9 @@ logging:
 cors:
   allowed-origins:
     - https://allowed-domain.com
+
+request-limit:
+  threshold: 3
+  duration: 1s
+  host: localhost
+  port: 6379

@@ -55,6 +55,7 @@ export const REVIEW_GROUP_DATA_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_GROU
 
 const endPoint = {
   postingReview: `${serverUrl}/${VERSION2}/reviews`,
+  gettingReviewInfoData: `${serverUrl}/${VERSION2}/reviews/summary`,
   gettingDetailedReview: (reviewId: number) => `${DETAILED_REVIEW_API_URL}/${reviewId}`,
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
@@ -68,6 +69,9 @@ const endPoint = {
   checkingPassword: `${serverUrl}/${VERSION2}/${REVIEW_PASSWORD_API_PARAMS.resource}/${REVIEW_PASSWORD_API_PARAMS.queryString.check}`,
   gettingReviewGroupData: (reviewRequestCode: string) =>
     `${REVIEW_GROUP_DATA_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
+  gettingSectionList: `${serverUrl}/${VERSION2}/sections`,
+  gettingGroupedReviews: (sectionId: number) => `${serverUrl}/${VERSION2}/reviews/gather?sectionId=${sectionId}`,
+  postingHighlight: `${serverUrl}/${VERSION2}/highlight`,
 };
 
 export default endPoint;

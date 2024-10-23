@@ -1,0 +1,3 @@
+==== 자신이 받은 리뷰 요약 조회
+
+operation::received-review-summary[snippets="curl-request,request-cookies,http-response,response-fields"]

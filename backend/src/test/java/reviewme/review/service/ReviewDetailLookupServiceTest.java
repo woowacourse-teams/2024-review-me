@@ -13,6 +13,7 @@ import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,6 @@ import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.exception.ReviewNotFoundByIdAndGroupException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -68,20 +68,6 @@ class ReviewDetailLookupServiceTest {
     private TemplateRepository templateRepository;
 
     @Test
-    void 잘못된_리뷰_요청_코드로_리뷰를_조회할_경우_예외가_발생한다() {
-        // given
-        String reviewRequestCode = "hello";
-        String groupAccessCode = "goodBye";
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
-        Review review = reviewRepository.save(new Review(0, reviewGroup.getId(), List.of()));
-
-        // when, then
-        assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(
-                review.getId(), "wrong" + reviewRequestCode
-        )).isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
-    }
-
-    @Test
     void 리뷰_그룹에_해당하지_않는_리뷰를_조회할_경우_예외가_발생한다() {
         // given
         String reviewRequestCode1 = "sancho";
@@ -96,12 +82,10 @@ class ReviewDetailLookupServiceTest {
 
         // when, then
         assertAll(
-                () -> assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(
-                        review2.getId(), reviewRequestCode1
-                )).isInstanceOf(ReviewNotFoundByIdAndGroupException.class),
-                () -> assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(
-                        review1.getId(), reviewRequestCode2
-                )).isInstanceOf(ReviewNotFoundByIdAndGroupException.class)
+                () -> assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(review2.getId(), reviewGroup1))
+                        .isInstanceOf(ReviewNotFoundByIdAndGroupException.class),
+                () -> assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(review1.getId(), reviewGroup2))
+                        .isInstanceOf(ReviewNotFoundByIdAndGroupException.class)
         );
     }
 
@@ -134,16 +118,15 @@ class ReviewDetailLookupServiceTest {
         );
 
         // when
-        ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
-                review.getId(), reviewRequestCode
-        );
+        ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId(), reviewGroup);
 
         // then
         assertThat(reviewDetail.sections()).hasSize(2);
     }
 
     @Nested
-    class 필수가_아닌_답변에_응답하지_않았을_때 {
+    @DisplayName("필수가 아닌 답변에 응답하지 않았을 때")
+    class NotAnsweredOptionalQuestion {
 
         @Test
         void 섹션에_필수가_아닌_질문만_있다면_섹션_자체를_반환하지_않는다() {
@@ -163,9 +146,7 @@ class ReviewDetailLookupServiceTest {
             );
 
             // when
-            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
-                    review.getId(), reviewRequestCode
-            );
+            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId(), reviewGroup);
 
             // then
             assertThat(reviewDetail.sections())
@@ -193,9 +174,7 @@ class ReviewDetailLookupServiceTest {
             );
 
             // when
-            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(
-                    review.getId(), reviewRequestCode
-            );
+            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId(), reviewGroup);
 
             // then
             assertAll(

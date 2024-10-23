@@ -3,22 +3,6 @@ import styled from '@emotion/styled';
 import media from '@/utils/media';
 
 export const Logo = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-
-  img {
-    width: 4rem;
-    height: 4rem;
-  }
-`;
-
-export const LogoText = styled.div`
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-
   line-height: 8rem;
   text-align: center;
 
