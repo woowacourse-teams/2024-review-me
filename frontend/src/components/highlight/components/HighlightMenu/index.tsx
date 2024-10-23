@@ -43,11 +43,6 @@ const HighlightMenu = ({
     }
   };
 
-  const isIOS = () => {
-    const userAgent = window.navigator.userAgent;
-    return /AppleWebKit/i.test(userAgent);
-  };
-
   useEffect(() => {
     const newSelectionInfo = findSelectionInfo();
     selectionInfoRef.current = newSelectionInfo;
