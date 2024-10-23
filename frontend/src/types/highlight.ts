@@ -31,7 +31,7 @@ export interface HighlightPostPayload {
     //하이라이트가 적용된 블럭의 정보를 보내줌
     lines: {
       index: number; // 하이라이트가 적용된 구문의 index
-      ranges: HighlightRange[];
+      ranges: HighlightRange[]; // 하이라이트가 적용되지 않으면 빈배열
     }[];
   }[];
 }

@@ -103,13 +103,13 @@ const useHighlight = ({
       : addMultipleAnswerHighlight(selectionInfo);
     if (!newEditorAnswerMap) return;
 
-    console.log('new', newEditorAnswerMap.get(2));
     mutateHighlight(newEditorAnswerMap, {
       onError: () => {
         handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.addFailure);
       },
     });
   };
+  // NOTE :공백으로 이루어진 개행용 문자열의 highlightList는 빈배열로 유지한다
 
   const addMultipleAnswerHighlight = (selectionInfo: SelectionInfo) => {
     const { startAnswer, endAnswer } = selectionInfo;
@@ -125,8 +125,8 @@ const useHighlight = ({
         const { lineList } = targetAnswer;
 
         const newLineList: EditorLine[] = lineList.map((line, index) => {
+          if (line.text.trim() === '') return line;
           if (index < lineIndex) return line;
-
           if (index > lineIndex) {
             return {
               ...line,
@@ -147,14 +147,17 @@ const useHighlight = ({
 
       if (startAnswer.index < answerIndex && endAnswer.index > answerIndex) {
         const targetAnswer = newEditorAnswerMap.get(answerId);
-
         if (!targetAnswer) return;
         const { lineList } = targetAnswer;
 
-        const newLineList = lineList.map((line) => ({
-          ...line,
-          highlightList: [{ startIndex: 0, endIndex: line.text.length - 1 }],
-        }));
+        const newLineList = lineList.map((line) => {
+          if (line.text.trim() === '') return line;
+
+          return {
+            ...line,
+            highlightList: [{ startIndex: 0, endIndex: line.text.length - 1 }],
+          };
+        });
 
         newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
       }
@@ -167,6 +170,7 @@ const useHighlight = ({
         const { lineList } = targetAnswer;
 
         const newLineList = lineList.map((line, index) => {
+          if (line.text.trim() === '') return line;
           if (index > lineIndex) return line;
           if (index < lineIndex) {
             return {
@@ -202,10 +206,13 @@ const useHighlight = ({
     if (!targetAnswer) return;
 
     const newLineList: EditorLine[] = targetAnswer.lineList.map((line, index, array) => {
+      if (line.text.trim() === '') return line;
       if (index < startLineIndex) return line;
       if (index > endLineIndex) return line;
+
       if (index === startLineIndex) {
         const { startIndex, endIndex } = getStartLineOffset(selectionInfo, line);
+
         return getUpdatedBlockByHighlight({
           blockTextLength: line.text.length,
           lineIndex: index,
@@ -226,6 +233,7 @@ const useHighlight = ({
           lineList: array,
         });
       }
+
       return {
         ...line,
         highlightList: [{ startIndex: 0, endIndex: line.text.length - 1 }],
@@ -233,6 +241,7 @@ const useHighlight = ({
     });
 
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
+
     return newEditorAnswerMap;
   };
 
@@ -266,11 +275,13 @@ const useHighlight = ({
     if (!targetAnswer) return;
 
     const newLineList = targetAnswer.lineList.map((line, index) => {
+      if (line.text.trim() === '') return line;
       if (index < startLineIndex) return line;
       if (index > endLineIndex) return line;
+
       if (index === startLineIndex) {
         const { startIndex, endIndex } = getStartLineOffset(selectionInfo, line);
-        console.log(startIndex, endIndex);
+
         return {
           ...line,
           highlightList: getRemovedHighlightList({
@@ -281,6 +292,7 @@ const useHighlight = ({
           }),
         };
       }
+
       if (index === endLineIndex) {
         const endIndex = getEndLineOffset(selectionInfo);
         return {
@@ -300,6 +312,7 @@ const useHighlight = ({
     });
 
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
+
     return newEditorAnswerMap;
   };
   const removeMultipleAnswerHighlight = (selectionInfo: SelectionInfo) => {
@@ -316,6 +329,7 @@ const useHighlight = ({
         const { lineList } = targetAnswer;
 
         const newLineList = lineList.map((line, index) => {
+          if (line.text.trim() === '') return line;
           if (index < lineIndex) return line;
 
           if (index > lineIndex) {
@@ -324,6 +338,7 @@ const useHighlight = ({
               highlightList: [],
             };
           }
+
           return {
             ...line,
             highlightList: getRemovedHighlightList({
@@ -337,6 +352,7 @@ const useHighlight = ({
 
         newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
       }
+
       if (answerId === endAnswer.id) {
         const { lineIndex, offset } = endAnswer;
         const targetAnswer = newEditorAnswerMap.get(answerId);
@@ -345,6 +361,7 @@ const useHighlight = ({
         const { lineList } = targetAnswer;
 
         const newLineList = lineList.map((line, index) => {
+          if (line.text.trim() === '') return line;
           if (index > lineIndex) return line;
 
           if (index < lineIndex) {
@@ -353,6 +370,7 @@ const useHighlight = ({
               highlightList: [],
             };
           }
+
           return {
             ...line,
             highlightList: getRemovedHighlightList({

@@ -5,7 +5,7 @@ import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
 export const transformHighlightData = (editorAnswerMap: EditorAnswerMap, questionId: number): HighlightPostPayload => {
-  // NOTE: 하이라이트가 있는 답변만 서버에 보내줌
+  // NOTE: 하이라이트가 있는 답변만 서버에 보내줌 (줄에 하이라이트가 없으면 빈배열)
   return {
     questionId,
     highlights: [...editorAnswerMap.values()]
