@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
 
-import media from '@/utils/media';
-
 import { OptionSwitchStyleProps } from './index';
 
 export const OptionSwitchContainer = styled.ul`
@@ -10,16 +8,17 @@ export const OptionSwitchContainer = styled.ul`
   display: flex;
   justify-content: space-between;
 
-  width: 15rem;
-  height: 4.5rem;
+  width: 20rem;
+  height: 4.4rem;
   padding: 0.7rem;
 
   background-color: ${({ theme }) => theme.colors.lightGray};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
-  ${media.small} {
-    height: 3.5rem;
-    font-size: 1.2rem;
+  margin-top: 0.9rem;
+
+  @media screen and (max-width: 530px) {
+    width: 100%;
   }
 `;
 
@@ -43,6 +42,6 @@ export const CheckboxWrapper = styled.li<OptionSwitchStyleProps>`
 
 export const CheckboxButton = styled.button<OptionSwitchStyleProps>`
   user-select: none;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: ${({ $isChecked, theme }) => ($isChecked ? theme.colors.primary : theme.colors.black)};
 `;
