@@ -82,18 +82,17 @@ const getToastPositionStyles = (position: ToastPositionType, duration: number) =
 
 export const ToastModalContainer = styled.div<ToastModalProps>`
   background-color: #626262;
+
   color: white;
+
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
 
-  z-index: ${({ theme }) => theme.zIndex.modal};
-
   position: fixed;
 
   ${({ position, duration }) => getToastPositionStyles(position, duration)}
-
   left: 50%;
   transform: translateX(-50%);
 
@@ -103,7 +102,6 @@ export const ToastModalContainer = styled.div<ToastModalProps>`
 
   border-radius: ${({ theme }) => theme.borderRadius.basic};
   box-shadow: 0.4rem 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
-
   border: none;
 
   ${media.xxSmall} {

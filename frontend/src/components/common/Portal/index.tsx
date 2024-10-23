@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 
 import * as S from './styles';
 
-interface PortalProps {
+export interface PortalProps {
   id?: string;
   disableScroll?: boolean;
 }
@@ -25,7 +25,12 @@ const Portal: React.FC<PropsWithChildren<PortalProps>> = ({ children: Modal, id,
     };
   });
 
-  return createPortal(<S.Portal id={id || 'portal'}>{Modal}</S.Portal>, document.body);
+  return createPortal(
+    <S.Portal id={id || 'portal'} disableScroll={disableScroll}>
+      {Modal}
+    </S.Portal>,
+    document.body,
+  );
 };
 
 export default Portal;
