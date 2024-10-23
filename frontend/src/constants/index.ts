@@ -4,5 +4,5 @@ export * from './review';
 export * from './queryKey';
 export * from './routerParam';
 export * from './highlight';
-export * from './sessionStorageKey';
+export * from './storageKey';
 export * from './amplitudeEventName';
