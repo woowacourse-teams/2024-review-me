@@ -26,13 +26,18 @@ const CheckboxItem = ({
         currentTarget: {
           id: id,
           checked: !isChecked,
-        } as Partial<HTMLInputElement>, 
-      } as ChangeEvent<HTMLInputElement>); 
+        } as Partial<HTMLInputElement>,
+      } as ChangeEvent<HTMLInputElement>);
     }
   };
 
   return (
-    <S.CheckboxItem tabIndex={$isReadonly ? -1 : 0} aria-label={isCheckedLabel} onKeyDown={handleKeyDown}>
+    <S.CheckboxItem
+      className="checkbox-item"
+      tabIndex={$isReadonly ? -1 : 0}
+      aria-label={isCheckedLabel}
+      onKeyDown={handleKeyDown}
+    >
       <S.CheckboxLabel>
         <UndraggableWrapper>
           <Checkbox
