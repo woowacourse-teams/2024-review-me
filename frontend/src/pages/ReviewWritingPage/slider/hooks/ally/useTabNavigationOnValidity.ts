@@ -23,13 +23,18 @@ const useTabNavigationOnValidity = ({ cardId }: UseTabNavigationOnValidityProps)
   const handleTabKeydown = (event: KeyboardEvent) => {
     if (event.code !== 'Tab') return;
     const currentCardElement = findCurrentCardElement();
-    const lastTabCandidateList = currentCardElement?.querySelectorAll('input, textarea, button:not([disabled])');
+
+    // 리뷰 작성 카드에서, tab으로 접근 가능한 요소들은
+    // 활성화된 버튼(이동 버튼, 프로그레스 바 버튼), CheckboxItem, textarea
+    const lastTabCandidateList = currentCardElement?.querySelectorAll(
+      'textarea, .checkbox-item, button:not([disabled])',
+    );
     if (!lastTabCandidateList || lastTabCandidateList.length === 0) return;
 
     const lastTabElementInCard = lastTabCandidateList[lastTabCandidateList.length - 1];
     if (document.activeElement !== lastTabElementInCard) return;
 
-    //카드 속에서 마지막 탭 요소에 focus되어있고, tab키 누를 경우
+    // 리뷰 작성 카드에서 tab 가능한 마지막 요소에 focus가 있을 때 tab키를 누를 경우
     event.preventDefault();
     (document.querySelector('footer a') as HTMLElement | null)?.focus();
   };
