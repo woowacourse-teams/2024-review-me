@@ -31,7 +31,7 @@ jobs:
           elif [ "$PR_PREFIX" = '[FE]' ]; then
             echo Frontend PR Found!
             echo "PR_PREFIX=FE" >> $GITHUB_ENV
-          elif [ "$PR_PREFIX" = '[All]' ]; then
+          elif [ "$PR_PREFIX" = '[All]' ] || [ "$PR_PREFIX" = '[Release]' ]; then
             echo All PR Found!
             echo "PR_PREFIX=All" >> $GITHUB_ENV
           fi
