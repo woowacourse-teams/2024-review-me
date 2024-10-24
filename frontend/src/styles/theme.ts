@@ -63,6 +63,7 @@ export const colors: ThemeProperty<CSSProperties['color']> = {
   primaryHover: '#9082E6',
   lightPurple: '#E6E3F6',
   palePurple: '#F5F4FF',
+  highlight: '#E5DAFF',
   black: '#1E2022',
   white: '#FFFFFF',
   lightGray: '#F1F2F4',
