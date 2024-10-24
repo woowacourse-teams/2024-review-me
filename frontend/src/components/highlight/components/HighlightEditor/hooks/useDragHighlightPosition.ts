@@ -2,7 +2,7 @@ import { useLayoutEffect } from 'react';
 
 import { GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON, HIGHLIGHT_MENU_STYLE_SIZE, HIGHLIGHT_MENU_WIDTH } from '@/constants';
 import { Position } from '@/types';
-import { isTouchDevice, SelectionInfo } from '@/utils';
+import { isAppWebKit, isTouchDevice, SelectionInfo } from '@/utils';
 
 import { HighlightArea } from './useCheckHighlight';
 
@@ -41,10 +41,12 @@ const useDragHighlightPosition = ({
     if (rects.length === 0) return console.error('선택된 글자가 없어요.');
 
     const lastRect = rects[isForwardDrag ? rects.length - 1 : 0];
+    const firstRect = rects[0];
 
     return {
       editorRect,
       lastRect,
+      firstRect,
     };
   };
 
@@ -56,6 +58,7 @@ const useDragHighlightPosition = ({
    */
   const calculateRectOffsets = (
     lastRect: DOMRect,
+    firstRect: DOMRect,
     editorRect: DOMRect,
     isForwardDrag: boolean,
     buttonWidth: number,
@@ -71,8 +74,8 @@ const useDragHighlightPosition = ({
     // 에디터 기준 위치
     const leftOffsetFromEditor = rectLeft - editorRect.left;
     const topOffsetFromEditor = rectTop - editorRect.top;
-
-    return { leftOffsetFromEditor, topOffsetFromEditor, rectLeft, rectTop };
+    const firstRectOffsetFromEditor = { top: firstRect.top - editorRect.top, left: firstRect.left - editorRect.left };
+    return { leftOffsetFromEditor, topOffsetFromEditor, rectLeft, rectTop, firstRectOffsetFromEditor };
   };
 
   /**
@@ -100,6 +103,10 @@ const useDragHighlightPosition = ({
   };
 
   interface CalculateDragHighlightMenuPosition {
+    firstRectOffsetFromEditor: {
+      top: number;
+      left: number;
+    };
     leftOffsetFromEditor: number;
     topOffsetFromEditor: number;
     buttonWidth: number;
@@ -107,8 +114,10 @@ const useDragHighlightPosition = ({
     isOverflowingVertically: { top: boolean; bottom: boolean };
     editorRect: DOMRect;
     lastRect: DOMRect;
+    firstRect: DOMRect;
   }
   const calculateDragHighlightMenuPosition = ({
+    firstRectOffsetFromEditor,
     leftOffsetFromEditor,
     topOffsetFromEditor,
     buttonWidth,
@@ -116,6 +125,7 @@ const useDragHighlightPosition = ({
     isOverflowingVertically,
     editorRect,
     lastRect,
+    firstRect,
   }: CalculateDragHighlightMenuPosition) => {
     const { height: buttonHeight, shadow: shadowWidth } = HIGHLIGHT_MENU_STYLE_SIZE;
     const buttonTotalHeight = buttonHeight + shadowWidth;
@@ -132,12 +142,26 @@ const useDragHighlightPosition = ({
       left = shadowWidth;
     }
 
+    if (isOverflowingVertically.top) {
+      top = shadowWidth;
+    }
+
     // top 계산
     if (isOverflowingVertically.bottom) {
       top = topOffsetFromEditor - lastRect.height - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON - buttonTotalHeight;
     }
-    if (isOverflowingVertically.top) {
-      top = shadowWidth;
+    // 아이폰, 아이패트에서 에디터 하단 영역을 벗어난 경우
+    if (isOverflowingVertically.bottom && isAppWebKit()) {
+      top = topOffsetFromEditor - lastRect.height;
+      const leftForApp = left + buttonWidth + GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON;
+      left = leftForApp;
+      const isOverflowingEditor = editorRect.right <= lastRect.left + leftForApp + buttonWidth + shadowWidth;
+      // NOTE: 아이폰, 아이패드에서 하단, 오른쪽 에디터 영역을 넘어갈 경우
+      if (isOverflowingEditor) {
+        top =
+          firstRectOffsetFromEditor.top - firstRect.height - shadowWidth - GAP_WIDTH_SELECTION_AND_HIGHLIGHT_BUTTON * 2;
+        left = firstRectOffsetFromEditor.left;
+      }
     }
 
     return { left, top };
@@ -149,15 +173,11 @@ const useDragHighlightPosition = ({
     const rects = getRects({ selectionInfo, editorRef });
     if (!rects) return;
 
-    const { lastRect, editorRect } = rects;
+    const { lastRect, editorRect, firstRect } = rects;
     const buttonWidth = HIGHLIGHT_MENU_WIDTH[highlightArea];
 
-    const { leftOffsetFromEditor, topOffsetFromEditor, rectLeft, rectTop } = calculateRectOffsets(
-      lastRect,
-      editorRect,
-      isForwardDrag,
-      buttonWidth,
-    );
+    const { leftOffsetFromEditor, topOffsetFromEditor, rectLeft, rectTop, firstRectOffsetFromEditor } =
+      calculateRectOffsets(lastRect, firstRect, editorRect, isForwardDrag, buttonWidth);
     const { isOverflowingHorizontally, isOverflowingVertically } = checkOverflow(
       rectLeft,
       rectTop,
@@ -166,6 +186,7 @@ const useDragHighlightPosition = ({
       editorRect,
     );
     const { left, top } = calculateDragHighlightMenuPosition({
+      firstRectOffsetFromEditor,
       leftOffsetFromEditor,
       topOffsetFromEditor,
       buttonWidth,
@@ -173,6 +194,7 @@ const useDragHighlightPosition = ({
       isOverflowingVertically,
       editorRect,
       lastRect,
+      firstRect,
     });
 
     const position: Position = {
