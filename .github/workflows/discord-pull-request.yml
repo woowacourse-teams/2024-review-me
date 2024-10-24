@@ -38,7 +38,7 @@ jobs:
           echo PR Prefix : $PR_PREFIX
 
       - name: Notify on PR
-        if: env.PR_PREFIX == 'BE' || env.PR_PREFIX == 'FE' || env.PR_PREFIX == 'All' || env.PR_PREFIX == 'Release'
+        if: env.PR_PREFIX == 'BE' || env.PR_PREFIX == 'FE' || env.PR_PREFIX == 'All'
         run: |
           echo "Notify on Discord"
           
@@ -52,7 +52,7 @@ jobs:
           elif [ "${{ env.PR_PREFIX }}" = 'FE' ]; then
             NOTIFY_CONTENT="<@&${{ env.frontend }}>"
             WEBHOOK_URL=${{ secrets.DISCORD_FE_PR_WEBHOOK_URL }}
-          elif [ "${{ env.PR_PREFIX }}" = 'All' ] || [ "${{ env.PR_PREFIX }}" = 'Release' ]; then
+          elif [ "${{ env.PR_PREFIX }}" = 'All' ]; then
             NOTIFY_CONTENT="<@&${{ env.backend }}> <@&${{ env.frontend }}>"
             WEBHOOK_URL=${{ secrets.DISCORD_ALL_PR_WEBHOOK_URL }}
           fi
