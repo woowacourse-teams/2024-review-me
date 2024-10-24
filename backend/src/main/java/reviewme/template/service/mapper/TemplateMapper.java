@@ -2,6 +2,7 @@ package reviewme.template.service.mapper;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import reviewme.question.domain.OptionGroup;
 import reviewme.question.domain.OptionItem;
@@ -14,9 +15,6 @@ import reviewme.template.domain.Section;
 import reviewme.template.domain.SectionQuestion;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.TemplateSection;
-import reviewme.template.service.exception.MissingOptionItemsInOptionGroupException;
-import reviewme.template.service.exception.SectionInTemplateNotFoundException;
-import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.dto.response.OptionGroupResponse;
@@ -24,7 +22,10 @@ import reviewme.template.service.dto.response.OptionItemResponse;
 import reviewme.template.service.dto.response.QuestionResponse;
 import reviewme.template.service.dto.response.SectionResponse;
 import reviewme.template.service.dto.response.TemplateResponse;
+import reviewme.template.service.exception.MissingOptionItemsInOptionGroupException;
 import reviewme.template.service.exception.QuestionInSectionNotFoundException;
+import reviewme.template.service.exception.SectionInTemplateNotFoundException;
+import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
 
 @Component
 @RequiredArgsConstructor
@@ -38,6 +39,7 @@ public class TemplateMapper {
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
+    @Cacheable(value = "template", key = "#reviewGroup.templateId")
     public TemplateResponse mapToTemplateResponse(ReviewGroup reviewGroup) {
         Template template = templateRepository.findById(reviewGroup.getTemplateId())
                 .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(
