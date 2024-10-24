@@ -9,8 +9,6 @@ on:
       - 'backend/**'
 
 env:
-  ARTIFACT_NAME: review-me-dev
-  ARTIFACT_DIRECTORY: ./backend/build/libs
   APPLICATION_DIRECTORY: /home/ubuntu/review-me
 
 jobs:
@@ -79,9 +77,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_ID }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Pull from DockerHub
+      - name: Deploy new version
+        env:
+          PROFILE_VAR: "dev"
         run: |
-          sudo docker-compose --env-file .env.dev down || true
-          sudo docker pull ${{ secrets.DOCKERHUB_ID }}/review-me-app:develop
-          sudo docker-compose --env-file .env.dev up -d
+          chmod +x ./deploy.sh
+          sudo -E ./deploy.sh
+
         working-directory: ${{ env.APPLICATION_DIRECTORY }}/app
