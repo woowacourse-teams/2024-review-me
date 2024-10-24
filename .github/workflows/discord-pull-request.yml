@@ -31,14 +31,14 @@ jobs:
           elif [ "$PR_PREFIX" = '[FE]' ]; then
             echo Frontend PR Found!
             echo "PR_PREFIX=FE" >> $GITHUB_ENV
-          elif [ "$PR_PREFIX" = '[All]' ]; then
+          elif [ "$PR_PREFIX" = '[All]' ] || [ "$PR_PREFIX" = '[Release]' ]; then
             echo All PR Found!
             echo "PR_PREFIX=All" >> $GITHUB_ENV
           fi
           echo PR Prefix : $PR_PREFIX
 
       - name: Notify on PR
-        if: env.PR_PREFIX == 'BE' || env.PR_PREFIX == 'FE' || env.PR_PREFIX == 'All'
+        if: env.PR_PREFIX == 'BE' || env.PR_PREFIX == 'FE' || env.PR_PREFIX == 'All' || env.PR_PREFIX == 'Release'
         run: |
           echo "Notify on Discord"
           
@@ -52,7 +52,7 @@ jobs:
           elif [ "${{ env.PR_PREFIX }}" = 'FE' ]; then
             NOTIFY_CONTENT="<@&${{ env.frontend }}>"
             WEBHOOK_URL=${{ secrets.DISCORD_FE_PR_WEBHOOK_URL }}
-          elif [ "${{ env.PR_PREFIX }}" = 'All' ]; then
+          elif [ "${{ env.PR_PREFIX }}" = 'All' ] || [ "${{ env.PR_PREFIX }}" = 'Release' ]; then
             NOTIFY_CONTENT="<@&${{ env.backend }}> <@&${{ env.frontend }}>"
             WEBHOOK_URL=${{ secrets.DISCORD_ALL_PR_WEBHOOK_URL }}
           fi
