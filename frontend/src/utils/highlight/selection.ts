@@ -139,7 +139,7 @@ export const findSelectedLineInfo = (selection: Selection) => {
 };
 
 export type SelectedLineInfo = Exclude<ReturnType<typeof findSelectedLineInfo>, undefined>;
-
+/**드래그의 시작과 끝 계산 */
 export const calculateStartAndEndLine = ({
   anchorLineElement,
   anchorLineIndex,
@@ -216,8 +216,13 @@ export const findSelectionInfo = () => {
 
   const isOnlyOneSelectedBlock = startLineIndex === endLineIndex;
 
+  // NOTE: ios에서 selection을 분리하지 않고 넘겨주면 형광펜 버튼 클릭 시 selection 값이 빈값이 되는 오류가 발생해서, 형광펜 버튼 클릭 시 필요한 데이터를 분리해서 넘겨줌
   return {
     selection,
+    anchorNode: selection.anchorNode,
+    anchorOffset: selection.anchorOffset,
+    focusNode: selection.focusNode,
+    focusOffset: selection.focusOffset,
     startLineElement,
     endLineElement,
     startLineIndex,
@@ -231,8 +236,17 @@ export const findSelectionInfo = () => {
 export type SelectionInfo = Exclude<ReturnType<typeof findSelectionInfo>, undefined>;
 
 export const getStartLineOffset = (infoForOffset: SelectionInfo, line: EditorLine) => {
-  const { isForwardDrag, startLineElement, selection, isOnlyOneSelectedBlock } = infoForOffset;
-  const { anchorNode, focusNode, anchorOffset, focusOffset } = selection;
+  const {
+    isForwardDrag,
+    startLineElement,
+    endLineElement,
+    anchorNode,
+    focusNode,
+    anchorOffset,
+    focusOffset,
+    isOnlyOneSelectedBlock,
+  } = infoForOffset;
+
   const startIndex = calculateOffsetInLine({
     selectionTargetNode: isForwardDrag ? anchorNode : focusNode,
     selectionTargetOffset: isForwardDrag ? anchorOffset : focusOffset,
@@ -243,7 +257,7 @@ export const getStartLineOffset = (infoForOffset: SelectionInfo, line: EditorLin
     ? calculateOffsetInLine({
         selectionTargetNode: isForwardDrag ? focusNode : anchorNode,
         selectionTargetOffset: isForwardDrag ? focusOffset - 1 : anchorOffset - 1,
-        lineElement: startLineElement,
+        lineElement: endLineElement,
       })
     : line.text.length - 1;
 
@@ -251,8 +265,7 @@ export const getStartLineOffset = (infoForOffset: SelectionInfo, line: EditorLin
 };
 
 export const getEndLineOffset = (infoForOffset: SelectionInfo) => {
-  const { isForwardDrag, endLineElement, selection } = infoForOffset;
-  const { anchorNode, anchorOffset, focusNode, focusOffset } = selection;
+  const { isForwardDrag, endLineElement, anchorNode, anchorOffset, focusNode, focusOffset } = infoForOffset;
 
   const endIndex = calculateOffsetInLine({
     selectionTargetNode: isForwardDrag ? focusNode : anchorNode,

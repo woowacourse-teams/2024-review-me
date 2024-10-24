@@ -30,6 +30,12 @@ export const HighlightText = styled.span`
 `;
 
 export const AnswerList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  min-height: 7.5rem; /* 툴팁 가려지지 않게 최소 높이 설정 */
+
   list-style: disc;
   list-style-position: outside;
 `;

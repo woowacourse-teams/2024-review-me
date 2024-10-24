@@ -6,7 +6,6 @@ import {
   getEndLineOffset,
   getStartLineOffset,
   getRemovedHighlightList,
-  findSelectionInfo,
   getUpdatedBlockByHighlight,
   removeSelection,
   SelectionInfo,
@@ -93,10 +92,9 @@ const useHighlight = ({
     handleErrorModal,
   });
 
-  const addHighlightByDrag = () => {
+  const addHighlightByDrag = (selectionInfo: SelectionInfo) => {
     trackEventInAmplitude(HIGHLIGHT_EVENT_NAME.addHighlightByDrag);
 
-    const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
     const newEditorAnswerMap: EditorAnswerMap | undefined = selectionInfo.isSameAnswer
       ? addSingleAnswerHighlight(selectionInfo)
@@ -197,6 +195,7 @@ const useHighlight = ({
 
   const addSingleAnswerHighlight = (selectionInfo: SelectionInfo) => {
     const { startLineIndex, endLineIndex, startAnswer } = selectionInfo;
+
     if (!startAnswer) return;
 
     const newEditorAnswerMap = new Map(editorAnswerMap);
@@ -245,10 +244,9 @@ const useHighlight = ({
     return newEditorAnswerMap;
   };
 
-  const removeHighlightByDrag = () => {
+  const removeHighlightByDrag = (selectionInfo: SelectionInfo) => {
     trackEventInAmplitude(HIGHLIGHT_EVENT_NAME.removeHighlightByDrag);
 
-    const selectionInfo = findSelectionInfo();
     if (!selectionInfo) return;
 
     const newEditorAnswerMap: EditorAnswerMap | undefined = selectionInfo.isSameAnswer

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AlertModal } from '@/components';
 import Checkbox from '@/components/common/Checkbox';
@@ -21,6 +21,29 @@ const ReviewZoneURLModal = ({ reviewZoneURL, closeModal }: ReviewZoneURLModalPro
   const handleCloseButtonClick = () => {
     if (isChecked) closeModal();
   };
+
+  const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    event.preventDefault();
+  };
+
+  const handlePopState = () => {
+    if (window.confirm('링크가 사라질 수 있어요. 계속하시겠어요?')) {
+      closeModal();
+    } else {
+      // 히스토리를 다시 추가해 뒤로가기 취소
+      window.history.pushState(null, '', window.location.href);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', handleBeforeUnload); // 새로고침 방지
+    window.addEventListener('popstate', handlePopState); // 뒤로가기 이벤트(history change) 감지
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
 
   return (
     <AlertModal
