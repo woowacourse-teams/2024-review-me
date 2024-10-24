@@ -15,6 +15,7 @@ import reviewme.review.domain.Review;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Template;
@@ -61,6 +62,10 @@ public class ReviewMapper {
 
     private Answer mapRequestToAnswer(Map<Long, Question> questions, ReviewAnswerRequest answerRequest) {
         Question question = questions.get(answerRequest.questionId());
+
+        if (question == null) {
+            throw new SubmittedQuestionNotFoundException(answerRequest.questionId());
+        }
 
         // TODO: 아래 코드를 삭제해야 한다
         if (question.isSelectable() && answerRequest.selectedOptionIds() != null && answerRequest.selectedOptionIds().isEmpty()) {
