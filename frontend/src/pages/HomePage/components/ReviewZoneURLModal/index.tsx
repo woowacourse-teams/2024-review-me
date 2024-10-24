@@ -37,7 +37,6 @@ const ReviewZoneURLModal = ({ reviewZoneURL, closeModal }: ReviewZoneURLModalPro
 
   useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeUnload); // 새로고침 방지
-    window.history.pushState(null, '', window.location.href); // 뒤로가기 방지 설정
     window.addEventListener('popstate', handlePopState); // 뒤로가기 이벤트(history change) 감지
 
     return () => {
