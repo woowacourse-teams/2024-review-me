@@ -5,10 +5,6 @@ import java.util.List;
 public record SectionAnswerResponse(
         long sectionId,
         String header,
-        List<QuestionAnswerResponse> questions
+        List<QuestionAnswerResponse> reviews
 ) {
-
-    public boolean hasAnsweredQuestion() {
-        return !questions.isEmpty();
-    }
 }
