@@ -8,7 +8,9 @@ import { ErrorBoundary } from '../../../error';
 import ErrorFallback from '../../../error/ErrorFallback';
 import HighlightEditor, { HighlightEditorProps } from '../HighlightEditor';
 
-const HighlightEditorContainer = (props: Omit<HighlightEditorProps, 'handleErrorModal'>) => {
+interface HighlightEditorContainerProps extends Omit<HighlightEditorProps, 'handleErrorModal' | 'handleModalMessage'> {}
+
+const HighlightEditorContainer = (props: HighlightEditorContainerProps) => {
   const [isOpenErrorModal, setIsOpenErrorModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
