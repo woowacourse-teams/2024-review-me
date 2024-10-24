@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DatabaseCleaner {
 
     private static final String TRUNCATE_FORMAT = "TRUNCATE TABLE %s";
-    private static final String ALTER_FORMAT = "ALTER TABLE %s ALTER COLUMN ID RESTART WITH 1";
+    private static final String ALTER_FORMAT = "ALTER TABLE %s AUTO_INCREMENT = 1";
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -32,11 +32,11 @@ public class DatabaseCleaner {
     @Transactional
     public void execute() {
         entityManager.flush();
-        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
         for (String tableName : tableNames) {
             entityManager.createNativeQuery(TRUNCATE_FORMAT.formatted(tableName)).executeUpdate();
             entityManager.createNativeQuery(ALTER_FORMAT.formatted(tableName)).executeUpdate();
         }
-        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
     }
 }
