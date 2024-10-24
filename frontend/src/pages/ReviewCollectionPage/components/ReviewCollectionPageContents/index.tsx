@@ -25,6 +25,10 @@ const ReviewCollectionPageContents = () => {
   const [selectedSection, setSelectedSection] = useState<DropdownItem>(dropdownSectionList[0]);
   const { data: groupedReviews } = useGetGroupedReviews({ sectionId: selectedSection.value as number });
 
+  groupedReviews.reviews.forEach((review) => {
+    review.votes?.sort((voteA, voteB) => voteB.count - voteA.count);
+  });
+
   const renderContent = (review: GroupedReview) => {
     if (review.question.type === 'CHECKBOX') {
       const hasNoCheckboxAnswer = review.votes?.every((vote) => vote.count === 0);
