@@ -48,10 +48,17 @@ export const REVIEW_GROUP_DATA_API_PARAMS = {
   },
 };
 
+export const REVIEW_GROUP_API_PARAMS = {
+  queryString: {
+    sectionId: 'sectionId',
+  },
+};
+
 export const REVIEW_WRITING_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_WRITING_API_PARAMS.resource}`;
 export const REVIEW_LIST_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_LIST_API_PARAMS.resource}`;
 export const DETAILED_REVIEW_API_URL = `${serverUrl}/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}`;
 export const REVIEW_GROUP_DATA_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_GROUP_DATA_API_PARAMS.resource}`;
+export const REVIEW_GROUP_API_URL = `${serverUrl}/${VERSION2}/reviews/gather`;
 
 const endPoint = {
   postingReview: `${serverUrl}/${VERSION2}/reviews`,
@@ -70,7 +77,8 @@ const endPoint = {
   gettingReviewGroupData: (reviewRequestCode: string) =>
     `${REVIEW_GROUP_DATA_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingSectionList: `${serverUrl}/${VERSION2}/sections`,
-  gettingGroupedReviews: (sectionId: number) => `${serverUrl}/${VERSION2}/reviews/gather?sectionId=${sectionId}`,
+  gettingGroupedReviews: (sectionId: number) =>
+    `${REVIEW_GROUP_API_URL}?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
   postingHighlight: `${serverUrl}/${VERSION2}/highlight`,
 };
 
