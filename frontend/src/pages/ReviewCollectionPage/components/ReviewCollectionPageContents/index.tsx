@@ -68,11 +68,7 @@ const ReviewCollectionPageContents = () => {
           });
 
           return (
-            <Accordion
-              title={parsedQuestionName}
-              key={`${selectedSection.value}-${index}`}
-              isInitiallyOpened={index === 0}
-            >
+            <Accordion title={parsedQuestionName} key={`${selectedSection.value}-${index}`} isInitiallyOpened={false}>
               {renderContent(review)}
             </Accordion>
           );
