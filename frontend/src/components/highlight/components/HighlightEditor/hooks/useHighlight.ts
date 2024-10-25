@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_EVENT_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
+import {
+  EDITOR_ANSWER_CLASS_NAME,
+  HIGHLIGHT_EVENT_NAME,
+  HIGHLIGHT_SPAN_CLASS_NAME,
+  SESSION_STORAGE_KEY,
+} from '@/constants';
 import { EditorAnswerMap, EditorLine, HighlightResponseData, ReviewAnswerResponseData } from '@/types';
 import {
   getEndLineOffset,
@@ -71,13 +76,25 @@ const useHighlight = ({
   handleModalMessage,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
+  const storageKey = `${SESSION_STORAGE_KEY.editorAnswerMap}-${questionId}`;
+
+  useEffect(() => {
+    const item = localStorage.getItem(storageKey);
+    if (item) {
+      setEditorAnswerMap(new Map(JSON.parse(item)) as EditorAnswerMap);
+    }
+  }, []);
 
   // span 클릭 시, 제공되는 형광펜 삭제 기능 타겟
   const [longPressRemovalTarget, setLongPressRemovalTarget] = useState<RemovalTarget | null>(null);
 
   const resetLongPressRemovalTarget = () => setLongPressRemovalTarget(null);
 
-  const updateEditorAnswerMap = (newEditorAnswerMap: EditorAnswerMap) => setEditorAnswerMap(newEditorAnswerMap);
+  const updateEditorAnswerMap = (newEditorAnswerMap: EditorAnswerMap) => {
+    setEditorAnswerMap(newEditorAnswerMap);
+    // editorAnswerMap이 변경될 때 새로운 값을 로컬 스토리지에 저장
+    localStorage.setItem(storageKey, JSON.stringify(Array.from(newEditorAnswerMap)));
+  };
 
   const resetHighlightMenu = () => {
     removeSelection();
