@@ -18,6 +18,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class RequestLimitInterceptor implements HandlerInterceptor {
 
     private static final String X_FORWARDED_FOR = "X-FORWARDED-FOR";
+    private static final String X_REAL_IP = "X-REAL-IP";
 
     private final RedisTemplate<String, Long> redisTemplate;
     private final RequestLimitProperties requestLimitProperties;
@@ -42,9 +43,18 @@ public class RequestLimitInterceptor implements HandlerInterceptor {
 
     private String generateRequestKey(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        String forwardedIp = request.getHeader(X_FORWARDED_FOR);
         String userAgent = request.getHeader(USER_AGENT);
+        String ip = extractIp(request);
 
-        return String.format("RequestURI: %s, IP: %s, UserAgent: %s", requestURI, forwardedIp, userAgent);
+        return String.format("RequestURI: %s, IP: %s, UserAgent: %s", requestURI, ip, userAgent);
+    }
+
+    private String extractIp(HttpServletRequest request) {
+        String xForwardedForIP = request.getHeader(X_FORWARDED_FOR);
+        String xRealIp = request.getHeader(X_REAL_IP);
+        if (xForwardedForIP == null) {
+            return xRealIp;
+        }
+        return xForwardedForIP;
     }
 }
