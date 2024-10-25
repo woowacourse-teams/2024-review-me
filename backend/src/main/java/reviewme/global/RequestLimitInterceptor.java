@@ -4,8 +4,8 @@ import static org.springframework.http.HttpHeaders.USER_AGENT;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -21,7 +21,7 @@ import reviewme.global.exception.TooManyRequestException;
 @RequiredArgsConstructor
 public class RequestLimitInterceptor implements HandlerInterceptor {
 
-    private static final Stream<String> PROXY_HEADERS = Stream.of("X-FORWARDED-FOR", "X-REAL-IP");
+    private static final List<String> PROXY_HEADERS = List.of("X-FORWARDED-FOR", "X-REAL-IP");
 
     private final RedisTemplate<String, Long> redisTemplate;
     private final RequestLimitProperties requestLimitProperties;
@@ -47,7 +47,8 @@ public class RequestLimitInterceptor implements HandlerInterceptor {
     private String generateRequestKey(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         String userAgent = request.getHeader(USER_AGENT);
-        String ip = PROXY_HEADERS.map(request::getHeader)
+        String ip = PROXY_HEADERS.stream()
+                .map(request::getHeader)
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(request.getRemoteAddr());
