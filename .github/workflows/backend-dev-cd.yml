@@ -80,9 +80,8 @@ jobs:
       - name: Deploy new version
         env:
           PROFILE_VAR: "dev"
-          DOCKERHUB_ID: ${{ secrets.DOCKERHUB_ID }}
         run: |
+          sudo docker pull ${{ secrets.DOCKERHUB_ID }}/review-me-app:$PROFILE_VAR
           chmod +x ./deploy.sh
           sudo -E ./deploy.sh
-
         working-directory: ${{ env.APPLICATION_DIRECTORY }}/app
