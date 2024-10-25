@@ -3,6 +3,8 @@ import { http, HttpResponse } from 'msw';
 import endPoint, {
   DETAILED_REVIEW_API_PARAMS,
   DETAILED_REVIEW_API_URL,
+  REVIEW_GROUP_API_PARAMS,
+  REVIEW_GROUP_API_URL,
   REVIEW_WRITING_API_PARAMS,
   REVIEW_WRITING_API_URL,
   VERSION2,
@@ -104,17 +106,23 @@ const getSectionList = () =>
     return authorizeWithCookie(cookies, () => HttpResponse.json(GROUPED_SECTION_MOCK_DATA));
   });
 
-const getGroupedReviews = (sectionId: number) =>
-  http.get(endPoint.gettingGroupedReviews(sectionId), ({ cookies }) => {
-    return authorizeWithCookie(cookies, () => HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA));
+const getGroupedReviews = () => {
+  return http.get(new RegExp(`^${REVIEW_GROUP_API_URL}`), ({ request, cookies }) => {
+    const url = new URL(request.url);
+    const sectionId = url.searchParams.get(REVIEW_GROUP_API_PARAMS.queryString.sectionId);
+    const { length } = GROUPED_REVIEWS_MOCK_DATA;
+    const index = (Number(sectionId) + length) % length;
+
+    return authorizeWithCookie(cookies, () => HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]));
   });
+};
 
 const reviewHandler = [
   getDetailedReview(),
   getReviewList(null, 10),
   getDataToWriteReview(),
   getSectionList(),
-  getGroupedReviews(1),
+  getGroupedReviews(),
   getReviewInfoData(),
   postReview(),
 ];
