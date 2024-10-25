@@ -78,6 +78,7 @@ jobs:
       - name: Deploy new version
         env:
           PROFILE_VAR: "prod"
+          DOCKERHUB_ID: ${{ secrets.DOCKERHUB_ID }}
         run: |
           chmod +x ./deploy.sh
           sudo -E ./deploy.sh
