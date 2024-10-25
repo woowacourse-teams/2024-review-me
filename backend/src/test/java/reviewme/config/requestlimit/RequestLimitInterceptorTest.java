@@ -22,7 +22,7 @@ class RequestLimitInterceptorTest {
     private final ValueOperations<String, Long> valueOperations = mock(ValueOperations.class);
     private final RequestLimitProperties requestLimitProperties = mock(RequestLimitProperties.class);
     private final RequestLimitInterceptor interceptor = new RequestLimitInterceptor(redisTemplate, requestLimitProperties);
-    private final String requestKey = "RequestURI: /api/v2/reviews, RemoteAddr: localhost, UserAgent: Postman";
+    private final String requestKey = "RequestURI: /api/v2/reviews, IP: localhost, UserAgent: Postman";
 
     @BeforeEach
     void setUp() {
