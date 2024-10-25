@@ -47,15 +47,11 @@ public class RequestLimitInterceptor implements HandlerInterceptor {
     private String generateRequestKey(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         String userAgent = request.getHeader(USER_AGENT);
-        String ip = extractIpAddress(request);
-
-        return String.format("RequestURI: %s, IP: %s, UserAgent: %s", requestURI, ip, userAgent);
-    }
-
-    private String extractIpAddress(HttpServletRequest request) {
-        return PROXY_HEADERS.map(request::getHeader)
+        String ip = PROXY_HEADERS.map(request::getHeader)
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(request.getRemoteAddr());
+
+        return String.format("RequestURI: %s, IP: %s, UserAgent: %s", requestURI, ip, userAgent);
     }
 }
