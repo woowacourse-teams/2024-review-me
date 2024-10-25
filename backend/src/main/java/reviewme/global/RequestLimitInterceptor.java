@@ -4,6 +4,8 @@ import static org.springframework.http.HttpHeaders.USER_AGENT;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Objects;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -19,8 +21,7 @@ import reviewme.global.exception.TooManyRequestException;
 @RequiredArgsConstructor
 public class RequestLimitInterceptor implements HandlerInterceptor {
 
-    private static final String X_FORWARDED_FOR = "X-FORWARDED-FOR";
-    private static final String X_REAL_IP = "X-REAL-IP";
+    private static final Stream<String> PROXY_HEADERS = Stream.of("X-FORWARDED-FOR", "X-REAL-IP");
 
     private final RedisTemplate<String, Long> redisTemplate;
     private final RequestLimitProperties requestLimitProperties;
@@ -46,17 +47,15 @@ public class RequestLimitInterceptor implements HandlerInterceptor {
     private String generateRequestKey(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         String userAgent = request.getHeader(USER_AGENT);
-        String ip = extractIp(request);
+        String ip = extractIpAddress(request);
 
         return String.format("RequestURI: %s, IP: %s, UserAgent: %s", requestURI, ip, userAgent);
     }
 
-    private String extractIp(HttpServletRequest request) {
-        String xForwardedForIP = request.getHeader(X_FORWARDED_FOR);
-        String xRealIp = request.getHeader(X_REAL_IP);
-        if (xForwardedForIP == null) {
-            return xRealIp;
-        }
-        return xForwardedForIP;
+    private String extractIpAddress(HttpServletRequest request) {
+        return PROXY_HEADERS.map(request::getHeader)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(request.getRemoteAddr());
     }
 }
