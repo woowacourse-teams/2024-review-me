@@ -79,7 +79,7 @@ jobs:
         env:
           PROFILE_VAR: "prod"
         run: |
-          sudo docker pull ${{ secrets.DOCKERHUB_ID }}/review-me-app:$PROFILE_VAR
+          sudo docker pull ${{ secrets.DOCKERHUB_ID }}/review-me-app:release
           chmod +x ./deploy.sh
           sudo -E ./deploy.sh
         working-directory: ${{ env.APPLICATION_DIRECTORY }}/app
