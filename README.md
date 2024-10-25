@@ -35,7 +35,7 @@
 
 ### 리뷰로 나를 파악해보세요
 받은 리뷰를 모아보고, 나를 파악하는데 도움이 된 부분을 형광펜으로 표시할 수 있어요.
-<p align="center"><img src="https://github.com/user-attachments/assets/b780fb23-6cdc-4cb3-bb78-c5c0c3bea185" width="800px"/></p>
+<p align="center"><img src="https://github.com/user-attachments/assets/acb9899f-4483-4505-928a-2458062c355a" width="800px"/></p>
 
 ## 😮 리뷰미 서비스 사용 후기
 <p align="center"><img src="https://github.com/user-attachments/assets/9753d451-42d9-4b9e-b483-1c34b5839464" width="800px" /></p>
