@@ -1,7 +1,6 @@
 package reviewme.review.service.exception;
 
 import java.util.Collection;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import reviewme.global.exception.BadRequestException;
 
@@ -15,10 +14,5 @@ public class SubmittedQuestionAndProvidedQuestionMismatchException extends BadRe
                 "Submitted questions and provided questions mismatch. submittedQuestionIds: {}, providedQuestionIds: {}",
                 submittedQuestionIds, providedQuestionIds, this
         );
-    }
-
-    public SubmittedQuestionAndProvidedQuestionMismatchException(long submittedQuestionId,
-                                                                 Collection<Long> providedQuestionIds) {
-        this(List.of(submittedQuestionId), providedQuestionIds);
     }
 }
