@@ -54,4 +54,3 @@ public class ReplicationDatasourceConfig {
         return new LazyConnectionDataSourceProxy(routingDataSource);
     }
 }
-
