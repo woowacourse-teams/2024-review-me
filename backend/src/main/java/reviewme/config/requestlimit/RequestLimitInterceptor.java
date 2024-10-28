@@ -1,7 +1,5 @@
 package reviewme.config.requestlimit;
 
-import static org.springframework.http.HttpHeaders.USER_AGENT;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -44,13 +42,12 @@ public class RequestLimitInterceptor implements HandlerInterceptor {
 
     private String generateRequestKey(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        String userAgent = request.getHeader(USER_AGENT);
-        String ip = PROXY_HEADERS.stream()
+        String remoteAddress = PROXY_HEADERS.stream()
                 .map(request::getHeader)
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(request.getRemoteAddr());
 
-        return String.format("RequestURI: %s, IP: %s, UserAgent: %s", requestURI, ip, userAgent);
+        return String.format("RequestURI: %s, RemoteAddress: %s", requestURI, remoteAddress);
     }
 }
