@@ -1,4 +1,4 @@
-package reviewme.global;
+package reviewme.config.requestlimit;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -14,8 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import reviewme.config.RequestLimitProperties;
-import reviewme.global.exception.TooManyRequestException;
 
 class RequestLimitInterceptorTest {
 
@@ -41,7 +39,6 @@ class RequestLimitInterceptorTest {
     @Test
     void POST_요청이_아니면_통과한다() {
         // given
-        HttpServletRequest request = mock(HttpServletRequest.class);
         given(request.getMethod()).willReturn("GET");
 
         // when

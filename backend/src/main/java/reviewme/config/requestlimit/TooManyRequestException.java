@@ -1,6 +1,7 @@
-package reviewme.global.exception;
+package reviewme.config.requestlimit;
 
 import lombok.extern.slf4j.Slf4j;
+import reviewme.global.exception.ReviewMeException;
 
 @Slf4j
 public class TooManyRequestException extends ReviewMeException {

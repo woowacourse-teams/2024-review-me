@@ -1,4 +1,4 @@
-package reviewme.global;
+package reviewme.config.requestlimit;
 
 import static org.springframework.http.HttpHeaders.USER_AGENT;
 
@@ -11,8 +11,6 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import reviewme.config.RequestLimitProperties;
-import reviewme.global.exception.TooManyRequestException;
 
 @Component
 @EnableConfigurationProperties(RequestLimitProperties.class)

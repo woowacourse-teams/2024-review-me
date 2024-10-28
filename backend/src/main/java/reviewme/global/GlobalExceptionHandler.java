@@ -22,7 +22,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import reviewme.global.exception.BadRequestException;
 import reviewme.global.exception.DataInconsistencyException;
-import reviewme.global.exception.TooManyRequestException;
+import reviewme.config.requestlimit.TooManyRequestException;
 import reviewme.global.exception.FieldErrorResponse;
 import reviewme.global.exception.NotFoundException;
 import reviewme.global.exception.UnauthorizedException;

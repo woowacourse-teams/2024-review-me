@@ -1,4 +1,4 @@
-package reviewme.config;
+package reviewme.config.cors;
 
 import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;

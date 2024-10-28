@@ -1,4 +1,4 @@
-package reviewme.config;
+package reviewme.config.requestlimit;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

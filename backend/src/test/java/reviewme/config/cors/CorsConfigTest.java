@@ -1,4 +1,4 @@
-package reviewme.config;
+package reviewme.config.cors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +32,7 @@ abstract class CorsConfigTest {
     static class TestController {
         @RequestMapping("/test")
         public void test() {
+            // Testing controller calls, no-op
         }
     }
 }

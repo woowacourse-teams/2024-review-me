@@ -1,4 +1,4 @@
-package reviewme.config;
+package reviewme.config.cors;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
