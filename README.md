@@ -48,6 +48,9 @@
 ### 백엔드
 <p align="center"><img src="https://github.com/user-attachments/assets/0a7aa302-b737-496d-9fec-54a8088da3b5" width="600px"/></p>
 
+### Infrastructure
+<p align=center><img src=https://github.com/user-attachments/assets/ea1c3226-f452-4910-9a90-11a9d3e1e1df width=800px/></p>
+
 ## 🧑‍💻 팀원 소개
 
 ### 프론트엔드
@@ -59,3 +62,4 @@
 | <img src="https://review-me-blog.github.io/assets/images/sancho-a505ff332869b4eda5a1fa6cf296ddc8.jpeg" width="120px" max-height="120px">  |  <img src="https://review-me-blog.github.io/assets/images/aru-f1f92d2d3284aab8aa385afd817d2ae7.jpeg" width="120px" max-height="120px">   | <img src="https://review-me-blog.github.io/assets/images/kirby-c5c179939bc7a2fd587bcc2cbb6af129.png" width="120px" max-height="120px"> |   <img src="https://review-me-blog.github.io/assets/images/ted-a4f788b021e7619d4cc9ae7fc0ab336d.png" width="120px" max-height="120px">  |
 | :---: | :---: | :---: | :---: |
 | [🦧 산초](https://github.com/nayonsoso)  | [🤸🏻‍♂️ 아루](https://github.com/donghoony)   | [💃 커비](https://github.com/skylar1220)   | [🐻 테드](https://github.com/Kimprodp)   |
+
