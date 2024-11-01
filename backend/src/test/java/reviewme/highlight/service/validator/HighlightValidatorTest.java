@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.highlight.service.dto.HighlightRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
 import reviewme.highlight.service.exception.SubmittedAnswerAndProvidedAnswerMismatchException;
-import reviewme.question.repository.QuestionRepository;
+import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;

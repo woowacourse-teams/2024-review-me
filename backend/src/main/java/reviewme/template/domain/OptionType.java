@@ -1,4 +1,4 @@
-package reviewme.question.domain;
+package reviewme.template.domain;
 
 public enum OptionType {
     CATEGORY,

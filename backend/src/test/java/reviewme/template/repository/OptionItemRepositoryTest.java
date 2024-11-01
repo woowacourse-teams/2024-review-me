@@ -1,4 +1,4 @@
-package reviewme.question.repository;
+package reviewme.template.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
@@ -9,10 +9,13 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import reviewme.question.domain.OptionGroup;
-import reviewme.question.domain.OptionItem;
-import reviewme.question.domain.OptionType;
-import reviewme.question.domain.Question;
+import reviewme.template.domain.OptionGroup;
+import reviewme.template.domain.OptionItem;
+import reviewme.template.domain.OptionType;
+import reviewme.template.domain.Question;
+import reviewme.template.repository.OptionGroupRepository;
+import reviewme.template.repository.OptionItemRepository;
+import reviewme.template.repository.QuestionRepository;
 
 @DataJpaTest
 class OptionItemRepositoryTest {

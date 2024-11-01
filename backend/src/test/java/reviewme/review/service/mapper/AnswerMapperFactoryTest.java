@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
-import reviewme.question.domain.QuestionType;
+import reviewme.template.domain.QuestionType;
 import reviewme.review.domain.Answer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 

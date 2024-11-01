@@ -1,11 +1,11 @@
-package reviewme.question.repository;
+package reviewme.template.repository;
 
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import reviewme.question.domain.OptionGroup;
+import reviewme.template.domain.OptionGroup;
 
 @Repository
 public interface OptionGroupRepository extends JpaRepository<OptionGroup, Long> {

@@ -1,7 +1,7 @@
 package reviewme.fixture;
 
-import reviewme.question.domain.Question;
-import reviewme.question.domain.QuestionType;
+import reviewme.template.domain.Question;
+import reviewme.template.domain.QuestionType;
 
 public class QuestionFixture {
 

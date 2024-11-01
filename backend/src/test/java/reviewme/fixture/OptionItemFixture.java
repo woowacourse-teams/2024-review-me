@@ -1,7 +1,7 @@
 package reviewme.fixture;
 
-import reviewme.question.domain.OptionItem;
-import reviewme.question.domain.OptionType;
+import reviewme.template.domain.OptionItem;
+import reviewme.template.domain.OptionType;
 
 public class OptionItemFixture {
 

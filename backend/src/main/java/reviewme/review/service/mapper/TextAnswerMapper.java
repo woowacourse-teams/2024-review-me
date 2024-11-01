@@ -1,7 +1,7 @@
 package reviewme.review.service.mapper;
 
 import org.springframework.stereotype.Component;
-import reviewme.question.domain.QuestionType;
+import reviewme.template.domain.QuestionType;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
