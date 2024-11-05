@@ -1,6 +1,7 @@
 package reviewme.question.repository;
 
 import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
 
     List<OptionItem> findAllByOptionGroupId(long optionGroupId);
 
+    @Cacheable(value = "templateCache", key = "#optionType")
     @Query("""
             SELECT o FROM OptionItem o
             WHERE o.optionType = :optionType
