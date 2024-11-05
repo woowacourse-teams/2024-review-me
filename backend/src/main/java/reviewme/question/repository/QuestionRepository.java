@@ -21,6 +21,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             """)
     Set<Long> findAllQuestionIdByTemplateId(long templateId);
 
+    @Cacheable(value = "templateCache", key = "#templateId")
     @Query("""
             SELECT q FROM Question q
             JOIN SectionQuestion sq

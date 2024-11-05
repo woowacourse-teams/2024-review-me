@@ -36,4 +36,12 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
             ORDER BY o.position
             """)
     List<OptionItem> findAllOptionItemsByIdOrderByPosition(long questionId);
+
+    @Cacheable(value = "templateCache", key = "#questionId")
+    @Query("""
+            SELECT o FROM OptionItem o
+            JOIN OptionGroup og ON o.optionGroupId = og.id
+            WHERE og.questionId = :questionId
+            """)
+    List<OptionItem> findByQuestionId(long questionId);
 }

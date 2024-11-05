@@ -11,6 +11,7 @@ import reviewme.template.domain.Section;
 @Repository
 public interface SectionRepository extends JpaRepository<Section, Long> {
 
+    @Cacheable(value = "templateCache", key = "#templateId")
     @Query("""
             SELECT s FROM Section s
             JOIN TemplateSection ts
