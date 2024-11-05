@@ -1,12 +1,12 @@
-package reviewme.config;
+package reviewme.util;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.stereotype.Component;
 
-@Component("customKeyGenerator")
-public class CustomKeyGenerator implements KeyGenerator {
+@Component("cacheKeyGenerator")
+public class CacheKeyGenerator implements KeyGenerator {
 
     @Override
     public Object generate(Object target, Method method, Object... params) {
