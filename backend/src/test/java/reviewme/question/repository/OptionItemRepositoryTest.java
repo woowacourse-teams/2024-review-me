@@ -41,27 +41,4 @@ class OptionItemRepositoryTest {
         // then
         assertThat(actual).containsExactlyInAnyOrder(optionItem1, optionItem2);
     }
-
-    @Test
-    void 질문_아이디_그룹에_포함되는_모든_옵션_아이템을_불러온다() {
-        // given
-        Question question1 = questionRepository.save(선택형_필수_질문());
-        Question question2 = questionRepository.save(선택형_필수_질문());
-        Question question3 = questionRepository.save(선택형_필수_질문());
-        OptionGroup optionGroup1 = optionGroupRepository.save(선택지_그룹(question1.getId()));
-        OptionGroup optionGroup2 = optionGroupRepository.save(선택지_그룹(question2.getId()));
-        OptionGroup optionGroup3 = optionGroupRepository.save(선택지_그룹(question3.getId()));
-
-        OptionItem optionItem1 = optionItemRepository.save(선택지(optionGroup1.getId()));
-        OptionItem optionItem2 = optionItemRepository.save(선택지(optionGroup1.getId()));
-        OptionItem optionItem3 = optionItemRepository.save(선택지(optionGroup2.getId()));
-        OptionItem optionItem4 = optionItemRepository.save(선택지(optionGroup3.getId()));
-
-        // when
-        List<OptionItem> actual = optionItemRepository.findAllByQuestionIds(
-                List.of(question1.getId(), question2.getId()));
-
-        // then
-        assertThat(actual).containsExactlyInAnyOrder(optionItem1, optionItem2, optionItem3);
-    }
 }
