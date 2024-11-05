@@ -2,6 +2,7 @@ package reviewme.question.repository;
 
 import java.util.List;
 import java.util.Set;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -31,6 +32,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             """)
     List<Question> findAllByTemplatedId(long templateId);
 
+    @Cacheable(value = "templateCache", key = "#sectionId")
     @Query("""
             SELECT q FROM Question q
             JOIN SectionQuestion sq ON q.id = sq.questionId
@@ -39,6 +41,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             """)
     List<Question> findAllBySectionIdOrderByPosition(long sectionId);
 
+    @Cacheable(value = "templateCache", key = "#questionId")
     @Query("""
             SELECT o FROM OptionItem o
             JOIN OptionGroup og ON o.optionGroupId = og.id
