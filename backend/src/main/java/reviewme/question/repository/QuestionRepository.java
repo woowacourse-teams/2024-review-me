@@ -6,7 +6,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
 
 @Repository
@@ -40,13 +39,4 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             ORDER BY q.position
             """)
     List<Question> findAllBySectionIdOrderByPosition(long sectionId);
-
-    @Cacheable(value = "templateCache", key = "#questionId")
-    @Query("""
-            SELECT o FROM OptionItem o
-            JOIN OptionGroup og ON o.optionGroupId = og.id
-            WHERE og.questionId = :questionId
-            ORDER BY o.position
-            """)
-    List<OptionItem> findAllOptionItemsByIdOrderByPosition(long questionId);
 }

@@ -127,7 +127,7 @@ class QuestionRepositoryTest {
 
         // when
         List<OptionItem> optionItemsForQuestion1
-                = questionRepository.findAllOptionItemsByIdOrderByPosition(question1.getId());
+                = optionItemRepository.findAllOptionItemsByIdOrderByPosition(question1.getId());
 
         // then
         assertThat(optionItemsForQuestion1).containsExactly(optionItem1, optionItem2);
