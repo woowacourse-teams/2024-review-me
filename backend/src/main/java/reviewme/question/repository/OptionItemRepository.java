@@ -11,17 +11,17 @@ import reviewme.question.domain.OptionType;
 @Repository
 public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
 
-    @Cacheable(value = "templateCache", key = "'OptionItemRepository_findAllByOptionGroupId_' + #optionGroupId")
+    @Cacheable(value = "templateCache", key = "#root.targetClass.simpleName + '_' + #root.methodName + '_' + #optionGroupId")
     List<OptionItem> findAllByOptionGroupId(long optionGroupId);
 
-    @Cacheable(value = "templateCache", key = "'OptionItemRepository_findAllByOptionType_' + #optionType")
+    @Cacheable(value = "templateCache", key = "#root.targetClass.simpleName + '_' + #root.methodName + '_' + #optionType")
     @Query("""
             SELECT o FROM OptionItem o
             WHERE o.optionType = :optionType
             """)
     List<OptionItem> findAllByOptionType(OptionType optionType);
 
-    @Cacheable(value = "templateCache", key = "'OptionItemRepository_findAllOptionItemsByIdOrderByPosition_' + #questionId")
+    @Cacheable(value = "templateCache", key = "#root.targetClass.simpleName + '_' + #root.methodName + '_' + #questionId")
     @Query("""
             SELECT o FROM OptionItem o
             JOIN OptionGroup og ON o.optionGroupId = og.id
@@ -30,7 +30,7 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
             """)
     List<OptionItem> findAllOptionItemsByIdOrderByPosition(long questionId);
 
-    @Cacheable(value = "templateCache", key = "'OptionItemRepository_findByQuestionId_' + #questionId")
+    @Cacheable(value = "templateCache", key = "#root.targetClass.simpleName + '_' + #root.methodName + '_' + #questionId")
     @Query("""
             SELECT o FROM OptionItem o
             JOIN OptionGroup og ON o.optionGroupId = og.id
