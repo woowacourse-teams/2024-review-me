@@ -11,6 +11,7 @@ import reviewme.question.domain.OptionType;
 @Repository
 public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
 
+    @Cacheable(value = "templateCache", key = "#optionGroupId")
     List<OptionItem> findAllByOptionGroupId(long optionGroupId);
 
     @Cacheable(value = "templateCache", key = "#optionType")
