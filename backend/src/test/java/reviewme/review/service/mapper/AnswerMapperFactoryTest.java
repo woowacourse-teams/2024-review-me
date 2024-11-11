@@ -8,23 +8,22 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
-import reviewme.template.domain.QuestionType;
 import reviewme.review.domain.Answer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
+import reviewme.template.domain.QuestionType;
 
 @ExtendWith(OutputCaptureExtension.class)
 class AnswerMapperFactoryTest {
 
     private final AnswerMapper answerMapper = new AnswerMapper() {
-
         @Override
-        public boolean supports(QuestionType questionType) {
-            return questionType == QuestionType.CHECKBOX;
+        protected Answer doMap(ReviewAnswerRequest answerRequest) {
+            return null;
         }
 
         @Override
-        public Answer mapToAnswer(ReviewAnswerRequest answerRequest) {
-            return null;
+        protected QuestionType getQuestionType() {
+            return QuestionType.CHECKBOX;
         }
     };
 

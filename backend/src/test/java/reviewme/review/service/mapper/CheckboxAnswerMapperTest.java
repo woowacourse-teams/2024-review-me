@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
-import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
 
 class CheckboxAnswerMapperTest {
 
@@ -19,7 +18,7 @@ class CheckboxAnswerMapperTest {
         CheckboxAnswerMapper mapper = new CheckboxAnswerMapper();
 
         // when
-        CheckboxAnswer actual = mapper.mapToAnswer(request);
+        CheckboxAnswer actual = (CheckboxAnswer) mapper.mapToAnswer(request);
 
         // then
         assertThat(actual.getQuestionId()).isEqualTo(1L);
@@ -38,6 +37,6 @@ class CheckboxAnswerMapperTest {
 
         // then
         assertThatThrownBy(() -> mapper.mapToAnswer(request))
-                .isInstanceOf(CheckBoxAnswerIncludedTextException.class);
+                .isInstanceOf(QuestionTypeAnswerMismatchException.class);
     }
 }

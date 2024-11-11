@@ -7,7 +7,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
-import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 
 class TextAnswerMapperTest {
 
@@ -25,7 +24,7 @@ class TextAnswerMapperTest {
 
         // when
         TextAnswerMapper mapper = new TextAnswerMapper();
-        TextAnswer actual = mapper.mapToAnswer(request);
+        TextAnswer actual = (TextAnswer) mapper.mapToAnswer(request);
 
         // then
         assertThat(actual.getContent()).isEqualTo("text");
@@ -41,6 +40,6 @@ class TextAnswerMapperTest {
 
         // then
         assertThatThrownBy(() -> mapper.mapToAnswer(request))
-                .isInstanceOf(TextAnswerIncludedOptionItemException.class);
+                .isInstanceOf(QuestionTypeAnswerMismatchException.class);
     }
 }
