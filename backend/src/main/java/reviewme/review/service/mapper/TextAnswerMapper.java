@@ -14,6 +14,16 @@ public class TextAnswerMapper extends AnswerMapper {
     }
 
     @Override
+    protected boolean isAnswerMatchesQuestionType(ReviewAnswerRequest request) {
+        return request.text() != null && request.selectedOptionIds() == null;
+    }
+
+    @Override
+    protected boolean isAnswerEmpty(ReviewAnswerRequest request) {
+        return request.text() != null && request.text().isEmpty();
+    }
+
+    @Override
     protected QuestionType getQuestionType() {
         return QuestionType.TEXT;
     }

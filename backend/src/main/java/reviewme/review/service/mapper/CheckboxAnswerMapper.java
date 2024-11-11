@@ -14,6 +14,16 @@ public class CheckboxAnswerMapper extends AnswerMapper {
     }
 
     @Override
+    protected boolean isAnswerMatchesQuestionType(ReviewAnswerRequest request) {
+        return request.selectedOptionIds() != null && request.text() == null;
+    }
+
+    @Override
+    protected boolean isAnswerEmpty(ReviewAnswerRequest request) {
+        return request.selectedOptionIds() != null && request.selectedOptionIds().isEmpty();
+    }
+
+    @Override
     protected QuestionType getQuestionType() {
         return QuestionType.CHECKBOX;
     }

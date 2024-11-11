@@ -20,10 +20,17 @@ class AnswerMapperFactoryTest {
         protected Answer doMap(ReviewAnswerRequest answerRequest) {
             return null;
         }
-
         @Override
         protected QuestionType getQuestionType() {
             return QuestionType.CHECKBOX;
+        }
+        @Override
+        protected boolean isAnswerMatchesQuestionType(ReviewAnswerRequest request) {
+            return false;
+        }
+        @Override
+        protected boolean isAnswerEmpty(ReviewAnswerRequest request) {
+            return false;
         }
     };
 

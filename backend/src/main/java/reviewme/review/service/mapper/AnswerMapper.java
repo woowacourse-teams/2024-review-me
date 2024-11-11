@@ -22,19 +22,9 @@ public abstract class AnswerMapper {
 
     protected abstract Answer doMap(ReviewAnswerRequest answerRequest);
 
+    protected abstract boolean isAnswerMatchesQuestionType(ReviewAnswerRequest request);
+
+    protected abstract boolean isAnswerEmpty(ReviewAnswerRequest request);
+
     protected abstract QuestionType getQuestionType();
-
-    private boolean isAnswerMatchesQuestionType(ReviewAnswerRequest request) {
-        if (getQuestionType() == QuestionType.CHECKBOX) {
-            return request.selectedOptionIds() != null && request.text() == null;
-        }
-        return request.text() != null && request.selectedOptionIds() == null;
-    }
-
-    private boolean isAnswerEmpty(ReviewAnswerRequest request) {
-        if (getQuestionType() == QuestionType.CHECKBOX) {
-            return request.selectedOptionIds() != null && request.selectedOptionIds().isEmpty();
-        }
-        return request.text() != null && request.text().isEmpty();
-    }
 }
