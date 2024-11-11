@@ -14,7 +14,7 @@ public abstract class AnswerMapper {
         if (!isAnswerMatchesQuestionType(answerRequest)) {
             throw new QuestionTypeAnswerMismatchException(answerRequest.questionId());
         }
-        if(isAnswerEmpty(answerRequest)) {
+        if (isAnswerEmpty(answerRequest)) {
             return null;
         }
         return doMap(answerRequest);

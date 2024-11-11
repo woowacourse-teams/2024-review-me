@@ -16,18 +16,22 @@ import reviewme.template.domain.QuestionType;
 class AnswerMapperFactoryTest {
 
     private final AnswerMapper answerMapper = new AnswerMapper() {
+
         @Override
         protected Answer doMap(ReviewAnswerRequest answerRequest) {
             return null;
         }
+
         @Override
-        protected QuestionType getQuestionType() {
-            return QuestionType.CHECKBOX;
+        protected boolean supports(QuestionType questionType) {
+            return questionType == QuestionType.CHECKBOX;
         }
+
         @Override
         protected boolean isAnswerMatchesQuestionType(ReviewAnswerRequest request) {
             return false;
         }
+
         @Override
         protected boolean isAnswerEmpty(ReviewAnswerRequest request) {
             return false;
