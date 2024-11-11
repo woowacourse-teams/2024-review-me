@@ -9,6 +9,11 @@ import reviewme.template.domain.QuestionType;
 public class CheckboxAnswerMapper extends AnswerMapper {
 
     @Override
+    protected boolean supports(QuestionType questionType) {
+        return questionType == QuestionType.CHECKBOX;
+    }
+
+    @Override
     protected CheckboxAnswer doMap(ReviewAnswerRequest answerRequest) {
         return new CheckboxAnswer(answerRequest.questionId(), answerRequest.selectedOptionIds());
     }
@@ -21,10 +26,5 @@ public class CheckboxAnswerMapper extends AnswerMapper {
     @Override
     protected boolean isAnswerEmpty(ReviewAnswerRequest request) {
         return request.selectedOptionIds() != null && request.selectedOptionIds().isEmpty();
-    }
-
-    @Override
-    protected QuestionType getQuestionType() {
-        return QuestionType.CHECKBOX;
     }
 }

@@ -9,6 +9,11 @@ import reviewme.template.domain.QuestionType;
 public class TextAnswerMapper extends AnswerMapper {
 
     @Override
+    protected boolean supports(QuestionType questionType) {
+        return questionType == QuestionType.TEXT;
+    }
+
+    @Override
     protected TextAnswer doMap(ReviewAnswerRequest answerRequest) {
         return new TextAnswer(answerRequest.questionId(), answerRequest.text());
     }
@@ -21,10 +26,5 @@ public class TextAnswerMapper extends AnswerMapper {
     @Override
     protected boolean isAnswerEmpty(ReviewAnswerRequest request) {
         return request.text() != null && request.text().isEmpty();
-    }
-
-    @Override
-    protected QuestionType getQuestionType() {
-        return QuestionType.TEXT;
     }
 }

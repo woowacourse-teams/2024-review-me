@@ -6,10 +6,6 @@ import reviewme.template.domain.QuestionType;
 
 public abstract class AnswerMapper {
 
-    public final boolean supports(QuestionType questionType) {
-        return getQuestionType() == questionType;
-    }
-
     public final Answer mapToAnswer(ReviewAnswerRequest answerRequest) {
         if (!isAnswerMatchesQuestionType(answerRequest)) {
             throw new QuestionTypeAnswerMismatchException(answerRequest.questionId());
@@ -20,11 +16,11 @@ public abstract class AnswerMapper {
         return doMap(answerRequest);
     }
 
+    protected abstract boolean supports(QuestionType questionType);
+
     protected abstract Answer doMap(ReviewAnswerRequest answerRequest);
 
     protected abstract boolean isAnswerMatchesQuestionType(ReviewAnswerRequest request);
 
     protected abstract boolean isAnswerEmpty(ReviewAnswerRequest request);
-
-    protected abstract QuestionType getQuestionType();
 }
