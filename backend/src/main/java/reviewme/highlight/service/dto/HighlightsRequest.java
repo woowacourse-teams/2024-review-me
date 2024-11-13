@@ -23,8 +23,7 @@ public record HighlightsRequest(
     }
 
     public List<HighlightFragment> toFragments() {
-        return highlights()
-                .stream()
+        return highlights.stream()
                 .flatMap(request -> request.toFragments().stream())
                 .toList();
     }
