@@ -3,10 +3,8 @@ package reviewme.highlight.repository;
 import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 import reviewme.highlight.domain.Highlight;
 
-@Repository
 @RequiredArgsConstructor
 public class HighlightJdbcRepositoryImpl implements HighlightJdbcRepository {
 
