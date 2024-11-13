@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Stream;
 import reviewme.highlight.service.mapper.HighlightFragment;
 
@@ -18,12 +17,13 @@ public record HighlightRequest(
 ) {
     public List<HighlightFragment> toFragments() {
         return lines.stream()
-                .flatMap(flatMapStreamFunction())
+                .flatMap(this::mapRangesToFragment)
                 .toList();
     }
 
-    private Function<HighlightedLineRequest, Stream<? extends HighlightFragment>> flatMapStreamFunction() {
-        return line -> line.ranges().stream()
+    private Stream<HighlightFragment> mapRangesToFragment(HighlightedLineRequest line) {
+        return line.ranges()
+                .stream()
                 .map(range -> new HighlightFragment(answerId, line.index(), range.startIndex(), range.endIndex()));
     }
 }
