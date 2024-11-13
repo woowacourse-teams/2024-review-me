@@ -23,14 +23,9 @@ public class HighlightMapper {
                 .stream()
                 .collect(Collectors.toMap(TextAnswer::getId, answer -> new HighlightedLines(answer.getContent())));
 
-        List<HighlightFragment> particles = highlightsRequest.highlights()
-                .stream()
-                .flatMap(request -> request.toFragments().stream())
-                .toList();
-
-        for (HighlightFragment particle : particles) {
-            HighlightedLines highlightedLines = answerIdHighlightedLines.get(particle.answerId());
-            highlightedLines.addRange(particle.lineIndex(), particle.startIndex(), particle.endIndex());
+        for (HighlightFragment fragment : highlightsRequest.toFragments()) {
+            HighlightedLines highlightedLines = answerIdHighlightedLines.get(fragment.answerId());
+            highlightedLines.addRange(fragment.lineIndex(), fragment.startIndex(), fragment.endIndex());
         }
 
         return answerIdHighlightedLines.entrySet()
