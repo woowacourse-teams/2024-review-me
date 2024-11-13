@@ -21,7 +21,7 @@ class HighlightRepositoryTest {
         // given
         List<Highlight> highlights = List.of(
                 new Highlight(1L, 1, new HighlightRange(1, 2)),
-                new Highlight(1L, 2, new HighlightRange(2, 3))
+                new Highlight(1L, 1, new HighlightRange(3, 5))
         );
 
         // when
@@ -29,7 +29,9 @@ class HighlightRepositoryTest {
 
         // then
         List<Highlight> actual = highlightRepository.findAllByAnswerIdsOrderedAsc(List.of(1L));
-        assertThat(actual).containsExactlyElementsOf(highlights);
+        assertThat(actual)
+                .extracting(Highlight::getHighlightRange)
+                .containsExactly(new HighlightRange(1, 2), new HighlightRange(3, 5));
     }
 
     @Test
