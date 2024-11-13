@@ -4,6 +4,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
+import reviewme.highlight.service.mapper.HighlightFragment;
 
 public record HighlightRequest(
 
@@ -13,4 +16,14 @@ public record HighlightRequest(
         @Valid @NotEmpty(message = "하이라이트 된 라인을 입력해주세요.")
         List<HighlightedLineRequest> lines
 ) {
+    public List<HighlightFragment> toFragments() {
+        return lines.stream()
+                .flatMap(flatMapStreamFunction())
+                .toList();
+    }
+
+    private Function<HighlightedLineRequest, Stream<? extends HighlightFragment>> flatMapStreamFunction() {
+        return line -> line.ranges().stream()
+                .map(range -> new HighlightFragment(answerId, line.index(), range.startIndex(), range.endIndex()));
+    }
 }

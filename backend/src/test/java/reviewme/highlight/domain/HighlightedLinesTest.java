@@ -84,4 +84,23 @@ class HighlightedLinesTest {
         assertThatCode(() -> highlightedLines.addRange(invalidLineIndex, 0, 1))
                 .isInstanceOf(InvalidHighlightLineIndexException.class);
     }
+
+    @Test
+    void 하이라이트_엔티티로_변환한다() {
+        // given
+        HighlightedLines lines = new HighlightedLines("0\n11\n222");
+        lines.addRange(0, 0, 0);
+        lines.addRange(1, 0, 1);
+        lines.addRange(2, 2, 2);
+
+        // when
+        List<Highlight> highlights = lines.toHighlights(1L);
+
+        // then
+        assertThat(highlights).containsExactly(
+                new Highlight(1L, 0, new HighlightRange(0, 0)),
+                new Highlight(1L, 1, new HighlightRange(0, 1)),
+                new Highlight(1L, 2, new HighlightRange(2, 2))
+        );
+    }
 }
