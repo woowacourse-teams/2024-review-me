@@ -2,12 +2,16 @@ package reviewme.highlight.repository;
 
 import java.util.Collection;
 import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.Repository;
 import reviewme.highlight.domain.Highlight;
 
-public interface HighlightRepository extends JpaRepository<Highlight, Long> {
+public interface HighlightRepository extends Repository<Highlight, Long>, HighlightJdbcRepository {
+
+    Highlight save(Highlight highlight);
+
+    boolean existsById(long id);
 
     @Modifying
     @Query("""
