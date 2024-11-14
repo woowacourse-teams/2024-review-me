@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { useSearchParamAndQuery } from '@/hooks';
 import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
@@ -15,7 +15,7 @@ import useCardFormModal from '@/pages/ReviewWritingPage/modals/hooks/useCardForm
 import MobileProgressBar from '@/pages/ReviewWritingPage/progressBar/components/MobileProgressBar';
 import ProgressBar from '@/pages/ReviewWritingPage/progressBar/components/ProgressBar';
 import { CardSlider } from '@/pages/ReviewWritingPage/slider/components';
-import { reviewRequestCodeAtom } from '@/recoil';
+import { answerMapAtom, answerValidationMapAtom, reviewRequestCodeAtom, selectedCategoryAtom } from '@/recoil';
 import { calculateParticle } from '@/utils';
 
 import * as S from './styles';
@@ -24,6 +24,67 @@ const CardForm = () => {
   const { param: reviewRequestCode } = useSearchParamAndQuery({
     paramKey: 'reviewRequestCode',
   });
+
+  // 작성했던 내용들을 저장하는 로직
+  const selectedCategory = useRecoilValue(selectedCategoryAtom);
+  const answerMap = useRecoilValue(answerMapAtom);
+  const answerValidation = useRecoilValue(answerValidationMapAtom);
+
+  const getCurrentSelectedCategory = () => {
+    if (selectedCategory && selectedCategory.length > 0) {
+      return selectedCategory;
+    }
+  };
+
+  const getAnswerValidation = () => {
+    if (answerValidation && answerValidation.size > 0) {
+      const plainObjectAnswers = Array.from(answerValidation.entries());
+      return plainObjectAnswers.length > 0 ? plainObjectAnswers : null;
+    }
+  };
+
+  const getCurrentAnswers = () => {
+    if (answerMap) {
+      const plainObjectAnswers = Array.from(answerMap.entries());
+      return plainObjectAnswers.length > 0 ? plainObjectAnswers : null;
+    }
+  };
+
+  const handleBeforeUnloadChange = () => {
+    const selectedCategories = getCurrentSelectedCategory();
+    const answers = getCurrentAnswers();
+    const answerValidations = getAnswerValidation();
+
+    // 빈 상태인지 확인 후 저장
+    if (selectedCategories) {
+      localStorage.setItem(`selectedCategories_${reviewRequestCode}`, JSON.stringify(selectedCategories));
+    }
+    if (answerValidations) {
+      localStorage.setItem(`answerValidations_${reviewRequestCode}`, JSON.stringify(answerValidations));
+    }
+    if (answers) {
+      localStorage.setItem(`answers_${reviewRequestCode}`, JSON.stringify(answers));
+    }
+  };
+
+  useEffect(() => {
+    // TODO: 라우터를 통한 이동에서도 동작할 수 있도록 하기
+
+    window.addEventListener('beforeunload', handleBeforeUnloadChange);
+    document.addEventListener('visibilitychange', handleBeforeUnloadChange);
+    // window.addEventListener('pagehide', handleBeforeUnloadChange);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnloadChange);
+      document.removeEventListener('visibilitychange', handleBeforeUnloadChange);
+      // window.removeEventListener('pagehide', handleBeforeUnloadChange);
+    };
+  }, [reviewRequestCode, answerMap, selectedCategory, answerValidation]);
+
+  //// 복원 로직
+  const setAnswerMap = useSetRecoilState(answerMapAtom); // 답변 상태를 설정할 수 있게 해줌
+
+  ////////////////// 기존 로직
 
   const setReviewRequestCode = useSetRecoilState(reviewRequestCodeAtom);
 
@@ -57,7 +118,7 @@ const CardForm = () => {
 
   useEffect(() => {
     return () => {
-      // 페이지 나갈때 관련 recoil 상태 초기화
+      // 페이지 나갈 때 관련 recoil 상태 초기화
       resetFormRecoil();
     };
   }, []);
@@ -95,6 +156,8 @@ const CardForm = () => {
         isOpen={isOpen}
         closeModal={closeModal}
         handleNavigateConfirmButtonClick={handleNavigateConfirmButtonClick}
+        handleRestoreButtonClick={() => {}}
+        // handleRestoreButtonClick={handleRestoreAnswers}
       />
     </S.CardFormContainer>
   );
