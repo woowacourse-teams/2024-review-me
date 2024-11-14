@@ -15,4 +15,12 @@ public record ReviewAnswerRequest(
         @Nullable
         String text
 ) {
+
+    public boolean isTextEmpty() {
+        return text == null || text.isBlank();
+    }
+
+    public boolean isSelectedOptionIdsEmpty() {
+        return selectedOptionIds == null || selectedOptionIds.isEmpty();
+    }
 }

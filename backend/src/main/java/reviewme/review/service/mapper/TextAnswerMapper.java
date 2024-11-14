@@ -14,17 +14,10 @@ public class TextAnswerMapper extends AnswerMapper {
     }
 
     @Override
-    protected TextAnswer doMap(ReviewAnswerRequest answerRequest) {
+    protected TextAnswer mapToAnswer(ReviewAnswerRequest answerRequest) {
+        if(answerRequest.isTextEmpty()) {
+            return null;
+        }
         return new TextAnswer(answerRequest.questionId(), answerRequest.text());
-    }
-
-    @Override
-    protected boolean isAnswerMatchesQuestionType(ReviewAnswerRequest request) {
-        return request.text() != null && request.selectedOptionIds() == null;
-    }
-
-    @Override
-    protected boolean isAnswerEmpty(ReviewAnswerRequest request) {
-        return request.text() != null && request.text().isEmpty();
     }
 }

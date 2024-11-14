@@ -18,23 +18,13 @@ class AnswerMapperFactoryTest {
     private final AnswerMapper answerMapper = new AnswerMapper() {
 
         @Override
-        protected Answer doMap(ReviewAnswerRequest answerRequest) {
+        protected Answer mapToAnswer(ReviewAnswerRequest answerRequest) {
             return null;
         }
 
         @Override
         protected boolean supports(QuestionType questionType) {
             return questionType == QuestionType.CHECKBOX;
-        }
-
-        @Override
-        protected boolean isAnswerMatchesQuestionType(ReviewAnswerRequest request) {
-            return false;
-        }
-
-        @Override
-        protected boolean isAnswerEmpty(ReviewAnswerRequest request) {
-            return false;
         }
     };
 

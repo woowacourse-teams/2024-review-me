@@ -14,17 +14,10 @@ public class CheckboxAnswerMapper extends AnswerMapper {
     }
 
     @Override
-    protected CheckboxAnswer doMap(ReviewAnswerRequest answerRequest) {
+    protected CheckboxAnswer mapToAnswer(ReviewAnswerRequest answerRequest) {
+        if(answerRequest.isSelectedOptionIdsEmpty()) {
+            return null;
+        }
         return new CheckboxAnswer(answerRequest.questionId(), answerRequest.selectedOptionIds());
-    }
-
-    @Override
-    protected boolean isAnswerMatchesQuestionType(ReviewAnswerRequest request) {
-        return request.selectedOptionIds() != null && request.text() == null;
-    }
-
-    @Override
-    protected boolean isAnswerEmpty(ReviewAnswerRequest request) {
-        return request.selectedOptionIds() != null && request.selectedOptionIds().isEmpty();
     }
 }
