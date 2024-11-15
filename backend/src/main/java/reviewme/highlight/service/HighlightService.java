@@ -27,9 +27,7 @@ public class HighlightService {
         answerValidator.validateReviewGroupContainsAnswers(reviewGroup, requestedAnswerIds);
 
         List<Highlight> highlights = highlightMapper.mapToHighlights(highlightsRequest);
-
-        Set<Long> answerIds = answerRepository.findIdsByQuestionId(highlightsRequest.questionId());
-        highlightRepository.deleteAllByAnswerIds(answerIds);
+        highlightRepository.deleteByReviewGroupIdAndQuestionId(reviewGroup.getId(), highlightsRequest.questionId());
         highlightRepository.saveAll(highlights);
     }
 }

@@ -13,18 +13,21 @@ public interface HighlightRepository extends Repository<Highlight, Long>, Highli
 
     boolean existsById(long id);
 
-    @Modifying
     @Query("""
-            DELETE FROM Highlight h
-            WHERE h.answerId IN :answerIds
-            """)
-    void deleteAllByAnswerIds(Collection<Long> answerIds);
-
-    @Query("""
-            SELECT h
-            FROM Highlight h
+            SELECT h FROM Highlight h
             WHERE h.answerId IN :answerIds
             ORDER BY h.lineIndex, h.highlightRange.startIndex ASC
             """)
     List<Highlight> findAllByAnswerIdsOrderedAsc(Collection<Long> answerIds);
+
+    @Modifying
+    @Query("""
+            DELETE FROM Highlight highlight WHERE highlight in (
+                SELECT h FROM Highlight h
+                JOIN Answer a ON h.answerId = a.id
+                JOIN Review r ON a.reviewId = r.id
+                WHERE r.reviewGroupId = :reviewGroupId AND a.questionId = :questionId
+            )
+            """)
+    void deleteByReviewGroupIdAndQuestionId(long reviewGroupId, long questionId);
 }
