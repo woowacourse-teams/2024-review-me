@@ -1,6 +1,6 @@
 package reviewme.review.service.validator;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,14 +15,14 @@ public class AnswerValidator {
 
     private final AnswerRepository answerRepository;
 
-    public void validateQuestionContainsAnswers(long questionId, List<Long> answerIds) {
+    public void validateQuestionContainsAnswers(long questionId, Collection<Long> answerIds) {
         Set<Long> receivedAnswerIds = answerRepository.findIdsByQuestionId(questionId);
         if (!receivedAnswerIds.containsAll(answerIds)) {
             throw new QuestionNotContainingAnswersException(questionId, answerIds);
         }
     }
 
-    public void validateReviewGroupContainsAnswers(ReviewGroup reviewGroup, List<Long> answerIds) {
+    public void validateReviewGroupContainsAnswers(ReviewGroup reviewGroup, Collection<Long> answerIds) {
         Set<Long> receivedAnswerIds = answerRepository.findIdsByReviewGroupId(reviewGroup.getId());
         if (!receivedAnswerIds.containsAll(answerIds)) {
             throw new ReviewGroupNotContainingAnswersException(reviewGroup.getId(), answerIds);
