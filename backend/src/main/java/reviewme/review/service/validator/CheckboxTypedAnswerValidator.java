@@ -21,7 +21,7 @@ import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class CheckboxAnswerValidator implements AnswerValidator {
+public class CheckboxTypedAnswerValidator implements TypedAnswerValidator {
 
     private final QuestionRepository questionRepository;
     private final OptionGroupRepository optionGroupRepository;

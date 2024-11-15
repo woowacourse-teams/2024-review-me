@@ -22,10 +22,10 @@ import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
-class CheckboxAnswerValidatorTest {
+class CheckboxTypedAnswerValidatorTest {
 
     @Autowired
-    private CheckboxAnswerValidator checkBoxAnswerValidator;
+    private CheckboxTypedAnswerValidator checkBoxAnswerValidator;
 
     @Autowired
     private QuestionRepository questionRepository;

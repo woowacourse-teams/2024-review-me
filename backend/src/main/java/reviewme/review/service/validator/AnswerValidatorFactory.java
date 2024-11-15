@@ -10,10 +10,10 @@ import reviewme.review.domain.Answer;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class AnswerValidatorFactory {
 
-    private final List<AnswerValidator> answerValidators;
+    private final List<TypedAnswerValidator> validators;
 
-    public AnswerValidator getAnswerValidator(Class<? extends Answer> answerClass) {
-        return answerValidators.stream()
+    public TypedAnswerValidator getAnswerValidator(Class<? extends Answer> answerClass) {
+        return validators.stream()
                 .filter(validator -> validator.supports(answerClass))
                 .findFirst()
                 .orElseThrow(() -> new UnsupportedAnswerTypeException(answerClass));

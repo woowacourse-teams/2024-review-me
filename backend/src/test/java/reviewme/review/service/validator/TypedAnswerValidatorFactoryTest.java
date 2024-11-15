@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswer;
 
-class AnswerValidatorFactoryTest {
+class TypedAnswerValidatorFactoryTest {
 
-    private final AnswerValidator validator = new AnswerValidator() {
+    private final TypedAnswerValidator validator = new TypedAnswerValidator() {
 
         @Override
         public boolean supports(Class<? extends Answer> answerClass) {
@@ -25,11 +25,11 @@ class AnswerValidatorFactoryTest {
     @Test
     void 지원하는_타입에_따른_밸리데이터를_가져온다() {
         // given
-        List<AnswerValidator> validators = List.of(validator);
+        List<TypedAnswerValidator> validators = List.of(validator);
         AnswerValidatorFactory factory = new AnswerValidatorFactory(validators);
 
         // when
-        AnswerValidator actual = factory.getAnswerValidator(CheckboxAnswer.class);
+        TypedAnswerValidator actual = factory.getAnswerValidator(CheckboxAnswer.class);
 
         // then
         assertThat(actual).isEqualTo(validator);
