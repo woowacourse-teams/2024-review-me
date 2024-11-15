@@ -6,7 +6,7 @@ import reviewme.template.domain.QuestionType;
 
 public abstract class AnswerMapper {
 
-    abstract boolean supports(QuestionType questionType);
+    public abstract boolean supports(QuestionType questionType);
 
-    abstract Answer mapToAnswer(ReviewAnswerRequest answerRequest);
+    public abstract Answer mapToAnswer(ReviewAnswerRequest answerRequest);
 }
