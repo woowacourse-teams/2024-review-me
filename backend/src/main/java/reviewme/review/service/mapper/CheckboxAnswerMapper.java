@@ -15,7 +15,7 @@ public class CheckboxAnswerMapper extends AnswerMapper {
 
     @Override
     protected CheckboxAnswer mapToAnswer(ReviewAnswerRequest answerRequest) {
-        if(answerRequest.isSelectedOptionIdsEmpty()) {
+        if(answerRequest.hasNoSelectedOptions()) {
             return null;
         }
         return new CheckboxAnswer(answerRequest.questionId(), answerRequest.selectedOptionIds());

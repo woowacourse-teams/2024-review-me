@@ -15,7 +15,7 @@ public class TextAnswerMapper extends AnswerMapper {
 
     @Override
     protected TextAnswer mapToAnswer(ReviewAnswerRequest answerRequest) {
-        if(answerRequest.isTextEmpty()) {
+        if(answerRequest.hasNoText()) {
             return null;
         }
         return new TextAnswer(answerRequest.questionId(), answerRequest.text());

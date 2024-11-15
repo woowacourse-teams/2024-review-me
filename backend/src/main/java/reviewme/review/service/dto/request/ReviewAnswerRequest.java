@@ -16,11 +16,11 @@ public record ReviewAnswerRequest(
         String text
 ) {
 
-    public boolean isTextEmpty() {
+    public boolean hasNoText() {
         return text == null || text.isBlank();
     }
 
-    public boolean isSelectedOptionIdsEmpty() {
+    public boolean hasNoSelectedOptions() {
         return selectedOptionIds == null || selectedOptionIds.isEmpty();
     }
 }
