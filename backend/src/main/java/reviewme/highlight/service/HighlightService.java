@@ -30,7 +30,6 @@ public class HighlightService {
 
         Set<Long> answerIds = answerRepository.findIdsByQuestionId(highlightsRequest.questionId());
         highlightRepository.deleteAllByAnswerIds(answerIds);
-
         highlightRepository.saveAll(highlights);
     }
 }
