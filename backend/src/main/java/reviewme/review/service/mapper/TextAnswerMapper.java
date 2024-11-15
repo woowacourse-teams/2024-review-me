@@ -9,12 +9,12 @@ import reviewme.template.domain.QuestionType;
 public class TextAnswerMapper extends AnswerMapper {
 
     @Override
-    protected boolean supports(QuestionType questionType) {
+    boolean supports(QuestionType questionType) {
         return questionType == QuestionType.TEXT;
     }
 
     @Override
-    protected TextAnswer mapToAnswer(ReviewAnswerRequest answerRequest) {
+    TextAnswer mapToAnswer(ReviewAnswerRequest answerRequest) {
         if (answerRequest.hasNoText()) {
             return null;
         }

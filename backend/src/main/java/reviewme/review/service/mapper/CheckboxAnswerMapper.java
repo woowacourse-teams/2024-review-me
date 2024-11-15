@@ -9,12 +9,12 @@ import reviewme.template.domain.QuestionType;
 public class CheckboxAnswerMapper extends AnswerMapper {
 
     @Override
-    protected boolean supports(QuestionType questionType) {
+    boolean supports(QuestionType questionType) {
         return questionType == QuestionType.CHECKBOX;
     }
 
     @Override
-    protected CheckboxAnswer mapToAnswer(ReviewAnswerRequest answerRequest) {
+    CheckboxAnswer mapToAnswer(ReviewAnswerRequest answerRequest) {
         if (answerRequest.hasNoSelectedOptions()) {
             return null;
         }
