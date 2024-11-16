@@ -22,9 +22,9 @@ public interface HighlightRepository extends Repository<Highlight, Long>, Highli
 
     @Modifying
     @Query("""
-            DELETE FROM Highlight highlight WHERE highlight in (
-                SELECT h FROM Highlight h
-                JOIN Answer a ON h.answerId = a.id
+            DELETE FROM Highlight h
+            WHERE h.answerId IN (
+                SELECT a.id FROM Answer a
                 JOIN Review r ON a.reviewId = r.id
                 WHERE r.reviewGroupId = :reviewGroupId AND a.questionId = :questionId
             )

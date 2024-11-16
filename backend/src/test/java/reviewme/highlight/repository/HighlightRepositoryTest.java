@@ -2,19 +2,33 @@ package reviewme.highlight.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import reviewme.highlight.domain.Highlight;
 import reviewme.highlight.domain.HighlightRange;
+import reviewme.review.domain.Answer;
+import reviewme.review.domain.Review;
+import reviewme.review.domain.TextAnswer;
+import reviewme.review.repository.ReviewRepository;
+import reviewme.reviewgroup.domain.ReviewGroup;
+import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
 @DataJpaTest
 class HighlightRepositoryTest {
 
     @Autowired
     private HighlightRepository highlightRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    private ReviewGroupRepository reviewGroupRepository;
 
     @Test
     void 한_번에_여러_하이라이트를_벌크_삽입한다() {
@@ -60,6 +74,45 @@ class HighlightRepositoryTest {
                         .extracting(Highlight::getHighlightRange)
                         .extracting(HighlightRange::getStartIndex)
                         .containsExactly(1, 4, 2, 6, 3)
+        );
+    }
+
+    @Test
+    void 그룹_아이디와_질문_아이디로_하이라이트를_삭제한다() {
+        // given
+        ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹());
+
+        List<Answer> answers1 = List.of(
+                new TextAnswer(1L, "A1"),
+                new TextAnswer(2L, "A2"),
+                new TextAnswer(3L, "A3")
+        );
+        List<Answer> answers2 = List.of(
+                new TextAnswer(1L, "B1"),
+                new TextAnswer(2L, "B2"),
+                new TextAnswer(3L, "B3")
+        );
+        reviewRepository.save(new Review(1L, reviewGroup1.getId(), answers1));
+        reviewRepository.save(new Review(2L, reviewGroup2.getId(), answers2));
+
+        List<Long> answerIds = new ArrayList<>();
+        answerIds.addAll(answers1.stream().map(Answer::getId).toList());
+        answerIds.addAll(answers2.stream().map(Answer::getId).toList());
+
+        HighlightRange range = new HighlightRange(0, 1);
+        answerIds.stream()
+                .map(answerId -> new Highlight(answerId, 0, range))
+                .forEach(highlightRepository::save);
+
+        // when
+        highlightRepository.deleteByReviewGroupIdAndQuestionId(reviewGroup1.getId(), 1L);
+
+        // then
+        List<Highlight> actual = highlightRepository.findAllByAnswerIdsOrderedAsc(answerIds);
+        assertAll(
+                () -> assertThat(actual).hasSize(5),
+                () -> assertThat(actual).extracting(Highlight::getAnswerId).doesNotContain(answers1.get(0).getId())
         );
     }
 }
