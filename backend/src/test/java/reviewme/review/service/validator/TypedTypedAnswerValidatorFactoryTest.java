@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswer;
 
-class TypedAnswerValidatorFactoryTest {
+class TypedTypedAnswerValidatorFactoryTest {
 
     private final TypedAnswerValidator validator = new TypedAnswerValidator() {
 
@@ -19,6 +19,7 @@ class TypedAnswerValidatorFactoryTest {
 
         @Override
         public void validate(Answer answer) {
+            // no-op
         }
     };
 
@@ -26,7 +27,7 @@ class TypedAnswerValidatorFactoryTest {
     void 지원하는_타입에_따른_밸리데이터를_가져온다() {
         // given
         List<TypedAnswerValidator> validators = List.of(validator);
-        AnswerValidatorFactory factory = new AnswerValidatorFactory(validators);
+        TypedAnswerValidatorFactory factory = new TypedAnswerValidatorFactory(validators);
 
         // when
         TypedAnswerValidator actual = factory.getAnswerValidator(CheckboxAnswer.class);
@@ -38,7 +39,7 @@ class TypedAnswerValidatorFactoryTest {
     @Test
     void 지원하지_않는_타입에_대한_밸리데이터_요청_시_예외가_발생한다() {
         // given
-        AnswerValidatorFactory factory = new AnswerValidatorFactory(List.of());
+        TypedAnswerValidatorFactory factory = new TypedAnswerValidatorFactory(List.of());
 
         // when, then
         assertThatThrownBy(() -> factory.getAnswerValidator(CheckboxAnswer.class))

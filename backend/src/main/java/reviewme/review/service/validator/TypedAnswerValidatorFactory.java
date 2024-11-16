@@ -8,7 +8,7 @@ import reviewme.review.domain.Answer;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class AnswerValidatorFactory {
+public class TypedAnswerValidatorFactory {
 
     private final List<TypedAnswerValidator> validators;
 

@@ -23,7 +23,7 @@ import reviewme.template.repository.SectionRepository;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewValidator {
 
-    private final AnswerValidatorFactory answerValidatorFactory;
+    private final TypedAnswerValidatorFactory typedAnswerValidatorFactory;
 
     private final SectionRepository sectionRepository;
     private final QuestionRepository questionRepository;
@@ -36,7 +36,7 @@ public class ReviewValidator {
 
     private void validateAnswer(List<Answer> answers) {
         for (Answer answer : answers) {
-            answerValidatorFactory.getAnswerValidator(answer.getClass())
+            typedAnswerValidatorFactory.getAnswerValidator(answer.getClass())
                     .validate(answer);
         }
     }
