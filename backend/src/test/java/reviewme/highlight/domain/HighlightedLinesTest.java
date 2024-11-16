@@ -86,7 +86,7 @@ class HighlightedLinesTest {
     }
 
     @Test
-    void 하이라이트_엔티티로_변환한다() {
+    void 하이라이트가_존재하는_부분만_엔티티로_변환한다() {
         // given
         HighlightedLines lines = new HighlightedLines("0\n11\n222");
         lines.addRange(0, 0, 0);
