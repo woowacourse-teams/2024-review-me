@@ -6,7 +6,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.service.dto.request.ReviewAnswerRequest;
+import reviewme.review.facade.mapper.TextAnswerMapper;
+import reviewme.review.facade.request.ReviewAnswerRequest;
 import reviewme.review.service.exception.TextAnswerIncludedOptionItemException;
 
 class TextAnswerMapperTest {

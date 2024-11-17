@@ -8,9 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
+import reviewme.review.facade.mapper.AnswerMapper;
+import reviewme.review.facade.mapper.AnswerMapperFactory;
 import reviewme.template.domain.QuestionType;
 import reviewme.review.domain.Answer;
-import reviewme.review.service.dto.request.ReviewAnswerRequest;
+import reviewme.review.facade.request.ReviewAnswerRequest;
 
 @ExtendWith(OutputCaptureExtension.class)
 class AnswerMapperFactoryTest {

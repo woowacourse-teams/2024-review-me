@@ -104,4 +104,8 @@ public class StructuredTemplate {
             throw new StructuredTemplateOptionItemsValidationException(optionGroupIds, itemGroupIds);
         }
     }
+
+    public long getTemplateId() {
+        return template.getId();
+    }
 }

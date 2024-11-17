@@ -1,4 +1,4 @@
-package reviewme.review.service.dto.request;
+package reviewme.review.facade.request;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;

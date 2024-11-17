@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reviewme.review.facade.ReviewFacade;
+import reviewme.review.facade.request.ReviewRegisterRequest;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewGatheredLookupService;
 import reviewme.review.service.ReviewListLookupService;
-import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.ReviewSummaryService;
-import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
@@ -27,7 +27,7 @@ import reviewme.reviewgroup.domain.ReviewGroup;
 @RequiredArgsConstructor
 public class ReviewController {
 
-    private final ReviewRegisterService reviewRegisterService;
+    private final ReviewFacade reviewFacade;
     private final ReviewListLookupService reviewListLookupService;
     private final ReviewDetailLookupService reviewDetailLookupService;
     private final ReviewSummaryService reviewSummaryService;
@@ -35,7 +35,7 @@ public class ReviewController {
 
     @PostMapping("/v2/reviews")
     public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRegisterRequest request) {
-        long savedReviewId = reviewRegisterService.registerReview(request);
+        long savedReviewId = reviewFacade.registerReview(request);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 

@@ -1,8 +1,9 @@
-package reviewme.review.service.mapper;
+package reviewme.review.facade.mapper;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reviewme.review.service.mapper.UnsupportedQuestionTypeException;
 import reviewme.template.domain.QuestionType;
 
 @Component
