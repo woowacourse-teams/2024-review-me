@@ -51,16 +51,6 @@ public class Review {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Set<Long> getAnsweredQuestionIds() {
-        return answers.stream()
-                .map(Answer::getQuestionId)
-                .collect(Collectors.toSet());
-    }
-
-    public boolean hasAnsweredQuestion(long questionId) {
-        return getAnsweredQuestionIds().contains(questionId);
-    }
-
     public <T extends Answer> List<T> getAnswersByType(Class<T> clazz) {
         return answers.stream()
                 .filter(clazz::isInstance)
@@ -68,7 +58,17 @@ public class Review {
                 .toList();
     }
 
+    public Set<Long> getAnsweredQuestionIds() {
+        return answers.stream()
+                .map(Answer::getQuestionId)
+                .collect(Collectors.toSet());
+    }
+
     public LocalDate getCreatedDate() {
         return createdAt.toLocalDate();
+    }
+
+    public boolean hasAnsweredQuestion(long questionId) {
+        return getAnsweredQuestionIds().contains(questionId);
     }
 }

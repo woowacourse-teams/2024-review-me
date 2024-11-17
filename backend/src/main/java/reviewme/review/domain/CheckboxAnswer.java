@@ -37,4 +37,10 @@ public class CheckboxAnswer extends Answer {
             throw new QuestionNotAnsweredException(questionId);
         }
     }
+
+    public List<Long> getSelectedOptionIds() {
+        return selectedOptionIds.stream()
+                .map(CheckboxAnswerSelectedOption::getSelectedOptionId)
+                .toList();
+    }
 }

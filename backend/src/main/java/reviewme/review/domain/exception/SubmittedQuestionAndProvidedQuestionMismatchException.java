@@ -1,4 +1,4 @@
-package reviewme.review.service.exception;
+package reviewme.review.domain.exception;
 
 import java.util.Collection;
 import lombok.extern.slf4j.Slf4j;
