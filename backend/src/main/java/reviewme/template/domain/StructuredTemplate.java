@@ -4,12 +4,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.Getter;
 import reviewme.template.domain.exception.StructuredTemplateSectionValidationException;
 import reviewme.template.service.exception.StructuredTemplateOptionGroupValidationException;
 import reviewme.template.service.exception.StructuredTemplateOptionItemsValidationException;
 import reviewme.template.service.exception.StructuredTemplateQuestionValidationException;
 import reviewme.template.service.exception.StructuredTemplateSectionQuestionValidationException;
 
+@Getter
 public class StructuredTemplate {
 
     private final Template template;
@@ -38,7 +40,8 @@ public class StructuredTemplate {
                 .map(Section::getId)
                 .toList();
 
-        if (!new HashSet<>(templateSectionIds).containsAll(sectionIds) || templateSectionIds.size() != sectionIds.size()) {
+        if (!new HashSet<>(templateSectionIds).containsAll(sectionIds)
+            || templateSectionIds.size() != sectionIds.size()) {
             throw new StructuredTemplateSectionValidationException(template.getId(), sectionIds);
         }
     }
@@ -66,7 +69,8 @@ public class StructuredTemplate {
                 .map(Question::getId)
                 .toList();
 
-        if (!new HashSet<>(sectionQuestionIds).containsAll(questions) || sectionQuestionIds.size() != questionIds.size()) {
+        if (!new HashSet<>(sectionQuestionIds).containsAll(questions)
+            || sectionQuestionIds.size() != questionIds.size()) {
             throw new StructuredTemplateQuestionValidationException(sectionQuestionIds, questionIds);
         }
     }
