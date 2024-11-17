@@ -13,11 +13,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import reviewme.template.domain.exception.DuplicateQuestionIdException;
 
 @Entity
 @Table(name = "section")
@@ -52,6 +55,7 @@ public class Section {
 
     public Section(VisibleType visibleType, List<Long> questionIds,
                    Long onSelectedOptionId, String sectionName, String header, int position) {
+        validateQuestionIds(questionIds);
         this.visibleType = visibleType;
         this.questionIds = questionIds.stream()
                 .map(SectionQuestion::new)
@@ -60,6 +64,22 @@ public class Section {
         this.sectionName = sectionName;
         this.header = header;
         this.position = position;
+    }
+
+    private void validateQuestionIds(List<Long> questionIds) {
+        int originalSize = questionIds.size();
+        Set<Long> deduplicatedIds = new HashSet<>(questionIds);
+        int deduplicatedSize = deduplicatedIds.size();
+
+        if (originalSize != deduplicatedSize) {
+            throw new DuplicateQuestionIdException(questionIds);
+        }
+    }
+
+    public List<Long> getQuestionIds() {
+        return questionIds.stream()
+                .map(SectionQuestion::getQuestionId)
+                .toList();
     }
 
     public boolean isVisibleBySelectedOptionIds(Collection<Long> selectedOptionIds) {

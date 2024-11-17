@@ -9,11 +9,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import reviewme.template.domain.exception.DuplicateSectionIdException;
 
 @Entity
 @Table(name = "template")
@@ -31,8 +34,25 @@ public class Template {
     private List<TemplateSection> sectionIds;
 
     public Template(List<Long> sectionIds) {
+        validateSectionIds(sectionIds);
         this.sectionIds = sectionIds.stream()
                 .map(TemplateSection::new)
+                .toList();
+    }
+
+    private void validateSectionIds(List<Long> sectionIds) {
+        int originalSize = sectionIds.size();
+        Set<Long> deduplicatedIds = new HashSet<>(sectionIds);
+        int deduplicatedSize = deduplicatedIds.size();
+
+        if (originalSize != deduplicatedSize) {
+            throw new DuplicateSectionIdException(sectionIds);
+        }
+    }
+
+    public List<Long> getSectionIds() {
+        return sectionIds.stream()
+                .map(TemplateSection::getSectionId)
                 .toList();
     }
 }
