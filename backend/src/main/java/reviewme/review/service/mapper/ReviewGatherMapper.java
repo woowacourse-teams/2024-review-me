@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import reviewme.highlight.domain.Highlight;
 import reviewme.question.domain.OptionItem;
 import reviewme.question.domain.Question;
-import reviewme.question.repository.OptionItemRepository;
 import reviewme.question.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswer;
@@ -29,7 +28,6 @@ import reviewme.review.service.exception.GatheredAnswersTypeNonUniformException;
 public class ReviewGatherMapper {
 
     private final QuestionRepository questionRepository;
-    private final OptionItemRepository optionItemRepository;
 
     public ReviewsGatheredBySectionResponse mapToReviewsGatheredBySection(Map<Question, List<Answer>> questionAnswers,
                                                                           List<Highlight> highlights) {
@@ -96,7 +94,7 @@ public class ReviewGatherMapper {
                 .collect(Collectors.groupingBy(CheckboxAnswerSelectedOption::getSelectedOptionId,
                         Collectors.counting()));
 
-        List<OptionItem> allOptionItem = optionItemRepository.findAllOptionItemsByIdOrderByPosition(question.getId());
+        List<OptionItem> allOptionItem = questionRepository.findAllOptionItemsByIdOrderByPosition(question.getId());
         return allOptionItem.stream()
                 .map(optionItem -> new VoteResponse(
                         optionItem.getContent(),
