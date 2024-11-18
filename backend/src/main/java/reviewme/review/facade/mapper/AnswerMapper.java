@@ -1,8 +1,8 @@
 package reviewme.review.facade.mapper;
 
-import reviewme.template.domain.QuestionType;
 import reviewme.review.domain.Answer;
 import reviewme.review.facade.request.ReviewAnswerRequest;
+import reviewme.template.domain.QuestionType;
 
 public interface AnswerMapper {
 

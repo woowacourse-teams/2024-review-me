@@ -1,7 +1,7 @@
 package reviewme.review.facade.mapper;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -21,24 +21,24 @@ public class ReviewMapper {
 
     public Review mapToReview(List<ReviewAnswerRequest> answerRequests, StructuredTemplate template,
                               ReviewGroup reviewGroup) {
-        List<Answer> answers = mapAnswers(answerRequests, template);
+
+        List<Answer> answers = answerRequests.stream()
+                .map(request -> mapAnswer(request, template))
+                .filter(Objects::nonNull)
+                .toList();
+
         return new Review(template.getTemplateId(), reviewGroup.getId(), answers);
     }
 
-    private List<Answer> mapAnswers(List<ReviewAnswerRequest> answerRequests, StructuredTemplate template) {
-        List<Answer> answers = new ArrayList<>();
-        for (ReviewAnswerRequest answerRequest : answerRequests) {
-            Long questionId = answerRequest.questionId();
-            Question question = template.getQuestions()
-                    .stream()
-                    .filter(q -> q.getId() == questionId)
-                    .findFirst()
-                    .orElseThrow(() -> new SubmittedQuestionNotFoundException(questionId));
+    private Answer mapAnswer(ReviewAnswerRequest answerRequest, StructuredTemplate template) {
+        Long questionId = answerRequest.questionId();
+        Question question = template.getQuestions()
+                .stream()
+                .filter(q -> q.getId() == questionId)
+                .findFirst()
+                .orElseThrow(() -> new SubmittedQuestionNotFoundException(questionId));
 
-            AnswerMapper answerMapper = answerMapperFactory.getAnswerMapper(question.getQuestionType());
-            answers.add(answerMapper.mapToAnswer(answerRequest));
-        }
-
-        return answers;
+        AnswerMapper answerMapper = answerMapperFactory.getAnswerMapper(question.getQuestionType());
+        return answerMapper.mapToAnswer(answerRequest);
     }
 }
