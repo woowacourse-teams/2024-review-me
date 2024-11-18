@@ -39,7 +39,7 @@ public class TemplateMapper {
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
-    @Cacheable(value = "template_response", key = "#root.targetClass.simpleName + '_' + #root.methodName + '_' + #reviewGroup.t emplateId")
+    @Cacheable(value = "template_response", key = "#reviewGroup.templateId")
     public TemplateResponse mapToTemplateResponse(ReviewGroup reviewGroup) {
         Template template = templateRepository.findById(reviewGroup.getTemplateId())
                 .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(
