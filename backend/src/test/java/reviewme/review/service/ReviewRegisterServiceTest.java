@@ -105,7 +105,7 @@ class ReviewRegisterServiceTest {
         Answer requiredTextQuestionAnswer = new TextAnswer(requiredTextQuestion.getId(), "답변".repeat(30));
         Answer conditionalCheckQuestionAnswer = new CheckboxAnswer(conditionalCheckQuestion.getId(),
                 List.of(conditionalOptionItem1.getId()));
-        Answer optionalTextQuestionAnswer = new TextAnswer(optionalTextQuestion.getId(), "");
+        Answer optionalTextQuestionAnswer = new TextAnswer(optionalTextQuestion.getId(), "답변".repeat(20));
         List<Answer> answers = List.of(requiredCheckQuestionAnswer, requiredTextQuestionAnswer,
                 conditionalCheckQuestionAnswer, optionalTextQuestionAnswer);
 
@@ -117,7 +117,7 @@ class ReviewRegisterServiceTest {
         // then
         assertAll(
                 () -> assertThat(actual.getAnswersByType(TextAnswer.class)).extracting(TextAnswer::getQuestionId)
-                        .containsExactly(requiredTextQuestion.getId()),
+                        .containsExactly(requiredTextQuestion.getId(), optionalTextQuestion.getId()),
                 () -> assertThat(actual.getAnswersByType(CheckboxAnswer.class)).extracting(
                                 CheckboxAnswer::getQuestionId)
                         .containsAll(List.of(requiredCheckQuestion.getId(), conditionalCheckQuestion.getId()))
