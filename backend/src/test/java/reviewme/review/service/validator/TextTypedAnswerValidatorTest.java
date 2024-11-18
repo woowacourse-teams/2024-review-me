@@ -17,10 +17,10 @@ import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
-class TextAnswerValidatorTest {
+class TextTypedAnswerValidatorTest {
 
     @Autowired
-    private TextAnswerValidator textAnswerValidator;
+    private TextTypedAnswerValidator textAnswerValidator;
 
     @Autowired
     private QuestionRepository questionRepository;

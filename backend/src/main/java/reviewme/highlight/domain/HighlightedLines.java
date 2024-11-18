@@ -2,6 +2,8 @@ package reviewme.highlight.domain;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 import lombok.Getter;
 import reviewme.highlight.domain.exception.InvalidHighlightLineIndexException;
 import reviewme.highlight.domain.exception.NegativeHighlightLineIndexException;
@@ -36,5 +38,13 @@ public class HighlightedLines {
         if (lineIndex >= lines.size()) {
             throw new InvalidHighlightLineIndexException(lineIndex, lines.size());
         }
+    }
+
+    public List<Highlight> toHighlights(long answerId) {
+        return IntStream.range(0, lines.size())
+                .mapToObj(lineIndex -> lines.get(lineIndex).getRanges().stream()
+                        .map(range -> new Highlight(answerId, lineIndex, range)))
+                .flatMap(Function.identity())
+                .toList();
     }
 }

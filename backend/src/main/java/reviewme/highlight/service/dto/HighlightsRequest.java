@@ -3,6 +3,7 @@ package reviewme.highlight.service.dto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
+import reviewme.highlight.service.mapper.HighlightFragment;
 
 public record HighlightsRequest(
 
@@ -18,6 +19,12 @@ public record HighlightsRequest(
                 .stream()
                 .map(HighlightRequest::answerId)
                 .distinct()
+                .toList();
+    }
+
+    public List<HighlightFragment> toFragments() {
+        return highlights.stream()
+                .flatMap(request -> request.toFragments().stream())
                 .toList();
     }
 }

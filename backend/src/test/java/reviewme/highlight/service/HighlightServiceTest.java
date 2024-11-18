@@ -102,7 +102,7 @@ class HighlightServiceTest {
         highlightService.editHighlight(highlightsRequest, reviewGroup);
 
         // then
-        List<Highlight> highlights = highlightRepository.findAll();
+        List<Highlight> highlights = highlightRepository.findAllByAnswerIdsOrderedAsc(List.of(textAnswer.getId()));
         assertAll(
                 () -> assertThat(highlights.get(0).getAnswerId()).isEqualTo(textAnswer.getId()),
                 () -> assertThat(highlights.get(0).getHighlightRange()).isEqualTo(

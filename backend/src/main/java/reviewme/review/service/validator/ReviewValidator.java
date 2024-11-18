@@ -7,23 +7,23 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import reviewme.template.domain.Question;
-import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
-import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.CheckboxAnswer;
+import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.Review;
 import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
+import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.SectionQuestion;
+import reviewme.template.repository.QuestionRepository;
 import reviewme.template.repository.SectionRepository;
 
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewValidator {
 
-    private final AnswerValidatorFactory answerValidatorFactory;
+    private final TypedAnswerValidatorFactory typedAnswerValidatorFactory;
 
     private final SectionRepository sectionRepository;
     private final QuestionRepository questionRepository;
@@ -36,8 +36,8 @@ public class ReviewValidator {
 
     private void validateAnswer(List<Answer> answers) {
         for (Answer answer : answers) {
-            AnswerValidator validator = answerValidatorFactory.getAnswerValidator(answer.getClass());
-            validator.validate(answer);
+            typedAnswerValidatorFactory.getAnswerValidator(answer.getClass())
+                    .validate(answer);
         }
     }
 
