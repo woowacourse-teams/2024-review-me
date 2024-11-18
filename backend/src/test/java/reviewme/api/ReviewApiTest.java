@@ -22,7 +22,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.template.domain.QuestionType;
-import reviewme.review.service.dto.request.ReviewRegisterRequest;
+import reviewme.review.facade.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.gathered.HighlightResponse;
 import reviewme.review.service.dto.response.gathered.RangeResponse;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredByQuestionResponse;
@@ -56,7 +56,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 리뷰를_등록한다() {
-        BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
+        BDDMockito.given(reviewFacade.registerReview(any(ReviewRegisterRequest.class)))
                 .willReturn(1L);
 
         FieldDescriptor[] requestFieldDescriptors = {
@@ -83,7 +83,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 리뷰_그룹_코드가_올바르지_않은_경우_예외가_발생한다() {
-        BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
+        BDDMockito.given(reviewFacade.registerReview(any(ReviewRegisterRequest.class)))
                 .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException("ABCD1234"));
 
         FieldDescriptor[] requestFieldDescriptors = {

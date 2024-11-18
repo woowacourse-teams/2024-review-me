@@ -34,10 +34,11 @@ import org.springframework.web.context.WebApplicationContext;
 import reviewme.highlight.controller.HighlightController;
 import reviewme.highlight.service.HighlightService;
 import reviewme.review.controller.ReviewController;
+import reviewme.review.facade.ReviewFacade;
 import reviewme.review.service.ReviewGatheredLookupService;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewListLookupService;
-import reviewme.review.service.ReviewRegisterService;
+import reviewme.review.domain.service.ReviewRegisterService;
 import reviewme.review.service.ReviewSummaryService;
 import reviewme.reviewgroup.controller.ReviewGroupController;
 import reviewme.reviewgroup.controller.ReviewGroupSessionResolver;
@@ -68,6 +69,9 @@ public abstract class ApiTest {
 
     @MockBean
     protected TemplateService templateService;
+
+    @MockBean
+    protected ReviewFacade reviewFacade;
 
     @MockBean
     protected ReviewRegisterService reviewRegisterService;

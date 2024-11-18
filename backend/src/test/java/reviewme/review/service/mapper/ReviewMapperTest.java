@@ -1,7 +1,6 @@
 package reviewme.review.service.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
 import static reviewme.fixture.OptionItemFixture.선택지;
@@ -16,22 +15,24 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.template.domain.OptionGroup;
-import reviewme.template.domain.OptionItem;
-import reviewme.template.domain.Question;
-import reviewme.template.repository.OptionGroupRepository;
-import reviewme.template.repository.OptionItemRepository;
-import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.service.dto.request.ReviewAnswerRequest;
-import reviewme.review.service.dto.request.ReviewRegisterRequest;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.review.facade.mapper.ReviewMapper;
+import reviewme.review.facade.request.ReviewAnswerRequest;
+import reviewme.review.facade.request.ReviewRegisterRequest;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
+import reviewme.template.domain.OptionGroup;
+import reviewme.template.domain.OptionItem;
+import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
+import reviewme.template.domain.StructuredTemplate;
+import reviewme.template.domain.Template;
+import reviewme.template.repository.OptionGroupRepository;
+import reviewme.template.repository.OptionItemRepository;
+import reviewme.template.repository.QuestionRepository;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
@@ -66,15 +67,17 @@ class ReviewMapperTest {
 
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         String expectedTextAnswer = "답".repeat(20);
         ReviewAnswerRequest reviewAnswerRequest = new ReviewAnswerRequest(question.getId(), null, expectedTextAnswer);
         ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(),
                 List.of(reviewAnswerRequest));
 
+        StructuredTemplate structuredTemplate = new StructuredTemplate(template, List.of(section), List.of(question));
+
         // when
-        Review review = reviewMapper.mapToReview(reviewRegisterRequest);
+        Review review = reviewMapper.mapToReview(reviewRegisterRequest.answers(), structuredTemplate, reviewGroup);
 
         // then
         assertThat(review.getAnswersByType(TextAnswer.class)).hasSize(1);
@@ -91,15 +94,18 @@ class ReviewMapperTest {
         OptionItem optionItem2 = optionItemRepository.save(선택지(optionGroup.getId()));
 
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         ReviewAnswerRequest reviewAnswerRequest = new ReviewAnswerRequest(question.getId(),
                 List.of(optionItem1.getId()), null);
         ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(),
                 List.of(reviewAnswerRequest));
 
+        StructuredTemplate structuredTemplate = new StructuredTemplate(template, List.of(section), List.of(question),
+                List.of(optionGroup), List.of(optionItem1, optionItem2));
+
         // when
-        Review review = reviewMapper.mapToReview(reviewRegisterRequest);
+        Review review = reviewMapper.mapToReview(reviewRegisterRequest.answers(), structuredTemplate, reviewGroup);
 
         // then
         assertThat(review.getAnswersByType(CheckboxAnswer.class)).hasSize(1);
@@ -126,7 +132,7 @@ class ReviewMapperTest {
         Section section = sectionRepository.save(항상_보이는_섹션(
                 List.of(requiredTextQuestion.getId(), optionalTextQuestion.getId(),
                         requeiredCheckBoxQuestion.getId(), optionalCheckBoxQuestion.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         String textAnswer = "답".repeat(20);
         ReviewAnswerRequest requiredTextAnswerRequest = new ReviewAnswerRequest(
@@ -145,8 +151,15 @@ class ReviewMapperTest {
                 List.of(requiredTextAnswerRequest, optionalTextAnswerRequest,
                         requiredCheckBoxAnswerRequest, optionalCheckBoxAnswerRequest));
 
+        List<Question> questions = questionRepository.findAll();
+        List<OptionGroup> optionGroups = optionGroupRepository.findAll();
+        List<OptionItem> optionItems = optionItemRepository.findAll();
+
+        StructuredTemplate structuredTemplate = new StructuredTemplate(template, List.of(section), questions,
+                optionGroups, optionItems);
+
         // when
-        Review review = reviewMapper.mapToReview(reviewRegisterRequest);
+        Review review = reviewMapper.mapToReview(reviewRegisterRequest.answers(), structuredTemplate, reviewGroup);
 
         // then
         assertAll(
@@ -157,20 +170,5 @@ class ReviewMapperTest {
                         .extracting(CheckboxAnswer::getQuestionId)
                         .containsExactly(requeiredCheckBoxQuestion.getId())
         );
-    }
-
-    @Test
-    void 잘못된_리뷰_요청_코드로_리뷰를_생성할_경우_예외가_발생한다() {
-        // given
-        String reviewRequestCode = "notExistCode";
-        Question savedQuestion = questionRepository.save(서술형_필수_질문());
-        ReviewAnswerRequest emptyTextReviewRequest = new ReviewAnswerRequest(
-                savedQuestion.getId(), null, "");
-        ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(
-                reviewRequestCode, List.of(emptyTextReviewRequest));
-
-        // when, then
-        assertThatThrownBy(() -> reviewMapper.mapToReview(reviewRegisterRequest))
-                .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 }
