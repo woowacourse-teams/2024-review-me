@@ -9,7 +9,6 @@ import reviewme.template.domain.exception.StructuredTemplateSectionValidationExc
 import reviewme.template.service.exception.StructuredTemplateOptionGroupValidationException;
 import reviewme.template.service.exception.StructuredTemplateOptionItemsValidationException;
 import reviewme.template.service.exception.StructuredTemplateQuestionValidationException;
-import reviewme.template.service.exception.StructuredTemplateSectionQuestionValidationException;
 
 @Getter
 public class StructuredTemplate {
@@ -23,7 +22,6 @@ public class StructuredTemplate {
     public StructuredTemplate(Template template, List<Section> sections, List<Question> questions,
                               List<OptionGroup> optionGroups, List<OptionItem> optionItems) {
         validateSections(template, sections);
-        validateSectionQuestions(sections);
         validateQuestions(sections, questions);
         validateOptionGroup(questions, optionGroups);
         validateOptionItems(optionGroups, optionItems);
@@ -36,7 +34,6 @@ public class StructuredTemplate {
 
     public StructuredTemplate(Template template, List<Section> sections, List<Question> questions) {
         validateSections(template, sections);
-        validateSectionQuestions(sections);
         validateQuestions(sections, questions);
         this.template = template;
         this.sections = sections;
@@ -57,30 +54,16 @@ public class StructuredTemplate {
         }
     }
 
-    private void validateSectionQuestions(List<Section> sections) {
-        List<Long> sectionQuestionIds = sections.stream()
-                .flatMap(section -> section.getQuestionIds().stream())
-                .toList();
-
-        int originalSize = sectionQuestionIds.size();
-        Set<Long> deduplicatedQuestionIds = new HashSet<>(sectionQuestionIds);
-        int deduplicatedSize = deduplicatedQuestionIds.size();
-
-        if (originalSize != deduplicatedSize) {
-            throw new StructuredTemplateSectionQuestionValidationException(sectionQuestionIds);
-        }
-    }
-
     private void validateQuestions(List<Section> sections, List<Question> questions) {
-        List<Long> sectionQuestionIds = sections.stream()
+        Set<Long> sectionQuestionIds = sections.stream()
                 .flatMap(section -> section.getQuestionIds().stream())
-                .toList();
+                .collect(Collectors.toSet());
 
         List<Long> questionIds = questions.stream()
                 .map(Question::getId)
                 .toList();
 
-        if (!new HashSet<>(sectionQuestionIds).containsAll(questionIds)
+        if (!sectionQuestionIds.containsAll(questionIds)
             || sectionQuestionIds.size() != questionIds.size()) {
             throw new StructuredTemplateQuestionValidationException(sectionQuestionIds, questionIds);
         }
