@@ -93,7 +93,7 @@ public class StructuredTemplate {
                 .toList();
 
         List<Long> optionGroupQuestionIds = optionGroups.stream()
-                .map(OptionGroup::getId)
+                .map(OptionGroup::getQuestionId)
                 .toList();
 
         if (!new HashSet<>(checkboxQuestionIds).containsAll(optionGroupQuestionIds)
