@@ -1,29 +1,29 @@
 package reviewme.review.domain.policy;
 
-import java.util.List;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import reviewme.review.domain.Review;
+import reviewme.review.domain.Answer;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.domain.exception.InvalidTextAnswerLengthException;
 import reviewme.review.domain.policy.TemplateValidationContext.QuestionProperties;
 
 @Component
-@Order(2)
-public class TextAnswerRegistrationPolicy implements ReviewRegistrationPolicy {
+public class TextAnswerRegistrationPolicy implements AnswerRegistrationPolicy {
 
     private static final int MIN_LENGTH = 20;
     private static final int MAX_LENGTH = 1_000;
 
     @Override
-    public void verify(Review review, TemplateValidationContext templateContext) {
-        List<TextAnswer> textAnswers = review.getAnswersByType(TextAnswer.class);
+    public boolean support(Answer answer) {
+        return answer instanceof TextAnswer;
+    }
 
-        for (TextAnswer textAnswer : textAnswers) {
-            QuestionProperties questionProperties = templateContext.getQuestionPropertiesById(
-                    textAnswer.getQuestionId());
-            validateLength(textAnswer, questionProperties);
-        }
+    @Override
+    public void verify(Answer answer, TemplateValidationContext templateContext) {
+        TextAnswer textAnswer = (TextAnswer) answer;
+
+        QuestionProperties questionProperties = templateContext.getQuestionPropertiesById(
+                textAnswer.getQuestionId());
+        validateLength(textAnswer, questionProperties);
     }
 
     private void validateLength(TextAnswer textAnswer, QuestionProperties questionProperties) {

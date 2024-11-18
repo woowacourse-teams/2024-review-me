@@ -1,4 +1,4 @@
-package reviewme.review.service.validator;
+package reviewme.review.domain.policy;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -15,36 +15,33 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.template.domain.OptionGroup;
-import reviewme.template.domain.OptionItem;
-import reviewme.template.domain.Question;
-import reviewme.template.repository.OptionGroupRepository;
-import reviewme.template.repository.OptionItemRepository;
-import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
-import reviewme.review.service.exception.MissingRequiredQuestionException;
-import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
+import reviewme.review.domain.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
+import reviewme.template.domain.OptionGroup;
+import reviewme.template.domain.OptionItem;
+import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
+import reviewme.template.domain.StructuredTemplate;
 import reviewme.template.domain.Template;
+import reviewme.template.repository.OptionGroupRepository;
+import reviewme.template.repository.OptionItemRepository;
+import reviewme.template.repository.QuestionRepository;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
-class ReviewValidatorTest {
+class ProvidedAndSubmittedQuestionPolicyTest {
+
+    @Autowired
+    private ProvidedAndSubmittedQuestionPolicy providedAndSubmittedQuestionPolicy;
 
     @Autowired
     private QuestionRepository questionRepository;
-
-    @Autowired
-    private OptionGroupRepository optionGroupRepository;
-
-    @Autowired
-    private OptionItemRepository optionItemRepository;
 
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
@@ -56,7 +53,10 @@ class ReviewValidatorTest {
     private SectionRepository sectionRepository;
 
     @Autowired
-    private ReviewValidator reviewValidator;
+    private OptionGroupRepository optionGroupRepository;
+
+    @Autowired
+    private OptionItemRepository optionItemRepository;
 
     @Test
     void 템플릿에_있는_질문에_대한_답과_필수_질문에_모두_응답하는_경우_예외가_발생하지_않는다() {
@@ -104,13 +104,22 @@ class ReviewValidatorTest {
         CheckboxAnswer conditionalCheckAnswer1 = new CheckboxAnswer(conditionalCheckQuestion.getId(),
                 List.of(conditionalOptionItem.getId()));
 
+        // 검증 템플릿 생성
+        List<Section> sections = sectionRepository.findAll();
+        List<Question> questions = questionRepository.findAll();
+        List<OptionGroup> optionGroups = optionGroupRepository.findAll();
+        List<OptionItem> optionItems = optionItemRepository.findAll();
+        StructuredTemplate structuredTemplate = new StructuredTemplate(
+                template, sections, questions, optionGroups, optionItems);
+        TemplateValidationContext templateContext = new TemplateValidationContext(structuredTemplate);
+
         // 리뷰 생성
         Review review = new Review(template.getId(), reviewGroup.getId(),
                 List.of(notRequiredTextAnswer, conditionalTextAnswer1,
                         alwaysRequiredCheckAnswer, conditionalCheckAnswer1));
 
         // when, then
-        assertThatCode(() -> reviewValidator.validate(review))
+        assertThatCode(() -> providedAndSubmittedQuestionPolicy.verify(review, templateContext))
                 .doesNotThrowAnyException();
     }
 
@@ -124,30 +133,14 @@ class ReviewValidatorTest {
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
         Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
+        StructuredTemplate structuredTemplate = new StructuredTemplate(template, List.of(section), List.of(question1));
+        TemplateValidationContext templateContext = new TemplateValidationContext(structuredTemplate);
+
         TextAnswer textAnswer = new TextAnswer(question2.getId(), "답변".repeat(20));
         Review review = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
 
         // when, then
-        assertThatThrownBy(() -> reviewValidator.validate(review))
+        assertThatThrownBy(() -> providedAndSubmittedQuestionPolicy.verify(review, templateContext))
                 .isInstanceOf(SubmittedQuestionAndProvidedQuestionMismatchException.class);
-    }
-
-    @Test
-    void 필수_질문에_답변하지_않은_경우_예외가_발생한다() {
-        // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
-
-        Question requiredQuestion = questionRepository.save(서술형_필수_질문());
-        Question optionalQuestion = questionRepository.save(서술형_옵션_질문());
-        Section section = sectionRepository.save(
-                항상_보이는_섹션(List.of(requiredQuestion.getId(), optionalQuestion.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
-
-        TextAnswer optionalTextAnswer = new TextAnswer(optionalQuestion.getId(), "답변".repeat(20));
-        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer));
-
-        // when, then
-        assertThatThrownBy(() -> reviewValidator.validate(review))
-                .isInstanceOf(MissingRequiredQuestionException.class);
     }
 }

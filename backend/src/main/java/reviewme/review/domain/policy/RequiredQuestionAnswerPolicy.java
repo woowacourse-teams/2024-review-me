@@ -3,13 +3,11 @@ package reviewme.review.domain.policy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.exception.MissingRequiredQuestionException;
 
 @Component
-@Order(4)
 public class RequiredQuestionAnswerPolicy implements ReviewRegistrationPolicy {
 
     @Override

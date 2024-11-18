@@ -15,23 +15,25 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.template.domain.OptionGroup;
-import reviewme.template.domain.OptionItem;
-import reviewme.template.domain.Question;
-import reviewme.template.repository.OptionGroupRepository;
-import reviewme.template.repository.OptionItemRepository;
-import reviewme.template.repository.QuestionRepository;
+import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
+import reviewme.review.domain.policy.TemplateValidationContext;
+import reviewme.review.domain.service.ReviewRegisterService;
 import reviewme.review.repository.ReviewRepository;
-import reviewme.review.service.dto.request.ReviewAnswerRequest;
-import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
+import reviewme.template.domain.OptionGroup;
+import reviewme.template.domain.OptionItem;
+import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
+import reviewme.template.domain.StructuredTemplate;
 import reviewme.template.domain.Template;
+import reviewme.template.repository.OptionGroupRepository;
+import reviewme.template.repository.OptionItemRepository;
+import reviewme.template.repository.QuestionRepository;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
@@ -91,27 +93,32 @@ class ReviewRegisterServiceTest {
         Template template = templateRepository.save(템플릿(
                 List.of(visibleSection.getId(), conditionalSection.getId(), visibleOptionalSection.getId())));
 
-        ReviewAnswerRequest requiredCheckQuestionAnswer = new ReviewAnswerRequest(
-                requiredCheckQuestion.getId(), List.of(requiredOptionItem1.getId()), null);
-        ReviewAnswerRequest requiredTextQuestionAnswer = new ReviewAnswerRequest(
-                requiredTextQuestion.getId(), null, "답변".repeat(30));
-        ReviewAnswerRequest conditionalCheckQuestionAnswer = new ReviewAnswerRequest(
-                conditionalCheckQuestion.getId(), List.of(conditionalOptionItem1.getId()), null);
-        ReviewAnswerRequest optionalTextQuestionAnswer = new ReviewAnswerRequest(
-                optionalTextQuestion.getId(), null, "");
-        ReviewRegisterRequest reviewRegisterRequest = new ReviewRegisterRequest(reviewGroup.getReviewRequestCode(),
-                List.of(requiredCheckQuestionAnswer, requiredTextQuestionAnswer, conditionalCheckQuestionAnswer,
-                        optionalTextQuestionAnswer));
+        List<Section> sections = sectionRepository.findAll();
+        List<Question> questions = questionRepository.findAll();
+        List<OptionGroup> optionGroups = optionGroupRepository.findAll();
+        List<OptionItem> optionItems = optionItemRepository.findAll();
+        StructuredTemplate structuredTemplate = new StructuredTemplate(template, sections, questions, optionGroups,
+                optionItems);
+
+        Answer requiredCheckQuestionAnswer = new CheckboxAnswer(requiredCheckQuestion.getId(),
+                List.of(requiredOptionItem1.getId()));
+        Answer requiredTextQuestionAnswer = new TextAnswer(requiredTextQuestion.getId(), "답변".repeat(30));
+        Answer conditionalCheckQuestionAnswer = new CheckboxAnswer(conditionalCheckQuestion.getId(),
+                List.of(conditionalOptionItem1.getId()));
+        Answer optionalTextQuestionAnswer = new TextAnswer(optionalTextQuestion.getId(), "");
+        List<Answer> answers = List.of(requiredCheckQuestionAnswer, requiredTextQuestionAnswer,
+                conditionalCheckQuestionAnswer, optionalTextQuestionAnswer);
+
+        Review review = new Review(template.getId(), reviewGroup.getId(), answers);
 
         // when
-        long registeredReviewId = reviewRegisterService.registerReview(reviewRegisterRequest);
+        Review actual = reviewRegisterService.register(review, new TemplateValidationContext(structuredTemplate));
 
-        // when, then
-        Review review = reviewRepository.findById(registeredReviewId).orElseThrow();
+        // then
         assertAll(
-                () -> assertThat(review.getAnswersByType(TextAnswer.class)).extracting(TextAnswer::getQuestionId)
+                () -> assertThat(actual.getAnswersByType(TextAnswer.class)).extracting(TextAnswer::getQuestionId)
                         .containsExactly(requiredTextQuestion.getId()),
-                () -> assertThat(review.getAnswersByType(CheckboxAnswer.class)).extracting(
+                () -> assertThat(actual.getAnswersByType(CheckboxAnswer.class)).extracting(
                                 CheckboxAnswer::getQuestionId)
                         .containsAll(List.of(requiredCheckQuestion.getId(), conditionalCheckQuestion.getId()))
         );

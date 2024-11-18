@@ -1,14 +1,12 @@
 package reviewme.review.domain.policy;
 
 import java.util.Set;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 
 @Component
-@Order(3)
-public class AnswerTemplateMatchingPolicy implements ReviewRegistrationPolicy {
+public class ProvidedAndSubmittedQuestionPolicy implements ReviewRegistrationPolicy {
 
     @Override
     public void verify(Review review, TemplateValidationContext templateContext) {
