@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { Accordion, Dropdown, HighlightEditorContainer } from '@/components';
 import { DropdownItem } from '@/components/common/Dropdown';
 import ReviewEmptySection from '@/components/common/ReviewEmptySection';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
-import { REVIEW_EMPTY } from '@/constants';
+import { REVIEW_EMPTY, SESSION_STORAGE_KEY } from '@/constants';
 import { GroupedReview } from '@/types';
 import { substituteString } from '@/utils';
 
@@ -18,6 +18,7 @@ const ReviewCollectionPageContents = () => {
   const { revieweeName, projectName, totalReviewCount } = useContext(ReviewInfoDataContext);
 
   const { data: reviewSectionList } = useGetSectionList();
+
   const dropdownSectionList = reviewSectionList.sections.map((section) => {
     return { text: section.name, value: section.id };
   });
@@ -28,6 +29,12 @@ const ReviewCollectionPageContents = () => {
   groupedReviews.reviews.forEach((review) => {
     review.votes?.sort((voteA, voteB) => voteB.count - voteA.count);
   });
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem(SESSION_STORAGE_KEY.currentReviewCollectionSectionId);
+    };
+  }, []);
 
   const renderContent = (review: GroupedReview) => {
     if (review.question.type === 'CHECKBOX') {
