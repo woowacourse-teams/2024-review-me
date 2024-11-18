@@ -7,12 +7,8 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.highlight.domain.Highlight;
-import reviewme.template.domain.OptionItem;
-import reviewme.template.domain.Question;
-import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.service.dto.response.gathered.HighlightResponse;
 import reviewme.review.service.dto.response.gathered.RangeResponse;
@@ -22,6 +18,9 @@ import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
 import reviewme.review.service.dto.response.gathered.TextResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
 import reviewme.review.service.exception.GatheredAnswersTypeNonUniformException;
+import reviewme.template.domain.OptionItem;
+import reviewme.template.domain.Question;
+import reviewme.template.repository.QuestionRepository;
 
 @Component
 @RequiredArgsConstructor
@@ -91,8 +90,7 @@ public class ReviewGatherMapper {
         List<CheckboxAnswer> checkboxAnswers = castAllOrThrow(answers, CheckboxAnswer.class);
         Map<Long, Long> optionItemIdVoteCount = checkboxAnswers.stream()
                 .flatMap(checkboxAnswer -> checkboxAnswer.getSelectedOptionIds().stream())
-                .collect(Collectors.groupingBy(CheckboxAnswerSelectedOption::getSelectedOptionId,
-                        Collectors.counting()));
+                .collect(Collectors.groupingBy(optionId -> optionId, Collectors.counting()));
 
         List<OptionItem> allOptionItem = questionRepository.findAllOptionItemsByIdOrderByPosition(question.getId());
         return allOptionItem.stream()
