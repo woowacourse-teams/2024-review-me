@@ -40,6 +40,9 @@ public class StructuredTemplateService {
         List<OptionGroup> optionGroups = optionGroupRepository.findAllByQuestionIds(questionIds);
         List<OptionItem> optionItems = optionItemRepository.findAllByQuestionIds(questionIds);
 
+        if (optionGroups.isEmpty() && optionItems.isEmpty()) {
+            return new StructuredTemplate(template, sections, questions);
+        }
         return new StructuredTemplate(template, sections, questions, optionGroups, optionItems);
     }
 }

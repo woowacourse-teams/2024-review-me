@@ -34,6 +34,17 @@ public class StructuredTemplate {
         this.optionItems = optionItems;
     }
 
+    public StructuredTemplate(Template template, List<Section> sections, List<Question> questions) {
+        validateSections(template, sections);
+        validateSectionQuestions(sections);
+        validateQuestions(sections, questions);
+        this.template = template;
+        this.sections = sections;
+        this.questions = questions;
+        this.optionGroups = List.of();
+        this.optionItems = List.of();
+    }
+
     private void validateSections(Template template, List<Section> sections) {
         List<Long> templateSectionIds = template.getSectionIds();
         List<Long> sectionIds = sections.stream()
@@ -69,7 +80,7 @@ public class StructuredTemplate {
                 .map(Question::getId)
                 .toList();
 
-        if (!new HashSet<>(sectionQuestionIds).containsAll(questions)
+        if (!new HashSet<>(sectionQuestionIds).containsAll(questionIds)
             || sectionQuestionIds.size() != questionIds.size()) {
             throw new StructuredTemplateQuestionValidationException(sectionQuestionIds, questionIds);
         }
