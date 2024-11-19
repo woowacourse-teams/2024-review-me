@@ -3,7 +3,7 @@ package reviewme.review.service.mapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import reviewme.question.domain.QuestionType;
+import reviewme.template.domain.QuestionType;
 
 @Component
 @RequiredArgsConstructor

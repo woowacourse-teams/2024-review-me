@@ -4,5 +4,5 @@ export const LOCAL_STORAGE_KEY = {
 };
 
 export const SESSION_STORAGE_KEY = {
-  editorAnswerMap: 'editorAnswerMap-question',
+  currentReviewCollectionSectionId: 'currentReviewCollectionSectionId',
 };

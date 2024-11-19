@@ -2,7 +2,7 @@ package reviewme.review.service.mapper;
 
 import lombok.extern.slf4j.Slf4j;
 import reviewme.global.exception.DataInconsistencyException;
-import reviewme.question.domain.QuestionType;
+import reviewme.template.domain.QuestionType;
 
 @Slf4j
 public class UnsupportedQuestionTypeException extends DataInconsistencyException {
