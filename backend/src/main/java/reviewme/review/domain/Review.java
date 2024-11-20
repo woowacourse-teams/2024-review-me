@@ -37,7 +37,7 @@ public class Review {
     @Column(name = "review_group_id", nullable = false)
     private long reviewGroupId;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "review_id", nullable = false, updatable = false)
     private List<Answer> answers;
 
@@ -61,6 +61,7 @@ public class Review {
         return getAnsweredQuestionIds().contains(questionId);
     }
 
+    // 하위 타입의 구체적인 정보를 알지 못하므로, fetch join할 수 없다..?
     public <T extends Answer> List<T> getAnswersByType(Class<T> clazz) {
         return answers.stream()
                 .filter(clazz::isInstance)

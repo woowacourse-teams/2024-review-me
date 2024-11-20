@@ -3,12 +3,14 @@ package reviewme.review.repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import reviewme.review.domain.Review;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
+    @EntityGraph(attributePaths = {"answers"})
     @Query("""
             SELECT r FROM Review r
             WHERE r.reviewGroupId = :reviewGroupId
@@ -16,6 +18,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             """)
     List<Review> findAllByGroupId(long reviewGroupId);
 
+    @EntityGraph(attributePaths = {"answers"})
     @Query("""
             SELECT r FROM Review r
             WHERE r.reviewGroupId = :reviewGroupId
@@ -25,6 +28,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             """)
     List<Review> findByReviewGroupIdWithLimit(long reviewGroupId, Long lastReviewId, int limit);
 
+    @EntityGraph(attributePaths = {"answers"})
     Optional<Review> findByIdAndReviewGroupId(long reviewId, long reviewGroupId);
 
     @Query("""

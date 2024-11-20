@@ -20,7 +20,7 @@ import reviewme.review.domain.exception.QuestionNotAnsweredException;
 @Getter
 public class CheckboxAnswer extends Answer {
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "checkbox_answer_id", nullable = false, updatable = false)
     private List<CheckboxAnswerSelectedOption> selectedOptionIds;
 

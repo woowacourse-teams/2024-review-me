@@ -34,7 +34,7 @@ public class Section {
     @Enumerated(EnumType.STRING)
     private VisibleType visibleType;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "section_id", nullable = false, updatable = false)
     private List<SectionQuestion> questionIds;
 
