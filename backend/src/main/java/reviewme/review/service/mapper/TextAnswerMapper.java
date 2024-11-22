@@ -6,7 +6,7 @@ import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.template.domain.QuestionType;
 
 @Component
-public class TextAnswerMapper extends AnswerMapper {
+public class TextAnswerMapper implements AnswerMapper {
 
     @Override
     public boolean supports(QuestionType questionType) {

@@ -6,7 +6,7 @@ import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.template.domain.QuestionType;
 
 @Component
-public class CheckboxAnswerMapper extends AnswerMapper {
+public class CheckboxAnswerMapper implements AnswerMapper {
 
     @Override
     public boolean supports(QuestionType questionType) {
