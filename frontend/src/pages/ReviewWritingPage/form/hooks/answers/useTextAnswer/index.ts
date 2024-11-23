@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import { TEXT_ANSWER_LENGTH } from '@/pages/ReviewWritingPage/constants';
+import { answerMapAtom } from '@/recoil';
 import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
 
 import useUpdateReviewerAnswer from '../useUpdateReviewerAnswer';
@@ -21,9 +23,35 @@ interface UseTextAnswerProps {
  */
 const useTextAnswer = ({ question }: UseTextAnswerProps) => {
   const { updateAnswerMap, updateAnswerValidationMap } = useUpdateReviewerAnswer();
+  const answerMap = useRecoilValue(answerMapAtom);
 
   const [text, setText] = useState('');
   const [errorMessage, setErrorMessage] = useState(TEXT_ANSWER_ERROR_MESSAGE.noError);
+
+  // 로컬 스토리지에 저장했던 답변으로부터터, questionId를 통해 해당 질문의 서술형 답변을 찾는 함수
+  // TODO: 복원을 위한 find 함수들을 별도 유틸로 분리 및 통합
+  interface findTextAnswerParams {
+    answerMap: Map<number, ReviewWritingAnswer> | null;
+    questionId: number;
+  }
+  const findTextAnswer = ({ answerMap, questionId }: findTextAnswerParams) => {
+    if (!answerMap) return null;
+
+    for (const [, value] of answerMap) {
+      if (value.questionId === questionId) {
+        return value.text;
+      }
+    }
+    return null;
+  };
+
+  // 저장된 주관식 답변이 있다면 복원
+  useEffect(() => {
+    const questionId = question.questionId;
+    const textAnswer = findTextAnswer({ answerMap, questionId });
+
+    if (textAnswer) setText(textAnswer);
+  }, []);
 
   const handleTextAnswerChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
