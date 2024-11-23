@@ -48,7 +48,7 @@ public class Question {
         this.position = position;
     }
 
-    public boolean isSelectable() {
+    public boolean isCheckboxType() {
         return questionType == QuestionType.CHECKBOX;
     }
 
