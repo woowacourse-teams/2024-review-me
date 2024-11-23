@@ -48,13 +48,13 @@ public class ReviewListMapper {
 
     private List<ReviewCategoryResponse> mapToCategoryOptionResponse(Review review,
                                                                      List<OptionItem> categoryOptionItems) {
-        Set<Long> checkBoxOptionIds = review.getAnswersByType(CheckboxAnswer.class)
+        Set<Long> checkboxOptionIds = review.getAnswersByType(CheckboxAnswer.class)
                 .stream()
                 .flatMap(answer -> answer.getSelectedOptionIds().stream())
                 .map(CheckboxAnswerSelectedOption::getSelectedOptionId)
                 .collect(Collectors.toSet());
         return categoryOptionItems.stream()
-                .filter(optionItem -> checkBoxOptionIds.contains(optionItem.getId()))
+                .filter(optionItem -> checkboxOptionIds.contains(optionItem.getId()))
                 .map(optionItem -> new ReviewCategoryResponse(optionItem.getId(), optionItem.getContent()))
                 .toList();
     }

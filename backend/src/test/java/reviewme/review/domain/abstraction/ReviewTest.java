@@ -45,16 +45,16 @@ class ReviewTest {
     void 리뷰에_특정_질문에_대한_답변이_있는지_여부를_반환한다() {
         // given
         long textQuestionId = 1L;
-        long checkBoxQuestionId = 2L;
+        long checkboxQuestionId = 2L;
 
         TextAnswer textAnswer = new TextAnswer(textQuestionId, "답변");
-        CheckboxAnswer checkboxAnswer = new CheckboxAnswer(checkBoxQuestionId, List.of(1L));
+        CheckboxAnswer checkboxAnswer = new CheckboxAnswer(checkboxQuestionId, List.of(1L));
         Review review = new Review(1L, 1L, List.of(textAnswer, checkboxAnswer));
 
         // when, then
         assertAll(
                 () -> assertThat(review.hasAnsweredQuestion(textQuestionId)).isTrue(),
-                () -> assertThat(review.hasAnsweredQuestion(checkBoxQuestionId)).isTrue()
+                () -> assertThat(review.hasAnsweredQuestion(checkboxQuestionId)).isTrue()
         );
     }
 }

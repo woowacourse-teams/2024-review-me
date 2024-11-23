@@ -27,7 +27,7 @@ public class Questions {
                 .toList();
     }
 
-    public List<Long> getCheckBoxQuestionIds() {
+    public List<Long> getCheckboxQuestionIds() {
         return questions.stream()
                 .filter(Question::isCheckboxType)
                 .map(Question::getId)

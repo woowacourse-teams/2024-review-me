@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import reviewme.global.exception.BadRequestException;
 
 @Slf4j
-public class CheckBoxAnswerIncludedNotProvidedOptionItemException extends BadRequestException {
+public class CheckboxAnswerIncludedNotProvidedOptionItemException extends BadRequestException {
 
-    public CheckBoxAnswerIncludedNotProvidedOptionItemException(long questionId,
+    public CheckboxAnswerIncludedNotProvidedOptionItemException(long questionId,
                                                                 List<Long> providedOptionIds,
                                                                 List<Long> submittedOptionIds) {
         super("제공되는 선택지에 없는 선택지를 응답했어요.");

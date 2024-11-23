@@ -14,7 +14,7 @@ import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
 import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
+import reviewme.review.service.exception.CheckboxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
@@ -53,7 +53,7 @@ public class CheckboxTypedAnswerValidator implements TypedAnswerValidator {
         List<Long> answeredOptionItemIds = extractAnsweredOptionItemIds(checkboxAnswer);
 
         if (!new HashSet<>(providedOptionItemIds).containsAll(answeredOptionItemIds)) {
-            throw new CheckBoxAnswerIncludedNotProvidedOptionItemException(
+            throw new CheckboxAnswerIncludedNotProvidedOptionItemException(
                     checkboxAnswer.getQuestionId(), providedOptionItemIds, answeredOptionItemIds
             );
         }
