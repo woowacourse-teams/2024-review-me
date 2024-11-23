@@ -1,9 +1,9 @@
 package reviewme.config.requestlimit;
 
-import static org.springframework.http.HttpHeaders.USER_AGENT;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -16,6 +16,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @EnableConfigurationProperties(RequestLimitProperties.class)
 @RequiredArgsConstructor
 public class RequestLimitInterceptor implements HandlerInterceptor {
+
+    private static final List<String> PROXY_HEADERS = List.of("X-FORWARDED-FOR", "X-REAL-IP");
 
     private final RedisTemplate<String, Long> redisTemplate;
     private final RequestLimitProperties requestLimitProperties;
@@ -40,9 +42,12 @@ public class RequestLimitInterceptor implements HandlerInterceptor {
 
     private String generateRequestKey(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        String remoteAddr = request.getRemoteAddr();
-        String userAgent = request.getHeader(USER_AGENT);
+        String remoteAddress = PROXY_HEADERS.stream()
+                .map(request::getHeader)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(request.getRemoteAddr());
 
-        return String.format("RequestURI: %s, RemoteAddr: %s, UserAgent: %s", requestURI, remoteAddr, userAgent);
+        return String.format("RequestURI: %s, RemoteAddress: %s", requestURI, remoteAddress);
     }
 }
