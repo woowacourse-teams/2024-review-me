@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { useSearchParamAndQuery } from '@/hooks';
 import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
@@ -25,11 +25,28 @@ const CardForm = () => {
     paramKey: 'reviewRequestCode',
   });
 
-  // 작성했던 내용들을 저장하는 로직
-  const selectedCategory = useRecoilValue(selectedCategoryAtom);
-  const answerMap = useRecoilValue(answerMapAtom);
-  const answerValidation = useRecoilValue(answerValidationMapAtom);
+  const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoryAtom);
+  const [answerMap, setAnswerMap] = useRecoilState(answerMapAtom);
+  const [answerValidation, setAnswerValidation] = useRecoilState(answerValidationMapAtom);
 
+  // 로컬 스토리지에서 값을 불러와 전역 상태에 저장
+  useEffect(() => {
+    (() => {
+      const storedSelectedCategories = localStorage.getItem(`selectedCategories_${reviewRequestCode}`);
+      const storedAnswerValidations = localStorage.getItem(`answerValidations_${reviewRequestCode}`);
+      const storedAnswers = localStorage.getItem(`answers_${reviewRequestCode}`);
+
+      const selectedCategories = storedSelectedCategories ? JSON.parse(storedSelectedCategories) : null;
+      const answerValidations = storedAnswerValidations ? new Map(JSON.parse(storedAnswerValidations)) : new Map();
+      const answers = storedAnswers ? JSON.parse(storedAnswers) : null; 
+
+      setSelectedCategory(selectedCategories); 
+      setAnswerValidation(answerValidations);
+      setAnswerMap(new Map(answers));
+    })();
+  }, []);
+
+  // 작성했던 내용들을 저장하는 로직
   const getCurrentSelectedCategory = () => {
     if (selectedCategory && selectedCategory.length > 0) {
       return selectedCategory;
@@ -55,13 +72,13 @@ const CardForm = () => {
     const answers = getCurrentAnswers();
     const answerValidations = getAnswerValidation();
 
-    // 빈 상태인지 확인 후 저장
     if (selectedCategories) {
       localStorage.setItem(`selectedCategories_${reviewRequestCode}`, JSON.stringify(selectedCategories));
     }
     if (answerValidations) {
       localStorage.setItem(`answerValidations_${reviewRequestCode}`, JSON.stringify(answerValidations));
     }
+
     if (answers) {
       localStorage.setItem(`answers_${reviewRequestCode}`, JSON.stringify(answers));
     }
@@ -81,18 +98,15 @@ const CardForm = () => {
     };
   }, [reviewRequestCode, answerMap, selectedCategory, answerValidation]);
 
-  //// 복원 로직
-  const setAnswerMap = useSetRecoilState(answerMapAtom); // 답변 상태를 설정할 수 있게 해줌
-
   ////////////////// 기존 로직
 
   const setReviewRequestCode = useSetRecoilState(reviewRequestCodeAtom);
 
   const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
 
-  // 리뷰에 필요한 질문지,프로젝트 정보 가져오기
+  // 프로젝트 정보 및 질문지를 서버에서 가져옴
   const { revieweeName, projectName } = useLoadAndPrepareReview({ reviewRequestCode });
-  // 답변
+
   // 생성된 질문지를 바탕으로 답변 기본값 및 답변의 유효성 기본값 설정
   useUpdateDefaultAnswers();
 
