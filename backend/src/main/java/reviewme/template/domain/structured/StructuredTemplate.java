@@ -22,11 +22,7 @@ public class StructuredTemplate {
     }
 
     StructuredTemplate(Template template, Sections sections, Questions questions) {
-        this.template = template;
-        this.sections = sections;
-        this.questions = questions;
-        this.optionGroups = null;
-        this.optionItems = null;
+        this(template, sections, questions, null, null);
     }
 
     public long getTemplateId() {
