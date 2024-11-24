@@ -3,11 +3,9 @@ package reviewme.template.domain.structured;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.Getter;
 import reviewme.template.domain.OptionGroup;
 import reviewme.template.domain.exception.OptionGroupNotExistException;
 
-@Getter
 public class OptionGroups {
 
     private final List<OptionGroup> optionGroups;
