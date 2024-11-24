@@ -1,7 +1,9 @@
 package reviewme.template.domain.structured;
 
+import lombok.Getter;
 import reviewme.template.domain.Template;
 
+@Getter
 public class StructuredTemplate {
 
     private final Template template;
