@@ -7,15 +7,15 @@ import reviewme.global.exception.BadRequestException;
 @Slf4j
 public class StructuredTemplateInvisibleSectionFoundException extends BadRequestException {
 
-    private static final String ERROR_MESSAGE = "서버 내부에서 문제가 발생했어요. 서버에 문의해주세요.";
+    private static final String INTERNAL_SERVER_ERROR_MESSAGE = "서버 내부에서 문제가 발생했어요. 서버에 문의해주세요.";
 
     public StructuredTemplateInvisibleSectionFoundException(List<Long> invisibleSectionIds, List<Long> optionIds) {
-        super(ERROR_MESSAGE);
+        super(INTERNAL_SERVER_ERROR_MESSAGE);
         logWarning(invisibleSectionIds, optionIds);
     }
 
     public StructuredTemplateInvisibleSectionFoundException(List<Long> invisibleSectionIds) {
-        super(ERROR_MESSAGE);
+        super(INTERNAL_SERVER_ERROR_MESSAGE);
         logWarning(invisibleSectionIds, null);
     }
 
