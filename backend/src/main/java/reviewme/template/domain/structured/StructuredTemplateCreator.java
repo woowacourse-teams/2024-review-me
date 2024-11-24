@@ -43,7 +43,7 @@ public class StructuredTemplateCreator {
         validateSections(template, sections);
         validateSectionsVisibility(sections);
         validateQuestions(sections, questions);
-        validateNoCheckBoxQuestion(questions);
+        validateNoCheckboxQuestion(questions);
 
         return new StructuredTemplate(template, sections, questions);
     }
@@ -55,33 +55,34 @@ public class StructuredTemplateCreator {
     }
 
     private void validateSections(Template template, Sections sections) {
-        List<Long> sectionIds = sections.getSectionIds();
-        if (!new HashSet<>(template.getSectionIds()).containsAll(sectionIds)) {
+        Set<Long> sectionIdsOfTemplate = new HashSet<>(template.getSectionIds());
+        Set<Long> sectionIds = new HashSet<>(sections.getSectionIds());
+        if (!sectionIdsOfTemplate.equals(sectionIds)) {
             throw new StructuredTemplateSectionValidationException(template.getId(), sectionIds);
         }
     }
 
     private void validateQuestions(Sections sections, Questions questions) {
         Set<Long> questionIdsOfSections = sections.getQuestionIds();
-        List<Long> questionIds = questions.getQuestionIds();
-        if (!questionIdsOfSections.containsAll(questionIds)) {
+        Set<Long> questionIds = new HashSet<>(questions.getQuestionIds());
+        if (!questionIdsOfSections.equals(questionIds)) {
             throw new StructuredTemplateQuestionValidationException(questionIdsOfSections, questionIds);
         }
     }
 
     private void validateOptionGroup(Questions questions, OptionGroups optionGroups) {
-        List<Long> checkboxQuestionIds = questions.getCheckBoxQuestionIds();
-        List<Long> questionIdsOfOptionGroup = optionGroups.getQuestionIds();
-        if (!new HashSet<>(checkboxQuestionIds).containsAll(questionIdsOfOptionGroup)) {
+        Set<Long> checkboxQuestionIds = new HashSet<>(questions.getCheckboxQuestionIds());
+        Set<Long> questionIdsOfOptionGroup = optionGroups.getQuestionIds();
+        if (!checkboxQuestionIds.equals(questionIdsOfOptionGroup) || checkboxQuestionIds.size() < optionGroups.size()) {
             throw new StructuredTemplateOptionGroupValidationException(checkboxQuestionIds,
                     questionIdsOfOptionGroup);
         }
     }
 
     private void validateOptionItems(OptionGroups optionGroups, OptionItems optionItems) {
-        List<Long> optionGroupIds = optionGroups.getOptionGroupIds();
-        List<Long> OptionGroupIdsOfItems = optionItems.getOptionGroupIds();
-        if (!new HashSet<>(optionGroupIds).containsAll(OptionGroupIdsOfItems)) {
+        Set<Long> optionGroupIds = new HashSet<>(optionGroups.getOptionGroupIds());
+        Set<Long> OptionGroupIdsOfItems = optionItems.getOptionGroupIds();
+        if (!optionGroupIds.equals(OptionGroupIdsOfItems)) {
             throw new StructuredTemplateOptionItemsValidationException(optionGroupIds, OptionGroupIdsOfItems);
         }
     }
@@ -101,7 +102,7 @@ public class StructuredTemplateCreator {
         }
     }
 
-    private void validateNoCheckBoxQuestion(Questions questions) {
+    private void validateNoCheckboxQuestion(Questions questions) {
         if (questions.hasCheckboxQuestion()) {
             throw new StructuredTemplateCheckBoxQuestionFoundException(questions.getQuestionIds());
         }

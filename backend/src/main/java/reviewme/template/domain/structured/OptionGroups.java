@@ -1,6 +1,8 @@
 package reviewme.template.domain.structured;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import reviewme.template.domain.OptionGroup;
 import reviewme.template.domain.exception.OptionGroupNotExistException;
@@ -29,9 +31,13 @@ public class OptionGroups {
                 .toList();
     }
 
-    public List<Long> getQuestionIds() {
+    public Set<Long> getQuestionIds() {
         return optionGroups.stream()
                 .map(OptionGroup::getQuestionId)
-                .toList();
+                .collect(Collectors.toSet());
+    }
+
+    public int size() {
+        return optionGroups.size();
     }
 }

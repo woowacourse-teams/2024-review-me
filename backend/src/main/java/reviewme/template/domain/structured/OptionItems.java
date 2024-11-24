@@ -1,6 +1,8 @@
 package reviewme.template.domain.structured;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import reviewme.template.domain.OptionItem;
 import reviewme.template.domain.exception.OptionItemNotExistException;
 
@@ -27,9 +29,10 @@ public class OptionItems {
                 .toList();
     }
 
-    public List<Long> getOptionGroupIds() {
+    public Set<Long> getOptionGroupIds() {
         return optionItems.stream()
                 .map(OptionItem::getOptionGroupId)
-                .toList();
+                .distinct()
+                .collect(Collectors.toSet());
     }
 }
