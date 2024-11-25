@@ -28,7 +28,7 @@ const useTextAnswer = ({ question }: UseTextAnswerProps) => {
   const [text, setText] = useState('');
   const [errorMessage, setErrorMessage] = useState(TEXT_ANSWER_ERROR_MESSAGE.noError);
 
-  // 로컬 스토리지에 저장했던 답변으로부터터, questionId를 통해 해당 질문의 서술형 답변을 찾는 함수
+  // 로컬 스토리지에 저장했던 답변으로부터, questionId를 통해 해당 질문의 서술형 답변을 찾는 함수
   // TODO: 복원을 위한 find 함수들을 별도 유틸로 분리 및 통합
   interface findTextAnswerParams {
     answerMap: Map<number, ReviewWritingAnswer> | null;
@@ -47,11 +47,14 @@ const useTextAnswer = ({ question }: UseTextAnswerProps) => {
 
   // 저장된 주관식 답변이 있다면 복원
   useEffect(() => {
+    if (!answerMap || answerMap.size === 0) return;
+    if(text && text.length > 0) return;
+
     const questionId = question.questionId;
     const textAnswer = findTextAnswer({ answerMap, questionId });
 
     if (textAnswer) setText(textAnswer);
-  }, []);
+  }, [answerMap, question]);
 
   const handleTextAnswerChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
