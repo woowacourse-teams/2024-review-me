@@ -45,7 +45,7 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     questionId: number;
   }
 
-  // 로컬 스토리지에 저장했던 답변으로부터터, questionId를 통해 해당 질문의 selectedOptionIds를 찾는 함수
+  // 로컬 스토리지에 저장했던 답변으로부터, questionId를 통해 해당 질문의 selectedOptionIds를 찾는 함수
   const findSelectedOptionIds = ({ answerMap, questionId }: findSelectedOptionIdsParams) => {
     if (!answerMap) return null;
 
@@ -59,11 +59,14 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
 
   // 저장된 객관식 답변이 있다면 복원
   useEffect(() => {
-    const questionId = question.questionId;
-    const selectedOptionList = findSelectedOptionIds({ answerMap, questionId });
+    if (!answerMap || answerMap.size === 0) return;
+    if (selectedOptionList.length > 0) return;
 
-    if (selectedOptionList) initSelectedOptionList([...selectedOptionList]);
-  }, []);
+    const questionId = question.questionId;
+    const selectedOptionIds = findSelectedOptionIds({ answerMap, questionId });
+
+    if (selectedOptionIds) initSelectedOptionList([...selectedOptionIds]);
+  }, [answerMap, question]);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.currentTarget;
