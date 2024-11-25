@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { useSearchParamAndQuery } from '@/hooks';
@@ -32,7 +32,7 @@ const useStepList = ({ currentCardIndex }: UseStepListProps) => {
     const newStepList: Step[] = [];
 
     cardSectionList?.forEach((section, index) => {
-      const isPreviousDone = index === 0 || newStepList.every((step) => step.isDone); 
+      const isPreviousDone = index === 0 || newStepList.every((step) => step.isDone);
       const isMovingAvailable = isPreviousDone && visitedCardIdList.includes(section.sectionId);
       const isCurrentStep = index === currentCardIndex;
 
@@ -70,36 +70,27 @@ const useStepList = ({ currentCardIndex }: UseStepListProps) => {
     paramKey: 'reviewRequestCode',
   });
 
-  const handleBeforeUnloadChange = () => {
+  const handleBeforeUnloadChange = useCallback(() => {
     if (visitedCardIdList.length > 0) {
       localStorage.setItem(`visitedCardIdList_${reviewRequestCode}`, JSON.stringify(visitedCardIdList));
     }
-  };
+  }, [reviewRequestCode, visitedCardIdList]);
 
-  // 복원
+  // 복원 
   useEffect(() => {
-    (() => {
       const storedVisitedCardIdList = localStorage.getItem(`visitedCardIdList_${reviewRequestCode}`);
       const defaultVisitedCardIdList = cardSectionList.length > 0 ? [cardSectionList[0].sectionId] : [];
       const parsedVisitedCardIdList = storedVisitedCardIdList
         ? JSON.parse(storedVisitedCardIdList)
         : defaultVisitedCardIdList;
 
-      setVisitedCardIdList(parsedVisitedCardIdList); 
-    })();
+      setVisitedCardIdList(parsedVisitedCardIdList);
   }, [reviewRequestCode, cardSectionList]);
 
-  // 저장
-  useEffect(() => {
-    // TODO: 라우터를 통한 이동에서도 동작할 수 있도록 하기
-    window.addEventListener('beforeunload', handleBeforeUnloadChange);
-    document.addEventListener('visibilitychange', handleBeforeUnloadChange);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnloadChange);
-      document.removeEventListener('visibilitychange', handleBeforeUnloadChange);
-    };
-  }, [reviewRequestCode, visitedCardIdList]);
+  // 로컬 스토리지와의 동기화를 위한 useEffect
+  useEffect(()=>{
+    handleBeforeUnloadChange();
+  },[visitedCardIdList]);
 
   useEffect(() => {
     updateVisitedCardIdList();
