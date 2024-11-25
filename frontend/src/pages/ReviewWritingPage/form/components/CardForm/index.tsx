@@ -1,13 +1,11 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { useSearchParamAndQuery } from '@/hooks';
-import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
 import {
   useCurrentCardIndex,
   useResetFormRecoil,
   useUpdateDefaultAnswers,
-  useNavigateBlocker,
   useLoadAndPrepareReview,
 } from '@/pages/ReviewWritingPage/form/hooks';
 import { CardFormModalContainer } from '@/pages/ReviewWritingPage/modals/components';
@@ -29,21 +27,19 @@ const CardForm = () => {
   const [answerMap, setAnswerMap] = useRecoilState(answerMapAtom);
   const [answerValidation, setAnswerValidation] = useRecoilState(answerValidationMapAtom);
 
-  // 로컬 스토리지에서 값을 불러와 전역 상태에 저장
+  // 로컬 스토리지의 값으로 전역 상태 복원
   useEffect(() => {
-    (() => {
-      const storedSelectedCategories = localStorage.getItem(`selectedCategories_${reviewRequestCode}`);
-      const storedAnswerValidations = localStorage.getItem(`answerValidations_${reviewRequestCode}`);
-      const storedAnswers = localStorage.getItem(`answers_${reviewRequestCode}`);
+    const storedSelectedCategories = localStorage.getItem(`selectedCategories_${reviewRequestCode}`);
+    const storedAnswerValidations = localStorage.getItem(`answerValidations_${reviewRequestCode}`);
+    const storedAnswers = localStorage.getItem(`answers_${reviewRequestCode}`);
 
-      const selectedCategories = storedSelectedCategories ? JSON.parse(storedSelectedCategories) : null;
-      const answerValidations = storedAnswerValidations ? new Map(JSON.parse(storedAnswerValidations)) : new Map();
-      const answers = storedAnswers ? JSON.parse(storedAnswers) : null; 
+    const selectedCategories = storedSelectedCategories ? JSON.parse(storedSelectedCategories) : null;
+    const answerValidations = storedAnswerValidations ? new Map(JSON.parse(storedAnswerValidations)) : new Map();
+    const answers = storedAnswers ? JSON.parse(storedAnswers) : null;
 
-      setSelectedCategory(selectedCategories); 
-      setAnswerValidation(answerValidations);
-      setAnswerMap(new Map(answers));
-    })();
+    setSelectedCategory(selectedCategories);
+    setAnswerValidation(answerValidations);
+    setAnswerMap(new Map(answers));
   }, []);
 
   // 작성했던 내용들을 저장하는 로직
@@ -67,7 +63,7 @@ const CardForm = () => {
     }
   };
 
-  const handleBeforeUnloadChange = () => {
+  const handleBeforeUnloadChange = useCallback(() => {
     const selectedCategories = getCurrentSelectedCategory();
     const answers = getCurrentAnswers();
     const answerValidations = getAnswerValidation();
@@ -82,21 +78,12 @@ const CardForm = () => {
     if (answers) {
       localStorage.setItem(`answers_${reviewRequestCode}`, JSON.stringify(answers));
     }
-  };
+  }, [selectedCategory, answerMap, answerValidation, reviewRequestCode]);
 
+  // 실시간 답변 상태를 로컬 스토리지에 저장
   useEffect(() => {
-    // TODO: 라우터를 통한 이동에서도 동작할 수 있도록 하기
-
-    window.addEventListener('beforeunload', handleBeforeUnloadChange);
-    document.addEventListener('visibilitychange', handleBeforeUnloadChange);
-    // window.addEventListener('pagehide', handleBeforeUnloadChange);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnloadChange);
-      document.removeEventListener('visibilitychange', handleBeforeUnloadChange);
-      // window.removeEventListener('pagehide', handleBeforeUnloadChange);
-    };
-  }, [reviewRequestCode, answerMap, selectedCategory, answerValidation]);
+    handleBeforeUnloadChange();
+  }, [handleBeforeUnloadChange]);
 
   ////////////////// 기존 로직
 
@@ -112,17 +99,6 @@ const CardForm = () => {
 
   // 모달
   const { handleOpenModal, closeModal, isOpen } = useCardFormModal();
-
-  const handleNavigateConfirmButtonClick = () => {
-    closeModal(CARD_FORM_MODAL_KEY.navigateConfirm);
-
-    if (blocker.proceed) blocker.proceed();
-  };
-
-  // 작성 중인 답변이 있는 경우 페이지 이동을 막는 기능
-  const { blocker } = useNavigateBlocker({
-    openNavigateConfirmModal: () => handleOpenModal('navigateConfirm'),
-  });
 
   const { resetFormRecoil } = useResetFormRecoil();
 
@@ -169,7 +145,6 @@ const CardForm = () => {
       <CardFormModalContainer
         isOpen={isOpen}
         closeModal={closeModal}
-        handleNavigateConfirmButtonClick={handleNavigateConfirmButtonClick}
         handleRestoreButtonClick={() => {}}
         // handleRestoreButtonClick={handleRestoreAnswers}
       />
