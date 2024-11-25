@@ -1,6 +1,6 @@
 package reviewme.fixture;
 
-import reviewme.question.domain.OptionGroup;
+import reviewme.template.domain.OptionGroup;
 
 public class OptionGroupFixture {
 

@@ -1,6 +1,6 @@
 import { CheckboxItem } from '@/components';
 import { useModals } from '@/hooks';
-import { useMultipleChoice } from '@/pages/ReviewWritingPage/form/hooks';
+import { useMultipleChoice, useFocusMessage } from '@/pages/ReviewWritingPage/form/hooks';
 import { StrengthUnCheckModal } from '@/pages/ReviewWritingPage/modals/components';
 import { ReviewWritingCardQuestion } from '@/types';
 
@@ -28,6 +28,8 @@ const MultipleChoiceAnswer = ({ question }: MultipleChoiceAnswerProps) => {
     },
   );
 
+  const { messageRef } = useFocusMessage<HTMLParagraphElement>({ isMessageShown: isOpenLimitGuide });
+
   const handleModalCancelButtonClick = () => {
     closeModal(MODAL_KEY.confirm);
   };
@@ -51,7 +53,9 @@ const MultipleChoiceAnswer = ({ question }: MultipleChoiceAnswerProps) => {
       ))}
       <S.LimitGuideMessage>
         {isOpenLimitGuide && (
-          <p data-testid="limitGuideMessage">😅 최대 {question.optionGroup?.maxCount}개까지 선택가능해요</p>
+          <p data-testid="limitGuideMessage" tabIndex={-1} ref={messageRef} aria-live="assertive">
+            😅 최대 {question.optionGroup?.maxCount}개까지 선택가능해요
+          </p>
         )}
       </S.LimitGuideMessage>
       {isOpen(MODAL_KEY.confirm) && (

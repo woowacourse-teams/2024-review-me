@@ -15,11 +15,12 @@ public record ReviewAnswerRequest(
         @Nullable
         String text
 ) {
-    public boolean hasTextAnswer() {
-        return text != null && !text.isEmpty();
+
+    public boolean hasNoText() {
+        return text == null || text.isBlank();
     }
 
-    public boolean hasCheckboxAnswer() {
-        return selectedOptionIds != null && !selectedOptionIds.isEmpty();
+    public boolean hasNoSelectedOptions() {
+        return selectedOptionIds == null || selectedOptionIds.isEmpty();
     }
 }

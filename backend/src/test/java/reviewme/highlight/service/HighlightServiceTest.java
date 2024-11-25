@@ -17,7 +17,7 @@ import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
 import reviewme.highlight.service.dto.HighlightRequest;
 import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
-import reviewme.question.repository.QuestionRepository;
+import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
@@ -102,7 +102,7 @@ class HighlightServiceTest {
         highlightService.editHighlight(highlightsRequest, reviewGroup);
 
         // then
-        List<Highlight> highlights = highlightRepository.findAll();
+        List<Highlight> highlights = highlightRepository.findAllByAnswerIdsOrderedAsc(List.of(textAnswer.getId()));
         assertAll(
                 () -> assertThat(highlights.get(0).getAnswerId()).isEqualTo(textAnswer.getId()),
                 () -> assertThat(highlights.get(0).getHighlightRange()).isEqualTo(

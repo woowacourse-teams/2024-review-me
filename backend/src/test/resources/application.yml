@@ -13,6 +13,8 @@ spring:
       ddl-auto: update
   flyway:
     enabled: false
+  cache:
+    type: none
 
 springdoc:
   swagger-ui:

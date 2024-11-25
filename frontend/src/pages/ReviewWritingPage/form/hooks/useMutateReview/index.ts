@@ -12,6 +12,9 @@ const useMutateReview = ({ executeAfterMutateSuccess }: UseMutateReviewProps) =>
 
   const reviewMutation = useMutation({
     mutationFn: (formResult: ReviewWritingFormResult) => postReviewApi(formResult),
+    onMutate: () => {
+      if (reviewMutation.isPending) return;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [REVIEW_QUERY_KEY.postReview] });
       executeAfterMutateSuccess();

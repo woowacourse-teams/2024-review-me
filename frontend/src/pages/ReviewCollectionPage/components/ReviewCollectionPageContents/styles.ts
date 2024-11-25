@@ -15,10 +15,6 @@ export const ReviewCollectionContainer = styled.div`
 export const ReviewSectionDropdown = styled.div`
   display: flex;
   justify-content: flex-end;
-
-  @media screen and (max-width: 500px) {
-    justify-content: flex-start;
-  }
 `;
 
 export const ReviewCollection = styled.div`

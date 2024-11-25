@@ -2,7 +2,7 @@ package reviewme.api;
 
 import java.time.LocalDate;
 import java.util.List;
-import reviewme.question.domain.QuestionType;
+import reviewme.template.domain.QuestionType;
 import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;

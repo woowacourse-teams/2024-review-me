@@ -13,12 +13,22 @@ export interface CheckboxStyleProps {
 export interface CheckboxProps extends CheckboxStyleProps {
   id: string;
   isChecked: boolean;
+  isTabAccessible?: boolean;
   handleChange?: (event: ChangeEvent<HTMLInputElement>, label?: string) => void;
   name?: string;
   isDisabled?: boolean;
 }
 
-const Checkbox = ({ id, isChecked, handleChange, isDisabled, $style, $isReadonly = false, ...rest }: CheckboxProps) => {
+const Checkbox = ({
+  id,
+  isChecked,
+  handleChange,
+  isDisabled,
+  isTabAccessible = true,
+  $style,
+  $isReadonly = false,
+  ...rest
+}: CheckboxProps) => {
   return (
     <S.CheckboxContainer $style={$style} $isReadonly={$isReadonly}>
       <S.CheckboxLabel>
@@ -29,9 +39,18 @@ const Checkbox = ({ id, isChecked, handleChange, isDisabled, $style, $isReadonly
           disabled={isDisabled}
           type="checkbox"
           onChange={handleChange}
+          tabIndex={-1}
           {...rest}
         />
-        <img src={isChecked ? CheckedIcon : UncheckedIcon} alt="체크박스" />
+        <img
+          src={isChecked ? CheckedIcon : UncheckedIcon}
+          tabIndex={$isReadonly || isDisabled || !isTabAccessible ? -1 : 0}
+          role="checkbox"
+          aria-checked={isChecked}
+          aria-readonly={$isReadonly}
+          alt=""
+        />
+        {$isReadonly && <span className="sr-only">{isChecked ? '선택됨' : '선택 안 됨'}</span>}
       </S.CheckboxLabel>
     </S.CheckboxContainer>
   );

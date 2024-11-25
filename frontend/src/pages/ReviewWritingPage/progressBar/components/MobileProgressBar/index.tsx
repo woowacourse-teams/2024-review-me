@@ -1,6 +1,5 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
-import NavigateNextIcon from '@/assets/navigateNext.svg';
 import useStepList from '@/pages/ReviewWritingPage/progressBar/hooks/useStepList';
 import { Direction } from '@/pages/ReviewWritingPage/types';
 
@@ -18,6 +17,8 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
   const stepRefs = useRef<HTMLDivElement[]>([]);
   const animationFrameId = useRef<number | null>(null);
 
+  const [currentCardIndexDescription, setCurrentCardIndexDescription] = useState('');
+
   useLayoutEffect(() => {
     if (!progressBarRef.current || !stepRefs.current[currentCardIndex]) return;
 
@@ -30,6 +31,10 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
         stepRefs.current[currentCardIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'center' });
       }, 250);
     };
+
+    setCurrentCardIndexDescription(
+      `현재 질문 카드는, 전체 ${stepList.length}개 카드 중, ${currentCardIndex + 1}번째 카드입니다. ${stepList[currentCardIndex].sectionName}`,
+    );
 
     animationFrameId.current = requestAnimationFrame(scrollProgressBar);
   }, [currentCardIndex]);
@@ -51,6 +56,8 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
               $isCurrentStep={step.isCurrentStep}
               onClick={() => handleClick(index)}
               type="button"
+              aria-label={step.isCurrentStep ? `현재 질문 카드는, ${step.sectionName}입니다` : `${step.sectionName}`}
+              disabled={!step.isMovingAvailable}
             >
               {step.sectionName}
             </S.StepButton>
@@ -58,6 +65,9 @@ const MobileProgressBar = ({ currentCardIndex, handleCurrentCardIndex }: MobileP
           </S.StepWrapper>
         ))}
       </S.ProgressBar>
+      <span className="sr-only" aria-live="polite">
+        {currentCardIndexDescription}
+      </span>
     </S.ProgressBarContainer>
   );
 };

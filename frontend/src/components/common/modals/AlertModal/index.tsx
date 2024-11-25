@@ -1,8 +1,9 @@
 import { ButtonStyleType, EssentialPropsWithChildren } from '@/types';
 
 import Button from '../../Button';
+import FocusTrap from '../../FocusTrap';
+import Portal from '../../Portal';
 import ModalBackground from '../ModalBackground';
-import ModalPortal from '../ModalPortal';
 
 import * as S from './styles';
 
@@ -25,20 +26,22 @@ const AlertModal = ({
   children,
 }: EssentialPropsWithChildren<AlertModalProps>) => {
   return (
-    <ModalPortal>
+    <Portal>
       <ModalBackground closeModal={isClosableOnBackground ? handleClose : null}>
-        <S.AlertModalContainer>
-          <S.Contents>{children}</S.Contents>
-          <Button
-            styleType={closeButton.type}
-            onClick={closeButton.handleClick}
-            style={{ width: '100%', minWidth: '30%', height: '4rem' }}
-          >
-            {closeButton.content}
-          </Button>
-        </S.AlertModalContainer>
+        <FocusTrap>
+          <S.AlertModalContainer>
+            <S.Contents>{children}</S.Contents>
+            <Button
+              styleType={closeButton.type}
+              onClick={closeButton.handleClick}
+              style={{ width: '100%', minWidth: '30%', height: '4rem' }}
+            >
+              {closeButton.content}
+            </Button>
+          </S.AlertModalContainer>
+        </FocusTrap>
       </ModalBackground>
-    </ModalPortal>
+    </Portal>
   );
 };
 

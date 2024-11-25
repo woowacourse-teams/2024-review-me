@@ -1,23 +1,14 @@
-// import LogoIcon from '../../../../../assets/logo.svg';
-
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import * as S from './styles';
 
 const Logo = () => {
-  const navigate = useNavigate();
-
-  const handleLogoClick = () => {
-    navigate('/');
-  };
-
   return (
     <S.Logo>
-      {/* <img src={LogoIcon} alt="로고 아이콘" /> */}
-      <S.LogoText onClick={handleLogoClick}>
-        <span>REVIEW</span>
-        <span>ME</span>
-      </S.LogoText>
+      <Link to={'/'} aria-label="리뷰미 홈페이지로 이동하기">
+        <span aria-hidden="true">REVIEW</span>
+        <span aria-hidden="true">ME</span>
+      </Link>
     </S.Logo>
   );
 };

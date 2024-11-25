@@ -8,13 +8,14 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import reviewme.question.domain.Question;
-import reviewme.question.repository.QuestionRepository;
+import reviewme.template.domain.Question;
+import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
 import reviewme.review.domain.Review;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.template.domain.Template;
@@ -61,15 +62,9 @@ public class ReviewMapper {
 
     private Answer mapRequestToAnswer(Map<Long, Question> questions, ReviewAnswerRequest answerRequest) {
         Question question = questions.get(answerRequest.questionId());
-
-        // TODO: 아래 코드를 삭제해야 한다
-        if (question.isSelectable() && answerRequest.selectedOptionIds() != null && answerRequest.selectedOptionIds().isEmpty()) {
-            return null;
+        if (question == null) {
+            throw new SubmittedQuestionNotFoundException(answerRequest.questionId());
         }
-        if (!question.isSelectable() && answerRequest.text() != null && answerRequest.text().isEmpty()) {
-            return null;
-        }
-        // END
 
         AnswerMapper answerMapper = answerMapperFactory.getAnswerMapper(question.getQuestionType());
         return answerMapper.mapToAnswer(answerRequest);

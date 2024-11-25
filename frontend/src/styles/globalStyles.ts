@@ -51,9 +51,19 @@ const globalStyles = (theme: Theme) => css`
   }
 
   .sr-only {
-    position: fixed;
-    top: -999rem;
-    left: -999rem;
+    position: absolute;
+
+    overflow: hidden;
+
+    width: 0.1rem;
+    height: 0.1rem;
+    margin: -0.1rem;
+    padding: 0;
+
+    white-space: nowrap;
+
+    clip: rect(0, 0, 0, 0);
+    border: 0;
   }
 `;
 

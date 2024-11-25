@@ -24,7 +24,6 @@ export const AccordionContainer = styled.div<AccordionStyleProps>`
 
 export const AccordionHeader = styled.div<AccordionStyleProps>`
   display: flex;
-  padding: 1rem;
   border-bottom: ${({ $isOpened, theme }) => $isOpened && `0.1rem solid ${theme.colors.placeholder}`};
 `;
 
@@ -36,7 +35,8 @@ export const AccordionButton = styled.button`
 
   width: 100%;
   height: fit-content;
-  min-height: 3rem;
+  min-height: 5rem;
+  padding: 1rem;
 `;
 
 export const AccordionTitle = styled.p`

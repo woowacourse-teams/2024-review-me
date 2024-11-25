@@ -1,39 +1,44 @@
 import { useState } from 'react';
 
-import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
-import { EditorAnswerMap, EditorLine, Highlight, ReviewAnswerResponseData } from '@/types';
+import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_EVENT_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
+import { EditorAnswerMap, EditorLine, HighlightResponseData, ReviewAnswerResponseData } from '@/types';
 import {
   getEndLineOffset,
   getStartLineOffset,
   getRemovedHighlightList,
-  findSelectionInfo,
   getUpdatedBlockByHighlight,
   removeSelection,
   SelectionInfo,
+  trackEventInAmplitude,
 } from '@/utils';
 
+import { UseLongPressHighlightPositionReturn } from './useLongPressHighlightPosition';
 import useMutateHighlight from './useMutateHighlight';
 
-interface UseHighlightProps {
+interface UseHighlightProps extends UseLongPressHighlightPositionReturn {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
   isEditable: boolean;
-  hideDragHighlightButton: () => void;
-  updateLongPressHighlightButtonPosition: (rect: DOMRect) => void;
-  hideLongPressHighlightButton: () => void;
   handleErrorModal: (isError: boolean) => void;
+  handleModalMessage: (message: string) => void;
+  resetHighlightMenuPosition: () => void;
 }
-
 interface RemovalTarget {
   answerId: number;
   lineIndex: number;
   highlightIndex: number;
 }
 
-const findBlockHighlightListFromAnswer = (answerHighlightList: Highlight[], lineIndex: number) => {
-  return answerHighlightList.find((i) => i.lineIndex === lineIndex)?.rangeList || [];
+const HIGHLIGHT_ERROR_MESSAGES = {
+  addFailure: '형광펜 추가에 실패했어요. 다시 시도해주세요.',
+  deleteFailure: '형광펜 삭제에 실패했어요. 다시 시도해주세요.',
 };
-const makeBlockListByText = (content: string, answerHighlightList: Highlight[]): EditorLine[] => {
+
+const findBlockHighlightListFromAnswer = (answerHighlightList: HighlightResponseData[], lineIndex: number) => {
+  return answerHighlightList.find((i) => i.lineIndex === lineIndex)?.ranges || [];
+};
+
+const makeBlockListByText = (content: string, answerHighlightList: HighlightResponseData[]): EditorLine[] => {
   return content.split('\n').map((text, index) => ({
     lineIndex: index,
     text,
@@ -60,40 +65,51 @@ const useHighlight = ({
   questionId,
   answerList,
   isEditable,
-  hideDragHighlightButton,
-  updateLongPressHighlightButtonPosition,
-  hideLongPressHighlightButton,
+  updateHighlightMenuPositionByLongPress,
+  resetHighlightMenuPosition,
   handleErrorModal,
+  handleModalMessage,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
 
   // span 클릭 시, 제공되는 형광펜 삭제 기능 타겟
-  const [removalTarget, setRemovalTarget] = useState<RemovalTarget | null>(null);
+  const [longPressRemovalTarget, setLongPressRemovalTarget] = useState<RemovalTarget | null>(null);
 
-  const updateEditorAnswerMap = (newEditorAnswerMap: EditorAnswerMap) => setEditorAnswerMap(newEditorAnswerMap);
+  const resetLongPressRemovalTarget = () => setLongPressRemovalTarget(null);
 
-  const resetHighlightButton = () => {
+  const updateEditorAnswerMap = (newEditorAnswerMap: EditorAnswerMap) => {
+    setEditorAnswerMap(newEditorAnswerMap);
+  };
+
+  const resetHighlightMenu = () => {
     removeSelection();
-    hideDragHighlightButton();
+    resetHighlightMenuPosition();
+    resetLongPressRemovalTarget();
   };
 
   const { mutate: mutateHighlight } = useMutateHighlight({
     questionId,
     updateEditorAnswerMap,
-    resetHighlightButton,
+    resetHighlightMenu,
     handleErrorModal,
   });
 
-  const addHighlightByDrag = () => {
-    const selectionInfo = findSelectionInfo();
+  const addHighlightByDrag = (selectionInfo: SelectionInfo) => {
+    trackEventInAmplitude(HIGHLIGHT_EVENT_NAME.addHighlightByDrag);
+
     if (!selectionInfo) return;
     const newEditorAnswerMap: EditorAnswerMap | undefined = selectionInfo.isSameAnswer
       ? addSingleAnswerHighlight(selectionInfo)
       : addMultipleAnswerHighlight(selectionInfo);
     if (!newEditorAnswerMap) return;
 
-    mutateHighlight(newEditorAnswerMap);
+    mutateHighlight(newEditorAnswerMap, {
+      onError: () => {
+        handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.addFailure);
+      },
+    });
   };
+  // NOTE :공백으로 이루어진 개행용 문자열의 highlightList는 빈배열로 유지한다
 
   const addMultipleAnswerHighlight = (selectionInfo: SelectionInfo) => {
     const { startAnswer, endAnswer } = selectionInfo;
@@ -109,8 +125,8 @@ const useHighlight = ({
         const { lineList } = targetAnswer;
 
         const newLineList: EditorLine[] = lineList.map((line, index) => {
+          if (line.text.trim() === '') return line;
           if (index < lineIndex) return line;
-
           if (index > lineIndex) {
             return {
               ...line,
@@ -131,14 +147,17 @@ const useHighlight = ({
 
       if (startAnswer.index < answerIndex && endAnswer.index > answerIndex) {
         const targetAnswer = newEditorAnswerMap.get(answerId);
-
         if (!targetAnswer) return;
         const { lineList } = targetAnswer;
 
-        const newLineList = lineList.map((block) => ({
-          ...block,
-          highlightList: [{ startIndex: 0, endIndex: block.text.length - 1 }],
-        }));
+        const newLineList = lineList.map((line) => {
+          if (line.text.trim() === '') return line;
+
+          return {
+            ...line,
+            highlightList: [{ startIndex: 0, endIndex: line.text.length - 1 }],
+          };
+        });
 
         newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
       }
@@ -150,17 +169,18 @@ const useHighlight = ({
         if (!targetAnswer) return;
         const { lineList } = targetAnswer;
 
-        const newLineList = lineList.map((block, index) => {
-          if (index > lineIndex) return block;
+        const newLineList = lineList.map((line, index) => {
+          if (line.text.trim() === '') return line;
+          if (index > lineIndex) return line;
           if (index < lineIndex) {
             return {
-              ...block,
-              highlightList: [{ startIndex: 0, endIndex: block.text.length - 1 }],
+              ...line,
+              highlightList: [{ startIndex: 0, endIndex: line.text.length - 1 }],
             };
           }
 
           return getUpdatedBlockByHighlight({
-            blockTextLength: block.text.length,
+            blockTextLength: line.text.length,
             lineIndex: index,
             startIndex: 0,
             endIndex: offset,
@@ -177,6 +197,7 @@ const useHighlight = ({
 
   const addSingleAnswerHighlight = (selectionInfo: SelectionInfo) => {
     const { startLineIndex, endLineIndex, startAnswer } = selectionInfo;
+
     if (!startAnswer) return;
 
     const newEditorAnswerMap = new Map(editorAnswerMap);
@@ -185,14 +206,16 @@ const useHighlight = ({
 
     if (!targetAnswer) return;
 
-    const newLineList: EditorLine[] = targetAnswer.lineList.map((block, index, array) => {
-      if (index < startLineIndex) return block;
-      if (index > endLineIndex) return block;
+    const newLineList: EditorLine[] = targetAnswer.lineList.map((line, index, array) => {
+      if (line.text.trim() === '') return line;
+      if (index < startLineIndex) return line;
+      if (index > endLineIndex) return line;
+
       if (index === startLineIndex) {
-        const { startIndex, endIndex } = getStartLineOffset(selectionInfo, block);
+        const { startIndex, endIndex } = getStartLineOffset(selectionInfo, line);
 
         return getUpdatedBlockByHighlight({
-          blockTextLength: block.text.length,
+          blockTextLength: line.text.length,
           lineIndex: index,
           startIndex,
           endIndex,
@@ -204,25 +227,28 @@ const useHighlight = ({
         const endIndex = getEndLineOffset(selectionInfo);
 
         return getUpdatedBlockByHighlight({
-          blockTextLength: block.text.length,
+          blockTextLength: line.text.length,
           lineIndex: index,
           startIndex: 0,
           endIndex,
           lineList: array,
         });
       }
+
       return {
-        ...block,
-        highlightList: [{ startIndex: 0, endIndex: block.text.length }],
+        ...line,
+        highlightList: [{ startIndex: 0, endIndex: line.text.length - 1 }],
       };
     });
 
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
+
     return newEditorAnswerMap;
   };
 
-  const removeHighlightByDrag = () => {
-    const selectionInfo = findSelectionInfo();
+  const removeHighlightByDrag = (selectionInfo: SelectionInfo) => {
+    trackEventInAmplitude(HIGHLIGHT_EVENT_NAME.removeHighlightByDrag);
+
     if (!selectionInfo) return;
 
     const newEditorAnswerMap: EditorAnswerMap | undefined = selectionInfo.isSameAnswer
@@ -231,7 +257,11 @@ const useHighlight = ({
 
     if (!newEditorAnswerMap) return;
 
-    mutateHighlight(newEditorAnswerMap);
+    mutateHighlight(newEditorAnswerMap, {
+      onError: () => {
+        handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.deleteFailure);
+      },
+    });
   };
 
   const removeSingleAnswerHighlight = (selectionInfo: SelectionInfo) => {
@@ -245,8 +275,10 @@ const useHighlight = ({
     if (!targetAnswer) return;
 
     const newLineList = targetAnswer.lineList.map((line, index) => {
+      if (line.text.trim() === '') return line;
       if (index < startLineIndex) return line;
       if (index > endLineIndex) return line;
+
       if (index === startLineIndex) {
         const { startIndex, endIndex } = getStartLineOffset(selectionInfo, line);
 
@@ -260,6 +292,7 @@ const useHighlight = ({
           }),
         };
       }
+
       if (index === endLineIndex) {
         const endIndex = getEndLineOffset(selectionInfo);
         return {
@@ -279,9 +312,9 @@ const useHighlight = ({
     });
 
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
+
     return newEditorAnswerMap;
   };
-
   const removeMultipleAnswerHighlight = (selectionInfo: SelectionInfo) => {
     const { startAnswer, endAnswer } = selectionInfo;
     const newEditorAnswerMap = new Map(editorAnswerMap);
@@ -296,6 +329,7 @@ const useHighlight = ({
         const { lineList } = targetAnswer;
 
         const newLineList = lineList.map((line, index) => {
+          if (line.text.trim() === '') return line;
           if (index < lineIndex) return line;
 
           if (index > lineIndex) {
@@ -304,6 +338,7 @@ const useHighlight = ({
               highlightList: [],
             };
           }
+
           return {
             ...line,
             highlightList: getRemovedHighlightList({
@@ -317,6 +352,7 @@ const useHighlight = ({
 
         newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
       }
+
       if (answerId === endAnswer.id) {
         const { lineIndex, offset } = endAnswer;
         const targetAnswer = newEditorAnswerMap.get(answerId);
@@ -325,6 +361,7 @@ const useHighlight = ({
         const { lineList } = targetAnswer;
 
         const newLineList = lineList.map((line, index) => {
+          if (line.text.trim() === '') return line;
           if (index > lineIndex) return line;
 
           if (index < lineIndex) {
@@ -333,6 +370,7 @@ const useHighlight = ({
               highlightList: [],
             };
           }
+
           return {
             ...line,
             highlightList: getRemovedHighlightList({
@@ -351,8 +389,8 @@ const useHighlight = ({
         const targetAnswer = newEditorAnswerMap.get(answerId);
         if (!targetAnswer) return;
 
-        const newLineList: EditorLine[] = targetAnswer.lineList.map((block) => ({
-          ...block,
+        const newLineList: EditorLine[] = targetAnswer.lineList.map((line) => ({
+          ...line,
           highlightList: [],
         }));
         newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
@@ -373,6 +411,7 @@ const useHighlight = ({
     }
     return false;
   };
+
   const handleLongPressLine = (event: React.MouseEvent | React.TouchEvent) => {
     if (!isEditable) return;
     if (isSingleCharacterSelected()) return;
@@ -395,19 +434,21 @@ const useHighlight = ({
     const { highlightList } = targetAnswer.lineList[Number(lineIndex)];
     const highlightIndex = highlightList.findIndex((i) => i.startIndex === Number(start) && i.endIndex === Number(end));
 
-    setRemovalTarget({
+    setLongPressRemovalTarget({
       answerId: targetAnswer.answerId,
       lineIndex: Number(lineIndex),
       highlightIndex: Number(highlightIndex),
     });
 
-    updateLongPressHighlightButtonPosition(rect);
+    updateHighlightMenuPositionByLongPress(rect);
   };
 
   const removeHighlightByLongPress = async () => {
-    if (!removalTarget) return;
+    trackEventInAmplitude(HIGHLIGHT_EVENT_NAME.removeHighlightByLongPress);
 
-    const { answerId, lineIndex, highlightIndex } = removalTarget;
+    if (!longPressRemovalTarget) return;
+
+    const { answerId, lineIndex, highlightIndex } = longPressRemovalTarget;
 
     const newEditorAnswerMap: EditorAnswerMap = new Map(editorAnswerMap);
     const targetAnswer = newEditorAnswerMap.get(answerId);
@@ -423,8 +464,11 @@ const useHighlight = ({
     newLineList.splice(lineIndex, 1, newTargetBlock);
     newEditorAnswerMap.set(answerId, { ...targetAnswer, lineList: newLineList });
 
-    mutateHighlight(newEditorAnswerMap);
-    hideLongPressHighlightButton();
+    mutateHighlight(newEditorAnswerMap, {
+      onError: () => {
+        handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.deleteFailure);
+      },
+    });
   };
 
   return {
@@ -433,7 +477,8 @@ const useHighlight = ({
     removeHighlightByDrag,
     handleLongPressLine,
     removeHighlightByLongPress,
-    removalTarget,
+    longPressRemovalTarget,
+    resetLongPressRemovalTarget,
   };
 };
 

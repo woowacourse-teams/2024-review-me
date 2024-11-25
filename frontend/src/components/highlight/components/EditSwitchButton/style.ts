@@ -17,7 +17,7 @@ export const EditSwitchButton = styled.button<EditorSwitchProps>`
 `;
 
 export const Circle = styled.div<EditorSwitchProps>`
-  transform: translateX(${({ $isEditable }) => ($isEditable ? 0 : '1.5rem')});
+  transform: translateX(${({ $isEditable }) => ($isEditable ? '1.5rem' : 0)});
 
   width: 1rem;
   height: 1rem;

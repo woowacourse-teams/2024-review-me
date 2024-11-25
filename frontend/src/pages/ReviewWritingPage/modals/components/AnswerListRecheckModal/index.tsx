@@ -28,9 +28,31 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
     return answer ? answer.text : '';
   };
 
+  const generateSummary = () => {
+    let summary = '작성한 리뷰 내용입니다.';
+
+    questionSectionList.forEach((section) => {
+      section.questions.forEach((question) => {
+        if (question.questionType === 'CHECKBOX') {
+          const selectedOptions = question.optionGroup?.options
+            .filter((option) => isSelectedChoice(question.questionId, option.optionId))
+            .map((option) => option.content)
+            .join(', ');
+          if (selectedOptions) summary += `질문: ${question.content}. 답변: ${selectedOptions}.`;
+        } else if (question.questionType === 'TEXT') {
+          const textAnswer = findTextAnswer(question.questionId);
+          summary += `질문: ${question.content}. 답변: ${textAnswer ? textAnswer : '답변이 없습니다.'}.`;
+        }
+      });
+    });
+
+    return summary;
+  };
+
   return (
     <ContentModal handleClose={closeModal}>
-      <S.AnswerListModalContent>
+      <span className="sr-only">{generateSummary()}</span>
+      <S.AnswerListModalContent aria-hidden={true} tabIndex={-1}>
         <S.AnswerListContainer>
           {questionSectionList.map((section) => (
             <ReviewWritingCardLayout cardSection={section} key={section.sectionId}>

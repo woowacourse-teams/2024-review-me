@@ -23,7 +23,7 @@ describe('하이라이트 요청 테스트', () => {
     const props: UseMutateHighlightProps = {
       questionId: QUESTION_ID,
       updateEditorAnswerMap: () => {},
-      resetHighlightButton: () => {},
+      resetHighlightMenu: () => {},
       handleErrorModal: () => {},
     };
 
