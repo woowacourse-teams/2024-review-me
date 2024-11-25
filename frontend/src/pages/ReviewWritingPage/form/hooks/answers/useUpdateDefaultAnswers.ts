@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { answerMapAtom, answerValidationMapAtom, cardSectionListSelector } from '@/recoil';
 import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
@@ -15,6 +15,7 @@ const useUpdateDefaultAnswers = () => {
   // NOTE : answerMap - 질문에 대한 답변들 , number : questionId
   const [answerMap, setAnswerMap] = useRecoilState(answerMapAtom);
 
+  // 서버에서 받아온 질문지
   const cardSectionList = useRecoilValue(cardSectionListSelector);
   // NOTE : answerValidationMap  -질문의 단볍들의 유효성 여부 ,number: questionId
   const [answerValidationMap, setAnswerValidationMap] = useRecoilState(answerValidationMapAtom);

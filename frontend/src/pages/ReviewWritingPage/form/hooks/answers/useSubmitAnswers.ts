@@ -33,7 +33,7 @@ const useSubmitAnswers = ({ closeSubmitConfirmModal }: UseSubmitAnswersProps) =>
     if (!answerMap || !reviewRequestCode) return;
 
     const result: ReviewWritingFormResult = {
-      reviewRequestCode: reviewRequestCode,
+      reviewRequestCode,
       answers: Array.from(answerMap.values()),
     };
 
