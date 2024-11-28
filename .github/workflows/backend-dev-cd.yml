@@ -57,7 +57,7 @@ jobs:
   deploy:
     name: Deploy via self-hosted runner
     needs: build
-    runs-on: [self-hosted, dev]
+    runs-on: [self-hosted, dev, oracle]
 
     steps:
       - name: Checkout to secret repository
