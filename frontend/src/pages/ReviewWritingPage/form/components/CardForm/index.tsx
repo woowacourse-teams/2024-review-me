@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
+import { STORED_DATA_NAME } from '@/constants';
 import { useSearchParamAndQuery } from '@/hooks';
 import {
   useCurrentCardIndex,
@@ -29,9 +30,11 @@ const CardForm = () => {
 
   // 로컬 스토리지의 값으로 전역 상태 복원
   useEffect(() => {
-    const storedSelectedCategories = localStorage.getItem(`selectedCategories_${reviewRequestCode}`);
-    const storedAnswerValidations = localStorage.getItem(`answerValidations_${reviewRequestCode}`);
-    const storedAnswers = localStorage.getItem(`answers_${reviewRequestCode}`);
+    const storedSelectedCategories = localStorage.getItem(
+      `${STORED_DATA_NAME.selectedCategories}_${reviewRequestCode}`,
+    );
+    const storedAnswerValidations = localStorage.getItem(`${STORED_DATA_NAME.answerValidations}_${reviewRequestCode}`);
+    const storedAnswers = localStorage.getItem(`${STORED_DATA_NAME.answers}_${reviewRequestCode}`);
 
     const selectedCategories = storedSelectedCategories ? JSON.parse(storedSelectedCategories) : null;
     const answerValidations = storedAnswerValidations ? new Map(JSON.parse(storedAnswerValidations)) : new Map();
@@ -69,14 +72,20 @@ const CardForm = () => {
     const answerValidations = getAnswerValidation();
 
     if (selectedCategories) {
-      localStorage.setItem(`selectedCategories_${reviewRequestCode}`, JSON.stringify(selectedCategories));
+      localStorage.setItem(
+        `${STORED_DATA_NAME.selectedCategories}_${reviewRequestCode}`,
+        JSON.stringify(selectedCategories),
+      );
     }
     if (answerValidations) {
-      localStorage.setItem(`answerValidations_${reviewRequestCode}`, JSON.stringify(answerValidations));
+      localStorage.setItem(
+        `${STORED_DATA_NAME.answerValidations}_${reviewRequestCode}`,
+        JSON.stringify(answerValidations),
+      );
     }
 
     if (answers) {
-      localStorage.setItem(`answers_${reviewRequestCode}`, JSON.stringify(answers));
+      localStorage.setItem(`${STORED_DATA_NAME.answers}_${reviewRequestCode}`, JSON.stringify(answers));
     }
   }, [selectedCategory, answerMap, answerValidation, reviewRequestCode]);
 

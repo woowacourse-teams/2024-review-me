@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
+import { STORED_DATA_NAME } from '@/constants';
 import { useSearchParamAndQuery } from '@/hooks';
 import { answerValidationMapAtom, cardSectionListSelector } from '@/recoil';
 
@@ -72,25 +73,28 @@ const useStepList = ({ currentCardIndex }: UseStepListProps) => {
 
   const handleBeforeUnloadChange = useCallback(() => {
     if (visitedCardIdList.length > 0) {
-      localStorage.setItem(`visitedCardIdList_${reviewRequestCode}`, JSON.stringify(visitedCardIdList));
+      localStorage.setItem(
+        `${STORED_DATA_NAME.visitedCardIdList}_${reviewRequestCode}`,
+        JSON.stringify(visitedCardIdList),
+      );
     }
   }, [reviewRequestCode, visitedCardIdList]);
 
-  // 복원 
+  // 복원
   useEffect(() => {
-      const storedVisitedCardIdList = localStorage.getItem(`visitedCardIdList_${reviewRequestCode}`);
-      const defaultVisitedCardIdList = cardSectionList.length > 0 ? [cardSectionList[0].sectionId] : [];
-      const parsedVisitedCardIdList = storedVisitedCardIdList
-        ? JSON.parse(storedVisitedCardIdList)
-        : defaultVisitedCardIdList;
+    const storedVisitedCardIdList = localStorage.getItem(`${STORED_DATA_NAME.visitedCardIdList}_${reviewRequestCode}`);
+    const defaultVisitedCardIdList = cardSectionList.length > 0 ? [cardSectionList[0].sectionId] : [];
+    const parsedVisitedCardIdList = storedVisitedCardIdList
+      ? JSON.parse(storedVisitedCardIdList)
+      : defaultVisitedCardIdList;
 
-      setVisitedCardIdList(parsedVisitedCardIdList);
+    setVisitedCardIdList(parsedVisitedCardIdList);
   }, [reviewRequestCode, cardSectionList]);
 
   // 로컬 스토리지와의 동기화를 위한 useEffect
-  useEffect(()=>{
+  useEffect(() => {
     handleBeforeUnloadChange();
-  },[visitedCardIdList]);
+  }, [visitedCardIdList]);
 
   useEffect(() => {
     updateVisitedCardIdList();
