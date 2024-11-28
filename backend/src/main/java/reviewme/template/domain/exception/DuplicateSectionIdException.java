@@ -9,6 +9,6 @@ public class DuplicateSectionIdException extends BadRequestException {
 
     public DuplicateSectionIdException(List<Long> sectionIds) {
         super("템플릿에는 중복된 섹션이 있을 수 없어요.");
-        log.info("Duplicate section ID Found during create Template - sectionIds: {}", sectionIds);
+        log.info("Duplicate section ID found while creating Template - sectionIds: {}", sectionIds);
     }
 }

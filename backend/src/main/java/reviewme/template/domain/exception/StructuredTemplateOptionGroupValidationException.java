@@ -10,7 +10,7 @@ public class StructuredTemplateOptionGroupValidationException extends BadRequest
     public StructuredTemplateOptionGroupValidationException(Collection<Long> checkboxQuestionIds,
                                                             Collection<Long> questionIdsOfOptionGroups) {
         super("서버 내부에서 문제가 발생했어요. 서버에 문의해주세요.");
-        log.warn("OptionGroup validation failed during StructuredTemplate creation: checkboxQuestionIds: {}, questionIdsOfOptionGroups: {}",
+        log.warn("OptionGroup validation failed while creating StructuredTemplate: checkboxQuestionIds: {}, questionIdsOfOptionGroups: {}",
                 checkboxQuestionIds, questionIdsOfOptionGroups);
     }
 }
