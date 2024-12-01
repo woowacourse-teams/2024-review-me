@@ -1,20 +1,21 @@
-import { useCallback, useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
 
-import { STORED_DATA_NAME } from '@/constants';
 import { useSearchParamAndQuery } from '@/hooks';
 import {
   useCurrentCardIndex,
   useResetFormRecoil,
   useUpdateDefaultAnswers,
   useLoadAndPrepareReview,
+  useSaveReviewToLocalStorage,
+  useRestoreFromLocalStorage,
 } from '@/pages/ReviewWritingPage/form/hooks';
 import { CardFormModalContainer } from '@/pages/ReviewWritingPage/modals/components';
 import useCardFormModal from '@/pages/ReviewWritingPage/modals/hooks/useCardFormModal';
 import MobileProgressBar from '@/pages/ReviewWritingPage/progressBar/components/MobileProgressBar';
 import ProgressBar from '@/pages/ReviewWritingPage/progressBar/components/ProgressBar';
 import { CardSlider } from '@/pages/ReviewWritingPage/slider/components';
-import { answerMapAtom, answerValidationMapAtom, reviewRequestCodeAtom, selectedCategoryAtom } from '@/recoil';
+import { reviewRequestCodeAtom } from '@/recoil';
 import { calculateParticle } from '@/utils';
 
 import * as S from './styles';
@@ -24,81 +25,14 @@ const CardForm = () => {
     paramKey: 'reviewRequestCode',
   });
 
-  const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoryAtom);
-  const [answerMap, setAnswerMap] = useRecoilState(answerMapAtom);
-  const [answerValidation, setAnswerValidation] = useRecoilState(answerValidationMapAtom);
+  const { resetFormRecoil } = useResetFormRecoil();
+  const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
 
-  // 로컬 스토리지의 값으로 전역 상태 복원
-  useEffect(() => {
-    const storedSelectedCategories = localStorage.getItem(
-      `${STORED_DATA_NAME.selectedCategories}_${reviewRequestCode}`,
-    );
-    const storedAnswerValidations = localStorage.getItem(`${STORED_DATA_NAME.answerValidations}_${reviewRequestCode}`);
-    const storedAnswers = localStorage.getItem(`${STORED_DATA_NAME.answers}_${reviewRequestCode}`);
-
-    const selectedCategories = storedSelectedCategories ? JSON.parse(storedSelectedCategories) : null;
-    const answerValidations = storedAnswerValidations ? new Map(JSON.parse(storedAnswerValidations)) : new Map();
-    const answers = storedAnswers ? JSON.parse(storedAnswers) : null;
-
-    setSelectedCategory(selectedCategories);
-    setAnswerValidation(answerValidations);
-    setAnswerMap(new Map(answers));
-  }, []);
-
-  // 작성했던 내용들을 저장하는 로직
-  const getCurrentSelectedCategory = () => {
-    if (selectedCategory && selectedCategory.length > 0) {
-      return selectedCategory;
-    }
-  };
-
-  const getAnswerValidation = () => {
-    if (answerValidation && answerValidation.size > 0) {
-      const plainObjectAnswers = Array.from(answerValidation.entries());
-      return plainObjectAnswers.length > 0 ? plainObjectAnswers : null;
-    }
-  };
-
-  const getCurrentAnswers = () => {
-    if (answerMap) {
-      const plainObjectAnswers = Array.from(answerMap.entries());
-      return plainObjectAnswers.length > 0 ? plainObjectAnswers : null;
-    }
-  };
-
-  const handleBeforeUnloadChange = useCallback(() => {
-    const selectedCategories = getCurrentSelectedCategory();
-    const answers = getCurrentAnswers();
-    const answerValidations = getAnswerValidation();
-
-    if (selectedCategories) {
-      localStorage.setItem(
-        `${STORED_DATA_NAME.selectedCategories}_${reviewRequestCode}`,
-        JSON.stringify(selectedCategories),
-      );
-    }
-    if (answerValidations) {
-      localStorage.setItem(
-        `${STORED_DATA_NAME.answerValidations}_${reviewRequestCode}`,
-        JSON.stringify(answerValidations),
-      );
-    }
-
-    if (answers) {
-      localStorage.setItem(`${STORED_DATA_NAME.answers}_${reviewRequestCode}`, JSON.stringify(answers));
-    }
-  }, [selectedCategory, answerMap, answerValidation, reviewRequestCode]);
-
-  // 실시간 답변 상태를 로컬 스토리지에 저장
-  useEffect(() => {
-    handleBeforeUnloadChange();
-  }, [handleBeforeUnloadChange]);
-
-  ////////////////// 기존 로직
+  // 로컬 스토리지에 저장된 값을 기반으로 모달의 isOpen 여부 설정
+  const { restoreData, initialModalsState } = useRestoreFromLocalStorage();
+  const { handleOpenModal, closeModal, isOpen } = useCardFormModal({ initialStates: initialModalsState });
 
   const setReviewRequestCode = useSetRecoilState(reviewRequestCodeAtom);
-
-  const { currentCardIndex, handleCurrentCardIndex } = useCurrentCardIndex();
 
   // 프로젝트 정보 및 질문지를 서버에서 가져옴
   const { revieweeName, projectName } = useLoadAndPrepareReview({ reviewRequestCode });
@@ -106,10 +40,7 @@ const CardForm = () => {
   // 생성된 질문지를 바탕으로 답변 기본값 및 답변의 유효성 기본값 설정
   useUpdateDefaultAnswers();
 
-  // 모달
-  const { handleOpenModal, closeModal, isOpen } = useCardFormModal();
-
-  const { resetFormRecoil } = useResetFormRecoil();
+  useSaveReviewToLocalStorage();
 
   useEffect(() => {
     if (reviewRequestCode) setReviewRequestCode(reviewRequestCode);
@@ -126,6 +57,8 @@ const CardForm = () => {
     target: revieweeName,
     particles: { withFinalConsonant: '을', withoutFinalConsonant: '를' },
   })} 리뷰해주세요!`;
+
+  const handleRestoreAnswers = () => restoreData();
 
   return (
     <S.CardFormContainer>
@@ -151,12 +84,7 @@ const CardForm = () => {
           handleOpenModal={handleOpenModal}
         />
       </S.CardForm>
-      <CardFormModalContainer
-        isOpen={isOpen}
-        closeModal={closeModal}
-        handleRestoreButtonClick={() => {}}
-        // handleRestoreButtonClick={handleRestoreAnswers}
-      />
+      <CardFormModalContainer isOpen={isOpen} closeModal={closeModal} handleRestoreButtonClick={handleRestoreAnswers} />
     </S.CardFormContainer>
   );
 };
