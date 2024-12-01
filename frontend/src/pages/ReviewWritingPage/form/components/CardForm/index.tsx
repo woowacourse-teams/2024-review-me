@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
 
 import { useSearchParamAndQuery } from '@/hooks';
 import {
@@ -15,7 +14,6 @@ import useCardFormModal from '@/pages/ReviewWritingPage/modals/hooks/useCardForm
 import MobileProgressBar from '@/pages/ReviewWritingPage/progressBar/components/MobileProgressBar';
 import ProgressBar from '@/pages/ReviewWritingPage/progressBar/components/ProgressBar';
 import { CardSlider } from '@/pages/ReviewWritingPage/slider/components';
-import { reviewRequestCodeAtom } from '@/recoil';
 import { calculateParticle } from '@/utils';
 
 import * as S from './styles';
@@ -32,8 +30,6 @@ const CardForm = () => {
   const { restoreData, initialModalsState } = useRestoreFromLocalStorage();
   const { handleOpenModal, closeModal, isOpen } = useCardFormModal({ initialStates: initialModalsState });
 
-  const setReviewRequestCode = useSetRecoilState(reviewRequestCodeAtom);
-
   // 프로젝트 정보 및 질문지를 서버에서 가져옴
   const { revieweeName, projectName } = useLoadAndPrepareReview({ reviewRequestCode });
 
@@ -41,10 +37,6 @@ const CardForm = () => {
   useUpdateDefaultAnswers();
 
   useSaveReviewToLocalStorage();
-
-  useEffect(() => {
-    if (reviewRequestCode) setReviewRequestCode(reviewRequestCode);
-  }, [reviewRequestCode]);
 
   useEffect(() => {
     return () => {
