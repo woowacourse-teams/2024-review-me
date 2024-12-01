@@ -72,21 +72,20 @@ const useStepList = ({ currentCardIndex }: UseStepListProps) => {
   });
 
   const handleBeforeUnloadChange = useCallback(() => {
-    if (visitedCardIdList.length > 0) {
-      localStorage.setItem(
-        `${STORED_DATA_NAME.visitedCardIdList}_${reviewRequestCode}`,
-        JSON.stringify(visitedCardIdList),
-      );
-    }
+    if (visitedCardIdList.length === 0) return;
+
+    localStorage.setItem(
+      `${STORED_DATA_NAME.visitedCardIdList}_${reviewRequestCode}`,
+      JSON.stringify(visitedCardIdList),
+    );
   }, [reviewRequestCode, visitedCardIdList]);
 
   // 복원
   useEffect(() => {
+    if (cardSectionList.length === 0 || !reviewRequestCode) return;
+
     const storedVisitedCardIdList = localStorage.getItem(`${STORED_DATA_NAME.visitedCardIdList}_${reviewRequestCode}`);
-    const defaultVisitedCardIdList = cardSectionList.length > 0 ? [cardSectionList[0].sectionId] : [];
-    const parsedVisitedCardIdList = storedVisitedCardIdList
-      ? JSON.parse(storedVisitedCardIdList)
-      : defaultVisitedCardIdList;
+    const parsedVisitedCardIdList = storedVisitedCardIdList ? JSON.parse(storedVisitedCardIdList) : [];
 
     setVisitedCardIdList(parsedVisitedCardIdList);
   }, [reviewRequestCode, cardSectionList]);
@@ -97,6 +96,8 @@ const useStepList = ({ currentCardIndex }: UseStepListProps) => {
   }, [visitedCardIdList]);
 
   useEffect(() => {
+    if (cardSectionList.length === 0 || visitedCardIdList.length === 0) return;
+
     updateVisitedCardIdList();
   }, [cardSectionList, currentCardIndex]);
 
