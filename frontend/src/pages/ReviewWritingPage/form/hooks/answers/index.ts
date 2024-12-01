@@ -3,3 +3,4 @@ export { default as useTextAnswer } from './useTextAnswer';
 export { default as useUpdateDefaultAnswers } from './useUpdateDefaultAnswers';
 export { default as useUpdateReviewerAnswer } from './useUpdateReviewerAnswer';
 export { default as useSubmitAnswers } from './useSubmitAnswers';
+export { default as useDeleteReviewInLocalStorage } from './useDeleteReviewInLocalStorage';

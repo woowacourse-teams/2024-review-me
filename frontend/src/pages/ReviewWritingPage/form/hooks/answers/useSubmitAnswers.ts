@@ -7,6 +7,8 @@ import { ReviewWritingFormResult } from '@/types';
 
 import useMutateReview from '../useMutateReview';
 
+import { useDeleteReviewInLocalStorage } from '.';
+
 interface UseSubmitAnswersProps {
   closeSubmitConfirmModal: () => void;
 }
@@ -15,12 +17,13 @@ interface UseSubmitAnswersProps {
  */
 const useSubmitAnswers = ({ closeSubmitConfirmModal }: UseSubmitAnswersProps) => {
   const reviewRequestCode = useRecoilValue(reviewRequestCodeAtom);
-
   const answerMap = useRecoilValue(answerMapAtom);
 
   const navigate = useNavigate();
-
+  const { deleteAllReviewDataInLocalStorage } = useDeleteReviewInLocalStorage();
+  
   const executeAfterMutateSuccess = () => {
+    deleteAllReviewDataInLocalStorage();
     navigate(`/${ROUTE.reviewWritingComplete}/${reviewRequestCode}`, { state: { isValidAccess: true } });
     closeSubmitConfirmModal();
   };
