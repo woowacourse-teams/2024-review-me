@@ -1,6 +1,0 @@
-server:
-  port: ${SERVER_PORT}
-
-management:
-  server:
-    port: ${ACTUATOR_PORT}
