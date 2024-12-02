@@ -6,10 +6,10 @@ import { CARD_FORM_MODAL_KEY } from '@/pages/ReviewWritingPage/constants';
 import {
   AnswerListRecheckModal,
   SubmitCheckModal,
+  SubmitErrorModal,
+  RestoreAnswerCheckModal,
 } from '@/pages/ReviewWritingPage/modals/components';
 import { answerMapAtom, cardSectionListSelector } from '@/recoil';
-
-import SubmitErrorModal from '../SubmitErrorModal';
 
 interface CardFormModalContainerProps {
   isOpen: (key: string) => boolean;
@@ -17,10 +17,7 @@ interface CardFormModalContainerProps {
   handleRestoreButtonClick: () => void;
 }
 
-const CardFormModalContainer = ({
-  isOpen,
-  closeModal,
-}: CardFormModalContainerProps) => {
+const CardFormModalContainer = ({ isOpen, closeModal, handleRestoreButtonClick }: CardFormModalContainerProps) => {
   const answerMap = useRecoilValue(answerMapAtom);
   const cardSectionList = useRecoilValue(cardSectionListSelector);
 
@@ -52,6 +49,12 @@ const CardFormModalContainer = ({
           answerMap={answerMap}
           closeModal={() => closeModal(CARD_FORM_MODAL_KEY.recheck)}
         />
+      )}
+      {isOpen(CARD_FORM_MODAL_KEY.restoreConfirm) && (
+        <RestoreAnswerCheckModal
+          restoreAnswer={handleRestoreButtonClick}
+          closeModal={() => closeModal(CARD_FORM_MODAL_KEY.restoreConfirm)}
+        ></RestoreAnswerCheckModal>
       )}
     </>
   );
