@@ -71,7 +71,7 @@ const useStepList = ({ currentCardIndex }: UseStepListProps) => {
     paramKey: 'reviewRequestCode',
   });
 
-  const handleBeforeUnloadChange = useCallback(() => {
+  const storeVisitedCardIdList = useCallback(() => {
     if (visitedCardIdList.length === 0) return;
 
     localStorage.setItem(
@@ -92,7 +92,7 @@ const useStepList = ({ currentCardIndex }: UseStepListProps) => {
 
   // 로컬 스토리지와의 동기화를 위한 useEffect
   useEffect(() => {
-    handleBeforeUnloadChange();
+    storeVisitedCardIdList();
   }, [visitedCardIdList]);
 
   useEffect(() => {
