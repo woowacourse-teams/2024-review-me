@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { EyeButton, Input } from '@/components';
 import { useEyeButton, usePasswordValidation } from '@/hooks';
 import { MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT } from '@/pages/HomePage/utils/validateInput';
@@ -12,11 +10,7 @@ import { InputField } from '.';
 
 const PasswordField = ({ id, value: password, setValue: setPassword }: InputValueProps) => {
   const { isOff, handleEyeButtonToggle } = useEyeButton();
-  const { passwordErrorMessage, handlePasswordBlur, initializeIsBlurredOnce } = usePasswordValidation(password);
-
-  useEffect(() => {
-    initializeIsBlurredOnce();
-  }, [initializeIsBlurredOnce]);
+  const { passwordErrorMessage } = usePasswordValidation(password);
 
   return (
     <InputField
@@ -29,7 +23,6 @@ const PasswordField = ({ id, value: password, setValue: setPassword }: InputValu
         <Input
           id={id}
           value={password}
-          onBlur={handlePasswordBlur}
           type={isOff ? 'password' : 'text'}
           $style={{ width: '100%', paddingRight: '3rem' }}
           onChange={(event) => {
