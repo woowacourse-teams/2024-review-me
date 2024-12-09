@@ -73,12 +73,20 @@ const URLGeneratorForm = () => {
     openModal(MODAL_KEYS.confirm);
   }, DEBOUNCE_TIME);
 
+  const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (value: string) => {
+    setter(value);
+  };
+
   return (
     <S.URLGeneratorForm>
       <FormLayout title="함께한 팀원으로부터 리뷰를 받아보세요!" direction="column">
-        <RevieweeNameField id={INPUT_ID.revieweeName} value={revieweeName} setValue={setRevieweeName} />
-        <ProjectNameField id={INPUT_ID.projectName} value={projectName} setValue={setProjectName} />
-        <PasswordField id={INPUT_ID.password} value={password} setValue={setPassword} />
+        <RevieweeNameField
+          id={INPUT_ID.revieweeName}
+          value={revieweeName}
+          setValue={handleInputChange(setRevieweeName)}
+        />
+        <ProjectNameField id={INPUT_ID.projectName} value={projectName} setValue={handleInputChange(setProjectName)} />
+        <PasswordField id={INPUT_ID.password} value={password} setValue={handleInputChange(setPassword)} />
         <Button
           type="button"
           styleType={isFormValid ? 'primary' : 'disabled'}

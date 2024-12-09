@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
-
 import { EssentialPropsWithChildren } from '@/types';
 
 import * as S from '../URLGeneratorForm/styles';
@@ -14,7 +12,7 @@ interface InputFieldProps {
 export interface InputValueProps {
   id: string;
   value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  setValue: (value: string) => void;
 }
 
 const InputField = ({
