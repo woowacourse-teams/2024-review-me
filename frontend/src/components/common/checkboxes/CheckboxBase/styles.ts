@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { CheckboxStyleProps } from './index';
+import { CheckboxStyleProps } from '.';
 
 export const CheckboxContainer = styled.div<CheckboxStyleProps>`
   width: 2.7rem;

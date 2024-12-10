@@ -1,7 +1,7 @@
-import { ChangeEvent } from 'react';
-
 import CheckedIcon from '@/assets/checked.svg';
 import UncheckedIcon from '@/assets/unchecked.svg';
+
+import { CheckboxProps } from '../Checkbox';
 
 import * as S from './styles';
 
@@ -10,23 +10,26 @@ export interface CheckboxStyleProps {
   $style?: React.CSSProperties;
 }
 
-export interface CheckboxProps extends CheckboxStyleProps {
+export interface CheckboxA11yProps {
+  $isReadonly?: boolean;
+  isTabAccessible?: boolean; // CheckboxItem을 사용할 때 Checkbox 중복 포커싱 방지용
+  tabIndex?: number;
+}
+export interface CheckboxBaseProps extends CheckboxStyleProps, CheckboxA11yProps {
   id: string;
   isChecked: boolean;
-  isTabAccessible?: boolean;
-  handleChange?: (event: ChangeEvent<HTMLInputElement>, label?: string) => void;
+  isDisabled: boolean;
   name?: string;
-  isDisabled?: boolean;
 }
 
-const Checkbox = ({
+const CheckboxBase = ({
   id,
   isChecked,
-  handleChange,
   isDisabled,
-  isTabAccessible = true,
-  $style,
+  tabIndex,
+  handleChange,
   $isReadonly = false,
+  $style,
   ...rest
 }: CheckboxProps) => {
   return (
@@ -37,17 +40,16 @@ const Checkbox = ({
           data-testid={`checkbox-${id}`}
           checked={isChecked}
           disabled={isDisabled}
-          type="checkbox"
           onChange={handleChange}
+          type="checkbox"
           tabIndex={-1}
           {...rest}
         />
         <img
           src={isChecked ? CheckedIcon : UncheckedIcon}
-          tabIndex={$isReadonly || isDisabled || !isTabAccessible ? -1 : 0}
+          tabIndex={tabIndex}
           role="checkbox"
           aria-checked={isChecked}
-          aria-readonly={$isReadonly}
           alt=""
         />
         {$isReadonly && <span className="sr-only">{isChecked ? '선택됨' : '선택 안 됨'}</span>}
@@ -56,4 +58,4 @@ const Checkbox = ({
   );
 };
 
-export default Checkbox;
+export default CheckboxBase;
