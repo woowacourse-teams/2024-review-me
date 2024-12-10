@@ -7,7 +7,7 @@ import { InputValueProps } from './InputField';
 
 import { InputField } from './';
 
-const ProjectNameField = ({ id, value: revieweeName, setValue: setRevieweeName }: InputValueProps) => {
+const ProjectNameField = ({ id, value: revieweeName, setValue: setProjectName }: InputValueProps) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const ProjectNameField = ({ id, value: revieweeName, setValue: setRevieweeName }
         value={revieweeName}
         type="text"
         onChange={(event) => {
-          setRevieweeName(event.target.value);
+          setProjectName(event.target.value);
         }}
       />
     </InputField>
