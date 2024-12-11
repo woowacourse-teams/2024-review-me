@@ -23,6 +23,8 @@ export interface CheckboxBaseProps extends CheckboxStyleProps, CheckboxA11yProps
   name?: string;
 }
 
+type FinalCheckboxBaseProps = CheckboxBaseProps & CheckboxProps;
+
 const CheckboxBase = ({
   id,
   isChecked,
@@ -32,7 +34,7 @@ const CheckboxBase = ({
   $isReadonly = false,
   $style,
   ...rest
-}: CheckboxProps) => {
+}: FinalCheckboxBaseProps) => {
   return (
     <UndraggableWrapper>
       <S.CheckboxContainer $style={$style} $isReadonly={$isReadonly}>
