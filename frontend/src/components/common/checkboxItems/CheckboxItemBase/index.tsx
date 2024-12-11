@@ -1,4 +1,3 @@
-import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import { EssentialPropsWithChildren } from '@/types';
 
 import { CheckboxItemProps } from '../CheckboxItem';
@@ -34,7 +33,7 @@ const CheckboxItemBase = ({
       {...rest}
     >
       <S.CheckboxLabel>
-        <UndraggableWrapper>{children}</UndraggableWrapper>
+        {children}
         {label}
       </S.CheckboxLabel>
     </S.CheckboxItem>
