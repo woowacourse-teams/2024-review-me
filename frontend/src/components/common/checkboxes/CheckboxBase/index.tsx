@@ -19,7 +19,7 @@ export interface CheckboxA11yProps {
 export interface CheckboxBaseProps extends CheckboxStyleProps, CheckboxA11yProps {
   id: string;
   isChecked: boolean;
-  isDisabled: boolean;
+  isDisabled?: boolean;
   name?: string;
 }
 
