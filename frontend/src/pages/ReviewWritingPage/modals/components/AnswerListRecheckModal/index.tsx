@@ -1,4 +1,4 @@
-import { CheckboxItem, MultilineTextViewer } from '@/components';
+import { ReadonlyCheckboxItem, MultilineTextViewer } from '@/components';
 import ContentModal from '@/components/common/modals/ContentModal';
 import { ReviewWritingCardLayout, QnABoxLayout } from '@/pages/ReviewWritingPage/layout/components';
 import { ReviewWritingAnswer, ReviewWritingCardSection } from '@/types';
@@ -61,14 +61,12 @@ const AnswerListRecheckModal = ({ questionSectionList, answerMap, closeModal }: 
                   {question.questionType === 'CHECKBOX' && (
                     <>
                       {question.optionGroup?.options.map((option, index) => (
-                        <CheckboxItem
+                        <ReadonlyCheckboxItem
                           key={`${question.questionId}_${index}`}
                           id={`${question.questionId}_${index}`}
                           name={`${question.questionId}_${index}`}
-                          isChecked={isSelectedChoice(question.questionId, option.optionId)}
-                          isDisabled={true}
                           label={option.content}
-                          $isReadonly={true}
+                          isChecked={isSelectedChoice(question.questionId, option.optionId)}
                         />
                       ))}
                     </>
