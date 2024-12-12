@@ -17,7 +17,7 @@ import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.template.service.dto.response.SectionNameResponse;
 import reviewme.template.service.dto.response.SectionNamesResponse;
 
