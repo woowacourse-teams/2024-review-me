@@ -49,12 +49,8 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
   const findSelectedOptionIds = ({ answerMap, questionId }: FindSelectedOptionIdsParams) => {
     if (!answerMap) return null;
 
-    for (const [, value] of answerMap) {
-      if (value.questionId === questionId) {
-        return value.selectedOptionIds;
-      }
-    }
-    return null;
+    const selectedItem = answerMap.get(questionId);
+    return selectedItem ? selectedItem.selectedOptionIds : null;
   };
 
   // 저장된 객관식 답변이 있다면 복원
