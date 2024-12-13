@@ -30,11 +30,11 @@ const useTextAnswer = ({ question }: UseTextAnswerProps) => {
 
   // 로컬 스토리지에 저장했던 답변으로부터, questionId를 통해 해당 질문의 서술형 답변을 찾는 함수
   // TODO: 복원을 위한 find 함수들을 별도 유틸로 분리 및 통합
-  interface findTextAnswerParams {
+  interface FindTextAnswerParams {
     answerMap: Map<number, ReviewWritingAnswer> | null;
     questionId: number;
   }
-  const findTextAnswer = ({ answerMap, questionId }: findTextAnswerParams) => {
+  const findTextAnswer = ({ answerMap, questionId }: FindTextAnswerParams) => {
     if (!answerMap) return null;
 
     for (const [, value] of answerMap) {

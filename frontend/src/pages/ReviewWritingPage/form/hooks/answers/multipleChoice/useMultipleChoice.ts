@@ -40,13 +40,13 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     },
   );
 
-  interface findSelectedOptionIdsParams {
+  interface FindSelectedOptionIdsParams {
     answerMap: Map<number, ReviewWritingAnswer> | null;
     questionId: number;
   }
 
   // 로컬 스토리지에 저장했던 답변으로부터, questionId를 통해 해당 질문의 selectedOptionIds를 찾는 함수
-  const findSelectedOptionIds = ({ answerMap, questionId }: findSelectedOptionIdsParams) => {
+  const findSelectedOptionIds = ({ answerMap, questionId }: FindSelectedOptionIdsParams) => {
     if (!answerMap) return null;
 
     for (const [, value] of answerMap) {

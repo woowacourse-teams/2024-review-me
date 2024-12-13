@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 export type Modals = Record<string, boolean>;
 
-interface useModalsProps {
+interface UseModalsProps {
   initialStates?: Modals;
 }
 
-const useModals = ({ initialStates }: useModalsProps = {}) => {
+const useModals = ({ initialStates }: UseModalsProps = {}) => {
   const [modals, setModals] = useState<Modals>(initialStates ?? {});
 
   const openModal = (key: string) => {
