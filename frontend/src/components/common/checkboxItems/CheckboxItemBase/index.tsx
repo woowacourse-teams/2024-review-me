@@ -12,7 +12,7 @@ export interface CheckboxItemBaseProps {
   tabIndex?: number;
 }
 
-type FinalCheckboxItemBaseProps = CheckboxItemBaseProps & CheckboxItemProps;
+interface FinalCheckboxItemBaseProps extends CheckboxItemBaseProps, CheckboxItemProps{};
 
 const CheckboxItemBase = ({
   label,

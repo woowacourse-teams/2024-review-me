@@ -22,7 +22,7 @@ export interface CheckboxBaseProps extends CheckboxStyleProps, CheckboxA11yProps
   name?: string;
 }
 
-type FinalCheckboxBaseProps = CheckboxBaseProps & CheckboxProps;
+interface FinalCheckboxBaseProps extends CheckboxBaseProps, CheckboxProps {}
 
 const CheckboxBase = ({
   id,
