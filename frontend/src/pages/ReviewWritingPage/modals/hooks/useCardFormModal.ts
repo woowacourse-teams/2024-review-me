@@ -3,11 +3,11 @@ import { Modals } from '@/hooks/modal/useModals';
 
 import { CARD_FORM_MODAL_KEY } from '../../constants';
 
-interface useCardFormModalProps {
+interface UseCardFormModalProps {
   initialStates: Modals;
 }
 
-const useCardFormModal = ({ initialStates }: useCardFormModalProps) => {
+const useCardFormModal = ({ initialStates }: UseCardFormModalProps) => {
   const { isOpen, openModal, closeModal } = useModals({ initialStates });
 
   const handleOpenModal = (key: keyof typeof CARD_FORM_MODAL_KEY) => {
