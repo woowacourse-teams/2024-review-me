@@ -12,7 +12,6 @@ export interface CheckboxStyleProps {
 }
 
 export interface CheckboxA11yProps {
-  $isReadonly?: boolean;
   isTabAccessible?: boolean; // CheckboxItem을 사용할 때 Checkbox 중복 포커싱 방지용
   tabIndex?: number;
 }
