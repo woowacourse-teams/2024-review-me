@@ -23,7 +23,7 @@ const CheckboxItem = ({ id, label, isChecked, isDisabled = false, handleChange, 
 
   return (
     <CheckboxItemBase
-      id={id}
+      id={`checkbox-item-${id}`}
       isChecked={isChecked}
       tabIndex={isDisabled ? -1 : 0}
       isDisabled={isDisabled}
