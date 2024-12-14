@@ -1,7 +1,8 @@
 import React, { ChangeEvent } from 'react';
 
 import { Checkbox } from '../../checkboxes';
-import CheckboxItemBase, { CheckboxItemBaseProps } from '../CheckboxItemBase';
+import { CheckboxItemBaseProps } from '../CheckboxItemBase';
+import { CheckboxItemBase } from '../index';
 
 export interface CheckboxItemProps extends CheckboxItemBaseProps {
   isDisabled?: boolean;
