@@ -14,7 +14,7 @@ spring:
   flyway:
     enabled: false
   cache:
-    type: none
+    type: simple
 
 springdoc:
   swagger-ui:

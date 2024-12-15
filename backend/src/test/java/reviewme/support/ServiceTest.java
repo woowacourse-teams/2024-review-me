@@ -12,6 +12,6 @@ import reviewme.config.TestConfig;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = TestConfig.class)
-@ExtendWith(DatabaseCleanerExtension.class)
+@ExtendWith({DatabaseCleanerExtension.class, CacheCleanerExtension.class})
 public @interface ServiceTest {
 }
