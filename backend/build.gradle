@@ -30,20 +30,24 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
 
-    runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
-    annotationProcessor 'org.projectlombok:lombok'
+
+    // ConfigurationProperties
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
+    // Test dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'com.h2database:h2'
+
+    // Lombok
+    annotationProcessor 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // RestDocs
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor:3.0.1'
