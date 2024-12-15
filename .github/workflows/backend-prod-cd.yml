@@ -52,10 +52,7 @@ jobs:
   deploy:
     name: Deploy via self-hosted runner
     needs: build
-    strategy:
-      matrix:
-        runner: [prod-a, prod-b]
-    runs-on: [ self-hosted, "${{ matrix.runner }}" ]
+    runs-on: [self-hosted, prod, oracle]
 
     steps:
       - name: Checkout to secret repository

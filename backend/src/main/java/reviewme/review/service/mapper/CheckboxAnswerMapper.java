@@ -1,10 +1,9 @@
 package reviewme.review.service.mapper;
 
 import org.springframework.stereotype.Component;
-import reviewme.template.domain.QuestionType;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
-import reviewme.review.service.exception.CheckBoxAnswerIncludedTextException;
+import reviewme.template.domain.QuestionType;
 
 @Component
 public class CheckboxAnswerMapper implements AnswerMapper {
@@ -16,8 +15,8 @@ public class CheckboxAnswerMapper implements AnswerMapper {
 
     @Override
     public CheckboxAnswer mapToAnswer(ReviewAnswerRequest answerRequest) {
-        if (answerRequest.text() != null) {
-            throw new CheckBoxAnswerIncludedTextException(answerRequest.questionId());
+        if (answerRequest.hasNoSelectedOptions()) {
+            return null;
         }
         return new CheckboxAnswer(answerRequest.questionId(), answerRequest.selectedOptionIds());
     }
