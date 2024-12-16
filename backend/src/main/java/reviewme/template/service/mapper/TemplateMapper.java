@@ -2,19 +2,18 @@ package reviewme.template.service.mapper;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
+import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.template.domain.OptionGroup;
 import reviewme.template.domain.OptionItem;
 import reviewme.template.domain.Question;
-import reviewme.template.repository.OptionGroupRepository;
-import reviewme.template.repository.OptionItemRepository;
-import reviewme.template.repository.QuestionRepository;
-import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.SectionQuestion;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.TemplateSection;
+import reviewme.template.repository.OptionGroupRepository;
+import reviewme.template.repository.OptionItemRepository;
+import reviewme.template.repository.QuestionRepository;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.dto.response.OptionGroupResponse;
@@ -39,7 +38,6 @@ public class TemplateMapper {
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
-    @Cacheable(value = "template_response", key = "#reviewGroup.id")
     public TemplateResponse mapToTemplateResponse(ReviewGroup reviewGroup) {
         Template template = templateRepository.findById(reviewGroup.getTemplateId())
                 .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(
