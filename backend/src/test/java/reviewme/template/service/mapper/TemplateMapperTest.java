@@ -14,22 +14,22 @@ import static reviewme.fixture.TemplateFixture.템플릿;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.template.domain.OptionGroup;
-import reviewme.template.domain.Question;
-import reviewme.template.repository.OptionGroupRepository;
-import reviewme.template.repository.OptionItemRepository;
-import reviewme.template.repository.QuestionRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
+import reviewme.template.domain.OptionGroup;
+import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
-import reviewme.template.service.exception.MissingOptionItemsInOptionGroupException;
-import reviewme.template.service.exception.SectionInTemplateNotFoundException;
+import reviewme.template.domain.Template;
+import reviewme.template.repository.OptionGroupRepository;
+import reviewme.template.repository.OptionItemRepository;
+import reviewme.template.repository.QuestionRepository;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.dto.response.QuestionResponse;
 import reviewme.template.service.dto.response.SectionResponse;
-import reviewme.template.service.dto.response.TemplateResponse;
+import reviewme.template.service.exception.MissingOptionItemsInOptionGroupException;
+import reviewme.template.service.exception.SectionInTemplateNotFoundException;
 
 @ServiceTest
 class TemplateMapperTest {
@@ -67,22 +67,22 @@ class TemplateMapperTest {
         Section section1 = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
         Section section2 = sectionRepository.save(항상_보이는_섹션(List.of(question2.getId())));
 
-        templateRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // when
-        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup);
+        List<SectionResponse> sectionResponses = templateMapper.mapSectionResponses(
+                template.getId(), reviewGroup.getId()
+        );
 
         // then
         assertAll(
-                () -> assertThat(templateResponse.revieweeName()).isEqualTo(reviewGroup.getReviewee()),
-                () -> assertThat(templateResponse.projectName()).isEqualTo(reviewGroup.getProjectName()),
-                () -> assertThat(templateResponse.sections()).hasSize(2),
-                () -> assertThat(templateResponse.sections().get(0).header()).isEqualTo(section1.getHeader()),
-                () -> assertThat(templateResponse.sections().get(0).questions()).hasSize(1),
-                () -> assertThat(templateResponse.sections().get(1).header()).isEqualTo(section2.getHeader()),
-                () -> assertThat(templateResponse.sections().get(1).questions()).hasSize(1)
+                () -> assertThat(sectionResponses).hasSize(2),
+                () -> assertThat(sectionResponses.get(0).header()).isEqualTo(section1.getHeader()),
+                () -> assertThat(sectionResponses.get(0).questions()).hasSize(1),
+                () -> assertThat(sectionResponses.get(1).header()).isEqualTo(section2.getHeader()),
+                () -> assertThat(sectionResponses.get(1).questions()).hasSize(1)
         );
     }
 
@@ -91,16 +91,17 @@ class TemplateMapperTest {
         // given
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // when
-        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup);
+        List<SectionResponse> sectionResponses = templateMapper.mapSectionResponses(
+                template.getId(), reviewGroup.getId()
+        );
 
         // then
-        SectionResponse sectionResponse = templateResponse.sections().get(0);
-        assertThat(sectionResponse.onSelectedOptionId()).isNull();
+        assertThat(sectionResponses.get(0).onSelectedOptionId()).isNull();
     }
 
     @Test
@@ -108,15 +109,17 @@ class TemplateMapperTest {
         // given
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // when
-        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup);
+        List<SectionResponse> sectionResponses = templateMapper.mapSectionResponses(
+                template.getId(), reviewGroup.getId()
+        );
 
         // then
-        QuestionResponse questionResponse = templateResponse.sections().get(0).questions().get(0);
+        QuestionResponse questionResponse = sectionResponses.get(0).questions().get(0);
         assertAll(
                 () -> assertThat(questionResponse.hasGuideline()).isFalse(),
                 () -> assertThat(questionResponse.guideline()).isNull()
@@ -128,26 +131,28 @@ class TemplateMapperTest {
         // given
         Question question = questionRepository.save(서술형_필수_질문());
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // when
-        TemplateResponse templateResponse = templateMapper.mapToTemplateResponse(reviewGroup);
+        List<SectionResponse> sectionResponses = templateMapper.mapSectionResponses(
+                template.getId(), reviewGroup.getId()
+        );
 
         // then
-        QuestionResponse questionResponse = templateResponse.sections().get(0).questions().get(0);
+        QuestionResponse questionResponse = sectionResponses.get(0).questions().get(0);
         assertThat(questionResponse.optionGroup()).isNull();
     }
 
     @Test
     void 템플릿_매핑_시_템플릿에_제공할_섹션이_없을_경우_예외가_발생한다() {
         // given
-        templateRepository.save(템플릿(List.of(1L)));
+        Template template = templateRepository.save(템플릿(List.of(1L)));
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // when, then
-        assertThatThrownBy(() -> templateMapper.mapToTemplateResponse(reviewGroup))
+        assertThatThrownBy(() -> templateMapper.mapSectionResponses(template.getId(), reviewGroup.getId()))
                 .isInstanceOf(SectionInTemplateNotFoundException.class);
     }
 
@@ -158,12 +163,12 @@ class TemplateMapperTest {
         optionGroupRepository.save(선택지_그룹(question.getId()));
 
         Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        templateRepository.save(템플릿(List.of(section.getId())));
+        Template template = templateRepository.save(템플릿(List.of(section.getId())));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // when, then
-        assertThatThrownBy(() -> templateMapper.mapToTemplateResponse(reviewGroup))
+        assertThatThrownBy(() -> templateMapper.mapSectionResponses(template.getId(), reviewGroup.getId()))
                 .isInstanceOf(MissingOptionItemsInOptionGroupException.class);
     }
 }

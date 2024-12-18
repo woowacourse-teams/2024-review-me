@@ -3,7 +3,6 @@ package reviewme.template.service.mapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.template.domain.OptionGroup;
 import reviewme.template.domain.OptionItem;
 import reviewme.template.domain.Question;
@@ -20,7 +19,6 @@ import reviewme.template.service.dto.response.OptionGroupResponse;
 import reviewme.template.service.dto.response.OptionItemResponse;
 import reviewme.template.service.dto.response.QuestionResponse;
 import reviewme.template.service.dto.response.SectionResponse;
-import reviewme.template.service.dto.response.TemplateResponse;
 import reviewme.template.service.exception.MissingOptionItemsInOptionGroupException;
 import reviewme.template.service.exception.QuestionInSectionNotFoundException;
 import reviewme.template.service.exception.SectionInTemplateNotFoundException;
@@ -38,23 +36,14 @@ public class TemplateMapper {
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
-    public TemplateResponse mapToTemplateResponse(ReviewGroup reviewGroup) {
-        Template template = templateRepository.findById(reviewGroup.getTemplateId())
-                .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(
-                        reviewGroup.getId(), reviewGroup.getTemplateId()
-                ));
+    public List<SectionResponse> mapSectionResponses(long templateId, long reviewGroupId) {
+        Template template = templateRepository.findById(templateId)
+                .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(reviewGroupId, templateId));
 
-        List<SectionResponse> sectionResponses = template.getSectionIds()
+        return template.getSectionIds()
                 .stream()
                 .map(this::mapToSectionResponse)
                 .toList();
-
-        return new TemplateResponse(
-                template.getId(),
-                reviewGroup.getReviewee(),
-                reviewGroup.getProjectName(),
-                sectionResponses
-        );
     }
 
     private SectionResponse mapToSectionResponse(TemplateSection templateSection) {
