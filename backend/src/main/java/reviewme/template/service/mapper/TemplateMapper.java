@@ -4,17 +4,15 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
+import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.template.domain.OptionGroup;
 import reviewme.template.domain.OptionItem;
 import reviewme.template.domain.Question;
+import reviewme.template.domain.Section;
+import reviewme.template.domain.Template;
 import reviewme.template.repository.OptionGroupRepository;
 import reviewme.template.repository.OptionItemRepository;
 import reviewme.template.repository.QuestionRepository;
-import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.template.domain.Section;
-import reviewme.template.domain.SectionQuestion;
-import reviewme.template.domain.Template;
-import reviewme.template.domain.TemplateSection;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.dto.response.OptionGroupResponse;
@@ -31,8 +29,6 @@ import reviewme.template.service.exception.TemplateNotFoundByReviewGroupExceptio
 @RequiredArgsConstructor
 public class TemplateMapper {
 
-    public static final String REVIEWEE_NAME_PLACEHOLDER = "{revieweeName}";
-
     private final TemplateRepository templateRepository;
     private final SectionRepository sectionRepository;
     private final QuestionRepository questionRepository;
@@ -48,7 +44,7 @@ public class TemplateMapper {
 
         List<SectionResponse> sectionResponses = template.getSectionIds()
                 .stream()
-                .map(this::mapToSectionResponse)
+                .map(sectionId -> mapToSectionResponse(template.getId(), sectionId))
                 .toList();
 
         return new TemplateResponse(
@@ -59,14 +55,12 @@ public class TemplateMapper {
         );
     }
 
-    private SectionResponse mapToSectionResponse(TemplateSection templateSection) {
-        Section section = sectionRepository.findById(templateSection.getSectionId())
-                .orElseThrow(() -> new SectionInTemplateNotFoundException(
-                        templateSection.getTemplateId(), templateSection.getSectionId())
-                );
+    private SectionResponse mapToSectionResponse(long templateId, long sectionId) {
+        Section section = sectionRepository.findById(sectionId)
+                .orElseThrow(() -> new SectionInTemplateNotFoundException(templateId, sectionId));
         List<QuestionResponse> questionResponses = section.getQuestionIds()
                 .stream()
-                .map(this::mapToQuestionResponse)
+                .map(questionId -> mapToQuestionResponse(section.getId(), questionId))
                 .toList();
 
         return new SectionResponse(
@@ -79,11 +73,9 @@ public class TemplateMapper {
         );
     }
 
-    private QuestionResponse mapToQuestionResponse(SectionQuestion sectionQuestion) {
-        Question question = questionRepository.findById(sectionQuestion.getQuestionId())
-                .orElseThrow(() -> new QuestionInSectionNotFoundException(
-                        sectionQuestion.getSectionId(), sectionQuestion.getQuestionId())
-                );
+    private QuestionResponse mapToQuestionResponse(long sectionId, long questionId) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new QuestionInSectionNotFoundException(sectionId, questionId));
         OptionGroupResponse optionGroupResponse = optionGroupRepository.findByQuestionId(question.getId())
                 .map(this::mapToOptionGroupResponse)
                 .orElse(null);

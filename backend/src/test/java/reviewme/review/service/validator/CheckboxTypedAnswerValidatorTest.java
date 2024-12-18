@@ -15,7 +15,7 @@ import reviewme.template.repository.OptionGroupRepository;
 import reviewme.template.repository.OptionItemRepository;
 import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.service.exception.CheckBoxAnswerIncludedNotProvidedOptionItemException;
+import reviewme.review.service.exception.CheckboxAnswerIncludedNotProvidedOptionItemException;
 import reviewme.review.service.exception.OptionGroupNotFoundByQuestionIdException;
 import reviewme.review.service.exception.SelectedOptionItemCountOutOfRangeException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
@@ -25,7 +25,7 @@ import reviewme.support.ServiceTest;
 class CheckboxTypedAnswerValidatorTest {
 
     @Autowired
-    private CheckboxTypedAnswerValidator checkBoxAnswerValidator;
+    private CheckboxTypedAnswerValidator checkboxAnswerValidator;
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -43,7 +43,7 @@ class CheckboxTypedAnswerValidatorTest {
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(notSavedQuestionId, List.of(1L));
 
         // when, then
-        assertThatCode(() -> checkBoxAnswerValidator.validate(checkboxAnswer))
+        assertThatCode(() -> checkboxAnswerValidator.validate(checkboxAnswer))
                 .isInstanceOf(SubmittedQuestionNotFoundException.class);
     }
 
@@ -54,7 +54,7 @@ class CheckboxTypedAnswerValidatorTest {
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(savedQuestion.getId(), List.of(1L));
 
         // when, then
-        assertThatCode(() -> checkBoxAnswerValidator.validate(checkboxAnswer))
+        assertThatCode(() -> checkboxAnswerValidator.validate(checkboxAnswer))
                 .isInstanceOf(OptionGroupNotFoundByQuestionIdException.class);
     }
 
@@ -69,8 +69,8 @@ class CheckboxTypedAnswerValidatorTest {
                 List.of(savedOptionItem.getId() + 1L));
 
         // when, then
-        assertThatCode(() -> checkBoxAnswerValidator.validate(checkboxAnswer))
-                .isInstanceOf(CheckBoxAnswerIncludedNotProvidedOptionItemException.class);
+        assertThatCode(() -> checkboxAnswerValidator.validate(checkboxAnswer))
+                .isInstanceOf(CheckboxAnswerIncludedNotProvidedOptionItemException.class);
     }
 
     @Test
@@ -86,7 +86,7 @@ class CheckboxTypedAnswerValidatorTest {
                 List.of(savedOptionItem1.getId()));
 
         // when, then
-        assertThatCode(() -> checkBoxAnswerValidator.validate(checkboxAnswer))
+        assertThatCode(() -> checkboxAnswerValidator.validate(checkboxAnswer))
                 .isInstanceOf(SelectedOptionItemCountOutOfRangeException.class);
     }
 
@@ -104,7 +104,7 @@ class CheckboxTypedAnswerValidatorTest {
                 savedQuestion.getId(), List.of(savedOptionItem1.getId(), savedOptionItem2.getId()));
 
         // when, then
-        assertThatCode(() -> checkBoxAnswerValidator.validate(checkboxAnswer))
+        assertThatCode(() -> checkboxAnswerValidator.validate(checkboxAnswer))
                 .isInstanceOf(SelectedOptionItemCountOutOfRangeException.class);
     }
 }

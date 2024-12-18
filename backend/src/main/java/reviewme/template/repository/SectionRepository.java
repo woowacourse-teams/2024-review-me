@@ -12,8 +12,8 @@ public interface SectionRepository extends JpaRepository<Section, Long> {
 
     @Query("""
             SELECT s FROM Section s
-            JOIN TemplateSection ts
-            ON s.id = ts.sectionId
+            JOIN FETCH s.questionIds
+            JOIN TemplateSection ts ON s.id = ts.sectionId
             WHERE ts.templateId = :templateId
             ORDER BY s.position ASC
             """)

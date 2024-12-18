@@ -86,7 +86,7 @@ public class ReviewDetailMapper {
     private QuestionAnswerResponse mapToQuestionResponse(Review review, Question question,
                                                          Map<Long, OptionGroup> optionGroupsByQuestion,
                                                          Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
-        if (question.isSelectable()) {
+        if (question.isCheckboxType()) {
             return mapToCheckboxQuestionResponse(review, question, optionGroupsByQuestion, optionItemsByOptionGroup);
         } else {
             return mapToTextQuestionResponse(review, question);

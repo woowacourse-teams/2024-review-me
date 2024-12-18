@@ -46,7 +46,7 @@ class ReviewGroupServiceTest {
     @Test
     void 코드가_중복되는_경우_다시_생성한다() {
         // given
-        templateRepository.save(템플릿(List.of()));
+        templateRepository.save(템플릿(List.of(1L)));
         reviewGroupRepository.save(리뷰_그룹("0000", "1111"));
         given(randomCodeGenerator.generate(anyInt()))
                 .willReturn("0000") // ReviewRequestCode
