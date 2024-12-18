@@ -70,7 +70,7 @@ public class TemplateMapper {
         return new SectionResponse(
                 section.getId(),
                 section.getSectionName(),
-                section.getVisibleType().name(),
+                section.getVisibleType(),
                 section.getOnSelectedOptionId(),
                 section.getHeader(),
                 questionResponses
@@ -90,7 +90,7 @@ public class TemplateMapper {
                 question.getId(),
                 question.isRequired(),
                 question.getContent(),
-                question.getQuestionType().name(),
+                question.getQuestionType(),
                 optionGroupResponse,
                 question.hasGuideline(),
                 question.getGuideline()
