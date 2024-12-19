@@ -144,7 +144,7 @@ class ReviewGroupApiTest extends ApiTest {
 
         FieldDescriptor[] responseFieldDescriptors = {
                 fieldWithPath("isLastPage").description("마지막 페이지 여부"),
-                fieldWithPath("reviewGroups[]").description("리뷰 그룹 목록"),
+                fieldWithPath("reviewGroups[]").description("리뷰 그룹 목록 (생성일 기준 내림차순 정렬)"),
                 fieldWithPath("reviewGroups[].revieweeName").description("리뷰이 이름"),
                 fieldWithPath("reviewGroups[].projectName").description("프로젝트 이름"),
                 fieldWithPath("reviewGroups[].createdAt").description("생성일"),
