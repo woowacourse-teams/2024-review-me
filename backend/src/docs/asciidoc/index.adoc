@@ -44,3 +44,7 @@ include::highlight-answers.adoc[]
 == 인증
 
 include::auth.adoc[]
+
+== 사용자
+
+include::member.adoc[]

@@ -30,6 +30,8 @@ import reviewme.auth.controller.AuthController;
 import reviewme.auth.service.AuthService;
 import reviewme.highlight.controller.HighlightController;
 import reviewme.highlight.service.HighlightService;
+import reviewme.member.controller.MemberController;
+import reviewme.member.service.MemberService;
 import reviewme.review.controller.ReviewController;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewGatheredLookupService;
@@ -51,6 +53,7 @@ import reviewme.template.service.TemplateService;
         TemplateController.class,
         SectionController.class,
         HighlightController.class,
+        MemberController.class,
         AuthController.class
 })
 @ExtendWith(RestDocumentationExtension.class)
@@ -87,6 +90,9 @@ public abstract class ApiTest {
 
     @MockBean
     protected HighlightService highlightService;
+
+    @MockBean
+    protected MemberService memberService;
 
     @MockBean
     protected AuthService authService;
