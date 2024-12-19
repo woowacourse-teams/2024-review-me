@@ -29,6 +29,10 @@ public class ReviewListLookupService {
         );
     }
 
+    public WrittenReviewsResponse getWrittenReviews(Long lastReviewId, Integer size) {
+        return null;
+    }
+
     private long calculateLastReviewId(List<ReceivedReviewPageElementResponse> elements) {
         if (elements.isEmpty()) {
             return 0;
