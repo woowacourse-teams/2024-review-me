@@ -103,21 +103,51 @@ class ReviewGroupApiTest extends ApiTest {
     }
 
     @Test
-    void 리뷰_요청_코드로_리뷰_그룹_정보를_반환한다() {
+    void 리뷰_요청_코드로_회원이_만든_리뷰_그룹_정보를_반환한다() {
         BDDMockito.given(reviewGroupLookupService.getReviewGroupSummary(anyString()))
-                .willReturn(new ReviewGroupResponse("아루", "리뷰미"));
+                .willReturn(new ReviewGroupResponse(1L,"아루", "리뷰미"));
 
         ParameterDescriptor[] parameterDescriptors = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드")
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("revieweeId").description("리뷰이 ID"),
                 fieldWithPath("revieweeName").description("리뷰이 이름"),
                 fieldWithPath("projectName").description("프로젝트 이름")
         };
 
         RestDocumentationResultHandler handler = document(
-                "review-group-summary",
+                "member-review-group-summary",
+                queryParameters(parameterDescriptors),
+                responseFields(responseFieldDescriptors)
+        );
+
+        givenWithSpec().log().all()
+                .queryParam("reviewRequestCode", "ABCD1234")
+                .when().get("/v2/groups")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(200);
+    }
+
+    @Test
+    void 리뷰_요청_코드로_비회원이_만든_리뷰_그룹_정보를_반환한다() {
+        BDDMockito.given(reviewGroupLookupService.getReviewGroupSummary(anyString()))
+                .willReturn(new ReviewGroupResponse(null, "아루", "리뷰미"));
+
+        ParameterDescriptor[] parameterDescriptors = {
+                parameterWithName("reviewRequestCode").description("리뷰 요청 코드")
+        };
+
+        FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("revieweeId").description("리뷰이 ID"),
+                fieldWithPath("revieweeName").description("리뷰이 이름"),
+                fieldWithPath("projectName").description("프로젝트 이름")
+        };
+
+        RestDocumentationResultHandler handler = document(
+                "guest-review-group-summary",
                 queryParameters(parameterDescriptors),
                 responseFields(responseFieldDescriptors)
         );
