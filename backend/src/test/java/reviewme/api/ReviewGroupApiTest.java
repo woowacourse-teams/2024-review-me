@@ -21,7 +21,7 @@ import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
+import reviewme.reviewgroup.service.dto.GuestReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
@@ -30,8 +30,8 @@ import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
 class ReviewGroupApiTest extends ApiTest {
 
     @Test
-    void 리뷰_그룹을_생성한다() {
-        BDDMockito.given(reviewGroupService.createReviewGroup(any(ReviewGroupCreationRequest.class)))
+    void 비회원용_리뷰_그룹을_생성한다() {
+        BDDMockito.given(reviewGroupService.createGuestReviewGroup(any(GuestReviewGroupCreationRequest.class)))
                 .willReturn(new ReviewGroupCreationResponse("ABCD1234"));
 
         String request = """
@@ -53,7 +53,7 @@ class ReviewGroupApiTest extends ApiTest {
         };
 
         RestDocumentationResultHandler handler = document(
-                "review-group-create",
+                "guest-review-group-create",
                 requestFields(requestFieldDescriptors),
                 responseFields(responseFieldDescriptors)
         );

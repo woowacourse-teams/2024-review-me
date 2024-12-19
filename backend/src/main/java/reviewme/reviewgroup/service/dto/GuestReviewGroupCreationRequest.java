@@ -3,7 +3,7 @@ package reviewme.reviewgroup.service.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
-public record ReviewGroupCreationRequest(
+public record GuestReviewGroupCreationRequest(
 
         @NotEmpty(message = "리뷰이 이름을 입력해주세요.")
         String revieweeName,
