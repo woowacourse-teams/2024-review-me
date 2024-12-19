@@ -3,6 +3,7 @@ package reviewme.reviewgroup.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reviewme.reviewgroup.service.dto.ReviewGroupListResponse;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -20,5 +21,9 @@ public class ReviewGroupLookupService {
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
         return new ReviewGroupResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName());
+    }
+
+    public ReviewGroupListResponse getMyReviewGroups() {
+        return null;
     }
 }

@@ -4,6 +4,7 @@ package reviewme.api;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -12,6 +13,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.restdocs.cookies.CookieDescriptor;
@@ -20,6 +23,8 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupDetailResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupListResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
 
 class ReviewGroupApiTest extends ApiTest {
@@ -120,5 +125,43 @@ class ReviewGroupApiTest extends ApiTest {
                 .apply(handler)
                 .cookie("JSESSIONID")
                 .statusCode(204);
+    }
+
+    @Test
+    void 회원이_생성한_프로젝트_목록을_반환한다() {
+        ReviewGroupListResponse response = new ReviewGroupListResponse(true,
+                List.of(
+                        new ReviewGroupDetailResponse("아루", "리뷰미", LocalDate.of(2024, 1, 5), "ABCD1234"),
+                        new ReviewGroupDetailResponse("이동훈", "우테코", LocalDate.of(2024, 1, 30), "WOOTECO1")
+                )
+        );
+        BDDMockito.given(reviewGroupLookupService.getMyReviewGroups())
+                .willReturn(response);
+
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 ID")
+        };
+
+        FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("isLastPage").description("마지막 페이지 여부"),
+                fieldWithPath("reviewGroups[]").description("리뷰 그룹 목록"),
+                fieldWithPath("reviewGroups[].revieweeName").description("리뷰이 이름"),
+                fieldWithPath("reviewGroups[].projectName").description("프로젝트 이름"),
+                fieldWithPath("reviewGroups[].createdAt").description("생성일"),
+                fieldWithPath("reviewGroups[].reviewRequestCode").description("리뷰 요청 코드")
+        };
+
+        RestDocumentationResultHandler handler = document(
+                "review-group-list",
+                responseFields(responseFieldDescriptors),
+                requestCookies(cookieDescriptors)
+        );
+
+        givenWithSpec().log().all()
+                .cookie("JSESSIONID", "ABCDEFGHI1234")
+                .when().get("/v2/groups/mine")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(200);
     }
 }

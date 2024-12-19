@@ -9,3 +9,7 @@ operation::review-group-summary[snippets="curl-request,http-response,response-fi
 ==== 리뷰 요청 코드, 확인 코드 일치 여부
 
 operation::review-group-check-access[snippets="curl-request,request-fields,http-response,response-cookies"]
+
+==== 자신이 만든 리뷰 그룹 목록 조회
+
+operation::review-group-list[snippets="curl-request,request-cookies,http-response,response-fields"]

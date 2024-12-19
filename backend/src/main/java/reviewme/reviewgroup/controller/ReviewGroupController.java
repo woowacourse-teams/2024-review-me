@@ -15,6 +15,7 @@ import reviewme.reviewgroup.service.ReviewGroupService;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupListResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
 
 @RestController
@@ -47,5 +48,12 @@ public class ReviewGroupController {
         HttpSession session = httpRequest.getSession();
         session.setAttribute("reviewRequestCode", request.reviewRequestCode());
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/v2/groups/mine")
+    public ResponseEntity<ReviewGroupListResponse> getMyReviewGroups() {
+        // TODO: 세션을 활용한 권한 체계에 따른 추가 조치 필요
+        ReviewGroupListResponse response = reviewGroupLookupService.getMyReviewGroups();
+        return ResponseEntity.ok(response);
     }
 }
