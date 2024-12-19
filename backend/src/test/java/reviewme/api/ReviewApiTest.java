@@ -21,7 +21,6 @@ import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.template.domain.QuestionType;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.gathered.HighlightResponse;
 import reviewme.review.service.dto.response.gathered.RangeResponse;
@@ -34,7 +33,10 @@ import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
+import reviewme.review.service.dto.response.list.WrittenReviewElementResponse;
+import reviewme.review.service.dto.response.list.WrittenReviewsResponse;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.template.domain.QuestionType;
 
 class ReviewApiTest extends ApiTest {
 
@@ -310,6 +312,63 @@ class ReviewApiTest extends ApiTest {
                 .cookie("JSESSIONID", "ABCDEFGHI1234")
                 .queryParam("sectionId", 1)
                 .when().get("/v2/reviews/gather")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(200);
+    }
+
+    @Test
+    void 자신이_작성한_리뷰_목록을_조회한다() {
+        List<WrittenReviewElementResponse> writtenReviews = List.of(
+                new WrittenReviewElementResponse(1L, "테드1", "리뷰미", LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
+                        List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
+                new WrittenReviewElementResponse(2L, "테드2", "리뷰미", LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
+                        List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
+        );
+        WrittenReviewsResponse response = new WrittenReviewsResponse(
+                1L, writtenReviews, 1L, true);
+        BDDMockito.given(reviewListLookupService.getWrittenReviews(anyLong(), anyInt()))
+                .willReturn(response);
+
+//        CookieDescriptor[] cookieDescriptors = {
+//                cookieWithName("JSESSIONID").description("세션 ID")
+//        };
+
+        ParameterDescriptor[] queryParameter = {
+                parameterWithName("lastReviewId").description("페이지의 마지막 리뷰 ID - 기본으로 최신순 첫번째 페이지 응답"),
+                parameterWithName("size").description("페이지의 크기 - 기본으로 10개씩 응답")
+        };
+
+        FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("memberId").description("회원 ID"),
+                fieldWithPath("lastReviewId").description("페이지의 마지막 리뷰 ID"),
+                fieldWithPath("isLastPage").description("마지막 페이지 여부"),
+
+                fieldWithPath("reviews[]").description("리뷰 목록"),
+                fieldWithPath("reviews[].reviewId").description("리뷰 ID"),
+                fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
+                fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
+                fieldWithPath("reviews[].revieweeName").description("리뷰이 이름"),
+                fieldWithPath("reviews[].projectName").description("프로젝트명"),
+
+                fieldWithPath("reviews[].categories[]").description("카테고리 목록"),
+                fieldWithPath("reviews[].categories[].optionId").description("카테고리 ID"),
+                fieldWithPath("reviews[].categories[].content").description("카테고리 내용")
+        };
+
+        RestDocumentationResultHandler handler = document(
+                "written-review-list-with-pagination",
+//                requestCookies(cookieDescriptors),
+                queryParameters(queryParameter),
+                responseFields(responseFieldDescriptors)
+        );
+
+        givenWithSpec().log().all()
+//                .cookie("JSESSIONID", "ASVNE1VAKDNV4")
+//                .queryParam("reviewRequestCode", "hello!!")
+                .queryParam("lastReviewId", "2")
+                .queryParam("size", "5")
+                .when().get("/v2/written")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
