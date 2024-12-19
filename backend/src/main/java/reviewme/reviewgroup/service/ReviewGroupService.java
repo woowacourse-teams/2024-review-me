@@ -45,6 +45,10 @@ public class ReviewGroupService {
         return new ReviewGroupCreationResponse(reviewGroup.getReviewRequestCode());
     }
 
+    public ReviewGroupCreationResponse createMemberReviewGroup(MemberReviewGroupCreationRequest request) {
+        return null;
+    }
+
     @Transactional(readOnly = true)
     public void checkGroupAccessCode(CheckValidAccessRequest request) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(request.reviewRequestCode())

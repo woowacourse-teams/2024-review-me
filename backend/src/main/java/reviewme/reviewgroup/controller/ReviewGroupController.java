@@ -39,6 +39,14 @@ public class ReviewGroupController {
         ReviewGroupCreationResponse response = reviewGroupService.createGuestReviewGroup(request);
         return ResponseEntity.ok(response);
     }
+    
+    @PostMapping("/v2/groups/member")
+    public ResponseEntity<ReviewGroupCreationResponse> createReviewGroup(
+            @Valid @RequestBody MemberReviewGroupCreationRequest request
+    ) {
+        ReviewGroupCreationResponse response = reviewGroupService.createMemberReviewGroup(request);
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping("/v2/groups/check")
     public ResponseEntity<Void> checkGroupAccessCode(
