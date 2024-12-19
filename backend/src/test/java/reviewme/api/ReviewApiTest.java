@@ -57,7 +57,7 @@ class ReviewApiTest extends ApiTest {
             """;
 
     @Test
-    void 리뷰를_등록한다() {
+    void 비회원이_리뷰를_등록한다() {
         BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
                 .willReturn(1L);
 
@@ -71,13 +71,40 @@ class ReviewApiTest extends ApiTest {
         };
 
         RestDocumentationResultHandler handler = document(
-                "create-review",
+                "create-review-by-guest",
                 requestFields(requestFieldDescriptors)
         );
 
         givenWithSpec().log().all()
                 .body(request)
                 .when().post("/v2/reviews")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(201);
+    }
+
+    @Test
+    void 회원이_리뷰를_등록한다() {
+        BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
+                .willReturn(1L);
+
+        FieldDescriptor[] requestFieldDescriptors = {
+                fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
+
+                fieldWithPath("answers[]").description("답변 목록"),
+                fieldWithPath("answers[].questionId").description("질문 ID"),
+                fieldWithPath("answers[].selectedOptionIds").description("선택한 옵션 ID 목록").optional(),
+                fieldWithPath("answers[].text").description("서술 답변").optional()
+        };
+
+        RestDocumentationResultHandler handler = document(
+                "create-review-by-member",
+                requestFields(requestFieldDescriptors)
+        );
+
+        givenWithSpec().log().all()
+                .body(request)
+                .when().post("/v2/reviews/member")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(201);
