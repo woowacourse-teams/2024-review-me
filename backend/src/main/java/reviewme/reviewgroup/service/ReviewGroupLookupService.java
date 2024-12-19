@@ -24,6 +24,7 @@ public class ReviewGroupLookupService {
     }
 
     public ReviewGroupListResponse getMyReviewGroups() {
+        // TODO: 생성일자 최신순 정렬
         return null;
     }
 }
