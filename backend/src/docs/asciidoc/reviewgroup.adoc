@@ -1,7 +1,10 @@
 ==== 비회원용 리뷰 그룹 생성
 
-operation::review-group-create[snippets="curl-request,request-fields,http-response,response-fields"]
 operation::guest-review-group-create[snippets="curl-request,request-fields,http-response,response-fields"]
+
+==== 회원용 리뷰 그룹 생성
+
+operation::member-review-group-create[snippets="curl-request,request-fields,http-response,response-fields"]
 
 ==== 리뷰 그룹 간단 정보 조회
 

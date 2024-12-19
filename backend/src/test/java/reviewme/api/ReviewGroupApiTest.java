@@ -22,6 +22,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.reviewgroup.service.dto.GuestReviewGroupCreationRequest;
+import reviewme.reviewgroup.service.dto.MemberReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
@@ -61,6 +62,41 @@ class ReviewGroupApiTest extends ApiTest {
         givenWithSpec().log().all()
                 .body(request)
                 .when().post("/v2/groups")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(200);
+    }
+
+    @Test
+    void 회원용_리뷰_그룹을_생성한다() {
+        BDDMockito.given(reviewGroupService.createMemberReviewGroup(any(MemberReviewGroupCreationRequest.class)))
+                .willReturn(new ReviewGroupCreationResponse("ABCD1234"));
+
+        String request = """
+                {
+                    "revieweeName": "아루",
+                    "projectName": "리뷰미"
+                }
+                """;
+
+        FieldDescriptor[] requestFieldDescriptors = {
+                fieldWithPath("revieweeName").description("리뷰이 이름"),
+                fieldWithPath("projectName").description("프로젝트 이름")
+        };
+
+        FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("reviewRequestCode").description("리뷰 요청 코드")
+        };
+
+        RestDocumentationResultHandler handler = document(
+                "member-review-group-create",
+                requestFields(requestFieldDescriptors),
+                responseFields(responseFieldDescriptors)
+        );
+
+        givenWithSpec().log().all()
+                .body(request)
+                .when().post("/v2/groups/member")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
