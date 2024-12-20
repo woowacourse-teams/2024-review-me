@@ -347,9 +347,9 @@ class ReviewApiTest extends ApiTest {
     @Test
     void 자신이_작성한_리뷰_목록을_조회한다() {
         List<WrittenReviewElementResponse> writtenReviews = List.of(
-                new WrittenReviewElementResponse(1L, "테드1", "리뷰미", LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
+                new WrittenReviewElementResponse(1L, "테드1", "리뷰미", LocalDate.of(2024, 8, 2), "(리뷰 미리보기 1)",
                         List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
-                new WrittenReviewElementResponse(2L, "테드2", "리뷰미", LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
+                new WrittenReviewElementResponse(2L, "테드2", "리뷰미", LocalDate.of(2024, 8, 1), "(리뷰 미리보기 2)",
                         List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
         );
         WrittenReviewsResponse response = new WrittenReviewsResponse(
@@ -371,7 +371,7 @@ class ReviewApiTest extends ApiTest {
                 fieldWithPath("lastReviewId").description("페이지의 마지막 리뷰 ID"),
                 fieldWithPath("isLastPage").description("마지막 페이지 여부"),
 
-                fieldWithPath("reviews[]").description("리뷰 목록"),
+                fieldWithPath("reviews[]").description("리뷰 목록 (생성일 기준 내림차순 정렬)"),
                 fieldWithPath("reviews[].reviewId").description("리뷰 ID"),
                 fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
                 fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
