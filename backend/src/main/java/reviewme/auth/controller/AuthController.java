@@ -31,8 +31,10 @@ public class AuthController {
     public ResponseEntity<Void> logout(
             HttpServletRequest httpRequest
     ) {
-        HttpSession session = httpRequest.getSession();
-        session.invalidate();
+        HttpSession session = httpRequest.getSession(false);
+        if(session != null) {
+            session.invalidate();
+        }
 
         ResponseCookie cookie = ResponseCookie.from("JSESSIONID", "")
                 .path("/")
