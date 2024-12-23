@@ -13,4 +13,6 @@ export { default as Toast } from './Toast';
 
 export { default as OptionSwitch } from './OptionSwitch';
 export { default as ReviewEmptySection } from './ReviewEmptySection';
+export { default as GithubLoginButton } from './GithubLoginButton';
+export { default as LoginButton } from './LoginButton';
 export * from './modals';
