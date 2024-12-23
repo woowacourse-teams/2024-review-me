@@ -7,7 +7,7 @@ interface LoginButtonProps extends LoginButtonStyleProps {
   platform: string;
   engPlatform?: string;
   logoSrc: string;
-  handleLoginButtonClick: () => void;
+  handleClick: () => void;
 }
 
 export interface LoginButtonStyleProps {
@@ -19,12 +19,12 @@ const LoginButton = ({
   platform,
   engPlatform,
   logoSrc,
-  handleLoginButtonClick,
+  handleClick,
   $logoStyle,
   $style,
 }: LoginButtonProps) => {
   return (
-    <Button onClick={handleLoginButtonClick} styleType="primary" style={$style}>
+    <Button onClick={handleClick} styleType="primary" style={$style}>
       <S.ButtonLabelContainer>
         <S.LogoImg src={logoSrc} alt={`${platform} 로고`} $logoStyle={$logoStyle} />
         <span>

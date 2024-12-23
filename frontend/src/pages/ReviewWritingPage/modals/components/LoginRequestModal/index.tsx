@@ -20,7 +20,7 @@ const LoginRequestModal = ({ titleType, closeModal }: LoginRequestModalProps) =>
       <S.LoginRequestModal>
         <S.LoginRequestLabel>로그인 후 간편하게 받은 리뷰를 확인하세요!</S.LoginRequestLabel>
         <GithubLoginButton
-          handleGithubLoginButtonClick={() => {}}
+          handleClick={() => {}}
           $logoStyle={{ height: '3rem' }}
           $style={{ fontSize: '1.3rem', height: '4rem', width: '100%' }}
         />
