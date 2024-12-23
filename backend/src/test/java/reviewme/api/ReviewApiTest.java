@@ -357,9 +357,9 @@ class ReviewApiTest extends ApiTest {
         BDDMockito.given(reviewListLookupService.getWrittenReviews(anyLong(), anyInt()))
                 .willReturn(response);
 
-//        CookieDescriptor[] cookieDescriptors = {
-//                cookieWithName("JSESSIONID").description("세션 ID")
-//        };
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 ID")
+        };
 
         ParameterDescriptor[] queryParameter = {
                 parameterWithName("lastReviewId").description("페이지의 마지막 리뷰 ID - 기본으로 최신순 첫번째 페이지 응답"),
@@ -385,13 +385,13 @@ class ReviewApiTest extends ApiTest {
 
         RestDocumentationResultHandler handler = document(
                 "written-review-list-with-pagination",
-//                requestCookies(cookieDescriptors),
+                requestCookies(cookieDescriptors),
                 queryParameters(queryParameter),
                 responseFields(responseFieldDescriptors)
         );
 
         givenWithSpec().log().all()
-//                .cookie("JSESSIONID", "ASVNE1VAKDNV4")
+                .cookie("JSESSIONID", "ASVNE1VAKDNV4")
 //                .queryParam("reviewRequestCode", "hello!!")
                 .queryParam("lastReviewId", "2")
                 .queryParam("size", "5")
