@@ -1,16 +1,20 @@
-import Button from '@/components/common/Button';
+import { Button } from '@/components/index';
 import { calculateParticle } from '@/utils';
 
 import * as S from './styles';
 
-export interface LoginButtonProps {
+interface LoginButtonProps extends LoginButtonStyleProps {
   platform: string;
   engPlatform?: string;
   logoSrc: string;
   handleLoginButtonClick: () => void;
+}
+
+export interface LoginButtonStyleProps {
   $logoStyle?: React.CSSProperties;
   $style?: React.CSSProperties;
 }
+
 const LoginButton = ({
   platform,
   engPlatform,

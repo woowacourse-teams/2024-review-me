@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 
-interface LoginButtonStyleProps {
-  $logoStyle?: React.CSSProperties;
-}
+import { LoginButtonStyleProps } from './index';
 
 export const ButtonLabelContainer = styled.div`
   display: flex;
@@ -10,7 +8,7 @@ export const ButtonLabelContainer = styled.div`
   align-items: center;
 `;
 
-export const LogoImg = styled.img<LoginButtonStyleProps>`
+export const LogoImg = styled.img<Omit<LoginButtonStyleProps, '$style' >>`
   width: 3.2rem;
   height: 3.2rem;
 

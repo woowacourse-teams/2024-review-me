@@ -1,10 +1,9 @@
 import GithubWhiteLogoIcon from '@/assets/githubWhiteLogo.svg';
-import LoginButton from '@/components/common/LoginButton';
+import { LoginButtonStyleProps } from '@/components/common/LoginButton';
+import { LoginButton } from '@/components/index';
 
-interface GithubLoginButtonProps {
+interface GithubLoginButtonProps extends LoginButtonStyleProps {
   handleGithubLoginButtonClick: () => void;
-  $logoStyle?: React.CSSProperties;
-  $style?: React.CSSProperties;
 }
 
 const GithubLoginButton = ({ handleGithubLoginButtonClick, $logoStyle, $style }: GithubLoginButtonProps) => {
