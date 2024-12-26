@@ -4,12 +4,12 @@ import AlertIcon from '@/assets/alertTriangle.svg';
 import { Button, ErrorSuspenseContainer, Toast } from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useModals } from '@/hooks';
-import { isValidPasswordInput, isValidReviewGroupDataInput } from '@/pages/HomePage/utils/validateInput';
 
 import { FormLayout, ReviewZoneURLModal } from '../index';
 import { ProjectNameField, RevieweeNameField, PasswordField } from '../Inputs';
 
 import URLGeneratorButton from './components/URLGeneratorButton';
+import useURLGeneratorState from './hooks/useURLGeneratorState';
 import * as S from './styles';
 
 const MODAL_KEYS = {
@@ -25,9 +25,9 @@ interface URLGeneratorFormProps {
   isMember?: boolean;
 }
 const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
-  const [revieweeName, setRevieweeName] = useState('');
-  const [projectName, setProjectName] = useState('');
-  const [password, setPassword] = useState('');
+  const { revieweeName, projectName, password, isFormValid, resetForm, urlGeneratorStateHandler } =
+    useURLGeneratorState({ isMember });
+
   const [reviewZoneURL, setReviewZoneURL] = useState('');
 
   const [isOpenToast, setIsOpenToast] = useState(false);
@@ -36,20 +36,11 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
   const handleOpenToast = (isOpen: boolean) => setIsOpenToast(isOpen);
 
   const useInputId = useId();
+
   const INPUT_ID = {
     revieweeName: `reviewee-name-input-${useInputId}`,
     projectName: `project-name-input-${useInputId}`,
     password: `password-input-${useInputId}`,
-  };
-
-  const isCommonFormValid = isValidReviewGroupDataInput(revieweeName) && isValidReviewGroupDataInput(projectName);
-
-  const isFormValid = isMember ? isCommonFormValid : isCommonFormValid && isValidPasswordInput(password);
-
-  const resetForm = () => {
-    setRevieweeName('');
-    setProjectName('');
-    !isMember && setPassword('');
   };
 
   const getCompleteReviewZoneURL = (reviewRequestCode: string) => {
@@ -76,9 +67,19 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
   return (
     <S.URLGeneratorForm>
       <FormLayout title="함께한 팀원으로부터 리뷰를 받아보세요!" direction="column">
-        <RevieweeNameField id={INPUT_ID.revieweeName} value={revieweeName} setValue={setRevieweeName} />
-        <ProjectNameField id={INPUT_ID.projectName} value={projectName} setValue={setProjectName} />
-        {!isMember && <PasswordField id={INPUT_ID.password} value={password} setValue={setPassword} />}
+        <RevieweeNameField
+          id={INPUT_ID.revieweeName}
+          value={revieweeName}
+          setValue={urlGeneratorStateHandler.revieweeName}
+        />
+        <ProjectNameField
+          id={INPUT_ID.projectName}
+          value={projectName}
+          setValue={urlGeneratorStateHandler.projectName}
+        />
+        {!isMember && (
+          <PasswordField id={INPUT_ID.password} value={password} setValue={urlGeneratorStateHandler.password} />
+        )}
         <ErrorSuspenseContainer
           suspenseFallback={
             <Button type="button" styleType="primary" disabled={true}>
