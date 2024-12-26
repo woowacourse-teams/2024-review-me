@@ -20,7 +20,10 @@ const MODAL_KEYS = {
   confirm: 'CONFIRM',
 };
 
-const URLGeneratorForm = () => {
+interface URLGeneratorFormProps {
+  isMember?: boolean;
+}
+const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
   const [revieweeName, setRevieweeName] = useState('');
   const [projectName, setProjectName] = useState('');
   const [password, setPassword] = useState('');
@@ -38,10 +41,9 @@ const URLGeneratorForm = () => {
 
   const mutation = usePostDataForReviewRequestCode();
 
-  const isFormValid =
-    isValidReviewGroupDataInput(revieweeName) &&
-    isValidReviewGroupDataInput(projectName) &&
-    isValidPasswordInput(password);
+  const isCommonFormValid = isValidReviewGroupDataInput(revieweeName) && isValidReviewGroupDataInput(projectName);
+
+  const isFormValid = isMember ? isCommonFormValid : isCommonFormValid && isValidPasswordInput(password);
 
   const postDataForURL = () => {
     trackEventInAmplitude(HOM_EVENT_NAME.generateReviewURL);
@@ -53,14 +55,16 @@ const URLGeneratorForm = () => {
         setReviewZoneURL(completeReviewZoneURL);
 
         resetForm();
+        openModal(MODAL_KEYS.confirm);
       },
+      // TODO : api 요청 실패 핸들링 추가하기
     });
   };
 
   const resetForm = () => {
     setRevieweeName('');
     setProjectName('');
-    setPassword('');
+    !isMember && setPassword('');
   };
 
   const getCompleteReviewZoneURL = (reviewRequestCode: string) => {
@@ -70,7 +74,6 @@ const URLGeneratorForm = () => {
   const handleUrlCreationButtonClick = debounce((event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     postDataForURL();
-    openModal(MODAL_KEYS.confirm);
   }, DEBOUNCE_TIME);
 
   return (
@@ -78,7 +81,7 @@ const URLGeneratorForm = () => {
       <FormLayout title="함께한 팀원으로부터 리뷰를 받아보세요!" direction="column">
         <RevieweeNameField id={INPUT_ID.revieweeName} value={revieweeName} setValue={setRevieweeName} />
         <ProjectNameField id={INPUT_ID.projectName} value={projectName} setValue={setProjectName} />
-        <PasswordField id={INPUT_ID.password} value={password} setValue={setPassword} />
+        {!isMember && <PasswordField id={INPUT_ID.password} value={password} setValue={setPassword} />}
         <Button
           type="button"
           styleType={isFormValid ? 'primary' : 'disabled'}
