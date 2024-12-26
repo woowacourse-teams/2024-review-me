@@ -1,25 +1,21 @@
-import { useId, useState } from 'react';
+import React, { useId, useState } from 'react';
 
-import { DataForReviewRequestCode } from '@/apis/group';
-import { Button } from '@/components';
-import { HOM_EVENT_NAME } from '@/constants';
+import { Button, ErrorSuspenseContainer } from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useModals } from '@/hooks';
 import { isValidPasswordInput, isValidReviewGroupDataInput } from '@/pages/HomePage/utils/validateInput';
-import { debounce, trackEventInAmplitude } from '@/utils';
 
-import usePostDataForReviewRequestCode from '../../hooks/usePostDataForReviewRequestCode';
 import { FormLayout, ReviewZoneURLModal } from '../index';
 import { ProjectNameField, RevieweeNameField, PasswordField } from '../Inputs';
 
+import URLGeneratorButton from './components/URLGeneratorButton';
 import * as S from './styles';
-
-const DEBOUNCE_TIME = 300;
 
 const MODAL_KEYS = {
   confirm: 'CONFIRM',
 };
 
+const LINK_API_ERROR_MESSAGE = '리뷰 링크 생성에 실패했어요.';
 interface URLGeneratorFormProps {
   isMember?: boolean;
 }
@@ -27,10 +23,12 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
   const [revieweeName, setRevieweeName] = useState('');
   const [projectName, setProjectName] = useState('');
   const [password, setPassword] = useState('');
+  const [apiErrorMessage, setApiErrorMessage] = useState('');
 
   const [reviewZoneURL, setReviewZoneURL] = useState('');
 
   const { isOpen, openModal, closeModal } = useModals();
+  let apiErrorMessageTime: ReturnType<typeof setTimeout>;
 
   const useInputId = useId();
   const INPUT_ID = {
@@ -39,27 +37,9 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
     password: `password-input-${useInputId}`,
   };
 
-  const mutation = usePostDataForReviewRequestCode();
-
   const isCommonFormValid = isValidReviewGroupDataInput(revieweeName) && isValidReviewGroupDataInput(projectName);
 
   const isFormValid = isMember ? isCommonFormValid : isCommonFormValid && isValidPasswordInput(password);
-
-  const postDataForURL = () => {
-    trackEventInAmplitude(HOM_EVENT_NAME.generateReviewURL);
-
-    const dataForReviewRequestCode: DataForReviewRequestCode = { revieweeName, projectName, groupAccessCode: password };
-    mutation.mutate(dataForReviewRequestCode, {
-      onSuccess: (data) => {
-        const completeReviewZoneURL = getCompleteReviewZoneURL(data.reviewRequestCode);
-        setReviewZoneURL(completeReviewZoneURL);
-
-        resetForm();
-        openModal(MODAL_KEYS.confirm);
-      },
-      // TODO : api 요청 실패 핸들링 추가하기
-    });
-  };
 
   const resetForm = () => {
     setRevieweeName('');
@@ -71,10 +51,30 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
     return `${window.location.origin}/${ROUTE.reviewZone}/${reviewRequestCode}`;
   };
 
-  const handleUrlCreationButtonClick = debounce((event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    postDataForURL();
-  }, DEBOUNCE_TIME);
+  const toastApiErrorMessage = () => {
+    setApiErrorMessage(LINK_API_ERROR_MESSAGE);
+    apiErrorMessageTime = setTimeout(() => {
+      setApiErrorMessage('');
+    }, 1000 * 3);
+  };
+  const handleAPISuccess = (data: any) => {
+    const completeReviewZoneURL = getCompleteReviewZoneURL(data.reviewRequestCode);
+    setReviewZoneURL(completeReviewZoneURL);
+
+    resetForm();
+
+    setApiErrorMessage('');
+    clearTimeout(apiErrorMessageTime);
+
+    openModal(MODAL_KEYS.confirm);
+  };
+
+  const handleAPIError = (error: Error) => {
+    console.error(error.message);
+
+    toastApiErrorMessage();
+    closeModal(MODAL_KEYS.confirm);
+  };
 
   return (
     <S.URLGeneratorForm>
@@ -82,14 +82,21 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
         <RevieweeNameField id={INPUT_ID.revieweeName} value={revieweeName} setValue={setRevieweeName} />
         <ProjectNameField id={INPUT_ID.projectName} value={projectName} setValue={setProjectName} />
         {!isMember && <PasswordField id={INPUT_ID.password} value={password} setValue={setPassword} />}
-        <Button
-          type="button"
-          styleType={isFormValid ? 'primary' : 'disabled'}
-          onClick={handleUrlCreationButtonClick}
-          disabled={!isFormValid}
+        <ErrorSuspenseContainer
+          suspenseFallback={
+            <Button type="button" styleType="primary" disabled={true}>
+              리뷰 링크 생성 중...
+            </Button>
+          }
         >
-          리뷰 링크 생성하기
-        </Button>
+          <URLGeneratorButton
+            isFormValid={isFormValid}
+            dataForReviewRequestCode={{ revieweeName, projectName, groupAccessCode: password }}
+            handleAPIError={handleAPIError}
+            handleAPISuccess={handleAPISuccess}
+          />
+        </ErrorSuspenseContainer>
+        {apiErrorMessage && <p>{apiErrorMessage}</p>}
         {isOpen(MODAL_KEYS.confirm) && (
           <ReviewZoneURLModal reviewZoneURL={reviewZoneURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
         )}
@@ -98,4 +105,4 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
   );
 };
 
-export default URLGeneratorForm;
+export default React.memo(URLGeneratorForm);
