@@ -9,19 +9,19 @@ import ErrorFallback from '../ErrorFallback';
 const LoadingPage = lazy(() => import('@/pages/LoadingPage'));
 
 interface ErrorSuspenseContainerProps {
-  fallback?: React.ComponentType<FallbackProps>;
+  errorFallback?: React.ComponentType<FallbackProps>;
   suspenseFallback?: ReactNode;
 }
 
 const ErrorSuspenseContainer = ({
   children,
-  fallback = ErrorFallback,
+  errorFallback = ErrorFallback,
   suspenseFallback = <LoadingPage />,
 }: EssentialPropsWithChildren<ErrorSuspenseContainerProps>) => {
   return (
     <QueryErrorResetBoundary>
       {({ reset }) => (
-        <ErrorBoundary fallback={fallback} resetQueryError={reset}>
+        <ErrorBoundary fallback={errorFallback} resetQueryError={reset}>
           <Suspense fallback={suspenseFallback}>{children}</Suspense>
         </ErrorBoundary>
       )}
