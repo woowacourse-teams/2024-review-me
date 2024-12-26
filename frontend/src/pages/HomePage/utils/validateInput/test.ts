@@ -7,6 +7,7 @@ describe('isNotEmptyInput', () => {
 
   test('빈 문자열인 경우 false를 반환한다.', () => {
     expect(isNotEmptyInput('')).toBe(false);
+    expect(isNotEmptyInput('  ')).toBe(false);
   });
 });
 

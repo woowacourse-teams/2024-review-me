@@ -1,5 +1,5 @@
 export const isNotEmptyInput = (input: string) => {
-  return input !== '';
+  return input.trim() !== '';
 };
 
 export const isAlphanumeric = (input: string) => {
