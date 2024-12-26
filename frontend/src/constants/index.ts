@@ -6,3 +6,4 @@ export * from './routerParam';
 export * from './highlight';
 export * from './storageKey';
 export * from './amplitudeEventName';
+export * from './route';
