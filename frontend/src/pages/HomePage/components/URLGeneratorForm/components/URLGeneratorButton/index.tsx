@@ -37,11 +37,11 @@ const URLGeneratorButton = ({
   return (
     <Button
       type="button"
-      styleType={isFormValid ? 'primary' : 'disabled'}
+      styleType={isFormValid && !mutation.isPending ? 'primary' : 'disabled'}
       onClick={handleUrlCreationButtonClick}
-      disabled={!isFormValid}
+      disabled={!isFormValid && !mutation.isPending}
     >
-      리뷰 링크 생성하기
+      {mutation.isPending ? '리뷰 링크 생성 중...' : '리뷰 링크 생성하기'}
     </Button>
   );
 };

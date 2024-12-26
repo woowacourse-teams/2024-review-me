@@ -80,13 +80,7 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
         {!isMember && (
           <PasswordField id={INPUT_ID.password} value={password} setValue={urlGeneratorStateHandler.password} />
         )}
-        <ErrorSuspenseContainer
-          suspenseFallback={
-            <Button type="button" styleType="primary" disabled={true}>
-              리뷰 링크 생성 중...
-            </Button>
-          }
-        >
+        <ErrorSuspenseContainer>
           <URLGeneratorButton
             isFormValid={isFormValid}
             dataForReviewRequestCode={{ revieweeName, projectName, groupAccessCode: password }}

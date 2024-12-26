@@ -21,11 +21,11 @@ const usePostDataForReviewRequestCode = ({
     }
   };
 
-  const { mutate, isPending, isError } = useMutation({
+  const mutation = useMutation({
     mutationFn,
 
     onMutate: () => {
-      if (isPending) return;
+      if (mutation.isPending) return;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [GROUP_QUERY_KEY.dataForReviewRequestCode] });
@@ -34,11 +34,7 @@ const usePostDataForReviewRequestCode = ({
     onError: handleAPIError,
   });
 
-  return {
-    mutate,
-    isError,
-    isPending,
-  };
+  return mutation;
 };
 
 export default usePostDataForReviewRequestCode;
