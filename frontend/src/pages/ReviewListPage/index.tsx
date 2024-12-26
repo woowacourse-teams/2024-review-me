@@ -5,7 +5,7 @@ import ReviewListPageContents from './components/ReviewListPageContents';
 
 const ReviewListPage = () => {
   return (
-    <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
+    <ErrorSuspenseContainer errorFallback={AuthAndServerErrorFallback}>
       <ReviewDisplayLayout isReviewList={true}>
         <ReviewListPageContents />
         <TopButton />
