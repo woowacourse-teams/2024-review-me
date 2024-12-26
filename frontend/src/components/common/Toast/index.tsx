@@ -17,14 +17,14 @@ interface ToastProps {
   duration: number;
   position: ToastPositionType;
   handleOpenModal: (isOpen: boolean) => void;
-  handleModalMessage: (message: string) => void;
+  handleModalMessage?: (message: string) => void;
 }
 
 const Toast = ({ icon, message, duration, position, handleOpenModal, handleModalMessage }: ToastProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       handleOpenModal(false);
-      handleModalMessage('');
+      if (handleModalMessage) handleModalMessage('');
     }, duration * 1000);
 
     return () => clearTimeout(timer);
