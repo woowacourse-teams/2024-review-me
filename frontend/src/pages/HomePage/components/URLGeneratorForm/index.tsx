@@ -1,6 +1,7 @@
 import React, { useId, useState } from 'react';
 
-import { Button, ErrorSuspenseContainer } from '@/components';
+import AlertIcon from '@/assets/alertTriangle.svg';
+import { Button, ErrorSuspenseContainer, Toast } from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useModals } from '@/hooks';
 import { isValidPasswordInput, isValidReviewGroupDataInput } from '@/pages/HomePage/utils/validateInput';
@@ -15,7 +16,11 @@ const MODAL_KEYS = {
   confirm: 'CONFIRM',
 };
 
-const LINK_API_ERROR_MESSAGE = '리뷰 링크 생성에 실패했어요.';
+const TOAST_INFORM = {
+  icon: { src: AlertIcon, alt: '' },
+  message: '리뷰 링크 생성에 실패했어요. 다시 시도해 보세요.',
+  duration: 1000 * 5,
+};
 interface URLGeneratorFormProps {
   isMember?: boolean;
 }
@@ -23,12 +28,12 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
   const [revieweeName, setRevieweeName] = useState('');
   const [projectName, setProjectName] = useState('');
   const [password, setPassword] = useState('');
-  const [apiErrorMessage, setApiErrorMessage] = useState('');
-
   const [reviewZoneURL, setReviewZoneURL] = useState('');
 
+  const [isOpenToast, setIsOpenToast] = useState(false);
   const { isOpen, openModal, closeModal } = useModals();
-  let apiErrorMessageTime: ReturnType<typeof setTimeout>;
+
+  const handleOpenToast = (isOpen: boolean) => setIsOpenToast(isOpen);
 
   const useInputId = useId();
   const INPUT_ID = {
@@ -51,28 +56,20 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
     return `${window.location.origin}/${ROUTE.reviewZone}/${reviewRequestCode}`;
   };
 
-  const toastApiErrorMessage = () => {
-    setApiErrorMessage(LINK_API_ERROR_MESSAGE);
-    apiErrorMessageTime = setTimeout(() => {
-      setApiErrorMessage('');
-    }, 1000 * 3);
-  };
   const handleAPISuccess = (data: any) => {
     const completeReviewZoneURL = getCompleteReviewZoneURL(data.reviewRequestCode);
     setReviewZoneURL(completeReviewZoneURL);
 
     resetForm();
 
-    setApiErrorMessage('');
-    clearTimeout(apiErrorMessageTime);
-
+    handleOpenToast(false);
     openModal(MODAL_KEYS.confirm);
   };
 
   const handleAPIError = (error: Error) => {
     console.error(error.message);
 
-    toastApiErrorMessage();
+    handleOpenToast(true);
     closeModal(MODAL_KEYS.confirm);
   };
 
@@ -96,7 +93,15 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
             handleAPISuccess={handleAPISuccess}
           />
         </ErrorSuspenseContainer>
-        {apiErrorMessage && <p>{apiErrorMessage}</p>}
+        {isOpenToast && (
+          <Toast
+            icon={TOAST_INFORM.icon}
+            message={TOAST_INFORM.message}
+            handleOpenModal={handleOpenToast}
+            duration={TOAST_INFORM.duration}
+            position="top"
+          />
+        )}
         {isOpen(MODAL_KEYS.confirm) && (
           <ReviewZoneURLModal reviewZoneURL={reviewZoneURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
         )}

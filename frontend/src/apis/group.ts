@@ -1,4 +1,4 @@
-import { INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
+import { ERROR_BOUNDARY_IGNORE_ERROR, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
 import { PasswordResponse, ReviewGroupData } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
@@ -21,7 +21,7 @@ export const postDataForReviewRequestCodeApi = async (dataForReviewRequestCode: 
   });
 
   if (!response.ok) {
-    throw new Error(createApiErrorMessage(response.status));
+    throw new Error(`${createApiErrorMessage(response.status)} ${ERROR_BOUNDARY_IGNORE_ERROR}`);
   }
 
   const data = await response.json();
