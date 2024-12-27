@@ -10,7 +10,7 @@ import { InputValueProps } from './InputField';
 
 import { InputField } from '.';
 
-const PasswordField = ({ id, value: password, setValue: setPassword }: InputValueProps) => {
+const PasswordField = ({ id, value: password, updateValue: updatePassword }: InputValueProps) => {
   const { isOff, handleEyeButtonToggle } = useEyeButton();
   const { passwordErrorMessage, handlePasswordBlur, initializeIsBlurredOnce } = usePasswordValidation(password);
 
@@ -33,7 +33,7 @@ const PasswordField = ({ id, value: password, setValue: setPassword }: InputValu
           type={isOff ? 'password' : 'text'}
           $style={{ width: '100%', paddingRight: '3rem' }}
           onChange={(event) => {
-            setPassword(event.target.value);
+            updatePassword(event.target.value);
           }}
         />
         <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />

@@ -20,10 +20,10 @@ const useURLGeneratorState = ({ isMember }: useURLGeneratorStateProps) => {
     !isMember && setPassword('');
   };
 
-  const urlGeneratorStateHandler: Record<string, React.Dispatch<React.SetStateAction<string>>> = {
-    revieweeName: setRevieweeName,
-    projectName: setProjectName,
-    password: setPassword,
+  const urlGeneratorStateUpdater = {
+    revieweeName: (value: string) => setRevieweeName(value),
+    projectName: (value: string) => setProjectName(value),
+    password: (value: string) => setPassword(value),
   };
 
   return {
@@ -32,7 +32,7 @@ const useURLGeneratorState = ({ isMember }: useURLGeneratorStateProps) => {
     password,
     isFormValid,
     resetForm,
-    urlGeneratorStateHandler,
+    urlGeneratorStateUpdater,
   };
 };
 

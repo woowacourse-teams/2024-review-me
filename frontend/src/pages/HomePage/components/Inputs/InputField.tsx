@@ -14,7 +14,7 @@ interface InputFieldProps {
 export interface InputValueProps {
   id: string;
   value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  updateValue: (newValue: string) => void;
 }
 
 const InputField = ({

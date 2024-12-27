@@ -1,7 +1,7 @@
 import React, { useId, useState } from 'react';
 
 import AlertIcon from '@/assets/alertTriangle.svg';
-import { Button, ErrorSuspenseContainer, Toast } from '@/components';
+import { ErrorSuspenseContainer, Toast } from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useModals } from '@/hooks';
 
@@ -25,7 +25,7 @@ interface URLGeneratorFormProps {
   isMember?: boolean;
 }
 const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
-  const { revieweeName, projectName, password, isFormValid, resetForm, urlGeneratorStateHandler } =
+  const { revieweeName, projectName, password, isFormValid, resetForm, urlGeneratorStateUpdater } =
     useURLGeneratorState({ isMember });
 
   const [reviewZoneURL, setReviewZoneURL] = useState('');
@@ -70,15 +70,15 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
         <RevieweeNameField
           id={INPUT_ID.revieweeName}
           value={revieweeName}
-          setValue={urlGeneratorStateHandler.revieweeName}
+          updateValue={urlGeneratorStateUpdater.revieweeName}
         />
         <ProjectNameField
           id={INPUT_ID.projectName}
           value={projectName}
-          setValue={urlGeneratorStateHandler.projectName}
+          updateValue={urlGeneratorStateUpdater.projectName}
         />
         {!isMember && (
-          <PasswordField id={INPUT_ID.password} value={password} setValue={urlGeneratorStateHandler.password} />
+          <PasswordField id={INPUT_ID.password} value={password} updateValue={urlGeneratorStateUpdater.password} />
         )}
         <ErrorSuspenseContainer>
           <URLGeneratorButton
