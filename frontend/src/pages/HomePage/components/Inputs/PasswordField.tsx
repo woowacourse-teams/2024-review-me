@@ -12,7 +12,8 @@ import { InputField } from '.';
 
 const PasswordField = ({ id, value: password, updateValue: updatePassword }: InputValueProps) => {
   const { isOff, handleEyeButtonToggle } = useEyeButton();
-  const { passwordErrorMessage, handlePasswordBlur, initializeIsBlurredOnce } = usePasswordValidation(password);
+  const { passwordErrorMessage, handlePasswordErrorMessage, handlePasswordBlur, initializeIsBlurredOnce } =
+    usePasswordValidation(password);
 
   const { min, max } = REVIEW_URL_GENERATOR_FORM_VALIDATION.password;
 
@@ -36,6 +37,7 @@ const PasswordField = ({ id, value: password, updateValue: updatePassword }: Inp
           $style={{ width: '100%', paddingRight: '3rem' }}
           onChange={(event) => {
             updatePassword(event.target.value);
+            handlePasswordErrorMessage('');
           }}
         />
         <EyeButton isOff={isOff} handleEyeButtonToggle={handleEyeButtonToggle} />

@@ -31,12 +31,15 @@ const usePasswordValidation = (password: string) => {
     validatePassword();
   };
 
+  const handlePasswordErrorMessage = (errorMessage: string) => setPasswordErrorMessage(errorMessage);
+
   useEffect(() => {
     if (isBlurredOnce) validatePassword();
   }, [password, isBlurredOnce]);
 
   return {
     passwordErrorMessage,
+    handlePasswordErrorMessage,
     handlePasswordBlur,
     initializeIsBlurredOnce,
   };
