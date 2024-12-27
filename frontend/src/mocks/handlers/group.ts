@@ -18,13 +18,6 @@ const postDataForReviewRequestCode = () => {
   });
 };
 
-// NOTE: reviewRequestCode 생성 에러 응답
-// const postDataForReviewRequestCode = () => {
-//   return http.post(endPoint.postingDataForReviewRequestCode, async () => {
-//     return HttpResponse.json({ error: '서버 에러 테스트' }, { status: 500 });
-//   });
-// };
-
 const postPassWordValidation = () => {
   return http.post(endPoint.checkingPassword, async ({ request, cookies }) => {
     // request body의 존재 검증
