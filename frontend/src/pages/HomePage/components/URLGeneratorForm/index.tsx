@@ -6,7 +6,7 @@ import { ROUTE } from '@/constants/route';
 import { useModals } from '@/hooks';
 
 import { FormLayout, ReviewZoneURLModal } from '../index';
-import { ProjectNameField, RevieweeNameField, PasswordField } from '../Inputs';
+import { PasswordField, ReviewGroupDataField } from '../Inputs';
 
 import URLGeneratorButton from './components/URLGeneratorButton';
 import useURLGeneratorState from './hooks/useURLGeneratorState';
@@ -67,13 +67,15 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
   return (
     <S.URLGeneratorForm>
       <FormLayout title="함께한 팀원으로부터 리뷰를 받아보세요!" direction="column">
-        <RevieweeNameField
+        <ReviewGroupDataField
           id={INPUT_ID.revieweeName}
+          labelText="본인의 이름을 적어주세요"
           value={revieweeName}
           updateValue={urlGeneratorStateUpdater.revieweeName}
         />
-        <ProjectNameField
+        <ReviewGroupDataField
           id={INPUT_ID.projectName}
+          labelText="함께한 프로젝트 이름을 입력해주세요"
           value={projectName}
           updateValue={urlGeneratorStateUpdater.projectName}
         />
