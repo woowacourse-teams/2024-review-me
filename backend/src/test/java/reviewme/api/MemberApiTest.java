@@ -37,7 +37,7 @@ public class MemberApiTest extends ApiTest {
 
         givenWithSpec().log().all()
                 .cookie("JSESSIONID", "SESSION12345678")
-                .when().get("/v2/members/profile/mine")
+                .when().get("/v2/members/profile")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);

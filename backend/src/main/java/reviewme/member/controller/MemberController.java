@@ -13,7 +13,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/v2/members/profile/mine")
+    @GetMapping("/v2/members/profile")
     public ResponseEntity<ProfileResponse> getProfile() {
         ProfileResponse response = memberService.getProfile();
         return ResponseEntity.ok(response);
