@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Input } from '@/components';
 import { REVIEW_URL_GENERATOR_FORM_VALIDATION } from '@/constants';
@@ -15,11 +15,11 @@ const ReviewGroupDataField = ({ id, labelText, value: data, updateValue: updateD
   const [errorMessage, setErrorMessage] = useState('');
   const { max, min } = REVIEW_URL_GENERATOR_FORM_VALIDATION.groupData;
 
-  useEffect(() => {
+  const handleBlur = () => {
     isValidReviewGroupDataInput(data)
       ? setErrorMessage('')
       : setErrorMessage(`${min}자부터 ${max}자까지 입력할 수 있어요`);
-  }, [data]);
+  };
 
   return (
     <InputField id={id} labelText={labelText} errorMessage={errorMessage}>
@@ -29,7 +29,9 @@ const ReviewGroupDataField = ({ id, labelText, value: data, updateValue: updateD
         type="text"
         onChange={(event) => {
           updateData(event.target.value);
+          setErrorMessage('');
         }}
+        onBlur={handleBlur}
       />
     </InputField>
   );
