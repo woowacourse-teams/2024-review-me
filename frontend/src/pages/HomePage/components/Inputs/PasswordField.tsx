@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
 import { EyeButton, Input } from '@/components';
+import { REVIEW_URL_GENERATOR_FORM_VALIDATION } from '@/constants';
 import { useEyeButton, usePasswordValidation } from '@/hooks';
-import { MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT } from '@/pages/HomePage/utils/validateInput';
 
 import * as S from '../URLGeneratorForm/styles';
 
@@ -14,6 +14,8 @@ const PasswordField = ({ id, value: password, updateValue: updatePassword }: Inp
   const { isOff, handleEyeButtonToggle } = useEyeButton();
   const { passwordErrorMessage, handlePasswordBlur, initializeIsBlurredOnce } = usePasswordValidation(password);
 
+  const { min, max } = REVIEW_URL_GENERATOR_FORM_VALIDATION.password;
+
   useEffect(() => {
     initializeIsBlurredOnce();
   }, [initializeIsBlurredOnce]);
@@ -22,7 +24,7 @@ const PasswordField = ({ id, value: password, updateValue: updatePassword }: Inp
     <InputField
       id={id}
       labelText="리뷰 확인에 사용할 비밀번호를 적어주세요"
-      inputInfoText={`${MIN_PASSWORD_INPUT}~${MAX_PASSWORD_INPUT}자의 영문(대/소문자),숫자만 사용가능해요`}
+      inputInfoText={`${min}~${max}자의 영문(대/소문자),숫자만 사용가능해요`}
       errorMessage={passwordErrorMessage}
     >
       <S.PasswordInputContainer>
