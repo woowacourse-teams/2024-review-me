@@ -9,14 +9,31 @@ interface ProfileTabProps {
 const ProfileTab = ({ items }: ProfileTabProps) => {
   return (
     <S.ProfileTabContainer>
-      {items.map((item) => {
+      {items.map((item, index) => {
         switch (item.elementType) {
           case 'readonly':
-            return <S.ReadonlyItemWrapper>{item.content}</S.ReadonlyItemWrapper>;
+            return (
+              <S.ReadonlyItemWrapper
+                key={`${item.elementType}_${index}`}
+                $isDisplayedOnlyMobile={item.isDisplayedOnlyMobile}
+              >
+                {item.content}
+              </S.ReadonlyItemWrapper>
+            );
           case 'action':
-            return <S.ActionItemWrapper onClick={item.handleClick}>{item.content}</S.ActionItemWrapper>;
+            return (
+              <S.ActionItemWrapper
+                key={`${item.elementType}_${index}`}
+                onClick={item.handleClick}
+                $isDisplayedOnlyMobile={item.isDisplayedOnlyMobile}
+              >
+                {item.content}
+              </S.ActionItemWrapper>
+            );
           case 'divider':
-            return <S.Divider />;
+            return (
+              <S.Divider key={`${item.elementType}_${index}`} $isDisplayedOnlyMobile={item.isDisplayedOnlyMobile} />
+            );
         }
       })}
     </S.ProfileTabContainer>

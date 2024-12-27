@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 interface DropdownStyleProps {
   $isOpened: boolean;
 }
@@ -32,6 +34,10 @@ export const ProfileImageWrapper = styled.div`
 
 export const ProfileId = styled.p`
   font-weight: ${({ theme }) => theme.fontWeight.semibold};
+
+  ${media.small} {
+    display: none;
+  }
 `;
 
 export const ArrowIcon = styled.img<DropdownStyleProps>`
@@ -39,4 +45,8 @@ export const ArrowIcon = styled.img<DropdownStyleProps>`
   width: 2rem;
   height: 2rem;
   transition: transform 0.3s ease-in-out;
+
+  ${media.small} {
+    display: none;
+  }
 `;
