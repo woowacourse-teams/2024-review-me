@@ -1,5 +1,4 @@
 import DownArrowIcon from '@/assets/downArrow.svg';
-import GitHubIcon from '@/assets/github.svg';
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import { SocialType } from '@/types/profile';
 
@@ -24,7 +23,7 @@ const ProfileInfo = ({ profileImageSrc, profileId, socialType }: ProfileInfoProp
       <UndraggableWrapper>
         <S.ProfileContainer onClick={handleContainerClick}>
           <S.ProfileImageWrapper>
-            <img src={profileImageSrc || GitHubIcon} alt="프로필 사진" />
+            {profileImageSrc && <img src={profileImageSrc} alt="프로필 사진" />}
           </S.ProfileImageWrapper>
           <S.ProfileId>{profileId}</S.ProfileId>
           <S.ArrowIcon src={DownArrowIcon} $isOpened={isOpened} alt="" />

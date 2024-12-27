@@ -28,7 +28,7 @@ export const ProfileImageWrapper = styled.div`
   width: 4rem;
   height: 4rem;
 
-  background-color: gray;
+  background-color: ${({ theme }) => theme.colors.gray};
   border-radius: 2rem;
 `;
 
