@@ -23,8 +23,8 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
-import reviewme.reviewgroup.service.dto.ReviewGroupDetailResponse;
-import reviewme.reviewgroup.service.dto.ReviewGroupListResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
 
 class ReviewGroupApiTest extends ApiTest {
@@ -129,10 +129,10 @@ class ReviewGroupApiTest extends ApiTest {
 
     @Test
     void 회원이_생성한_프로젝트_목록을_반환한다() {
-        ReviewGroupListResponse response = new ReviewGroupListResponse(true,
+        ReviewGroupPageResponse response = new ReviewGroupPageResponse(2L, true,
                 List.of(
-                        new ReviewGroupDetailResponse("이동훈", "우테코", LocalDate.of(2024, 1, 30), "WOOTECO1"),
-                        new ReviewGroupDetailResponse("아루", "리뷰미", LocalDate.of(2024, 1, 5), "ABCD1234")
+                        new ReviewGroupPageElementResponse("이동훈", "우테코", LocalDate.of(2024, 1, 30), "WOOTECO1"),
+                        new ReviewGroupPageElementResponse("아루", "리뷰미", LocalDate.of(2024, 1, 5), "ABCD1234")
                 )
         );
         BDDMockito.given(reviewGroupLookupService.getMyReviewGroups())

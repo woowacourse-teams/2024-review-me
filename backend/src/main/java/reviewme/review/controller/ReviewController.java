@@ -18,7 +18,7 @@ import reviewme.review.service.ReviewSummaryService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.reviewgroup.controller.ReviewGroupSession;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -40,12 +40,12 @@ public class ReviewController {
     }
 
     @GetMapping("/v2/reviews")
-    public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
+    public ResponseEntity<ReceivedReviewPageResponse> findReceivedReviews(
             @RequestParam(required = false) Long lastReviewId,
             @RequestParam(required = false) Integer size,
             @ReviewGroupSession ReviewGroup reviewGroup
     ) {
-        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(lastReviewId, size, reviewGroup);
+        ReceivedReviewPageResponse response = reviewListLookupService.getReceivedReviews(lastReviewId, size, reviewGroup);
         return ResponseEntity.ok(response);
     }
 

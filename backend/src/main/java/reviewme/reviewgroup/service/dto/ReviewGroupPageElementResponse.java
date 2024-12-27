@@ -2,7 +2,7 @@ package reviewme.reviewgroup.service.dto;
 
 import java.time.LocalDate;
 
-public record ReviewGroupDetailResponse(
+public record ReviewGroupPageElementResponse(
         String revieweeName,
         String projectName,
         LocalDate createdAt,

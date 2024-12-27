@@ -15,7 +15,7 @@ import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
-import reviewme.review.service.dto.response.list.ReviewListElementResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -76,13 +76,13 @@ class ReviewListMapperTest {
         int size = 5;
 
         // when
-        List<ReviewListElementResponse> responses = reviewListMapper.mapToReviewList(
+        List<ReceivedReviewPageElementResponse> responses = reviewListMapper.mapToReviewList(
                 reviewGroup, lastReviewId, size);
 
         // then
         assertAll(
                 () -> assertThat(responses).hasSize(size),
-                () -> assertThat(responses).extracting(ReviewListElementResponse::reviewId)
+                () -> assertThat(responses).extracting(ReceivedReviewPageElementResponse::reviewId)
                         .containsExactly(
                                 review7.getId(), review6.getId(), review5.getId(), review4.getId(), review3.getId())
         );

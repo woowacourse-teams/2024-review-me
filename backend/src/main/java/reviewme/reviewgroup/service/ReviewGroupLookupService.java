@@ -3,7 +3,7 @@ package reviewme.reviewgroup.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.reviewgroup.service.dto.ReviewGroupListResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -23,7 +23,7 @@ public class ReviewGroupLookupService {
         return new ReviewGroupResponse(reviewGroup.getReviewee(), reviewGroup.getProjectName());
     }
 
-    public ReviewGroupListResponse getMyReviewGroups() {
+    public ReviewGroupPageResponse getMyReviewGroups() {
         // TODO: 생성일자 최신순 정렬
         return null;
     }
