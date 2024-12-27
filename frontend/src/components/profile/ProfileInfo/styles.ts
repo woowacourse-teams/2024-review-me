@@ -8,13 +8,13 @@ export const ProfileSection = styled.section`
   cursor: pointer;
   position: relative;
   width: fit-content;
-  padding: 0 1rem;
 `;
 
 export const ProfileContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+  padding: 0 1rem;
 `;
 
 export const ProfileImageWrapper = styled.div`
@@ -26,6 +26,7 @@ export const ProfileImageWrapper = styled.div`
   width: 4rem;
   height: 4rem;
 
+  background-color: gray;
   border-radius: 2rem;
 `;
 
