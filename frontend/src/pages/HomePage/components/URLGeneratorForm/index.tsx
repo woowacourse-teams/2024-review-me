@@ -96,7 +96,7 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
             message={TOAST_INFORM.message}
             handleOpenModal={handleOpenToast}
             duration={TOAST_INFORM.duration}
-            position="top"
+            position="bottom"
           />
         )}
         {isOpen(MODAL_KEYS.confirm) && (
