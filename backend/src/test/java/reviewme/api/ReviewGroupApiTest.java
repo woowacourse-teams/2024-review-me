@@ -131,8 +131,8 @@ class ReviewGroupApiTest extends ApiTest {
     void 회원이_생성한_프로젝트_목록을_반환한다() {
         ReviewGroupPageResponse response = new ReviewGroupPageResponse(2L, true,
                 List.of(
-                        new ReviewGroupPageElementResponse("이동훈", "우테코", LocalDate.of(2024, 1, 30), "WOOTECO1"),
-                        new ReviewGroupPageElementResponse("아루", "리뷰미", LocalDate.of(2024, 1, 5), "ABCD1234")
+                        new ReviewGroupPageElementResponse("이동훈", "우테코", LocalDate.of(2024, 1, 30), "WOOTECO1", 1),
+                        new ReviewGroupPageElementResponse("아루", "리뷰미", LocalDate.of(2024, 1, 5), "ABCD1234", 2)
                 )
         );
         BDDMockito.given(reviewGroupLookupService.getMyReviewGroups())
@@ -143,12 +143,14 @@ class ReviewGroupApiTest extends ApiTest {
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("lastReviewGroupId").description("해당 페이지의 마지막 리뷰 그룹 ID"),
                 fieldWithPath("isLastPage").description("마지막 페이지 여부"),
                 fieldWithPath("reviewGroups[]").description("리뷰 그룹 목록 (생성일 기준 내림차순 정렬)"),
                 fieldWithPath("reviewGroups[].revieweeName").description("리뷰이 이름"),
                 fieldWithPath("reviewGroups[].projectName").description("프로젝트 이름"),
                 fieldWithPath("reviewGroups[].createdAt").description("생성일"),
-                fieldWithPath("reviewGroups[].reviewRequestCode").description("리뷰 요청 코드")
+                fieldWithPath("reviewGroups[].reviewRequestCode").description("리뷰 요청 코드"),
+                fieldWithPath("reviewGroups[].reviewCount").description("작성된 리뷰 수")
         };
 
         RestDocumentationResultHandler handler = document(

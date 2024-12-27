@@ -6,6 +6,7 @@ public record ReviewGroupPageElementResponse(
         String revieweeName,
         String projectName,
         LocalDate createdAt,
-        String reviewRequestCode
+        String reviewRequestCode,
+        int reviewCount
 ) {
 }
