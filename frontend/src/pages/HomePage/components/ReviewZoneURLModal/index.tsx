@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { AlertModal } from '@/components';
-import Checkbox from '@/components/common/Checkbox';
+import Checkbox from '@/components/common/checkboxes/Checkbox';
 
 import { CopyTextButton } from '../index';
 
