@@ -107,4 +107,4 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
   );
 };
 
-export default React.memo(URLGeneratorForm);
+export default URLGeneratorForm;

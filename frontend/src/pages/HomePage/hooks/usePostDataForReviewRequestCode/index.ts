@@ -12,17 +12,10 @@ const usePostDataForReviewRequestCode = ({
   handleAPISuccess,
 }: UsePostDataForReviewRequestCodeProps) => {
   const queryClient = useQueryClient();
-  const mutationFn = async (dataForReviewRequestCode: DataForReviewRequestCode) => {
-    try {
-      return await postDataForReviewRequestCodeApi(dataForReviewRequestCode);
-    } catch (error) {
-      console.error('Mutation function error:', error);
-      return Promise.reject(error); // Promise로 거부를 반환하여 onError로 전달
-    }
-  };
 
   const mutation = useMutation({
-    mutationFn,
+    mutationFn: (dataForReviewRequestCode: DataForReviewRequestCode) =>
+      postDataForReviewRequestCodeApi(dataForReviewRequestCode),
 
     onMutate: () => {
       if (mutation.isPending) return;
