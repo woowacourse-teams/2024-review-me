@@ -352,8 +352,7 @@ class ReviewApiTest extends ApiTest {
                 new WrittenReviewElementResponse(2L, "테드2", "리뷰미", LocalDate.of(2024, 8, 1), "(리뷰 미리보기 2)",
                         List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
         );
-        WrittenReviewsResponse response = new WrittenReviewsResponse(
-                1L, writtenReviews, 1L, true);
+        WrittenReviewsResponse response = new WrittenReviewsResponse(writtenReviews, 1L, true);
         BDDMockito.given(reviewListLookupService.getWrittenReviews(anyLong(), anyInt()))
                 .willReturn(response);
 
@@ -367,7 +366,6 @@ class ReviewApiTest extends ApiTest {
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
-                fieldWithPath("memberId").description("회원 ID"),
                 fieldWithPath("lastReviewId").description("페이지의 마지막 리뷰 ID"),
                 fieldWithPath("isLastPage").description("마지막 페이지 여부"),
 
