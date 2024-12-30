@@ -10,6 +10,9 @@ const ReviewWritingPage = lazy(() => import('@/pages/ReviewWritingPage'));
 const ReviewZonePage = lazy(() => import('@/pages/ReviewZonePage'));
 const ReviewCollectionPage = lazy(() => import('@/pages/ReviewCollectionPage'));
 const LoadingPage = lazy(() => import('@/pages/LoadingPage'));
+// 임시
+const WrittenReviewConfirmPage = lazy(() => import('@/pages/WrittenReviewConfirmPage'));
+const DetailedWrittenReview = lazy(() => import('@/pages/WrittenReviewConfirmPage/components/DetailedWrittenReview'));
 
 import App from './App';
 import { ErrorSuspenseContainer } from './components';
@@ -52,6 +55,12 @@ const router = createBrowserRouter([
         ),
       },
       { path: `${ROUTE.reviewCollection}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewCollectionPage /> },
+      // NOTE: 임시 라우팅 및 페이지명
+      { path: `user/written-review-confirm/:${ROUTE_PARAM.reviewRequestCode}`, element: <WrittenReviewConfirmPage /> },
+      {
+        path: `user/written-review-confirm/:${ROUTE_PARAM.reviewRequestCode}/:${ROUTE_PARAM.reviewId}`,
+        element: <DetailedWrittenReview $isMobile={true} selectedReviewId={Number(ROUTE_PARAM.reviewId)} />,
+      },
     ],
   },
 ]);
