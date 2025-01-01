@@ -1,32 +1,40 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import * as S from './styles';
 
 interface TabInfoItem {
   name: string;
   path: string;
+  param: string;
 }
 
 interface NavigationTabProps {
   tabInfoList: TabInfoItem[];
-  tabIndex: number;
 }
 
-const NavigationTab = ({ tabInfoList, tabIndex }: NavigationTabProps) => {
-  const [currentIndex, setCurrentIndex] = useState(tabIndex);
+const NavigationTab = ({ tabInfoList }: NavigationTabProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [currentTabWidth, setCurrentTabWidth] = useState(0);
   const [currentTabLeft, setCurrentTabLeft] = useState(0);
 
   const currentItemRef = useRef<HTMLUListElement>(null);
 
+  const location = useLocation();
   const navigate = useNavigate();
 
-  const handleTabClick = (path: string, index: number) => {
-    setCurrentIndex(index);
-    navigate(path);
-  };
+  // URL의 쿼리 파라미터 값을 읽어, 탭 인덱스 업데이트
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const tabParam = queryParams.get('tab');
+    const tabIndex = tabInfoList.findIndex((item) => item.param === tabParam);
 
+    if (tabIndex >= 0) {
+      setCurrentIndex(tabIndex);
+    }
+  }, [location.search]);
+
+  // 탭이 변경될 때마다 현재 탭의 크기와 위치 업데이트
   useEffect(() => {
     if (currentItemRef.current) {
       const currentTab = currentItemRef.current.children[currentIndex];
@@ -35,6 +43,11 @@ const NavigationTab = ({ tabInfoList, tabIndex }: NavigationTabProps) => {
       setCurrentTabLeft(left);
     }
   }, [currentIndex]);
+
+  const handleTabClick = (path: string, index: number) => {
+    setCurrentIndex(index);
+    navigate(`${path}?tab=${tabInfoList[index].param}`);
+  };
 
   return (
     <S.NavContainer>
