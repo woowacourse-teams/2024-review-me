@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import media from '@/utils/media';
+
 export const NavContainer = styled.nav`
   position: relative;
 
@@ -16,15 +18,35 @@ export const NavList = styled.ul`
 
   padding: 0 2.5rem;
 
-  gap: 4rem;
+  gap: 3rem;
+
+  ${media.xSmall} {
+    width: 100%;
+    padding: 0;
+    gap: 0;
+  }
 `;
 
 export const NavItem = styled.li<{ selected: boolean }>`
-  padding: 1.2rem 0;
+  padding: 0.7rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
 
   button {
-    color: ${({ theme, selected }) => (selected ? theme.colors.primary : theme.colors.disabled)};
+    color: ${({ theme, selected }) => (selected ? theme.colors.black : theme.colors.disabled)};
     font-weight: ${({ theme }) => theme.fontWeight.semibold};
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.black};
+    }
+  }
+
+  ${media.xSmall} {
+    display: flex;
+    justify-content: center;
+
+    flex: 1;
+    padding: 0.7rem 0;
   }
 `;
 
