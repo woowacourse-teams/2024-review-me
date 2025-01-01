@@ -16,7 +16,7 @@ interface NavigationTabProps {
 const NavigationTab = ({ tabInfoList }: NavigationTabProps) => {
   const activeTab = sessionStorage.getItem('activeTab');
 
-  const [currentIndex, setCurrentIndex] = useState(Number(activeTab));
+  const [currentIndex, setCurrentIndex] = useState(Number(activeTab) || 0);
   const [currentTabWidth, setCurrentTabWidth] = useState(0);
   const [currentTabLeft, setCurrentTabLeft] = useState(0);
   const [isTransitionEnabled, setIsTransitionEnabled] = useState(false);
