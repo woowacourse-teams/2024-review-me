@@ -50,7 +50,7 @@ export const NavItem = styled.li<{ selected: boolean }>`
   }
 `;
 
-export const CurrentNavBar = styled.div<{ width: number; left: number }>`
+export const CurrentNavBar = styled.div<{ width: number; left: number; isTransitionEnabled: boolean }>`
   position: absolute;
   left: ${({ left }) => `${left}px`};
   bottom: 0;
@@ -61,5 +61,5 @@ export const CurrentNavBar = styled.div<{ width: number; left: number }>`
   background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 0.1rem;
 
-  transition: all 0.2s ease-in-out;
+  transition: ${({ isTransitionEnabled }) => (isTransitionEnabled ? 'all 0.2s ease-in-out' : 'none')};
 `;

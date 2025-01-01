@@ -19,6 +19,7 @@ const NavigationTab = ({ tabInfoList }: NavigationTabProps) => {
   const [currentIndex, setCurrentIndex] = useState(Number(activeTab));
   const [currentTabWidth, setCurrentTabWidth] = useState(0);
   const [currentTabLeft, setCurrentTabLeft] = useState(0);
+  const [isTransitionEnabled, setIsTransitionEnabled] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ const NavigationTab = ({ tabInfoList }: NavigationTabProps) => {
 
   const handleTabClick = (path: string, index: number) => {
     setCurrentIndex(index);
+    setIsTransitionEnabled(true);
     navigate(`${path}?tab=${tabInfoList[index].param}`);
   };
 
@@ -61,7 +63,7 @@ const NavigationTab = ({ tabInfoList }: NavigationTabProps) => {
           </S.NavItem>
         ))}
       </S.NavList>
-      <S.CurrentNavBar width={currentTabWidth} left={currentTabLeft} />
+      <S.CurrentNavBar width={currentTabWidth} left={currentTabLeft} isTransitionEnabled={isTransitionEnabled} />
     </S.NavContainer>
   );
 };
