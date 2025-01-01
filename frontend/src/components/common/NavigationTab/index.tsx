@@ -14,14 +14,16 @@ interface NavigationTabProps {
 }
 
 const NavigationTab = ({ tabInfoList }: NavigationTabProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const activeTab = sessionStorage.getItem('activeTab');
+
+  const [currentIndex, setCurrentIndex] = useState(Number(activeTab));
   const [currentTabWidth, setCurrentTabWidth] = useState(0);
   const [currentTabLeft, setCurrentTabLeft] = useState(0);
 
-  const currentItemRef = useRef<HTMLUListElement>(null);
-
   const location = useLocation();
   const navigate = useNavigate();
+
+  const currentItemRef = useRef<HTMLUListElement>(null);
 
   // URL의 쿼리 파라미터 값을 읽어, 탭 인덱스 업데이트
   useEffect(() => {
@@ -31,6 +33,7 @@ const NavigationTab = ({ tabInfoList }: NavigationTabProps) => {
 
     if (tabIndex >= 0) {
       setCurrentIndex(tabIndex);
+      sessionStorage.setItem('activeTab', String(tabIndex));
     }
   }, [location.search]);
 
