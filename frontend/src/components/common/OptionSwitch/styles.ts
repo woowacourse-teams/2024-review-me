@@ -10,12 +10,11 @@ export const OptionSwitchContainer = styled.ul`
 
   width: 20rem;
   height: 4.4rem;
+  margin-top: 0.9rem;
   padding: 0.7rem;
 
   background-color: ${({ theme }) => theme.colors.lightGray};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
-
-  margin-top: 0.9rem;
 
   @media screen and (max-width: 530px) {
     width: 100%;
