@@ -6,9 +6,8 @@ export const ReviewDate = styled.div`
   display: flex;
   align-items: center;
 
-  span {
-    color: ${({ theme }) => theme.colors.gray};
-  }
+  color: ${({ theme }) => theme.colors.gray};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
 
   ${media.xSmall} {
     font-size: ${({ theme }) => theme.fontSize.small};

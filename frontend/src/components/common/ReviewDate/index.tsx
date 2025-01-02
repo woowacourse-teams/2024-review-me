@@ -13,7 +13,7 @@ const ReviewDate = ({ date, dateTitle }: ReviewDateProps) => {
   return (
     <S.ReviewDate>
       <span>
-        {dateTitle} | {year}-{month}-{day}
+        {dateTitle} | {year}.{month}.{day}
       </span>
     </S.ReviewDate>
   );
