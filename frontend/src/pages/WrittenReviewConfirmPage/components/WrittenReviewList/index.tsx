@@ -1,4 +1,6 @@
-import WrittenReviewItem from '../../layouts/WrittenReviewItem';
+import ReviewListItem from '@/components/ReviewListItem';
+
+import { WrittenReviewContent } from '../../layouts';
 
 import * as S from './styles';
 
@@ -7,19 +9,20 @@ interface WrittenReviewListProps {
 }
 
 const WrittenReviewList = ({ handleClick }: WrittenReviewListProps) => {
+  // 리뷰 리스트 받아오기
+  const reviewIdList = [5, 1, 2, 3, 4];
+
   return (
-    <S.WrittenReviewList>
-      <WrittenReviewItem title="작성한 리뷰 목록">
-        <h2>My Posts</h2>
-        <ul>
-          {[5, 1, 2, 3].map((reviewId) => (
-            <li key={reviewId} onClick={() => handleClick(reviewId)}>
-              Post {reviewId}
-            </li>
-          ))}
-        </ul>
-      </WrittenReviewItem>
-    </S.WrittenReviewList>
+    <WrittenReviewContent title="작성한 리뷰 목록">
+      <S.WrittenReviewList>
+        {/** 추후 이벤트 위임 형식으로 변경 가능 */}
+
+        {/** TODO: 작성한 리뷰 없을 때의 컴포넌트 추가*/}
+        {reviewIdList.map((reviewId) => (
+          <ReviewListItem key={reviewId} handleClick={() => handleClick(reviewId)} />
+        ))}
+      </S.WrittenReviewList>
+    </WrittenReviewContent>
   );
 };
 

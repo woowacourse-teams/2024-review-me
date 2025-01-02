@@ -1,4 +1,4 @@
-import WrittenReviewItem from '../../layouts/WrittenReviewItem';
+import { WrittenReviewContent } from '../../layouts';
 
 import * as S from './styles';
 
@@ -16,9 +16,9 @@ const DetailedWrittenReview = ({ $isMobile, selectedReviewId }: DetailedWrittenR
   // 라우팅으로 넘어온 경우 무조건 isMobile은 true
   return (
     <S.DetailedWrittenReview $isMobile={$isMobile}>
-      <WrittenReviewItem title="작성한 리뷰 상세보기">
-        <div style={{ width: '100%', height: '60vh' }}>{selectedReviewId ? <div>있다다</div> : <div>없다</div>}</div>
-      </WrittenReviewItem>
+      <WrittenReviewContent title="작성한 리뷰 상세보기">
+        <S.Outline>{selectedReviewId ? <div style={{ height: '120vh' }}>있다</div> : <div>없다</div>}</S.Outline>
+      </WrittenReviewContent>
     </S.DetailedWrittenReview>
   );
 };

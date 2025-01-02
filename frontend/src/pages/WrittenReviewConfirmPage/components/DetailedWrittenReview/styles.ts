@@ -7,8 +7,6 @@ interface DetailedWrittenReviewStyleProps {
 }
 
 export const DetailedWrittenReview = styled.div<DetailedWrittenReviewStyleProps>`
-  width: 50%;
-
   ${media.xSmall} {
     ${({ $isMobile }) =>
       $isMobile
@@ -19,5 +17,17 @@ export const DetailedWrittenReview = styled.div<DetailedWrittenReviewStyleProps>
         : `
           display: none;
         `}
+  }
+`;
+
+export const Outline = styled.div`
+  min-width: ${({ theme }) => theme.writtenReviewLayoutSize.width};
+  min-height: ${({ theme }) => theme.writtenReviewLayoutSize.height};
+  border: 0.2rem solid ${({ theme }) => theme.colors.lightGray};
+  border-radius: ${({ theme }) => theme.borderRadius.basic};
+`;
+
+export const NoSelectedReview = styled.p`
+  img {
   }
 `;
