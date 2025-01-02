@@ -34,7 +34,7 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
               {
                 optionId: 2,
                 content: '💡문제 해결 능력 (예: 프로젝트 중 만난 버그/오류를 분석하고 이를 해결하는 능력)',
-                isChecked: false,
+                isChecked: true,
               },
             ],
           },

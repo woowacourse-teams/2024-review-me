@@ -1,4 +1,5 @@
 import { Options } from '@/types';
+import formattedCategories from '@/utils/formattedCategories';
 
 import * as S from './styles';
 
@@ -7,10 +8,12 @@ interface KeywordSectionProps {
 }
 
 const KeywordSection = ({ options }: KeywordSectionProps) => {
+  const transformedOptions = formattedCategories(options);
+
   return (
     <S.KeywordSection>
       <S.KeywordList>
-        {options.map(({ optionId, content }) => (
+        {transformedOptions.map(({ optionId, content }) => (
           <S.KeywordItem key={optionId}>{content}</S.KeywordItem>
         ))}
       </S.KeywordList>
