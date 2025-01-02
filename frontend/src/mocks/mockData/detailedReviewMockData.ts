@@ -26,8 +26,16 @@ export const DETAILED_REVIEW_MOCK_DATA: DetailReviewData = {
             minCount: 1,
             maxCount: 2,
             options: [
-              { optionId: 1, content: '🗣️ 커뮤니케이션, 협업 능력', isChecked: true },
-              { optionId: 2, content: '💡 문제 해결 능력', isChecked: false },
+              {
+                optionId: 1,
+                content: '🗣️커뮤니케이션, 협업 능력 (예: 팀원간의 원활한 정보 공유, 명확한 의사소통)',
+                isChecked: true,
+              },
+              {
+                optionId: 2,
+                content: '💡문제 해결 능력 (예: 프로젝트 중 만난 버그/오류를 분석하고 이를 해결하는 능력)',
+                isChecked: false,
+              },
             ],
           },
         },
