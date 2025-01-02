@@ -6,10 +6,10 @@ export const KeywordSection = styled.section`
 `;
 
 export const KeywordList = styled.ul`
-  padding-left: 2rem;
+  padding-left: 4rem;
   list-style-type: disc;
-`;
 
-export const KeywordItem = styled.li`
-  margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 `;

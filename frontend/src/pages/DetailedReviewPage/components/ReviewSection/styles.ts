@@ -2,7 +2,11 @@ import styled from '@emotion/styled';
 
 export const ReviewSection = styled.section`
   width: 100%;
-  margin-top: 3.2rem;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2rem;
 `;
 
 export const Answer = styled.div`
@@ -10,7 +14,7 @@ export const Answer = styled.div`
 
   box-sizing: border-box;
   width: 100%;
-  height: 23rem;
+  height: 20rem;
   padding: 1rem 1.5rem;
 
   font-size: 1.6rem;

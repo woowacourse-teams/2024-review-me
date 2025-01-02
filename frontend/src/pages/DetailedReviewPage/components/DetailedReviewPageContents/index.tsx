@@ -56,14 +56,17 @@ const DetailedReviewPageContents = () => {
         isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
       />
-      {parsedDetailedReview.sections.map((section) =>
-        section.questions.map((question) => (
-          <S.ReviewContentContainer key={question.questionId}>
-            <ReviewSection question={question.content} answer={question.answer!} />
-            {question.questionType === 'CHECKBOX' && <KeywordSection options={question.optionGroup!.options} />}
-          </S.ReviewContentContainer>
-        )),
-      )}
+      <S.Separator />
+      <S.DetailedReviewContainer>
+        {parsedDetailedReview.sections.map((section) =>
+          section.questions.map((question) => (
+            <S.ReviewContentContainer key={question.questionId}>
+              <ReviewSection question={question.content} answer={question.answer!} />
+              {question.questionType === 'CHECKBOX' && <KeywordSection options={question.optionGroup!.options} />}
+            </S.ReviewContentContainer>
+          )),
+        )}
+      </S.DetailedReviewContainer>
     </S.DetailedReviewPageContents>
   );
 };

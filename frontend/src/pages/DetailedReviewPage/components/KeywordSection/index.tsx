@@ -14,7 +14,7 @@ const KeywordSection = ({ options }: KeywordSectionProps) => {
     <S.KeywordSection>
       <S.KeywordList>
         {transformedOptions.map(({ optionId, content }) => (
-          <S.KeywordItem key={optionId}>{content}</S.KeywordItem>
+          <li key={optionId}>{content}</li>
         ))}
       </S.KeywordList>
     </S.KeywordSection>
