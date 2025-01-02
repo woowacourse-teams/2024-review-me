@@ -1,4 +1,5 @@
 import { WrittenReviewContent } from '../../layouts';
+import { NoSelectedReviewGuide } from '../index';
 
 import * as S from './styles';
 
@@ -17,7 +18,9 @@ const DetailedWrittenReview = ({ $isMobile, selectedReviewId }: DetailedWrittenR
   return (
     <S.DetailedWrittenReview $isMobile={$isMobile}>
       <WrittenReviewContent title="작성한 리뷰 상세보기">
-        <S.Outline>{selectedReviewId ? <div style={{ height: '120vh' }}>있다</div> : <div>없다</div>}</S.Outline>
+        <S.Outline>
+          {selectedReviewId ? <div style={{ height: '120vh' }}>있다</div> : <NoSelectedReviewGuide />}
+        </S.Outline>
       </WrittenReviewContent>
     </S.DetailedWrittenReview>
   );

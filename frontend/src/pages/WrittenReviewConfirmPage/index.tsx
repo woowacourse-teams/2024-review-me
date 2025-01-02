@@ -32,7 +32,7 @@ const WrittenReviewConfirmPage = () => {
     <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
       <S.PageContainer>
         <WrittenReviewList handleClick={handleClick} />
-        {/* TODO: DetailedWrittenReview를 화살표 레이아웃으로 감싸기 */}
+        {/* TODO: 모바일에서 DetailedWrittenReview를 화살표 레이아웃으로 감싸기 */}
         {!currentDeviceType.isMobile && (
           <DetailedWrittenReview $isMobile={currentDeviceType.isMobile} selectedReviewId={selectedReviewId} />
         )}

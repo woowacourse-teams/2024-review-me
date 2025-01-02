@@ -10,4 +10,8 @@ export const PageContainer = styled.div`
   ${media.medium} {
     gap: 4rem;
   }
+
+  ${media.small} {
+    margin: 0 2rem;
+  }
 `;
