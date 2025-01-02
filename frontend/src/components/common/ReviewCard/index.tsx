@@ -1,5 +1,6 @@
 import { Category } from '@/types';
 
+import StrengthKeywordList from './StrengthKeywordList';
 import * as S from './styles';
 
 interface ReviewCardProps {
@@ -13,16 +14,12 @@ const ReviewCard = ({ createdAt, contentPreview, categories, handleClick }: Revi
   return (
     <S.Layout onClick={handleClick}>
       <S.Header>
-        <S.Date>{createdAt}</S.Date>
+        <S.Date>{`작성일 | ${createdAt}`}</S.Date>
       </S.Header>
       <S.Main>
         <S.ContentPreview>{contentPreview}</S.ContentPreview>
         <S.Footer>
-          <S.Keyword>
-            {categories.map((category) => (
-              <div key={category.optionId}>{category.content}</div>
-            ))}
-          </S.Keyword>
+          <StrengthKeywordList categories={categories} />
         </S.Footer>
       </S.Main>
     </S.Layout>
