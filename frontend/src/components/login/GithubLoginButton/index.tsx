@@ -15,7 +15,7 @@ const GithubLoginButton = ({ handleClick, $logoStyle, $style }: GithubLoginButto
       logoSrc={GithubWhiteLogoIcon}
       $logoStyle={$logoStyle}
       $style={$style}
-    ></LoginButton>
+    />
   );
 };
 
