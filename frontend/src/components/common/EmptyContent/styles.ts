@@ -12,17 +12,8 @@ interface ImgProps {
 }
 export const Img = styled.img<ImgProps>`
   aspect-ratio: 39/25;
-  width: ${(props) => {
-    if (props.$width && props.$height) return props.$width;
-    if (props.$width) return props.$width;
-    return 'auto';
-  }};
-  height: ${(props) => {
-    if (props.$height && props.$width) return props.$height;
-    if (props.$height) return props.$height;
-    if (props.$width) return 'auto';
-    return '19.7rem';
-  }};
+  width: ${(props) => props.$width || 'auto'};
+  height: ${(props) => props.$height || (props.$width ? 'auto' : '19.7rem')};
 `;
 
 export const MessageContainer = styled.div<{ $messageFontSize?: string }>`
