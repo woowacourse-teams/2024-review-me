@@ -46,7 +46,6 @@ const DetailedReviewPageContents = () => {
     };
   }, [detailedReview]);
 
-  // TODO: 리뷰 공개/비공개 토글 버튼 기능
   return (
     <S.DetailedReviewPageContents>
       <ReviewDescription
