@@ -1,6 +1,6 @@
 import GithubWhiteLogoIcon from '@/assets/githubWhiteLogo.svg';
-import { LoginButtonStyleProps } from '@/components/common/LoginButton';
-import { LoginButton } from '@/components/index';
+import { LoginButton } from '@/components/login';
+import { LoginButtonStyleProps } from '@/components/login/LoginButton';
 
 interface GithubLoginButtonProps extends LoginButtonStyleProps {
   handleClick: () => void;
