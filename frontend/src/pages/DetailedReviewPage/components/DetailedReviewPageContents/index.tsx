@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { ROUTE_PARAM } from '@/constants';
 import { useGetDetailedReview, useSearchParamAndQuery } from '@/hooks';
-import { ReviewDescription, ReviewSection, KeywordSection } from '@/pages/DetailedReviewPage/components';
+import { MultipleChoiceAnswerList, ReviewDescription, ReviewSection } from '@/pages/DetailedReviewPage/components';
 import { substituteString } from '@/utils';
 
 import * as S from './styles';
@@ -62,7 +62,9 @@ const DetailedReviewPageContents = () => {
           section.questions.map((question) => (
             <S.ReviewContentContainer key={question.questionId}>
               <ReviewSection question={question.content} answer={question.answer!} />
-              {question.questionType === 'CHECKBOX' && <KeywordSection options={question.optionGroup!.options} />}
+              {question.questionType === 'CHECKBOX' && (
+                <MultipleChoiceAnswerList answerList={question.optionGroup!.options} />
+              )}
             </S.ReviewContentContainer>
           )),
         )}

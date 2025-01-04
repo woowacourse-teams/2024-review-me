@@ -5,7 +5,7 @@ import media from '@/utils/media';
 export const DetailedReviewPageContents = styled.div`
   width: 70%;
   margin-top: 2rem;
-  border: 0.2rem solid ${({ theme }) => theme.colors.lightGray};
+  border: 0.2rem solid ${({ theme }) => theme.colors.disabled};
 
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
