@@ -8,10 +8,11 @@ import * as S from './styles';
 interface BackButtonProps {
   prevPath: string;
   options?: NavigateOptions;
-  style?: React.CSSProperties;
+  buttonStyle?: React.CSSProperties;
+  wrapperStyle?: React.CSSProperties;
 }
 
-const BackButton = ({ prevPath, options, style }: BackButtonProps) => {
+const BackButton = ({ prevPath, options, buttonStyle, wrapperStyle }: BackButtonProps) => {
   const navigate = useNavigate();
 
   const handleBackButtonClick = () => {
@@ -19,9 +20,11 @@ const BackButton = ({ prevPath, options, style }: BackButtonProps) => {
   };
 
   return (
-    <S.BackButton onClick={handleBackButtonClick} $style={style}>
-      <S.BackButtonImage src={BackButtonIcon} alt="뒤로가기 버튼" />
-    </S.BackButton>
+    <S.BackButtonWrapper $style={wrapperStyle}>
+      <S.BackButton onClick={handleBackButtonClick} $style={buttonStyle}>
+        <img src={BackButtonIcon} alt="뒤로가기 버튼" />
+      </S.BackButton>
+    </S.BackButtonWrapper>
   );
 };
 
