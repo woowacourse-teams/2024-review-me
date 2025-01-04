@@ -1,3 +1,5 @@
+import { useTheme } from '@emotion/react';
+
 import { ContentModal, GithubLoginButton } from '@/components';
 
 import * as S from './styles';
@@ -10,6 +12,8 @@ interface LoginRequestModalProps {
 }
 
 const LoginRequestModal = ({ titleType, closeModal }: LoginRequestModalProps) => {
+  const theme = useTheme();
+
   const getTitleLabel = (titleType: LoginRequestTitle) => {
     if (titleType === 'loginIntent') return '로그인하시겠어요?';
     if (titleType === 'membershipCheck') return '회원이신가요?';
@@ -22,7 +26,7 @@ const LoginRequestModal = ({ titleType, closeModal }: LoginRequestModalProps) =>
         <GithubLoginButton
           handleClick={() => {}}
           $logoStyle={{ height: '3rem' }}
-          $style={{ fontSize: '1.3rem', height: '4rem', width: '100%' }}
+          $style={{ fontSize: theme.fontSize.small, height: '4rem', width: '100%' }}
         />
       </S.LoginRequestModal>
     </ContentModal>
