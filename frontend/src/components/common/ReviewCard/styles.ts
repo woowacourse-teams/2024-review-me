@@ -5,7 +5,7 @@ import media from '@/utils/media';
 export const Layout = styled.div`
   display: flex;
   flex-direction: column;
-  border: 0.2rem solid ${({ theme }) => theme.colors.lightGray};
+  border: 0.2rem solid ${({ theme }) => theme.colors.disabled};
   border-radius: 1rem;
 
   &:hover {
@@ -27,12 +27,6 @@ export const Header = styled.div`
   padding: 2rem 0 0 2.5rem;
 
   border-radius: 1rem 1rem 0 0;
-`;
-
-export const Date = styled.p`
-  height: fit-content;
-
-  color: ${({ theme }) => theme.colors.gray};
 `;
 
 export const Main = styled.div`
@@ -73,5 +67,21 @@ export const Footer = styled.div`
     flex-direction: column;
     gap: 1.2rem;
     align-items: flex-start;
+  }
+`;
+
+export const ReviewKeywordList = styled.ul`
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+
+  flex-wrap: wrap;
+
+  font-size: 1.2rem;
+
+  list-style-type: none;
+
+  ${media.small} {
+    gap: 1.2rem;
   }
 `;

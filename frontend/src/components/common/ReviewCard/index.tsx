@@ -1,8 +1,8 @@
 import { Category } from '@/types';
 
 import ReviewDate from '../ReviewDate';
+import ReviewKeyword from '../ReviewKeyword';
 
-import StrengthKeywordList from './StrengthKeywordList';
 import * as S from './styles';
 
 interface ReviewCardProps {
@@ -23,7 +23,11 @@ const ReviewCard = ({ createdAt, contentPreview, categories, handleClick }: Revi
       <S.Main>
         <S.ContentPreview>{contentPreview}</S.ContentPreview>
         <S.Footer>
-          <StrengthKeywordList categories={categories} />
+          <S.ReviewKeywordList>
+            {categories.map(({ optionId, content }) => (
+              <ReviewKeyword key={optionId} content={content} />
+            ))}
+          </S.ReviewKeywordList>
         </S.Footer>
       </S.Main>
     </S.Layout>
