@@ -6,13 +6,13 @@ interface WrittenReviewItemProps {
   title: string;
 }
 
-const WrittenReviewContent = ({ title, children }: EssentialPropsWithChildren<WrittenReviewItemProps>) => {
+const PageContentLayout = ({ title, children }: EssentialPropsWithChildren<WrittenReviewItemProps>) => {
   return (
-    <S.WrittenReviewContent>
+    <S.PageContentLayout>
       <S.Title>{title}</S.Title>
       <S.Content>{children}</S.Content>
-    </S.WrittenReviewContent>
+    </S.PageContentLayout>
   );
 };
 
-export default WrittenReviewContent;
+export default PageContentLayout;

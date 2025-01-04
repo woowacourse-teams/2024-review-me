@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import media from '@/utils/media';
 
-export const WrittenReviewContent = styled.article`
+export const PageContentLayout = styled.article`
   display: flex;
   flex-direction: column;
   height: 100%;

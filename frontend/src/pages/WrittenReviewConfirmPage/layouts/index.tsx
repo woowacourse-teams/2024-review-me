@@ -1,1 +1,1 @@
-export { default as WrittenReviewContent } from './WrittenReviewContent';
+export { default as PageContentLayout } from './PageContentLayout';

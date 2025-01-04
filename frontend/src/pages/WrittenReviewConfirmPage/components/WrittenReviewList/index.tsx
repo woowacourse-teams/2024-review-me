@@ -1,6 +1,6 @@
 import ReviewListItem from '@/components/ReviewListItem';
 
-import { WrittenReviewContent } from '../../layouts';
+import { PageContentLayout } from '../../layouts';
 
 import * as S from './styles';
 
@@ -13,7 +13,7 @@ const WrittenReviewList = ({ handleClick }: WrittenReviewListProps) => {
   const reviewIdList = [5, 1, 2, 3, 4];
 
   return (
-    <WrittenReviewContent title="작성한 리뷰 목록">
+    <PageContentLayout title="작성한 리뷰 목록">
       <S.WrittenReviewList>
         {/** 추후 이벤트 위임 형식으로 변경 가능 */}
 
@@ -22,7 +22,7 @@ const WrittenReviewList = ({ handleClick }: WrittenReviewListProps) => {
           <ReviewListItem key={reviewId} handleClick={() => handleClick(reviewId)} />
         ))}
       </S.WrittenReviewList>
-    </WrittenReviewContent>
+    </PageContentLayout>
   );
 };
 
