@@ -1,12 +1,10 @@
 import styled from '@emotion/styled';
 
 export const ReviewSection = styled.section`
-  width: 100%;
-
   display: flex;
   flex-direction: column;
-
   gap: 2rem;
+  width: 100%;
 `;
 
 export const Answer = styled.div`

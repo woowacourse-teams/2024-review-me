@@ -23,7 +23,6 @@ export const Header = styled.div`
   align-items: center;
 
   width: 100%;
-
   padding: 2rem 0 0 2.5rem;
 
   border-radius: 1rem 1rem 0 0;
@@ -52,7 +51,6 @@ export const ContentPreview = styled.p`
   padding-right: 2rem;
 
   line-height: 2.5rem;
-
   text-overflow: ellipsis;
   overflow-wrap: break-word;
 `;
@@ -72,13 +70,11 @@ export const Footer = styled.div`
 
 export const ReviewKeywordList = styled.ul`
   display: flex;
-  align-items: center;
-  gap: 2.5rem;
-
   flex-wrap: wrap;
+  gap: 2.5rem;
+  align-items: center;
 
   font-size: 1.2rem;
-
   list-style-type: none;
 
   ${media.small} {
