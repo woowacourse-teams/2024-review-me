@@ -19,7 +19,7 @@ const MODAL_KEYS = {
 const TOAST_INFORM = {
   icon: { src: AlertIcon, alt: '' },
   message: '리뷰 링크 생성에 실패했어요. 다시 시도해 보세요.',
-  duration: 1000 * 5,
+  duration: 1000 * 3,
 };
 interface URLGeneratorFormProps {
   isMember?: boolean;

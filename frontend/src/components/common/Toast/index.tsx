@@ -25,7 +25,7 @@ const Toast = ({ icon, message, duration, position, handleOpenModal, handleModal
     const timer = setTimeout(() => {
       handleOpenModal(false);
       if (handleModalMessage) handleModalMessage('');
-    }, duration * 1000);
+    }, duration);
 
     return () => clearTimeout(timer);
   }, [handleOpenModal]);
