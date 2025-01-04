@@ -2,15 +2,15 @@ import { ContentModal, GithubLoginButton } from '@/components';
 
 import * as S from './styles';
 
-type LoginRequestTitleType = 'loginIntent' | 'membershipCheck';
+type LoginRequestTitle = 'loginIntent' | 'membershipCheck';
 
 interface LoginRequestModalProps {
-  titleType: LoginRequestTitleType;
+  titleType: LoginRequestTitle;
   closeModal: () => void;
 }
 
 const LoginRequestModal = ({ titleType, closeModal }: LoginRequestModalProps) => {
-  const getTitleLabel = (titleType: LoginRequestTitleType) => {
+  const getTitleLabel = (titleType: LoginRequestTitle) => {
     if (titleType === 'loginIntent') return '로그인하시겠어요?';
     if (titleType === 'membershipCheck') return '회원이신가요?';
   };
