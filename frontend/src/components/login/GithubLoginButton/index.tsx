@@ -9,8 +9,7 @@ interface GithubLoginButtonProps extends LoginButtonStyleProps {
 const GithubLoginButton = ({ handleClick, $logoStyle, $style }: GithubLoginButtonProps) => {
   return (
     <LoginButton
-      platform="깃허브"
-      engPlatform="github"
+      platform="GitHub"
       handleClick={handleClick}
       logoSrc={GithubWhiteLogoIcon}
       $logoStyle={$logoStyle}
