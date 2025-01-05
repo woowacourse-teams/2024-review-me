@@ -2,7 +2,6 @@ package reviewme.review.service.validator;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 
 import java.util.List;
