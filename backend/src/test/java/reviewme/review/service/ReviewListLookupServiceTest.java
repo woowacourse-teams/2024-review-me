@@ -2,10 +2,7 @@ package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
-import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -18,11 +15,6 @@ import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
-import reviewme.template.domain.OptionGroup;
-import reviewme.template.domain.OptionItem;
-import reviewme.template.domain.Question;
-import reviewme.template.domain.Section;
-import reviewme.template.domain.Template;
 import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
@@ -47,20 +39,11 @@ class ReviewListLookupServiceTest {
         String groupAccessCode = "groupAccessCode";
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
 
-        // given - 질문 저장
-        Question question = questionRepository.save(선택형_필수_질문());
-        OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question.getId()));
-        OptionItem categoryOption = optionItemRepository.save(선택지(optionGroup.getId(), 1));
-
-        // given - 섹션, 템플릿 저장
-        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
-
         // given - 리뷰 답변 저장
-        CheckboxAnswer categoryAnswer = new CheckboxAnswer(question.getId(), List.of(categoryOption.getId()));
-        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(categoryAnswer));
-        TextAnswer textAnswer = new TextAnswer(question.getId(), "텍스트형 응답");
-        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        CheckboxAnswer categoryAnswer = new CheckboxAnswer(1L, List.of(1L));
+        Review review1 = new Review(1L, reviewGroup.getId(), List.of(categoryAnswer));
+        TextAnswer textAnswer = new TextAnswer(1L, "텍스트형 응답");
+        Review review2 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
         reviewRepository.saveAll(List.of(review1, review2));
 
         // when
@@ -83,18 +66,11 @@ class ReviewListLookupServiceTest {
         String groupAccessCode = "groupAccessCode";
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
 
-        // given - 질문 저장
-        Question question = questionRepository.save(선택형_필수_질문());
-
-        // given - 섹션, 템플릿 저장
-        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
-
         // given - 리뷰 답변 저장
-        TextAnswer textAnswer = new TextAnswer(question.getId(), "텍스트형 응답");
-        Review review1 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
-        Review review2 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
-        Review review3 = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        TextAnswer textAnswer = new TextAnswer(1L, "텍스트형 응답");
+        Review review1 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review2 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review3 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
         reviewRepository.saveAll(List.of(review1, review2, review3));
 
         // when
