@@ -40,9 +40,9 @@ class ReviewSummaryServiceTest {
     @Test
     void 리뷰_그룹에_등록된_리뷰_요약_정보를_반환한다() {
         // given
-        Question question = questionRepository.save(서술형_필수_질문());
-        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+        Question question = 서술형_필수_질문();
+        Section section = 항상_보이는_섹션(List.of(question));
+        Template template = templateRepository.save(new Template(List.of(section)));
 
         ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹());
         ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹("reReCo", "groupCo"));
