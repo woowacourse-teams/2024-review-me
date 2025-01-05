@@ -1,11 +1,8 @@
 package reviewme.template.service.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
-import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
@@ -15,15 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
-import reviewme.template.domain.OptionGroup;
 import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.dto.response.QuestionResponse;
 import reviewme.template.service.dto.response.SectionResponse;
-import reviewme.template.service.exception.MissingOptionItemsInOptionGroupException;
-import reviewme.template.service.exception.SectionInTemplateNotFoundException;
 
 @ServiceTest
 class TemplateMapperTest {
@@ -40,17 +34,11 @@ class TemplateMapperTest {
     @Test
     void 리뷰_그룹과_템플릿으로_템플릿_응답을_매핑한다() {
         // given
-        Question question1 = questionRepository.save(서술형_필수_질문());
-        Question question2 = questionRepository.save(서술형_필수_질문());
-
-        OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question1.getId()));
-        optionItemRepository.save(선택지(optionGroup.getId()));
-
-        Section section1 = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
-        Section section2 = sectionRepository.save(항상_보이는_섹션(List.of(question2.getId())));
-
-        Template template = templateRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
-
+        Question question1 = 서술형_필수_질문();
+        Question question2 = 서술형_필수_질문();
+        Section section1 = 항상_보이는_섹션(List.of(question1));
+        Section section2 = 항상_보이는_섹션(List.of(question2));
+        Template template = templateRepository.save(new Template(List.of(section1, section2)));
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // when
@@ -109,9 +97,9 @@ class TemplateMapperTest {
     @Test
     void 옵션_그룹이_없는_질문의_경우_옵션_그룹을_제공하지_않는다() {
         // given
-        Question question = questionRepository.save(서술형_필수_질문());
-        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+        Question question = 서술형_필수_질문();
+        Section section = 항상_보이는_섹션(List.of(question));
+        Template template = templateRepository.save(new Template(List.of(section)));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
@@ -123,32 +111,5 @@ class TemplateMapperTest {
         // then
         QuestionResponse questionResponse = sectionResponses.get(0).questions().get(0);
         assertThat(questionResponse.optionGroup()).isNull();
-    }
-
-    @Test
-    void 템플릿_매핑_시_템플릿에_제공할_섹션이_없을_경우_예외가_발생한다() {
-        // given
-        Template template = templateRepository.save(템플릿(List.of(1L)));
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
-
-        // when, then
-        assertThatThrownBy(() -> templateMapper.mapSectionResponses(template.getId(), reviewGroup.getId()))
-                .isInstanceOf(SectionInTemplateNotFoundException.class);
-    }
-
-    @Test
-    void 템플릿_매핑_시_옵션_그룹에_해당하는_옵션_아이템이_없을_경우_예외가_발생한다() {
-        // given
-        Question question = questionRepository.save(선택형_필수_질문());
-        optionGroupRepository.save(선택지_그룹(question.getId()));
-
-        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
-
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
-
-        // when, then
-        assertThatThrownBy(() -> templateMapper.mapSectionResponses(template.getId(), reviewGroup.getId()))
-                .isInstanceOf(MissingOptionItemsInOptionGroupException.class);
     }
 }
