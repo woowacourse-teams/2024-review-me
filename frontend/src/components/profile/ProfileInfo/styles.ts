@@ -25,11 +25,16 @@ export const ProfileImageWrapper = styled.div`
   align-items: center;
   justify-content: center;
 
-  width: 4rem;
-  height: 4rem;
+  width: 2.8rem;
+  height: 2.8rem;
 
   background-color: ${({ theme }) => theme.colors.gray};
-  border-radius: 2rem;
+  border-radius: 50%;
+
+  ${media.small} {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
 `;
 
 export const ProfileId = styled.p`
