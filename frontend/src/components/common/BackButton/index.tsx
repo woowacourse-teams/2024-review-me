@@ -21,7 +21,7 @@ const BackButton = ({ prevPath, navigateOptions, buttonStyle, wrapperStyle }: Ba
 
   return (
     <S.BackButtonWrapper $style={wrapperStyle}>
-      <S.BackButton onClick={handleBackButtonClick} $style={buttonStyle}>
+      <S.BackButton onClick={handleBackButtonClick} $style={buttonStyle} type="button">
         <img src={BackButtonIcon} alt="뒤로가기 버튼" />
       </S.BackButton>
     </S.BackButtonWrapper>
