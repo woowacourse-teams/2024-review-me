@@ -1,5 +1,5 @@
-import { PageContentLayout } from '../../layouts';
 import { NoSelectedReviewGuide } from '../index';
+import { PageContentLayout } from '../layouts';
 
 import * as S from './styles';
 

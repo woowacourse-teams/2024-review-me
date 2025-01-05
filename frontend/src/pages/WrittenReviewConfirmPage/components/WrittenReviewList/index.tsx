@@ -1,6 +1,6 @@
 import ReviewListItem from '@/components/ReviewListItem';
 
-import { PageContentLayout } from '../../layouts';
+import { PageContentLayout } from '../layouts';
 
 import * as S from './styles';
 
