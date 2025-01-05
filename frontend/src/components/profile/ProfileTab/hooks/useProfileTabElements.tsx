@@ -32,60 +32,45 @@ const useProfileTabElements = ({ profileId, socialType }: UseProfileTabElementsP
 
   const profileTabElements: ProfileTabElement[] = [
     {
+      elementId: 'socialType',
       elementType: 'readonly',
       isDisplayedOnlyMobile: false,
-      content: socialType === 'github' && (
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <img src={GitHubIcon} alt="소셜 아이콘" />
-          <span>GitHub 계정</span>
-        </div>
-      ),
+      content:
+        // 다른 소셜 타입 추가 시 리팩토링
+        socialType === 'github'
+          ? { icon: { src: GitHubIcon, alt: '' }, text: 'GitHub 계정' }
+          : { icon: { src: '', alt: '' }, text: '' },
     },
     {
+      elementId: 'profileId',
       elementType: 'readonly',
       isDisplayedOnlyMobile: true,
-      content: (
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <img src={UserIcon} alt="사람 아이콘" />
-          <span>{profileId}</span>
-        </div>
-      ),
+      content: { icon: { src: UserIcon, alt: '' }, text: profileId },
     },
     {
+      elementId: 'reviewLinkControlButton',
       elementType: 'action',
       isDisplayedOnlyMobile: false,
-      content: (
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <img src={MenuIcon} alt="메뉴 아이콘" />
-          <span>리뷰 링크 관리</span>
-        </div>
-      ),
+      content: { icon: { src: MenuIcon, alt: '' }, text: '리뷰 링크 관리' },
       handleClick: handleReviewLinkControl,
     },
     {
+      elementId: 'checkWrittenReviewsButton',
       elementType: 'action',
       isDisplayedOnlyMobile: false,
-      content: (
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <img src={OpenedBookIcon} alt="펼쳐진 책 아이콘" />
-          <span>작성한 리뷰 확인</span>
-        </div>
-      ),
+      content: { icon: { src: OpenedBookIcon, alt: '' }, text: '작성한 리뷰 확인' },
       handleClick: handleCheckWrittenReviews,
     },
     {
+      elementId: 'divider',
       elementType: 'divider',
       isDisplayedOnlyMobile: false,
     },
     {
+      elementId: 'logoutButton',
       elementType: 'action',
       isDisplayedOnlyMobile: false,
-      content: (
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <img src={LogoutIcon} alt="펼쳐진 책 아이콘" />
-          <span>로그아웃</span>
-        </div>
-      ),
+      content: { icon: { src: LogoutIcon, alt: '' }, text: '로그아웃' },
       handleClick: handleLogout,
     },
   ];
