@@ -24,6 +24,9 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "section_id", nullable = false, insertable = false, updatable = false)
+    private long sectionId;
+
     @Column(name = "required", nullable = false)
     private boolean required;
 
@@ -46,6 +49,10 @@ public class Question {
         this.content = content;
         this.guideline = guideline;
         this.position = position;
+    }
+
+    public boolean hasIdOf(long id) {
+        return this.id == id;
     }
 
     public boolean isSelectable() {

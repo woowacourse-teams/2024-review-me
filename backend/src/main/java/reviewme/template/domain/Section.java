@@ -36,7 +36,7 @@ public class Section {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "section_id", nullable = false, updatable = false)
-    private List<SectionQuestion> questionIds;
+    private List<Question> questions;
 
     @Column(name = "on_selected_option_id", nullable = true)
     private Long onSelectedOptionId;
@@ -50,12 +50,10 @@ public class Section {
     @Column(name = "position", nullable = false)
     private int position;
 
-    public Section(VisibleType visibleType, List<Long> questionIds,
+    public Section(VisibleType visibleType, List<Question> questions,
                    Long onSelectedOptionId, String sectionName, String header, int position) {
         this.visibleType = visibleType;
-        this.questionIds = questionIds.stream()
-                .map(SectionQuestion::new)
-                .toList();
+        this.questions = questions;
         this.onSelectedOptionId = onSelectedOptionId;
         this.sectionName = sectionName;
         this.header = header;
@@ -67,7 +65,7 @@ public class Section {
     }
 
     public boolean containsQuestionId(long questionId) {
-        return questionIds.stream()
-                .anyMatch(sectionQuestion -> sectionQuestion.hasQuestionId(questionId));
+        return questions.stream()
+                .anyMatch(question -> question.hasIdOf(questionId));
     }
 }
