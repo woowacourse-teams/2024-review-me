@@ -43,7 +43,7 @@ public class TemplateMapper {
                 section.getId(),
                 section.getSectionName(),
                 section.getVisibleType(),
-                section.getOnSelectedOptionId(),
+                section.isConditional() ? section.getOnSelectedOption().getId() : null,
                 section.getHeader(),
                 questionResponses
         );
