@@ -7,16 +7,16 @@ import * as S from './styles';
 
 interface BackButtonProps {
   prevPath: string;
-  options?: NavigateOptions;
+  navigateOptions?: NavigateOptions;
   buttonStyle?: React.CSSProperties;
   wrapperStyle?: React.CSSProperties;
 }
 
-const BackButton = ({ prevPath, options, buttonStyle, wrapperStyle }: BackButtonProps) => {
+const BackButton = ({ prevPath, navigateOptions, buttonStyle, wrapperStyle }: BackButtonProps) => {
   const navigate = useNavigate();
 
   const handleBackButtonClick = () => {
-    navigate(prevPath, options);
+    navigate(prevPath, navigateOptions);
   };
 
   return (
