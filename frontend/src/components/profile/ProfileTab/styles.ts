@@ -6,7 +6,7 @@ interface ProfileTabStyleProps {
   $isDisplayedOnlyMobile: boolean;
 }
 
-export const ProfileTabContainer = styled.div`
+export const ProfileTabContainer = styled.section`
   position: absolute;
   z-index: ${({ theme }) => theme.zIndex.profileTab};
   top: 5rem;
