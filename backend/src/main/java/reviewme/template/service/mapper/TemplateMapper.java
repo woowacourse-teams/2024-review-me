@@ -8,16 +8,11 @@ import reviewme.template.domain.OptionItem;
 import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
-import reviewme.template.repository.OptionGroupRepository;
-import reviewme.template.repository.OptionItemRepository;
-import reviewme.template.repository.QuestionRepository;
-import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.dto.response.OptionGroupResponse;
 import reviewme.template.service.dto.response.OptionItemResponse;
 import reviewme.template.service.dto.response.QuestionResponse;
 import reviewme.template.service.dto.response.SectionResponse;
-import reviewme.template.service.exception.MissingOptionItemsInOptionGroupException;
 import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
 
 @Component
@@ -27,8 +22,6 @@ public class TemplateMapper {
     public static final String REVIEWEE_NAME_PLACEHOLDER = "{revieweeName}";
 
     private final TemplateRepository templateRepository;
-    private final OptionGroupRepository optionGroupRepository;
-    private final OptionItemRepository optionItemRepository;
 
     public List<SectionResponse> mapSectionResponses(long templateId, long reviewGroupId) {
         Template template = templateRepository.findById(templateId)
@@ -57,28 +50,20 @@ public class TemplateMapper {
     }
 
     private QuestionResponse mapToQuestionResponse(Question question) {
-        OptionGroupResponse optionGroupResponse = optionGroupRepository.findByQuestionId(question.getId())
-                .map(this::mapToOptionGroupResponse)
-                .orElse(null);
-
         return new QuestionResponse(
                 question.getId(),
                 question.isRequired(),
                 question.getContent(),
                 question.getQuestionType(),
-                optionGroupResponse,
+                question.isSelectable() ? mapToOptionGroupResponse(question.getOptionGroup()) : null,
                 question.hasGuideline(),
                 question.getGuideline()
         );
     }
 
     private OptionGroupResponse mapToOptionGroupResponse(OptionGroup optionGroup) {
-        List<OptionItem> optionItems = optionItemRepository.findAllByOptionGroupId(optionGroup.getId());
-        if (optionItems.isEmpty()) {
-            throw new MissingOptionItemsInOptionGroupException(optionGroup.getId());
-        }
-
-        List<OptionItemResponse> optionItemResponses = optionItems.stream()
+        List<OptionItemResponse> optionItemResponses = optionGroup.getOptionItems()
+                .stream()
                 .map(this::mapToOptionItemResponse)
                 .toList();
 
