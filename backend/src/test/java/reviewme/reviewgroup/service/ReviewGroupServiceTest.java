@@ -22,7 +22,7 @@ import reviewme.reviewgroup.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
-import reviewme.reviewgroup.service.dto.GuestReviewGroupCreationRequest;
+import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.support.ServiceTest;
 import reviewme.template.repository.TemplateRepository;
@@ -52,10 +52,10 @@ class ReviewGroupServiceTest {
                 .willReturn("0000") // ReviewRequestCode
                 .willReturn("AAAA");
 
-        GuestReviewGroupCreationRequest request = new GuestReviewGroupCreationRequest("sancho", "reviewme", "groupAccessCode");
+        ReviewGroupCreationRequest request = new ReviewGroupCreationRequest("sancho", "reviewme", "groupAccessCode");
 
         // when
-        ReviewGroupCreationResponse response = reviewGroupService.createGuestReviewGroup(request);
+        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request);
 
         // then
         assertThat(response).isEqualTo(new ReviewGroupCreationResponse("AAAA"));

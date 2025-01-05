@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reviewme.reviewgroup.service.ReviewGroupLookupService;
 import reviewme.reviewgroup.service.ReviewGroupService;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
-import reviewme.reviewgroup.service.dto.GuestReviewGroupCreationRequest;
-import reviewme.reviewgroup.service.dto.MemberReviewGroupCreationRequest;
+import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
@@ -34,17 +33,10 @@ public class ReviewGroupController {
 
     @PostMapping("/v2/groups")
     public ResponseEntity<ReviewGroupCreationResponse> createReviewGroup(
-            @Valid @RequestBody GuestReviewGroupCreationRequest request
+            @Valid @RequestBody ReviewGroupCreationRequest request
     ) {
-        ReviewGroupCreationResponse response = reviewGroupService.createGuestReviewGroup(request);
-        return ResponseEntity.ok(response);
-    }
-    
-    @PostMapping("/v2/groups/member")
-    public ResponseEntity<ReviewGroupCreationResponse> createReviewGroup(
-            @Valid @RequestBody MemberReviewGroupCreationRequest request
-    ) {
-        ReviewGroupCreationResponse response = reviewGroupService.createMemberReviewGroup(request);
+        // 회원 세션 추후 추가해야 함
+        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request);
         return ResponseEntity.ok(response);
     }
 

@@ -21,8 +21,7 @@ import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.reviewgroup.service.dto.GuestReviewGroupCreationRequest;
-import reviewme.reviewgroup.service.dto.MemberReviewGroupCreationRequest;
+import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
@@ -32,7 +31,7 @@ class ReviewGroupApiTest extends ApiTest {
 
     @Test
     void 비회원용_리뷰_그룹을_생성한다() {
-        BDDMockito.given(reviewGroupService.createGuestReviewGroup(any(GuestReviewGroupCreationRequest.class)))
+        BDDMockito.given(reviewGroupService.createReviewGroup(any(ReviewGroupCreationRequest.class)))
                 .willReturn(new ReviewGroupCreationResponse("ABCD1234"));
 
         String request = """
@@ -69,8 +68,12 @@ class ReviewGroupApiTest extends ApiTest {
 
     @Test
     void 회원용_리뷰_그룹을_생성한다() {
-        BDDMockito.given(reviewGroupService.createMemberReviewGroup(any(MemberReviewGroupCreationRequest.class)))
+        BDDMockito.given(reviewGroupService.createReviewGroup(any(ReviewGroupCreationRequest.class)))
                 .willReturn(new ReviewGroupCreationResponse("ABCD1234"));
+
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 ID")
+        };
 
         String request = """
                 {
@@ -90,13 +93,15 @@ class ReviewGroupApiTest extends ApiTest {
 
         RestDocumentationResultHandler handler = document(
                 "member-review-group-create",
+                requestCookies(cookieDescriptors),
                 requestFields(requestFieldDescriptors),
                 responseFields(responseFieldDescriptors)
         );
 
         givenWithSpec().log().all()
+                .cookie("JSESSIONID", "ASVNE1VAKDNV4")
                 .body(request)
-                .when().post("/v2/groups/member")
+                .when().post("/v2/groups")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
