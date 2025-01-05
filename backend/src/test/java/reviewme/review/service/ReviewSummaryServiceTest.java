@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
-import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -37,12 +36,6 @@ class ReviewSummaryServiceTest {
 
     @Autowired
     private TemplateRepository templateRepository;
-
-    @Autowired
-    private SectionRepository sectionRepository;
-
-    @Autowired
-    private QuestionRepository questionRepository;
 
     @Test
     void 리뷰_그룹에_등록된_리뷰_요약_정보를_반환한다() {

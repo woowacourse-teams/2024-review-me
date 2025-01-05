@@ -3,23 +3,22 @@ package reviewme.review.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
-import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
-import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import reviewme.template.domain.Question;
-import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
+import reviewme.template.domain.VisibleType;
+import reviewme.template.repository.QuestionRepository;
 import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
@@ -47,12 +46,15 @@ class AnswerRepositoryTest {
     @Test
     void 내가_받은_답변들_중_주어진_질문들에_대한_답변들을_최신_작성순으로_제한된_수만_반환한다() {
         // given
-        Question question1 = questionRepository.save(서술형_필수_질문());
-        Question question2 = questionRepository.save(서술형_필수_질문());
-        Question question3 = questionRepository.save(서술형_필수_질문());
-        Section section = sectionRepository.save(항상_보이는_섹션(
-                List.of(question1.getId(), question2.getId(), question3.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
+        Question question1 = 서술형_필수_질문(1);
+        Question question2 = 서술형_필수_질문(2);
+        Question question3 = 서술형_필수_질문(3);
+        List<Question> questions = List.of(question1, question2, question3);
+        Template template = templateRepository.save(
+                new Template(List.of(
+                        new Section(VisibleType.ALWAYS, questions, null, "Section", "Header", 1)
+                ))
+        );
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         TextAnswer answer1 = new TextAnswer(question1.getId(), "답1".repeat(20));

@@ -5,13 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
-import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.template.domain.Question;
-import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
@@ -19,28 +16,22 @@ import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
+import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
-import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
 class ReviewListMapperTest {
 
     @Autowired
+    private TemplateRepository templateRepository;
+
+    @Autowired
     private ReviewListMapper reviewListMapper;
 
     @Autowired
-    private QuestionRepository questionRepository;
-
-    @Autowired
     private ReviewGroupRepository reviewGroupRepository;
-
-    @Autowired
-    private SectionRepository sectionRepository;
-
-    @Autowired
-    private TemplateRepository templateRepository;
 
     @Autowired
     private ReviewRepository reviewRepository;

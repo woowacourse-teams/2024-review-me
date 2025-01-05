@@ -3,14 +3,12 @@ package reviewme.review.service.validator;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.조건부로_보이는_섹션;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
-import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -38,22 +36,10 @@ import reviewme.template.repository.TemplateRepository;
 class ReviewValidatorTest {
 
     @Autowired
-    private QuestionRepository questionRepository;
-
-    @Autowired
-    private OptionGroupRepository optionGroupRepository;
-
-    @Autowired
-    private OptionItemRepository optionItemRepository;
-
-    @Autowired
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
     private TemplateRepository templateRepository;
-
-    @Autowired
-    private SectionRepository sectionRepository;
 
     @Autowired
     private ReviewValidator reviewValidator;

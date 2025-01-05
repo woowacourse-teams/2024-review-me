@@ -3,7 +3,6 @@ package reviewme.review.service.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.선택형_옵션_질문;
 
@@ -12,12 +11,6 @@ import java.util.Map;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import reviewme.template.domain.OptionGroup;
-import reviewme.template.domain.OptionItem;
-import reviewme.template.domain.Question;
-import reviewme.template.repository.OptionGroupRepository;
-import reviewme.template.repository.OptionItemRepository;
-import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
@@ -28,7 +21,10 @@ import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
 import reviewme.review.service.dto.response.gathered.TextResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
 import reviewme.support.ServiceTest;
-import reviewme.template.repository.SectionRepository;
+import reviewme.template.domain.OptionGroup;
+import reviewme.template.domain.OptionItem;
+import reviewme.template.domain.Question;
+import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
 class ReviewGatherMapperTest {
@@ -37,16 +33,7 @@ class ReviewGatherMapperTest {
     private ReviewGatherMapper reviewGatherMapper;
 
     @Autowired
-    private SectionRepository sectionRepository;
-
-    @Autowired
-    private QuestionRepository questionRepository;
-
-    @Autowired
-    private OptionGroupRepository optionGroupRepository;
-
-    @Autowired
-    private OptionItemRepository optionItemRepository;
+    private TemplateRepository templateRepository;
 
     @Autowired
     private ReviewRepository reviewRepository;

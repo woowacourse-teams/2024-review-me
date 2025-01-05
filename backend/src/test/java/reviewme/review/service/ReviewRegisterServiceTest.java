@@ -3,14 +3,12 @@ package reviewme.review.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.조건부로_보이는_섹션;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
-import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -42,15 +40,6 @@ class ReviewRegisterServiceTest {
     private ReviewRegisterService reviewRegisterService;
 
     @Autowired
-    private QuestionRepository questionRepository;
-
-    @Autowired
-    private OptionGroupRepository optionGroupRepository;
-
-    @Autowired
-    private OptionItemRepository optionItemRepository;
-
-    @Autowired
     private ReviewGroupRepository reviewGroupRepository;
 
     @Autowired
@@ -58,9 +47,6 @@ class ReviewRegisterServiceTest {
 
     @Autowired
     private ReviewRepository reviewRepository;
-
-    @Autowired
-    private SectionRepository sectionRepository;
 
     @Test
     void 요청한_내용으로_리뷰를_등록한다() {

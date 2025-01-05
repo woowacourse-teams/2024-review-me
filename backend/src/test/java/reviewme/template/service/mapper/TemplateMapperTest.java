@@ -4,12 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
-import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -21,10 +19,6 @@ import reviewme.template.domain.OptionGroup;
 import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
-import reviewme.template.repository.OptionGroupRepository;
-import reviewme.template.repository.OptionItemRepository;
-import reviewme.template.repository.QuestionRepository;
-import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.dto.response.QuestionResponse;
 import reviewme.template.service.dto.response.SectionResponse;
@@ -39,18 +33,6 @@ class TemplateMapperTest {
 
     @Autowired
     private TemplateRepository templateRepository;
-
-    @Autowired
-    private SectionRepository sectionRepository;
-
-    @Autowired
-    private QuestionRepository questionRepository;
-
-    @Autowired
-    private OptionGroupRepository optionGroupRepository;
-
-    @Autowired
-    private OptionItemRepository optionItemRepository;
 
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
@@ -89,10 +71,9 @@ class TemplateMapperTest {
     @Test
     void 섹션의_선택된_옵션이_필요없는_경우_제공하지_않는다() {
         // given
-        Question question = questionRepository.save(서술형_필수_질문());
-        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
-
+        Question question = 서술형_필수_질문();
+        Section section = 항상_보이는_섹션(List.of(question));
+        Template template = templateRepository.save(new Template(List.of(section)));
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // when
@@ -107,10 +88,9 @@ class TemplateMapperTest {
     @Test
     void 가이드라인이_없는_경우_가이드_라인을_제공하지_않는다() {
         // given
-        Question question = questionRepository.save(서술형_필수_질문());
-        Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section.getId())));
-
+        Question question = 서술형_필수_질문();
+        Section section = 항상_보이는_섹션(List.of(question));
+        Template template = templateRepository.save(new Template(List.of(section)));
         ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // when
