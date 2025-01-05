@@ -9,23 +9,20 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
-import static reviewme.fixture.TemplateFixture.템플릿;
 
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
-import reviewme.reviewgroup.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
+import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.reviewgroup.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.support.ServiceTest;
-import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
 @ExtendWith(MockitoExtension.class)
@@ -40,13 +37,9 @@ class ReviewGroupServiceTest {
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
 
-    @Autowired
-    private TemplateRepository templateRepository;
-
     @Test
     void 코드가_중복되는_경우_다시_생성한다() {
         // given
-        templateRepository.save(템플릿(List.of()));
         reviewGroupRepository.save(리뷰_그룹("0000", "1111"));
         given(randomCodeGenerator.generate(anyInt()))
                 .willReturn("0000") // ReviewRequestCode
