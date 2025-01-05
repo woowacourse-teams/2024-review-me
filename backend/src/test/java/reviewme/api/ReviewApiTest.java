@@ -88,6 +88,10 @@ class ReviewApiTest extends ApiTest {
         BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
                 .willReturn(1L);
 
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 ID")
+        };
+
         FieldDescriptor[] requestFieldDescriptors = {
                 fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
 
@@ -99,12 +103,14 @@ class ReviewApiTest extends ApiTest {
 
         RestDocumentationResultHandler handler = document(
                 "create-review-by-member",
+                requestCookies(cookieDescriptors),
                 requestFields(requestFieldDescriptors)
         );
 
         givenWithSpec().log().all()
+                .cookie("JSESSIONID", "ASVNE1VAKDNV4")
                 .body(request)
-                .when().post("/v2/reviews/member")
+                .when().post("/v2/reviews")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(201);

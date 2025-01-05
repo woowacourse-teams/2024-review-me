@@ -36,12 +36,6 @@ public class ReviewController {
 
     @PostMapping("/v2/reviews")
     public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRegisterRequest request) {
-        long savedReviewId = reviewRegisterService.registerReview(request);
-        return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
-    }
-
-    @PostMapping("/v2/reviews/member")
-    public ResponseEntity<Void> createReviewByMember(@Valid @RequestBody ReviewRegisterRequest request) {
         // 회원 세션 추후 추가해야 함
         long savedReviewId = reviewRegisterService.registerReview(request);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
