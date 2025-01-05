@@ -7,7 +7,7 @@ import * as S from './styles';
 
 type LoginRequestTitle = 'loginIntent' | 'membershipCheck';
 
-const LoginRequestTitleMap: Record<LoginRequestTitle, string> = {
+const LoginRequestTitleMap: Readonly<Record<LoginRequestTitle, string>> = {
   loginIntent: '로그인하시겠어요?',
   membershipCheck: '회원이신가요?',
 };
