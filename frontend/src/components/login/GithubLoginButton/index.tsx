@@ -6,14 +6,14 @@ interface GithubLoginButtonProps extends LoginButtonStyleProps {
   handleClick: () => void;
 }
 
-const GithubLoginButton = ({ handleClick, $logoStyle, $style }: GithubLoginButtonProps) => {
+const GithubLoginButton = ({ handleClick, $logoImgStyle, $buttonStyle }: GithubLoginButtonProps) => {
   return (
     <LoginButton
       platform="GitHub"
       handleClick={handleClick}
       logoSrc={GithubWhiteLogoIcon}
-      $logoStyle={$logoStyle}
-      $style={$style}
+      $logoImgStyle={$logoImgStyle}
+      $buttonStyle={$buttonStyle}
     />
   );
 };

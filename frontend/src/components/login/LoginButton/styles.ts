@@ -8,9 +8,9 @@ export const ButtonLabelContainer = styled.div`
   align-items: center;
 `;
 
-export const LogoImg = styled.img<Pick<LoginButtonStyleProps, '$logoStyle'>>`
+export const LogoImg = styled.img<Pick<LoginButtonStyleProps, '$logoImgStyle'>>`
   width: 3.2rem;
   height: 3.2rem;
 
-  ${({ $logoStyle }) => $logoStyle && { ...$logoStyle }};
+  ${({ $logoImgStyle }) => $logoImgStyle && { ...$logoImgStyle }};
 `;
