@@ -5,14 +5,14 @@ import MultipleChoiceAnswer from '../MultipleChoiceAnswer';
 import * as S from './styles';
 
 interface MultipleChoiceAnswerListProps {
-  answerList: Options[];
+  selectedOptionList: Options[];
 }
 
-const MultipleChoiceAnswerList = ({ answerList }: MultipleChoiceAnswerListProps) => {
+const MultipleChoiceAnswerList = ({ selectedOptionList }: MultipleChoiceAnswerListProps) => {
   return (
     <S.MultipleChoiceAnswerList>
-      {answerList.map(({ optionId, content }) => (
-        <MultipleChoiceAnswer key={optionId} answer={content} />
+      {selectedOptionList.map(({ optionId, content }) => (
+        <MultipleChoiceAnswer key={optionId} selectedOption={content} />
       ))}
     </S.MultipleChoiceAnswerList>
   );

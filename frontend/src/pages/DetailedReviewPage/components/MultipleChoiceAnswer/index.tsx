@@ -1,7 +1,7 @@
 import formatKeyword from '@/utils/formatKeyword';
 
-const MultipleChoiceAnswer = ({ answer }: { answer: string }) => {
-  const formattedAnswer = formatKeyword(answer);
+const MultipleChoiceAnswer = ({ selectedOption }: { selectedOption: string }) => {
+  const formattedAnswer = formatKeyword(selectedOption);
 
   return <li>{formattedAnswer}</li>;
 };

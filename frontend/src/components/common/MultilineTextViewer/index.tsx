@@ -6,14 +6,14 @@ interface MultilineTextViewerProps {
 
 const MultilineTextViewer = ({ text }: MultilineTextViewerProps) => {
   return (
-    <>
+    <S.MultilineTextContainer>
       {text.split('\n').map((line, index) => (
         <S.MultilineText key={index}>
           {line}
           <br />
         </S.MultilineText>
       ))}
-    </>
+    </S.MultilineTextContainer>
   );
 };
 

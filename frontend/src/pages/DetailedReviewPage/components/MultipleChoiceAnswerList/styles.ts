@@ -5,7 +5,6 @@ export const MultipleChoiceAnswerList = styled.ul`
   flex-direction: column;
   gap: 0.5rem;
 
-  margin-top: 2rem;
   padding-left: 4rem;
 
   list-style-type: disc;
