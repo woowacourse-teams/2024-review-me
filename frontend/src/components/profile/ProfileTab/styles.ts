@@ -10,7 +10,7 @@ export const ProfileTabContainer = styled.section`
   flex-direction: column;
 
   width: max-content;
-  min-width: 100%;
+  max-width: 25rem;
   height: fit-content;
   padding: 1rem;
 
