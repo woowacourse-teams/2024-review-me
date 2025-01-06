@@ -12,7 +12,7 @@ const ActionItem = ({ isDisplayedOnlyMobile, content, handleItemClick }: ActionI
   return (
     <S.ActionItemContainer $isDisplayedOnlyMobile={isDisplayedOnlyMobile} onClick={handleItemClick}>
       <img src={content.icon.src} alt={content.icon.alt} />
-      <span>{content.text}</span>
+      <S.ItemText>{content.text}</S.ItemText>
     </S.ActionItemContainer>
   );
 };

@@ -11,7 +11,7 @@ const ReadonlyItem = ({ isDisplayedOnlyMobile, content }: ReadonlyItemProps) => 
   return (
     <S.ReadonlyItemContainer $isDisplayedOnlyMobile={isDisplayedOnlyMobile}>
       <img src={content.icon.src} alt={content.icon.alt} />
-      <span>{content.text}</span>
+      <S.ItemText>{content.text}</S.ItemText>
     </S.ReadonlyItemContainer>
   );
 };

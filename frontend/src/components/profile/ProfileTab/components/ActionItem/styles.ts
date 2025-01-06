@@ -13,6 +13,7 @@ export const ActionItemContainer = styled.div<ActionItemStyleProps>`
   gap: 1rem;
   align-items: center;
 
+  width: 100%;
   height: 3rem;
   padding: 1rem;
 
@@ -25,4 +26,14 @@ export const ActionItemContainer = styled.div<ActionItemStyleProps>`
   ${media.small} {
     display: ${({ $isDisplayedOnlyMobile }) => $isDisplayedOnlyMobile && 'flex'};
   }
+`;
+
+export const ItemText = styled.p`
+  overflow: hidden;
+  display: block;
+
+  width: 100%;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
