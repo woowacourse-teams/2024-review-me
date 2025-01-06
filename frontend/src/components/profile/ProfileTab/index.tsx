@@ -25,7 +25,7 @@ const ProfileTab = ({ items }: ProfileTabProps) => {
         return (
           <ActionItem
             key={item.elementId}
-            handleItemClick={() => item.handleClick}
+            handleItemClick={item.handleClick!}
             isDisplayedOnlyMobile={item.isDisplayedOnlyMobile}
             content={item.content!}
           />
