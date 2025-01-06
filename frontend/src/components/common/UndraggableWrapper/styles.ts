@@ -5,6 +5,4 @@ export const Wrapper = styled.div`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-
-  min-width: fit-content;
 `;
