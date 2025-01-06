@@ -1,4 +1,5 @@
-import { MultipleChoiceAnswerList, QuestionTitle, MultilineTextViewer } from '@/pages/DetailedReviewPage/components';
+import { MultilineTextViewer } from '@/components';
+import { MultipleChoiceAnswerList, QuestionTitle } from '@/pages/DetailedReviewPage/components';
 import { Options, QuestionType } from '@/types';
 
 import * as S from './styles';
@@ -15,7 +16,11 @@ const QuestionAnswerSection = ({ question, questionType, answer, options }: Ques
     <S.QuestionAnswerSection>
       <QuestionTitle text={question} />
       {questionType === 'CHECKBOX' && options && <MultipleChoiceAnswerList selectedOptionList={options} />}
-      {questionType === 'TEXT' && answer && <MultilineTextViewer text={answer} />}
+      {questionType === 'TEXT' && answer && (
+        <S.TextAnswerWrapper>
+          <MultilineTextViewer text={answer} />
+        </S.TextAnswerWrapper>
+      )}
     </S.QuestionAnswerSection>
   );
 };

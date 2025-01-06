@@ -1,6 +1,7 @@
 export { default as Button } from './Button';
 export { default as Input } from './Input';
 export { default as ReviewDate } from './ReviewDate';
+export { default as MultilineTextViewer } from './MultilineTextViewer';
 export { default as TopButton } from './TopButton';
 export { default as Checkbox } from './Checkbox';
 export { default as CheckboxItem } from './CheckboxItem';
