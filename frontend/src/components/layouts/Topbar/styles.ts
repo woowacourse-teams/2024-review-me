@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 
 export const Layout = styled.section`
+  z-index: ${({ theme }) => theme.zIndex.topbar};
+
   display: flex;
   justify-content: space-between;
 

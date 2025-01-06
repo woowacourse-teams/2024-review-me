@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 
 export const ProfileTabContainer = styled.section`
   position: absolute;
-  z-index: ${({ theme }) => theme.zIndex.profileTab};
   top: 5rem;
   right: 0;
 
