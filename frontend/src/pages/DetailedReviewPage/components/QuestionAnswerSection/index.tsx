@@ -1,8 +1,5 @@
-import { MultilineTextViewer } from '@/components';
+import { MultipleChoiceAnswerList, QuestionTitle, MultilineTextViewer } from '@/pages/DetailedReviewPage/components';
 import { Options, QuestionType } from '@/types';
-
-import MultipleChoiceAnswerList from '../MultipleChoiceAnswerList';
-import QuestionTitle from '../QuestionTitle';
 
 import * as S from './styles';
 
