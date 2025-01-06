@@ -4,7 +4,6 @@ import { SocialType } from '@/types/profile';
 
 import ProfileTab from '../ProfileTab';
 import useProfile from '../ProfileTab/hooks/useProfile';
-import useProfileTabElements from '../ProfileTab/hooks/useProfileTabElements';
 
 import * as S from './styles';
 
@@ -16,7 +15,6 @@ interface ProfileInfoProps {
 
 const ProfileInfo = ({ profileImageSrc, profileId, socialType }: ProfileInfoProps) => {
   const { isOpened, containerRef, handleContainerClick } = useProfile();
-  const { profileTabElements } = useProfileTabElements({ profileId, socialType });
 
   return (
     <S.ProfileSection ref={containerRef}>
@@ -29,7 +27,7 @@ const ProfileInfo = ({ profileImageSrc, profileId, socialType }: ProfileInfoProp
           <S.ArrowIcon src={DownArrowIcon} $isOpened={isOpened} alt="" />
         </S.ProfileContainer>
       </UndraggableWrapper>
-      {isOpened && <ProfileTab items={profileTabElements} />}
+      {isOpened && <ProfileTab profileId={profileId} socialType={socialType} />}
     </S.ProfileSection>
   );
 };

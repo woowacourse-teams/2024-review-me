@@ -1,16 +1,20 @@
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
-import { ProfileTabElement } from '@/types/profile';
+import { ProfileTabElement, SocialType } from '@/types/profile';
 
 import ActionItem from './components/ActionItem';
 import Divider from './components/Divider';
 import ReadonlyItem from './components/ReadonlyItem';
+import useProfileTabElements from './hooks/useProfileTabElements';
 import * as S from './styles';
 
 interface ProfileTabProps {
-  items: ProfileTabElement[];
+  profileId: string;
+  socialType: SocialType;
 }
 
-const ProfileTab = ({ items }: ProfileTabProps) => {
+const ProfileTab = ({ socialType, profileId }: ProfileTabProps) => {
+  const { profileTabElements } = useProfileTabElements({ profileId, socialType });
+
   const renderProfileTabItem = (item: ProfileTabElement) => {
     switch (item.elementType) {
       case 'readonly':
@@ -37,7 +41,7 @@ const ProfileTab = ({ items }: ProfileTabProps) => {
 
   return (
     <S.ProfileTabContainer>
-      <UndraggableWrapper>{items.map((item) => renderProfileTabItem(item))}</UndraggableWrapper>
+      <UndraggableWrapper>{profileTabElements.map((element) => renderProfileTabItem(element))}</UndraggableWrapper>
     </S.ProfileTabContainer>
   );
 };
