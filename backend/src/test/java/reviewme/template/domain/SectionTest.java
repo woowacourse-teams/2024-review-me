@@ -1,13 +1,10 @@
 package reviewme.template.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static reviewme.fixture.SectionFixture.조건부로_보이는_섹션;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.List;
-import org.aspectj.util.Reflection;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.support.ReflectionSupport;
 import org.springframework.test.util.ReflectionTestUtils;
 
 class SectionTest {
@@ -18,7 +15,7 @@ class SectionTest {
         OptionItem optionItem = new OptionItem("content", 1, OptionType.CATEGORY);
         ReflectionTestUtils.setField(optionItem, "id", 1L);
         Question question = new Question(true, QuestionType.CHECKBOX, "question", null, 1);
-        Section section = new Section(VisibleType.CONDITIONAL, List.of(question), optionItem, "sectionName", "header", 1);
+        Section section = new Section(VisibleType.CONDITIONAL, List.of(question), optionItem, "name", "header", 1);
 
         // when, then
         assertThat(section.isVisibleBySelectedOptionIds(List.of(1L, 2L, 3L))).isTrue();
@@ -30,7 +27,7 @@ class SectionTest {
         OptionItem optionItem = new OptionItem("content", 1, OptionType.CATEGORY);
         ReflectionTestUtils.setField(optionItem, "id", 1L);
         Question question = new Question(true, QuestionType.CHECKBOX, "question", null, 1);
-        Section section = new Section(VisibleType.CONDITIONAL, List.of(question), optionItem, "sectionName", "header", 1);
+        Section section = new Section(VisibleType.CONDITIONAL, List.of(question), optionItem, "name", "header", 1);
 
         // when, then
         assertThat(section.isVisibleBySelectedOptionIds(List.of(2L))).isFalse();
