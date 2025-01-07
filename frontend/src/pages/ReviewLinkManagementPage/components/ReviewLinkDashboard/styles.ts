@@ -57,7 +57,7 @@ export const Separator = styled.div`
 export const LinkSection = styled.section`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 3rem;
 
   width: 100%;

@@ -5,6 +5,7 @@ import media from '@/utils/media';
 export const ReviewLinkLayout = styled.div`
   display: flex;
   flex-direction: column;
+
   gap: 4rem;
 `;
 
