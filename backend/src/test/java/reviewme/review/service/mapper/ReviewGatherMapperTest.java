@@ -66,7 +66,7 @@ class ReviewGatherMapperTest {
         assertAll(
                 () -> 질문의_수만큼_반환한다(actual, 2),
                 () -> 질문의_내용을_반환한다(actual, question1.getContent(), question2.getContent()),
-                () -> 서술형_답변을_반환한다(actual, "프엔 서술형 답변", "백엔드 서술형 답변"),
+                () -> 서술형_답변을_반환한다(actual, "프엔 서술형 답변"),
                 () -> 선택형_답변을_반환한다(actual,
                         Tuple.tuple(optionItems.get(0).getContent(), 1L),
                         Tuple.tuple(optionItems.get(1).getContent(), 1L))

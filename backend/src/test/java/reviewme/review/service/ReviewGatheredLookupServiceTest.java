@@ -179,10 +179,10 @@ class ReviewGatheredLookupServiceTest {
         @Test
         void 섹션_하위_질문이_하나인_경우() {
             // given - 템플릿 저장
-            Question question1 = 선택형_필수_질문();
             OptionItem optionItem1 = new OptionItem("짜장", 1, OptionType.CATEGORY);
             OptionItem optionItem2 = new OptionItem("짬뽕", 2, OptionType.CATEGORY);
             OptionGroup optionGroup = 선택지_그룹(List.of(optionItem1, optionItem2));
+            Question question1 = new Question(true, QuestionType.CHECKBOX, optionGroup, "선택형 질문", null, 1);
             Section section1 = 항상_보이는_섹션(List.of(question1));
             Template template = templateRepository.save(new Template(List.of(section1)));
 
