@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
+import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
-import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
@@ -30,6 +30,7 @@ import reviewme.support.ServiceTest;
 import reviewme.template.domain.OptionGroup;
 import reviewme.template.domain.OptionItem;
 import reviewme.template.domain.Question;
+import reviewme.template.domain.QuestionType;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.TemplateRepository;
@@ -52,12 +53,8 @@ class ReviewDetailLookupServiceTest {
     @Test
     void 리뷰_그룹에_해당하지_않는_리뷰를_조회할_경우_예외가_발생한다() {
         // given
-        String reviewRequestCode1 = "sancho";
-        String groupAccessCode1 = "kirby";
-        String reviewRequestCode2 = "aruru";
-        String groupAccessCode2 = "tedChang";
-        ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode1, groupAccessCode1));
-        ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode2, groupAccessCode2));
+        ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹("12341234", "qwerqwer"));
+        ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹("12345678", "qwertyui"));
 
         Review review1 = reviewRepository.save(new Review(0, reviewGroup1.getId(), List.of()));
         Review review2 = reviewRepository.save(new Review(0, reviewGroup2.getId(), List.of()));
@@ -74,21 +71,19 @@ class ReviewDetailLookupServiceTest {
     @Test
     void 사용자가_작성한_리뷰를_확인한다() {
         // given - 리뷰 그룹 저장
-        String reviewRequestCode = "1111";
-        String groupAccessCode = "2222";
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // given - 질문 저장
-        Question question1 = questionRepository.save(선택형_필수_질문());
-        Question question2 = questionRepository.save(서술형_필수_질문());
-        OptionGroup optionGroup = optionGroupRepository.save(선택지_그룹(question1.getId()));
-        OptionItem optionItem1 = optionItemRepository.save(선택지(optionGroup.getId(), 1));
-        OptionItem optionItem2 = optionItemRepository.save(선택지(optionGroup.getId(), 2));
+        OptionItem optionItem1 = 선택지();
+        OptionItem optionItem2 = 선택지();
+        OptionGroup optionGroup = 선택지_그룹(List.of(optionItem1, optionItem2));
+        Question question1 = new Question(true, QuestionType.CHECKBOX, optionGroup, "질문1", "설명1", 1);
+        Question question2 = 서술형_필수_질문();
 
         // given - 섹션, 템플릿 저장
-        Section section1 = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId())));
-        Section section2 = sectionRepository.save(항상_보이는_섹션(List.of(question2.getId())));
-        Template template = templateRepository.save(템플릿(List.of(section1.getId(), section2.getId())));
+        Section section1 = 항상_보이는_섹션(List.of(question1));
+        Section section2 = 항상_보이는_섹션(List.of(question2));
+        Template template = templateRepository.save(new Template(List.of(section1, section2)));
 
         // given - 리뷰 답변 저장
         List<Answer> answers = List.of(
@@ -113,14 +108,12 @@ class ReviewDetailLookupServiceTest {
         @Test
         void 섹션에_필수가_아닌_질문만_있다면_섹션_자체를_반환하지_않는다() {
             // given - 리뷰 그룹 저장
-            String reviewRequestCode = "sancho";
-            String groupAccessCode = "kirby";
-            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
+            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
             // given - 질문, 세션, 템플릿 저장
-            Question question = questionRepository.save(서술형_옵션_질문(1));
-            Section section = sectionRepository.save(항상_보이는_섹션(List.of(question.getId())));
-            Template template = templateRepository.save(템플릿(List.of(section.getId())));
+            Question question = 서술형_옵션_질문(1);
+            Section section = 항상_보이는_섹션(List.of(question));
+            Template template = templateRepository.save(new Template(List.of(section)));
 
             // given - 아무것도 응답하지 않은 리뷰 답변 저장
             Review review = reviewRepository.save(
@@ -139,15 +132,13 @@ class ReviewDetailLookupServiceTest {
         @Test
         void 섹션의_다른_질문에_응답했다면_답하지_않은_질문만_반환하지_않는다() {
             // given - 리뷰 그룹 저장
-            String reviewRequestCode = "aruru";
-            String groupAccessCode = "tedChang";
-            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
+            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
             // given - 질문, 세션, 템플릿 저장
-            Question question1 = questionRepository.save(서술형_옵션_질문(1));
-            Question question2 = questionRepository.save(서술형_옵션_질문(2));
-            Section section = sectionRepository.save(항상_보이는_섹션(List.of(question1.getId(), question2.getId())));
-            Template template = templateRepository.save(템플릿(List.of(section.getId())));
+            Question question1 = 서술형_옵션_질문(1);
+            Question question2 = 서술형_옵션_질문(2);
+            Section section = 항상_보이는_섹션(List.of(question1, question2));
+            Template template = templateRepository.save(new Template(List.of(section)));
 
             // given - 질문 하나에만 응답한 리뷰 답변 저장
             TextAnswer textAnswer = new TextAnswer(question1.getId(), "답변".repeat(20));

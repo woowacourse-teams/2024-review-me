@@ -46,6 +46,7 @@ public class ReviewDetailMapper {
                 .flatMap(section -> section.getQuestions().stream())
                 .toList();
         Map<Long, OptionGroup> optionGroupsByQuestion = questions.stream()
+                .filter(Question::isSelectable)
                 .collect(Collectors.toMap(Question::getId, Question::getOptionGroup));
         Map<Long, List<OptionItem>> optionItemsByOptionGroup = optionGroupsByQuestion.values().stream()
                 .collect(Collectors.toMap(OptionGroup::getId, OptionGroup::getOptionItems));
