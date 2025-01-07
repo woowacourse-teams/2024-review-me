@@ -5,12 +5,12 @@ import { ContentModal, GithubLoginButton } from '@/components';
 
 import * as S from './styles';
 
-type LoginRequestTitle = 'loginIntent' | 'membershipCheck';
+const LOGIN_REQUEST_TITLE = {
+  loginIntent: 'loginIntent',
+  membershipCheck: 'membershipCheck',
+} as const;
 
-const LoginRequestTitleMap: Readonly<Record<LoginRequestTitle, string>> = {
-  loginIntent: '로그인하시겠어요?',
-  membershipCheck: '회원이신가요?',
-};
+type LoginRequestTitle = keyof typeof LOGIN_REQUEST_TITLE;
 
 interface LoginRequestModalProps {
   titleType: LoginRequestTitle;
@@ -28,7 +28,7 @@ const LoginRequestModal = ({ titleType, closeModal }: LoginRequestModalProps) =>
 
   return (
     <ContentModal
-      title={LoginRequestTitleMap[titleType]}
+      title={LOGIN_REQUEST_TITLE[titleType]}
       handleClose={closeModal}
       isClosableOnBackground={true}
       $style={{
