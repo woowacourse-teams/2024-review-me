@@ -8,8 +8,11 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
+import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,6 +26,10 @@ import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.support.ServiceTest;
+import reviewme.template.domain.Question;
+import reviewme.template.domain.Section;
+import reviewme.template.domain.Template;
+import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
 @ExtendWith(MockitoExtension.class)
@@ -37,9 +44,16 @@ class ReviewGroupServiceTest {
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
 
+    @Autowired
+    private TemplateRepository templateRepository;
+
     @Test
     void 코드가_중복되는_경우_다시_생성한다() {
         // given
+        Question question = 서술형_필수_질문();
+        Section section = 항상_보이는_섹션(List.of(question));
+        templateRepository.save(new Template(List.of(section)));
+
         reviewGroupRepository.save(리뷰_그룹("0000", "1111"));
         given(randomCodeGenerator.generate(anyInt()))
                 .willReturn("0000") // ReviewRequestCode
