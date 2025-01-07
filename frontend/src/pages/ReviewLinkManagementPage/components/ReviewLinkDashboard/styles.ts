@@ -19,7 +19,7 @@ export const ReviewLinkDashboardContainer = styled.div`
 
   ${media.small} {
     flex-direction: column;
-    padding: 0 3rem;
+    align-items: center;
   }
 `;
 
@@ -38,6 +38,7 @@ export const FormSection = styled.section`
 
   ${media.small} {
     width: 100%;
+    padding: 0;
   }
 `;
 
@@ -56,6 +57,7 @@ export const Separator = styled.div`
 export const LinkSection = styled.section`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 3rem;
 
   width: 100%;
@@ -67,6 +69,10 @@ export const LinkSection = styled.section`
   }
 
   ${media.small} {
-    width: 100%;
+    width: 85%;
+  }
+
+  ${media.xSmall} {
+    width: 90%;
   }
 `;
