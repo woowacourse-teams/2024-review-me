@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.template.domain.OptionGroup;
+import reviewme.template.domain.OptionGroupSelectionCount;
 import reviewme.template.domain.OptionItem;
 import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
@@ -66,11 +67,12 @@ public class TemplateMapper {
                 .stream()
                 .map(this::mapToOptionItemResponse)
                 .toList();
+        OptionGroupSelectionCount selectionCount = optionGroup.getSelectionCount();
 
         return new OptionGroupResponse(
                 optionGroup.getId(),
-                optionGroup.getMinSelectionCount(),
-                optionGroup.getMaxSelectionCount(),
+                selectionCount.getMinSelectionCount(),
+                selectionCount.getMaxSelectionCount(),
                 optionItemResponses
         );
     }
