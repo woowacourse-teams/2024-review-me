@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.template.domain.OptionGroup;
+import reviewme.template.domain.OptionGroupSelectionCount;
 import reviewme.template.domain.OptionItem;
 import reviewme.template.domain.Question;
 import reviewme.template.repository.OptionGroupRepository;
@@ -60,15 +61,15 @@ public class CheckboxTypedAnswerValidator implements TypedAnswerValidator {
     }
 
     private void validateCheckedOptionItemCount(CheckboxAnswer checkboxAnswer, OptionGroup optionGroup) {
+        OptionGroupSelectionCount selectionCount = optionGroup.getSelectionCount();
         int answeredOptionItemCount = extractAnsweredOptionItemIds(checkboxAnswer).size();
 
-        if (answeredOptionItemCount < optionGroup.getMinSelectionCount()
-            || answeredOptionItemCount > optionGroup.getMaxSelectionCount()) {
+        if (selectionCount.isOutOfRange(answeredOptionItemCount)) {
             throw new SelectedOptionItemCountOutOfRangeException(
                     checkboxAnswer.getQuestionId(),
                     answeredOptionItemCount,
-                    optionGroup.getMinSelectionCount(),
-                    optionGroup.getMaxSelectionCount()
+                    selectionCount.getMinSelectionCount(),
+                    selectionCount.getMaxSelectionCount()
             );
         }
     }
