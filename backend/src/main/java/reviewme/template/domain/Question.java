@@ -34,7 +34,7 @@ public class Question {
     @Enumerated(EnumType.STRING)
     private QuestionType questionType;
 
-    @OneToOne(mappedBy = "questionId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "option_group_id", nullable = true, updatable = false)
     private OptionGroup optionGroup;
 

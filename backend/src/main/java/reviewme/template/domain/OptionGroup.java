@@ -26,7 +26,7 @@ public class OptionGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "optionGroupId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "option_group_id", nullable = false, updatable = false)
     private List<OptionItem> optionItems;
 
