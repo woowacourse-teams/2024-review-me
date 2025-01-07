@@ -2,6 +2,7 @@ package reviewme.template.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.ReviewGroupFixture.템플릿_지정_리뷰_그룹;
 
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
+import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
 import reviewme.template.domain.VisibleType;
@@ -44,10 +46,12 @@ class TemplateServiceTest {
     @Test
     void 템플릿에_있는_섹션_이름_목록을_응답한다() {
         // given
-        Section section1 = new Section(VisibleType.ALWAYS, List.of(), null, "섹션1", "헤더", 1);
-        Section section2 = new Section(VisibleType.ALWAYS, List.of(), null, "섹션2", "헤더", 2);
-        Section section3 = new Section(VisibleType.CONDITIONAL, List.of(), null, "섹션3", "헤더", 3);
-        Template template = templateRepository.save(new Template(List.of(section1, section2, section3)));
+        Question question1 = 서술형_필수_질문(1);
+        Question question2 = 서술형_필수_질문(1);
+
+        Section section1 = new Section(VisibleType.ALWAYS, List.of(question1), null, "섹션1", "헤더", 1);
+        Section section2 = new Section(VisibleType.ALWAYS, List.of(question2), null, "섹션2", "헤더", 2);
+        Template template = templateRepository.save(new Template(List.of(section1, section2)));
         ReviewGroup reviewGroup = reviewGroupRepository.save(템플릿_지정_리뷰_그룹(template.getId()));
 
         // when
@@ -55,6 +59,6 @@ class TemplateServiceTest {
 
         // then
         assertThat(actual.sections()).extracting(SectionNameResponse::name)
-                .containsExactly("섹션1", "섹션2", "섹션3");
+                .containsExactly("섹션1", "섹션2");
     }
 }
