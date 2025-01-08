@@ -1,6 +1,5 @@
 package reviewme.template.service;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +7,6 @@ import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.service.ReviewGroupService;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.TemplateRepository;
-import reviewme.template.service.dto.response.SectionNameResponse;
 import reviewme.template.service.dto.response.SectionNamesResponse;
 import reviewme.template.service.dto.response.TemplateResponse;
 import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
@@ -36,12 +34,6 @@ public class TemplateService {
                 .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(
                         reviewGroup.getId(), reviewGroup.getTemplateId())
                 );
-
-        List<SectionNameResponse> sectionNameResponses = template.getSections()
-                .stream()
-                .map(section -> new SectionNameResponse(section.getId(), section.getSectionName()))
-                .toList();
-
-        return new SectionNamesResponse(sectionNameResponses);
+        return SectionNamesResponse.from(template);
     }
 }
