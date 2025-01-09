@@ -2,7 +2,7 @@ package reviewme.template.service.dto.response;
 
 import java.util.List;
 import reviewme.template.domain.OptionGroup;
-import reviewme.template.domain.OptionGroupSelectionCount;
+import reviewme.template.domain.OptionGroupSelectionRange;
 
 public record OptionGroupResponse(
         long optionGroupId,
@@ -16,12 +16,12 @@ public record OptionGroupResponse(
                 .map(OptionItemResponse::from)
                 .toList();
 
-        OptionGroupSelectionCount selectionCount = optionGroup.getSelectionCount();
+        OptionGroupSelectionRange selectionRange = optionGroup.getSelectionRange();
 
         return new OptionGroupResponse(
                 optionGroup.getId(),
-                selectionCount.getMinSelectionCount(),
-                selectionCount.getMaxSelectionCount(),
+                selectionRange.getMinSelectionCount(),
+                selectionRange.getMaxSelectionCount(),
                 optionItemResponses
         );
     }

@@ -31,7 +31,7 @@ public class OptionGroup {
     private List<OptionItem> optionItems;
 
     @Embedded
-    private OptionGroupSelectionCount selectionCount;
+    private OptionGroupSelectionRange selectionRange;
 
     public OptionGroup(List<OptionItem> optionItems, int minSelectionCount, int maxSelectionCount) {
         if (optionItems.isEmpty()) {
@@ -41,6 +41,6 @@ public class OptionGroup {
             throw new IllegalArgumentException("선택 가능한 아이템의 개수가 올바르지 않습니다.");
         }
         this.optionItems = optionItems;
-        this.selectionCount = new OptionGroupSelectionCount(minSelectionCount, maxSelectionCount);
+        this.selectionRange = new OptionGroupSelectionRange(minSelectionCount, maxSelectionCount);
     }
 }
