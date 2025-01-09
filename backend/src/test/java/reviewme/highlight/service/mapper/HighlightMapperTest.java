@@ -50,13 +50,11 @@ class HighlightMapperTest {
         Question question = 서술형_필수_질문();
         Section section = 항상_보이는_섹션(List.of(question));
         Template template = templateRepository.save(new Template(List.of(section)));
-        String reviewRequestCode = "reviewRequestCode";
-        long reviewGroupId = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, "groupAccessCode"))
-                .getId();
+        long reviewGroupId = reviewGroupRepository.save(리뷰_그룹()).getId();
 
         TextAnswer textAnswer1 = new TextAnswer(question.getId(), "text answer1");
         TextAnswer textAnswer2 = new TextAnswer(question.getId(), "text answer2");
-        Review review = reviewRepository.save(new Review(template.getId(), reviewGroupId, List.of(textAnswer1, textAnswer2)));
+        reviewRepository.save(new Review(template.getId(), reviewGroupId, List.of(textAnswer1, textAnswer2)));
 
         highlightRepository.save(new Highlight(1, 1, new HighlightRange(1, 1)));
 

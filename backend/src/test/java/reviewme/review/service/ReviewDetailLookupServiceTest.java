@@ -53,8 +53,8 @@ class ReviewDetailLookupServiceTest {
     @Test
     void 리뷰_그룹에_해당하지_않는_리뷰를_조회할_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹("12341234", "qwerqwer"));
-        ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹("12345678", "qwertyui"));
+        ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹());
 
         Review review1 = reviewRepository.save(new Review(0, reviewGroup1.getId(), List.of()));
         Review review2 = reviewRepository.save(new Review(0, reviewGroup2.getId(), List.of()));

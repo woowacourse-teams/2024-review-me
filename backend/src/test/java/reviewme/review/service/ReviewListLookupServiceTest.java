@@ -35,9 +35,7 @@ class ReviewListLookupServiceTest {
     @Test
     void 확인_코드에_해당하는_그룹이_존재하면_내가_받은_리뷰_목록을_반환한다() {
         // given - 리뷰 그룹 저장
-        String reviewRequestCode = "reviewRequestCode";
-        String groupAccessCode = "groupAccessCode";
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // given - 리뷰 답변 저장
         CheckboxAnswer categoryAnswer = new CheckboxAnswer(1L, List.of(1L));
@@ -62,9 +60,7 @@ class ReviewListLookupServiceTest {
     @Test
     void 내가_받은_리뷰_목록을_페이지네이션을_적용하여_반환한다() {
         // given - 리뷰 그룹 저장
-        String reviewRequestCode = "reviewRequestCode";
-        String groupAccessCode = "groupAccessCode";
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
+        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
         // given - 리뷰 답변 저장
         TextAnswer textAnswer = new TextAnswer(1L, "텍스트형 응답");

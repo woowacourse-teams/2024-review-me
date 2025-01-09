@@ -43,7 +43,7 @@ class ReviewSummaryServiceTest {
         Template template = templateRepository.save(new Template(List.of(section)));
 
         ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹());
-        ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹("reReCo", "groupCo"));
+        ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹());
 
         List<Review> reviews = List.of(
                 new Review(template.getId(), reviewGroup1.getId(), List.of()),

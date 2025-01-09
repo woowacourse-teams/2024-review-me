@@ -10,6 +10,7 @@ import static reviewme.fixture.QuestionFixture.선택형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.선택형_질문;
 import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.템플릿_지정_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.List;
@@ -58,7 +59,7 @@ class ReviewGatheredLookupServiceTest {
 
     @BeforeEach
     void saveReviewGroup() {
-        reviewGroup = reviewGroupRepository.save(리뷰_그룹("1111", "2222"));
+        reviewGroup = reviewGroupRepository.save(리뷰_그룹());
     }
 
     @Nested
@@ -157,7 +158,7 @@ class ReviewGatheredLookupServiceTest {
             // given - 템플릿 저장
             Question question1 = 서술형_필수_질문();
             Section section1 = 항상_보이는_섹션(List.of(question1));
-            Template template = templateRepository.save(new Template(List.of(section1)));
+            templateRepository.save(new Template(List.of(section1)));
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
@@ -188,8 +189,9 @@ class ReviewGatheredLookupServiceTest {
 
             // given - 리뷰 답변 저장
             CheckboxAnswer answer1 = new CheckboxAnswer(question1.getId(), List.of(optionItem1.getId()));
-            CheckboxAnswer answer2 = new CheckboxAnswer(question1.getId(),
-                    List.of(optionItem1.getId(), optionItem2.getId()));
+            CheckboxAnswer answer2 = new CheckboxAnswer(
+                    question1.getId(), List.of(optionItem1.getId(), optionItem2.getId())
+            );
             reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer1)));
             reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer2)));
 
@@ -201,10 +203,7 @@ class ReviewGatheredLookupServiceTest {
             // then
             assertThat(actual.reviews().get(0).votes())
                     .extracting(VoteResponse::content, VoteResponse::count)
-                    .containsExactlyInAnyOrder(
-                            tuple("짜장", 2L),
-                            tuple("짬뽕", 1L)
-                    );
+                    .containsExactlyInAnyOrder(tuple("짜장", 2L), tuple("짬뽕", 1L));
         }
 
         @Test
@@ -233,10 +232,7 @@ class ReviewGatheredLookupServiceTest {
             // then
             assertThat(actual.reviews().get(0).votes())
                     .extracting(VoteResponse::content, VoteResponse::count)
-                    .containsExactlyInAnyOrder(
-                            tuple("우테코 산초", 2L),
-                            tuple("제이든 산초", 0L)
-                    );
+                    .containsExactlyInAnyOrder(tuple("우테코 산초", 2L), tuple("제이든 산초", 0L));
         }
     }
 
@@ -290,11 +286,8 @@ class ReviewGatheredLookupServiceTest {
         Section section1 = 항상_보이는_섹션(List.of(question1));
         Template template = templateRepository.save(new Template(List.of(section1)));
 
-        String reviewRequestCodeBE = "review_me_be";
-        ReviewGroup reviewGroupBE = new ReviewGroup("reviewee", "projectName",
-                reviewRequestCodeBE, "groupAccessCode", template.getId());
-        ReviewGroup reviewGroupFE = new ReviewGroup("reviewee", "projectName",
-                "reviewRequestCode", "groupAccessCode", template.getId());
+        ReviewGroup reviewGroupBE = 템플릿_지정_리뷰_그룹(template.getId());
+        ReviewGroup reviewGroupFE = 템플릿_지정_리뷰_그룹(template.getId());
         reviewGroupRepository.saveAll(List.of(reviewGroupFE, reviewGroupBE));
 
         // given - 리뷰 답변 저장
@@ -319,17 +312,19 @@ class ReviewGatheredLookupServiceTest {
         Question question3 = new Question(false, QuestionType.TEXT, "질문3", null, 1);
         Question question4 = new Question(false, QuestionType.TEXT, "질문4", null, 2);
         Section section1 = 항상_보이는_섹션(List.of(question1, question2, question3, question4));
-        Template template = templateRepository.save(new Template(List.of(section1)));
+        templateRepository.save(new Template(List.of(section1)));
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewGroup, section1.getId());
+                reviewGroup, section1.getId()
+        );
 
         // then
         assertThat(actual.reviews())
                 .extracting(ReviewsGatheredByQuestionResponse::question)
                 .extracting(SimpleQuestionResponse::name)
-                .containsExactly(question3.getContent(), question4.getContent(),
-                        question1.getContent(), question2.getContent());
+                .containsExactly(
+                        question3.getContent(), question4.getContent(), question1.getContent(), question2.getContent()
+                );
     }
 }
