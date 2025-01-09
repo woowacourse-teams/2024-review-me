@@ -1,9 +1,9 @@
 import theme from '@/styles/theme';
+import { Breakpoints } from '@/types/media';
+
+type Media = { [key in Breakpoints]: string };
 
 const { breakpoint } = theme;
-
-export type Breakpoints = keyof typeof breakpoint;
-type Media = { [key in Breakpoints]: string };
 
 const breakpointsKeyList = Object.keys(breakpoint) as Breakpoints[];
 
