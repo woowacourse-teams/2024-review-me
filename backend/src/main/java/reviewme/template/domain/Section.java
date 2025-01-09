@@ -72,9 +72,8 @@ public class Section {
         return visibleType == VisibleType.ALWAYS || selectedOptionIds.contains(onSelectedOption.getId());
     }
 
-    public boolean containsQuestionId(long questionId) {
-        return questions.stream()
-                .anyMatch(question -> question.hasIdOf(questionId));
+    public boolean contains(Question question) {
+        return questions.contains(question);
     }
 
     public boolean isConditional() {
