@@ -14,7 +14,7 @@ const WrittenReviewPage = () => {
   const { currentDeviceType } = useCurrentMediaType();
 
   const { queryString: reviewIdString } = useSearchParamAndQuery({
-    paramKey: '',
+
     queryStringKey: 'reviewId',
   });
 
