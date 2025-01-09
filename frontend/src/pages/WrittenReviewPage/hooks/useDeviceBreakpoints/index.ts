@@ -1,7 +1,7 @@
 import { useState, useLayoutEffect } from 'react';
 
 import { breakpoint } from '@/styles/theme';
-import { Breakpoints } from '@/utils/media';
+import { Breakpoints } from '@/types/media';
 
 interface CurrentDevice {
   isMobile: boolean;
