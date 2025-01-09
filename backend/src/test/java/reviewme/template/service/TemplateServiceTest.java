@@ -29,6 +29,7 @@ class TemplateServiceTest {
 
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
+
     @Autowired
     private TemplateRepository templateRepository;
 
