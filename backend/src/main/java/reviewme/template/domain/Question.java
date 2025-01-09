@@ -64,10 +64,6 @@ public class Question {
         this(required, questionType, null, content, guideline, position);
     }
 
-    public boolean hasIdOf(long id) {
-        return this.id == id;
-    }
-
     public boolean isSelectable() {
         return questionType == QuestionType.CHECKBOX;
     }
