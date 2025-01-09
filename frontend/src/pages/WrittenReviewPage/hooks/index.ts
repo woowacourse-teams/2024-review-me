@@ -1,1 +1,1 @@
-export { default as useCurrentMediaType } from './useCurrentMediaType';
+export { default as useDeviceBreakpoints } from './useDeviceBreakpoints';

@@ -5,16 +5,15 @@ import { useSearchParamAndQuery } from '@/hooks';
 
 import DetailedWrittenReview from './components/DetailedWrittenReview';
 import WrittenReviewList from './components/WrittenReviewList';
-import { useCurrentMediaType } from './hooks';
+import { useDeviceBreakpoints } from './hooks';
 import * as S from './styles';
 
 const WrittenReviewPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentDeviceType } = useCurrentMediaType();
+  const { deviceType } = useDeviceBreakpoints();
 
   const { queryString: reviewIdString } = useSearchParamAndQuery({
-
     queryStringKey: 'reviewId',
   });
 
@@ -28,7 +27,7 @@ const WrittenReviewPage = () => {
   };
 
   const renderContent = () => {
-    if (currentDeviceType.isMobile) {
+    if (deviceType.isMobile) {
       // 모바일: queryString 없으면 목록, 있으면 상세보기
       return selectedReviewId ? (
         <DetailedWrittenReview $isMobile={true} selectedReviewId={selectedReviewId} />
