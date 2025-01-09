@@ -35,16 +35,17 @@ const WrittenReviewPage = () => {
       ) : (
         <WrittenReviewList handleClick={handleReviewItemClick} />
       );
-    } else {
-      // 태블릿 ~ : 목록 + 상세보기
-      return (
-        <S.PageContainer>
-          <WrittenReviewList handleClick={handleReviewItemClick} />
-          <DetailedWrittenReview $isMobile={false} selectedReviewId={selectedReviewId} />
-        </S.PageContainer>
-      );
     }
+
+    // 태블릿 ~ : 목록 + 상세보기
+    return (
+      <S.PageContainer>
+        <WrittenReviewList handleClick={handleReviewItemClick} />
+        <DetailedWrittenReview $isMobile={false} selectedReviewId={selectedReviewId} />
+      </S.PageContainer>
+    );
   };
+
   return <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>{renderContent()}</ErrorSuspenseContainer>;
 };
 
