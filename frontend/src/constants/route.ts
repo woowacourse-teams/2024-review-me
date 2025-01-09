@@ -7,4 +7,5 @@ export const ROUTE = {
   detailedReview: 'user/detailed-review',
   reviewZone: 'user/review-zone',
   reviewCollection: 'user/review-collection',
+  writtenReview: 'user/written-review',
 };
