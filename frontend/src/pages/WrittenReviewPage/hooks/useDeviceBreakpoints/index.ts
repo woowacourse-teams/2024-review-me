@@ -13,7 +13,7 @@ interface CurrentDevice {
   현재 미디어 쿼리 상태와 디바이스 종류(boolean)를 리턴하는 훅 
  */
 const useDeviceBreakpoints = () => {
-  const [breakPointType, setBreakPointType] = useState<Breakpoints | null>(null);
+  const [breakpointType, setBreakPointType] = useState<Breakpoints | null>(null);
   const breakpointsArray = Object.entries(breakpoint);
 
   const getDeviceType = (breakpointType: Breakpoints | null): CurrentDevice => ({
@@ -37,8 +37,8 @@ const useDeviceBreakpoints = () => {
   }, []);
 
   return {
-    breakPointType,
-    deviceType: getDeviceType(breakPointType),
+    breakpointType,
+    deviceType: getDeviceType(breakpointType),
   };
 };
 
