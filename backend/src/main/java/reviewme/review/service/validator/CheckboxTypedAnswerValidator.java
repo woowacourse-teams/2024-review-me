@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reviewme.template.domain.OptionGroup;
-import reviewme.template.domain.OptionGroupSelectionRange;
+import reviewme.template.domain.SelectionRange;
 import reviewme.template.domain.OptionItem;
 import reviewme.template.domain.Question;
 import reviewme.template.repository.OptionGroupRepository;
@@ -61,7 +61,7 @@ public class CheckboxTypedAnswerValidator implements TypedAnswerValidator {
     }
 
     private void validateCheckedOptionItemCount(CheckboxAnswer checkboxAnswer, OptionGroup optionGroup) {
-        OptionGroupSelectionRange selectionRange = optionGroup.getSelectionRange();
+        SelectionRange selectionRange = optionGroup.getSelectionRange();
         int answeredOptionItemCount = extractAnsweredOptionItemIds(checkboxAnswer).size();
 
         if (selectionRange.isOutOfRange(answeredOptionItemCount)) {

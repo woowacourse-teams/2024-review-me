@@ -17,7 +17,7 @@ import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.template.domain.OptionGroup;
-import reviewme.template.domain.OptionGroupSelectionRange;
+import reviewme.template.domain.SelectionRange;
 import reviewme.template.domain.OptionItem;
 import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
@@ -110,7 +110,7 @@ public class ReviewDetailMapper {
                 .filter(optionItem -> selectedOptionIds.contains(optionItem.getId()))
                 .map(optionItem -> new OptionItemAnswerResponse(optionItem.getId(), optionItem.getContent(), true))
                 .toList();
-        OptionGroupSelectionRange selectionRange = optionGroup.getSelectionRange();
+        SelectionRange selectionRange = optionGroup.getSelectionRange();
 
         OptionGroupAnswerResponse optionGroupAnswerResponse = new OptionGroupAnswerResponse(
                 optionGroup.getId(),

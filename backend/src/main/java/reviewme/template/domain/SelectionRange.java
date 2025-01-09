@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode
-public class OptionGroupSelectionRange {
+public class SelectionRange {
 
     @Column(name = "min_selection_count", nullable = false)
     private int minSelectionCount;
@@ -19,7 +19,7 @@ public class OptionGroupSelectionRange {
     @Column(name = "max_selection_count", nullable = false)
     private int maxSelectionCount;
 
-    public OptionGroupSelectionRange(int minSelectionCount, int maxSelectionCount) {
+    public SelectionRange(int minSelectionCount, int maxSelectionCount) {
         if (minSelectionCount > maxSelectionCount) {
             throw new IllegalArgumentException("선택 가능 범위가 잘못 설정되었습니다.");
         }
