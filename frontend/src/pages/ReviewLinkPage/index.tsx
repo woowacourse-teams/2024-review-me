@@ -2,7 +2,7 @@ import { ErrorSuspenseContainer } from '@/components';
 
 import ReviewLinkDashboard from './components/ReviewLinkDashboard';
 
-const ReviewLinkManagementPage = () => {
+const ReviewLinkPage = () => {
   return (
     <ErrorSuspenseContainer>
       {/* TODO: 네비게이션 탭 추가 */}
@@ -11,4 +11,4 @@ const ReviewLinkManagementPage = () => {
   );
 };
 
-export default ReviewLinkManagementPage;
+export default ReviewLinkPage;
