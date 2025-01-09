@@ -10,6 +10,7 @@ public record TemplateResponse(
         String projectName,
         List<SectionResponse> sections
 ) {
+
     public static TemplateResponse of(ReviewGroup reviewGroup, Template template) {
         List<SectionResponse> sectionResponses = template.getSections()
                 .stream()

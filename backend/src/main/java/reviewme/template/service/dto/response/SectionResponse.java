@@ -13,6 +13,7 @@ public record SectionResponse(
         String header,
         List<QuestionResponse> questions
 ) {
+
     public static SectionResponse from(Section section) {
         List<QuestionResponse> questionResponses = section.getQuestions()
                 .stream()

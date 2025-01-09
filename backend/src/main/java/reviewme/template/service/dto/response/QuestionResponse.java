@@ -13,6 +13,7 @@ public record QuestionResponse(
         boolean hasGuideline,
         @Nullable String guideline
 ) {
+
     public static QuestionResponse from(Question question) {
         return new QuestionResponse(
                 question.getId(),

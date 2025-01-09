@@ -10,6 +10,7 @@ public record OptionGroupResponse(
         int maxCount,
         List<OptionItemResponse> options
 ) {
+
     public static OptionGroupResponse from(OptionGroup optionGroup) {
         List<OptionItemResponse> optionItemResponses = optionGroup.getOptionItems()
                 .stream()

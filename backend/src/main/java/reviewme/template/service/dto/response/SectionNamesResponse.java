@@ -6,6 +6,7 @@ import reviewme.template.domain.Template;
 public record SectionNamesResponse(
         List<SectionNameResponse> sections
 ) {
+
     public static SectionNamesResponse from(Template template) {
         List<SectionNameResponse> sectionNames = template.getSections()
                 .stream()
