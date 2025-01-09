@@ -20,11 +20,8 @@ public class SelectionRange {
     private int maxSelectionCount;
 
     public SelectionRange(int minSelectionCount, int maxSelectionCount) {
-        if (minSelectionCount > maxSelectionCount) {
-            throw new IllegalArgumentException("선택 가능 범위가 잘못 설정되었습니다.");
-        }
-        if (minSelectionCount <= 0) {
-            throw new IllegalArgumentException("선택 가능 개수는 0보다 커야 합니다.");
+        if (minSelectionCount <= 0 || minSelectionCount > maxSelectionCount) {
+            throw new InvalidSelectionRangeException(minSelectionCount, maxSelectionCount);
         }
         this.minSelectionCount = minSelectionCount;
         this.maxSelectionCount = maxSelectionCount;

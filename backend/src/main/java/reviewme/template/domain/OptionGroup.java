@@ -35,10 +35,10 @@ public class OptionGroup {
 
     public OptionGroup(List<OptionItem> optionItems, int minSelectionCount, int maxSelectionCount) {
         if (optionItems.isEmpty()) {
-            throw new IllegalArgumentException("옵션 아이템은 최소 한 개 이상이어야 합니다.");
+            throw new EmptyOptionGroupException();
         }
         if (optionItems.size() < maxSelectionCount) {
-            throw new IllegalArgumentException("선택 가능한 아이템의 개수가 올바르지 않습니다.");
+            throw new InvalidSelectionRangeException(optionItems.size(), minSelectionCount, maxSelectionCount);
         }
         this.optionItems = optionItems;
         this.selectionRange = new SelectionRange(minSelectionCount, maxSelectionCount);
