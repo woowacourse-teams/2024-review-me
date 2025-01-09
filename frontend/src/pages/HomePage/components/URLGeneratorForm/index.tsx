@@ -1,92 +1,104 @@
-import { useId, useState } from 'react';
+import React, { useId, useState } from 'react';
 
-import { DataForReviewRequestCode } from '@/apis/group';
-import { Button } from '@/components';
-import { HOM_EVENT_NAME } from '@/constants';
+import AlertIcon from '@/assets/alertTriangle.svg';
+import { ErrorSuspenseContainer, Toast } from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useModals } from '@/hooks';
-import { isValidPasswordInput, isValidReviewGroupDataInput } from '@/pages/HomePage/utils/validateInput';
-import { debounce, trackEventInAmplitude } from '@/utils';
 
-import usePostDataForReviewRequestCode from '../../hooks/usePostDataForReviewRequestCode';
 import { FormLayout, ReviewZoneURLModal } from '../index';
-import { ProjectNameField, RevieweeNameField, PasswordField } from '../Inputs';
+import { PasswordField, ReviewGroupDataField } from '../Inputs';
 
+import URLGeneratorButton from './components/URLGeneratorButton';
+import useURLGeneratorState from './hooks/useURLGeneratorState';
 import * as S from './styles';
-
-const DEBOUNCE_TIME = 300;
 
 const MODAL_KEYS = {
   confirm: 'CONFIRM',
 };
 
-const URLGeneratorForm = () => {
-  const [revieweeName, setRevieweeName] = useState('');
-  const [projectName, setProjectName] = useState('');
-  const [password, setPassword] = useState('');
+const TOAST_INFORM = {
+  icon: { src: AlertIcon, alt: '' },
+  message: '리뷰 링크 생성에 실패했어요. 다시 시도해 보세요.',
+  duration: 1000 * 3,
+};
+interface URLGeneratorFormProps {
+  isMember?: boolean;
+}
+const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
+  const { revieweeName, projectName, password, isFormValid, resetForm, urlGeneratorStateUpdater } =
+    useURLGeneratorState({ isMember });
 
   const [reviewZoneURL, setReviewZoneURL] = useState('');
 
+  const [isOpenToast, setIsOpenToast] = useState(false);
   const { isOpen, openModal, closeModal } = useModals();
 
+  const handleOpenToast = (isOpen: boolean) => setIsOpenToast(isOpen);
+
   const useInputId = useId();
+
   const INPUT_ID = {
     revieweeName: `reviewee-name-input-${useInputId}`,
     projectName: `project-name-input-${useInputId}`,
     password: `password-input-${useInputId}`,
   };
 
-  const mutation = usePostDataForReviewRequestCode();
-
-  const isFormValid =
-    isValidReviewGroupDataInput(revieweeName) &&
-    isValidReviewGroupDataInput(projectName) &&
-    isValidPasswordInput(password);
-
-  const postDataForURL = () => {
-    trackEventInAmplitude(HOM_EVENT_NAME.generateReviewURL);
-
-    const dataForReviewRequestCode: DataForReviewRequestCode = { revieweeName, projectName, groupAccessCode: password };
-    mutation.mutate(dataForReviewRequestCode, {
-      onSuccess: (data) => {
-        const completeReviewZoneURL = getCompleteReviewZoneURL(data.reviewRequestCode);
-        setReviewZoneURL(completeReviewZoneURL);
-
-        resetForm();
-      },
-    });
-  };
-
-  const resetForm = () => {
-    setRevieweeName('');
-    setProjectName('');
-    setPassword('');
-  };
-
   const getCompleteReviewZoneURL = (reviewRequestCode: string) => {
     return `${window.location.origin}/${ROUTE.reviewZone}/${reviewRequestCode}`;
   };
 
-  const handleUrlCreationButtonClick = debounce((event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    postDataForURL();
+  const handleAPISuccess = (data: any) => {
+    const completeReviewZoneURL = getCompleteReviewZoneURL(data.reviewRequestCode);
+    setReviewZoneURL(completeReviewZoneURL);
+
+    resetForm();
+
+    handleOpenToast(false);
     openModal(MODAL_KEYS.confirm);
-  }, DEBOUNCE_TIME);
+  };
+
+  const handleAPIError = (error: Error) => {
+    console.error(error.message);
+
+    handleOpenToast(true);
+    closeModal(MODAL_KEYS.confirm);
+  };
 
   return (
     <S.URLGeneratorForm>
       <FormLayout title="함께한 팀원으로부터 리뷰를 받아보세요!" direction="column">
-        <RevieweeNameField id={INPUT_ID.revieweeName} value={revieweeName} setValue={setRevieweeName} />
-        <ProjectNameField id={INPUT_ID.projectName} value={projectName} setValue={setProjectName} />
-        <PasswordField id={INPUT_ID.password} value={password} setValue={setPassword} />
-        <Button
-          type="button"
-          styleType={isFormValid ? 'primary' : 'disabled'}
-          onClick={handleUrlCreationButtonClick}
-          disabled={!isFormValid}
-        >
-          리뷰 링크 생성하기
-        </Button>
+        <ReviewGroupDataField
+          id={INPUT_ID.revieweeName}
+          labelText="본인의 이름을 적어주세요"
+          value={revieweeName}
+          updateValue={urlGeneratorStateUpdater.revieweeName}
+        />
+        <ReviewGroupDataField
+          id={INPUT_ID.projectName}
+          labelText="함께한 프로젝트 이름을 입력해주세요"
+          value={projectName}
+          updateValue={urlGeneratorStateUpdater.projectName}
+        />
+        {!isMember && (
+          <PasswordField id={INPUT_ID.password} value={password} updateValue={urlGeneratorStateUpdater.password} />
+        )}
+        <ErrorSuspenseContainer>
+          <URLGeneratorButton
+            isFormValid={isFormValid}
+            dataForReviewRequestCode={{ revieweeName, projectName, groupAccessCode: password }}
+            handleAPIError={handleAPIError}
+            handleAPISuccess={handleAPISuccess}
+          />
+        </ErrorSuspenseContainer>
+        {isOpenToast && (
+          <Toast
+            icon={TOAST_INFORM.icon}
+            message={TOAST_INFORM.message}
+            handleOpenModal={handleOpenToast}
+            duration={TOAST_INFORM.duration}
+            position="bottom"
+          />
+        )}
         {isOpen(MODAL_KEYS.confirm) && (
           <ReviewZoneURLModal reviewZoneURL={reviewZoneURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
         )}

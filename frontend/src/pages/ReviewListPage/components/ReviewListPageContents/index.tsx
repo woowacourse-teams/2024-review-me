@@ -2,9 +2,9 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 
 import { ReviewEmptySection } from '@/components';
+import ReviewCard from '@/components/common/ReviewCard';
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
-import ReviewCard from '@/components/ReviewCard';
 import { REVIEW_EMPTY } from '@/constants';
 import { ROUTE } from '@/constants/route';
 import { useGetReviewList, useSearchParamAndQuery } from '@/hooks';

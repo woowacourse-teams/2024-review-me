@@ -32,7 +32,7 @@ const HighlightEditorContainer = (props: HighlightEditorContainerProps) => {
         <Toast
           icon={{ src: WarningIcon, alt: '경고 아이콘' }}
           message={modalMessage}
-          duration={5}
+          duration={5 * 1000}
           position="bottom"
           handleOpenModal={handleErrorModal}
           handleModalMessage={handleModalMessage}

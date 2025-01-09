@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { ROUTE_PARAM } from '@/constants';
 import { useGetDetailedReview, useSearchParamAndQuery } from '@/hooks';
-import { ReviewDescription, ReviewSection, KeywordSection } from '@/pages/DetailedReviewPage/components';
+import { ReviewDescription, QuestionAnswerSection } from '@/pages/DetailedReviewPage/components';
 import { substituteString } from '@/utils';
 
 import * as S from './styles';
@@ -46,7 +46,6 @@ const DetailedReviewPageContents = () => {
     };
   }, [detailedReview]);
 
-  // TODO: 리뷰 공개/비공개 토글 버튼 기능
   return (
     <S.DetailedReviewPageContents>
       <ReviewDescription
@@ -56,14 +55,21 @@ const DetailedReviewPageContents = () => {
         isPublic={true}
         handleClickToggleButton={() => console.log('click toggle ')}
       />
-      {parsedDetailedReview.sections.map((section) =>
-        section.questions.map((question) => (
-          <S.ReviewContentContainer key={question.questionId}>
-            <ReviewSection question={question.content} answer={question.answer!} />
-            {question.questionType === 'CHECKBOX' && <KeywordSection options={question.optionGroup!.options} />}
-          </S.ReviewContentContainer>
-        )),
-      )}
+      <S.Separator />
+      <S.DetailedReviewContainer>
+        {parsedDetailedReview.sections.map((section) =>
+          section.questions.map((question) => (
+            <S.ReviewContentContainer key={question.questionId}>
+              <QuestionAnswerSection
+                question={question.content}
+                questionType={question.questionType}
+                answer={question.answer}
+                options={question.optionGroup?.options}
+              />
+            </S.ReviewContentContainer>
+          )),
+        )}
+      </S.DetailedReviewContainer>
     </S.DetailedReviewPageContents>
   );
 };

@@ -5,15 +5,15 @@ import media from '@/utils/media';
 export const Layout = styled.div`
   display: flex;
   flex-direction: column;
-  border: 0.1rem solid ${({ theme }) => theme.colors.lightGray};
+  border: 0.2rem solid ${({ theme }) => theme.colors.disabled};
   border-radius: 1rem;
 
   &:hover {
     cursor: pointer;
-    border: 0.15rem solid ${({ theme }) => theme.colors.primaryHover};
+    border: 0.2rem solid ${({ theme }) => theme.colors.primaryHover};
 
-    & > div:first-of-type {
-      background-color: ${({ theme }) => theme.colors.lightPurple};
+    & > div {
+      background-color: ${({ theme }) => theme.colors.palePurple};
     }
   }
 `;
@@ -23,16 +23,9 @@ export const Header = styled.div`
   align-items: center;
 
   width: 100%;
-  height: 3.8rem;
+  padding: 2rem 0 0 2.5rem;
 
-  background-color: ${({ theme }) => theme.colors.lightGray};
   border-radius: 1rem 1rem 0 0;
-`;
-
-export const Date = styled.p`
-  height: fit-content;
-  padding: 0 3rem;
-  font-size: 1.3rem;
 `;
 
 export const Main = styled.div`
@@ -41,9 +34,11 @@ export const Main = styled.div`
   gap: 2rem;
 
   width: 100%;
-  padding: 2rem 3rem;
+  padding: 2rem 2.5rem;
 
   font-size: 1.6rem;
+
+  border-radius: 0 0 1rem 1rem;
 `;
 
 export const ContentPreview = styled.p`
@@ -52,10 +47,10 @@ export const ContentPreview = styled.p`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 
-  height: 6rem;
+  height: 7.5rem;
   padding-right: 2rem;
 
-  line-height: 2rem;
+  line-height: 2.5rem;
   text-overflow: ellipsis;
   overflow-wrap: break-word;
 `;
@@ -73,21 +68,16 @@ export const Footer = styled.div`
   }
 `;
 
-export const Keyword = styled.div`
+export const ReviewKeywordList = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 2.5rem;
   align-items: center;
 
-  font-size: 1.4rem;
+  font-size: 1.2rem;
+  list-style-type: none;
 
   ${media.small} {
     gap: 1.2rem;
-  }
-
-  div {
-    padding: 0.5rem 3rem;
-    background-color: ${({ theme }) => theme.colors.lightPurple};
-    border-radius: 0.8rem;
   }
 `;

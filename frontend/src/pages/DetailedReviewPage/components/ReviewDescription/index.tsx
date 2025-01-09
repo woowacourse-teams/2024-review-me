@@ -2,7 +2,7 @@ import ReviewDate, { ReviewDateProps } from '@/components/common/ReviewDate';
 
 import * as S from './styles';
 
-const DATE_TITLE = '리뷰 작성일';
+const DATE_TITLE = '작성일';
 
 interface ReviewDescriptionProps extends Omit<ReviewDateProps, 'dateTitle'> {
   projectName: string;

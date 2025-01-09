@@ -1,4 +1,4 @@
-import { INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
+import { ERROR_BOUNDARY_IGNORE_ERROR, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
 import { PasswordResponse, ReviewGroupData } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
@@ -7,7 +7,7 @@ import endPoint from './endpoints';
 export interface DataForReviewRequestCode {
   revieweeName: string;
   projectName: string;
-  groupAccessCode: string;
+  groupAccessCode?: string;
 }
 
 export const postDataForReviewRequestCodeApi = async (dataForReviewRequestCode: DataForReviewRequestCode) => {
@@ -16,11 +16,12 @@ export const postDataForReviewRequestCodeApi = async (dataForReviewRequestCode: 
     headers: {
       'Content-Type': 'application/json',
     },
+    // TODO : 회원 리뷰 링크 API 문서 나오면 비밀번호 관련해 변경해야함
     body: JSON.stringify(dataForReviewRequestCode),
   });
 
   if (!response.ok) {
-    throw new Error(createApiErrorMessage(response.status));
+    throw new Error(`${createApiErrorMessage(response.status)} ${ERROR_BOUNDARY_IGNORE_ERROR}`);
   }
 
   const data = await response.json();
