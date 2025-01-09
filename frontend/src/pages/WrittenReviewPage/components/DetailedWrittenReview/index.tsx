@@ -18,9 +18,7 @@ const DetailedWrittenReview = ({ $isMobile, selectedReviewId }: DetailedWrittenR
   return (
     <S.DetailedWrittenReview $isMobile={$isMobile}>
       <PageContentLayout title="작성한 리뷰 상세보기">
-        <S.Outline>
-          {selectedReviewId ? <div style={{ height: '120vh' }}>있다</div> : <NoSelectedReviewGuide />}
-        </S.Outline>
+        <S.Outline>{selectedReviewId ? <div>{selectedReviewId} 선택함 </div> : <NoSelectedReviewGuide />}</S.Outline>
       </PageContentLayout>
     </S.DetailedWrittenReview>
   );
