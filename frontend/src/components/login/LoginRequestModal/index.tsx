@@ -6,8 +6,8 @@ import { ContentModal, GithubLoginButton } from '@/components';
 import * as S from './styles';
 
 const LOGIN_REQUEST_TITLE = {
-  loginIntent: 'loginIntent',
-  membershipCheck: 'membershipCheck',
+  loginIntent: '로그인하시겠어요?',
+  membershipCheck: '회원이신가요?',
 } as const;
 
 type LoginRequestTitle = keyof typeof LOGIN_REQUEST_TITLE;
