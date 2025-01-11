@@ -20,7 +20,7 @@ public record QuestionResponse(
                 question.isRequired(),
                 question.getContent(),
                 question.getQuestionType(),
-                question.isSelectable() ? OptionGroupResponse.from(question.getOptionGroup()) : null,
+                question.isCheckbox() ? OptionGroupResponse.from(question.getOptionGroup()) : null,
                 question.hasGuideline(),
                 question.getGuideline()
         );

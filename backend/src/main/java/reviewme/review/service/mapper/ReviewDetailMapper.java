@@ -46,7 +46,7 @@ public class ReviewDetailMapper {
                 .flatMap(section -> section.getQuestions().stream())
                 .toList();
         Map<Long, OptionGroup> optionGroupsByQuestion = questions.stream()
-                .filter(Question::isSelectable)
+                .filter(Question::isCheckbox)
                 .collect(Collectors.toMap(Question::getId, Question::getOptionGroup));
         Map<Long, List<OptionItem>> optionItemsByOptionGroup = optionGroupsByQuestion.values().stream()
                 .collect(Collectors.toMap(OptionGroup::getId, OptionGroup::getOptionItems));
@@ -87,7 +87,7 @@ public class ReviewDetailMapper {
     private QuestionAnswerResponse mapToQuestionResponse(Review review, Question question,
                                                          Map<Long, OptionGroup> optionGroupsByQuestion,
                                                          Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
-        if (question.isSelectable()) {
+        if (question.isCheckbox()) {
             return mapToCheckboxQuestionResponse(review, question, optionGroupsByQuestion, optionItemsByOptionGroup);
         } else {
             return mapToTextQuestionResponse(review, question);

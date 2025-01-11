@@ -64,7 +64,7 @@ public class Question {
         this(required, questionType, null, content, guideline, position);
     }
 
-    public boolean isSelectable() {
+    public boolean isCheckbox() {
         return questionType == QuestionType.CHECKBOX;
     }
 

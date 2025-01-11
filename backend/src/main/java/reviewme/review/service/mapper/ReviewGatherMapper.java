@@ -51,7 +51,7 @@ public class ReviewGatherMapper {
     @Nullable
     private List<TextResponse> mapToTextResponse(Question question, List<Answer> answers,
                                                  List<Highlight> highlights) {
-        if (question.isSelectable()) {
+        if (question.isCheckbox()) {
             return null;
         }
         Map<Long, List<Highlight>> answerIdHighlights = highlights.stream()
@@ -84,7 +84,7 @@ public class ReviewGatherMapper {
 
     @Nullable
     private List<VoteResponse> mapToVoteResponse(Question question, List<Answer> answers) {
-        if (!question.isSelectable()) {
+        if (!question.isCheckbox()) {
             return null;
         }
 
