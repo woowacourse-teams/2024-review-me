@@ -251,7 +251,7 @@ class ReviewApiTest extends ApiTest {
                 .queryParam("reviewRequestCode", "hello!!")
                 .queryParam("lastReviewId", "2")
                 .queryParam("size", "5")
-                .when().get("/v2/reviews")
+                .when().get("/v2/reviews/received")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
@@ -399,7 +399,7 @@ class ReviewApiTest extends ApiTest {
 //                .queryParam("reviewRequestCode", "hello!!")
                 .queryParam("lastReviewId", "2")
                 .queryParam("size", "5")
-                .when().get("/v2/written")
+                .when().get("/v2/reviews/authored")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);

@@ -41,7 +41,7 @@ public class ReviewController {
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
-    @GetMapping("/v2/reviews")
+    @GetMapping("/v2/reviews/received")
     public ResponseEntity<ReceivedReviewPageResponse> findReceivedReviews(
             @RequestParam(required = false) Long lastReviewId,
             @RequestParam(required = false) Integer size,
@@ -78,7 +78,7 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/written")
+    @GetMapping("/v2/reviews/authored")
     public ResponseEntity<WrittenReviewsResponse> findWrittenReviews(
             @RequestParam(required = false) Long lastReviewId,
             @RequestParam(required = false) Integer size
