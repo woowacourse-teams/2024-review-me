@@ -3,6 +3,7 @@ package reviewme.highlight.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,8 +18,9 @@ public class HighlightController {
 
     private final HighlightService highlightService;
 
-    @PostMapping("/v2/highlight")
+    @PostMapping("/v2/groups/{reviewGroupId}/highlight")
     public ResponseEntity<Void> highlight(
+            @PathVariable long reviewGroupId,
             @Valid @RequestBody HighlightsRequest request,
             @ReviewGroupSession ReviewGroup reviewGroup
     ) {

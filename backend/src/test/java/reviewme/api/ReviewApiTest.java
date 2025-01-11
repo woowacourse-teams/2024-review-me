@@ -216,7 +216,7 @@ class ReviewApiTest extends ApiTest {
                 .queryParam("reviewRequestCode", "hello!!")
                 .queryParam("lastReviewId", "2")
                 .queryParam("size", "5")
-                .when().get("/v2/reviews")
+                .when().get("/v2/groups/1/reviews")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
@@ -245,7 +245,7 @@ class ReviewApiTest extends ApiTest {
 
         givenWithSpec().log().all()
                 .cookie("JSESSIONID", "ABCDEFGHI1234")
-                .when().get("/v2/reviews/summary")
+                .when().get("/v2/groups/1/reviews/summary")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
@@ -309,7 +309,7 @@ class ReviewApiTest extends ApiTest {
         givenWithSpec().log().all()
                 .cookie("JSESSIONID", "ABCDEFGHI1234")
                 .queryParam("sectionId", 1)
-                .when().get("/v2/reviews/gather")
+                .when().get("/v2/groups/1/reviews/gather")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);

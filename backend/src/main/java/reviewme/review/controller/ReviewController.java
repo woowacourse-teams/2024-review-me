@@ -39,8 +39,9 @@ public class ReviewController {
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
-    @GetMapping("/v2/reviews")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews")
     public ResponseEntity<ReceivedReviewsResponse> findReceivedReviews(
+            @PathVariable long reviewGroupId,
             @RequestParam(required = false) Long lastReviewId,
             @RequestParam(required = false) Integer size,
             @ReviewGroupSession ReviewGroup reviewGroup
@@ -58,16 +59,18 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/reviews/summary")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/summary")
     public ResponseEntity<ReceivedReviewsSummaryResponse> findReceivedReviewOverview(
+            @PathVariable long reviewGroupId,
             @ReviewGroupSession ReviewGroup reviewGroup
     ) {
         ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewGroup);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/reviews/gather")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/gather")
     public ResponseEntity<ReviewsGatheredBySectionResponse> getReceivedReviewsBySectionId(
+            @PathVariable long reviewGroupId,
             @RequestParam("sectionId") long sectionId,
             @ReviewGroupSession ReviewGroup reviewGroup
     ) {

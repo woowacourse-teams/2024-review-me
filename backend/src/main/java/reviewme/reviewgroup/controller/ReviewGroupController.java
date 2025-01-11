@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,8 +25,10 @@ public class ReviewGroupController {
     private final ReviewGroupService reviewGroupService;
     private final ReviewGroupLookupService reviewGroupLookupService;
 
-    @GetMapping("/v2/groups")
-    public ResponseEntity<ReviewGroupResponse> getReviewGroupSummary(@RequestParam String reviewRequestCode) {
+    @GetMapping("/v2/groups/{reviewGroupId}")
+    public ResponseEntity<ReviewGroupResponse> getReviewGroupSummary(
+            @PathVariable long reviewGroupId,
+            @RequestParam String reviewRequestCode) {
         ReviewGroupResponse response = reviewGroupLookupService.getReviewGroupSummary(reviewRequestCode);
         return ResponseEntity.ok(response);
     }

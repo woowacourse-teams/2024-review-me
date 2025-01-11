@@ -54,7 +54,7 @@ class HighlightApiTest extends ApiTest {
         givenWithSpec().log().all()
                 .cookie("JSESSIONID", "AVEBNKLCL13TNVZ")
                 .body(request)
-                .when().post("/v2/highlight")
+                .when().post("/v2/groups/1/highlight")
                 .then().log().all()
                 .apply(handler)
                 .status(HttpStatus.OK);

@@ -83,7 +83,7 @@ class ReviewGroupApiTest extends ApiTest {
 
         givenWithSpec().log().all()
                 .queryParam("reviewRequestCode", "ABCD1234")
-                .when().get("/v2/groups")
+                .when().get("/v2/groups/1")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);

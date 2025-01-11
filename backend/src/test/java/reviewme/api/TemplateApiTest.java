@@ -122,7 +122,7 @@ class TemplateApiTest extends ApiTest {
         );
         givenWithSpec().log().all()
                 .cookie("JSESSIONID", "ABCDEFGHI1234")
-                .when().get("/v2/sections")
+                .when().get("/v2/groups/1/sections")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
