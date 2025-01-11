@@ -25,6 +25,8 @@ repositories {
     mavenCentral()
 }
 
+def activeProfile = project.findProperty("profile") ?: 'local'
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -42,7 +44,6 @@ dependencies {
 
     // Test dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'com.h2database:h2'
 
     // Lombok
     annotationProcessor 'org.projectlombok:lombok'
@@ -54,6 +55,13 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'io.rest-assured:spring-mock-mvc'
     testImplementation 'io.rest-assured:rest-assured'
+
+    // H2
+    if (activeProfile == 'local') {
+        implementation 'com.h2database:h2'
+    } else {
+        testImplementation 'com.h2database:h2'
+    }
 }
 
 ext {
