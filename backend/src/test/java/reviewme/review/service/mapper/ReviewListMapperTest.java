@@ -14,13 +14,9 @@ import reviewme.review.service.dto.response.list.ReviewListElementResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
-import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
 class ReviewListMapperTest {
-
-    @Autowired
-    private TemplateRepository templateRepository;
 
     @Autowired
     private ReviewListMapper reviewListMapper;

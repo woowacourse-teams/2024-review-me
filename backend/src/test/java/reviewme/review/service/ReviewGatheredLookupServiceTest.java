@@ -3,12 +3,8 @@ package reviewme.review.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
-import static reviewme.fixture.OptionItemFixture.선택지;
-import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
-import static reviewme.fixture.QuestionFixture.선택형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.선택형_질문;
-import static reviewme.fixture.QuestionFixture.선택형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.ReviewGroupFixture.템플릿_지정_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
@@ -210,7 +206,7 @@ class ReviewGatheredLookupServiceTest {
         void 아무도_고르지_않은_선택지는_0개로_계산하여_반환한다() {
             // given - 질문 저장
             OptionItem optionItem1 = new OptionItem("우테코 산초", 1, OptionType.CATEGORY);
-            OptionItem optionItem2 = new OptionItem("제이든 산초",  2, OptionType.CATEGORY);
+            OptionItem optionItem2 = new OptionItem("제이든 산초", 2, OptionType.CATEGORY);
             OptionGroup optionGroup = 선택지_그룹(List.of(optionItem1, optionItem2));
             Question question1 = new Question(false, QuestionType.CHECKBOX, optionGroup, "선택형 질문", null, 1);
 
