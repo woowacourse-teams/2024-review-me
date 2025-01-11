@@ -7,7 +7,7 @@ import reviewme.global.exception.BadRequestException;
 public class EmptyOptionGroupException extends BadRequestException {
 
     public EmptyOptionGroupException() {
-        super("옵션 아이템은 최소 한 개 이상이어야 합니다.");
+        super("옵션 아이템은 최소 한 개 이상이어야 해요.");
         log.info("OptionItems were empty while creating Option Group.");
     }
 }

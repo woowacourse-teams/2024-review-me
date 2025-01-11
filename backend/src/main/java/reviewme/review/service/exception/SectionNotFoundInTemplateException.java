@@ -7,7 +7,7 @@ import reviewme.global.exception.NotFoundException;
 public class SectionNotFoundInTemplateException extends NotFoundException {
 
     public SectionNotFoundInTemplateException(long sectionId, long templateId) {
-        super("섹션 정보를 찾을 수 없습니다.");
+        super("섹션 정보를 찾을 수 없어요.");
         log.info("Section not found in template - sectionId: {}, templateId: {}", sectionId, templateId, this);
     }
 }
