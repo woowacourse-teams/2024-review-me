@@ -25,7 +25,7 @@ public class ReviewGroupController {
     private final ReviewGroupService reviewGroupService;
     private final ReviewGroupLookupService reviewGroupLookupService;
 
-    @GetMapping("/v2/groups")
+    @GetMapping("/v2/groups/summary")
     public ResponseEntity<ReviewGroupResponse> getReviewGroupSummary(@RequestParam String reviewRequestCode) {
         ReviewGroupResponse response = reviewGroupLookupService.getReviewGroupSummary(reviewRequestCode);
         return ResponseEntity.ok(response);
@@ -50,7 +50,7 @@ public class ReviewGroupController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/v2/groups/mine")
+    @GetMapping("/v2/groups")
     public ResponseEntity<ReviewGroupPageResponse> getMyReviewGroups() {
         // TODO: 세션을 활용한 권한 체계에 따른 추가 조치 필요
         ReviewGroupPageResponse response = reviewGroupLookupService.getMyReviewGroups();

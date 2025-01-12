@@ -88,7 +88,7 @@ class ReviewGroupApiTest extends ApiTest {
 
         givenWithSpec().log().all()
                 .queryParam("reviewRequestCode", "ABCD1234")
-                .when().get("/v2/groups")
+                .when().get("/v2/groups/summary")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
@@ -161,7 +161,7 @@ class ReviewGroupApiTest extends ApiTest {
 
         givenWithSpec().log().all()
                 .cookie("JSESSIONID", "ABCDEFGHI1234")
-                .when().get("/v2/groups/mine")
+                .when().get("/v2/groups")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
