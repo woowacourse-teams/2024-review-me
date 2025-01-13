@@ -2,7 +2,6 @@ package reviewme.template.service.mapper;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import reviewme.template.domain.OptionGroup;
 import reviewme.template.domain.OptionItem;
@@ -39,7 +38,6 @@ public class TemplateMapper {
     private final OptionGroupRepository optionGroupRepository;
     private final OptionItemRepository optionItemRepository;
 
-    @Cacheable(value = "template_response", key = "#reviewGroup.templateId")
     public TemplateResponse mapToTemplateResponse(ReviewGroup reviewGroup) {
         Template template = templateRepository.findById(reviewGroup.getTemplateId())
                 .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(
