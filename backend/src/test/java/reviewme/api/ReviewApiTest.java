@@ -33,8 +33,8 @@ import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
-import reviewme.review.service.dto.response.list.WrittenReviewElementResponse;
-import reviewme.review.service.dto.response.list.WrittenReviewsResponse;
+import reviewme.review.service.dto.response.list.AuthoredReviewElementResponse;
+import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.template.domain.QuestionType;
 
@@ -352,14 +352,14 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 자신이_작성한_리뷰_목록을_조회한다() {
-        List<WrittenReviewElementResponse> writtenReviews = List.of(
-                new WrittenReviewElementResponse(1L, "테드1", "리뷰미", LocalDate.of(2024, 8, 2), "(리뷰 미리보기 1)",
+        List<AuthoredReviewElementResponse> authoredReviews = List.of(
+                new AuthoredReviewElementResponse(1L, "테드1", "리뷰미", LocalDate.of(2024, 8, 2), "(리뷰 미리보기 1)",
                         List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
-                new WrittenReviewElementResponse(2L, "테드2", "리뷰미", LocalDate.of(2024, 8, 1), "(리뷰 미리보기 2)",
+                new AuthoredReviewElementResponse(2L, "테드2", "리뷰미", LocalDate.of(2024, 8, 1), "(리뷰 미리보기 2)",
                         List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
         );
-        WrittenReviewsResponse response = new WrittenReviewsResponse(writtenReviews, 1L, true);
-        BDDMockito.given(reviewListLookupService.getWrittenReviews(anyLong(), anyInt()))
+        AuthoredReviewsResponse response = new AuthoredReviewsResponse(authoredReviews, 1L, true);
+        BDDMockito.given(reviewListLookupService.getAuthoredReviews(anyLong(), anyInt()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
@@ -388,7 +388,7 @@ class ReviewApiTest extends ApiTest {
         };
 
         RestDocumentationResultHandler handler = document(
-                "written-review-list-with-pagination",
+                "authored-review-list-with-pagination",
                 requestCookies(cookieDescriptors),
                 queryParameters(queryParameter),
                 responseFields(responseFieldDescriptors)

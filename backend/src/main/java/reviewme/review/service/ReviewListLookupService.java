@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.repository.ReviewRepository;
+import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
 import reviewme.review.service.mapper.ReviewListMapper;
@@ -29,7 +30,7 @@ public class ReviewListLookupService {
         );
     }
 
-    public WrittenReviewsResponse getWrittenReviews(Long lastReviewId, Integer size) {
+    public AuthoredReviewsResponse getAuthoredReviews(Long lastReviewId, Integer size) {
         // TODO: 생성일자 최신순 정렬
         return null;
     }

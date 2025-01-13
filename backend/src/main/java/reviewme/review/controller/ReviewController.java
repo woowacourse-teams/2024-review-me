@@ -20,7 +20,7 @@ import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
-import reviewme.review.service.dto.response.list.WrittenReviewsResponse;
+import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
 import reviewme.reviewgroup.controller.ReviewGroupSession;
 import reviewme.reviewgroup.domain.ReviewGroup;
 
@@ -79,13 +79,13 @@ public class ReviewController {
     }
 
     @GetMapping("/v2/reviews/authored")
-    public ResponseEntity<WrittenReviewsResponse> findWrittenReviews(
+    public ResponseEntity<AuthoredReviewsResponse> findAuthoredReviews(
             @RequestParam(required = false) Long lastReviewId,
             @RequestParam(required = false) Integer size
 //            @MemberSession Member member
             // TODO: 세션을 활용한 권한 체계에 따른 추가 조치 필요
     ) {
-        WrittenReviewsResponse response = reviewListLookupService.getWrittenReviews(lastReviewId, size);
+        AuthoredReviewsResponse response = reviewListLookupService.getAuthoredReviews(lastReviewId, size);
         return ResponseEntity.ok(response);
     }
 }
