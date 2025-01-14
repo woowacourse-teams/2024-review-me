@@ -16,15 +16,19 @@ const useSlideImgSize = ({ slideRef }: UseSlideImgSizeProps) => {
 
   const updateImgSize = () => {
     if (!slideRef.current) return;
+
     const slideDomRect = slideRef.current.getBoundingClientRect();
     const width = Math.ceil(slideDomRect.width * 0.8 * 0.1);
     const height = width * 0.61;
+
     setImgSize({ width: `${width}rem`, height: `${height}rem` });
   };
+
   const debouncedUpdateImgSize = debounce(updateImgSize, DEBOUNCE_TIME);
 
   useEffect(() => {
     updateImgSize();
+
     document.addEventListener('resize', debouncedUpdateImgSize);
 
     return () => {
