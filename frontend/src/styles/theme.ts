@@ -9,9 +9,11 @@ export const scrollbarWidth = {
   basic: '1.2rem',
   small: '0.5rem',
 };
+
 export const breadcrumbSize = {
   paddingLeft: '2rem',
 };
+
 export const confirmModalSize = {
   maxWidth: '90vw',
   padding: '3.2rem',
