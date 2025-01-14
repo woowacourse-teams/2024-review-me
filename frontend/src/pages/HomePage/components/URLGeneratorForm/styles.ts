@@ -8,10 +8,10 @@ export const URLGeneratorForm = styled.section`
   justify-content: center;
 
   width: 40%;
-  padding: 0 9rem;
 
   ${media.medium} {
     width: 45%;
+    padding: 0 9rem;
 
     h2 {
       font-size: 2rem;

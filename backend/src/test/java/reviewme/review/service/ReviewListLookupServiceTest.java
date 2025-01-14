@@ -22,7 +22,7 @@ import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -82,7 +82,7 @@ class ReviewListLookupServiceTest {
         reviewRepository.saveAll(List.of(review1, review2));
 
         // when
-        ReceivedReviewsResponse response = reviewListLookupService.getReceivedReviews(
+        ReceivedReviewPageResponse response = reviewListLookupService.getReceivedReviews(
                 Long.MAX_VALUE, 5, reviewGroup
         );
 
@@ -116,7 +116,7 @@ class ReviewListLookupServiceTest {
         reviewRepository.saveAll(List.of(review1, review2, review3));
 
         // when
-        ReceivedReviewsResponse response
+        ReceivedReviewPageResponse response
                 = reviewListLookupService.getReceivedReviews(Long.MAX_VALUE, 2, reviewGroup);
 
         // then

@@ -1,6 +1,10 @@
-==== 리뷰 생성
+==== 비회원이 리뷰 생성
 
-operation::create-review[snippets="curl-request,request-fields,http-response"]
+operation::create-review-by-guest[snippets="curl-request,request-fields,http-response"]
+
+==== 회원이 리뷰 생성
+
+operation::create-review-by-member[snippets="curl-request,request-fields,http-response"]
 
 ==== 그룹 코드가 올바르지 않은 경우
 

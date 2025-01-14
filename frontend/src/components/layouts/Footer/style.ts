@@ -21,6 +21,8 @@ export const Footer = styled.footer`
 
   background-color: ${({ theme }) => theme.colors.white};
 
+  border-top: 0.1rem solid ${({ theme }) => theme.colors.lightGray};
+
   ${media.xSmall} {
     flex-direction: column;
     gap: 0.2rem;

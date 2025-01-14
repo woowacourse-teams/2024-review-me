@@ -26,8 +26,12 @@ import org.springframework.restdocs.operation.preprocess.UriModifyingOperationPr
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import reviewme.auth.controller.AuthController;
+import reviewme.auth.service.AuthService;
 import reviewme.highlight.controller.HighlightController;
 import reviewme.highlight.service.HighlightService;
+import reviewme.member.controller.MemberController;
+import reviewme.member.service.MemberService;
 import reviewme.review.controller.ReviewController;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewGatheredLookupService;
@@ -48,7 +52,9 @@ import reviewme.template.service.TemplateService;
         ReviewController.class,
         TemplateController.class,
         SectionController.class,
-        HighlightController.class
+        HighlightController.class,
+        MemberController.class,
+        AuthController.class
 })
 @ExtendWith(RestDocumentationExtension.class)
 public abstract class ApiTest {
@@ -84,6 +90,12 @@ public abstract class ApiTest {
 
     @MockBean
     protected HighlightService highlightService;
+
+    @MockBean
+    protected MemberService memberService;
+
+    @MockBean
+    protected AuthService authService;
 
     @MockBean
     private ReviewGroupSessionResolver reviewGroupSessionResolver;

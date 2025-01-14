@@ -24,6 +24,7 @@ export const PAGE_VISITED_EVENT_NAME: { [key in Exclude<PageName, undefined>]: s
   detailedReview: '[page] 리뷰 상세 보기 페이지',
   reviewWriting: '[page] 리뷰 작성 페이지',
   reviewWritingComplete: '[page] 리뷰 작성 완료 페이지',
+  reviewLinks: '[page] 리뷰 링크 관리 페이지',
 };
 
 export const REVIEW_WRITING_EVENT_NAME = {
