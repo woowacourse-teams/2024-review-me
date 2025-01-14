@@ -15,7 +15,6 @@ import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
-import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
 class ReviewListLookupServiceTest {
@@ -25,9 +24,6 @@ class ReviewListLookupServiceTest {
 
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
-
-    @Autowired
-    private TemplateRepository templateRepository;
 
     @Autowired
     private ReviewRepository reviewRepository;

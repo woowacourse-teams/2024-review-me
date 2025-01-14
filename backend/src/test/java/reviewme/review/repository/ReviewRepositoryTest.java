@@ -12,14 +12,12 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import reviewme.template.domain.Question;
-import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
 import reviewme.template.domain.Template;
-import reviewme.template.repository.SectionRepository;
 import reviewme.template.repository.TemplateRepository;
 
 @DataJpaTest
@@ -30,12 +28,6 @@ class ReviewRepositoryTest {
 
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
-
-    @Autowired
-    private QuestionRepository questionRepository;
-
-    @Autowired
-    private SectionRepository sectionRepository;
 
     @Autowired
     private TemplateRepository templateRepository;
