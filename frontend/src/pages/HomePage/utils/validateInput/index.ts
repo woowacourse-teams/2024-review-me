@@ -1,5 +1,7 @@
+import { REVIEW_URL_GENERATOR_FORM_VALIDATION } from '@/constants';
+
 export const isNotEmptyInput = (input: string) => {
-  return input !== '';
+  return input.trim() !== '';
 };
 
 export const isAlphanumeric = (input: string) => {
@@ -12,19 +14,12 @@ export const isWithinLengthRange = (input: string, end: number, start: number = 
   return length >= start && length <= end;
 };
 
-export const MAX_VALID_REVIEW_GROUP_DATA_INPUT = 50;
-
 export const isValidReviewGroupDataInput = (input: string) => {
-  return isNotEmptyInput(input) && isWithinLengthRange(input, MAX_VALID_REVIEW_GROUP_DATA_INPUT);
+  const { min, max } = REVIEW_URL_GENERATOR_FORM_VALIDATION.groupData;
+  return isNotEmptyInput(input) && isWithinLengthRange(input, max, min);
 };
 
-export const MIN_PASSWORD_INPUT = 4;
-export const MAX_PASSWORD_INPUT = 20;
-
 export const isValidPasswordInput = (input: string) => {
-  return (
-    isNotEmptyInput(input) &&
-    isAlphanumeric(input) &&
-    isWithinLengthRange(input, MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT)
-  );
+  const { min, max } = REVIEW_URL_GENERATOR_FORM_VALIDATION.password;
+  return isNotEmptyInput(input) && isAlphanumeric(input) && isWithinLengthRange(input, max, min);
 };

@@ -13,3 +13,8 @@ export const REVIEW_EMPTY = {
   noReviewInTotal: '아직 받은 리뷰가 없어요!',
   noReviewInQuestion: '이 질문은 아직 받은 답변이 없어요!',
 };
+
+export const REVIEW_URL_GENERATOR_FORM_VALIDATION = {
+  groupData: { min: 1, max: 50 },
+  password: { min: 4, max: 20 },
+};

@@ -3,13 +3,13 @@ package reviewme.reviewgroup.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
-import reviewme.reviewgroup.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
+import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.reviewgroup.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.exception.TemplateNotFoundException;
@@ -27,6 +27,7 @@ public class ReviewGroupService {
 
     @Transactional
     public ReviewGroupCreationResponse createReviewGroup(ReviewGroupCreationRequest request) {
+        // 회원, 비회원 분기 처리 필요
         String reviewRequestCode;
         do {
             reviewRequestCode = randomCodeGenerator.generate(REVIEW_REQUEST_CODE_LENGTH);

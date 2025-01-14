@@ -14,7 +14,16 @@ describe('usePostDataForReviewRequestCode', () => {
       groupAccessCode: '1234',
     };
 
-    const { result } = renderHook(() => usePostDataForReviewRequestCode(), { wrapper: QueryClientWrapper });
+    const { result } = renderHook(
+      () =>
+        usePostDataForReviewRequestCode({
+          handleAPIError: (error: Error) => {
+            console.error(error);
+          },
+          handleAPISuccess: (data: any) => {},
+        }),
+      { wrapper: QueryClientWrapper },
+    );
 
     // when
     act(() => {

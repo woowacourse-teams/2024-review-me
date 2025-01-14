@@ -1,0 +1,7 @@
+==== 깃허브로 로그인/회원가입
+
+operation::github-auth[snippets="curl-request,request-fields,http-response"]
+
+==== 로그아웃
+
+operation::logout[snippets="curl-request,request-cookies,http-response"]

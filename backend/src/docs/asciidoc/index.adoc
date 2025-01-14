@@ -40,3 +40,11 @@ include::review-gather.adoc[]
 === 답변 하이라이트
 
 include::highlight-answers.adoc[]
+
+== 인증
+
+include::auth.adoc[]
+
+== 사용자
+
+include::member.adoc[]

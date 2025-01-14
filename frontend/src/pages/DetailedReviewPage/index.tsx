@@ -4,7 +4,7 @@ import { DetailedReviewPageContents } from './components';
 
 const DetailedReviewPage = () => {
   return (
-    <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>
+    <ErrorSuspenseContainer errorFallback={AuthAndServerErrorFallback}>
       <DetailedReviewPageContents />
       <TopButton />
     </ErrorSuspenseContainer>

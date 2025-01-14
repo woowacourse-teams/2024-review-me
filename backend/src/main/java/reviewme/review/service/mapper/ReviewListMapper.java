@@ -14,7 +14,7 @@ import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
-import reviewme.review.service.dto.response.list.ReviewListElementResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 
 @Component
@@ -26,7 +26,7 @@ public class ReviewListMapper {
 
     private final ReviewPreviewGenerator reviewPreviewGenerator = new ReviewPreviewGenerator();
 
-    public List<ReviewListElementResponse> mapToReviewList(ReviewGroup reviewGroup, Long lastReviewId, int size) {
+    public List<ReceivedReviewPageElementResponse> mapToReviewList(ReviewGroup reviewGroup, Long lastReviewId, int size) {
         List<OptionItem> categoryOptionItems = optionItemRepository.findAllByOptionType(OptionType.CATEGORY);
         return reviewRepository.findByReviewGroupIdWithLimit(reviewGroup.getId(), lastReviewId, size)
                 .stream()
@@ -34,11 +34,11 @@ public class ReviewListMapper {
                 .toList();
     }
 
-    private ReviewListElementResponse mapToReviewListElementResponse(Review review,
-                                                                     List<OptionItem> categoryOptionItems) {
+    private ReceivedReviewPageElementResponse mapToReviewListElementResponse(Review review,
+                                                                             List<OptionItem> categoryOptionItems) {
         List<ReviewCategoryResponse> categoryResponses = mapToCategoryOptionResponse(review, categoryOptionItems);
 
-        return new ReviewListElementResponse(
+        return new ReceivedReviewPageElementResponse(
                 review.getId(),
                 review.getCreatedDate(),
                 reviewPreviewGenerator.generatePreview(review.getAnswersByType(TextAnswer.class)),

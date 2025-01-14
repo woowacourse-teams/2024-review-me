@@ -21,7 +21,6 @@ import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.template.domain.QuestionType;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.gathered.HighlightResponse;
 import reviewme.review.service.dto.response.gathered.RangeResponse;
@@ -30,11 +29,14 @@ import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionRes
 import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
 import reviewme.review.service.dto.response.gathered.TextResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewsResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
-import reviewme.review.service.dto.response.list.ReviewListElementResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
+import reviewme.review.service.dto.response.list.AuthoredReviewElementResponse;
+import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.template.domain.QuestionType;
 
 class ReviewApiTest extends ApiTest {
 
@@ -55,7 +57,7 @@ class ReviewApiTest extends ApiTest {
             """;
 
     @Test
-    void 리뷰를_등록한다() {
+    void 비회원이_리뷰를_등록한다() {
         BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
                 .willReturn(1L);
 
@@ -69,11 +71,44 @@ class ReviewApiTest extends ApiTest {
         };
 
         RestDocumentationResultHandler handler = document(
-                "create-review",
+                "create-review-by-guest",
                 requestFields(requestFieldDescriptors)
         );
 
         givenWithSpec().log().all()
+                .body(request)
+                .when().post("/v2/reviews")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(201);
+    }
+
+    @Test
+    void 회원이_리뷰를_등록한다() {
+        BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class)))
+                .willReturn(1L);
+
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 ID")
+        };
+
+        FieldDescriptor[] requestFieldDescriptors = {
+                fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
+
+                fieldWithPath("answers[]").description("답변 목록"),
+                fieldWithPath("answers[].questionId").description("질문 ID"),
+                fieldWithPath("answers[].selectedOptionIds").description("선택한 옵션 ID 목록").optional(),
+                fieldWithPath("answers[].text").description("서술 답변").optional()
+        };
+
+        RestDocumentationResultHandler handler = document(
+                "create-review-by-member",
+                requestCookies(cookieDescriptors),
+                requestFields(requestFieldDescriptors)
+        );
+
+        givenWithSpec().log().all()
+                .cookie("JSESSIONID", "ASVNE1VAKDNV4")
                 .body(request)
                 .when().post("/v2/reviews")
                 .then().log().all()
@@ -167,13 +202,13 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 자신이_받은_리뷰_목록을_조회한다() {
-        List<ReviewListElementResponse> receivedReviews = List.of(
-                new ReviewListElementResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
+        List<ReceivedReviewPageElementResponse> receivedReviews = List.of(
+                new ReceivedReviewPageElementResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
                         List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
-                new ReviewListElementResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
+                new ReceivedReviewPageElementResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
                         List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
         );
-        ReceivedReviewsResponse response = new ReceivedReviewsResponse(
+        ReceivedReviewPageResponse response = new ReceivedReviewPageResponse(
                 "아루3", "리뷰미", 1L, true, receivedReviews);
         BDDMockito.given(reviewListLookupService.getReceivedReviews(anyLong(), anyInt(), any()))
                 .willReturn(response);
@@ -216,7 +251,7 @@ class ReviewApiTest extends ApiTest {
                 .queryParam("reviewRequestCode", "hello!!")
                 .queryParam("lastReviewId", "2")
                 .queryParam("size", "5")
-                .when().get("/v2/reviews")
+                .when().get("/v2/reviews/received")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
@@ -310,6 +345,61 @@ class ReviewApiTest extends ApiTest {
                 .cookie("JSESSIONID", "ABCDEFGHI1234")
                 .queryParam("sectionId", 1)
                 .when().get("/v2/reviews/gather")
+                .then().log().all()
+                .apply(handler)
+                .statusCode(200);
+    }
+
+    @Test
+    void 자신이_작성한_리뷰_목록을_조회한다() {
+        List<AuthoredReviewElementResponse> authoredReviews = List.of(
+                new AuthoredReviewElementResponse(1L, "테드1", "리뷰미", LocalDate.of(2024, 8, 2), "(리뷰 미리보기 1)",
+                        List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
+                new AuthoredReviewElementResponse(2L, "테드2", "리뷰미", LocalDate.of(2024, 8, 1), "(리뷰 미리보기 2)",
+                        List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
+        );
+        AuthoredReviewsResponse response = new AuthoredReviewsResponse(authoredReviews, 1L, true);
+        BDDMockito.given(reviewListLookupService.getAuthoredReviews(anyLong(), anyInt()))
+                .willReturn(response);
+
+        CookieDescriptor[] cookieDescriptors = {
+                cookieWithName("JSESSIONID").description("세션 ID")
+        };
+
+        ParameterDescriptor[] queryParameter = {
+                parameterWithName("lastReviewId").description("페이지의 마지막 리뷰 ID - 기본으로 최신순 첫번째 페이지 응답"),
+                parameterWithName("size").description("페이지의 크기 - 기본으로 10개씩 응답")
+        };
+
+        FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("lastReviewId").description("페이지의 마지막 리뷰 ID"),
+                fieldWithPath("isLastPage").description("마지막 페이지 여부"),
+
+                fieldWithPath("reviews[]").description("리뷰 목록 (생성일 기준 내림차순 정렬)"),
+                fieldWithPath("reviews[].reviewId").description("리뷰 ID"),
+                fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
+                fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
+                fieldWithPath("reviews[].revieweeName").description("리뷰이 이름"),
+                fieldWithPath("reviews[].projectName").description("프로젝트명"),
+
+                fieldWithPath("reviews[].categories[]").description("카테고리 목록"),
+                fieldWithPath("reviews[].categories[].optionId").description("카테고리 ID"),
+                fieldWithPath("reviews[].categories[].content").description("카테고리 내용")
+        };
+
+        RestDocumentationResultHandler handler = document(
+                "authored-review-list-with-pagination",
+                requestCookies(cookieDescriptors),
+                queryParameters(queryParameter),
+                responseFields(responseFieldDescriptors)
+        );
+
+        givenWithSpec().log().all()
+                .cookie("JSESSIONID", "ASVNE1VAKDNV4")
+//                .queryParam("reviewRequestCode", "hello!!")
+                .queryParam("lastReviewId", "2")
+                .queryParam("size", "5")
+                .when().get("/v2/reviews/authored")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);

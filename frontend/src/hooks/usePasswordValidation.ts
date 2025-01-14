@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
 
-import {
-  isWithinLengthRange,
-  isAlphanumeric,
-  MAX_PASSWORD_INPUT,
-  MIN_PASSWORD_INPUT,
-} from '@/pages/HomePage/utils/validateInput';
+import { REVIEW_URL_GENERATOR_FORM_VALIDATION } from '@/constants';
+import { isWithinLengthRange, isAlphanumeric } from '@/pages/HomePage/utils/validateInput';
+
+const { min, max } = REVIEW_URL_GENERATOR_FORM_VALIDATION.password;
 
 const INVALID_CHAR_ERROR_MESSAGE = `영문(대/소문자) 및 숫자만 입력해주세요`;
-const PASSWORD_LENGTH_ERROR_MESSAGE = `${MIN_PASSWORD_INPUT}자부터 ${MAX_PASSWORD_INPUT}자까지 입력할 수 있어요`;
+const PASSWORD_LENGTH_ERROR_MESSAGE = `${min}자부터 ${max}자까지 입력할 수 있어요`;
 
 const usePasswordValidation = (password: string) => {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
@@ -19,7 +17,7 @@ const usePasswordValidation = (password: string) => {
   };
 
   const validatePassword = () => {
-    if (!isWithinLengthRange(password, MAX_PASSWORD_INPUT, MIN_PASSWORD_INPUT)) {
+    if (!isWithinLengthRange(password, max, min)) {
       return setPasswordErrorMessage(PASSWORD_LENGTH_ERROR_MESSAGE);
     }
     if (!isAlphanumeric(password)) {
@@ -33,12 +31,15 @@ const usePasswordValidation = (password: string) => {
     validatePassword();
   };
 
+  const handlePasswordErrorMessage = (errorMessage: string) => setPasswordErrorMessage(errorMessage);
+
   useEffect(() => {
     if (isBlurredOnce) validatePassword();
   }, [password, isBlurredOnce]);
 
   return {
     passwordErrorMessage,
+    handlePasswordErrorMessage,
     handlePasswordBlur,
     initializeIsBlurredOnce,
   };

@@ -43,6 +43,7 @@ export const breakpoint = {
   medium: 1024,
   large: 1025,
 };
+
 // NOTE: 1rem = 10px
 export const fontSize: ThemeProperty<CSSProperties['fontSize']> = {
   small: '1.4rem',
@@ -52,7 +53,6 @@ export const fontSize: ThemeProperty<CSSProperties['fontSize']> = {
   large: '3.2rem',
   h2: '4.8rem',
 };
-
 export const borderRadius: ThemeProperty<CSSProperties['borderRadius']> = {
   basic: '0.8rem',
 };
@@ -79,12 +79,14 @@ export const colors: ThemeProperty<CSSProperties['color']> = {
   sidebarBackground: `rgba(0, 0, 0, 0.25)`,
   disabled: '#D8D8D8',
   disabledText: '#7F7F7F',
+  emptyContentText: '#CBD6DE',
   red: '#FF0000',
 };
 
 export const zIndex: ThemeProperty<CSSProperties['zIndex']> = {
   main: 1,
-  dropdown: 998,
+  dropdown: 997,
+  topbar: 998,
   modal: 999,
 };
 
