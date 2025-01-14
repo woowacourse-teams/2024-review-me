@@ -14,9 +14,9 @@ export const ReviewZonePage = styled.div`
   justify-content: center;
 `;
 
-export const ReviewZoneMainImg = styled.img`
+export const ReviewZoneMainImg = styled.img<{ $height: string }>`
   width: 43rem;
-  height: 23rem;
+  height: ${(props) => props.$height};
 `;
 
 export const ReviewGuideContainer = styled.div`
@@ -25,6 +25,7 @@ export const ReviewGuideContainer = styled.div`
   align-items: center;
   justify-content: center;
 
+  margin-top: 3rem;
   padding-left: 0.2rem;
 `;
 
