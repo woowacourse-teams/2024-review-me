@@ -4,8 +4,7 @@ import { useRecoilState } from 'recoil';
 
 import ReviewZoneIcon from '@/assets/reviewZone.svg';
 import { Button, ImgWithSkeleton } from '@/components';
-// TODO: ROUTE 상수명을 단수로 고치기
-import { ROUTE } from '@/constants/route';
+import { ROUTE } from '@/constants';
 import { useGetReviewGroupData, useSearchParamAndQuery, useModals } from '@/hooks';
 import { reviewRequestCodeAtom } from '@/recoil';
 import { calculateParticle } from '@/utils';
