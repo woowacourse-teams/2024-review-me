@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { REVIEW_URL_GENERATOR_FORM_VALIDATION } from '@/constants';
-import { isWithinLengthRange, isAlphanumeric } from '@/pages/HomePage/utils/validateInput';
+import { isWithinLengthRange, isAlphanumeric } from '@/utils';
 
 const { min, max } = REVIEW_URL_GENERATOR_FORM_VALIDATION.password;
 
