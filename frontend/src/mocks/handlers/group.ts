@@ -4,7 +4,6 @@ import endPoint, { REVIEW_GROUP_DATA_API_PARAMS, REVIEW_GROUP_DATA_API_URL } fro
 import { API_ERROR_MESSAGE, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
 
 import {
-  CREATED_REVIEW_REQUEST_CODE,
   MOCK_AUTH_TOKEN_NAME,
   REVIEW_GROUP_DATA,
   VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
@@ -14,7 +13,7 @@ import {
 // NOTE: reviewRequestCode 생성 정상 응답
 const postDataForReviewRequestCode = () => {
   return http.post(endPoint.postingDataForReviewRequestCode, async () => {
-    return HttpResponse.json(CREATED_REVIEW_REQUEST_CODE, { status: 200 });
+    return HttpResponse.json({ reviewRequestCode: VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE }, { status: 200 });
   });
 };
 

@@ -1,9 +1,5 @@
 import { ReviewGroupData } from '@/types';
 
-export const CREATED_REVIEW_REQUEST_CODE = {
-  reviewRequestCode: 'mocked-reviewRequestCode',
-};
-
 export const VALIDATED_PASSWORD = '1234';
 
 export const MOCK_AUTH_TOKEN_NAME = 'mockAuthToken';
