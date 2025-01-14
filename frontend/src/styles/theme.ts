@@ -38,7 +38,7 @@ export const componentHeight = {
 
 export const breakpoint = {
   xxSmall: 320,
-  xSmall: 425,
+  xSmall: 430,
   small: 768,
   medium: 1024,
   large: 1025,
