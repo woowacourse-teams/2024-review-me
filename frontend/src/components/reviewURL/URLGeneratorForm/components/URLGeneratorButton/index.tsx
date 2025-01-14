@@ -1,10 +1,11 @@
 import { DataForReviewRequestCode } from '@/apis/group';
 import { Button } from '@/components';
 import { HOM_EVENT_NAME } from '@/constants';
+import { debounce, trackEventInAmplitude } from '@/utils';
+
 import usePostDataForReviewRequestCode, {
   UsePostDataForReviewRequestCodeProps,
-} from '@/pages/HomePage/hooks/usePostDataForReviewRequestCode';
-import { debounce, trackEventInAmplitude } from '@/utils';
+} from '../../hooks/usePostDataForReviewRequestCode';
 
 const DEBOUNCE_TIME = 300;
 

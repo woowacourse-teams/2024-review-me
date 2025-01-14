@@ -2,7 +2,7 @@ import React from 'react';
 
 import { EssentialPropsWithChildren } from '@/types';
 
-import { FormBody } from '../index';
+import FormBody from '../FormBody';
 
 import * as S from './styles';
 

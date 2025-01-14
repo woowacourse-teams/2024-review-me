@@ -4,11 +4,9 @@ import { EyeButton, Input } from '@/components';
 import { REVIEW_URL_GENERATOR_FORM_VALIDATION } from '@/constants';
 import { useEyeButton, usePasswordValidation } from '@/hooks';
 
-import * as S from '../URLGeneratorForm/styles';
+import InputField, { InputValueProps } from '../InputField';
 
-import { InputValueProps } from './InputField';
-
-import { InputField } from '.';
+import * as S from './style';
 
 const PasswordField = ({ id, value: password, updateValue: updatePassword }: InputValueProps) => {
   const { isOff, handleEyeButtonToggle } = useEyeButton();

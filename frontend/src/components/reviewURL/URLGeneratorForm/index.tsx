@@ -1,16 +1,20 @@
-import React, { useId, useState } from 'react';
+import { useId, useState } from 'react';
 
 import AlertIcon from '@/assets/alertTriangle.svg';
-import { ErrorSuspenseContainer, Toast } from '@/components';
+import {
+  ErrorSuspenseContainer,
+  FormLayout,
+  PasswordField,
+  ReviewGroupDataField,
+  ReviewZoneURLModal,
+  Toast,
+} from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useModals } from '@/hooks';
 
-import { FormLayout, ReviewZoneURLModal } from '../index';
-import { PasswordField, ReviewGroupDataField } from '../Inputs';
-
 import URLGeneratorButton from './components/URLGeneratorButton';
 import useURLGeneratorState from './hooks/useURLGeneratorState';
-import * as S from './styles';
+import * as S from './style';
 
 const MODAL_KEYS = {
   confirm: 'CONFIRM',

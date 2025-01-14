@@ -1,6 +1,6 @@
-import { ErrorSuspenseContainer } from '@/components';
+import { ErrorSuspenseContainer, URLGeneratorForm } from '@/components';
 
-import { ReviewMeOverview, URLGeneratorForm } from './components';
+import { ReviewMeOverview } from './components';
 import * as S from './styles';
 
 const HomePage = () => {

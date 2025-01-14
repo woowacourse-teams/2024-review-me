@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { AlertModal } from '@/components';
-import Checkbox from '@/components/common/Checkbox';
-
-import { CopyTextButton } from '../index';
+import { AlertModal, CopyTextButton, Checkbox } from '@/components';
 
 import * as S from './styles';
 interface ReviewZoneURLModalProps {

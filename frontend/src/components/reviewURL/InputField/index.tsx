@@ -1,8 +1,6 @@
-import { Dispatch, SetStateAction } from 'react';
-
 import { EssentialPropsWithChildren } from '@/types';
 
-import * as S from '../URLGeneratorForm/styles';
+import * as S from './style';
 
 interface InputFieldProps {
   id: string;

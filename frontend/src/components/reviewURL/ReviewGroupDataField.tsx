@@ -2,11 +2,9 @@ import { useState } from 'react';
 
 import { Input } from '@/components';
 import { REVIEW_URL_GENERATOR_FORM_VALIDATION } from '@/constants';
-import { isNotEmptyInput, isValidReviewGroupDataInput } from '@/pages/HomePage/utils/validateInput';
+import { isNotEmptyInput, isValidReviewGroupDataInput } from '@/utils';
 
-import { InputValueProps } from './InputField';
-
-import { InputField } from '.';
+import InputField, { InputValueProps } from './InputField';
 
 const EMPTY_ERROR_MESSAGE = '공백이 아닌 내용을 입력해주세요';
 const { min, max } = REVIEW_URL_GENERATOR_FORM_VALIDATION.groupData;

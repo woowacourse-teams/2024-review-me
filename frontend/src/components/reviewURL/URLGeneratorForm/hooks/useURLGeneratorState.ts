@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { isValidPasswordInput, isValidReviewGroupDataInput } from '@/pages/HomePage/utils/validateInput';
+import { isValidPasswordInput, isValidReviewGroupDataInput } from '@/utils';
 
 interface UseURLGeneratorStateProps {
   isMember?: boolean;

@@ -1,4 +1,4 @@
-import { URLGeneratorForm } from '@/pages/HomePage/components';
+import { URLGeneratorForm } from '@/components';
 
 import ReviewLinkLayout from '../layouts/ReviewLinkLayout';
 
