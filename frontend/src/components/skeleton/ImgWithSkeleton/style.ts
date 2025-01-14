@@ -10,7 +10,7 @@ export const Container = styled.div<ContainerProps>`
   height: ${(props) => props.$height};
 `;
 export const ImgWrapper = styled.div<{ $isLoaded: boolean }>`
-  position: 'absolute';
+  position: absolute;
   top: 0;
   left: 0;
 
@@ -28,7 +28,7 @@ export const ImgSkeleton = styled.div`
   background-image: linear-gradient(
     135deg,
     ${({ theme }) => theme.colors.lightGray} 40%,
-    rgba(246, 246, 246, 0.76) 50%,
+    rgba(246, 246, 246, 0.89) 50%,
     ${({ theme }) => theme.colors.lightGray} 85%
   );
   background-size: 200% 100%;
