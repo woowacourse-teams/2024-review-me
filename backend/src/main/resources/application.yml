@@ -37,3 +37,8 @@ cors:
   allowed-origins:
     - http://localhost
     - https://localhost
+
+github:
+  oauth:
+    client-id: client-id
+    client-secret: client-secret
