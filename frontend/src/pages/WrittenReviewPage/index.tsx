@@ -45,7 +45,7 @@ const WrittenReviewPage = () => {
     );
   };
 
-  return <ErrorSuspenseContainer fallback={AuthAndServerErrorFallback}>{renderContent()}</ErrorSuspenseContainer>;
+  return <ErrorSuspenseContainer errorFallback={AuthAndServerErrorFallback}>{renderContent()}</ErrorSuspenseContainer>;
 };
 
 export default WrittenReviewPage;
