@@ -27,21 +27,21 @@ const WrittenReviewPage = () => {
   };
 
   const renderContent = () => {
-    if (deviceType.isMobile) {
-      // 모바일: queryString 없으면 목록, 있으면 상세보기
-      return selectedReviewId ? (
-        <DetailedWrittenReview $isMobile={true} selectedReviewId={selectedReviewId} />
-      ) : (
-        <WrittenReviewList handleClick={handleReviewItemClick} />
+    // 노트북, 보통 사이즈 이상의 태블릿 가로모드: 목록, 상세 모두 렌더링
+    if (deviceType.isDesktop) {
+      return (
+        <S.PageContainer>
+          <WrittenReviewList handleClick={handleReviewItemClick} />
+          <DetailedWrittenReview $isMobile={false} selectedReviewId={selectedReviewId} />
+        </S.PageContainer>
       );
     }
 
-    // 태블릿 ~ : 목록 + 상세보기
-    return (
-      <S.PageContainer>
-        <WrittenReviewList handleClick={handleReviewItemClick} />
-        <DetailedWrittenReview $isMobile={false} selectedReviewId={selectedReviewId} />
-      </S.PageContainer>
+    // 이외의 경우: queryString 없으면 목록, 있으면 상세보기 렌더링
+    return selectedReviewId ? (
+      <DetailedWrittenReview $isMobile={true} selectedReviewId={selectedReviewId} />
+    ) : (
+      <WrittenReviewList handleClick={handleReviewItemClick} />
     );
   };
 

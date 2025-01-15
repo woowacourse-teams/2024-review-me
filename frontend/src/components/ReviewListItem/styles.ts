@@ -7,13 +7,24 @@ export const ReviewListItem = styled.li`
   flex-direction: column;
 
   min-width: ${({ theme }) => theme.writtenReviewLayoutSize.width};
-  min-height: 20rem;
+  min-height: 26rem;
+  max-height: 26rem;
 
   border: 0.2rem solid ${({ theme }) => theme.colors.placeholder};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
+  ${media.medium} {
+    min-width: 62vw;
+    min-height: 18vh;
+  }
+
   ${media.small} {
-    min-width: 30rem;
-    min-height: 18rem;
+    min-width: 65vw;
+    min-height: 14vh;
+  }
+
+  ${media.xSmall} {
+    min-width: 70vw;
+    min-height: 14vh;
   }
 `;

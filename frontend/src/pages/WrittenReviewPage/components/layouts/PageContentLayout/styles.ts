@@ -7,7 +7,7 @@ export const PageContentLayout = styled.article`
   flex-direction: column;
   height: 100%;
 
-  ${media.xSmall} {
+  ${media.medium} {
     margin: 0 auto;
   }
 `;

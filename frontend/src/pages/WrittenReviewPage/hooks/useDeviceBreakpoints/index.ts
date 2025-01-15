@@ -28,7 +28,7 @@ const useDeviceBreakpoints = () => {
   const handleResize = debounce(() => {
     const currentWidth = window.innerWidth;
 
-    // 마지막 breakpoint만 특정 범위 사이의 width 값이 아닌 초과값이므로 따로 처리
+    // 마지막 breakpoint만 특정 범위 사이의 width 값이 아닌, 해당 기준 이상인 값이므로 따로 처리
     const inRangeBreakpoint = breakpointsArray.find(([, width]) => currentWidth <= width);
     const upperBoundBreakpoint = breakpointsArray[breakpointsArray.length - 1];
 
