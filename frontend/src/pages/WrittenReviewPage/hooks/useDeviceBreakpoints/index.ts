@@ -27,9 +27,14 @@ const useDeviceBreakpoints = () => {
 
   const handleResize = debounce(() => {
     const currentWidth = window.innerWidth;
-    const matchedBreakpoint = breakpointsArray.find(([, width]) => currentWidth <= width);
 
-    setBreakPointType((matchedBreakpoint?.[0] as Breakpoints) ?? null);
+    // 마지막 breakpoint만 특정 범위 사이의 width 값이 아닌 초과값이므로 따로 처리
+    const inRangeBreakpoint = breakpointsArray.find(([, width]) => currentWidth <= width);
+    const upperBoundBreakpoint = breakpointsArray[breakpointsArray.length - 1];
+
+    const finalBreakpoint = inRangeBreakpoint || upperBoundBreakpoint;
+
+    setBreakPointType((finalBreakpoint[0] as Breakpoints) ?? null);
   }, DEBOUNCE_TIME);
 
   useLayoutEffect(() => {
