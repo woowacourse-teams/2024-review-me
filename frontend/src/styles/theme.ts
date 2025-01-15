@@ -26,8 +26,9 @@ export const contentModalSize = {
 };
 
 export const writtenReviewLayoutSize = {
-  height: '68vh',
-  width: '35vw',
+  largeMinWidth: '45rem',
+  largeMaxHeight: '90rem',
+  largeMaxWidth: '90rem',
 };
 
 export const componentHeight = {

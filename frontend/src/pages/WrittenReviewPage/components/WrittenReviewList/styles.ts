@@ -7,7 +7,7 @@ export const WrittenReviewList = styled.ul`
   flex-direction: column;
   gap: 1.7rem;
 
-  max-height: 68vh;
+  max-height: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxHeight};
 
   & > li {
     margin-right: 0.5rem;

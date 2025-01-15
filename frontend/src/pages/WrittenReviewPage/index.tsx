@@ -32,14 +32,14 @@ const WrittenReviewPage = () => {
       return (
         <S.PageContainer>
           <WrittenReviewList handleClick={handleReviewItemClick} />
-          <DetailedWrittenReview $isMobile={false} selectedReviewId={selectedReviewId} />
+          <DetailedWrittenReview $isDisplayable={true} selectedReviewId={selectedReviewId} />
         </S.PageContainer>
       );
     }
 
     // 이외의 경우: queryString 없으면 목록, 있으면 상세보기 렌더링
     return selectedReviewId ? (
-      <DetailedWrittenReview $isMobile={true} selectedReviewId={selectedReviewId} />
+      <DetailedWrittenReview $isDisplayable={!!selectedReviewId} selectedReviewId={selectedReviewId} />
     ) : (
       <WrittenReviewList handleClick={handleReviewItemClick} />
     );

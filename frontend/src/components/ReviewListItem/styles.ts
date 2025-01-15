@@ -6,9 +6,10 @@ export const ReviewListItem = styled.li`
   display: flex;
   flex-direction: column;
 
-  min-width: ${({ theme }) => theme.writtenReviewLayoutSize.width};
-  min-height: 26rem;
-  max-height: 26rem;
+  min-width: ${({ theme }) => theme.writtenReviewLayoutSize.largeMinWidth};
+  max-width: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxWidth};
+  min-height: 20rem;
+  max-height: 24rem;
 
   border: 0.2rem solid ${({ theme }) => theme.colors.placeholder};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
