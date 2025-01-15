@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import reviewme.auth.domain.Principal;
 import reviewme.auth.service.AuthService;
 import reviewme.auth.service.dto.GithubCodeRequest;
 
@@ -21,6 +22,8 @@ public class AuthController {
             @Valid @RequestBody GithubCodeRequest request,
             HttpServletRequest httpRequest
     ) {
+        Principal principal = authService.authWithGithub(request);
+        httpRequest.setAttribute("principal", principal);
         return ResponseEntity.ok().build();
     }
 
