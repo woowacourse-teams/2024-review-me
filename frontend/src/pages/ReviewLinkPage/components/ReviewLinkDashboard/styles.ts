@@ -8,6 +8,8 @@ export const ReviewLinkDashboardContainer = styled.div`
   gap: 7rem;
 
   width: 100%;
+  // 전체 영역에서 헤더(7rem), 푸터(6rem), 네비게이션 탭(4rem) 영역 제외
+  min-height: calc(100vh - 17rem);
 
   ${media.medium} {
     gap: 4rem;
@@ -19,6 +21,7 @@ export const ReviewLinkDashboardContainer = styled.div`
 
   ${media.small} {
     flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
   }
 `;
@@ -44,8 +47,6 @@ export const FormSection = styled.section`
 
 export const Separator = styled.div`
   width: 0.1rem;
-  // 전체 영역에서 헤더(7rem)와 푸터(6rem) 영역 제외하고, 추후 네비게이션 탭이 추가되면 해당 영역도 제외
-  min-height: calc(100vh - 13rem);
 
   background-color: ${({ theme }) => theme.colors.lightGray};
 
