@@ -10,9 +10,9 @@ permissions:
   contents: read
   pages: write
   id-token: write
-concurrency: 
+concurrency:
   group: "ci-group"
-  cancel-in-progress: false # NOTE: 기존 CI가 돌고 있는 상황에서 새 작업이 추가돼도 기존 작업 계속 수행
+  cancel-in-progress: false # 기존 작업 계속 수행
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,10 +28,30 @@ jobs:
           cache-dependency-path: ./frontend/yarn.lock
 
       - name: Create .env file
-        run: echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" > ./frontend/.env
+        run: |
+          echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" > ./frontend/.env
+          echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> ./frontend/.env
+          echo "AMPLITUDE_KEY=${{ secrets.AMPLITUDE_KEY }}" >> ./frontend/.env
 
       - name: Set environment file permissions
         run: chmod 644 ./frontend/.env
+
+      # 프리플라이트 체크
+      - name: Preflight Check for Environment Variables
+        run: |
+          if [ -z "${{ secrets.API_BASE_URL }}" ]; then
+            echo "Error: API_BASE_URL is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.SENTRY_AUTH_TOKEN }}" ]; then
+            echo "Error: SENTRY_AUTH_TOKEN is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.AMPLITUDE_KEY }}" ]; then
+            echo "Error: AMPLITUDE_KEY is not set"
+            exit 1
+          fi
+        shell: bash
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -45,4 +65,6 @@ jobs:
         run: yarn build
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          AMPLITUDE_KEY: ${{ secrets.AMPLITUDE_KEY }}
         working-directory: frontend

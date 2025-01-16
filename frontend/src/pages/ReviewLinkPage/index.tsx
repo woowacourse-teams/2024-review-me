@@ -1,11 +1,12 @@
 import { ErrorSuspenseContainer } from '@/components';
+import NavigationTab from '@/components/common/NavigationTab';
 
 import ReviewLinkDashboard from './components/ReviewLinkDashboard';
 
 const ReviewLinkPage = () => {
   return (
     <ErrorSuspenseContainer>
-      {/* TODO: 네비게이션 탭 추가 */}
+      <NavigationTab />
       <ReviewLinkDashboard />
     </ErrorSuspenseContainer>
   );

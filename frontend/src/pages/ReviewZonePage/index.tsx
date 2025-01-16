@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
 
 import ReviewZoneIcon from '@/assets/reviewZone.svg';
-import { Button } from '@/components';
-import { ROUTE } from '@/constants/route';
+import { Button, ImgWithSkeleton } from '@/components';
+import { ROUTE } from '@/constants';
 import { useGetReviewGroupData, useSearchParamAndQuery, useModals } from '@/hooks';
 import { reviewRequestCodeAtom } from '@/recoil';
 import { calculateParticle } from '@/utils';
@@ -15,6 +15,11 @@ import * as S from './styles';
 const MODAL_KEYS = {
   content: 'CONTENT_MODAL',
 };
+const BUTTON_SIZE = {
+  width: '28rem',
+  height: '8.5rem',
+};
+const IMG_HEIGHT = '15rem';
 
 const ReviewZonePage = () => {
   const { isOpen, openModal, closeModal } = useModals();
@@ -46,29 +51,21 @@ const ReviewZonePage = () => {
 
   return (
     <S.ReviewZonePage>
-      <S.ReviewZoneMainImg src={ReviewZoneIcon} alt="" />
+      <ImgWithSkeleton imgWidth={BUTTON_SIZE.width} imgHeight={IMG_HEIGHT}>
+        <S.ReviewZoneMainImg src={ReviewZoneIcon} alt="" $height={IMG_HEIGHT} />
+      </ImgWithSkeleton>
       <S.ReviewGuideContainer>
         <S.ReviewGuide>{`${reviewGroupData.projectName}${calculateParticle({ target: reviewGroupData.projectName, particles: { withFinalConsonant: '을', withoutFinalConsonant: '를' } })} 함께한`}</S.ReviewGuide>
         <S.ReviewGuide>{`${reviewGroupData.revieweeName}의 리뷰 공간이에요`}</S.ReviewGuide>
       </S.ReviewGuideContainer>
       <S.ButtonContainer>
-        <Button
-          styleType="primary"
-          type="button"
-          onClick={handleReviewWritingButtonClick}
-          style={{ width: '28rem', height: '8.5rem' }}
-        >
+        <Button styleType="primary" type="button" onClick={handleReviewWritingButtonClick} style={BUTTON_SIZE}>
           <S.ButtonTextContainer>
             <S.ButtonText>리뷰 쓰기</S.ButtonText>
             <S.ButtonDescription>작성한 리뷰는 익명으로 제출돼요</S.ButtonDescription>
           </S.ButtonTextContainer>
         </Button>
-        <Button
-          styleType="secondary"
-          type="button"
-          onClick={handleReviewListButtonClick}
-          style={{ width: '28rem', height: '8.5rem' }}
-        >
+        <Button styleType="secondary" type="button" onClick={handleReviewListButtonClick} style={BUTTON_SIZE}>
           <S.ButtonTextContainer>
             <S.ButtonText>리뷰 확인하기</S.ButtonText>
             <S.ButtonDescription>비밀번호로 내가 받은 리뷰를 확인할 수 있어요</S.ButtonDescription>

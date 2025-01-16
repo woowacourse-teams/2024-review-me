@@ -46,10 +46,10 @@ export const SlideContent = styled.div`
   justify-content: space-between;
 
   width: 100%;
+`;
 
-  img {
-    width: 80%;
-  }
+export const SlideContentImg = styled.img`
+  width: 100%;
 `;
 
 export const PrevButton = styled.button`

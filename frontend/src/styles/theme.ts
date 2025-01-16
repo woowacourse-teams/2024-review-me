@@ -9,9 +9,11 @@ export const scrollbarWidth = {
   basic: '1.2rem',
   small: '0.5rem',
 };
+
 export const breadcrumbSize = {
   paddingLeft: '2rem',
 };
+
 export const confirmModalSize = {
   maxWidth: '90vw',
   padding: '3.2rem',
@@ -23,6 +25,12 @@ export const contentModalSize = {
   smallPadding: '2rem',
 };
 
+export const writtenReviewLayoutSize = {
+  largeMinWidth: '45rem',
+  largeMaxHeight: '90rem',
+  largeMaxWidth: '90rem',
+};
+
 export const componentHeight = {
   footer: '6rem',
   topbar: '7rem',
@@ -31,7 +39,7 @@ export const componentHeight = {
 
 export const breakpoint = {
   xxSmall: 320,
-  xSmall: 425,
+  xSmall: 430,
   small: 768,
   medium: 1024,
   large: 1025,
@@ -104,6 +112,7 @@ const theme: Theme = {
   confirmModalSize,
   contentModalSize,
   breadcrumbSize,
+  writtenReviewLayoutSize,
 };
 
 export default theme;
