@@ -15,3 +15,4 @@ export { default as OptionSwitch } from './OptionSwitch';
 export { default as ReviewEmptySection } from './ReviewEmptySection';
 export * from './modals';
 export { default as CopyTextButton } from './CopyTextButton';
+export { default as ReviewCard } from './ReviewCard';
