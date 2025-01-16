@@ -23,7 +23,7 @@ const ImgWithSkeleton = ({ children, imgWidth, imgHeight }: ImgWithSkeletonProps
       {!isLoaded && <S.ImgSkeleton />}
       <S.ImgWrapper $isLoaded={isLoaded}>
         {React.cloneElement(children, {
-          onLoad: (event) => handleImgLoad(event),
+          onLoad: (event: React.SyntheticEvent<HTMLImageElement, Event>) => handleImgLoad(event),
         })}
       </S.ImgWrapper>
     </S.Container>
