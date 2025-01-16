@@ -1,6 +1,6 @@
-export { default as FormBody } from './FormBody';
-export { default as FormLayout } from './FormLayout';
+export { default as FormBody } from './form/FormBody';
+export { default as FormLayout } from './form/FormLayout';
+export { default as PasswordField } from './form/PasswordField';
+export { default as URLGeneratorForm } from './form/URLGeneratorForm';
+export { default as ReviewGroupDataField } from './form/ReviewGroupDataField';
 export { default as ReviewZoneURLModal } from './ReviewZoneURLModal';
-export { default as URLGeneratorForm } from './URLGeneratorForm';
-export { default as PasswordField } from './PasswordField';
-export { default as ReviewGroupDataField } from './ReviewGroupDataField';
