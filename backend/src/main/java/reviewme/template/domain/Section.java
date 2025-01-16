@@ -39,7 +39,7 @@ public class Section {
     @JoinColumn(name = "section_id", nullable = false, updatable = false)
     private List<Question> questions;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "on_selected_option_id", nullable = true)
     private OptionItem onSelectedOption;
 

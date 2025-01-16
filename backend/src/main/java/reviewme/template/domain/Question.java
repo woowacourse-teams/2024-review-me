@@ -8,7 +8,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -34,8 +33,7 @@ public class Question {
     @Enumerated(EnumType.STRING)
     private QuestionType questionType;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "option_group_id", nullable = true, updatable = false)
+    @OneToOne(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private OptionGroup optionGroup;
 
     @Column(name = "content", nullable = false, length = 1_000)
@@ -58,6 +56,9 @@ public class Question {
         this.content = content;
         this.guideline = guideline;
         this.position = position;
+        if (optionGroup != null) {
+            optionGroup.setQuestion(this);
+        }
     }
 
     public Question(boolean required, QuestionType questionType, String content, String guideline, int position) {
