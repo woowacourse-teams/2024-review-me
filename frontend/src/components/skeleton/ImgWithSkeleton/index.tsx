@@ -11,7 +11,10 @@ interface ImgWithSkeletonProps {
 const ImgWithSkeleton = ({ children, imgWidth, imgHeight }: ImgWithSkeletonProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const handleImgLoad = () => {
+  const handleImgLoad = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    if (children.props.onLoad) {
+      children.props.onLoad(event);
+    }
     setIsLoaded(true);
   };
 
@@ -20,7 +23,7 @@ const ImgWithSkeleton = ({ children, imgWidth, imgHeight }: ImgWithSkeletonProps
       {!isLoaded && <S.ImgSkeleton />}
       <S.ImgWrapper $isLoaded={isLoaded}>
         {React.cloneElement(children, {
-          onLoad: handleImgLoad,
+          onLoad: (event) => handleImgLoad(event),
         })}
       </S.ImgWrapper>
     </S.Container>
