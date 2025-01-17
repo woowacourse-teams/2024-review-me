@@ -15,7 +15,8 @@ public class ClientConfig {
         RestClient restClient = RestClient.builder()
                 .requestFactory(getClientHttpRequestFactory())
                 .build();
-        return new GithubOAuthClient(restClient, properties.clientId(), properties.clientSecret());
+        return new GithubOAuthClient(restClient, properties.clientId(), properties.clientSecret(),
+                properties.accessTokenUri(), properties.userInfoUri());
     }
 
     private JdkClientHttpRequestFactory getClientHttpRequestFactory() {
