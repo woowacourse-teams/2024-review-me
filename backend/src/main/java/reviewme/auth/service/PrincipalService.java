@@ -25,14 +25,14 @@ public class PrincipalService {
 
     public Optional<Member> getMember(Principal principal) {
         if (principal instanceof MemberPrincipal) {
-            return Optional.of(((MemberPrincipal) principal).getMember());
+            return Optional.ofNullable(((MemberPrincipal) principal).getMember());
         }
         return Optional.empty();
     }
 
     public Optional<ReviewGroup> getReviewGroup(Principal principal) {
         if (principal instanceof ReviewGroupPrincipal) {
-            return Optional.of(((ReviewGroupPrincipal) principal).getReviewGroup());
+            return Optional.ofNullable(((ReviewGroupPrincipal) principal).getReviewGroup());
         }
         return Optional.empty();
     }

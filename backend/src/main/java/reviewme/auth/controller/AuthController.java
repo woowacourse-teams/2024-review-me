@@ -1,6 +1,7 @@
 package reviewme.auth.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,8 @@ public class AuthController {
             HttpServletRequest httpRequest
     ) {
         Principal principal = authService.authWithGithub(request);
-        httpRequest.setAttribute("principal", principal);
+        HttpSession session = httpRequest.getSession();
+        session.setAttribute("principal", principal);
         return ResponseEntity.ok().build();
     }
 
