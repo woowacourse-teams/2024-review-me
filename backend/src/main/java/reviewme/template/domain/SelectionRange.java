@@ -20,7 +20,7 @@ public class SelectionRange {
     private int maxSelectionCount;
 
     public SelectionRange(int minSelectionCount, int maxSelectionCount) {
-        if (minSelectionCount <= 0 || minSelectionCount > maxSelectionCount) {
+        if (minSelectionCount < 0 || minSelectionCount > maxSelectionCount) {
             throw new InvalidSelectionRangeException(minSelectionCount, maxSelectionCount);
         }
         this.minSelectionCount = minSelectionCount;
