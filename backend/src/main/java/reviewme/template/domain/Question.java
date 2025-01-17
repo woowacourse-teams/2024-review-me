@@ -33,7 +33,7 @@ public class Question {
     @Enumerated(EnumType.STRING)
     private QuestionType questionType;
 
-    @OneToOne(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private OptionGroup optionGroup;
 
     @Column(name = "content", nullable = false, length = 1_000)
@@ -56,9 +56,6 @@ public class Question {
         this.content = content;
         this.guideline = guideline;
         this.position = position;
-        if (optionGroup != null) {
-            optionGroup.setQuestion(this);
-        }
     }
 
     public Question(boolean required, QuestionType questionType, String content, String guideline, int position) {
