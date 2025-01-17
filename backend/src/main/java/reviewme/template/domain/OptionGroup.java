@@ -37,10 +37,10 @@ public class OptionGroup {
         if (optionItems.isEmpty()) {
             throw new EmptyOptionGroupException();
         }
+        this.optionItems = optionItems;
+        this.selectionRange = new SelectionRange(minSelectionCount, maxSelectionCount);
         if (optionItems.size() < maxSelectionCount) {
             throw new InvalidSelectionRangeException(optionItems.size(), minSelectionCount, maxSelectionCount);
         }
-        this.optionItems = optionItems;
-        this.selectionRange = new SelectionRange(minSelectionCount, maxSelectionCount);
     }
 }
