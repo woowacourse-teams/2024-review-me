@@ -1,5 +1,6 @@
 package reviewme.auth.service;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class AuthService {
     private final GitHubOAuthClient githubOAuthClient;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public Principal authWithGithub(@Valid GithubCodeRequest request) {
         GitHubUserInfoResponse userInfo = githubOAuthClient.getUserInfo(request.code());
         String email = userInfo.email();
