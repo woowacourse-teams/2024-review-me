@@ -1,11 +1,11 @@
 import { useId, useState } from 'react';
 
 import AlertIcon from '@/assets/alertTriangle.svg';
-import { ErrorSuspenseContainer, PasswordField, ReviewGroupDataField, ReviewZoneURLModal, Toast } from '@/components';
+import { ErrorSuspenseContainer, ReviewZoneURLModal, Toast } from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useModals } from '@/hooks';
 
-import URLGeneratorButton from './components/URLGeneratorButton';
+import { PasswordField, ReviewGroupDataField, URLGeneratorButton } from './components';
 import useURLGeneratorState from './hooks/useURLGeneratorState';
 import * as S from './style';
 
