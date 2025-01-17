@@ -8,7 +8,7 @@ import org.springframework.web.client.RestClient;
 
 @EnableConfigurationProperties(GitHubOAuthProperties.class)
 @Configuration
-public class ClientConfig {
+public class OAuthClientConfig {
 
     @Bean
     public GitHubOAuthClient githubOAuthClient(GitHubOAuthProperties properties) {
