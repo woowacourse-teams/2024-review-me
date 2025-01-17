@@ -6,16 +6,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
-@EnableConfigurationProperties(GithubOauthProperties.class)
+@EnableConfigurationProperties(GitHubOAuthProperties.class)
 @Configuration
 public class ClientConfig {
 
     @Bean
-    public GithubOAuthClient githubOAuthClient(GithubOauthProperties properties) {
+    public GitHubOAuthClient githubOAuthClient(GitHubOAuthProperties properties) {
         RestClient restClient = RestClient.builder()
                 .requestFactory(getClientHttpRequestFactory())
                 .build();
-        return new GithubOAuthClient(restClient, properties.clientId(), properties.clientSecret(),
+        return new GitHubOAuthClient(restClient, properties.clientId(), properties.clientSecret(),
                 properties.accessTokenUri(), properties.userInfoUri());
     }
 

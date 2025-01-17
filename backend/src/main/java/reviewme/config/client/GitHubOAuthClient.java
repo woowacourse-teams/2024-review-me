@@ -4,13 +4,13 @@ import java.util.Objects;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
-import reviewme.config.client.dto.request.GithubAccessTokenRequest;
-import reviewme.config.client.dto.response.GithubAccessTokenResponse;
-import reviewme.config.client.dto.response.GithubUserInfoResponse;
-import reviewme.config.client.exception.GithubOauthFailedException;
+import reviewme.config.client.dto.request.GitHubAccessTokenRequest;
+import reviewme.config.client.dto.response.GitHubAccessTokenResponse;
+import reviewme.config.client.dto.response.GitHubUserInfoResponse;
+import reviewme.config.client.exception.GitHubOAuthFailedException;
 
-@EnableConfigurationProperties(GithubOauthProperties.class)
-public class GithubOAuthClient {
+@EnableConfigurationProperties(GitHubOAuthProperties.class)
+public class GitHubOAuthClient {
 
     private final RestClient restClient;
     private final String clientId;
@@ -18,7 +18,7 @@ public class GithubOAuthClient {
     private final String accessTokenUri;
     private final String userInfoUri;
 
-    public GithubOAuthClient(RestClient restClient, String clientId, String clientSecret,
+    public GitHubOAuthClient(RestClient restClient, String clientId, String clientSecret,
                              String accessTokenUri, String userInfoUri) {
         this.restClient = restClient;
         this.clientId = clientId;
@@ -27,7 +27,7 @@ public class GithubOAuthClient {
         this.userInfoUri = userInfoUri;
     }
 
-    public GithubUserInfoResponse getUserInfo(String code) {
+    public GitHubUserInfoResponse getUserInfo(String code) {
         String accessToken = requestAccessToken(code);
         return requestUserInfo(accessToken);
     }
@@ -40,12 +40,12 @@ public class GithubOAuthClient {
                 .uri(accessTokenUri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .body(new GithubAccessTokenRequest(clientId, clientSecret, code))
+                .body(new GitHubAccessTokenRequest(clientId, clientSecret, code))
                 .exchange((request, response) -> {
                     if (response.getStatusCode().is2xxSuccessful()) {
-                        return Objects.requireNonNull(response.bodyTo(GithubAccessTokenResponse.class));
+                        return Objects.requireNonNull(response.bodyTo(GitHubAccessTokenResponse.class));
                     } else {
-                        throw new GithubOauthFailedException();
+                        throw new GitHubOAuthFailedException();
                     }
                 }).accessToken();
     }
@@ -53,16 +53,16 @@ public class GithubOAuthClient {
     /**
      * https://docs.github.com/ko/rest/users/users
      */
-    private GithubUserInfoResponse requestUserInfo(String accessToken) {
+    private GitHubUserInfoResponse requestUserInfo(String accessToken) {
         return restClient.get()
                 .uri(userInfoUri)
                 .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange((request, response) -> {
                     if (response.getStatusCode().is2xxSuccessful()) {
-                        return Objects.requireNonNull(response.bodyTo(GithubUserInfoResponse.class));
+                        return Objects.requireNonNull(response.bodyTo(GitHubUserInfoResponse.class));
                     } else {
-                        throw new GithubOauthFailedException();
+                        throw new GitHubOAuthFailedException();
                     }
                 });
     }

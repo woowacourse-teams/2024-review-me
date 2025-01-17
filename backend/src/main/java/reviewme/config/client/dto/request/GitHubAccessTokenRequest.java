@@ -2,7 +2,7 @@ package reviewme.config.client.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record GithubAccessTokenRequest(
+public record GitHubAccessTokenRequest(
         @JsonProperty("client_id")
         String clientId,
 

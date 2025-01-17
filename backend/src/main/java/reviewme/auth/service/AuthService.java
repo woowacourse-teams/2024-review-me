@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import reviewme.auth.domain.MemberPrincipal;
 import reviewme.auth.domain.Principal;
 import reviewme.auth.service.dto.GithubCodeRequest;
-import reviewme.config.client.GithubOAuthClient;
-import reviewme.config.client.dto.response.GithubUserInfoResponse;
+import reviewme.config.client.GitHubOAuthClient;
+import reviewme.config.client.dto.response.GitHubUserInfoResponse;
 import reviewme.member.domain.Member;
 import reviewme.member.repository.MemberRepository;
 
@@ -15,11 +15,11 @@ import reviewme.member.repository.MemberRepository;
 @Service
 public class AuthService {
 
-    private final GithubOAuthClient githubOAuthClient;
+    private final GitHubOAuthClient githubOAuthClient;
     private final MemberRepository memberRepository;
 
     public Principal authWithGithub(@Valid GithubCodeRequest request) {
-        GithubUserInfoResponse userInfo = githubOAuthClient.getUserInfo(request.code());
+        GitHubUserInfoResponse userInfo = githubOAuthClient.getUserInfo(request.code());
         String email = userInfo.email();
         Member member = memberRepository.findByEmail(email)
                 .orElseGet(() -> memberRepository.save(new Member(email)));
