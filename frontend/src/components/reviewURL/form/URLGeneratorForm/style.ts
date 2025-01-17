@@ -2,32 +2,44 @@ import styled from '@emotion/styled';
 
 import media from '@/utils/media';
 
-export const URLGeneratorForm = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40%;
+export const Title = styled.h2`
+  margin-bottom: 6.5rem;
+  font-size: 2.5rem;
+  white-space: nowrap;
 
   ${media.medium} {
-    width: 45%;
-    padding: 0 9rem;
-
-    h2 {
-      font-size: 2rem;
-    }
-  }
-
-  ${media.small} {
-    width: 100%;
-    margin: 5rem 0 4rem 0;
+    font-size: 2rem;
   }
 
   ${media.xSmall} {
-    h2 {
-      margin-bottom: 4rem;
-      font-size: 1.8rem;
-    }
+    margin-bottom: 4rem;
+    font-size: 1.8rem;
+  }
 
+  ${media.xxSmall} {
+    font-size: 1.6rem;
+  }
+`;
+
+export const Fieldset = styled.fieldset`
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  border: none;
+`;
+
+export const URLGeneratorForm = styled.form`
+  & > button {
+    width: 100%;
+    margin-top: 1.8rem;
+  }
+
+  ${media.xSmall} {
     label {
       font-size: 1.5rem;
     }
@@ -36,16 +48,12 @@ export const URLGeneratorForm = styled.section`
       font-size: 1.3rem;
     }
 
-    button {
+    & > button {
       font-size: 1.5rem;
     }
   }
 
   ${media.xxSmall} {
-    h2 {
-      font-size: 1.6rem;
-    }
-
     label {
       font-size: 1.3rem;
     }
@@ -54,8 +62,28 @@ export const URLGeneratorForm = styled.section`
       font-size: 1.1rem;
     }
 
-    button {
+    & > button {
       font-size: 1.3rem;
     }
+  }
+`;
+
+export const FormContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 40%;
+  padding: 0px 9rem;
+
+  ${media.medium} {
+    width: 45%;
+    padding: 0 9rem;
+  }
+
+  ${media.small} {
+    width: 100%;
+    margin: 5rem 0 4rem 0;
   }
 `;

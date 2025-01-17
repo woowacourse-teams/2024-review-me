@@ -1,14 +1,7 @@
 import { useId, useState } from 'react';
 
 import AlertIcon from '@/assets/alertTriangle.svg';
-import {
-  ErrorSuspenseContainer,
-  FormLayout,
-  PasswordField,
-  ReviewGroupDataField,
-  ReviewZoneURLModal,
-  Toast,
-} from '@/components';
+import { ErrorSuspenseContainer, PasswordField, ReviewGroupDataField, ReviewZoneURLModal, Toast } from '@/components';
 import { ROUTE } from '@/constants/route';
 import { useModals } from '@/hooks';
 
@@ -69,23 +62,26 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
   };
 
   return (
-    <S.URLGeneratorForm>
-      <FormLayout title="함께한 팀원으로부터 리뷰를 받아보세요!" direction="column">
-        <ReviewGroupDataField
-          id={INPUT_ID.revieweeName}
-          labelText="본인의 이름을 적어주세요"
-          value={revieweeName}
-          updateValue={urlGeneratorStateUpdater.revieweeName}
-        />
-        <ReviewGroupDataField
-          id={INPUT_ID.projectName}
-          labelText="함께한 프로젝트 이름을 입력해주세요"
-          value={projectName}
-          updateValue={urlGeneratorStateUpdater.projectName}
-        />
-        {!isMember && (
-          <PasswordField id={INPUT_ID.password} value={password} updateValue={urlGeneratorStateUpdater.password} />
-        )}
+    <S.FormContainer>
+      <S.URLGeneratorForm>
+        <S.Title>함께한 팀원으로부터 리뷰를 받아보세요!</S.Title>
+        <S.Fieldset>
+          <ReviewGroupDataField
+            id={INPUT_ID.revieweeName}
+            labelText="본인의 이름을 적어주세요"
+            value={revieweeName}
+            updateValue={urlGeneratorStateUpdater.revieweeName}
+          />
+          <ReviewGroupDataField
+            id={INPUT_ID.projectName}
+            labelText="함께한 프로젝트 이름을 입력해주세요"
+            value={projectName}
+            updateValue={urlGeneratorStateUpdater.projectName}
+          />
+          {!isMember && (
+            <PasswordField id={INPUT_ID.password} value={password} updateValue={urlGeneratorStateUpdater.password} />
+          )}
+        </S.Fieldset>
         <ErrorSuspenseContainer>
           <URLGeneratorButton
             isFormValid={isFormValid}
@@ -94,20 +90,20 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
             handleAPISuccess={handleAPISuccess}
           />
         </ErrorSuspenseContainer>
-        {isOpenToast && (
-          <Toast
-            icon={TOAST_INFORM.icon}
-            message={TOAST_INFORM.message}
-            handleOpenModal={handleOpenToast}
-            duration={TOAST_INFORM.duration}
-            position="bottom"
-          />
-        )}
-        {isOpen(MODAL_KEYS.confirm) && (
-          <ReviewZoneURLModal reviewZoneURL={reviewZoneURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
-        )}
-      </FormLayout>
-    </S.URLGeneratorForm>
+      </S.URLGeneratorForm>
+      {isOpenToast && (
+        <Toast
+          icon={TOAST_INFORM.icon}
+          message={TOAST_INFORM.message}
+          handleOpenModal={handleOpenToast}
+          duration={TOAST_INFORM.duration}
+          position="bottom"
+        />
+      )}
+      {isOpen(MODAL_KEYS.confirm) && (
+        <ReviewZoneURLModal reviewZoneURL={reviewZoneURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
+      )}
+    </S.FormContainer>
   );
 };
 
