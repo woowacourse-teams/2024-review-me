@@ -30,7 +30,7 @@ const URLGeneratorButton = ({
     });
   };
 
-  const handleUrlCreationButtonClick = debounce((event: React.MouseEvent<HTMLElement>) => {
+  const handleURLCreationButtonClick = debounce((event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     postDataForURL();
   }, DEBOUNCE_TIME);
@@ -39,7 +39,7 @@ const URLGeneratorButton = ({
     <Button
       type="button"
       styleType={isFormValid && !mutation.isPending ? 'primary' : 'disabled'}
-      onClick={handleUrlCreationButtonClick}
+      onClick={handleURLCreationButtonClick}
       disabled={!isFormValid && !mutation.isPending}
     >
       {mutation.isPending ? '리뷰 링크 생성 중...' : '리뷰 링크 생성하기'}
