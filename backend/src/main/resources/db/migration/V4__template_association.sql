@@ -12,6 +12,7 @@ UPDATE question q SET option_group_id = og.id FROM option_group og WHERE q.id = 
 
 -- FK 관계 설정
 ALTER TABLE section ADD CONSTRAINT section_fk_template_id FOREIGN KEY (template_id) REFERENCES template (id);
+ALTER TABLE section ADD CONSTRAINT section_fk_on_selected_option_id FOREIGN KEY (on_selected_option_id) REFERENCES option_item (id);
 ALTER TABLE question ADD CONSTRAINT question_fk_section_id FOREIGN KEY (section_id) REFERENCES section (id);
 ALTER TABLE option_item ADD CONSTRAINT option_item_fk_option_group_id FOREIGN KEY (option_group_id) REFERENCES option_group (id);
 
