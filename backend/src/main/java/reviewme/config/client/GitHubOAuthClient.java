@@ -17,13 +17,12 @@ public class GitHubOAuthClient {
     private final String accessTokenUri;
     private final String userInfoUri;
 
-    public GitHubOAuthClient(RestClient restClient, String clientId, String clientSecret,
-                             String accessTokenUri, String userInfoUri) {
+    public GitHubOAuthClient(RestClient restClient, GitHubOAuthProperties properties) {
         this.restClient = restClient;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.accessTokenUri = accessTokenUri;
-        this.userInfoUri = userInfoUri;
+        this.clientId = properties.clientId();
+        this.clientSecret = properties.clientSecret();
+        this.accessTokenUri = properties.accessTokenUri();
+        this.userInfoUri = properties.userInfoUri();
     }
 
     public GitHubUserInfoResponse getUserInfo(String code) {
