@@ -3,6 +3,7 @@ package reviewme.config.client;
 import java.util.Objects;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClient.RequestHeadersSpec.ExchangeFunction;
 import reviewme.config.client.dto.request.GitHubAccessTokenRequest;
 import reviewme.config.client.dto.response.GitHubAccessTokenResponse;
 import reviewme.config.client.dto.response.GitHubUserInfoResponse;
@@ -39,13 +40,8 @@ public class GitHubOAuthClient {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(new GitHubAccessTokenRequest(clientId, clientSecret, code))
-                .exchange((request, response) -> {
-                    if (response.getStatusCode().is2xxSuccessful()) {
-                        return Objects.requireNonNull(response.bodyTo(GitHubAccessTokenResponse.class));
-                    } else {
-                        throw new GitHubOAuthFailedException();
-                    }
-                }).accessToken();
+                .exchange(handleResponse(GitHubAccessTokenResponse.class))
+                .accessToken();
     }
 
     /**
@@ -56,12 +52,16 @@ public class GitHubOAuthClient {
                 .uri(userInfoUri)
                 .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON)
-                .exchange((request, response) -> {
-                    if (response.getStatusCode().is2xxSuccessful()) {
-                        return Objects.requireNonNull(response.bodyTo(GitHubUserInfoResponse.class));
-                    } else {
-                        throw new GitHubOAuthFailedException();
-                    }
-                });
+                .exchange(handleResponse(GitHubUserInfoResponse.class));
+    }
+
+    private static <T> ExchangeFunction<T> handleResponse(Class<T> t) {
+        return (request, response) -> {
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return Objects.requireNonNull(response.bodyTo(t));
+            } else {
+                throw new GitHubOAuthFailedException();
+            }
+        };
     }
 }
