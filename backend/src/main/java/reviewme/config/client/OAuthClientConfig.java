@@ -9,16 +9,20 @@ import org.springframework.web.client.RestClient;
 public class OAuthClientConfig {
 
     @Bean
-    public GitHubOAuthClient githubOAuthClient(GitHubOAuthProperties properties) {
-        RestClient restClient = RestClient.builder()
+    public RestClient restClient() {
+        return RestClient.builder()
                 .requestFactory(getClientHttpRequestFactory())
                 .build();
-        return new GitHubOAuthClient(restClient, properties);
     }
 
     private JdkClientHttpRequestFactory getClientHttpRequestFactory() {
         JdkClientHttpRequestFactory clientHttpRequestFactory = new JdkClientHttpRequestFactory();
         clientHttpRequestFactory.setReadTimeout(3000);
         return clientHttpRequestFactory;
+    }
+
+    @Bean
+    public GitHubOAuthClient githubOAuthClient(GitHubOAuthProperties properties, RestClient restClient) {
+        return new GitHubOAuthClient(restClient, properties);
     }
 }
