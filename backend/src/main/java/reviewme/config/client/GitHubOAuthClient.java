@@ -1,7 +1,6 @@
 package reviewme.config.client;
 
 import java.util.Objects;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 import reviewme.config.client.dto.request.GitHubAccessTokenRequest;
@@ -9,7 +8,6 @@ import reviewme.config.client.dto.response.GitHubAccessTokenResponse;
 import reviewme.config.client.dto.response.GitHubUserInfoResponse;
 import reviewme.config.client.exception.GitHubOAuthFailedException;
 
-@EnableConfigurationProperties(GitHubOAuthProperties.class)
 public class GitHubOAuthClient {
 
     private final RestClient restClient;
