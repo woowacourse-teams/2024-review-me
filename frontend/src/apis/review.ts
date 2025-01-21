@@ -6,6 +6,7 @@ import {
   GroupedSection,
   GroupedReviews,
   ReviewInfoData,
+  WrittenReviewList,
 } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
@@ -137,4 +138,26 @@ export const getGroupedReviews = async ({ sectionId }: GetGroupedReviewsProps) =
 
   const data = await response.json();
   return data as GroupedReviews;
+};
+
+interface GetWrittenReviewListApi {
+  lastReviewId: number | null;
+  size: number;
+}
+
+export const getWrittenReviewList = async ({ lastReviewId, size }: GetWrittenReviewListApi) => {
+  const response = await fetch(endPoint.gettingWrittenReviewList(lastReviewId, size), {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error(createApiErrorMessage(response.status));
+  }
+
+  const data = await response.json();
+  return data as WrittenReviewList;
 };
