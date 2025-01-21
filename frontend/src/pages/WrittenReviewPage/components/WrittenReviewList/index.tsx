@@ -1,6 +1,5 @@
 import { ReviewCard } from '@/components';
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
-import ReviewListItem from '@/components/ReviewListItem';
 import { useInfiniteScroll } from '@/pages/ReviewListPage/hooks'; // 경로 수정하기
 
 import { useGetWrittenReviewList } from '../../hooks';
