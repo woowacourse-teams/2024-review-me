@@ -57,9 +57,13 @@ public class GitHubOAuthClient {
     private static <T> ExchangeFunction<T> handleResponse(Class<T> t) {
         return (request, response) -> {
             if (response.getStatusCode().is2xxSuccessful()) {
-                return Objects.requireNonNull(response.bodyTo(t));
+                try {
+                    return Objects.requireNonNull(response.bodyTo(t));
+                } catch (Exception e) {
+                    throw new GitHubOAuthFailedException(response.getStatusCode(), "Failed to parse response body");
+                }
             } else {
-                throw new GitHubOAuthFailedException();
+                throw new GitHubOAuthFailedException(response.getStatusCode(), response.bodyTo(String.class));
             }
         };
     }
