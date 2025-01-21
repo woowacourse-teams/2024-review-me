@@ -12,8 +12,8 @@ import reviewme.config.client.dto.response.GitHubUserInfoResponse;
 import reviewme.member.domain.Member;
 import reviewme.member.repository.MemberRepository;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
     private final GitHubOAuthClient githubOAuthClient;

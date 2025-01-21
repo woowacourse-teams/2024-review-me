@@ -9,8 +9,8 @@ import reviewme.auth.domain.ReviewGroupPrincipal;
 import reviewme.member.domain.Member;
 import reviewme.reviewgroup.domain.ReviewGroup;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class PrincipalService {
 
     public boolean canAccessReviewGroup(Principal principal, long reviewGroupId) {
