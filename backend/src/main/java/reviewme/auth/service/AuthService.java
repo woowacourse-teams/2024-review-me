@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reviewme.auth.domain.MemberPrincipal;
 import reviewme.auth.domain.Principal;
+import reviewme.auth.infrastructure.GitHubOAuthClient;
+import reviewme.auth.infrastructure.dto.response.GitHubUserInfoResponse;
 import reviewme.auth.service.dto.GithubCodeRequest;
-import reviewme.config.client.GitHubOAuthClient;
-import reviewme.config.client.dto.response.GitHubUserInfoResponse;
 import reviewme.member.domain.Member;
 import reviewme.member.repository.MemberRepository;
 

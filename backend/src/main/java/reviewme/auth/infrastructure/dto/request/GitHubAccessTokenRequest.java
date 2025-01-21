@@ -1,4 +1,4 @@
-package reviewme.config.client.dto.request;
+package reviewme.auth.infrastructure.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

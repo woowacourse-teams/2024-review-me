@@ -1,4 +1,4 @@
-package reviewme.config.client.exception;
+package reviewme.auth.infrastructure.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;

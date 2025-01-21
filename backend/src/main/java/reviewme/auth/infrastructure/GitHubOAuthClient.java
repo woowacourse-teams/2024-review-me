@@ -1,29 +1,23 @@
-package reviewme.config.client;
+package reviewme.auth.infrastructure;
 
 import java.util.Objects;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClient.RequestHeadersSpec.ExchangeFunction;
-import reviewme.config.client.dto.request.GitHubAccessTokenRequest;
-import reviewme.config.client.dto.response.GitHubAccessTokenResponse;
-import reviewme.config.client.dto.response.GitHubUserInfoResponse;
-import reviewme.config.client.exception.GitHubOAuthFailedException;
+import reviewme.auth.infrastructure.dto.request.GitHubAccessTokenRequest;
+import reviewme.auth.infrastructure.dto.response.GitHubAccessTokenResponse;
+import reviewme.auth.infrastructure.dto.response.GitHubUserInfoResponse;
+import reviewme.auth.infrastructure.exception.GitHubOAuthFailedException;
+import reviewme.config.client.GitHubOAuthProperties;
 
+@Component
+@RequiredArgsConstructor
 public class GitHubOAuthClient {
 
     private final RestClient restClient;
-    private final String clientId;
-    private final String clientSecret;
-    private final String accessTokenUri;
-    private final String userInfoUri;
-
-    public GitHubOAuthClient(RestClient restClient, GitHubOAuthProperties properties) {
-        this.restClient = restClient;
-        this.clientId = properties.clientId();
-        this.clientSecret = properties.clientSecret();
-        this.accessTokenUri = properties.accessTokenUri();
-        this.userInfoUri = properties.userInfoUri();
-    }
+    private final GitHubOAuthProperties properties;
 
     public GitHubUserInfoResponse getUserInfo(String code) {
         String accessToken = requestAccessToken(code);
@@ -35,10 +29,10 @@ public class GitHubOAuthClient {
      */
     private String requestAccessToken(String code) {
         return restClient.post()
-                .uri(accessTokenUri)
+                .uri(properties.accessTokenUri())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .body(new GitHubAccessTokenRequest(clientId, clientSecret, code))
+                .body(new GitHubAccessTokenRequest(properties.clientId(), properties.clientSecret(), code))
                 .exchange(handleResponse(GitHubAccessTokenResponse.class))
                 .accessToken();
     }
@@ -48,7 +42,7 @@ public class GitHubOAuthClient {
      */
     private GitHubUserInfoResponse requestUserInfo(String accessToken) {
         return restClient.get()
-                .uri(userInfoUri)
+                .uri(properties.userInfoUri())
                 .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange(handleResponse(GitHubUserInfoResponse.class));

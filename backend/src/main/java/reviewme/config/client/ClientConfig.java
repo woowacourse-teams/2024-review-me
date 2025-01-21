@@ -6,7 +6,7 @@ import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 @Configuration
-public class OAuthClientConfig {
+public class ClientConfig {
 
     @Bean
     public RestClient restClient() {
@@ -19,10 +19,5 @@ public class OAuthClientConfig {
         JdkClientHttpRequestFactory clientHttpRequestFactory = new JdkClientHttpRequestFactory();
         clientHttpRequestFactory.setReadTimeout(3000);
         return clientHttpRequestFactory;
-    }
-
-    @Bean
-    public GitHubOAuthClient githubOAuthClient(GitHubOAuthProperties properties, RestClient restClient) {
-        return new GitHubOAuthClient(restClient, properties);
     }
 }
