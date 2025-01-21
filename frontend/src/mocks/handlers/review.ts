@@ -19,8 +19,10 @@ import {
   MOCK_REVIEW_INFO_DATA,
 } from '../mockData';
 import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
+import { WRITTEN_REVIEW_LIST } from '../mockData/writtenReviewList';
 
 import { authorizeWithCookie } from './cookies';
+import { paginateDataList } from './pagination';
 
 export const PAGE = {
   firstPageNumber: 1,
@@ -117,6 +119,33 @@ const getGroupedReviews = () => {
   });
 };
 
+// TODO: 파라미터 타입 분리, defaultSize인 10 상수화
+const getWrittenReviewList = (lastReviewId: number | null, size: number) => {
+  return http.get(endPoint.gettingWrittenReviewList(lastReviewId, size), ({ request, cookies }) => {
+    const handleAPI = () => {
+      const url = new URL(request.url);
+      const lastReviewIdParam = url.searchParams.get('lastReviewId');
+      const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
+
+      const { isLastPage, paginatedDataList, lastDataId } = paginateDataList(
+        WRITTEN_REVIEW_LIST.reviews,
+        'reviewId',
+        lastReviewId,
+        10,
+      );
+
+      return HttpResponse.json({
+        revieweeName: REVIEW_LIST.revieweeName,
+        projectName: REVIEW_LIST.projectName,
+        lastReviewId: lastDataId,
+        isLastPage: isLastPage,
+        reviews: paginatedDataList,
+      });
+    };
+    return authorizeWithCookie(cookies, handleAPI);
+  });
+};
+
 const reviewHandler = [
   getDetailedReview(),
   getReviewList(null, 10),
@@ -125,6 +154,7 @@ const reviewHandler = [
   getGroupedReviews(),
   getReviewInfoData(),
   postReview(),
+  getWrittenReviewList(null, 10),
 ];
 
 export default reviewHandler;
