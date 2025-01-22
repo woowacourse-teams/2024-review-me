@@ -10,14 +10,22 @@ export interface DataForReviewRequestCode {
   groupAccessCode?: string;
 }
 
-export const postDataForReviewRequestCodeApi = async (dataForReviewRequestCode: DataForReviewRequestCode) => {
+export const postDataForReviewRequestCodeApi = async ({
+  groupAccessCode,
+  ...commonRequestData
+}: DataForReviewRequestCode) => {
+  const requestData = {
+    ...commonRequestData,
+    ...(groupAccessCode !== undefined && { groupAccessCode }),
+  };
+  console.log('requestData', requestData);
   const response = await fetch(endPoint.postingDataForReviewRequestCode, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     // TODO : 회원 리뷰 링크 API 문서 나오면 비밀번호 관련해 변경해야함
-    body: JSON.stringify(dataForReviewRequestCode),
+    body: JSON.stringify(requestData),
   });
 
   if (!response.ok) {
