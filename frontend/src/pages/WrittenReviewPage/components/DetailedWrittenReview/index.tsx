@@ -27,12 +27,16 @@ const DetailedWrittenReview = ({ $isDisplayable, selectedReviewId }: DetailedWri
 
         <S.Outline>
           {selectedReviewId ? (
-            <S.ContentContainer>
-              <DetailedReview
-                selectedReviewId={selectedReviewId}
-                $layoutStyle={{ width: '100%', height: '100%', marginTop: '0', border: 'none' }}
-              />
-            </S.ContentContainer>
+            <DetailedReview
+              selectedReviewId={selectedReviewId}
+              $layoutStyle={{
+                width: '100%',
+                height: '100%',
+                marginTop: '0',
+                padding: '3rem 1.5rem',
+                border: 'none',
+              }}
+            />
           ) : (
             <NoSelectedReviewGuide />
           )}

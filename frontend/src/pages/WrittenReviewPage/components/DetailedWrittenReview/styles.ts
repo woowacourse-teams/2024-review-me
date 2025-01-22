@@ -25,6 +25,7 @@ export const DetailedWrittenReview = styled.div<StyleProps>`
 export const Outline = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 
   width: 100%;
   min-width: ${({ theme }) => theme.writtenReviewLayoutSize.largeMinWidth};
@@ -47,7 +48,7 @@ export const Outline = styled.div`
   }
 `;
 
-export const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+// export const ContentContainer = styled.div`
+//   display: flex;
+//   flex-direction: column;
+// `;
