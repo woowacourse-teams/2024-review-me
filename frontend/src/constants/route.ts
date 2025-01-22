@@ -1,13 +1,13 @@
-import { gettingPath } from '@/utils';
+import { makeRoutePath } from '@/utils';
 
 export const ROUTE = {
   home: '/',
-  reviewList: gettingPath('review-list'),
-  reviewWriting: gettingPath('review-writing'),
-  reviewWritingComplete: gettingPath('review-writing-complete'),
-  detailedReview: gettingPath('detailed-review'),
-  reviewZone: gettingPath('review-zone'),
-  reviewCollection: gettingPath('review-collection'),
-  reviewLinks: gettingPath('review-links', true),
-  writtenReview: gettingPath('written-review', true),
+  reviewList: makeRoutePath('review-list'),
+  reviewWriting: makeRoutePath('review-writing'),
+  reviewWritingComplete: makeRoutePath('review-writing-complete'),
+  detailedReview: makeRoutePath('detailed-review'),
+  reviewZone: makeRoutePath('review-zone'),
+  reviewCollection: makeRoutePath('review-collection'),
+  reviewLinks: makeRoutePath('review-links', true),
+  writtenReview: makeRoutePath('written-review', true),
 };
