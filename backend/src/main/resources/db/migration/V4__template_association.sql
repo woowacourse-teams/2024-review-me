@@ -6,9 +6,9 @@ ALTER TABLE question ADD COLUMN section_id BIGINT;
 ALTER TABLE question ADD COLUMN option_group_id BIGINT;
 
 -- 기존 테이블의 데이터를 새로운 테이블로 이동
-UPDATE question q SET section_id = sq.section_id FROM section_question sq WHERE q.id = sq.question_id;
-UPDATE section s SET template_id = st.template_id FROM template_section st WHERE s.id = st.section_id;
-UPDATE question q SET option_group_id = og.id FROM option_group og WHERE q.id = og.question_id;
+UPDATE question q JOIN section_question sq ON q.id = sq.question_id SET q.section_id = sq.section_id;
+UPDATE section s JOIN template_section st ON s.id = st.section_id SET s.template_id = st.template_id;
+UPDATE question q JOIN option_group og ON q.id = og.question_id SET q.option_group_id = og.id;
 
 -- FK 관계 설정
 ALTER TABLE section ADD CONSTRAINT section_fk_template_id FOREIGN KEY (template_id) REFERENCES template (id);
