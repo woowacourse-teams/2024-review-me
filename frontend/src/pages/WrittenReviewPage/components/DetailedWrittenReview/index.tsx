@@ -1,3 +1,5 @@
+import { DetailedReview } from '@/components';
+
 import { NoSelectedReviewGuide } from '../index';
 import { PageContentLayout } from '../layouts';
 
@@ -9,12 +11,19 @@ export interface DetailedWrittenReviewProps {
 }
 
 const DetailedWrittenReview = ({ $isDisplayable, selectedReviewId }: DetailedWrittenReviewProps) => {
-  // 추후 이곳에서 직접 상세 리뷰 데이터 호출
-
   return (
     <PageContentLayout title="작성한 리뷰 상세보기">
       <S.DetailedWrittenReview $isDisplayable={$isDisplayable}>
-        <S.Outline>{selectedReviewId ? <div>{selectedReviewId} 선택함 </div> : <NoSelectedReviewGuide />}</S.Outline>
+        <S.Outline>
+          {selectedReviewId ? (
+            <DetailedReview
+              selectedReviewId={selectedReviewId}
+              $layoutStyle={{ width: '100%', height: '100%', marginTop: '0', marginBottom: '2rem', border: 'none' }}
+            />
+          ) : (
+            <NoSelectedReviewGuide />
+          )}
+        </S.Outline>
       </S.DetailedWrittenReview>
     </PageContentLayout>
   );
