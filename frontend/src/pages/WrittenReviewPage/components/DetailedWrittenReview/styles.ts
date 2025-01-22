@@ -31,6 +31,7 @@ export const Outline = styled.div`
   max-width: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxWidth};
   height: 100%;
   min-height: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxHeight};
+  margin-bottom: 2rem;
 
   border: 0.2rem solid ${({ theme }) => theme.colors.lightGray};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
@@ -44,4 +45,9 @@ export const Outline = styled.div`
     min-width: 75vw;
     max-width: 75vw;
   }
+`;
+
+export const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;

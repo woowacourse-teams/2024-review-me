@@ -1,5 +1,7 @@
-import { DetailedReview } from '@/components';
+import { DetailedReview, BackButton } from '@/components';
+import { ROUTE } from '@/constants';
 
+import { useDeviceBreakpoints } from '../../hooks';
 import { NoSelectedReviewGuide } from '../index';
 import { PageContentLayout } from '../layouts';
 
@@ -11,15 +13,22 @@ export interface DetailedWrittenReviewProps {
 }
 
 const DetailedWrittenReview = ({ $isDisplayable, selectedReviewId }: DetailedWrittenReviewProps) => {
+  const { deviceType } = useDeviceBreakpoints();
+
   return (
-    <PageContentLayout title="작성한 리뷰 상세보기">
+    <PageContentLayout title={deviceType.isDesktop ? '작성한 리뷰 상세보기' : ''}>
       <S.DetailedWrittenReview $isDisplayable={$isDisplayable}>
+        {!deviceType.isDesktop && (
+          <BackButton prevPath={`/${ROUTE.writtenReview}`} wrapperStyle={{ marginBottom: '2rem' }} />
+        )}
         <S.Outline>
           {selectedReviewId ? (
-            <DetailedReview
-              selectedReviewId={selectedReviewId}
-              $layoutStyle={{ width: '100%', height: '100%', marginTop: '0', marginBottom: '2rem', border: 'none' }}
-            />
+            <S.ContentContainer>
+              <DetailedReview
+                selectedReviewId={selectedReviewId}
+                $layoutStyle={{ width: '100%', height: '100%', marginTop: '0', border: 'none' }}
+              />
+            </S.ContentContainer>
           ) : (
             <NoSelectedReviewGuide />
           )}
