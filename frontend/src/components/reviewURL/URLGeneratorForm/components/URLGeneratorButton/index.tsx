@@ -1,5 +1,5 @@
 import { DataForReviewRequestCode } from '@/apis/group';
-import { Button, TextBlinkLoader } from '@/components';
+import { Button, BlinkLoader } from '@/components';
 import { HOM_EVENT_NAME } from '@/constants';
 import { debounce, trackEventInAmplitude } from '@/utils';
 
@@ -42,7 +42,7 @@ const URLGeneratorButton = ({
       onClick={handleURLCreationButtonClick}
       disabled={!isFormValid && !mutation.isPending}
     >
-      {mutation.isPending ? <TextBlinkLoader $content="리뷰 링크 생성 중..." /> : <p>리뷰 링크 생성하기</p>}
+      {mutation.isPending ? <BlinkLoader>리뷰 링크 생성 중...</BlinkLoader> : '리뷰 링크 생성하기'}
     </Button>
   );
 };
