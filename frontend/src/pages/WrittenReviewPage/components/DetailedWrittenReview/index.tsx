@@ -1,4 +1,4 @@
-import { DetailedReview, BackButton } from '@/components';
+import { DetailedReview, BackButton, TopButton } from '@/components';
 import { ROUTE } from '@/constants';
 
 import { useDeviceBreakpoints } from '../../hooks';
@@ -19,8 +19,12 @@ const DetailedWrittenReview = ({ $isDisplayable, selectedReviewId }: DetailedWri
     <PageContentLayout title={deviceType.isDesktop ? '작성한 리뷰 상세보기' : ''}>
       <S.DetailedWrittenReview $isDisplayable={$isDisplayable}>
         {!deviceType.isDesktop && (
-          <BackButton prevPath={`/${ROUTE.writtenReview}`} wrapperStyle={{ marginBottom: '2rem' }} />
+          <>
+            <BackButton prevPath={`/${ROUTE.writtenReview}`} wrapperStyle={{ marginBottom: '2rem' }} />
+            <TopButton />
+          </>
         )}
+
         <S.Outline>
           {selectedReviewId ? (
             <S.ContentContainer>

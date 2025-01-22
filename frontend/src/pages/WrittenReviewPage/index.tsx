@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { ErrorSuspenseContainer, AuthAndServerErrorFallback, EmptyContent } from '@/components';
+import { ErrorSuspenseContainer, AuthAndServerErrorFallback, EmptyContent, TopButton } from '@/components';
 import { useSearchParamAndQuery } from '@/hooks';
 
 import DetailedWrittenReview from './components/DetailedWrittenReview';
@@ -32,9 +32,9 @@ const WrittenReviewPage = () => {
   // NOTE: 임시 로그인 인증 쿠키 설정
   // 추후 로그인 쿠키값/비로그인 쿠키값을 분리하고,
   // (이 페이지에서 쿠키를 설정하지 않고) 이전 페이지(url 관리 페이지)의 값을 가져와야 함
-  useLayoutEffect(() => {
-    document.cookie = 'mockAuthToken=2024-review-me';
-  }, []);
+  // useLayoutEffect(() => {
+  //   document.cookie = 'mockAuthToken=2024-review-me';
+  // }, []);
 
   const renderEmptyContent = () => (
     <EmptyContent
@@ -69,7 +69,12 @@ const WrittenReviewPage = () => {
     return deviceType.isDesktop ? renderDesktopView() : renderMobileOrTabletView();
   };
 
-  return <ErrorSuspenseContainer errorFallback={AuthAndServerErrorFallback}>{renderContent()}</ErrorSuspenseContainer>;
+  return (
+    <ErrorSuspenseContainer errorFallback={AuthAndServerErrorFallback}>
+      <TopButton />
+      {renderContent()}
+    </ErrorSuspenseContainer>
+  );
 };
 
 export default WrittenReviewPage;
