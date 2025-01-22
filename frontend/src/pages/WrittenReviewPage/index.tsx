@@ -13,7 +13,7 @@ const WrittenReviewPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { deviceType } = useDeviceBreakpoints();
-  const { data, isLoading } = useGetWrittenReviewList();
+  const { data } = useGetWrittenReviewList();
 
   const { queryString: reviewIdString } = useSearchParamAndQuery({
     queryStringKey: 'reviewId',
@@ -63,7 +63,6 @@ const WrittenReviewPage = () => {
     );
 
   const renderContent = () => {
-    if (isLoading) return;
     if (reviewList.length === 0) return renderEmptyContent();
 
     return deviceType.isDesktop ? renderDesktopView() : renderMobileOrTabletView();
