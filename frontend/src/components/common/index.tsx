@@ -17,3 +17,4 @@ export * from './modals';
 export { default as CopyTextButton } from './CopyTextButton';
 export { default as ReviewCard } from './ReviewCard';
 export { default as DetailedReview } from './DetailedReview';
+export { default as BackButton } from './BackButton';
