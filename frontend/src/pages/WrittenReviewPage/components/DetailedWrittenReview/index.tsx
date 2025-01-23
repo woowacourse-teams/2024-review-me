@@ -1,4 +1,6 @@
-import { DetailedReview, BackButton, TopButton } from '@/components';
+import { Suspense } from 'react';
+
+import { DetailedReview, BackButton, TopButton, LoadingBar } from '@/components';
 import { ROUTE } from '@/constants';
 
 import { useDeviceBreakpoints } from '../../hooks';
@@ -26,20 +28,22 @@ const DetailedWrittenReview = ({ $isDisplayable, selectedReviewId }: DetailedWri
         )}
 
         <S.Outline>
-          {selectedReviewId ? (
-            <DetailedReview
-              selectedReviewId={selectedReviewId}
-              $layoutStyle={{
-                width: '100%',
-                height: '100%',
-                marginTop: '0',
-                padding: '3rem 1.5rem',
-                border: 'none',
-              }}
-            />
-          ) : (
-            <NoSelectedReviewGuide />
-          )}
+          <Suspense fallback={<LoadingBar />}>
+            {selectedReviewId ? (
+              <DetailedReview
+                selectedReviewId={selectedReviewId}
+                $layoutStyle={{
+                  width: '100%',
+                  height: '100%',
+                  marginTop: '0',
+                  padding: '3rem 1.5rem',
+                  border: 'none',
+                }}
+              />
+            ) : (
+              <NoSelectedReviewGuide />
+            )}
+          </Suspense>
         </S.Outline>
       </S.DetailedWrittenReview>
     </PageContentLayout>
