@@ -14,11 +14,8 @@ export const postDataForReviewRequestCodeApi = async ({
   groupAccessCode,
   ...commonRequestData
 }: DataForReviewRequestCode) => {
-  const requestData = {
-    ...commonRequestData,
-    ...(groupAccessCode !== undefined && { groupAccessCode }),
-  };
-  console.log('requestData', requestData);
+  const requestData = groupAccessCode ? { ...commonRequestData, groupAccessCode } : commonRequestData;
+
   const response = await fetch(endPoint.postingDataForReviewRequestCode, {
     method: 'POST',
     headers: {
