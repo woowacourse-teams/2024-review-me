@@ -1,9 +1,6 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 
-import {
-  MEMBER_VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
-  VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
-} from '@/mocks/mockData/group';
+import { VALID_REVIEW_REQUEST_CODE } from '@/mocks/mockData/group';
 import QueryClientWrapper from '@/queryTestSetup/QueryClientWrapper';
 import { DataForReviewRequestCode } from '@/types';
 
@@ -45,7 +42,7 @@ describe('usePostDataForReviewRequestCode', () => {
       groupAccessCode: '1234',
     };
 
-    await testReviewRequestCode(dataForReviewRequestCode, VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE);
+    await testReviewRequestCode(dataForReviewRequestCode, VALID_REVIEW_REQUEST_CODE.nonMember);
   });
 
   it('회원용 - ReviewRequestCode를 발급받을 수 있다.', async () => {
@@ -54,6 +51,6 @@ describe('usePostDataForReviewRequestCode', () => {
       projectName: 'review-me',
     };
 
-    await testReviewRequestCode(dataForReviewRequestCode, MEMBER_VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE);
+    await testReviewRequestCode(dataForReviewRequestCode, VALID_REVIEW_REQUEST_CODE.member);
   });
 });

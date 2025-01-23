@@ -5,10 +5,9 @@ import { API_ERROR_MESSAGE, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants'
 import { getRequestBody } from '@/utils/mockingUtils';
 
 import {
-  MEMBER_VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
   MOCK_AUTH_TOKEN_NAME,
   REVIEW_GROUP_DATA,
-  VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
+  VALID_REVIEW_REQUEST_CODE,
   VALIDATED_PASSWORD,
 } from '../mockData/group';
 
@@ -19,13 +18,10 @@ const postDataForReviewRequestCode = () => {
     const bodyResult = await getRequestBody(request);
 
     if (bodyResult instanceof Error) return HttpResponse.json({ error: bodyResult.message }, { status: 400 });
-
+    const { nonMember: nonMemberReviewRequestCode, member: memberReviewRequestCode } = VALID_REVIEW_REQUEST_CODE;
     return HttpResponse.json(
       {
-        reviewRequestCode:
-          'groupAccessCode' in bodyResult
-            ? VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE
-            : MEMBER_VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
+        reviewRequestCode: 'groupAccessCode' in bodyResult ? nonMemberReviewRequestCode : memberReviewRequestCode,
       },
       { status: 200 },
     );
@@ -78,7 +74,7 @@ const getReviewGroupData = () => {
     //요청 url에서 reviewRequestCode 추출
     const reviewRequestCode = params.get(queryString.reviewRequestCode);
 
-    if (reviewRequestCode === VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE) {
+    if (reviewRequestCode) {
       return HttpResponse.json(REVIEW_GROUP_DATA);
     }
 
