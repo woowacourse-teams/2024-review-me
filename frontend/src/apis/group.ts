@@ -1,14 +1,8 @@
 import { ERROR_BOUNDARY_IGNORE_ERROR, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
-import { PasswordResponse, ReviewGroupData } from '@/types';
+import { DataForReviewRequestCode, PasswordResponse, ReviewGroupData } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
-
-export interface DataForReviewRequestCode {
-  revieweeName: string;
-  projectName: string;
-  groupAccessCode?: string;
-}
 
 export const postDataForReviewRequestCodeApi = async ({
   groupAccessCode,
