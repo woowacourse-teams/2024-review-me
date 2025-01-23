@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { DataForReviewRequestCode, postDataForReviewRequestCodeApi } from '@/apis/group';
+import { postDataForReviewRequestCodeApi } from '@/apis/group';
 import { GROUP_QUERY_KEY } from '@/constants';
+import { DataForReviewRequestCode } from '@/types';
 export interface UsePostDataForReviewRequestCodeProps {
   handleAPISuccess: (data: any) => void;
   handleAPIError: (error: Error) => void;

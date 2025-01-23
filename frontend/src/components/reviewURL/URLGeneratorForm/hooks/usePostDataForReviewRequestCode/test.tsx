@@ -5,66 +5,55 @@ import {
   VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
 } from '@/mocks/mockData/group';
 import QueryClientWrapper from '@/queryTestSetup/QueryClientWrapper';
+import { DataForReviewRequestCode } from '@/types';
 
 import usePostDataForReviewRequestCode from '.';
 
 describe('usePostDataForReviewRequestCode', () => {
+  // 공통 로직: renderHook 호출 및 초기화
+  const setupHook = () => {
+    const { result } = renderHook(
+      () =>
+        usePostDataForReviewRequestCode({
+          handleAPIError: (error: Error) => {
+            console.error(error);
+          },
+          handleAPISuccess: (data: any) => {},
+        }),
+      { wrapper: QueryClientWrapper },
+    );
+    return result;
+  };
+
+  // 공통 테스트 로직
+  const testReviewRequestCode = async (dataForReviewRequestCode: DataForReviewRequestCode, expectedCode: string) => {
+    const result = setupHook();
+
+    act(() => {
+      result.current.mutate(dataForReviewRequestCode);
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.data.reviewRequestCode).toEqual(expectedCode);
+  };
+
   it('비회원 - ReviewRequestCode를 발급받을 수 있다.', async () => {
-    // given
     const dataForReviewRequestCode = {
       revieweeName: 'ollie',
       projectName: 'review-me',
       groupAccessCode: '1234',
     };
 
-    const { result } = renderHook(
-      () =>
-        usePostDataForReviewRequestCode({
-          handleAPIError: (error: Error) => {
-            console.error(error);
-          },
-          handleAPISuccess: (data: any) => {},
-        }),
-      { wrapper: QueryClientWrapper },
-    );
-
-    // when
-    act(() => {
-      result.current.mutate(dataForReviewRequestCode);
-    });
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    // then
-    expect(result.current.data.reviewRequestCode).toEqual(VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE);
+    await testReviewRequestCode(dataForReviewRequestCode, VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE);
   });
 
   it('회원용 - ReviewRequestCode를 발급받을 수 있다.', async () => {
-    // given
     const dataForReviewRequestCode = {
       revieweeName: 'ollie',
       projectName: 'review-me',
     };
 
-    const { result } = renderHook(
-      () =>
-        usePostDataForReviewRequestCode({
-          handleAPIError: (error: Error) => {
-            console.error(error);
-          },
-          handleAPISuccess: (data: any) => {},
-        }),
-      { wrapper: QueryClientWrapper },
-    );
-
-    // when
-    act(() => {
-      result.current.mutate(dataForReviewRequestCode);
-    });
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    // then
-    expect(result.current.data.reviewRequestCode).toEqual(MEMBER_VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE);
+    await testReviewRequestCode(dataForReviewRequestCode, MEMBER_VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE);
   });
 });
