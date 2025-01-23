@@ -2,8 +2,10 @@ import { http, HttpResponse } from 'msw';
 
 import endPoint, { REVIEW_GROUP_DATA_API_PARAMS, REVIEW_GROUP_DATA_API_URL } from '@/apis/endpoints';
 import { API_ERROR_MESSAGE, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
+import { getRequestBody } from '@/utils/mockingUtils';
 
 import {
+  MEMBER_VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
   MOCK_AUTH_TOKEN_NAME,
   REVIEW_GROUP_DATA,
   VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
@@ -12,8 +14,21 @@ import {
 
 // NOTE: reviewRequestCode 생성 정상 응답
 const postDataForReviewRequestCode = () => {
-  return http.post(endPoint.postingDataForReviewRequestCode, async () => {
-    return HttpResponse.json({ reviewRequestCode: VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE }, { status: 200 });
+  return http.post(endPoint.postingDataForReviewRequestCode, async ({ request }) => {
+    // request body의 존재 검증
+    const bodyResult = await getRequestBody(request);
+
+    if (bodyResult instanceof Error) return HttpResponse.json({ error: bodyResult.message }, { status: 400 });
+
+    return HttpResponse.json(
+      {
+        reviewRequestCode:
+          'groupAccessCode' in bodyResult
+            ? VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE
+            : MEMBER_VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
+      },
+      { status: 200 },
+    );
   });
 };
 
