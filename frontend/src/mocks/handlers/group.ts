@@ -19,15 +19,11 @@ const postDataForReviewRequestCode = () => {
 
 const postPassWordValidation = () => {
   return http.post(endPoint.checkingPassword, async ({ request, cookies }) => {
-    // request body의 존재 검증
-    if (!request.body) return HttpResponse.json({ error: API_ERROR_MESSAGE[400] }, { status: 400 });
-
-    const rawBody = await request.body.getReader().read();
-    const textDecoder = new TextDecoder();
-    const bodyText = textDecoder.decode(rawBody.value);
+    const bodyResult = await getRequestBody(request);
+    if (bodyResult instanceof Error) return HttpResponse.json({ error: bodyResult.message }, { status: 400 });
 
     // request에 포함된 값들의 검증 시작
-    const { reviewRequestCode, groupAccessCode: password } = JSON.parse(bodyText);
+    const { reviewRequestCode, groupAccessCode: password } = bodyResult;
 
     // 유효하지 않은 비밀번호인 경우
     if (password !== VALIDATED_PASSWORD) {
