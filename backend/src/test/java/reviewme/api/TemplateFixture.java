@@ -2,12 +2,11 @@ package reviewme.api;
 
 import java.time.LocalDate;
 import java.util.List;
-import reviewme.template.domain.QuestionType;
-import reviewme.review.service.dto.response.detail.OptionGroupAnswerResponse;
 import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
+import reviewme.template.domain.QuestionType;
 import reviewme.template.domain.VisibleType;
 import reviewme.template.service.dto.response.OptionGroupResponse;
 import reviewme.template.service.dto.response.OptionItemResponse;

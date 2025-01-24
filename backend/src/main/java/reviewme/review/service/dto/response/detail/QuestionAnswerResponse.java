@@ -2,7 +2,7 @@ package reviewme.review.service.dto.response.detail;
 
 import jakarta.annotation.Nullable;
 import java.util.List;
-import reviewme.question.domain.QuestionType;
+import reviewme.template.domain.QuestionType;
 
 public record QuestionAnswerResponse(
         long questionId,

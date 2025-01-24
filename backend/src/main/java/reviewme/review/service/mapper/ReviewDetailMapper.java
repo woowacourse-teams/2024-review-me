@@ -16,7 +16,6 @@ import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.template.domain.OptionGroup;
-import reviewme.template.domain.SelectionRange;
 import reviewme.template.domain.OptionItem;
 import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
@@ -107,9 +106,8 @@ public class ReviewDetailMapper {
 
         List<OptionItemAnswerResponse> optionItemResponse = optionItems.stream()
                 .filter(optionItem -> selectedOptionIds.contains(optionItem.getId()))
-                .map(optionItem -> new OptionItemAnswerResponse(optionItem.getId(), optionItem.getContent(), true))
+                .map(optionItem -> new OptionItemAnswerResponse(optionItem.getId(), optionItem.getContent()))
                 .toList();
-        SelectionRange selectionRange = optionGroup.getSelectionRange();
 
         return new QuestionAnswerResponse(
                 question.getId(),
