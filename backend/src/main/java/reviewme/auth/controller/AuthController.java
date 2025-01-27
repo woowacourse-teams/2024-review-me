@@ -2,15 +2,14 @@ package reviewme.auth.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.auth.domain.Principal;
 import reviewme.auth.service.AuthService;
-import reviewme.auth.service.dto.GithubCodeRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,12 +17,12 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/v2/auth/github")
+    @GetMapping("/v2/auth/github")
     public ResponseEntity<Void> authWithGithub(
-            @Valid @RequestBody GithubCodeRequest request,
+            @RequestParam String code,
             HttpServletRequest httpRequest
     ) {
-        Principal principal = authService.authWithGithub(request);
+        Principal principal = authService.authWithGithub(code);
         HttpSession session = httpRequest.getSession();
         session.setAttribute("principal", principal);
         return ResponseEntity.ok().build();
