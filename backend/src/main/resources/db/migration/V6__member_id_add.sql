@@ -3,3 +3,6 @@
 
 ALTER TABLE review_group ADD COLUMN member_id NULL;
 ALTER TABLE review_group MODIFY COLUMN group_access_code VARCHAR(255) NULL:
+
+-- 리뷰에 memberId를 추가합니다.
+ALTER TABLE review ADD COLUMN member_id NULL;
