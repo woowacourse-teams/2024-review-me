@@ -4,7 +4,7 @@ import { getReviewListApi } from '@/apis/review';
 import { REVIEW_QUERY_KEY } from '@/constants';
 
 const useGetReviewList = () => {
-  const result = useSuspenseInfiniteQuery({
+  const { data, ...rest } = useSuspenseInfiniteQuery({
     queryKey: [REVIEW_QUERY_KEY.reviews],
     queryFn: ({ pageParam }) =>
       getReviewListApi({
@@ -13,13 +13,15 @@ const useGetReviewList = () => {
       }),
 
     initialPageParam: 0,
-    getNextPageParam: (data) => {
-      return data.lastReviewId;
-    },
+    getNextPageParam: (lastPage) => lastPage.lastReviewId,
+
     staleTime: 1 * 60 * 1000,
   });
 
-  return { ...result };
+  const isLastPage = data.pages[data.pages.length - 1].isLastPage;
+  const reviewList = data.pages.flatMap((page) => page.reviews) || [];
+
+  return { isLastPage, reviewList, ...rest };
 };
 
 export default useGetReviewList;

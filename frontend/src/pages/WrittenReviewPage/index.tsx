@@ -1,4 +1,3 @@
-import { useLayoutEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ErrorSuspenseContainer, AuthAndServerErrorFallback, EmptyContent, TopButton } from '@/components';
@@ -13,13 +12,12 @@ const WrittenReviewPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { deviceType } = useDeviceBreakpoints();
-  const { data } = useGetWrittenReviewList();
+  const { reviewList } = useGetWrittenReviewList();
 
   const { queryString: reviewIdString } = useSearchParamAndQuery({
     queryStringKey: 'reviewId',
   });
 
-  const reviewList = data?.pages.flatMap((page) => page.reviews) || [];
   const selectedReviewId = reviewIdString ? Number(reviewIdString) : null;
 
   const handleReviewItemClick = (reviewId: number) => {

@@ -4,7 +4,7 @@ import { getWrittenReviewList } from '@/apis/review';
 import { REVIEW_QUERY_KEY } from '@/constants';
 
 const useGetWrittenReviewList = () => {
-  const result = useSuspenseInfiniteQuery({
+  const { data, ...rest } = useSuspenseInfiniteQuery({
     queryKey: [REVIEW_QUERY_KEY.writtenReviewList],
     queryFn: ({ pageParam }) =>
       getWrittenReviewList({
@@ -13,12 +13,15 @@ const useGetWrittenReviewList = () => {
       }),
 
     initialPageParam: 0,
-    getNextPageParam: (data) => data.lastReviewId,
+    getNextPageParam: (lastPage) => lastPage.lastReviewId,
 
     staleTime: 1 * 60 * 1000,
   });
 
-  return { ...result };
+  const isLastPage = data.pages[data.pages.length - 1].isLastPage;
+  const reviewList = data.pages.flatMap((page) => page.reviews) || [];
+
+  return { reviewList, isLastPage, ...rest };
 };
 
 export default useGetWrittenReviewList;

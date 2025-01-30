@@ -13,7 +13,7 @@ import * as S from './styles';
 const ReviewListPageContents = () => {
   const navigate = useNavigate();
 
-  const { data, fetchNextPage, isFetchingNextPage, isSuccess } = useGetReviewList();
+  const { isLastPage, reviewList, fetchNextPage, isFetchingNextPage, isSuccess } = useGetReviewList();
   const { totalReviewCount } = useContext(ReviewInfoDataContext);
 
   const { param: reviewRequestCode } = useSearchParamAndQuery({
@@ -23,9 +23,6 @@ const ReviewListPageContents = () => {
   const handleReviewClick = (id: number) => {
     navigate(`/${ROUTE.detailedReview}/${reviewRequestCode}/${id}`);
   };
-
-  const isLastPage = data.pages[data.pages.length - 1].isLastPage;
-  const reviews = data.pages.flatMap((page) => page.reviews);
 
   const lastReviewElementRef = useInfiniteScroll({
     fetchNextPage,
@@ -41,20 +38,17 @@ const ReviewListPageContents = () => {
         <ReviewEmptySection content={REVIEW_EMPTY.noReviewInTotal} />
       ) : (
         <S.ReviewSection>
-          {reviews.map((review, index) => {
-            const isLastReview = reviews.length === index + 1;
-            return (
-              <UndraggableWrapper key={review.reviewId}>
-                <ReviewPreview
-                  createdAt={review.createdAt}
-                  contentPreview={review.contentPreview}
-                  categories={review.categories}
-                  handleClick={() => handleReviewClick(review.reviewId)}
-                />
-                <div ref={isLastReview ? lastReviewElementRef : null} style={{ height: '0.1rem' }} />
-              </UndraggableWrapper>
-            );
-          })}
+          {reviewList.map((review) => (
+            <UndraggableWrapper key={review.reviewId}>
+              <ReviewPreview
+                createdAt={review.createdAt}
+                contentPreview={review.contentPreview}
+                categories={review.categories}
+                handleClick={() => handleReviewClick(review.reviewId)}
+              />
+              {!isFetchingNextPage && !isLastPage && <div ref={lastReviewElementRef} style={{ height: '0.1rem' }} />}
+            </UndraggableWrapper>
+          ))}
         </S.ReviewSection>
       )}
     </>
