@@ -25,11 +25,11 @@ class ReviewGroupLookupServiceTest {
     void 리뷰_요청_코드로_리뷰_그룹을_조회한다() {
         // given
         ReviewGroup reviewGroup = reviewGroupRepository.save(new ReviewGroup(
+                1L,
                 "ted",
                 "review-me",
                 "reviewRequestCode",
-                "groupAccessCode",
-                1L
+                "groupAccessCode"
         ));
 
         // when
