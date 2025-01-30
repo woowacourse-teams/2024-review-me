@@ -28,10 +28,15 @@ export const Header = styled.div`
   border-radius: 1rem 1rem 0 0;
 `;
 
+export const Title = styled.h3`
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
 export const Main = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 
   width: 100%;
   padding: 2rem 2.5rem;
@@ -57,9 +62,11 @@ export const ContentPreview = styled.p`
 
 export const Footer = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 1.3rem;
+
   width: 100%;
+  padding: 0 2.5rem 2rem 2.5rem;
 
   ${media.small} {
     flex-direction: column;
@@ -80,4 +87,9 @@ export const ReviewKeywordList = styled.ul`
   ${media.small} {
     gap: 1.2rem;
   }
+`;
+
+export const Divider = styled.hr`
+  width: 100%;
+  border-top: 0.1rem solid ${({ theme }) => theme.colors.placeholder};
 `;

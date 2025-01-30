@@ -18,3 +18,5 @@ export { default as CopyTextButton } from './CopyTextButton';
 export { default as ReviewCard } from './ReviewCard';
 export { default as DetailedReview } from './DetailedReview';
 export { default as BackButton } from './BackButton';
+export { default as RevieweeInfo } from './RevieweeInfo';
+export { default as ReviewKeyword } from './ReviewKeyword';
