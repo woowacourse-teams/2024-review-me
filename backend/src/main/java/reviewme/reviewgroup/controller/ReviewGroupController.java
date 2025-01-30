@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import reviewme.reviewgroup.service.ReviewGroupLookupService;
 import reviewme.reviewgroup.service.ReviewGroupService;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
@@ -31,16 +30,24 @@ public class ReviewGroupController {
 
     @PostMapping("/v2/groups")
     public ResponseEntity<ReviewGroupCreationResponse> createReviewGroup(
-            @Valid @RequestBody ReviewGroupCreationRequest request,
-            // TODO: 회원 세션 임시 사용 방식, 이후 리졸버를 통해 객체로 받아와야 함
-            @SessionAttribute(name = "member", required = false) Long memberId
+            @Valid @RequestBody ReviewGroupCreationRequest request
+            /*
+            TODO: 회원 세션 임시 사용 방식, 이후 리졸버를 통해 객체로 받아와야 함
+            @Nullable Member member
+             */
     ) {
+        /*
+        TODO: 회원 세션 유무에 따른 분기처리 로직
         ReviewGroupCreationResponse response;
-        if (memberId != null) {
-            response = reviewGroupService.createReviewGroupForMember(request, memberId);
+        if (member != null) {
+            response = reviewGroupService.createReviewGroupForMember(request, member.getId());
         } else {
             response = reviewGroupService.createReviewGroupForGuest(request);
         }
+        return ResponseEntity.ok(response);
+         */
+
+        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroupForGuest(request);
         return ResponseEntity.ok(response);
     }
 
