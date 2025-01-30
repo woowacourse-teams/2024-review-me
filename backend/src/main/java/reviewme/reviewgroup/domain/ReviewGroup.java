@@ -49,7 +49,7 @@ public class ReviewGroup {
     private GroupAccessCode groupAccessCode;
 
 
-    public ReviewGroup(Long memberId, long templateId, String reviewee, String projectName, String reviewRequestCode,
+    private ReviewGroup(Long memberId, long templateId, String reviewee, String projectName, String reviewRequestCode,
                        String groupAccessCode) {
         validateRevieweeLength(reviewee);
         validateProjectNameLength(projectName);
@@ -58,7 +58,11 @@ public class ReviewGroup {
         this.reviewee = reviewee;
         this.projectName = projectName;
         this.reviewRequestCode = reviewRequestCode;
-        this.groupAccessCode = new GroupAccessCode(groupAccessCode);
+        if (groupAccessCode != null) {
+            this.groupAccessCode = new GroupAccessCode(groupAccessCode);
+        } else {
+            this.groupAccessCode = null;
+        }
     }
 
     public ReviewGroup(Long memberId, long templateId, String reviewee, String projectName, String reviewRequestCode) {
@@ -85,10 +89,10 @@ public class ReviewGroup {
     }
 
     public boolean matchesGroupAccessCode(String code) {
-        return groupAccessCode.matches(code);
+        return groupAccessCode != null && groupAccessCode.matches(code);
     }
 
     public String getGroupAccessCode() {
-        return groupAccessCode.getCode();
+        return groupAccessCode != null ? groupAccessCode.getCode() : null;
     }
 }
