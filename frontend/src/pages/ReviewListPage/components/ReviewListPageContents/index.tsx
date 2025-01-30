@@ -6,16 +6,14 @@ import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
 import { REVIEW_EMPTY } from '@/constants';
 import { ROUTE } from '@/constants/route';
-import { useGetReviewList, useSearchParamAndQuery } from '@/hooks';
-
-import { useInfiniteScroll } from '../../hooks';
+import { useGetReviewList, useSearchParamAndQuery, useInfiniteScroll } from '@/hooks';
 
 import * as S from './styles';
 
 const ReviewListPageContents = () => {
   const navigate = useNavigate();
 
-  const { data, fetchNextPage, isLoading, isSuccess } = useGetReviewList();
+  const { data, fetchNextPage, isFetchingNextPage, isSuccess } = useGetReviewList();
   const { totalReviewCount } = useContext(ReviewInfoDataContext);
 
   const { param: reviewRequestCode } = useSearchParamAndQuery({
@@ -26,13 +24,12 @@ const ReviewListPageContents = () => {
     navigate(`/${ROUTE.detailedReview}/${reviewRequestCode}/${id}`);
   };
 
-  // TODO: 리팩토링
   const isLastPage = data.pages[data.pages.length - 1].isLastPage;
   const reviews = data.pages.flatMap((page) => page.reviews);
 
   const lastReviewElementRef = useInfiniteScroll({
     fetchNextPage,
-    isLoading,
+    isFetchingNextPage,
     isLastPage,
   });
 
