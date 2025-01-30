@@ -31,6 +31,9 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "reviewer_id", nullable = true)
+    private Long reviewerId;
+
     @Column(name = "template_id", nullable = false)
     private long templateId;
 
@@ -44,11 +47,16 @@ public class Review {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Review(long templateId, long reviewGroupId, List<Answer> answers) {
+    public Review(Long reviewerId, long templateId, long reviewGroupId, List<Answer> answers) {
+        this.reviewerId = reviewerId;
         this.templateId = templateId;
         this.reviewGroupId = reviewGroupId;
         this.answers = answers;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public Review(long templateId, long reviewGroupId, List<Answer> answers) {
+        this(null, templateId, reviewGroupId, answers);
     }
 
     public Set<Long> getAnsweredQuestionIds() {
