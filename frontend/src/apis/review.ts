@@ -12,6 +12,11 @@ import {
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
+export interface GetInfiniteReviewListApi {
+  lastReviewId: number | null;
+  size: number;
+}
+
 export const getDataToWriteReviewApi = async (reviewRequestCode: string) => {
   const response = await fetch(endPoint.gettingDataToWriteReview(reviewRequestCode), {
     method: 'GET',
@@ -80,12 +85,7 @@ export const getDetailedReviewApi = async ({ reviewId }: GetDetailedReviewApi) =
   return data as DetailReviewData;
 };
 
-interface GetReviewListApi {
-  lastReviewId: number | null;
-  size: number;
-}
-
-export const getReviewListApi = async ({ lastReviewId, size }: GetReviewListApi) => {
+export const getReviewListApi = async ({ lastReviewId, size }: GetInfiniteReviewListApi) => {
   const response = await fetch(endPoint.gettingReviewList(lastReviewId, size), {
     method: 'GET',
     headers: {
@@ -140,12 +140,7 @@ export const getGroupedReviews = async ({ sectionId }: GetGroupedReviewsProps) =
   return data as GroupedReviews;
 };
 
-interface GetWrittenReviewListApi {
-  lastReviewId: number | null;
-  size: number;
-}
-
-export const getWrittenReviewList = async ({ lastReviewId, size }: GetWrittenReviewListApi) => {
+export const getWrittenReviewList = async ({ lastReviewId, size }: GetInfiniteReviewListApi) => {
   const response = await fetch(endPoint.gettingWrittenReviewList(lastReviewId, size), {
     method: 'GET',
     headers: {

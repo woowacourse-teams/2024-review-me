@@ -9,6 +9,7 @@ import endPoint, {
   REVIEW_WRITING_API_URL,
   VERSION2,
 } from '@/apis/endpoints';
+import { GetInfiniteReviewListApi } from '@/apis/review';
 import { DEFAULT_SIZE_PER_PAGE } from '@/constants';
 
 import {
@@ -66,8 +67,7 @@ const getDataToWriteReview = () =>
     return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
   });
 
-// TODO: 추후 getReviewList API에서 리뷰 정보(이름, 개수...)를 내려주지 않는 경우 핸들러도 수정 필요
-const getReviewList = (lastReviewId: number | null, size: number) => {
+const getReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApi) => {
   return http.get(endPoint.gettingReviewList(lastReviewId, size), ({ request, cookies }) => {
     const handleAPI = () => {
       const url = new URL(request.url);
@@ -75,23 +75,18 @@ const getReviewList = (lastReviewId: number | null, size: number) => {
       const lastReviewIdParam = url.searchParams.get('lastReviewId');
       const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
 
-      const isFirstPage = lastReviewId === 0;
-      const startIndex = isFirstPage
-        ? PAGE.firstPageStartIndex
-        : REVIEW_LIST.reviews.findIndex((review) => review.reviewId === lastReviewId) + 1;
-
-      const endIndex = startIndex + size;
-
-      const paginatedReviews = REVIEW_LIST.reviews.slice(startIndex, endIndex);
-
-      const isLastPage = endIndex >= REVIEW_LIST.reviews.length;
+      const { isLastPage, paginatedDataList, lastDataId } = paginateDataList({
+        dataList: WRITTEN_REVIEW_LIST.reviews,
+        dataId: 'reviewId',
+        lastDataId: lastReviewId,
+      });
 
       return HttpResponse.json({
         revieweeName: REVIEW_LIST.revieweeName,
         projectName: REVIEW_LIST.projectName,
-        lastReviewId: paginatedReviews.length > 0 ? paginatedReviews[paginatedReviews.length - 1].reviewId : 0,
+        lastReviewId: lastDataId,
         isLastPage: isLastPage,
-        reviews: paginatedReviews,
+        reviews: paginatedDataList,
       });
     };
 
@@ -120,8 +115,7 @@ const getGroupedReviews = () => {
   });
 };
 
-// TODO: 파라미터 타입 분리
-const getWrittenReviewList = (lastReviewId: number | null, size: number) => {
+const getWrittenReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApi) => {
   return http.get(endPoint.gettingWrittenReviewList(lastReviewId, size), ({ request, cookies }) => {
     const handleAPI = () => {
       const url = new URL(request.url);
@@ -150,13 +144,13 @@ const getWrittenReviewList = (lastReviewId: number | null, size: number) => {
 
 const reviewHandler = [
   getDetailedReview(),
-  getReviewList(null, DEFAULT_SIZE_PER_PAGE),
+  getReviewList({ lastReviewId: null, size: DEFAULT_SIZE_PER_PAGE }),
   getDataToWriteReview(),
   getSectionList(),
   getGroupedReviews(),
   getReviewInfoData(),
   postReview(),
-  getWrittenReviewList(null, DEFAULT_SIZE_PER_PAGE),
+  getWrittenReviewList({ lastReviewId: null, size: DEFAULT_SIZE_PER_PAGE }),
 ];
 
 export default reviewHandler;
