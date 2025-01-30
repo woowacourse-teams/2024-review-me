@@ -128,12 +128,11 @@ const getWrittenReviewList = (lastReviewId: number | null, size: number) => {
       const lastReviewIdParam = url.searchParams.get('lastReviewId');
       const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
 
-      const { isLastPage, paginatedDataList, lastDataId } = paginateDataList(
-        WRITTEN_REVIEW_LIST.reviews,
-        'reviewId',
-        lastReviewId,
-        DEFAULT_SIZE_PER_PAGE,
-      );
+      const { isLastPage, paginatedDataList, lastDataId } = paginateDataList({
+        dataList: WRITTEN_REVIEW_LIST.reviews,
+        dataId: 'reviewId',
+        lastDataId: lastReviewId,
+      });
 
       return HttpResponse.json({
         revieweeName: REVIEW_LIST.revieweeName,
