@@ -25,37 +25,25 @@ public class ReviewGroupService {
     private final TemplateRepository templateRepository;
 
     @Transactional
-    public ReviewGroupCreationResponse createReviewGroupForMember(ReviewGroupCreationRequest request, long memberId) {
+    public ReviewGroupCreationResponse createReviewGroup(ReviewGroupCreationRequest request, Long memberId) {
         String reviewRequestCode = generateReviewRequestCode();
 
         Template template = templateRepository.findById(DEFAULT_TEMPLATE_ID)
                 .orElseThrow(() -> new TemplateNotFoundException(DEFAULT_TEMPLATE_ID));
 
-        ReviewGroup reviewGroup = reviewGroupRepository.save(
-                new ReviewGroup(
-                        memberId, template.getId(), request.revieweeName(), request.projectName(), reviewRequestCode
-                )
-        );
-        return new ReviewGroupCreationResponse(reviewGroup.getReviewRequestCode());
-    }
-
-    @Transactional
-    public ReviewGroupCreationResponse createReviewGroupForGuest(ReviewGroupCreationRequest request) {
-        String reviewRequestCode = generateReviewRequestCode();
-
-        if (request.groupAccessCode() == null) {
-            throw new GroupAccessCodeNullException();
+        ReviewGroup reviewGroup;
+        if (memberId != null) {
+            reviewGroup = new ReviewGroup(memberId, template.getId(), request.revieweeName(), request.projectName(),
+                    reviewRequestCode);
+        } else {
+            if (request.groupAccessCode() == null) {
+                throw new GroupAccessCodeNullException();
+            }
+            reviewGroup = new ReviewGroup(template.getId(), request.revieweeName(), request.projectName(),
+                    reviewRequestCode, request.groupAccessCode());
         }
 
-        Template template = templateRepository.findById(DEFAULT_TEMPLATE_ID)
-                .orElseThrow(() -> new TemplateNotFoundException(DEFAULT_TEMPLATE_ID));
-
-        ReviewGroup reviewGroup = reviewGroupRepository.save(
-                new ReviewGroup(
-                        template.getId(), request.revieweeName(), request.projectName(), reviewRequestCode,
-                        request.groupAccessCode()
-                )
-        );
+        reviewGroupRepository.save(reviewGroup);
         return new ReviewGroupCreationResponse(reviewGroup.getReviewRequestCode());
     }
 
