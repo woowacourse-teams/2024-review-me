@@ -9,6 +9,7 @@ import endPoint, {
   REVIEW_WRITING_API_URL,
   VERSION2,
 } from '@/apis/endpoints';
+import { DEFAULT_SIZE_PER_PAGE } from '@/constants';
 
 import {
   DETAILED_REVIEW_MOCK_DATA,
@@ -119,7 +120,7 @@ const getGroupedReviews = () => {
   });
 };
 
-// TODO: 파라미터 타입 분리, defaultSize인 10 상수화
+// TODO: 파라미터 타입 분리
 const getWrittenReviewList = (lastReviewId: number | null, size: number) => {
   return http.get(endPoint.gettingWrittenReviewList(lastReviewId, size), ({ request, cookies }) => {
     const handleAPI = () => {
@@ -131,7 +132,7 @@ const getWrittenReviewList = (lastReviewId: number | null, size: number) => {
         WRITTEN_REVIEW_LIST.reviews,
         'reviewId',
         lastReviewId,
-        10,
+        DEFAULT_SIZE_PER_PAGE,
       );
 
       return HttpResponse.json({
@@ -142,19 +143,21 @@ const getWrittenReviewList = (lastReviewId: number | null, size: number) => {
         reviews: paginatedDataList,
       });
     };
-    return authorizeWithCookie(cookies, handleAPI);
+
+    return handleAPI();
+    //return authorizeWithCookie(cookies, handleAPI);
   });
 };
 
 const reviewHandler = [
   getDetailedReview(),
-  getReviewList(null, 10),
+  getReviewList(null, DEFAULT_SIZE_PER_PAGE),
   getDataToWriteReview(),
   getSectionList(),
   getGroupedReviews(),
   getReviewInfoData(),
   postReview(),
-  getWrittenReviewList(null, 10),
+  getWrittenReviewList(null, DEFAULT_SIZE_PER_PAGE),
 ];
 
 export default reviewHandler;

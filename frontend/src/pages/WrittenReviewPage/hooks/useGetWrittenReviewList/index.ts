@@ -1,7 +1,7 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
 import { getWrittenReviewList } from '@/apis/review';
-import { REVIEW_QUERY_KEY } from '@/constants';
+import { DEFAULT_SIZE_PER_PAGE, REVIEW_QUERY_KEY } from '@/constants';
 
 const useGetWrittenReviewList = () => {
   const { data, ...rest } = useSuspenseInfiniteQuery({
@@ -9,7 +9,7 @@ const useGetWrittenReviewList = () => {
     queryFn: ({ pageParam }) =>
       getWrittenReviewList({
         lastReviewId: pageParam === 0 ? null : pageParam, // 첫 요청일 때 null으로 보냄
-        size: 10,
+        size: DEFAULT_SIZE_PER_PAGE,
       }),
 
     initialPageParam: 0,
