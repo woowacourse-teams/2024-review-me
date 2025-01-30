@@ -15,7 +15,7 @@ export { default as OptionSwitch } from './OptionSwitch';
 export { default as ReviewEmptySection } from './ReviewEmptySection';
 export * from './modals';
 export { default as CopyTextButton } from './CopyTextButton';
-export { default as ReviewCard } from './ReviewCard';
+export { default as ReviewPreview } from './ReviewPreview';
 export { default as DetailedReview } from './DetailedReview';
 export { default as BackButton } from './BackButton';
 export { default as RevieweeInfo } from './RevieweeInfo';

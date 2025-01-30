@@ -1,8 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 
-import { ReviewEmptySection } from '@/components';
-import ReviewCard from '@/components/common/ReviewCard';
+import { ReviewEmptySection, ReviewPreview } from '@/components';
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
 import { REVIEW_EMPTY } from '@/constants';
@@ -27,6 +26,7 @@ const ReviewListPageContents = () => {
     navigate(`/${ROUTE.detailedReview}/${reviewRequestCode}/${id}`);
   };
 
+  // TODO: 리팩토링
   const isLastPage = data.pages[data.pages.length - 1].isLastPage;
   const reviews = data.pages.flatMap((page) => page.reviews);
 
@@ -48,7 +48,7 @@ const ReviewListPageContents = () => {
             const isLastReview = reviews.length === index + 1;
             return (
               <UndraggableWrapper key={review.reviewId}>
-                <ReviewCard
+                <ReviewPreview
                   createdAt={review.createdAt}
                   contentPreview={review.contentPreview}
                   categories={review.categories}

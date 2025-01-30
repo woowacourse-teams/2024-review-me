@@ -1,9 +1,9 @@
-import { ReviewDate, ReviewKeyword, RevieweeInfo } from '@/components/common';
+import { ReviewDate, ReviewKeyword, RevieweeInfo } from '@/components';
 import { Category } from '@/types';
 
 import * as S from './styles';
 
-interface ReviewCardProps {
+interface ReviewPreviewProps {
   createdAt: string;
   projectName?: string;
   contentPreview: string;
@@ -12,14 +12,14 @@ interface ReviewCardProps {
   revieweeName?: string;
 }
 
-const ReviewCard = ({
+const ReviewPreview = ({
   projectName,
   createdAt,
   contentPreview,
   categories,
   handleClick,
   revieweeName,
-}: ReviewCardProps) => {
+}: ReviewPreviewProps) => {
   const date = new Date(createdAt);
 
   return (
@@ -50,4 +50,4 @@ const ReviewCard = ({
   );
 };
 
-export default ReviewCard;
+export default ReviewPreview;
