@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 import media from '@/utils/media';
 
 export const WrittenReviewList = styled.ul`
+  scrollbar-gutter: stable both-edges;
+
   overflow-x: hidden;
   overflow-y: auto;
   display: flex;
@@ -15,6 +17,7 @@ export const WrittenReviewList = styled.ul`
   height: 100%;
   min-height: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxHeight};
   max-height: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxHeight};
+  padding-right: 0.3rem;
 
   ${media.medium} {
     min-width: 65vw;
