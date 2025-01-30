@@ -18,9 +18,9 @@ import reviewme.review.service.ReviewSummaryService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
+import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
-import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
 import reviewme.reviewgroup.controller.ReviewGroupSession;
 import reviewme.reviewgroup.domain.ReviewGroup;
 
@@ -35,9 +35,19 @@ public class ReviewController {
     private final ReviewGatheredLookupService reviewGatheredLookupService;
 
     @PostMapping("/v2/reviews")
-    public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRegisterRequest request) {
-        // 회원 세션 추후 추가해야 함
-        long savedReviewId = reviewRegisterService.registerReview(request);
+    public ResponseEntity<Void> createReview(
+            @Valid @RequestBody ReviewRegisterRequest request
+            /*
+            TODO: 회원 세션 임시 사용 방식, 이후 리졸버를 통해 객체로 받아와야 함
+            @Nullable @LoginMember Member member
+             */
+    ) {
+        /*
+        TODO: 회원 세션 유무에 따른 분기처리 로직
+        Long memberId = Optional.ofNullable(member).map(Member::getId).orElse(null);
+         */
+        long memberId = 1L; // 임시
+        long savedReviewId = reviewRegisterService.registerReview(request, memberId);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
