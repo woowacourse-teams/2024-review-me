@@ -33,21 +33,17 @@ public class ReviewGroupController {
             @Valid @RequestBody ReviewGroupCreationRequest request
             /*
             TODO: 회원 세션 임시 사용 방식, 이후 리졸버를 통해 객체로 받아와야 함
-            @Nullable Member member
+            @Nullable @LoginMember Member member
              */
     ) {
         /*
         TODO: 회원 세션 유무에 따른 분기처리 로직
-        ReviewGroupCreationResponse response;
-        if (member != null) {
-            response = reviewGroupService.createReviewGroupForMember(request, member.getId());
-        } else {
-            response = reviewGroupService.createReviewGroupForGuest(request);
-        }
+        Long memberId = Optional.ofNullable(member).map(Member::getId).orElse(null);
+        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request, memberId);
         return ResponseEntity.ok(response);
-         */
-
-        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroupForGuest(request);
+        */
+        long memberId = 1L; // 임시
+        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request, memberId);
         return ResponseEntity.ok(response);
     }
 

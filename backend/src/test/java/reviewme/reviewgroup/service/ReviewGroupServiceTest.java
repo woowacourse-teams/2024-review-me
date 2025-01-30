@@ -58,7 +58,7 @@ class ReviewGroupServiceTest {
         long memberId = 1L;
 
         // when
-        ReviewGroupCreationResponse actual = reviewGroupService.createReviewGroupForMember(request, memberId);
+        ReviewGroupCreationResponse actual = reviewGroupService.createReviewGroup(request, memberId);
 
         // then
         ReviewGroup expected = reviewGroupRepository.findByReviewRequestCode(actual.reviewRequestCode())
@@ -86,7 +86,7 @@ class ReviewGroupServiceTest {
         ReviewGroupCreationRequest request = new ReviewGroupCreationRequest(revieweeName, projectName, "groupAccessCode");
 
         // when
-        ReviewGroupCreationResponse actual = reviewGroupService.createReviewGroupForGuest(request);
+        ReviewGroupCreationResponse actual = reviewGroupService.createReviewGroup(request, null);
 
         // then
         ReviewGroup expected = reviewGroupRepository.findByReviewRequestCode(actual.reviewRequestCode())
@@ -115,7 +115,7 @@ class ReviewGroupServiceTest {
         ReviewGroupCreationRequest request = new ReviewGroupCreationRequest("sancho", "reviewme", "groupAccessCode");
 
         // when
-        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroupForGuest(request);
+        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request, null);
 
         // then
         assertThat(response).isEqualTo(new ReviewGroupCreationResponse("AAAA"));
