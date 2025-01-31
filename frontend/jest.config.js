@@ -3,7 +3,11 @@ const { pathsToModuleNameMapper } = require('ts-jest');
 const { compilerOptions } = require('./tsconfig');
 
 module.exports = {
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
+  moduleNameMapper: {
+    ...pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }), // 기존 TypeScript alias 유지
+    '\\.(png|jpg|ico|jpeg|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+      '<rootDir>/src/__mocks__/ImageMock.js',
+  },
   setupFiles: ['./jest.polyfills.js'],
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['./jest.setup.js'],
