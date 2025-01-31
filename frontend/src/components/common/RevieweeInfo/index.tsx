@@ -1,4 +1,4 @@
-import revieweeIcon from '@/assets/revieweeEmoji.png';
+import RevieweeIcon from '@/assets/revieweeEmoji.png';
 
 import * as S from './styles';
 
@@ -10,7 +10,7 @@ const RevieweeInfo = ({ revieweeName }: RevieweeInfo) => {
   return (
     <S.RevieweeInfo>
       <S.Guide>
-        <img src={revieweeIcon} alt="" />
+        <img src={RevieweeIcon} alt="" />
         <span>리뷰이</span>
       </S.Guide>
       | <S.RevieweeName>{revieweeName}</S.RevieweeName>
