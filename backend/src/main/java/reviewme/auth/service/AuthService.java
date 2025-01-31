@@ -25,8 +25,7 @@ public class AuthService {
     @Transactional
     public void authWithGithub(HttpServletRequest httpRequest, String code) {
         GitHubUserInfoResponse userInfo = githubOAuthClient.getUserInfo(code);
-        String email = userInfo.email();
-        Member member = getOrSaveMember(email);
+        Member member = getOrSaveMember(userInfo.email());
         GitHubMember gitHubMember = gitHubMemberService.createGitHubMember(userInfo.userName());
 
         HttpSession session = httpRequest.getSession();
