@@ -7,29 +7,25 @@ import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
-import reviewme.reviewgroup.service.exception.GroupAccessCodeNullException;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.template.domain.Template;
-import reviewme.template.repository.TemplateRepository;
-import reviewme.template.service.exception.TemplateNotFoundException;
+import reviewme.template.service.DefaultTemplateService;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewGroupService {
 
     private static final int REVIEW_REQUEST_CODE_LENGTH = 8;
-    private static final long DEFAULT_TEMPLATE_ID = 1L;
 
     private final ReviewGroupRepository reviewGroupRepository;
     private final RandomCodeGenerator randomCodeGenerator;
-    private final TemplateRepository templateRepository;
+    private final DefaultTemplateService defaultTemplateService;
 
     @Transactional
     public ReviewGroupCreationResponse createReviewGroup(ReviewGroupCreationRequest request, Long memberId) {
         String reviewRequestCode = generateReviewRequestCode();
 
-        Template template = templateRepository.findById(DEFAULT_TEMPLATE_ID)
-                .orElseThrow(() -> new TemplateNotFoundException(DEFAULT_TEMPLATE_ID));
+        Template template = defaultTemplateService.getDefaultTemplate();
 
         ReviewGroup reviewGroup;
         if (memberId != null) {
