@@ -266,11 +266,14 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 자신이_받은_리뷰의_요약를_조회한다() {
-        BDDMockito.given(reviewSummaryService.getReviewSummary(any()))
+        BDDMockito.given(reviewSummaryService.getReviewSummary(anyLong()))
                 .willReturn(new ReceivedReviewsSummaryResponse("리뷰미", "산초", 5));
 
         CookieDescriptor[] cookieDescriptors = {
                 cookieWithName("JSESSIONID").description("세션 ID")
+        };
+        ParameterDescriptor[] requestPathDescriptors = {
+                parameterWithName("reviewGroupId").description("리뷰 그룹 ID")
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
@@ -281,13 +284,15 @@ class ReviewApiTest extends ApiTest {
 
         RestDocumentationResultHandler handler = document(
                 "received-review-summary",
+                pathParameters(requestPathDescriptors),
                 requestCookies(cookieDescriptors),
                 responseFields(responseFieldDescriptors)
         );
 
         givenWithSpec().log().all()
+                .pathParam("reviewGroupId", "1")
                 .cookie("JSESSIONID", "ABCDEFGHI1234")
-                .when().get("/v2/reviews/summary")
+                .when().get("/v2/groups/{reviewGroupId}/reviews/summary")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);

@@ -55,7 +55,7 @@ class ReviewSummaryServiceTest {
         reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup2.getId(), List.of()));
 
         // when
-        ReceivedReviewsSummaryResponse actual = reviewSummaryService.getReviewSummary(reviewGroup1);
+        ReceivedReviewsSummaryResponse actual = reviewSummaryService.getReviewSummary(reviewGroup1.getId());
 
         // then
         assertAll(

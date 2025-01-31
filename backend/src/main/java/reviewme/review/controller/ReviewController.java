@@ -69,11 +69,11 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/reviews/summary")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/summary")
     public ResponseEntity<ReceivedReviewsSummaryResponse> findReceivedReviewOverview(
-            @ReviewGroupSession ReviewGroup reviewGroup
+            @PathVariable long reviewGroupId
     ) {
-        ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewGroup);
+        ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewGroupId);
         return ResponseEntity.ok(response);
     }
 
