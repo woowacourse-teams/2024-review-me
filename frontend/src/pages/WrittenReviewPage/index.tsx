@@ -27,13 +27,6 @@ const WrittenReviewPage = () => {
     navigate(`${location.pathname}?${params.toString()}`);
   };
 
-  // NOTE: 임시 로그인 인증 쿠키 설정
-  // 추후 로그인 쿠키값/비로그인 쿠키값을 분리하고,
-  // (이 페이지에서 쿠키를 설정하지 않고) 이전 페이지(url 관리 페이지)의 값을 가져와야 함
-  // useLayoutEffect(() => {
-  //   document.cookie = 'mockAuthToken=2024-review-me';
-  // }, []);
-
   const renderEmptyContent = () => (
     <EmptyContent
       iconWidth={deviceType.isDesktop ? '30vw' : '60vw'}
@@ -44,7 +37,7 @@ const WrittenReviewPage = () => {
     </EmptyContent>
   );
 
-  // 노트북, 보통 사이즈 이상의 태블릿 가로모드: 목록, 상세 모두 렌더링
+  // Large 이상: 목록, 상세 모두 렌더링
   const renderDesktopView = () => (
     <S.PageContainer>
       <WrittenReviewList handleClick={handleReviewItemClick} />
