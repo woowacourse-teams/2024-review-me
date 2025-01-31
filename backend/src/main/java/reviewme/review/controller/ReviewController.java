@@ -77,13 +77,13 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/reviews/gather")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/gather")
     public ResponseEntity<ReviewsGatheredBySectionResponse> getReceivedReviewsBySectionId(
-            @RequestParam("sectionId") long sectionId,
-            @ReviewGroupSession ReviewGroup reviewGroup
+            @PathVariable long reviewGroupId,
+            @RequestParam("sectionId") long sectionId
     ) {
         ReviewsGatheredBySectionResponse response =
-                reviewGatheredLookupService.getReceivedReviewsBySectionId(reviewGroup, sectionId);
+                reviewGatheredLookupService.getReceivedReviewsBySectionId(reviewGroupId, sectionId);
         return ResponseEntity.ok(response);
     }
 

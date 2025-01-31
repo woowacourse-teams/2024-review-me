@@ -80,7 +80,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup, section1.getId()
+                    reviewGroup.getId(), section1.getId()
             );
 
             // then
@@ -111,7 +111,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup, section1.getId()
+                    reviewGroup.getId(), section1.getId()
             );
 
             // then
@@ -137,7 +137,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup, section1.getId()
+                    reviewGroup.getId(), section1.getId()
             );
 
             // then
@@ -158,7 +158,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup, section1.getId()
+                    reviewGroup.getId(), section1.getId()
             );
 
             // then
@@ -193,7 +193,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup, section1.getId()
+                    reviewGroup.getId(), section1.getId()
             );
 
             // then
@@ -222,7 +222,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup, section1.getId()
+                    reviewGroup.getId(), section1.getId()
             );
 
             // then
@@ -253,7 +253,7 @@ class ReviewGatheredLookupServiceTest {
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewGroup, section1.getId()
+                reviewGroup.getId(), section1.getId()
         );
 
         // then
@@ -294,7 +294,7 @@ class ReviewGatheredLookupServiceTest {
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewGroupBE, section1.getId());
+                reviewGroupBE.getId(), section1.getId());
 
         // then
         assertThat(actual.reviews()).hasSize(1);
@@ -312,7 +312,7 @@ class ReviewGatheredLookupServiceTest {
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewGroup, section1.getId()
+                reviewGroup.getId(), section1.getId()
         );
 
         // then
