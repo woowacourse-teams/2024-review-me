@@ -61,10 +61,12 @@ class HighlightServiceTest {
         HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(1, 1);
         HighlightedLineRequest lineRequest = new HighlightedLineRequest(0, List.of(indexRangeRequest));
         HighlightRequest highlightRequest1 = new HighlightRequest(textAnswer2.getId(), List.of(lineRequest));
-        HighlightsRequest highlightsRequest = new HighlightsRequest(question.getId(), List.of(highlightRequest1));
+        HighlightsRequest highlightsRequest = new HighlightsRequest(
+                reviewGroup.getId(), question.getId(), List.of(highlightRequest1
+        ));
 
         // when
-        highlightService.editHighlight(highlightsRequest, reviewGroup);
+        highlightService.editHighlight(highlightsRequest);
 
         // then
         assertAll(() -> assertThat(highlightRepository.existsById(highlight.getId())).isFalse());
@@ -87,10 +89,12 @@ class HighlightServiceTest {
         HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(startIndex, endIndex);
         HighlightedLineRequest lineRequest = new HighlightedLineRequest(0, List.of(indexRangeRequest));
         HighlightRequest highlightRequest = new HighlightRequest(textAnswer.getId(), List.of(lineRequest));
-        HighlightsRequest highlightsRequest = new HighlightsRequest(question.getId(), List.of(highlightRequest));
+        HighlightsRequest highlightsRequest = new HighlightsRequest(
+                reviewGroup.getId(), question.getId(), List.of(highlightRequest)
+        );
 
         // when
-        highlightService.editHighlight(highlightsRequest, reviewGroup);
+        highlightService.editHighlight(highlightsRequest);
 
         // then
         List<Highlight> highlights = highlightRepository.findAllByAnswerIdsOrderedAsc(List.of(textAnswer.getId()));
@@ -113,10 +117,10 @@ class HighlightServiceTest {
         reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(textAnswer)));
         Highlight highlight = highlightRepository.save(new Highlight(textAnswer.getId(), 1, new HighlightRange(1, 1)));
 
-        HighlightsRequest highlightsRequest = new HighlightsRequest(question.getId(), List.of());
+        HighlightsRequest highlightsRequest = new HighlightsRequest(reviewGroup.getId(), question.getId(), List.of());
 
         // when
-        highlightService.editHighlight(highlightsRequest, reviewGroup);
+        highlightService.editHighlight(highlightsRequest);
 
         // then
         assertAll(() -> assertThat(highlightRepository.existsById(highlight.getId())).isFalse());

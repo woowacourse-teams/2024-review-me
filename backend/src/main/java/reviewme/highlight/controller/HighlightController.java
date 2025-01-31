@@ -19,10 +19,9 @@ public class HighlightController {
 
     @PostMapping("/v2/highlight")
     public ResponseEntity<Void> highlight(
-            @Valid @RequestBody HighlightsRequest request,
-            @ReviewGroupSession ReviewGroup reviewGroup
+            @Valid @RequestBody HighlightsRequest request
     ) {
-        highlightService.editHighlight(request, reviewGroup);
+        highlightService.editHighlight(request);
         return ResponseEntity.ok().build();
     }
 }
