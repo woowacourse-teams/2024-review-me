@@ -1,4 +1,6 @@
-import { ReviewPreview } from '@/components';
+import { useRef } from 'react';
+
+import { ReviewPreview, TopButton } from '@/components';
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import { useInfiniteScroll } from '@/hooks';
 
@@ -14,6 +16,8 @@ interface WrittenReviewListProps {
 const WrittenReviewList = ({ handleClick }: WrittenReviewListProps) => {
   const { reviewList, isLastPage, fetchNextPage, isSuccess, isFetchingNextPage } = useGetWrittenReviewList();
 
+  const containerRef = useRef<HTMLUListElement | null>(null);
+
   const lastReviewElementRef = useInfiniteScroll({
     fetchNextPage,
     isFetchingNextPage,
@@ -23,7 +27,7 @@ const WrittenReviewList = ({ handleClick }: WrittenReviewListProps) => {
   return (
     <PageContentLayout title="작성한 리뷰 목록">
       {isSuccess && (
-        <S.WrittenReviewList>
+        <S.WrittenReviewList ref={containerRef}>
           {reviewList.map((review) => (
             <UndraggableWrapper key={review.reviewId}>
               <ReviewPreview
@@ -37,6 +41,7 @@ const WrittenReviewList = ({ handleClick }: WrittenReviewListProps) => {
               {!isFetchingNextPage && !isLastPage && <div ref={lastReviewElementRef} style={{ height: '0.1rem' }} />}
             </UndraggableWrapper>
           ))}
+          <TopButton containerRef={containerRef} />
         </S.WrittenReviewList>
       )}
     </PageContentLayout>
