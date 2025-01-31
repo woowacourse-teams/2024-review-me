@@ -43,7 +43,7 @@ class ReviewListLookupServiceTest {
 
         // when
         ReceivedReviewPageResponse response = reviewListLookupService.getReceivedReviews(
-                Long.MAX_VALUE, 5, reviewGroup
+                reviewGroup.getId(), Long.MAX_VALUE, 5
         );
 
         // then
@@ -68,7 +68,7 @@ class ReviewListLookupServiceTest {
 
         // when
         ReceivedReviewPageResponse response
-                = reviewListLookupService.getReceivedReviews(Long.MAX_VALUE, 2, reviewGroup);
+                = reviewListLookupService.getReceivedReviews(reviewGroup.getId(), Long.MAX_VALUE, 2);
 
         // then
         assertAll(

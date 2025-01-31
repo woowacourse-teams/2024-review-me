@@ -211,11 +211,15 @@ class ReviewApiTest extends ApiTest {
         );
         ReceivedReviewPageResponse response = new ReceivedReviewPageResponse(
                 "아루3", "리뷰미", 1L, true, receivedReviews);
-        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyLong(), anyInt(), any()))
+        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyLong(), anyLong(), anyInt()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
                 cookieWithName("JSESSIONID").description("세션 ID")
+        };
+
+        ParameterDescriptor[] requestPathDescriptors = {
+                parameterWithName("reviewGroupId").description("리뷰 그룹 ID")
         };
 
         ParameterDescriptor[] queryParameter = {
@@ -242,17 +246,19 @@ class ReviewApiTest extends ApiTest {
 
         RestDocumentationResultHandler handler = document(
                 "received-review-list-with-pagination",
+                pathParameters(requestPathDescriptors),
                 requestCookies(cookieDescriptors),
                 queryParameters(queryParameter),
                 responseFields(responseFieldDescriptors)
         );
 
         givenWithSpec().log().all()
+                .pathParam("reviewGroupId", "1")
                 .cookie("JSESSIONID", "ASVNE1VAKDNV4")
                 .queryParam("reviewRequestCode", "hello!!")
                 .queryParam("lastReviewId", "2")
                 .queryParam("size", "5")
-                .when().get("/v2/reviews/received")
+                .when().get("/v2/groups/{reviewGroupId}/reviews/received")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
