@@ -1,10 +1,10 @@
 package reviewme.auth.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import reviewme.auth.domain.MemberPrincipal;
-import reviewme.auth.domain.Principal;
 import reviewme.auth.infrastructure.GitHubOAuthClient;
 import reviewme.auth.infrastructure.dto.response.GitHubUserInfoResponse;
 import reviewme.member.domain.Member;
@@ -18,11 +18,17 @@ public class AuthService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Principal authWithGithub(String code) {
+    public void authWithGithub(HttpServletRequest httpRequest, String code) {
         GitHubUserInfoResponse userInfo = githubOAuthClient.getUserInfo(code);
         String email = userInfo.email();
-        Member member = memberRepository.findByEmail(email)
+        Member member = getOrSaveMember(email);
+
+        HttpSession session = httpRequest.getSession();
+        session.setAttribute("member", member);
+    }
+
+    private Member getOrSaveMember(String email) {
+        return memberRepository.findByEmail(email)
                 .orElseGet(() -> memberRepository.save(new Member(email)));
-        return new MemberPrincipal(member);
     }
 }
