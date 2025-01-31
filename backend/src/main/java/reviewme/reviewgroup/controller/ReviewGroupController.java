@@ -13,7 +13,7 @@ import reviewme.reviewgroup.service.ReviewGroupService;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
-import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupSummaryResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,8 +23,8 @@ public class ReviewGroupController {
     private final ReviewGroupLookupService reviewGroupLookupService;
 
     @GetMapping("/v2/groups/summary")
-    public ResponseEntity<ReviewGroupResponse> getReviewGroupSummary(@RequestParam String reviewRequestCode) {
-        ReviewGroupResponse response = reviewGroupLookupService.getReviewGroupSummary(reviewRequestCode);
+    public ResponseEntity<ReviewGroupSummaryResponse> getReviewGroupSummary(@RequestParam String reviewRequestCode) {
+        ReviewGroupSummaryResponse response = reviewGroupLookupService.getReviewGroupSummary(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 

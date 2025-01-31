@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupSummaryResponse;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
@@ -33,7 +33,7 @@ class ReviewGroupLookupServiceTest {
         ));
 
         // when
-        ReviewGroupResponse response = reviewGroupLookupService.getReviewGroupSummary(
+        ReviewGroupSummaryResponse response = reviewGroupLookupService.getReviewGroupSummary(
                 reviewGroup.getReviewRequestCode()
         );
 
