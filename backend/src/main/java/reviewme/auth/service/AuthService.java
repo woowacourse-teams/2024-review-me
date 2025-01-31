@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import reviewme.auth.domain.GitHubMember;
 import reviewme.auth.infrastructure.GitHubOAuthClient;
 import reviewme.auth.infrastructure.dto.response.GitHubUserInfoResponse;
+import reviewme.global.session.SessionManager;
 import reviewme.member.domain.Member;
 import reviewme.member.repository.MemberRepository;
 
@@ -17,6 +18,7 @@ import reviewme.member.repository.MemberRepository;
 public class AuthService {
 
     private final GitHubOAuthClient githubOAuthClient;
+    private final SessionManager sessionManager;
     private final GitHubMemberService gitHubMemberService;
     private final MemberRepository memberRepository;
 
@@ -28,8 +30,8 @@ public class AuthService {
         GitHubMember gitHubMember = gitHubMemberService.createGitHubMember(userInfo.userName());
 
         HttpSession session = httpRequest.getSession();
-        session.setAttribute("gitHubUser", gitHubMember);
-        session.setAttribute("member", member);
+        sessionManager.saveMember(session, member);
+        sessionManager.saveGitHubMember(session, gitHubMember);
     }
 
     private Member getOrSaveMember(String email) {
