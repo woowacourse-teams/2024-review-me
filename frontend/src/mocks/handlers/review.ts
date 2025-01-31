@@ -137,8 +137,7 @@ const getWrittenReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApi) 
       });
     };
 
-    return handleAPI();
-    //return authorizeWithCookie(cookies, handleAPI);
+    return authorizeWithCookie(cookies, handleAPI);
   });
 };
 
