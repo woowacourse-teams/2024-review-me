@@ -1,6 +1,5 @@
 package reviewme.api;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
@@ -104,7 +103,7 @@ class TemplateApiTest extends ApiTest {
                 new SectionNameResponse(1, "섹션1 이름"),
                 new SectionNameResponse(2, "섹션2 이름")
         ));
-        BDDMockito.given(templateService.getSectionNames(any()))
+        BDDMockito.given(templateService.getSectionNames())
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
