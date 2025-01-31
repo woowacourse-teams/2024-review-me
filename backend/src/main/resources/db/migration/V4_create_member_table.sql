@@ -3,6 +3,6 @@
 CREATE TABLE member
 (
     id    BIGINT AUTO_INCREMENT,
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     primary key (id)
 );
