@@ -10,6 +10,11 @@ import reviewme.template.domain.OptionType;
 @Repository
 public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
 
+    @Query("""
+            SELECT o FROM OptionGroup og
+            JOIN og.optionItems o
+            WHERE og.id = :optionGroupId
+            """)
     List<OptionItem> findAllByOptionGroupId(long optionGroupId);
 
     @Query("""
@@ -17,12 +22,4 @@ public interface OptionItemRepository extends JpaRepository<OptionItem, Long> {
             WHERE o.optionType = :optionType
             """)
     List<OptionItem> findAllByOptionType(OptionType optionType);
-
-    @Query("""
-            SELECT o FROM OptionItem o
-            JOIN OptionGroup og
-            ON o.optionGroupId = og.id
-            WHERE og.questionId IN :questionIds
-            """)
-    List<OptionItem> findAllByQuestionIds(List<Long> questionIds);
 }

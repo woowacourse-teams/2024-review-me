@@ -15,9 +15,6 @@ java {
 }
 
 configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
     asciidoctorExt
 }
 
@@ -34,6 +31,7 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
+    implementation 'com.h2database:h2'
 
     runtimeOnly 'com.mysql:mysql-connector-j'
 
@@ -42,12 +40,12 @@ dependencies {
 
     // Test dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'com.h2database:h2'
 
     // Lombok
+    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.projectlombok:lombok'
 
     // RestDocs
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'

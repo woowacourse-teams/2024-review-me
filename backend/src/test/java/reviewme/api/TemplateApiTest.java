@@ -104,7 +104,7 @@ class TemplateApiTest extends ApiTest {
                 new SectionNameResponse(1, "섹션1 이름"),
                 new SectionNameResponse(2, "섹션2 이름")
         ));
-        BDDMockito.given(sectionService.getSectionNames(any()))
+        BDDMockito.given(templateService.getSectionNames(any()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
