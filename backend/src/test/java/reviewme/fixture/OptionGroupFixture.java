@@ -1,10 +1,12 @@
 package reviewme.fixture;
 
+import java.util.List;
 import reviewme.template.domain.OptionGroup;
+import reviewme.template.domain.OptionItem;
 
 public class OptionGroupFixture {
 
-    public static OptionGroup 선택지_그룹(long questionId) {
-        return new OptionGroup(questionId, 1, 2);
+    public static OptionGroup 선택지_그룹(List<OptionItem> optionItems) {
+        return new OptionGroup(optionItems, 1, optionItems.size());
     }
 }

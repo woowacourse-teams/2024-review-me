@@ -44,7 +44,6 @@ import reviewme.reviewgroup.service.ReviewGroupLookupService;
 import reviewme.reviewgroup.service.ReviewGroupService;
 import reviewme.template.controller.SectionController;
 import reviewme.template.controller.TemplateController;
-import reviewme.template.service.SectionService;
 import reviewme.template.service.TemplateService;
 
 @WebMvcTest({
@@ -81,9 +80,6 @@ public abstract class ApiTest {
 
     @MockBean
     protected ReviewSummaryService reviewSummaryService;
-
-    @MockBean
-    protected SectionService sectionService;
 
     @MockBean
     protected ReviewGatheredLookupService reviewGatheredLookupService;

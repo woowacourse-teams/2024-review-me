@@ -5,3 +5,4 @@ export * from './highlight/components';
 export * from './login';
 export * from './reviewURL';
 export * from './skeleton';
+export * from './loading';

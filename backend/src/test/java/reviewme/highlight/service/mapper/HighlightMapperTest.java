@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
-import static reviewme.fixture.TemplateFixture.템플릿;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -17,13 +16,14 @@ import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
 import reviewme.highlight.service.dto.HighlightRequest;
 import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
-import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
-import reviewme.template.repository.SectionRepository;
+import reviewme.template.domain.Question;
+import reviewme.template.domain.Section;
+import reviewme.template.domain.Template;
 import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
@@ -42,27 +42,19 @@ class HighlightMapperTest {
     private ReviewRepository reviewRepository;
 
     @Autowired
-    private QuestionRepository questionRepository;
-
-    @Autowired
-    private SectionRepository sectionRepository;
-
-    @Autowired
     private TemplateRepository templateRepository;
 
     @Test
     void 하이라이트_요청과_기존_서술형_답변으로_하이라이트를_매핑한다() {
         // given
-        long questionId = questionRepository.save(서술형_필수_질문()).getId();
-        long sectionId = sectionRepository.save(항상_보이는_섹션(List.of(questionId))).getId();
-        long templateId = templateRepository.save(템플릿(List.of(sectionId))).getId();
-        String reviewRequestCode = "reviewRequestCode";
-        long reviewGroupId = reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, "groupAccessCode"))
-                .getId();
+        Question question = 서술형_필수_질문();
+        Section section = 항상_보이는_섹션(List.of(question));
+        Template template = templateRepository.save(new Template(List.of(section)));
+        long reviewGroupId = reviewGroupRepository.save(리뷰_그룹()).getId();
 
-        TextAnswer textAnswer1 = new TextAnswer(questionId, "text answer1");
-        TextAnswer textAnswer2 = new TextAnswer(questionId, "text answer2");
-        Review review = reviewRepository.save(new Review(templateId, reviewGroupId, List.of(textAnswer1, textAnswer2)));
+        TextAnswer textAnswer1 = new TextAnswer(question.getId(), "text answer1");
+        TextAnswer textAnswer2 = new TextAnswer(question.getId(), "text answer2");
+        reviewRepository.save(new Review(template.getId(), reviewGroupId, List.of(textAnswer1, textAnswer2)));
 
         highlightRepository.save(new Highlight(1, 1, new HighlightRange(1, 1)));
 
@@ -74,8 +66,10 @@ class HighlightMapperTest {
         HighlightedLineRequest lineRequest2 = new HighlightedLineRequest(lineIndex, List.of(rangeRequest));
         HighlightRequest highlightRequest1 = new HighlightRequest(textAnswer1.getId(), List.of(lineRequest1));
         HighlightRequest highlightRequest2 = new HighlightRequest(textAnswer2.getId(), List.of(lineRequest2));
-        HighlightsRequest highlightsRequest = new HighlightsRequest(questionId,
-                List.of(highlightRequest1, highlightRequest2));
+        HighlightsRequest highlightsRequest = new HighlightsRequest(
+                question.getId(),
+                List.of(highlightRequest1, highlightRequest2)
+        );
 
         // when
         List<Highlight> highlights = highlightMapper.mapToHighlights(highlightsRequest);
