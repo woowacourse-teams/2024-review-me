@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 export interface InfiniteScrollProps {
   fetchNextPage: () => void;
@@ -24,6 +24,12 @@ const useInfiniteScroll = ({ fetchNextPage, isFetchingNextPage, isLastPage }: In
     },
     [isFetchingNextPage, fetchNextPage, isLastPage],
   );
+
+  useEffect(() => {
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, []);
 
   return lastElementRef;
 };
