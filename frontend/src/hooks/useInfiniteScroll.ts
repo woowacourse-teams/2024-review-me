@@ -8,7 +8,7 @@ export interface InfiniteScrollProps {
 
 const useInfiniteScroll = ({ fetchNextPage, isFetchingNextPage, isLastPage }: InfiniteScrollProps) => {
   const observer = useRef<IntersectionObserver | null>(null);
-  const lastElementRef = useRef<HTMLElement | null>(null);
+  const lastElementRef = useRef<HTMLDivElement | null>(null);
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
