@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router';
 
 import { ReviewEmptySection, ReviewPreview } from '@/components';
@@ -20,9 +20,12 @@ const ReviewListPageContents = () => {
     paramKey: 'reviewRequestCode',
   });
 
-  const handleReviewClick = (id: number) => {
-    navigate(`/${ROUTE.detailedReview}/${reviewRequestCode}/${id}`);
-  };
+  const handleReviewClick = useCallback(
+    (id: number) => {
+      navigate(`/${ROUTE.detailedReview}/${reviewRequestCode}/${id}`);
+    },
+    [reviewRequestCode],
+  );
 
   const lastReviewElementRef = useInfiniteScroll({
     fetchNextPage,
@@ -41,10 +44,11 @@ const ReviewListPageContents = () => {
           {reviewList.map((review) => (
             <UndraggableWrapper key={review.reviewId}>
               <ReviewPreview
+                id={review.reviewId}
                 createdAt={review.createdAt}
                 contentPreview={review.contentPreview}
                 categories={review.categories}
-                handleClick={() => handleReviewClick(review.reviewId)}
+                handleClick={handleReviewClick}
               />
               {!isFetchingNextPage && !isLastPage && <div ref={lastReviewElementRef} style={{ height: '0.1rem' }} />}
             </UndraggableWrapper>
