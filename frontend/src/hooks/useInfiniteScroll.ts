@@ -8,28 +8,29 @@ export interface InfiniteScrollProps {
 
 const useInfiniteScroll = ({ fetchNextPage, isFetchingNextPage, isLastPage }: InfiniteScrollProps) => {
   const observer = useRef<IntersectionObserver | null>(null);
+  const lastElementRef = useRef<HTMLElement | null>(null);
 
-  const lastElementRef = useCallback(
-    (node: HTMLElement | null) => {
-      if (isFetchingNextPage || isLastPage) return;
-      if (observer.current) observer.current.disconnect();
-
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && !isLastPage) {
-          fetchNextPage();
-        }
-      });
-
-      if (node) observer.current.observe(node);
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting && !isFetchingNextPage && !isLastPage) {
+        fetchNextPage();
+      }
     },
-    [isFetchingNextPage, fetchNextPage, isLastPage],
+    [fetchNextPage, isFetchingNextPage, isLastPage],
   );
 
   useEffect(() => {
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(handleObserver);
+
+    if (lastElementRef.current) {
+      observer.current.observe(lastElementRef.current);
+    }
+
     return () => {
       if (observer.current) observer.current.disconnect();
     };
-  }, []);
+  }, [handleObserver]);
 
   return lastElementRef;
 };
