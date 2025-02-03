@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record GitHubUserInfoResponse(
         @JsonProperty("login")
-        String gitHubUserName,
+        String gitHubNickname,
 
         @JsonProperty("email")
         String gitHubEmail

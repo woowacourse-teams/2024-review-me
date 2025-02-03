@@ -11,10 +11,10 @@ public class GitHubMemberService {
 
     private final GitHubUserProperties gitHubUserProperties;
 
-    public GitHubMember createGitHubMember(long memberId, String gitHubUserName) {
+    public GitHubMember createGitHubMember(long memberId, String gitHubNickname) {
         return new GitHubMember(
-                memberId, gitHubUserName,
-                String.format(gitHubUserProperties.profileUriFormat(), gitHubUserName)
+                memberId, gitHubNickname,
+                String.format(gitHubUserProperties.profileUrlFormat(), gitHubNickname)
         );
     }
 }

@@ -22,7 +22,7 @@ public class AuthService {
     public GitHubMember authWithGithub(String code) {
         GitHubUserInfoResponse userInfo = githubOAuthClient.getUserInfo(code);
         Member member = getOrSaveMember(userInfo.gitHubEmail());
-        return gitHubMemberService.createGitHubMember(member.getId(), userInfo.gitHubUserName());
+        return gitHubMemberService.createGitHubMember(member.getId(), userInfo.gitHubNickname());
     }
 
     private Member getOrSaveMember(String email) {

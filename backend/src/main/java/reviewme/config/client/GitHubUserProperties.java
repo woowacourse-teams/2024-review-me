@@ -4,6 +4,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "github.user")
 public record GitHubUserProperties(
-        String profileUriFormat
+        String profileUrlFormat
 ) {
 }

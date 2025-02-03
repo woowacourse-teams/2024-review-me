@@ -42,7 +42,7 @@ github:
   oauth:
     client-id: client-id
     client-secret: client-secret
-    access-token-uri: https://github.com/login/oauth/access_token
-    user-info-uri: https://api.github.com/user
+    access-token-url: https://github.com/login/oauth/access_token
+    user-info-url: https://api.github.com/user
   user:
-    profile-uri-format: https://github.com/%s.png
+    profile-url-format: https://github.com/%s.png

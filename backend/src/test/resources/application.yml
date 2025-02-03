@@ -48,4 +48,4 @@ github:
     access-token-uri: access-token-uri
     user-info-uri: user-info-uri
   user:
-    profile-uri-format: profile-uri-format-%s
+    profile-url-format: profile-uri-format-%s

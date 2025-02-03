@@ -29,7 +29,7 @@ public class GitHubOAuthClient {
      */
     private String requestAccessToken(String code) {
         return restClient.post()
-                .uri(properties.accessTokenUri())
+                .uri(properties.accessTokenUrl())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .body(new GitHubAccessTokenRequest(properties.clientId(), properties.clientSecret(), code))
@@ -42,7 +42,7 @@ public class GitHubOAuthClient {
      */
     private GitHubUserInfoResponse requestUserInfo(String accessToken) {
         return restClient.get()
-                .uri(properties.userInfoUri())
+                .uri(properties.userInfoUrl())
                 .header("Authorization", "Bearer " + accessToken)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange(handleResponse(GitHubUserInfoResponse.class));

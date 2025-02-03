@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record GitHubOAuthProperties(
         String clientId,
         String clientSecret,
-        String accessTokenUri,
-        String userInfoUri
+        String accessTokenUrl,
+        String userInfoUrl
 ) {
 }

@@ -9,9 +9,9 @@ public class GitHubMember {
     private final String gitHubUserName;
     private final String gitHubProfileImageUrl;
 
-    public GitHubMember(long memberId, String gitHubUserName, String gitHubUserImageUrl) {
+    public GitHubMember(long memberId, String gitHubUserName, String gitHubProfileImageUrl) {
         this.memberId = memberId;
         this.gitHubUserName = gitHubUserName;
-        this.gitHubProfileImageUrl = gitHubUserImageUrl;
+        this.gitHubProfileImageUrl = gitHubProfileImageUrl;
     }
 }
