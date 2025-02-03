@@ -21,13 +21,12 @@ public class AuthService {
     @Transactional
     public GitHubMember authWithGithub(String code) {
         GitHubUserInfoResponse userInfo = githubOAuthClient.getUserInfo(code);
-        saveMemberIfNotExists(userInfo.email());
-        return gitHubMemberService.createGitHubMember(userInfo.userName());
+        Member member = getOrSaveMember(userInfo.gitHubEmail());
+        return gitHubMemberService.createGitHubMember(member.getId(), userInfo.gitHubUserName());
     }
 
-    private void saveMemberIfNotExists(String email) {
-        if(!memberRepository.existsByEmail(email)) {
-            memberRepository.save(new Member(email));
-        }
+    private Member getOrSaveMember(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseGet(() -> memberRepository.save(new Member(email)));
     }
 }

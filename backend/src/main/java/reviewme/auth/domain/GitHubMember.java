@@ -5,11 +5,13 @@ import lombok.Getter;
 @Getter
 public class GitHubMember {
 
-    private final String userName;
-    private final String userImageUrl;
+    private final long memberId;
+    private final String gitHubUserName;
+    private final String gitHubProfileImageUrl;
 
-    public  GitHubMember(String userName, String userImageUrl) {
-        this.userName = userName;
-        this.userImageUrl = userImageUrl;
+    public GitHubMember(long memberId, String gitHubUserName, String gitHubUserImageUrl) {
+        this.memberId = memberId;
+        this.gitHubUserName = gitHubUserName;
+        this.gitHubProfileImageUrl = gitHubUserImageUrl;
     }
 }
