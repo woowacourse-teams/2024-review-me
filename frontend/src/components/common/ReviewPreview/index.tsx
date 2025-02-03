@@ -1,18 +1,22 @@
+import React from 'react';
+
 import { ReviewDate, ReviewKeyword, RevieweeInfo } from '@/components';
 import { Category } from '@/types';
 
 import * as S from './styles';
 
 interface ReviewPreviewProps {
+  id: number;
   createdAt: string;
   projectName?: string;
   contentPreview: string;
   categories: Category[];
-  handleClick: () => void;
+  handleClick: (reviewId: number) => void;
   revieweeName?: string;
 }
 
 const ReviewPreview = ({
+  id,
   projectName,
   createdAt,
   contentPreview,
@@ -23,7 +27,7 @@ const ReviewPreview = ({
   const date = new Date(createdAt);
 
   return (
-    <S.Layout onClick={handleClick}>
+    <S.Layout onClick={() => handleClick(id)}>
       <S.Header>
         <ReviewDate date={date} dateTitle="작성일" />
       </S.Header>
@@ -50,4 +54,4 @@ const ReviewPreview = ({
   );
 };
 
-export default ReviewPreview;
+export default React.memo(ReviewPreview);
