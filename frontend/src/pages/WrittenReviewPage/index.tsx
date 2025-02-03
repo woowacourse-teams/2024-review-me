@@ -1,5 +1,3 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-
 import { ErrorSuspenseContainer, AuthAndServerErrorFallback, EmptyContent, TopButton } from '@/components';
 import { useSearchParamAndQuery } from '@/hooks';
 
@@ -9,8 +7,6 @@ import { useDeviceBreakpoints, useGetWrittenReviewList } from './hooks';
 import * as S from './styles';
 
 const WrittenReviewPage = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const { deviceType } = useDeviceBreakpoints();
   const { reviewList } = useGetWrittenReviewList();
 
@@ -19,13 +15,6 @@ const WrittenReviewPage = () => {
   });
 
   const selectedReviewId = reviewIdString ? Number(reviewIdString) : null;
-
-  const handleReviewItemClick = (reviewId: number) => {
-    const params = new URLSearchParams();
-    params.set('reviewId', reviewId.toString());
-
-    navigate(`${location.pathname}?${params.toString()}`);
-  };
 
   const renderEmptyContent = () => (
     <EmptyContent
@@ -40,7 +29,7 @@ const WrittenReviewPage = () => {
   // Large 이상: 목록, 상세 모두 렌더링
   const renderDesktopView = () => (
     <S.PageContainer>
-      <WrittenReviewList handleClick={handleReviewItemClick} />
+      <WrittenReviewList />
       <DetailedWrittenReview $isDisplayable={true} selectedReviewId={selectedReviewId} />
     </S.PageContainer>
   );
@@ -50,7 +39,7 @@ const WrittenReviewPage = () => {
     selectedReviewId ? (
       <DetailedWrittenReview $isDisplayable={!!selectedReviewId} selectedReviewId={selectedReviewId} />
     ) : (
-      <WrittenReviewList handleClick={handleReviewItemClick} />
+      <WrittenReviewList />
     );
 
   const renderContent = () => {

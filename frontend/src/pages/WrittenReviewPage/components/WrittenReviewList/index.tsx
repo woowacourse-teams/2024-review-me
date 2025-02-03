@@ -1,4 +1,5 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router';
 
 import { ReviewPreview, TopButton } from '@/components';
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
@@ -9,11 +10,8 @@ import { PageContentLayout } from '../layouts';
 
 import * as S from './styles';
 
-interface WrittenReviewListProps {
-  handleClick: (reviewId: number) => void;
-}
-
-const WrittenReviewList = ({ handleClick }: WrittenReviewListProps) => {
+const WrittenReviewList = () => {
+  const navigate = useNavigate();
   const { reviewList, isLastPage, fetchNextPage, isSuccess, isFetchingNextPage } = useGetWrittenReviewList();
 
   const containerRef = useRef<HTMLUListElement | null>(null);
@@ -24,6 +22,13 @@ const WrittenReviewList = ({ handleClick }: WrittenReviewListProps) => {
     isLastPage,
   });
 
+  const handleReviewItemClick = useCallback((reviewId: number) => {
+    const params = new URLSearchParams();
+    params.set('reviewId', reviewId.toString());
+
+    navigate(`${location.pathname}?${params.toString()}`);
+  }, []);
+
   return (
     <PageContentLayout title="작성한 리뷰 목록">
       {isSuccess && (
@@ -31,12 +36,13 @@ const WrittenReviewList = ({ handleClick }: WrittenReviewListProps) => {
           {reviewList.map((review) => (
             <UndraggableWrapper key={review.reviewId}>
               <ReviewPreview
+                id={review.reviewId}
                 createdAt={review.createdAt}
                 contentPreview={review.contentPreview}
                 categories={review.categories}
                 projectName={review.projectName}
                 revieweeName={review.revieweeName}
-                handleClick={() => handleClick(review.reviewId)}
+                handleClick={handleReviewItemClick}
               />
               {!isFetchingNextPage && !isLastPage && <div ref={lastReviewElementRef} style={{ height: '0.1rem' }} />}
             </UndraggableWrapper>
