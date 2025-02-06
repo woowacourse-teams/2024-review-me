@@ -2,8 +2,6 @@ package reviewme.reviewgroup.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -20,11 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
-import reviewme.reviewgroup.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.support.ServiceTest;
 import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
@@ -67,24 +63,6 @@ class ReviewGroupServiceTest {
         // then
         assertThat(response).isEqualTo(new ReviewGroupCreationResponse("AAAA"));
         then(randomCodeGenerator).should(times(2)).generate(anyInt());
-    }
-
-    @Test
-    void 리뷰_요청_코드와_리뷰_확인_코드가_일치하는지_확인한다() {
-        // given
-        String reviewRequestCode = "reviewRequestCode";
-        String groupAccessCode = "groupAccessCode";
-        reviewGroupRepository.save(리뷰_그룹(reviewRequestCode, groupAccessCode));
-
-        CheckValidAccessRequest request = new CheckValidAccessRequest(reviewRequestCode, groupAccessCode);
-        CheckValidAccessRequest wrongRequest = new CheckValidAccessRequest(reviewRequestCode, groupAccessCode + "!");
-
-        // when
-        assertAll(
-                () -> assertDoesNotThrow(() -> reviewGroupService.checkGroupAccessCode(request)),
-                () -> assertThatThrownBy(() -> reviewGroupService.checkGroupAccessCode(wrongRequest))
-                        .isInstanceOf(ReviewGroupUnauthorizedException.class)
-        );
     }
 
     @Test
