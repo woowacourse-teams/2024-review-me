@@ -5,11 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
-import reviewme.reviewgroup.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.exception.TemplateNotFoundException;
@@ -43,15 +41,6 @@ public class ReviewGroupService {
                 )
         );
         return new ReviewGroupCreationResponse(reviewGroup.getReviewRequestCode());
-    }
-
-    @Transactional(readOnly = true)
-    public void checkGroupAccessCode(CheckValidAccessRequest request) {
-        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(request.reviewRequestCode())
-                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(request.reviewRequestCode()));
-        if (!reviewGroup.matchesGroupAccessCode(request.groupAccessCode())) {
-            throw new ReviewGroupUnauthorizedException(reviewGroup.getId());
-        }
     }
 
     @Transactional(readOnly = true)
