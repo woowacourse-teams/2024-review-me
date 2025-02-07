@@ -8,9 +8,10 @@ const scrollToTop = (container?: RefObject<HTMLElement> | null) => {
 
   if (container?.current) {
     container.current.scrollTo(scrollOption);
-  } else {
-    window.scrollTo(scrollOption);
+    return;
   }
+
+  window.scrollTo(scrollOption);
 };
 
 export default scrollToTop;
