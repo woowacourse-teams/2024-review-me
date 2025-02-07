@@ -47,8 +47,3 @@ export const Outline = styled.div`
     max-width: 75vw;
   }
 `;
-
-// export const ContentContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-// `;
