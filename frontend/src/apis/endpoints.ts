@@ -92,10 +92,9 @@ const endPoint = {
 
   gettingWrittenReviewList: (lastReviewId: number | null, size: number) => {
     const defaultEndpoint = `${WRITTEN_REVIEW_LIST_API_URL}?${WRITTEN_REVIEW_PARAMS.queryString.size}=${size}`;
-    if (lastReviewId) {
-      return defaultEndpoint + '&' + `${WRITTEN_REVIEW_PARAMS.queryString.lastReviewId}=${lastReviewId}`;
-    }
-    return defaultEndpoint;
+
+    if (!lastReviewId) defaultEndpoint;
+    return defaultEndpoint + '&' + `${WRITTEN_REVIEW_PARAMS.queryString.lastReviewId}=${lastReviewId}`;
   },
 };
 
