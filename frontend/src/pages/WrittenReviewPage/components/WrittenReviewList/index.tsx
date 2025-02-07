@@ -2,7 +2,6 @@ import { useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router';
 
 import { ReviewPreview, TopButton } from '@/components';
-import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import { useInfiniteScroll } from '@/hooks';
 
 import { useGetWrittenReviewList } from '../../hooks';
