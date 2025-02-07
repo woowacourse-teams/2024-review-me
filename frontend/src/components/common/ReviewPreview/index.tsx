@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReviewDate, ReviewKeyword, RevieweeInfo } from '@/components';
+import { ReviewDate, ReviewKeyword, RevieweeInfo, UndraggableWrapper } from '@/components';
 import { Category } from '@/types';
 
 import * as S from './styles';
@@ -28,28 +28,30 @@ const ReviewPreview = ({
 
   return (
     <S.Layout onClick={() => handleClick(id)}>
-      <S.Header>
-        <ReviewDate date={date} dateTitle="작성일" />
-      </S.Header>
+      <UndraggableWrapper>
+        <S.Header>
+          <ReviewDate date={date} dateTitle="작성일" />
+        </S.Header>
 
-      <S.Main>
-        <S.Title>{projectName}</S.Title>
-        <S.ContentPreview>{contentPreview}</S.ContentPreview>
-      </S.Main>
+        <S.Main>
+          <S.Title>{projectName}</S.Title>
+          <S.ContentPreview>{contentPreview}</S.ContentPreview>
+        </S.Main>
 
-      <S.Footer>
-        <S.ReviewKeywordList>
-          {categories.map(({ optionId, content }) => (
-            <ReviewKeyword key={optionId} content={content} />
-          ))}
-        </S.ReviewKeywordList>
-        {revieweeName && (
-          <>
-            <S.Divider />
-            <RevieweeInfo revieweeName={revieweeName} />
-          </>
-        )}
-      </S.Footer>
+        <S.Footer>
+          <S.ReviewKeywordList>
+            {categories.map(({ optionId, content }) => (
+              <ReviewKeyword key={optionId} content={content} />
+            ))}
+          </S.ReviewKeywordList>
+          {revieweeName && (
+            <>
+              <S.Divider />
+              <RevieweeInfo revieweeName={revieweeName} />
+            </>
+          )}
+        </S.Footer>
+      </UndraggableWrapper>
     </S.Layout>
   );
 };

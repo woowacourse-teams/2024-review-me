@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import media from '@/utils/media';
 
-export const Layout = styled.div`
+export const Layout = styled.li`
   display: flex;
   flex-direction: column;
   border: 0.2rem solid ${({ theme }) => theme.colors.disabled};

@@ -42,7 +42,7 @@ const ReviewListPageContents = () => {
       ) : (
         <S.ReviewSection>
           {reviewList.map((review) => (
-            <UndraggableWrapper key={review.reviewId}>
+            <>
               <ReviewPreview
                 id={review.reviewId}
                 createdAt={review.createdAt}
@@ -51,7 +51,7 @@ const ReviewListPageContents = () => {
                 handleClick={handleReviewClick}
               />
               {!isFetchingNextPage && !isLastPage && <div ref={lastReviewElementRef} style={{ height: '0.1rem' }} />}
-            </UndraggableWrapper>
+            </>
           ))}
         </S.ReviewSection>
       )}

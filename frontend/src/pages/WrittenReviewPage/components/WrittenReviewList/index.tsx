@@ -34,7 +34,7 @@ const WrittenReviewList = () => {
       {isSuccess && (
         <S.WrittenReviewList ref={containerRef}>
           {reviewList.map((review) => (
-            <UndraggableWrapper key={review.reviewId}>
+            <>
               <ReviewPreview
                 id={review.reviewId}
                 createdAt={review.createdAt}
@@ -45,7 +45,7 @@ const WrittenReviewList = () => {
                 handleClick={handleReviewItemClick}
               />
               {!isFetchingNextPage && !isLastPage && <div ref={lastReviewElementRef} style={{ height: '0.1rem' }} />}
-            </UndraggableWrapper>
+            </>
           ))}
           <TopButton containerRef={containerRef} />
         </S.WrittenReviewList>
