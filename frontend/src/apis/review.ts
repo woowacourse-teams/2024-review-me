@@ -12,7 +12,7 @@ import {
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
-export interface GetInfiniteReviewListApi {
+export interface GetInfiniteReviewListApiParams {
   lastReviewId: number | null;
   size: number;
 }

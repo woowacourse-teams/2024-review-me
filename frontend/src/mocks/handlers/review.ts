@@ -9,7 +9,7 @@ import endPoint, {
   REVIEW_WRITING_API_URL,
   VERSION2,
 } from '@/apis/endpoints';
-import { GetInfiniteReviewListApi } from '@/apis/review';
+import { GetInfiniteReviewListApiParams } from '@/apis/review';
 import { DEFAULT_SIZE_PER_PAGE } from '@/constants';
 
 import {
@@ -69,7 +69,7 @@ const getDataToWriteReview = () =>
     return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
   });
 
-const getReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApi) => {
+const getReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
   return http.get(endPoint.gettingReviewList(lastReviewId, size), ({ request, cookies }) => {
     const handleAPI = () => {
       const url = new URL(request.url);
@@ -117,7 +117,7 @@ const getGroupedReviews = () => {
   });
 };
 
-const getWrittenReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApi) => {
+const getWrittenReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
   return http.get(endPoint.gettingWrittenReviewList(lastReviewId, size), ({ request, cookies }) => {
     const handleAPI = () => {
       const url = new URL(request.url);
