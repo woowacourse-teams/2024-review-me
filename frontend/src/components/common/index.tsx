@@ -20,3 +20,4 @@ export { default as DetailedReview } from './DetailedReview';
 export { default as BackButton } from './BackButton';
 export { default as RevieweeInfo } from './RevieweeInfo';
 export { default as ReviewKeyword } from './ReviewKeyword';
+export { default as UndraggableWrapper } from './UndraggableWrapper';
