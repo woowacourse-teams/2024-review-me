@@ -64,11 +64,11 @@ export const getReviewInfoDataApi = async () => {
   return data as ReviewInfoData;
 };
 
-interface GetDetailedReviewApi {
+interface GetDetailedReviewApiParams {
   reviewId: number;
 }
 // 상세 리뷰
-export const getDetailedReviewApi = async ({ reviewId }: GetDetailedReviewApi) => {
+export const getDetailedReviewApi = async ({ reviewId }: GetDetailedReviewApiParams) => {
   const response = await fetch(endPoint.gettingDetailedReview(reviewId), {
     method: 'GET',
     headers: {
@@ -85,7 +85,7 @@ export const getDetailedReviewApi = async ({ reviewId }: GetDetailedReviewApi) =
   return data as DetailReviewData;
 };
 
-export const getReviewListApi = async ({ lastReviewId, size }: GetInfiniteReviewListApi) => {
+export const getReviewListApi = async ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
   const response = await fetch(endPoint.gettingReviewList(lastReviewId, size), {
     method: 'GET',
     headers: {
@@ -140,7 +140,7 @@ export const getGroupedReviews = async ({ sectionId }: GetGroupedReviewsProps) =
   return data as GroupedReviews;
 };
 
-export const getWrittenReviewList = async ({ lastReviewId, size }: GetInfiniteReviewListApi) => {
+export const getWrittenReviewList = async ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
   const response = await fetch(endPoint.gettingWrittenReviewList(lastReviewId, size), {
     method: 'GET',
     headers: {
