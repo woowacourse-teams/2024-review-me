@@ -52,7 +52,9 @@ const getDetailedReview = () =>
       return HttpResponse.json({ error: '잘못된 상세리뷰 요청' }, { status: 404 });
     };
 
-    return authorizeWithCookie(cookies, handleAPI);
+    // NOTE: 임시로 모킹 핸들러에서 쿠키 검증 제거(로그인 관련 페이지 한정)
+    return handleAPI();
+    //return authorizeWithCookie(cookies, handleAPI);
   });
 
 const getDataToWriteReview = () =>
@@ -137,7 +139,8 @@ const getWrittenReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApi) 
       });
     };
 
-    return authorizeWithCookie(cookies, handleAPI);
+    return handleAPI();
+    //return authorizeWithCookie(cookies, handleAPI);
   });
 };
 
