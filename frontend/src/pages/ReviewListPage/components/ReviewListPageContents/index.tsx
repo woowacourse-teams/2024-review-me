@@ -44,6 +44,7 @@ const ReviewListPageContents = () => {
             <>
               <ReviewPreview
                 id={review.reviewId}
+                key={review.reviewId}
                 createdAt={review.createdAt}
                 contentPreview={review.contentPreview}
                 categories={review.categories}
