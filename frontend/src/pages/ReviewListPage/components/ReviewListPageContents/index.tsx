@@ -41,18 +41,16 @@ const ReviewListPageContents = () => {
       ) : (
         <S.ReviewSection>
           {reviewList.map((review) => (
-            <>
-              <ReviewPreview
-                id={review.reviewId}
-                key={review.reviewId}
-                createdAt={review.createdAt}
-                contentPreview={review.contentPreview}
-                categories={review.categories}
-                handleClick={handleReviewClick}
-              />
-              {!isFetchingNextPage && !isLastPage && <div ref={lastReviewElementRef} style={{ height: '0.1rem' }} />}
-            </>
+            <ReviewPreview
+              id={review.reviewId}
+              key={review.reviewId}
+              createdAt={review.createdAt}
+              contentPreview={review.contentPreview}
+              categories={review.categories}
+              handleClick={handleReviewClick}
+            />
           ))}
+          {!isFetchingNextPage && !isLastPage && <div ref={lastReviewElementRef} style={{ height: '0.1rem' }} />}
         </S.ReviewSection>
       )}
     </>
