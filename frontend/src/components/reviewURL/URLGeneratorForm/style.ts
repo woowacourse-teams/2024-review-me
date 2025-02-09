@@ -75,7 +75,6 @@ export const FormContainer = styled.section`
   justify-content: center;
 
   width: 40%;
-  padding: 0px 9rem;
 
   ${media.medium} {
     width: 45%;
