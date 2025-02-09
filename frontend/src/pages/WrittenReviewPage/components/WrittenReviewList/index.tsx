@@ -33,20 +33,23 @@ const WrittenReviewList = () => {
       {isSuccess && (
         <S.WrittenReviewList ref={containerRef}>
           {reviewList.map((review) => (
-            <>
-              <ReviewPreview
-                id={review.reviewId}
-                key={review.reviewId}
-                createdAt={review.createdAt}
-                contentPreview={review.contentPreview}
-                categories={review.categories}
-                projectName={review.projectName}
-                revieweeName={review.revieweeName}
-                handleClick={handleReviewItemClick}
-              />
-              {!isFetchingNextPage && !isLastPage && <div ref={lastReviewElementRef} style={{ height: '0.1rem' }} />}
-            </>
+            <ReviewPreview
+              id={review.reviewId}
+              key={review.reviewId}
+              createdAt={review.createdAt}
+              contentPreview={review.contentPreview}
+              categories={review.categories}
+              projectName={review.projectName}
+              revieweeName={review.revieweeName}
+              handleClick={handleReviewItemClick}
+            />
           ))}
+
+          {!isFetchingNextPage && !isLastPage && (
+            <div ref={lastReviewElementRef} style={{ height: '0.1rem' }}>
+              .
+            </div>
+          )}
           <TopButton containerRef={containerRef} />
         </S.WrittenReviewList>
       )}
