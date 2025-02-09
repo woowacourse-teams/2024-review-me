@@ -80,6 +80,7 @@ const endPoint = {
   gettingGroupedReviews: (sectionId: number) =>
     `${REVIEW_GROUP_API_URL}?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
   postingHighlight: `${serverUrl}/${VERSION2}/highlight`,
+  gettingReviewLinks: REVIEW_GROUP_DATA_API_URL,
 };
 
 export default endPoint;
