@@ -209,3 +209,17 @@ export interface ReviewInfoData {
   revieweeName: string;
   totalReviewCount: number;
 }
+
+export interface ReviewGroup {
+  revieweeName: string;
+  projectName: string;
+  createdAt: string;
+  reviewRequestCode: string;
+  reviewCount: number;
+}
+
+export interface ReviewLinks {
+  lastReviewGroupId: number;
+  isLastPage: boolean;
+  reviewGroups: ReviewGroup[];
+}
