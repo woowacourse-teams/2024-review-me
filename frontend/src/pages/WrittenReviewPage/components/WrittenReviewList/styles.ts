@@ -17,7 +17,6 @@ export const WrittenReviewList = styled.ul`
   height: 100%;
   min-height: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxHeight};
   max-height: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxHeight};
-  padding-right: 0.3rem;
 
   ${media.medium} {
     min-width: 65vw;
@@ -30,6 +29,6 @@ export const WrittenReviewList = styled.ul`
   }
 
   & > li {
-    margin-right: 0.5rem;
+    margin-right: 0.9rem;
   }
 `;
