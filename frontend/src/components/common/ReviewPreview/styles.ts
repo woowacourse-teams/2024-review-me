@@ -2,18 +2,31 @@ import styled from '@emotion/styled';
 
 import media from '@/utils/media';
 
+const OUTLINE_SIZE = 0.2;
+
 export const Layout = styled.li`
+  position: relative;
+
   display: flex;
   flex-direction: column;
-  border: 0.2rem solid ${({ theme }) => theme.colors.disabled};
+
   border-radius: 1rem;
+  outline: ${OUTLINE_SIZE}rem solid ${({ theme }) => theme.colors.disabled};
+  outline-offset: -${OUTLINE_SIZE}rem;
 
   &:hover {
     cursor: pointer;
-    border: 0.2rem solid ${({ theme }) => theme.colors.primaryHover};
+    outline: ${OUTLINE_SIZE}rem solid ${({ theme }) => theme.colors.primaryHover};
 
-    & > div {
+    &::before {
+      content: '';
+
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+
       background-color: ${({ theme }) => theme.colors.palePurple};
+      border-radius: 1rem;
     }
   }
 `;

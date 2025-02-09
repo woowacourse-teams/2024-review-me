@@ -5,7 +5,7 @@ import media from '@/utils/media';
 export const WrittenReviewList = styled.ul`
   scrollbar-gutter: stable both-edges;
 
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
