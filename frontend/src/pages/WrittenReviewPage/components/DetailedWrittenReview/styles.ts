@@ -9,6 +9,7 @@ export interface StyleProps extends Pick<DetailedWrittenReviewProps, '$isDisplay
 export const DetailedWrittenReview = styled.div<StyleProps>`
   display: block;
   max-width: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxWidth};
+  min-width: 55rem;
 
   ${media.medium} {
     ${({ $isDisplayable }) =>
