@@ -2,44 +2,52 @@ import { http, HttpResponse } from 'msw';
 
 import endPoint, { REVIEW_GROUP_DATA_API_PARAMS, REVIEW_GROUP_DATA_API_URL } from '@/apis/endpoints';
 import { API_ERROR_MESSAGE, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
+import { getRequestBody } from '@/utils/mockingUtils';
 
 import { REVIEW_LINKS } from '../mockData';
 import {
   MOCK_AUTH_TOKEN_NAME,
   REVIEW_GROUP_DATA,
-  VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE,
+  VALID_REVIEW_REQUEST_CODE,
   VALIDATED_PASSWORD,
 } from '../mockData/group';
 
 // NOTE: reviewRequestCode 생성 정상 응답
 const postDataForReviewRequestCode = () => {
-  return http.post(endPoint.postingDataForReviewRequestCode, async () => {
+  return http.post(endPoint.postingDataForReviewRequestCode, async ({ request }) => {
+    // request body의 존재 검증
+    const bodyResult = await getRequestBody(request);
+
+    if (bodyResult instanceof Error) return HttpResponse.json({ error: bodyResult.message }, { status: 400 });
+    const { nonMember: nonMemberReviewRequestCode, member: memberReviewRequestCode } = VALID_REVIEW_REQUEST_CODE;
+
     const newReviewLink = {
       revieweeName: '쑤쑤',
       projectName: '리뷰미2',
       createdAt: '2025-05-10',
-      reviewRequestCode: 'MEMBER1234',
+      reviewRequestCode: memberReviewRequestCode,
       reviewCount: 30,
     };
 
     // 새로 생성된 리뷰 링크를 목 데이터에 추가
     REVIEW_LINKS.reviewGroups.push(newReviewLink);
 
-    return HttpResponse.json({ reviewRequestCode: VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE }, { status: 200 });
+    return HttpResponse.json(
+      {
+        reviewRequestCode: 'groupAccessCode' in bodyResult ? nonMemberReviewRequestCode : memberReviewRequestCode,
+      },
+      { status: 200 },
+    );
   });
 };
 
 const postPassWordValidation = () => {
   return http.post(endPoint.checkingPassword, async ({ request, cookies }) => {
-    // request body의 존재 검증
-    if (!request.body) return HttpResponse.json({ error: API_ERROR_MESSAGE[400] }, { status: 400 });
-
-    const rawBody = await request.body.getReader().read();
-    const textDecoder = new TextDecoder();
-    const bodyText = textDecoder.decode(rawBody.value);
+    const bodyResult = await getRequestBody(request);
+    if (bodyResult instanceof Error) return HttpResponse.json({ error: bodyResult.message }, { status: 400 });
 
     // request에 포함된 값들의 검증 시작
-    const { reviewRequestCode, groupAccessCode: password } = JSON.parse(bodyText);
+    const { reviewRequestCode, groupAccessCode: password } = bodyResult;
 
     // 유효하지 않은 비밀번호인 경우
     if (password !== VALIDATED_PASSWORD) {
@@ -79,7 +87,7 @@ const getReviewGroupData = () => {
     //요청 url에서 reviewRequestCode 추출
     const reviewRequestCode = params.get(queryString.reviewRequestCode);
 
-    if (reviewRequestCode === VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE) {
+    if (reviewRequestCode) {
       return HttpResponse.json(REVIEW_GROUP_DATA);
     }
 
