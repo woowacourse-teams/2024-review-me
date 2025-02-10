@@ -37,6 +37,9 @@ jobs:
         with:
           gradle-version: 8.8
 
+      - name: Remove Gradle Cache (temporary)
+        run: rm -rf ~/.gradle/caches && rm -rf ~/.gradle/wrapper
+
       - name: Build and test with gradle
         run: |
           cd ./backend
