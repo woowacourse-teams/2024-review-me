@@ -16,7 +16,22 @@ const WrittenReviewPage = () => {
 
   const selectedReviewId = reviewIdString ? Number(reviewIdString) : null;
 
-  const renderEmptyContent = () => (
+  // Large 이상: 목록, 상세 모두 렌더링
+  const desktopView = (
+    <S.PageContainer>
+      <WrittenReviewList />
+      <DetailedWrittenReview $isDisplayable={true} selectedReviewId={selectedReviewId} />
+    </S.PageContainer>
+  );
+
+  // 이외의 경우: queryString 없으면 목록, 있으면 상세보기 렌더링
+  const mobileOrTabletView = selectedReviewId ? (
+    <DetailedWrittenReview $isDisplayable={!!selectedReviewId} selectedReviewId={selectedReviewId} />
+  ) : (
+    <WrittenReviewList />
+  );
+
+  const emptyContent = (
     <EmptyContent
       iconWidth={deviceType.isDesktop ? '30vw' : '60vw'}
       messageFontSize={deviceType.isTablet ? '2rem' : undefined}
@@ -26,32 +41,10 @@ const WrittenReviewPage = () => {
     </EmptyContent>
   );
 
-  // Large 이상: 목록, 상세 모두 렌더링
-  const renderDesktopView = () => (
-    <S.PageContainer>
-      <WrittenReviewList />
-      <DetailedWrittenReview $isDisplayable={true} selectedReviewId={selectedReviewId} />
-    </S.PageContainer>
-  );
-
-  // 이외의 경우: queryString 없으면 목록, 있으면 상세보기 렌더링
-  const renderMobileOrTabletView = () =>
-    selectedReviewId ? (
-      <DetailedWrittenReview $isDisplayable={!!selectedReviewId} selectedReviewId={selectedReviewId} />
-    ) : (
-      <WrittenReviewList />
-    );
-
-  const renderContent = () => {
-    if (reviewList.length === 0) return renderEmptyContent();
-
-    return deviceType.isDesktop ? renderDesktopView() : renderMobileOrTabletView();
-  };
-
   return (
     <ErrorSuspenseContainer errorFallback={AuthAndServerErrorFallback}>
       <TopButton />
-      {renderContent()}
+      {reviewList.length === 0 ? emptyContent : deviceType.isDesktop ? desktopView : mobileOrTabletView}
     </ErrorSuspenseContainer>
   );
 };
