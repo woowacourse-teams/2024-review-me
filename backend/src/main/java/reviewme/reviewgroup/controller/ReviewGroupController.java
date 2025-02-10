@@ -42,8 +42,7 @@ public class ReviewGroupController {
         ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request, memberId);
         return ResponseEntity.ok(response);
         */
-        long memberId = 1L; // 임시
-        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request, memberId);
+        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request, null);
         return ResponseEntity.ok(response);
     }
 
