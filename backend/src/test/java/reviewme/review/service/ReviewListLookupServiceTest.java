@@ -2,6 +2,7 @@ package reviewme.review.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 
 import java.util.List;
@@ -35,9 +36,9 @@ class ReviewListLookupServiceTest {
 
         // given - 리뷰 답변 저장
         CheckboxAnswer categoryAnswer = new CheckboxAnswer(1L, List.of(1L));
-        Review review1 = new Review(1L, reviewGroup.getId(), List.of(categoryAnswer));
+        Review review1 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(categoryAnswer));
         TextAnswer textAnswer = new TextAnswer(1L, "텍스트형 응답");
-        Review review2 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review2 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
         reviewRepository.saveAll(List.of(review1, review2));
 
         // when
@@ -60,9 +61,9 @@ class ReviewListLookupServiceTest {
 
         // given - 리뷰 답변 저장
         TextAnswer textAnswer = new TextAnswer(1L, "텍스트형 응답");
-        Review review1 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
-        Review review2 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
-        Review review3 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review1 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review2 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review3 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
         reviewRepository.saveAll(List.of(review1, review2, review3));
 
         // when

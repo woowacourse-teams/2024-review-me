@@ -7,6 +7,7 @@ import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
 import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
@@ -56,8 +57,8 @@ class ReviewDetailLookupServiceTest {
         ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹());
         ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹());
 
-        Review review1 = reviewRepository.save(new Review(0, reviewGroup1.getId(), List.of()));
-        Review review2 = reviewRepository.save(new Review(0, reviewGroup2.getId(), List.of()));
+        Review review1 = reviewRepository.save(비회원_작성_리뷰(0, reviewGroup1.getId(), List.of()));
+        Review review2 = reviewRepository.save(비회원_작성_리뷰(0, reviewGroup2.getId(), List.of()));
 
         // when, then
         assertAll(
@@ -91,7 +92,7 @@ class ReviewDetailLookupServiceTest {
                 new CheckboxAnswer(question1.getId(), List.of(optionItem1.getId(), optionItem2.getId()))
         );
         Review review = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), answers)
+                비회원_작성_리뷰(template.getId(), reviewGroup.getId(), answers)
         );
 
         // when
@@ -117,7 +118,7 @@ class ReviewDetailLookupServiceTest {
 
             // given - 아무것도 응답하지 않은 리뷰 답변 저장
             Review review = reviewRepository.save(
-                    new Review(template.getId(), reviewGroup.getId(), null)
+                    비회원_작성_리뷰(template.getId(), reviewGroup.getId(), null)
             );
 
             // when
@@ -143,7 +144,7 @@ class ReviewDetailLookupServiceTest {
             // given - 질문 하나에만 응답한 리뷰 답변 저장
             TextAnswer textAnswer = new TextAnswer(question1.getId(), "답변".repeat(20));
             Review review = reviewRepository.save(
-                    new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer))
+                    비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(textAnswer))
             );
 
             // when

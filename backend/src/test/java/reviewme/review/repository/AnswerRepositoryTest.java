@@ -1,6 +1,7 @@
 package reviewme.review.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
 
 import java.util.List;
 import java.util.Set;
@@ -30,9 +31,9 @@ class AnswerRepositoryTest {
         TextAnswer answer2 = new TextAnswer(2L, "답2".repeat(20));
         TextAnswer answer3 = new TextAnswer(2L, "답3".repeat(20));
         TextAnswer answer4 = new TextAnswer(3L, "답4".repeat(20));
-        reviewRepository.save(new Review(templateId, reviewGroupId, List.of(answer1)));
-        reviewRepository.save(new Review(templateId, reviewGroupId, List.of(answer2)));
-        reviewRepository.save(new Review(templateId, reviewGroupId, List.of(answer3)));
+        reviewRepository.save(비회원_작성_리뷰(templateId, reviewGroupId, List.of(answer1)));
+        reviewRepository.save(비회원_작성_리뷰(templateId, reviewGroupId, List.of(answer2)));
+        reviewRepository.save(비회원_작성_리뷰(templateId, reviewGroupId, List.of(answer3)));
 
         // when
         List<Answer> actual = answerRepository.findReceivedAnswersByQuestionIds(
@@ -49,7 +50,7 @@ class AnswerRepositoryTest {
         long reviewGroupId = 1L;
         TextAnswer answer1 = new TextAnswer(1L, "text answer1");
         TextAnswer answer2 = new TextAnswer(1L, "text answer2");
-        Review review = reviewRepository.save(new Review(1L, reviewGroupId, List.of(answer1, answer2)));
+        Review review = reviewRepository.save(비회원_작성_리뷰(1L, reviewGroupId, List.of(answer1, answer2)));
 
         // when
         Set<Long> actual = answerRepository.findIdsByReviewGroupId(reviewGroupId);
@@ -67,8 +68,8 @@ class AnswerRepositoryTest {
         TextAnswer textAnswer1_Q2 = new TextAnswer(2L, "text answer1 by Q2");
 
         reviewRepository.saveAll(List.of(
-                new Review(1L, reviewGroupId, List.of(textAnswer1_Q1, textAnswer2_Q1)),
-                new Review(1L, reviewGroupId, List.of(textAnswer1_Q2)
+                비회원_작성_리뷰(1L, reviewGroupId, List.of(textAnswer1_Q1, textAnswer2_Q1)),
+                비회원_작성_리뷰(1L, reviewGroupId, List.of(textAnswer1_Q2)
                 )));
 
         // when

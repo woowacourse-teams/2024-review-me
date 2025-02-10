@@ -3,6 +3,7 @@ package reviewme.highlight.service.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
@@ -16,7 +17,6 @@ import reviewme.highlight.service.dto.HighlightIndexRangeRequest;
 import reviewme.highlight.service.dto.HighlightRequest;
 import reviewme.highlight.service.dto.HighlightedLineRequest;
 import reviewme.highlight.service.dto.HighlightsRequest;
-import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -54,7 +54,7 @@ class HighlightMapperTest {
 
         TextAnswer textAnswer1 = new TextAnswer(question.getId(), "text answer1");
         TextAnswer textAnswer2 = new TextAnswer(question.getId(), "text answer2");
-        reviewRepository.save(new Review(template.getId(), reviewGroupId, List.of(textAnswer1, textAnswer2)));
+        reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroupId, List.of(textAnswer1, textAnswer2)));
 
         highlightRepository.save(new Highlight(1, 1, new HighlightRange(1, 1)));
 

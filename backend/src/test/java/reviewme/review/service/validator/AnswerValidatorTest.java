@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
@@ -54,7 +55,7 @@ class AnswerValidatorTest {
                 new TextAnswer(question1.getId(), "답변1"),
                 new TextAnswer(question2.getId(), "답변2")
         );
-        Review review = reviewRepository.save(new Review(1L, reviewGroup.getId(), answers));
+        Review review = reviewRepository.save(비회원_작성_리뷰(1L, reviewGroup.getId(), answers));
         Set<Long> answerIds = review.getAnsweredQuestionIds();
         List<Long> firstAnswerId = List.of(answers.get(0).getId());
 
@@ -81,7 +82,7 @@ class AnswerValidatorTest {
                 new TextAnswer(question1.getId(), "답변1"),
                 new TextAnswer(question2.getId(), "답변2")
         );
-        Review review = reviewRepository.save(new Review(1L, reviewGroup.getId(), answers));
+        Review review = reviewRepository.save(비회원_작성_리뷰(1L, reviewGroup.getId(), answers));
 
         List<Long> answerIds = review.getAnswers().stream().map(Answer::getQuestionId).toList();
         List<Long> wrongAnswerIds = new ArrayList<>(answerIds);

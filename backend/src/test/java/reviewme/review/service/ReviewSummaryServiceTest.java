@@ -3,6 +3,7 @@ package reviewme.review.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
@@ -46,12 +47,12 @@ class ReviewSummaryServiceTest {
         ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹());
 
         List<Review> reviews = List.of(
-                new Review(template.getId(), reviewGroup1.getId(), List.of()),
-                new Review(template.getId(), reviewGroup1.getId(), List.of()),
-                new Review(template.getId(), reviewGroup1.getId(), List.of())
+                비회원_작성_리뷰(template.getId(), reviewGroup1.getId(), List.of()),
+                비회원_작성_리뷰(template.getId(), reviewGroup1.getId(), List.of()),
+                비회원_작성_리뷰(template.getId(), reviewGroup1.getId(), List.of())
         );
         reviewRepository.saveAll(reviews);
-        reviewRepository.save(new Review(template.getId(), reviewGroup2.getId(), List.of()));
+        reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup2.getId(), List.of()));
 
         // when
         ReceivedReviewsSummaryResponse actual = reviewSummaryService.getReviewSummary(reviewGroup1);
