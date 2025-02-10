@@ -32,7 +32,7 @@ public class AuthApiTest extends ApiTest {
                 .when().get("/v2/auth/github?code=github_auth_code")
                 .then().log().all()
                 .apply(handler)
-                .statusCode(200);
+                .statusCode(204);
     }
 
     @Test
