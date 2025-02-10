@@ -11,7 +11,7 @@ import reviewme.reviewgroup.domain.ReviewGroup;
 class ReviewGroupTest {
 
     @Test
-    void 회원id로_생성한다() {
+    void 회원의_리뷰_그룹을_생성한다() {
         // given
         long memberId = 1L;
         int maxLength = 50;
@@ -29,7 +29,7 @@ class ReviewGroupTest {
     }
 
     @Test
-    void 그룹액세스코드로_생성한다() {
+    void 비회원의_리뷰_그룹을_생성한다() {
         // given
         int maxLength = 50;
         int minLength = 1;
