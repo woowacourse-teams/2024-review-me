@@ -1,5 +1,6 @@
 package reviewme.reviewgroup.domain;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -49,8 +50,8 @@ public class ReviewGroup {
     private GroupAccessCode groupAccessCode;
 
 
-    private ReviewGroup(Long memberId, long templateId, String reviewee, String projectName, String reviewRequestCode,
-                       String groupAccessCode) {
+    private ReviewGroup(@Nullable Long memberId, long templateId, String reviewee, String projectName,
+                        String reviewRequestCode, String groupAccessCode) {
         validateRevieweeLength(reviewee);
         validateProjectNameLength(projectName);
         this.memberId = memberId;
