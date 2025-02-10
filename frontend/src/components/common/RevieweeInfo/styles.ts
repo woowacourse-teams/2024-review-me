@@ -14,7 +14,7 @@ export const RevieweeInfo = styled.article`
 
 export const Guide = styled.span`
   display: flex;
-  gap: 0.2rem;
+  gap: 0.6rem;
 
   img {
     width: 2rem;
