@@ -6,6 +6,7 @@ import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
 import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 import static reviewme.fixture.SectionFixture.조건부로_보이는_섹션;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
@@ -85,7 +86,7 @@ class ReviewValidatorTest {
                 List.of(conditionalOptionItem.getId()));
 
         // 리뷰 생성
-        Review review = new Review(template.getId(), reviewGroup.getId(),
+        Review review = 비회원_작성_리뷰(template.getId(), reviewGroup.getId(),
                 List.of(notRequiredTextAnswer, conditionalTextAnswer1,
                         alwaysRequiredCheckAnswer, conditionalCheckAnswer1));
 
@@ -110,7 +111,7 @@ class ReviewValidatorTest {
         templateRepository.save(new Template(List.of(section2)));
 
         TextAnswer textAnswer = new TextAnswer(question2.getId(), "답변".repeat(20));
-        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review = 비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(textAnswer));
 
         // when, then
         assertThatThrownBy(() -> reviewValidator.validate(review))
@@ -128,7 +129,7 @@ class ReviewValidatorTest {
         Template template = templateRepository.save(new Template(List.of(section)));
 
         TextAnswer optionalTextAnswer = new TextAnswer(optionalQuestion.getId(), "답변".repeat(20));
-        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer));
+        Review review = 비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer));
 
         // when, then
         assertThatThrownBy(() -> reviewValidator.validate(review))
