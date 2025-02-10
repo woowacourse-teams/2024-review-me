@@ -3,6 +3,7 @@ package reviewme.api;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -118,7 +119,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 리뷰_그룹_코드가_올바르지_않은_경우_예외가_발생한다() {
-        BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class), anyLong()))
+        BDDMockito.given(reviewRegisterService.registerReview(any(ReviewRegisterRequest.class), nullable(Long.class)))
                 .willThrow(new ReviewGroupNotFoundByReviewRequestCodeException("ABCD1234"));
 
         FieldDescriptor[] requestFieldDescriptors = {
