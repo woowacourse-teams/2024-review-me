@@ -39,7 +39,9 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     // Test dependencies
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
