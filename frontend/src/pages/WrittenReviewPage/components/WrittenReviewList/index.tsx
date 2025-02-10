@@ -46,9 +46,7 @@ const WrittenReviewList = () => {
           ))}
 
           {!isFetchingNextPage && !isLastPage && (
-            <div ref={lastReviewElementRef} style={{ height: '0.1rem' }}>
-              .
-            </div>
+            <div ref={lastReviewElementRef} style={{ minWidth: '0.1rem', minHeight: '0.1rem' }} />
           )}
           <TopButton containerRef={containerRef} />
         </S.WrittenReviewList>
