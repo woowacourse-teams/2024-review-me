@@ -64,12 +64,17 @@ class ReviewGroupServiceTest {
         ReviewGroup expected = reviewGroupRepository.findByReviewRequestCode(actual.reviewRequestCode())
                 .orElseThrow();
 
-        assertAll(
-                () -> assertThat(expected.getReviewee()).isEqualTo(revieweeName),
-                () -> assertThat(expected.getProjectName()).isEqualTo(projectName),
-                () -> assertThat(expected.getGroupAccessCode()).isNull(),
-                () -> assertThat(expected.getMemberId()).isEqualTo(memberId)
-        );
+        assertThat(expected.getReviewee()).isEqualTo(revieweeName);
+        assertThat(expected.getProjectName()).isEqualTo(projectName);
+        assertThat(expected.getGroupAccessCode()).isNull();
+        assertThat(expected.getMemberId()).isEqualTo(memberId);
+
+//        assertAll(
+//                () -> assertThat(expected.getReviewee()).isEqualTo(revieweeName),
+//                () -> assertThat(expected.getProjectName()).isEqualTo(projectName),
+//                () -> assertThat(expected.getGroupAccessCode()).isNull(),
+//                () -> assertThat(expected.getMemberId()).isEqualTo(memberId)
+//        );
     }
 
     @Test
