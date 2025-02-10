@@ -2,6 +2,7 @@ package reviewme.reviewgroup.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -64,10 +65,12 @@ class ReviewGroupServiceTest {
         ReviewGroup expected = reviewGroupRepository.findByReviewRequestCode(actual.reviewRequestCode())
                 .orElseThrow();
 
-        assertThat(expected.getReviewee()).isEqualTo(revieweeName);
-        assertThat(expected.getProjectName()).isEqualTo(projectName);
-        assertThat(expected.getGroupAccessCode()).isNull();
-        assertThat(expected.getMemberId()).isEqualTo(memberId);
+        assertAll(
+                () -> assertThat(expected.getReviewee()).isEqualTo(revieweeName),
+                () -> assertThat(expected.getProjectName()).isEqualTo(projectName),
+                () -> assertThat(expected.getGroupAccessCode()).isNull(),
+                () -> assertThat(expected.getMemberId()).isEqualTo(memberId)
+        );
     }
 
     @Test
