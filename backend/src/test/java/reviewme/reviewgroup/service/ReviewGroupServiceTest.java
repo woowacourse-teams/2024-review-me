@@ -2,7 +2,6 @@ package reviewme.reviewgroup.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
@@ -68,12 +67,10 @@ class ReviewGroupServiceTest {
         ReviewGroup expected = reviewGroupRepository.findByReviewRequestCode(actual.reviewRequestCode())
                 .orElseThrow();
 
-        assertAll(
-                () -> assertThat(expected.getReviewee()).isEqualTo(revieweeName),
-                () -> assertThat(expected.getProjectName()).isEqualTo(projectName),
-                () -> assertThat(expected.getGroupAccessCode()).isNull(),
-                () -> assertThat(expected.getMemberId()).isEqualTo(memberId)
-        );
+        assertThat(expected.getReviewee()).isEqualTo(revieweeName);
+        assertThat(expected.getProjectName()).isEqualTo(projectName);
+        assertThat(expected.getGroupAccessCode()).isNull();
+        assertThat(expected.getMemberId()).isEqualTo(memberId);
     }
 
     @Test
@@ -87,7 +84,8 @@ class ReviewGroupServiceTest {
 
         String revieweeName = "ted";
         String projectName = "reviewme";
-        ReviewGroupCreationRequest request = new ReviewGroupCreationRequest(revieweeName, projectName, "groupAccessCode");
+        ReviewGroupCreationRequest request = new ReviewGroupCreationRequest(revieweeName, projectName,
+                "groupAccessCode");
 
         // when
         ReviewGroupCreationResponse actual = reviewGroupService.createReviewGroupForGuest(request);
@@ -95,13 +93,10 @@ class ReviewGroupServiceTest {
         // then
         ReviewGroup expected = reviewGroupRepository.findByReviewRequestCode(actual.reviewRequestCode())
                 .orElseThrow();
-
-        assertAll(
-                () -> assertThat(expected.getReviewee()).isEqualTo(revieweeName),
-                () -> assertThat(expected.getProjectName()).isEqualTo(projectName),
-                () -> assertThat(expected.getGroupAccessCode()).isNotNull(),
-                () -> assertThat(expected.getMemberId()).isNull()
-        );
+        assertThat(expected.getReviewee()).isEqualTo(revieweeName);
+        assertThat(expected.getProjectName()).isEqualTo(projectName);
+        assertThat(expected.getGroupAccessCode()).isNotNull();
+        assertThat(expected.getMemberId()).isNull();
     }
 
     @Test
@@ -137,11 +132,9 @@ class ReviewGroupServiceTest {
         CheckValidAccessRequest wrongRequest = new CheckValidAccessRequest(reviewRequestCode, groupAccessCode + "!");
 
         // when
-        assertAll(
-                () -> assertDoesNotThrow(() -> reviewGroupService.checkGroupAccessCode(request)),
-                () -> assertThatThrownBy(() -> reviewGroupService.checkGroupAccessCode(wrongRequest))
-                        .isInstanceOf(ReviewGroupUnauthorizedException.class)
-        );
+        assertDoesNotThrow(() -> reviewGroupService.checkGroupAccessCode(request));
+        assertThatThrownBy(() -> reviewGroupService.checkGroupAccessCode(wrongRequest))
+                .isInstanceOf(ReviewGroupUnauthorizedException.class);
     }
 
     @Test
