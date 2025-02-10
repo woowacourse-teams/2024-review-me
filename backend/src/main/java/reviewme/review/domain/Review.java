@@ -56,10 +56,6 @@ public class Review {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Review(long templateId, long reviewGroupId, List<Answer> answers) {
-        this(null, templateId, reviewGroupId, answers);
-    }
-
     public Set<Long> getAnsweredQuestionIds() {
         return answers.stream()
                 .map(Answer::getQuestionId)
