@@ -40,3 +40,12 @@ logging:
 cors:
   allowed-origins:
     - https://allowed-domain.com
+
+github:
+  oauth:
+    client-id: client-id
+    client-secret: client-secret
+    access-token-uri: access-token-uri
+    user-info-uri: user-info-uri
+  user:
+    profile-url-format: profile-uri-format-%s

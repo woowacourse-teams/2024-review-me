@@ -1,4 +1,4 @@
-package reviewme.reviewgroup.service.exception;
+package reviewme.auth.service.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import reviewme.global.exception.UnauthorizedException;

@@ -1,12 +1,13 @@
-// TODO: ROUTE -> ROUTE 및 상수 인덱스에 추가하기
+import { makeRoutePath } from '@/utils';
+
 export const ROUTE = {
   home: '/',
-  reviewList: 'user/review-list',
-  reviewWriting: 'user/review-writing',
-  reviewWritingComplete: 'user/review-writing-complete',
-  detailedReview: 'user/detailed-review',
-  reviewZone: 'user/review-zone',
-  reviewCollection: 'user/review-collection',
-  reviewLinks: 'user/review-links',
-  writtenReview: 'user/written-review',
+  reviewList: makeRoutePath('review-list'),
+  reviewWriting: makeRoutePath('review-writing'),
+  reviewWritingComplete: makeRoutePath('review-writing-complete'),
+  detailedReview: makeRoutePath('detailed-review'),
+  reviewZone: makeRoutePath('review-zone'),
+  reviewCollection: makeRoutePath('review-collection'),
+  reviewLinks: makeRoutePath('review-links', true),
+  writtenReview: makeRoutePath('written-review', true),
 };

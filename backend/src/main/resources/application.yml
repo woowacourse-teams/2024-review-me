@@ -37,3 +37,12 @@ cors:
   allowed-origins:
     - http://localhost
     - https://localhost
+
+github:
+  oauth:
+    client-id: client-id
+    client-secret: client-secret
+    access-token-url: https://github.com/login/oauth/access_token
+    user-info-url: https://api.github.com/user
+  user:
+    profile-url-format: https://github.com/%s.png
