@@ -12,8 +12,6 @@ import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -28,7 +26,6 @@ import reviewme.template.domain.Template;
 import reviewme.template.repository.TemplateRepository;
 
 @ServiceTest
-@ExtendWith(MockitoExtension.class)
 class ReviewGroupServiceTest {
 
     @MockBean
