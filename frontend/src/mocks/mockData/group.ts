@@ -12,4 +12,7 @@ export const REVIEW_GROUP_DATA: ReviewGroupData = {
 };
 
 /**리뷰 연결 페이지에서 유효한 reviewRequestCode */
-export const VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE = `ABCD1234`;
+export const VALID_REVIEW_REQUEST_CODE = {
+  nonMember: `ABCD1234`,
+  member: 'MEMBER1234',
+};

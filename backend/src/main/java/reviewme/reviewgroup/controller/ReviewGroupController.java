@@ -1,7 +1,5 @@
 package reviewme.reviewgroup.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.reviewgroup.service.ReviewGroupLookupService;
 import reviewme.reviewgroup.service.ReviewGroupService;
-import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
@@ -52,17 +49,6 @@ public class ReviewGroupController {
 
         ReviewGroupCreationResponse response = reviewGroupService.createReviewGroupForGuest(request);
         return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/v2/groups/check")
-    public ResponseEntity<Void> checkGroupAccessCode(
-            @Valid @RequestBody CheckValidAccessRequest request,
-            HttpServletRequest httpRequest
-    ) {
-        reviewGroupService.checkGroupAccessCode(request);
-        HttpSession session = httpRequest.getSession();
-        session.setAttribute("reviewRequestCode", request.reviewRequestCode());
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/v2/groups")

@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import reviewme.auth.controller.AuthController;
 import reviewme.auth.service.AuthService;
+import reviewme.global.session.SessionManager;
 import reviewme.highlight.controller.HighlightController;
 import reviewme.highlight.service.HighlightService;
 import reviewme.member.controller.MemberController;
@@ -92,6 +93,9 @@ public abstract class ApiTest {
 
     @MockBean
     protected AuthService authService;
+
+    @MockBean
+    protected SessionManager sessionManager;
 
     @MockBean
     private ReviewGroupSessionResolver reviewGroupSessionResolver;
