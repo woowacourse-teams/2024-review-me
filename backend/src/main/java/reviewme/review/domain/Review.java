@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = "new_review")
@@ -48,7 +49,7 @@ public class Review {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Review(Long memberId, long templateId, long reviewGroupId, List<Answer> answers) {
+    public Review(@Nullable Long memberId, long templateId, long reviewGroupId, List<Answer> answers) {
         this.memberId = memberId;
         this.templateId = templateId;
         this.reviewGroupId = reviewGroupId;
