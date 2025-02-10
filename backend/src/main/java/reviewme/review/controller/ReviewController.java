@@ -46,8 +46,7 @@ public class ReviewController {
         TODO: 회원 세션 유무에 따른 분기처리 로직
         Long memberId = Optional.ofNullable(member).map(Member::getId).orElse(null);
          */
-        long memberId = 1L; // 임시
-        long savedReviewId = reviewRegisterService.registerReview(request, memberId);
+        long savedReviewId = reviewRegisterService.registerReview(request, null);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
