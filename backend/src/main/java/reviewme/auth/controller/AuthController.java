@@ -29,7 +29,7 @@ public class AuthController {
     ) {
         GitHubMember gitHubMember = authService.authWithGithub(code);
         sessionManager.saveGitHubMember(session, gitHubMember);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/v2/auth/review-group")
