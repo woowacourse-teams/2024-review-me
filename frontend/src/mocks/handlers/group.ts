@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw';
 import endPoint, { REVIEW_GROUP_DATA_API_PARAMS, REVIEW_GROUP_DATA_API_URL } from '@/apis/endpoints';
 import { API_ERROR_MESSAGE, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
 
+import { REVIEW_LINKS } from '../mockData';
 import {
   MOCK_AUTH_TOKEN_NAME,
   REVIEW_GROUP_DATA,
@@ -13,6 +14,17 @@ import {
 // NOTE: reviewRequestCode 생성 정상 응답
 const postDataForReviewRequestCode = () => {
   return http.post(endPoint.postingDataForReviewRequestCode, async () => {
+    const newReviewLink = {
+      revieweeName: '쑤쑤',
+      projectName: '리뷰미2',
+      createdAt: '2025-05-10',
+      reviewRequestCode: 'MEMBER1234',
+      reviewCount: 30,
+    };
+
+    // 새로 생성된 리뷰 링크를 목 데이터에 추가
+    REVIEW_LINKS.reviewGroups.push(newReviewLink);
+
     return HttpResponse.json({ reviewRequestCode: VALID_REVIEW_GROUP_REVIEW_REQUEST_CODE }, { status: 200 });
   });
 };
