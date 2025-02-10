@@ -33,9 +33,6 @@ dependencies {
     implementation 'org.flywaydb:flyway-mysql'
     implementation 'com.h2database:h2'
 
-    // 런타임 열거형 오류 방지
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
-
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     // ConfigurationProperties
