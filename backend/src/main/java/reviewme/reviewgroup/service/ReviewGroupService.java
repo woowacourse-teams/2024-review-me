@@ -47,7 +47,7 @@ public class ReviewGroupService {
         return new ReviewGroupCreationResponse(reviewGroup.getReviewRequestCode());
     }
 
-    public String generateReviewRequestCode() {
+    private String generateReviewRequestCode() {
         String reviewRequestCode;
         do {
             reviewRequestCode = randomCodeGenerator.generate(REVIEW_REQUEST_CODE_LENGTH);
