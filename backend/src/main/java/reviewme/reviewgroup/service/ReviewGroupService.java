@@ -7,6 +7,7 @@ import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
+import reviewme.reviewgroup.service.exception.GroupAccessCodeNullException;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.template.domain.Template;
 import reviewme.template.service.DefaultTemplateService;
