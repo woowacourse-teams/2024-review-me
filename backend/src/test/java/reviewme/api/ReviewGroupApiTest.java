@@ -21,6 +21,7 @@ import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
+import reviewme.auth.domain.GitHubMember;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse;
@@ -123,14 +124,14 @@ class ReviewGroupApiTest extends ApiTest {
         };
 
         RestDocumentationResultHandler handler = document(
-                "member-review-group-summary",
+                "member-review-group",
                 queryParameters(parameterDescriptors),
                 responseFields(responseFieldDescriptors)
         );
 
         givenWithSpec().log().all()
                 .queryParam("reviewRequestCode", "ABCD1234")
-                .when().get("/v2/groups/summary")
+                .when().get("/v2/groups")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
@@ -152,14 +153,14 @@ class ReviewGroupApiTest extends ApiTest {
         };
 
         RestDocumentationResultHandler handler = document(
-                "guest-review-group-summary",
+                "guest-review-group",
                 queryParameters(parameterDescriptors),
                 responseFields(responseFieldDescriptors)
         );
 
         givenWithSpec().log().all()
                 .queryParam("reviewRequestCode", "ABCD1234")
-                .when().get("/v2/groups/summary")
+                .when().get("/v2/groups")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
@@ -167,6 +168,9 @@ class ReviewGroupApiTest extends ApiTest {
 
     @Test
     void 회원이_생성한_프로젝트_목록을_반환한다() {
+        BDDMockito.given(sessionManager.getGitHubMember(any()))
+                .willReturn(new GitHubMember(1L, "githubName", "githubURL"));
+
         ReviewGroupPageResponse response = new ReviewGroupPageResponse(2L, true,
                 List.of(
                         new ReviewGroupPageElementResponse("이동훈", "우테코", LocalDate.of(2024, 1, 30), "WOOTECO1", 1),
@@ -199,7 +203,7 @@ class ReviewGroupApiTest extends ApiTest {
 
         givenWithSpec().log().all()
                 .cookie("JSESSIONID", "ABCDEFGHI1234")
-                .when().get("/v2/groups")
+                .when().get("/v2/groups/me")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);

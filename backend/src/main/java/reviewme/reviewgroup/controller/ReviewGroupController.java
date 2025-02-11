@@ -1,6 +1,7 @@
 package reviewme.reviewgroup.controller;
 
 import jakarta.validation.Valid;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +46,8 @@ public class ReviewGroupController {
             @Valid @RequestBody ReviewGroupCreationRequest request,
             @LoginMemberSession(required = false) LoginMember loginMember
     ) {
-        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request, loginMember.id());
+        Long memberId = Optional.ofNullable(loginMember).map(LoginMember::id).orElse(null);
+        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request, memberId);
         return ResponseEntity.ok(response);
     }
 }
