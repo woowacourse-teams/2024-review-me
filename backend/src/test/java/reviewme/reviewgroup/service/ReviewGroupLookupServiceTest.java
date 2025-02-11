@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.reviewgroup.service.dto.ReviewGroupSummaryResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
@@ -33,7 +33,7 @@ class ReviewGroupLookupServiceTest {
         ));
 
         // when
-        ReviewGroupSummaryResponse response = reviewGroupLookupService.getReviewGroupSummary(
+        ReviewGroupResponse response = reviewGroupLookupService.getReviewGroup(
                 reviewGroup.getReviewRequestCode()
         );
 
@@ -47,7 +47,7 @@ class ReviewGroupLookupServiceTest {
     @Test
     void 리뷰_요청_코드에_대한_리뷰_그룹이_존재하지_않을_경우_예외가_발생한다() {
         // given, when, then
-        assertThatThrownBy(() -> reviewGroupLookupService.getReviewGroupSummary("reviewRequestCode"))
+        assertThatThrownBy(() -> reviewGroupLookupService.getReviewGroup("reviewRequestCode"))
                 .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 }

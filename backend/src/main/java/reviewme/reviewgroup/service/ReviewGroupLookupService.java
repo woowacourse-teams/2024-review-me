@@ -7,7 +7,7 @@ import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.reviewgroup.service.dto.ReviewGroupSummaryResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -16,12 +16,11 @@ public class ReviewGroupLookupService {
     private final ReviewGroupRepository reviewGroupRepository;
 
     @Transactional(readOnly = true)
-    public ReviewGroupSummaryResponse getReviewGroupSummary(String reviewRequestCode) {
+    public ReviewGroupResponse getReviewGroup(String reviewRequestCode) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
-        // todo: 리뷰어 id 가 있다면 같이 응답해야 함
-        return new ReviewGroupSummaryResponse(null, reviewGroup.getReviewee(), reviewGroup.getProjectName());
+        return new ReviewGroupResponse(reviewGroup.getMemberId(), reviewGroup.getReviewee(), reviewGroup.getProjectName());
     }
 
     public ReviewGroupPageResponse getMyReviewGroups() {

@@ -1,6 +1,7 @@
 package reviewme.reviewgroup.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -23,7 +24,7 @@ public class ReviewGroupService {
     private final DefaultTemplateService defaultTemplateService;
 
     @Transactional
-    public ReviewGroupCreationResponse createReviewGroup(ReviewGroupCreationRequest request, Long memberId) {
+    public ReviewGroupCreationResponse createReviewGroup(ReviewGroupCreationRequest request, @Nullable Long memberId) {
         String reviewRequestCode = generateReviewRequestCode();
 
         Template template = defaultTemplateService.getDefaultTemplate();

@@ -25,7 +25,7 @@ import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
-import reviewme.reviewgroup.service.dto.ReviewGroupSummaryResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
 
 class ReviewGroupApiTest extends ApiTest {
 
@@ -109,8 +109,8 @@ class ReviewGroupApiTest extends ApiTest {
 
     @Test
     void 리뷰_요청_코드로_회원이_만든_리뷰_그룹_정보를_반환한다() {
-        BDDMockito.given(reviewGroupLookupService.getReviewGroupSummary(anyString()))
-                .willReturn(new ReviewGroupSummaryResponse(1L,"아루", "리뷰미"));
+        BDDMockito.given(reviewGroupLookupService.getReviewGroup(anyString()))
+                .willReturn(new ReviewGroupResponse(1L,"아루", "리뷰미"));
 
         ParameterDescriptor[] parameterDescriptors = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드")
@@ -138,8 +138,8 @@ class ReviewGroupApiTest extends ApiTest {
 
     @Test
     void 리뷰_요청_코드로_비회원이_만든_리뷰_그룹_정보를_반환한다() {
-        BDDMockito.given(reviewGroupLookupService.getReviewGroupSummary(anyString()))
-                .willReturn(new ReviewGroupSummaryResponse(null, "아루", "리뷰미"));
+        BDDMockito.given(reviewGroupLookupService.getReviewGroup(anyString()))
+                .willReturn(new ReviewGroupResponse(null, "아루", "리뷰미"));
 
         ParameterDescriptor[] parameterDescriptors = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드")

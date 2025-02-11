@@ -8,6 +8,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import reviewme.auth.controller.exception.GuestReviewGroupSessionNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.service.ReviewGroupService;
 
@@ -31,11 +32,11 @@ public class ReviewGroupSessionResolver implements HandlerMethodArgumentResolver
 
         // 세션이 없거나, 세션 안에 reviewRequestCode가 존재하지 않는 경우
         if (session == null) {
-            throw new ReviewGroupSessionNotFoundException();
+            throw new GuestReviewGroupSessionNotFoundException();
         }
         String reviewRequestCode = (String) session.getAttribute(SESSION_KEY);
         if (reviewRequestCode == null) {
-            throw new ReviewGroupSessionNotFoundException();
+            throw new GuestReviewGroupSessionNotFoundException();
         }
         return reviewGroupService.getReviewGroupByReviewRequestCode(reviewRequestCode);
     }
