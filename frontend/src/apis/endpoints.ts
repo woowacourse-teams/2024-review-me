@@ -75,7 +75,7 @@ const endPoint = {
   postingDataForReviewRequestCode: `${serverUrl}/${VERSION2}/groups`,
   checkingPassword: `${serverUrl}/${VERSION2}/${REVIEW_PASSWORD_API_PARAMS.resource}/${REVIEW_PASSWORD_API_PARAMS.queryString.check}`,
   gettingReviewGroupData: (reviewRequestCode: string) =>
-    `${REVIEW_GROUP_DATA_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
+    `${REVIEW_GROUP_DATA_API_URL}/summary?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingSectionList: `${serverUrl}/${VERSION2}/sections`,
   gettingGroupedReviews: (sectionId: number) =>
     `${REVIEW_GROUP_API_URL}?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,

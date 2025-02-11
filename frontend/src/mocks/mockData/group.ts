@@ -7,6 +7,7 @@ export const MOCK_AUTH_TOKEN_NAME = 'mockAuthToken';
  * 리뷰 연결 페이지에서 사용하는 리뷰 그룹 정보
  */
 export const REVIEW_GROUP_DATA: ReviewGroupData = {
+  revieweeId: 1,
   revieweeName: '바다',
   projectName: '2024-review-me',
 };

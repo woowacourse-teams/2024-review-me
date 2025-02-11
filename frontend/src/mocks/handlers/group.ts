@@ -88,6 +88,14 @@ const getReviewGroupData = () => {
     const reviewRequestCode = params.get(queryString.reviewRequestCode);
 
     if (reviewRequestCode) {
+      const { nonMember: nonMemberReviewRequestCode } = VALID_REVIEW_REQUEST_CODE;
+
+      // 비회원일 경우, revieweeId를 null로 변경
+      if (reviewRequestCode === nonMemberReviewRequestCode) {
+        REVIEW_GROUP_DATA.revieweeId = null;
+        return HttpResponse.json(REVIEW_GROUP_DATA);
+      }
+
       return HttpResponse.json(REVIEW_GROUP_DATA);
     }
 
