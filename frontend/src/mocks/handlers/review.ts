@@ -120,8 +120,7 @@ const getGroupedReviews = () => {
 
 const getReviewLinks = () =>
   http.get(endPoint.gettingReviewLinks, ({ cookies }) => {
-    return HttpResponse.json(REVIEW_LINKS);
-    // return authorizeWithCookie(cookies, () => HttpResponse.json(REVIEW_LINKS));
+    return authorizeWithCookie(cookies, () => HttpResponse.json(REVIEW_LINKS));
   });
 
 const reviewHandler = [
