@@ -15,12 +15,11 @@ import reviewme.review.service.dto.response.detail.OptionItemAnswerResponse;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
-import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.template.domain.OptionGroup;
-import reviewme.template.domain.SelectionRange;
 import reviewme.template.domain.OptionItem;
 import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
+import reviewme.template.domain.SelectionRange;
 import reviewme.template.domain.Template;
 import reviewme.template.repository.TemplateRepository;
 import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
@@ -36,10 +35,10 @@ public class ReviewDetailMapper {
          조회 전용 로직을 만드는 게 좋겠다, Template + 리뷰 정보를 한 번에 내려줘야 한다.
          Template에서 정보를 가져오는 건 쉽다 (연관관계 있음), 리뷰 관련 정보를 가져와서 어떻게 섞을지 고민하자.
     */
-    public ReviewDetailResponse mapToReviewDetailResponse(Review review, ReviewGroup reviewGroup) {
-        Template template = templateRepository.findById(reviewGroup.getTemplateId())
-                .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(reviewGroup.getId(),
-                        reviewGroup.getTemplateId()));
+    public ReviewDetailResponse mapToReviewDetailResponse(Review review) {
+        Template template = templateRepository.findById(review.getTemplateId())
+                .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(review.getId(),
+                        review.getTemplateId()));
 
         List<Section> sections = template.getSections();
         List<Question> questions = sections.stream()
@@ -59,8 +58,6 @@ public class ReviewDetailMapper {
 
         return new ReviewDetailResponse(
                 template.getId(),
-                reviewGroup.getReviewee(),
-                reviewGroup.getProjectName(),
                 review.getCreatedDate(),
                 sectionResponses
         );

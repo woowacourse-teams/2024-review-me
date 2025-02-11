@@ -7,6 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import reviewme.template.domain.Question;
 import reviewme.template.repository.QuestionRepository;
@@ -31,7 +32,7 @@ public class ReviewMapper {
     private final QuestionRepository questionRepository;
     private final TemplateRepository templateRepository;
 
-    public Review mapToReview(ReviewRegisterRequest request, Long memberId) {
+    public Review mapToReview(ReviewRegisterRequest request, @Nullable Long memberId) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(request.reviewRequestCode())
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(request.reviewRequestCode()));
         Template template = templateRepository.findById(reviewGroup.getTemplateId())

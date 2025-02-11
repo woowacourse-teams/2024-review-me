@@ -103,7 +103,7 @@ class TemplateFixture {
         );
 
         return new ReviewDetailResponse(
-                1, "아루", "리뷰미", LocalDate.of(2024, 8, 1), List.of(firstSectionAnswer, secondSectionAnswer)
+                1, LocalDate.of(2024, 8, 1), List.of(firstSectionAnswer, secondSectionAnswer)
         );
     }
 }

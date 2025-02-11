@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.review.domain.Review;
 import reviewme.review.repository.ReviewRepository;
-import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
+import reviewme.review.service.dto.response.list.ReviewCountResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -55,12 +55,11 @@ class ReviewSummaryServiceTest {
         reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup2.getId(), List.of()));
 
         // when
-        ReceivedReviewsSummaryResponse actual = reviewSummaryService.getReviewSummary(reviewGroup1.getId());
+        ReviewCountResponse actual = reviewSummaryService.getReviewCountByGroup(reviewGroup1.getId());
 
         // then
         assertAll(
-                () -> assertThat(actual.projectName()).isEqualTo(reviewGroup1.getProjectName()),
-                () -> assertThat(actual.revieweeName()).isEqualTo(reviewGroup1.getReviewee()),
+                () -> assertThat(actual.reviewGroupId()).isEqualTo(reviewGroup1.getId()),
                 () -> assertThat(actual.totalReviewCount()).isEqualTo(reviews.size())
         );
     }

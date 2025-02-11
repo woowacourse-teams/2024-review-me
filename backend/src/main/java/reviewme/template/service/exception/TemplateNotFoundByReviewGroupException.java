@@ -6,9 +6,9 @@ import reviewme.global.exception.DataInconsistencyException;
 @Slf4j
 public class TemplateNotFoundByReviewGroupException extends DataInconsistencyException {
 
-    public TemplateNotFoundByReviewGroupException(long reviewGroupId, long templateId) {
+    public TemplateNotFoundByReviewGroupException(long reviewId, long templateId) {
         super("서버 내부에서 문제가 발생했어요. 서버에 문의해주세요.");
-        log.error("Template not found by groupAccessCode - reviewGroupId: {}, templateId: {}",
-                reviewGroupId, templateId, this);
+        log.error("Template not found by groupAccessCode - reviewId: {}, templateId: {}",
+                reviewId, templateId, this);
     }
 }

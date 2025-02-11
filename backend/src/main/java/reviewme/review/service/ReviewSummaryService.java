@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.repository.ReviewRepository;
-import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
-import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundException;
+import reviewme.review.service.dto.response.list.ReviewCountResponse;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 
 @Service
@@ -17,14 +15,11 @@ public class ReviewSummaryService {
     private final ReviewGroupRepository reviewGroupRepository;
 
     @Transactional(readOnly = true)
-    public ReceivedReviewsSummaryResponse getReviewSummary(long reviewGroupId) {
-        ReviewGroup reviewGroup = reviewGroupRepository.findById(reviewGroupId)
-                .orElseThrow(() -> new ReviewGroupNotFoundException(reviewGroupId));
+    public ReviewCountResponse getReviewCountByGroup(long reviewGroupId) {
         int totalReviewCount = reviewRepository.countByReviewGroupId(reviewGroupId);
 
-        return new ReceivedReviewsSummaryResponse(
-                reviewGroup.getProjectName(),
-                reviewGroup.getReviewee(),
+        return new ReviewCountResponse(
+                reviewGroupId,
                 totalReviewCount
         );
     }

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
+import reviewme.review.service.dto.response.list.ReviewPageResponse;
 import reviewme.review.service.mapper.ReviewListMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundException;
@@ -22,7 +22,7 @@ public class ReviewListLookupService {
     private final ReviewGroupRepository reviewGroupRepository;
 
     @Transactional(readOnly = true)
-    public ReceivedReviewPageResponse getReceivedReviews(long reviewGroupId, Long lastReviewId, Integer size) {
+    public ReviewPageResponse getReviewsByGroup(long reviewGroupId, Long lastReviewId, Integer size) {
         ReviewGroup reviewGroup = reviewGroupRepository.findById(reviewGroupId)
                 .orElseThrow(() -> new ReviewGroupNotFoundException(reviewGroupId));
         PageSize pageSize = new PageSize(size);
@@ -30,12 +30,12 @@ public class ReviewListLookupService {
                 = reviewListMapper.mapToReviewList(reviewGroup, lastReviewId, pageSize.getSize());
         long newLastReviewId = calculateLastReviewId(reviewListResponse);
         boolean isLastPage = isLastPage(reviewListResponse, reviewGroup);
-        return new ReceivedReviewPageResponse(
+        return new ReviewPageResponse(
                 reviewGroup.getReviewee(), reviewGroup.getProjectName(), newLastReviewId, isLastPage, reviewListResponse
         );
     }
 
-    public AuthoredReviewsResponse getAuthoredReviews(Long lastReviewId, Integer size) {
+    public AuthoredReviewsResponse getAuthoredReviews(Long lastReviewId, Integer size, long memberId) {
         // TODO: 생성일자 최신순 정렬
         return null;
     }

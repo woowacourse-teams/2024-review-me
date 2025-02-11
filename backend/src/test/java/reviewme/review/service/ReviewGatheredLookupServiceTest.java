@@ -79,7 +79,7 @@ class ReviewGatheredLookupServiceTest {
             reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answerTD1, answerTD2)));
 
             // when
-            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReviewsByGroupAndSection(
                     reviewGroup.getId(), section1.getId()
             );
 
@@ -110,7 +110,7 @@ class ReviewGatheredLookupServiceTest {
             reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answerTD1, answerTD2)));
 
             // when
-            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReviewsByGroupAndSection(
                     reviewGroup.getId(), section1.getId()
             );
 
@@ -136,7 +136,7 @@ class ReviewGatheredLookupServiceTest {
             reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answerAR)));
 
             // when
-            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReviewsByGroupAndSection(
                     reviewGroup.getId(), section1.getId()
             );
 
@@ -157,7 +157,7 @@ class ReviewGatheredLookupServiceTest {
             templateRepository.save(new Template(List.of(section1)));
 
             // when
-            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReviewsByGroupAndSection(
                     reviewGroup.getId(), section1.getId()
             );
 
@@ -192,7 +192,7 @@ class ReviewGatheredLookupServiceTest {
             reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answer2)));
 
             // when
-            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReviewsByGroupAndSection(
                     reviewGroup.getId(), section1.getId()
             );
 
@@ -221,7 +221,7 @@ class ReviewGatheredLookupServiceTest {
             reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answer2)));
 
             // when
-            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+            ReviewsGatheredBySectionResponse actual = reviewLookupService.getReviewsByGroupAndSection(
                     reviewGroup.getId(), section1.getId()
             );
 
@@ -252,7 +252,7 @@ class ReviewGatheredLookupServiceTest {
         reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answer1, answer2)));
 
         // when
-        ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+        ReviewsGatheredBySectionResponse actual = reviewLookupService.getReviewsByGroupAndSection(
                 reviewGroup.getId(), section1.getId()
         );
 
@@ -293,7 +293,7 @@ class ReviewGatheredLookupServiceTest {
         reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroupBE.getId(), List.of(answerBE)));
 
         // when
-        ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+        ReviewsGatheredBySectionResponse actual = reviewLookupService.getReviewsByGroupAndSection(
                 reviewGroupBE.getId(), section1.getId());
 
         // then
@@ -311,7 +311,7 @@ class ReviewGatheredLookupServiceTest {
         templateRepository.save(new Template(List.of(section1)));
 
         // when
-        ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
+        ReviewsGatheredBySectionResponse actual = reviewLookupService.getReviewsByGroupAndSection(
                 reviewGroup.getId(), section1.getId()
         );
 

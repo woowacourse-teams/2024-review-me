@@ -5,8 +5,6 @@ import java.util.List;
 
 public record ReviewDetailResponse(
         long formId,
-        String revieweeName,
-        String projectName,
         LocalDate createdAt,
         List<SectionAnswerResponse> sections
 ) {

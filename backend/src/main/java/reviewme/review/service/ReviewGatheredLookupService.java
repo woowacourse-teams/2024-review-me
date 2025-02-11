@@ -37,7 +37,7 @@ public class ReviewGatheredLookupService {
     private final ReviewGroupRepository reviewGroupRepository;
 
     @Transactional(readOnly = true)
-    public ReviewsGatheredBySectionResponse getReceivedReviewsBySectionId(long reviewGroupId, long sectionId) {
+    public ReviewsGatheredBySectionResponse getReviewsByGroupAndSection(long reviewGroupId, long sectionId) {
         ReviewGroup reviewGroup = reviewGroupRepository.findById(reviewGroupId)
                 .orElseThrow(() -> new ReviewGroupNotFoundException(reviewGroupId));
         Section section = getSectionOrThrow(sectionId, reviewGroup);

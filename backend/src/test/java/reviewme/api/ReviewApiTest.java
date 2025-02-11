@@ -1,7 +1,6 @@
 package reviewme.api;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
@@ -22,6 +21,7 @@ import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
+import reviewme.auth.domain.GitHubMember;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.gathered.HighlightResponse;
 import reviewme.review.service.dto.response.gathered.RangeResponse;
@@ -30,12 +30,12 @@ import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionRes
 import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
 import reviewme.review.service.dto.response.gathered.TextResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
-import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
 import reviewme.review.service.dto.response.list.AuthoredReviewElementResponse;
 import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
+import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
+import reviewme.review.service.dto.response.list.ReviewCountResponse;
+import reviewme.review.service.dto.response.list.ReviewPageResponse;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.template.domain.QuestionType;
 
@@ -146,7 +146,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 자신이_받은_리뷰_한_개를_조회한다() {
-        BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyLong(), any()))
+        BDDMockito.given(reviewDetailLookupService.getReviewDetail(anyLong()))
                 .willReturn(TemplateFixture.templateAnswerResponse());
 
         ParameterDescriptor[] requestPathDescriptors = {
@@ -160,8 +160,6 @@ class ReviewApiTest extends ApiTest {
         FieldDescriptor[] responseFieldDescriptors = {
                 fieldWithPath("createdAt").description("리뷰 작성 날짜"),
                 fieldWithPath("formId").description("폼 ID"),
-                fieldWithPath("revieweeName").description("리뷰이 이름"),
-                fieldWithPath("projectName").description("프로젝트 이름"),
 
                 fieldWithPath("sections[]").description("섹션 목록"),
                 fieldWithPath("sections[].sectionId").description("섹션 ID"),
@@ -209,9 +207,9 @@ class ReviewApiTest extends ApiTest {
                 new ReceivedReviewPageElementResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
                         List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
         );
-        ReceivedReviewPageResponse response = new ReceivedReviewPageResponse(
+        ReviewPageResponse response = new ReviewPageResponse(
                 "아루3", "리뷰미", 1L, true, receivedReviews);
-        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyLong(), anyLong(), anyInt()))
+        BDDMockito.given(reviewListLookupService.getReviewsByGroup(anyLong(), nullable(Long.class), nullable(Integer.class)))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
@@ -258,16 +256,16 @@ class ReviewApiTest extends ApiTest {
                 .queryParam("reviewRequestCode", "hello!!")
                 .queryParam("lastReviewId", "2")
                 .queryParam("size", "5")
-                .when().get("/v2/groups/{reviewGroupId}/reviews/received")
+                .when().get("/v2/groups/{reviewGroupId}/reviews")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
     }
 
     @Test
-    void 자신이_받은_리뷰의_요약를_조회한다() {
-        BDDMockito.given(reviewSummaryService.getReviewSummary(anyLong()))
-                .willReturn(new ReceivedReviewsSummaryResponse("리뷰미", "산초", 5));
+    void 자신이_받은_리뷰의_개수를_조회한다() {
+        BDDMockito.given(reviewCountService.getReviewCountByGroup(anyLong()))
+                .willReturn(new ReviewCountResponse(1L, 5));
 
         CookieDescriptor[] cookieDescriptors = {
                 cookieWithName("JSESSIONID").description("세션 ID")
@@ -277,8 +275,7 @@ class ReviewApiTest extends ApiTest {
         };
 
         FieldDescriptor[] responseFieldDescriptors = {
-                fieldWithPath("projectName").description("프로젝트 이름"),
-                fieldWithPath("revieweeName").description("리뷰어 이름"),
+                fieldWithPath("reviewGroupId").description("리뷰 그룹 ID"),
                 fieldWithPath("totalReviewCount").description("받은 리뷰 전체 개수")
         };
 
@@ -292,7 +289,7 @@ class ReviewApiTest extends ApiTest {
         givenWithSpec().log().all()
                 .pathParam("reviewGroupId", "1")
                 .cookie("JSESSIONID", "ABCDEFGHI1234")
-                .when().get("/v2/groups/{reviewGroupId}/reviews/summary")
+                .when().get("/v2/groups/{reviewGroupId}/reviews/count")
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
@@ -317,7 +314,7 @@ class ReviewApiTest extends ApiTest {
                                 new VoteResponse("짜장", 3),
                                 new VoteResponse("짬뽕", 5))))
         );
-        BDDMockito.given(reviewGatheredLookupService.getReceivedReviewsBySectionId(anyLong(), anyLong()))
+        BDDMockito.given(reviewGatheredLookupService.getReviewsByGroupAndSection(anyLong(), anyLong()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
@@ -369,6 +366,9 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 자신이_작성한_리뷰_목록을_조회한다() {
+        BDDMockito.given(sessionManager.getGitHubMember(any()))
+                .willReturn(new GitHubMember(3L, "githubName", "githubURL"));
+
         List<AuthoredReviewElementResponse> authoredReviews = List.of(
                 new AuthoredReviewElementResponse(1L, "테드1", "리뷰미", LocalDate.of(2024, 8, 2), "(리뷰 미리보기 1)",
                         List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
@@ -376,7 +376,7 @@ class ReviewApiTest extends ApiTest {
                         List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
         );
         AuthoredReviewsResponse response = new AuthoredReviewsResponse(authoredReviews, 1L, true);
-        BDDMockito.given(reviewListLookupService.getAuthoredReviews(anyLong(), anyInt()))
+        BDDMockito.given(reviewListLookupService.getAuthoredReviews(nullable(Long.class), nullable(Integer.class), anyLong()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
@@ -413,7 +413,6 @@ class ReviewApiTest extends ApiTest {
 
         givenWithSpec().log().all()
                 .cookie("JSESSIONID", "ASVNE1VAKDNV4")
-//                .queryParam("reviewRequestCode", "hello!!")
                 .queryParam("lastReviewId", "2")
                 .queryParam("size", "5")
                 .when().get("/v2/reviews/authored")
