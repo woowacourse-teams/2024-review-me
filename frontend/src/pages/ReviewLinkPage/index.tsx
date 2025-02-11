@@ -6,7 +6,7 @@ import ReviewLinkDashboard from './components/ReviewLinkDashboard';
 const ReviewLinkPage = () => {
   return (
     <ErrorSuspenseContainer>
-      <NavigationTab />
+      <NavigationTab selectedTab="리뷰 링크 관리" />
       <ReviewLinkDashboard />
     </ErrorSuspenseContainer>
   );

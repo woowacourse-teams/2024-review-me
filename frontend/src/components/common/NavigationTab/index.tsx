@@ -3,8 +3,12 @@ import useNavigationTabs from '@/hooks/useNavigationTabs';
 import NavItem from './NavItem';
 import * as S from './styles';
 
-const NavigationTab = () => {
-  const { currentTabIndex, tabList } = useNavigationTabs();
+interface NavigationTabProps {
+  selectedTab: '리뷰 링크 관리' | '작성한 리뷰 확인';
+}
+
+const NavigationTab = ({ selectedTab }: NavigationTabProps) => {
+  const { currentTabIndex, tabList } = useNavigationTabs({ selectedTab });
 
   return (
     <S.NavContainer>

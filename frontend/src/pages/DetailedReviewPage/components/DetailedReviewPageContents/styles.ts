@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import media from '@/utils/media';
 
 export const DetailedReviewPageContents = styled.div`
-  width: 70%;
   margin-top: 2rem;
   padding: 2rem 3rem;
 
