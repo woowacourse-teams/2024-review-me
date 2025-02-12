@@ -1,36 +1,27 @@
 import { useNavigate } from 'react-router';
 
+import { Tab } from '@/components/common/NavigationTab';
 import { ROUTE } from '@/constants';
 
-interface UseNavigationTabsProps {
-  selectedTab: string;
-}
-
-const useNavigationTabs = ({ selectedTab }: UseNavigationTabsProps) => {
+const useNavigationTabs = () => {
   const navigate = useNavigate();
 
-  const navigateReviewLinkManagementPage = () => {
-    navigate(`/${ROUTE.reviewLinks}`);
-  };
-
-  const navigateWrittenReviewConfirmPage = () => {
-    navigate(`/${ROUTE.writtenReview}`);
-  };
-
-  const tabList = [
+  const navigationTabList: Tab[] = [
     {
       label: '리뷰 링크 관리',
-      handleTabClick: navigateReviewLinkManagementPage,
+      // "리뷰 링크 관리" 탭이 활성화 되어야 하는 페이지 목록
+      activePathList: [ROUTE.reviewLinks, ROUTE.reviewList, ROUTE.reviewCollection, ROUTE.detailedReview],
+      handleTabClick: () => navigate(ROUTE.reviewLinks),
     },
     {
       label: '작성한 리뷰 확인',
-      handleTabClick: navigateWrittenReviewConfirmPage,
+      // "작성한 리뷰 확인" 탭이 활성화 되어야 하는 페이지 목록
+      activePathList: [ROUTE.writtenReview, ROUTE.reviewWriting, ROUTE.reviewWritingComplete],
+      handleTabClick: () => navigate(ROUTE.writtenReview),
     },
   ];
 
-  const currentTabIndex = tabList.findIndex((tab) => tab.label === selectedTab);
-
-  return { currentTabIndex, tabList };
+  return navigationTabList;
 };
 
 export default useNavigationTabs;
