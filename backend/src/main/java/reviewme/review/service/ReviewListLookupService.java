@@ -2,6 +2,7 @@ package reviewme.review.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.repository.ReviewRepository;
@@ -22,7 +23,8 @@ public class ReviewListLookupService {
     private final ReviewGroupRepository reviewGroupRepository;
 
     @Transactional(readOnly = true)
-    public ReceivedReviewPageResponse getReceivedReviews(long reviewGroupId, Long lastReviewId, Integer size) {
+    public ReceivedReviewPageResponse getReceivedReviews(long reviewGroupId,
+                                                         @Nullable Long lastReviewId, @Nullable Integer size) {
         ReviewGroup reviewGroup = reviewGroupRepository.findById(reviewGroupId)
                 .orElseThrow(() -> new ReviewGroupNotFoundException(reviewGroupId));
         PageSize pageSize = new PageSize(size);
@@ -35,7 +37,7 @@ public class ReviewListLookupService {
         );
     }
 
-    public AuthoredReviewsResponse getAuthoredReviews(Long lastReviewId, Integer size) {
+    public AuthoredReviewsResponse getAuthoredReviews(Long lastReviewId, Integer size, long loginMemberId) {
         // TODO: 생성일자 최신순 정렬
         return null;
     }
