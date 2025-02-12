@@ -28,4 +28,6 @@ public interface ReviewGroupRepository extends JpaRepository<ReviewGroup, Long> 
     List<ReviewGroupPageElementResponse> findByMemberIdWithLimit(long memberId, Long lastReviewGroupId, int limit);
 
     boolean existsByReviewRequestCode(String reviewRequestCode);
+
+    List<ReviewGroup> findAllByMemberId(long memberId);
 }
