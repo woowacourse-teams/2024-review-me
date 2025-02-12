@@ -3,7 +3,6 @@ package reviewme.review.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.global.authorization.RequireReviewAccess;
 import reviewme.review.domain.Review;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;

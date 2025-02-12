@@ -5,11 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.global.authorization.RequireReviewGroupAccess;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.mapper.ReviewListMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundException;
@@ -24,7 +23,6 @@ public class ReviewListLookupService {
     private final ReviewListMapper reviewListMapper;
     private final ReviewGroupRepository reviewGroupRepository;
 
-    @RequireReviewGroupAccess
     @Transactional(readOnly = true)
     public ReceivedReviewPageResponse getReceivedReviews(long reviewGroupId,
                                                          @Nullable Long lastReviewId, @Nullable Integer size) {

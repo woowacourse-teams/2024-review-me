@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reviewme.global.authorization.RequireReviewGroupAccess;
 import reviewme.highlight.domain.Highlight;
 import reviewme.highlight.repository.HighlightRepository;
 import reviewme.highlight.service.dto.HighlightsRequest;
@@ -24,7 +23,6 @@ public class HighlightService {
     private final HighlightMapper highlightMapper;
     private final AnswerValidator answerValidator;
 
-    @RequireReviewGroupAccess(target = "#highlightsRequest.reviewGroupId()")
     @Transactional
     public void editHighlight(HighlightsRequest highlightsRequest) {
         ReviewGroup reviewGroup = reviewGroupRepository.findById(highlightsRequest.reviewGroupId())
