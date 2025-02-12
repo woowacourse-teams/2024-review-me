@@ -3,6 +3,7 @@ package reviewme.review.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reviewme.global.authorization.RequireReviewGroupAccess;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -16,6 +17,7 @@ public class ReviewSummaryService {
     private final ReviewRepository reviewRepository;
     private final ReviewGroupRepository reviewGroupRepository;
 
+    @RequireReviewGroupAccess
     @Transactional(readOnly = true)
     public ReceivedReviewsSummaryResponse getReviewSummary(long reviewGroupId) {
         ReviewGroup reviewGroup = reviewGroupRepository.findById(reviewGroupId)
