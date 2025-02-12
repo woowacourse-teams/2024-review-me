@@ -24,7 +24,7 @@ import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
-import reviewme.review.service.exception.ReviewNotFoundByIdAndGroupException;
+import reviewme.review.service.exception.ReviewNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -52,21 +52,13 @@ class ReviewDetailLookupServiceTest {
     private TemplateRepository templateRepository;
 
     @Test
-    void 리뷰_그룹에_해당하지_않는_리뷰를_조회할_경우_예외가_발생한다() {
+    void 등록되지_않은_리뷰를_조회할_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹());
-        ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹());
-
-        Review review1 = reviewRepository.save(비회원_작성_리뷰(0, reviewGroup1.getId(), List.of()));
-        Review review2 = reviewRepository.save(비회원_작성_리뷰(0, reviewGroup2.getId(), List.of()));
+        long wrongReviewId = 1L;
 
         // when, then
-        assertAll(
-                () -> assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(review2.getId(), reviewGroup1))
-                        .isInstanceOf(ReviewNotFoundByIdAndGroupException.class),
-                () -> assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(review1.getId(), reviewGroup2))
-                        .isInstanceOf(ReviewNotFoundByIdAndGroupException.class)
-        );
+        assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(wrongReviewId))
+                .isInstanceOf(ReviewNotFoundException.class);
     }
 
     @Test
@@ -96,7 +88,7 @@ class ReviewDetailLookupServiceTest {
         );
 
         // when
-        ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId(), reviewGroup);
+        ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId());
 
         // then
         assertThat(reviewDetail.sections()).hasSize(2);
@@ -122,7 +114,7 @@ class ReviewDetailLookupServiceTest {
             );
 
             // when
-            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId(), reviewGroup);
+            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId());
 
             // then
             assertThat(reviewDetail.sections())
@@ -148,7 +140,7 @@ class ReviewDetailLookupServiceTest {
             );
 
             // when
-            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId(), reviewGroup);
+            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId());
 
             // then
             assertAll(

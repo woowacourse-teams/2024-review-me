@@ -21,6 +21,7 @@ import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
+import reviewme.auth.domain.GitHubMember;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse;
@@ -167,6 +168,9 @@ class ReviewGroupApiTest extends ApiTest {
 
     @Test
     void 회원이_생성한_프로젝트_목록을_반환한다() {
+        BDDMockito.given(sessionManager.getGitHubMember(any()))
+                .willReturn(new GitHubMember(1L, "githubName", "githubURL"));
+
         ReviewGroupPageResponse response = new ReviewGroupPageResponse(2L, true,
                 List.of(
                         new ReviewGroupPageElementResponse("이동훈", "우테코", LocalDate.of(2024, 1, 30), "WOOTECO1", 1),
