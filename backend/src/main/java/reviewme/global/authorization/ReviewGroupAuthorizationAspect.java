@@ -29,12 +29,15 @@ public class ReviewGroupAuthorizationAspect {
     @Around("@annotation(requireReviewGroupAccess)")
     public Object checkReviewGroupAccess(ProceedingJoinPoint joinPoint,
                                          RequireReviewGroupAccess requireReviewGroupAccess) throws Throwable {
+        HttpSession session = getCurrentSession();
+        if (session == null) {
+            throw new UnauthorizedReviewGroupAccessException();
+        }
+
         long reviewGroupId = getTarget(joinPoint, requireReviewGroupAccess.target(), Long.class);
         ReviewGroup reviewGroup = reviewGroupRepository.findById(reviewGroupId)
                 .orElseThrow(() -> new ReviewGroupNotFoundException(reviewGroupId));
-
-        HttpSession session = getCurrentSession();
-        if (session == null || !(isMemberAuthorized(reviewGroup, session) || isGuestAuthorized(reviewGroup, session))) {
+        if (!(isMemberAuthorized(reviewGroup, session) || isGuestAuthorized(reviewGroup, session))) {
             throw new UnauthorizedReviewGroupAccessException();
         }
 

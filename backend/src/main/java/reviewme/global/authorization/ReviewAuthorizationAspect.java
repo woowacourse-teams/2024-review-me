@@ -18,6 +18,7 @@ import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.exception.ReviewNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 
 @Aspect
 @Component
@@ -32,11 +33,14 @@ public class ReviewAuthorizationAspect {
     @Around("@annotation(requireReviewAccess)")
     public Object checkReviewAccess(ProceedingJoinPoint joinPoint,
                                     RequireReviewAccess requireReviewAccess) throws Throwable {
+        HttpSession session = getCurrentSession();
+        if (session == null) {
+            throw new UnauthorizedReviewAccessException();
+        }
+
         long reviewId = getTarget(joinPoint, requireReviewAccess.target(), Long.class);
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException(reviewId));
-
-        HttpSession session = getCurrentSession();
-        if (session == null || !(isMemberAuthorized(review, session) || isGuestAuthorized(review, session))) {
+        if (!(isMemberAuthorized(review, session) || isGuestAuthorized(review, session))) {
             throw new UnauthorizedReviewAccessException();
         }
 
@@ -49,20 +53,24 @@ public class ReviewAuthorizationAspect {
             return false;
         }
 
-        boolean hasMadeReviewGroup = reviewGroupRepository.findAllByMemberId(gitHubMember.getMemberId())
+        boolean isReviewGroupCreator = reviewGroupRepository.findAllByMemberId(gitHubMember.getMemberId())
                 .stream()
                 .map(ReviewGroup::getId)
                 .anyMatch(id -> id == review.getReviewGroupId());
+        boolean isReviewAuthor = review.getMemberId() != null && review.getMemberId() == gitHubMember.getMemberId();
 
-        boolean hasMadeReview = review.getMemberId() != null && review.getMemberId() == gitHubMember.getMemberId();
-
-        return hasMadeReviewGroup || hasMadeReview;
+        return isReviewGroupCreator || isReviewAuthor;
     }
 
     private boolean isGuestAuthorized(Review review, HttpSession session) {
         String reviewRequestCode = sessionManager.getReviewRequestCode(session);
+        if (reviewRequestCode == null) {
+            return false;
+        }
+
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
-                .orElseThrow(UnauthorizedReviewAccessException::new);
-        return reviewGroup.getId() == review.getReviewGroupId();
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
+
+        return review.getReviewGroupId() == reviewGroup.getId();
     }
 }
