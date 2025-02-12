@@ -35,7 +35,9 @@ const PageLayout = ({ children, isNeedBreadCrumb = true }: EssentialPropsWithChi
         <Topbar />
         {isShowNavigationTab && <NavigationTab tabList={navigationTabList} />}
         {isShowBreadCrumb && <Breadcrumb pathList={breadcrumbPathList} />}
-        <Main isShowBreadCrumb={isShowBreadCrumb}>{children}</Main>
+        <Main isShowBreadCrumb={isShowBreadCrumb} isShowNavigationTab={isShowNavigationTab}>
+          {children}
+        </Main>
         <Footer />
       </S.Wrapper>
     </S.Layout>

@@ -3,13 +3,15 @@ import styled from '@emotion/styled';
 
 interface MainContainerProps {
   $isShowBreadCrumb?: boolean;
+  $isShowNavigationTab?: boolean;
 }
-const calculateMinHeight = ({ $isShowBreadCrumb, ...theme }: MainContainerProps & Theme) => {
+const calculateMinHeight = ({ $isShowBreadCrumb, $isShowNavigationTab, ...theme }: MainContainerProps & Theme) => {
   const topbarHeight = theme.componentHeight.topbar;
   const footerHeight = theme.componentHeight.footer;
   const breadCrumbHeight = $isShowBreadCrumb ? theme.componentHeight.breadCrumb : '0rem';
+  const navigationTabHeight = $isShowNavigationTab ? theme.componentHeight.navigationTab : '0rem';
 
-  return `calc(100vh - ${topbarHeight} - ${footerHeight} - ${breadCrumbHeight})`;
+  return `calc(100vh - ${topbarHeight} - ${footerHeight} - ${breadCrumbHeight}) - ${navigationTabHeight}`;
 };
 
 export const MainContainer = styled.div<MainContainerProps>`
