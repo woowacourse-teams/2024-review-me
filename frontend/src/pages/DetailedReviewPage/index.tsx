@@ -1,20 +1,22 @@
 import { ErrorSuspenseContainer, AuthAndServerErrorFallback, TopButton } from '@/components';
 import BackButton from '@/components/common/BackButton';
-import NavigationTab from '@/components/common/NavigationTab';
 import { ROUTE } from '@/constants';
-import useCheckMemberUrl from '@/hooks/reviewGroup/useCheckMemberUrl';
+import { useSearchParamAndQuery } from '@/hooks';
 
 import { DetailedReviewPageContents } from './components';
 import * as S from './styles';
 
 const DetailedReviewPage = () => {
-  const { isMemberUrl, reviewRequestCode } = useCheckMemberUrl();
+  // TODO: 임시로 true 설정 (로그인 기능 추가하면서 여기도 수정해야 한다.)
+  const isUserLoggedIn = true;
+  const { param: reviewRequestCode } = useSearchParamAndQuery({
+    paramKey: 'reviewRequestCode',
+  });
 
   return (
     <ErrorSuspenseContainer errorFallback={AuthAndServerErrorFallback}>
-      {isMemberUrl && <NavigationTab selectedTab="리뷰 링크 관리" />}
       <S.PageWithBackButton>
-        {isMemberUrl && <BackButton prevPath={`/${ROUTE.reviewList}/${reviewRequestCode}`} />}
+        {isUserLoggedIn && <BackButton prevPath={`/${ROUTE.reviewList}/${reviewRequestCode}`} />}
         <DetailedReviewPageContents />
       </S.PageWithBackButton>
       <TopButton />

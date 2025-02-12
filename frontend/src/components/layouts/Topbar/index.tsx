@@ -7,11 +7,14 @@ import Logo from './components/Logo';
 import * as S from './styles';
 
 const Topbar = () => {
+  // TODO: 임시로 true 설정 (로그인 기능 추가하면서 여기도 수정해야 한다.)
+  const isUserLoggedIn = true;
   const { pathname } = useLocation();
-  const $hasNavigationTab = [ROUTE.reviewLinks, ROUTE.writtenReview].includes(pathname);
+
+  const isShowNavigationTab = isUserLoggedIn && !['/', ROUTE.reviewZone].includes(pathname);
 
   return (
-    <S.Layout $hasNavigationTab={$hasNavigationTab}>
+    <S.Layout $hideBorder={isShowNavigationTab}>
       <S.Container>
         <UndraggableWrapper>
           <Logo />
