@@ -46,7 +46,7 @@ export const FormSection = styled.section`
 `;
 
 export const Separator = styled.div`
-  width: 0.1rem;
+  width: 0.3rem;
 
   background-color: ${({ theme }) => theme.colors.lightGray};
 
@@ -76,4 +76,12 @@ export const LinkSection = styled.section`
   ${media.xSmall} {
     width: 90%;
   }
+`;
+
+export const EmptyContentWrapper = styled.div`
+  border: 0.2rem solid ${({ theme }) => theme.colors.lightGray};
+
+  border-radius: 1rem;
+
+  padding: 3rem 0;
 `;
