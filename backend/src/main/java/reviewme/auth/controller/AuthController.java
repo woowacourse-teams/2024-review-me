@@ -32,7 +32,7 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/v2/auth/review-group")
+    @PostMapping("/v2/auth/group")
     public ResponseEntity<Void> authWithReviewGroup(
             @Valid @RequestBody CheckValidAccessRequest request,
             HttpSession session
