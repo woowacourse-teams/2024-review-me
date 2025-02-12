@@ -26,9 +26,10 @@ import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.exception.ReviewNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.support.BaseSpringBootTest;
+import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.support.ServiceTest;
 
-@BaseSpringBootTest
+@ServiceTest
 class ReviewAuthorizationAspectTest {
 
     @Autowired
@@ -39,7 +40,7 @@ class ReviewAuthorizationAspectTest {
 
     @Autowired
     private ReviewRepository reviewRepository;
-    
+
     @Autowired
     private ReviewGroupRepository reviewGroupRepository;
 
@@ -58,10 +59,10 @@ class ReviewAuthorizationAspectTest {
     }
 
     @Nested
-    class 리뷰에_접근할_수_있으면_예외가_발생하지_않는다 {
+    class 성공적으로_리뷰에_접근할_수_있다 {
 
         @Test
-        void 회원이_자신이_작성한_리뷰에_접근할_수_있다() {
+        void 회원은_자신이_작성한_리뷰에_접근할_수_있다() {
             // given
             Member member = memberRepository.save(회원());
             Review review = reviewRepository.save(회원_작성_리뷰(member.getId(), 1L, 1L, List.of()));
@@ -69,11 +70,12 @@ class ReviewAuthorizationAspectTest {
             sessionManager.saveGitHubMember(session, gitHubMember);
 
             // when & then
-            assertThatCode(() -> aopTestClass.testReviewMethod(review.getId())).doesNotThrowAnyException();
+            assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
+                    .doesNotThrowAnyException();
         }
 
         @Test
-        void 회원이_자신이_만든_리뷰_그룹에_생성된_리뷰에_접근할_수_있다() {
+        void 회원은_자신이_만든_리뷰_그룹에_작성된_리뷰에_접근할_수_있다() {
             // given
             Member member = memberRepository.save(회원());
             ReviewGroup reviewGroup = reviewGroupRepository.save(회원_지정_리뷰_그룹(member.getId()));
@@ -83,29 +85,41 @@ class ReviewAuthorizationAspectTest {
             sessionManager.saveGitHubMember(session, gitHubMember);
 
             // when & then
-            assertThatCode(() -> aopTestClass.testReviewMethod(review.getId())).doesNotThrowAnyException();
+            assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
+                    .doesNotThrowAnyException();
         }
 
         @Test
-        void 비회원이_리뷰에_접근할_수_있다() {
+        void 비회원은_자신이_만든_리뷰_그룹에_작성된_리뷰에_접근할_수_있다() {
             // given
             ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
             Review review = reviewRepository.save(비회원_작성_리뷰(1L, 1L, List.of()));
             sessionManager.saveReviewRequestCode(session, reviewGroup.getReviewRequestCode());
 
             // when & then
-            assertThatCode(() -> aopTestClass.testReviewMethod(review.getId())).doesNotThrowAnyException();
+            assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
+                    .doesNotThrowAnyException();
         }
     }
 
+    @Test
+    void 존재하지_않는_리뷰에_접근하면_NotFound_예외가_발생한다() {
+        // when & then
+        assertThatCode(() -> aopTestClass.testReviewMethod(1L))
+                .isInstanceOf(ReviewNotFoundException.class);
+    }
+
     @Nested
-    class 리뷰에_접근할_수_없으면_예외가_발생한다 {
+    class 유효하지_않은_세션으로_접근하면_예외가_발생한다 {
 
         @Test
-        void 존재하지_않는_리뷰에_접근하면_NotFound_예외가_발생한다() {
+        void 세션이_존재하지_않으면_Unauthorized_예외가_발생한다() {
+            // given
+            request.setSession(null);
+
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(1L))
-                    .isInstanceOf(ReviewNotFoundException.class);
+                    .isInstanceOf(UnauthorizedReviewAccessException.class);
         }
 
         @Test
@@ -118,16 +132,17 @@ class ReviewAuthorizationAspectTest {
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
                     .isInstanceOf(UnauthorizedReviewAccessException.class);
         }
+    }
+
+    @Nested
+    class 회원이_리뷰에_접근할_수_없으면_예외가_발생한다 {
 
         @Test
-        void 자신이_만들지도_않고_작성하지도_않은_리뷰에_접근하면_Unauthorized_예외가_발생한다() {
+        void 자신이_작성하지_않은_리뷰에_접근하면_Unauthorized_예외가_발생한다() {
             // given
-            Member member = memberRepository.save(회원("email123@test.com"));
-            Member other = memberRepository.save(회원("email321@test.com"));
-            ReviewGroup othersReviewGroup = reviewGroupRepository.save(회원_지정_리뷰_그룹(other.getId()));
             Review review = reviewRepository.save(비회원_작성_리뷰(1L, 1L, List.of()));
 
-            GitHubMember gitHubMember = new GitHubMember(member.getId(), "name", "avatarUrl");
+            GitHubMember gitHubMember = new GitHubMember(1L, "name", "avatarUrl");
             sessionManager.saveGitHubMember(session, gitHubMember);
 
             // when & then
@@ -136,12 +151,32 @@ class ReviewAuthorizationAspectTest {
         }
 
         @Test
+        void 자신이_만들지_않은_리뷰그룹의_리뷰에_접근하면_Unauthorized_예외가_발생한다() {
+            // given
+            Member other = memberRepository.save(회원("email123@test.com"));
+            ReviewGroup othersReviewGroup = reviewGroupRepository.save(회원_지정_리뷰_그룹(other.getId()));
+            Review review = reviewRepository.save(비회원_작성_리뷰(1L, othersReviewGroup.getId(), List.of()));
+
+            Member member = memberRepository.save(회원("email321@test.com"));
+            GitHubMember gitHubMember = new GitHubMember(member.getId(), "name", "avatarUrl");
+            sessionManager.saveGitHubMember(session, gitHubMember);
+
+            // when & then
+            assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
+                    .isInstanceOf(UnauthorizedReviewAccessException.class);
+        }
+    }
+
+    @Nested
+    class 비회원이_리뷰에_접근할_수_없으면_예외가_발생한다 {
+
+        @Test
         void 리뷰_요청_코드가_다른_리뷰에_접근하면_Unauthorized_예외가_발생한다() {
             // given
-            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹("1234", "5678"));
             ReviewGroup othersReviewGroup = reviewGroupRepository.save(리뷰_그룹("abcd", "efgh"));
             Review review = reviewRepository.save(비회원_작성_리뷰(1L, othersReviewGroup.getId(), List.of()));
 
+            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹("1234", "5678"));
             sessionManager.saveReviewRequestCode(session, reviewGroup.getReviewRequestCode());
 
             // when & then
@@ -150,7 +185,7 @@ class ReviewAuthorizationAspectTest {
         }
 
         @Test
-        void 존재하지_않는_리뷰_요청_코드로_접근하면_Unauthorized_예외가_발생한다() {
+        void 일치하는_리뷰가_없는_리뷰_요청_코드로_접근하면_NotFound_예외가_발생한다() {
             // given
             ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
             Review review = reviewRepository.save(비회원_작성_리뷰(1L, reviewGroup.getId(), List.of()));
@@ -159,7 +194,7 @@ class ReviewAuthorizationAspectTest {
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
-                    .isInstanceOf(UnauthorizedReviewAccessException.class);
+                    .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
         }
     }
 }
