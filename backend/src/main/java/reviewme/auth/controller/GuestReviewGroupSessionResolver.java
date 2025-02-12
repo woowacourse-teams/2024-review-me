@@ -25,7 +25,7 @@ public class GuestReviewGroupSessionResolver implements HandlerMethodArgumentRes
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         GuestReviewGroup guestReviewGroup = Optional.ofNullable(webRequest.getNativeRequest(HttpServletRequest.class))
                 .map(HttpServletRequest::getSession)
                 .map(sessionManager::getReviewRequestCode)
