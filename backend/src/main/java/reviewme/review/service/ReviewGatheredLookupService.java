@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reviewme.global.authorization.RequireReviewGroupAccess;
 import reviewme.highlight.domain.Highlight;
 import reviewme.highlight.repository.HighlightRepository;
 import reviewme.review.domain.Answer;
@@ -36,6 +37,7 @@ public class ReviewGatheredLookupService {
     private final ReviewGatherMapper reviewGatherMapper;
     private final ReviewGroupRepository reviewGroupRepository;
 
+    @RequireReviewGroupAccess
     @Transactional(readOnly = true)
     public ReviewsGatheredBySectionResponse getReceivedReviewsBySectionId(long reviewGroupId, long sectionId) {
         ReviewGroup reviewGroup = reviewGroupRepository.findById(reviewGroupId)
