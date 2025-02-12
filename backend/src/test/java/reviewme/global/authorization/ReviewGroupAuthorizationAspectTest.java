@@ -88,7 +88,6 @@ class ReviewGroupAuthorizationAspectTest {
         @Test
         void 세션에_저장된_정보가_없으면_Unauthorized_예외가_발생한다() {
             // given
-            request.setSession(null);
             ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
 
             // when & then
