@@ -8,6 +8,7 @@ interface EmptyContentProps {
   iconWidth?: string;
   iconMessageGap?: string;
   messageFontSize?: string;
+  isBorder?: boolean;
 }
 
 const EmptyContent = ({
@@ -15,10 +16,11 @@ const EmptyContent = ({
   iconWidth,
   iconMessageGap,
   messageFontSize,
+  isBorder,
   children,
 }: EssentialPropsWithChildren<EmptyContentProps>) => {
   return (
-    <S.EmptyContent $iconMessageGap={iconMessageGap}>
+    <S.EmptyContent $iconMessageGap={iconMessageGap} $isBorder={isBorder}>
       <S.Img $height={iconHeight} $width={iconWidth} alt="" src={Icon} />
       <S.MessageContainer $messageFontSize={messageFontSize}>{children}</S.MessageContainer>
     </S.EmptyContent>

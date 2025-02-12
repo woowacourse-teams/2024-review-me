@@ -77,11 +77,3 @@ export const LinkSection = styled.section`
     width: 90%;
   }
 `;
-
-export const EmptyContentWrapper = styled.div`
-  border: 0.2rem solid ${({ theme }) => theme.colors.lightGray};
-
-  border-radius: 1rem;
-
-  padding: 3rem 0;
-`;

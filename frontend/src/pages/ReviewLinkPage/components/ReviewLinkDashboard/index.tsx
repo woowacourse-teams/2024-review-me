@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 
 import { URLGeneratorForm, EmptyContent } from '@/components';
-import { ROUTE } from '@/constants';
+import { REVIEW_EMPTY, ROUTE } from '@/constants';
 import { useGetReviewLinks } from '@/hooks';
 
 import ReviewLinkLayout from '../layouts/ReviewLinkLayout';
@@ -35,11 +35,9 @@ const ReviewLinkDashboard = () => {
           subTitle="클릭하면 해당 프로젝트의 리뷰 목록으로 이동해요"
         >
           {reviewLinks.lastReviewGroupId === 0 ? (
-            <S.EmptyContentWrapper>
-              <EmptyContent iconWidth="15rem" messageFontSize="1.8rem" iconMessageGap="2rem">
-                생성한 리뷰 링크가 없어요...
-              </EmptyContent>
-            </S.EmptyContentWrapper>
+            <EmptyContent iconWidth="15rem" messageFontSize="1.8rem" iconMessageGap="2rem" isBorder={true}>
+              {REVIEW_EMPTY.noReviewLink}
+            </EmptyContent>
           ) : (
             reviewLinks.reviewGroups.map((reviewGroup) => (
               <ReviewLinkItem
