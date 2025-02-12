@@ -3,10 +3,11 @@ package reviewme.review.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reviewme.global.authorization.RequireReviewAccess;
 import reviewme.review.domain.Review;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
-import reviewme.review.service.exception.ReviewNotFoundException;
+import reviewme.review.service.exception.ReviewNotFoundByIdAndGroupException;
 import reviewme.review.service.mapper.ReviewDetailMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundException;
@@ -25,7 +26,6 @@ public class ReviewDetailLookupService {
     public ReviewDetailResponse getReviewDetail(long reviewId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewNotFoundException(reviewId));
-
         ReviewGroup reviewGroup = reviewGroupRepository.findById(review.getReviewGroupId())
                 .orElseThrow(() -> new ReviewGroupNotFoundException(review.getReviewGroupId()));
 
