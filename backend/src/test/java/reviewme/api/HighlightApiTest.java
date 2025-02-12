@@ -18,6 +18,7 @@ class HighlightApiTest extends ApiTest {
     void 존재하는_답변에_하이라이트를_생성한다() {
         String request = """
                  {
+                     "reviewGroupId": 1,
                      "questionId": 1,
                      "highlights": [{
                        "answerId": 3,
@@ -37,6 +38,7 @@ class HighlightApiTest extends ApiTest {
         };
 
         FieldDescriptor[] requestFields = {
+                fieldWithPath("reviewGroupId").description("리뷰 그룹 ID"),
                 fieldWithPath("questionId").description("질문 ID"),
                 fieldWithPath("highlights").description("하이라이트 목록"),
                 fieldWithPath("highlights[].answerId").description("답변 ID"),

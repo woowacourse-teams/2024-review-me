@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupSummaryResponse;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
@@ -25,15 +25,15 @@ class ReviewGroupLookupServiceTest {
     void 리뷰_요청_코드로_리뷰_그룹을_조회한다() {
         // given
         ReviewGroup reviewGroup = reviewGroupRepository.save(new ReviewGroup(
+                1L,
                 "ted",
                 "review-me",
                 "reviewRequestCode",
-                "groupAccessCode",
-                1L
+                "groupAccessCode"
         ));
 
         // when
-        ReviewGroupResponse response = reviewGroupLookupService.getReviewGroupSummary(
+        ReviewGroupSummaryResponse response = reviewGroupLookupService.getReviewGroupSummary(
                 reviewGroup.getReviewRequestCode()
         );
 

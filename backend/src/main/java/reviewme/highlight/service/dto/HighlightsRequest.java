@@ -7,6 +7,9 @@ import reviewme.highlight.service.mapper.HighlightFragment;
 
 public record HighlightsRequest(
 
+        @NotNull(message = "리뷰 그룹 ID를 입력해주세요.")
+        Long reviewGroupId,
+
         @NotNull(message = "질문 ID를 입력해주세요.")
         Long questionId,
 

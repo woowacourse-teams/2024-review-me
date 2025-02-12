@@ -11,8 +11,9 @@ import reviewme.reviewgroup.domain.ReviewGroup;
 class ReviewGroupTest {
 
     @Test
-    void 정상_생성된다() {
+    void 회원의_리뷰_그룹을_생성한다() {
         // given
+        long memberId = 1L;
         int maxLength = 50;
         int minLength = 1;
         String minLengthName = "*".repeat(minLength);
@@ -20,9 +21,27 @@ class ReviewGroupTest {
 
         // when, then
         assertAll(
-                () -> assertThatCode(() -> new ReviewGroup(minLengthName, "project", "reviewCode", "groupCode", 1L))
+                () -> assertThatCode(() -> new ReviewGroup(memberId, 1L, minLengthName, "project", "reviewCode"))
                         .doesNotThrowAnyException(),
-                () -> assertThatCode(() -> new ReviewGroup(maxLengthName, "project", "reviewCode", "groupCode", 1L))
+                () -> assertThatCode(() -> new ReviewGroup(memberId, 1L, maxLengthName, "project", "reviewCode"))
+                        .doesNotThrowAnyException()
+        );
+    }
+
+    @Test
+    void 비회원의_리뷰_그룹을_생성한다() {
+        // given
+        int maxLength = 50;
+        int minLength = 1;
+        String minLengthName = "*".repeat(minLength);
+        String maxLengthName = "*".repeat(maxLength);
+        String groupAccessCode = "groupAccessCode";
+
+        // when, then
+        assertAll(
+                () -> assertThatCode(() -> new ReviewGroup(1L, minLengthName, "project", "reviewCode", groupAccessCode))
+                        .doesNotThrowAnyException(),
+                () -> assertThatCode(() -> new ReviewGroup(1L, maxLengthName, "project", "reviewCode", groupAccessCode))
                         .doesNotThrowAnyException()
         );
     }
@@ -37,9 +56,9 @@ class ReviewGroupTest {
 
         // when, then
         assertAll(
-                () -> assertThatCode(() -> new ReviewGroup(insufficientName, "project", "reviewCode", "groupCode", 1L))
+                () -> assertThatCode(() -> new ReviewGroup(1L, insufficientName, "project", "reviewCode", "groupCode"))
                         .isInstanceOf(BadRequestException.class),
-                () -> assertThatThrownBy(() -> new ReviewGroup(exceedName, "project", "reviewCode", "groupCode", 1L))
+                () -> assertThatThrownBy(() -> new ReviewGroup(1L, exceedName, "project", "reviewCode", "groupCode"))
                         .isInstanceOf(BadRequestException.class)
         );
     }
@@ -54,9 +73,9 @@ class ReviewGroupTest {
 
         // when, then
         assertAll(
-                () -> assertThatThrownBy(() -> new ReviewGroup("reviwee", insufficientName, "reviewCode", "groupCode", 1L))
+                () -> assertThatThrownBy(() -> new ReviewGroup(1L, "reviwee", insufficientName, "reviewCode", "groupCode"))
                         .isInstanceOf(BadRequestException.class),
-                () -> assertThatThrownBy(() -> new ReviewGroup("reviwee", exceedName, "reviewCode", "groupCode", 1L))
+                () -> assertThatThrownBy(() -> new ReviewGroup(1L, "reviwee", exceedName, "reviewCode", "groupCode"))
                         .isInstanceOf(BadRequestException.class)
         );
     }

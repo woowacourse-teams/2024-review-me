@@ -57,7 +57,7 @@ class ReviewMapperTest {
         );
 
         // when
-        Review review = reviewMapper.mapToReview(reviewRegisterRequest);
+        Review review = reviewMapper.mapToReview(reviewRegisterRequest, null);
 
         // then
         assertThat(review.getAnswersByType(TextAnswer.class)).hasSize(1);
@@ -81,7 +81,7 @@ class ReviewMapperTest {
         );
 
         // when
-        Review review = reviewMapper.mapToReview(reviewRegisterRequest);
+        Review review = reviewMapper.mapToReview(reviewRegisterRequest, null);
 
         // then
         assertThat(review.getAnswersByType(CheckboxAnswer.class)).hasSize(1);
@@ -101,7 +101,7 @@ class ReviewMapperTest {
         );
 
         // when
-        Review review = reviewMapper.mapToReview(reviewRegisterRequest);
+        Review review = reviewMapper.mapToReview(reviewRegisterRequest, null);
 
         // then
         assertThat(review.getAnswersByType(TextAnswer.class))
@@ -123,7 +123,7 @@ class ReviewMapperTest {
         );
 
         // when
-        Review review = reviewMapper.mapToReview(reviewRegisterRequest);
+        Review review = reviewMapper.mapToReview(reviewRegisterRequest, null);
 
         // then
         assertThat(review.getAnswersByType(CheckboxAnswer.class))
@@ -144,7 +144,7 @@ class ReviewMapperTest {
         );
 
         // when, then
-        assertThatThrownBy(() -> reviewMapper.mapToReview(reviewRegisterRequest))
+        assertThatThrownBy(() -> reviewMapper.mapToReview(reviewRegisterRequest, null))
                 .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 }

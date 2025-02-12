@@ -17,7 +17,7 @@ public class GroupAccessCode {
 
     private static final Pattern PATTERN = Pattern.compile("^[a-zA-Z0-9]{4,20}$");
 
-    @Column(name = "group_access_code", nullable = false)
+    @Column(name = "group_access_code", nullable = true)
     private String code;
 
     public GroupAccessCode(String code) {

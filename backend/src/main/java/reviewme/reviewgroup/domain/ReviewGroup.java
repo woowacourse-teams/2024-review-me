@@ -1,5 +1,6 @@
 package reviewme.reviewgroup.domain;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -30,6 +31,12 @@ public class ReviewGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "member_id", nullable = true)
+    private Long memberId;
+
+    @Column(name = "template_id", nullable = false)
+    private long templateId;
+
     @Column(name = "reviewee", nullable = false)
     private String reviewee;
 
@@ -42,18 +49,30 @@ public class ReviewGroup {
     @Embedded
     private GroupAccessCode groupAccessCode;
 
-    @Column(name = "template_id", nullable = false)
-    private long templateId;
 
-    public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode,
-                       long templateId) {
+    private ReviewGroup(@Nullable Long memberId, long templateId, String reviewee, String projectName,
+                        String reviewRequestCode, String groupAccessCode) {
         validateRevieweeLength(reviewee);
         validateProjectNameLength(projectName);
+        this.memberId = memberId;
+        this.templateId = templateId;
         this.reviewee = reviewee;
         this.projectName = projectName;
         this.reviewRequestCode = reviewRequestCode;
-        this.groupAccessCode = new GroupAccessCode(groupAccessCode);
-        this.templateId = templateId;
+        if (groupAccessCode != null) {
+            this.groupAccessCode = new GroupAccessCode(groupAccessCode);
+        } else {
+            this.groupAccessCode = null;
+        }
+    }
+
+    public ReviewGroup(Long memberId, long templateId, String reviewee, String projectName, String reviewRequestCode) {
+        this(memberId, templateId, reviewee, projectName, reviewRequestCode, null);
+    }
+
+    public ReviewGroup(long templateId, String reviewee, String projectName, String reviewRequestCode,
+                       String groupAccessCode) {
+        this(null, templateId, reviewee, projectName, reviewRequestCode, groupAccessCode);
     }
 
     private void validateRevieweeLength(String reviewee) {
@@ -71,10 +90,10 @@ public class ReviewGroup {
     }
 
     public boolean matchesGroupAccessCode(String code) {
-        return groupAccessCode.matches(code);
+        return groupAccessCode != null && groupAccessCode.matches(code);
     }
 
     public String getGroupAccessCode() {
-        return groupAccessCode.getCode();
+        return groupAccessCode != null ? groupAccessCode.getCode() : null;
     }
 }

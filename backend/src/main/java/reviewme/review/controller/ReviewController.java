@@ -18,9 +18,9 @@ import reviewme.review.service.ReviewSummaryService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
+import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
-import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
 import reviewme.reviewgroup.controller.ReviewGroupSession;
 import reviewme.reviewgroup.domain.ReviewGroup;
 
@@ -35,19 +35,28 @@ public class ReviewController {
     private final ReviewGatheredLookupService reviewGatheredLookupService;
 
     @PostMapping("/v2/reviews")
-    public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRegisterRequest request) {
-        // 회원 세션 추후 추가해야 함
-        long savedReviewId = reviewRegisterService.registerReview(request);
+    public ResponseEntity<Void> createReview(
+            @Valid @RequestBody ReviewRegisterRequest request
+            /*
+            TODO: 회원 세션 임시 사용 방식, 이후 리졸버를 통해 객체로 받아와야 함
+            @Nullable @LoginMember Member member
+             */
+    ) {
+        /*
+        TODO: 회원 세션 유무에 따른 분기처리 로직
+        Long memberId = Optional.ofNullable(member).map(Member::getId).orElse(null);
+         */
+        long savedReviewId = reviewRegisterService.registerReview(request, null);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
-    @GetMapping("/v2/reviews/received")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/received")
     public ResponseEntity<ReceivedReviewPageResponse> findReceivedReviews(
+            @PathVariable long reviewGroupId,
             @RequestParam(required = false) Long lastReviewId,
-            @RequestParam(required = false) Integer size,
-            @ReviewGroupSession ReviewGroup reviewGroup
+            @RequestParam(required = false) Integer size
     ) {
-        ReceivedReviewPageResponse response = reviewListLookupService.getReceivedReviews(lastReviewId, size, reviewGroup);
+        ReceivedReviewPageResponse response = reviewListLookupService.getReceivedReviews(reviewGroupId, lastReviewId, size);
         return ResponseEntity.ok(response);
     }
 
@@ -60,21 +69,21 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/reviews/summary")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/summary")
     public ResponseEntity<ReceivedReviewsSummaryResponse> findReceivedReviewOverview(
-            @ReviewGroupSession ReviewGroup reviewGroup
+            @PathVariable long reviewGroupId
     ) {
-        ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewGroup);
+        ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewGroupId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/reviews/gather")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/gather")
     public ResponseEntity<ReviewsGatheredBySectionResponse> getReceivedReviewsBySectionId(
-            @RequestParam("sectionId") long sectionId,
-            @ReviewGroupSession ReviewGroup reviewGroup
+            @PathVariable long reviewGroupId,
+            @RequestParam("sectionId") long sectionId
     ) {
         ReviewsGatheredBySectionResponse response =
-                reviewGatheredLookupService.getReceivedReviewsBySectionId(reviewGroup, sectionId);
+                reviewGatheredLookupService.getReceivedReviewsBySectionId(reviewGroupId, sectionId);
         return ResponseEntity.ok(response);
     }
 

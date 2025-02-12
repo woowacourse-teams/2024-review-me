@@ -1,6 +1,7 @@
 package reviewme.review.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
 
 import java.util.List;
 import java.util.Set;
@@ -13,7 +14,7 @@ class ReviewTest {
         // given
         TextAnswer textAnswer = new TextAnswer(1L, "답변");
         CheckboxAnswer checkboxAnswer = new CheckboxAnswer(2L, List.of(1L));
-        Review review = new Review(1L, 1L, List.of(textAnswer, checkboxAnswer));
+        Review review = 비회원_작성_리뷰(1L, 1L, List.of(textAnswer, checkboxAnswer));
 
         // when
         Set<Long> allQuestionIdsFromAnswers = review.getAnsweredQuestionIds();

@@ -2,7 +2,7 @@ package reviewme.reviewgroup.service.dto;
 
 import jakarta.annotation.Nullable;
 
-public record ReviewGroupResponse(
+public record ReviewGroupSummaryResponse(
 
         @Nullable Long revieweeId,
         String revieweeName,

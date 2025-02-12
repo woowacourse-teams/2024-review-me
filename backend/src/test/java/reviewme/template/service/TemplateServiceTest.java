@@ -56,7 +56,7 @@ class TemplateServiceTest {
         ReviewGroup reviewGroup = reviewGroupRepository.save(템플릿_지정_리뷰_그룹(template.getId()));
 
         // when
-        SectionNamesResponse actual = templateService.getSectionNames(reviewGroup);
+        SectionNamesResponse actual = templateService.getSectionNames();
 
         // then
         assertThat(actual.sections()).extracting(SectionNameResponse::name)

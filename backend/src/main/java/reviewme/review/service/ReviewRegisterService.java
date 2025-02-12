@@ -18,8 +18,8 @@ public class ReviewRegisterService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public long registerReview(ReviewRegisterRequest request) {
-        Review review = reviewMapper.mapToReview(request);
+    public long registerReview(ReviewRegisterRequest request, Long memberId) {
+        Review review = reviewMapper.mapToReview(request, memberId);
         reviewValidator.validate(review);
         Review registeredReview = reviewRepository.save(review);
 

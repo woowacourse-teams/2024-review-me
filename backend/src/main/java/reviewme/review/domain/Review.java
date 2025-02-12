@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = "new_review")
@@ -30,6 +31,10 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    // 리뷰 작성자 id
+    @Column(name = "member_id", nullable = true)
+    private Long memberId;
 
     @Column(name = "template_id", nullable = false)
     private long templateId;
@@ -44,7 +49,8 @@ public class Review {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    public Review(long templateId, long reviewGroupId, List<Answer> answers) {
+    public Review(@Nullable Long memberId, long templateId, long reviewGroupId, List<Answer> answers) {
+        this.memberId = memberId;
         this.templateId = templateId;
         this.reviewGroupId = reviewGroupId;
         this.answers = answers;

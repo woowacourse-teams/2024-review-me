@@ -2,6 +2,7 @@ package reviewme.review.service.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
 import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
 
 import java.util.List;
@@ -34,16 +35,16 @@ class ReviewListMapperTest {
 
         // given - 리뷰 답변 저장
         TextAnswer textAnswer = new TextAnswer(1L, "텍스트형 응답");
-        Review review1 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
-        Review review2 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
-        Review review3 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
-        Review review4 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
-        Review review5 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
-        Review review6 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
-        Review review7 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
-        Review review8 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
-        Review review9 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
-        Review review10 = new Review(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review1 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review2 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review3 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review4 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review5 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review6 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review7 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review8 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review9 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
+        Review review10 = 비회원_작성_리뷰(1L, reviewGroup.getId(), List.of(textAnswer));
         reviewRepository.saveAll(
                 List.of(review1, review2, review3, review4, review5, review6, review7, review8, review9, review10));
 

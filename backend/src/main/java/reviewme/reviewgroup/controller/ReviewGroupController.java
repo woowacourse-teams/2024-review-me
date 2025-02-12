@@ -1,7 +1,5 @@
 package reviewme.reviewgroup.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.reviewgroup.service.ReviewGroupLookupService;
 import reviewme.reviewgroup.service.ReviewGroupService;
-import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
-import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupSummaryResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,29 +23,27 @@ public class ReviewGroupController {
     private final ReviewGroupLookupService reviewGroupLookupService;
 
     @GetMapping("/v2/groups/summary")
-    public ResponseEntity<ReviewGroupResponse> getReviewGroupSummary(@RequestParam String reviewRequestCode) {
-        ReviewGroupResponse response = reviewGroupLookupService.getReviewGroupSummary(reviewRequestCode);
+    public ResponseEntity<ReviewGroupSummaryResponse> getReviewGroupSummary(@RequestParam String reviewRequestCode) {
+        ReviewGroupSummaryResponse response = reviewGroupLookupService.getReviewGroupSummary(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/v2/groups")
     public ResponseEntity<ReviewGroupCreationResponse> createReviewGroup(
             @Valid @RequestBody ReviewGroupCreationRequest request
+            /*
+            TODO: 회원 세션 임시 사용 방식, 이후 리졸버를 통해 객체로 받아와야 함
+            @Nullable @LoginMember Member member
+             */
     ) {
-        // 회원 세션 추후 추가해야 함
-        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request);
+        /*
+        TODO: 회원 세션 유무에 따른 분기처리 로직
+        Long memberId = Optional.ofNullable(member).map(Member::getId).orElse(null);
+        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request, memberId);
         return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/v2/groups/check")
-    public ResponseEntity<Void> checkGroupAccessCode(
-            @Valid @RequestBody CheckValidAccessRequest request,
-            HttpServletRequest httpRequest
-    ) {
-        reviewGroupService.checkGroupAccessCode(request);
-        HttpSession session = httpRequest.getSession();
-        session.setAttribute("reviewRequestCode", request.reviewRequestCode());
-        return ResponseEntity.noContent().build();
+        */
+        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request, null);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/v2/groups")

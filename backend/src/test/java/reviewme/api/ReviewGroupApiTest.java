@@ -3,9 +3,9 @@ package reviewme.api;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
-import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -25,13 +25,13 @@ import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
-import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupSummaryResponse;
 
 class ReviewGroupApiTest extends ApiTest {
 
     @Test
     void 비회원용_리뷰_그룹을_생성한다() {
-        BDDMockito.given(reviewGroupService.createReviewGroup(any(ReviewGroupCreationRequest.class)))
+        BDDMockito.given(reviewGroupService.createReviewGroup(any(ReviewGroupCreationRequest.class), nullable(Long.class)))
                 .willReturn(new ReviewGroupCreationResponse("ABCD1234"));
 
         String request = """
@@ -68,7 +68,7 @@ class ReviewGroupApiTest extends ApiTest {
 
     @Test
     void 회원용_리뷰_그룹을_생성한다() {
-        BDDMockito.given(reviewGroupService.createReviewGroup(any(ReviewGroupCreationRequest.class)))
+        BDDMockito.given(reviewGroupService.createReviewGroup(any(ReviewGroupCreationRequest.class), nullable(Long.class)))
                 .willReturn(new ReviewGroupCreationResponse("ABCD1234"));
 
         CookieDescriptor[] cookieDescriptors = {
@@ -110,7 +110,7 @@ class ReviewGroupApiTest extends ApiTest {
     @Test
     void 리뷰_요청_코드로_회원이_만든_리뷰_그룹_정보를_반환한다() {
         BDDMockito.given(reviewGroupLookupService.getReviewGroupSummary(anyString()))
-                .willReturn(new ReviewGroupResponse(1L,"아루", "리뷰미"));
+                .willReturn(new ReviewGroupSummaryResponse(1L,"아루", "리뷰미"));
 
         ParameterDescriptor[] parameterDescriptors = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드")
@@ -139,7 +139,7 @@ class ReviewGroupApiTest extends ApiTest {
     @Test
     void 리뷰_요청_코드로_비회원이_만든_리뷰_그룹_정보를_반환한다() {
         BDDMockito.given(reviewGroupLookupService.getReviewGroupSummary(anyString()))
-                .willReturn(new ReviewGroupResponse(null, "아루", "리뷰미"));
+                .willReturn(new ReviewGroupSummaryResponse(null, "아루", "리뷰미"));
 
         ParameterDescriptor[] parameterDescriptors = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드")
@@ -163,39 +163,6 @@ class ReviewGroupApiTest extends ApiTest {
                 .then().log().all()
                 .apply(handler)
                 .statusCode(200);
-    }
-
-    @Test
-    void 리뷰_그룹_코드와_액세스_코드로_일치_여부를_판단한다() {
-        String request = """
-                {
-                    "reviewRequestCode": "ABCD1234",
-                    "groupAccessCode": "00001234"
-                }
-                """;
-
-        FieldDescriptor[] requestFieldDescriptors = {
-                fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
-                fieldWithPath("groupAccessCode").description("그룹 접근 코드 (비밀번호)")
-        };
-
-        CookieDescriptor[] cookieDescriptors = {
-                cookieWithName("JSESSIONID").description("세션 ID")
-        };
-
-        RestDocumentationResultHandler handler = document(
-                "review-group-check-access",
-                requestFields(requestFieldDescriptors),
-                responseCookies(cookieDescriptors)
-        );
-
-        givenWithSpec().log().all()
-                .body(request)
-                .when().post("/v2/groups/check")
-                .then().log().all()
-                .apply(handler)
-                .cookie("JSESSIONID")
-                .statusCode(204);
     }
 
     @Test

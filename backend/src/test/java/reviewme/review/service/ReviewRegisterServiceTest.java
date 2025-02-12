@@ -85,7 +85,7 @@ class ReviewRegisterServiceTest {
                         optionalTextQuestionAnswer));
 
         // when
-        long registeredReviewId = reviewRegisterService.registerReview(reviewRegisterRequest);
+        long registeredReviewId = reviewRegisterService.registerReview(reviewRegisterRequest, null);
 
         // when, then
         Review review = reviewRepository.findById(registeredReviewId).orElseThrow();
