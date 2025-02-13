@@ -7,6 +7,7 @@ export { default as useAccordion } from './useAccordion';
 export { default as useBreadcrumbPaths } from './useBreadcrumbPaths';
 export { default as useTopButton } from './useTopButton';
 export { default as useTrackVisitedPageInAmplitude } from './useTrackVisitedPageInAmplitude';
+export { default as useReviewRequestCodeParam } from './useReviewRequestCodeParam';
 export * from './review';
 export * from './reviewGroup';
 export * from './modal';

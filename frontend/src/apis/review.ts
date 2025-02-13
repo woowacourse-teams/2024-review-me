@@ -41,8 +41,8 @@ export const postReviewApi = async (formResult: ReviewWritingFormResult) => {
 };
 
 // 받은 리뷰들에 대한 정보(프로젝트 이름, 리뷰이, 받은 리뷰 개수)
-export const getReviewInfoDataApi = async () => {
-  const response = await fetch(endPoint.gettingReviewInfoData, {
+export const getReviewSummaryInfoDataApi = async (reviewRequestCode: string) => {
+  const response = await fetch(endPoint.gettingReviewSummaryInfoData(reviewRequestCode), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

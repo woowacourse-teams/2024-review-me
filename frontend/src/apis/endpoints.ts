@@ -64,6 +64,8 @@ export const makeReviewGroupBasicApiUrl = (reviewRequestCode: string) =>
   `${serverUrl}/${VERSION2}/group/${reviewRequestCode}/reviews/gather`;
 export const makeReceivedReviewListBasicUrl = (reviewRequestCode: string) =>
   `${serverUrl}/${VERSION2}/groups/${reviewRequestCode}/${REVIEW_LIST_API_PARAMS.resource}`;
+export const makeReviewSummaryInfoBasicUrl = (reviewRequestCode: string) =>
+  `${serverUrl}/${VERSION2}/group/${reviewRequestCode}/reviews/summary`;
 
 interface GetReviewListEndPointParams {
   lastReviewId: number | null;
@@ -72,7 +74,7 @@ interface GetReviewListEndPointParams {
 }
 const endPoint = {
   postingReview: `${serverUrl}/${VERSION2}/reviews`,
-  gettingReviewInfoData: `${serverUrl}/${VERSION2}/reviews/summary`,
+  gettingReviewSummaryInfoData: (reviewRequestCode: string) => makeReviewSummaryInfoBasicUrl(reviewRequestCode),
   gettingDetailedReview: (reviewId: number) => `${DETAILED_REVIEW_API_URL}/${reviewId}`,
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,

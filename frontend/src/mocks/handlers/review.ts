@@ -4,6 +4,7 @@ import endPoint, {
   DETAILED_REVIEW_API_PARAMS,
   DETAILED_REVIEW_API_URL,
   makeReviewGroupBasicApiUrl,
+  makeReviewSummaryInfoBasicUrl,
   REVIEW_GROUP_API_PARAMS,
   REVIEW_WRITING_API_PARAMS,
   REVIEW_WRITING_API_URL,
@@ -27,10 +28,15 @@ export const PAGE = {
   firstPageStartIndex: 0,
 };
 
-const getReviewInfoData = () =>
-  http.get(endPoint.gettingReviewInfoData, ({ cookies }) => {
+const getReviewInfoData = () => {
+  const noMemberUrl = makeReviewSummaryInfoBasicUrl(VALID_REVIEW_REQUEST_CODE.nonMember);
+  const memberUrl = makeReviewSummaryInfoBasicUrl(VALID_REVIEW_REQUEST_CODE.member);
+  const targetUrl = new RegExp(`^(${noMemberUrl}|${memberUrl})`);
+
+  return http.get(targetUrl, ({ cookies }) => {
     return authorizeWithCookie(cookies, () => HttpResponse.json(MOCK_REVIEW_INFO_DATA));
   });
+};
 
 const getDetailedReview = () =>
   http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), ({ request, cookies }) => {
