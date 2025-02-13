@@ -4,8 +4,8 @@ import { Accordion, Dropdown, HighlightEditorContainer } from '@/components';
 import { DropdownItem } from '@/components/common/Dropdown';
 import ReviewEmptySection from '@/components/common/ReviewEmptySection';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
-import { REVIEW_EMPTY, ROUTE_PARAM, SESSION_STORAGE_KEY } from '@/constants';
-import { useSearchParamAndQuery } from '@/hooks';
+import { REVIEW_EMPTY, SESSION_STORAGE_KEY } from '@/constants';
+import { useReviewRequestCodeParam } from '@/hooks';
 import { GroupedReview } from '@/types';
 import { substituteString } from '@/utils';
 
@@ -16,8 +16,7 @@ import DoughnutChart from '../DoughnutChart';
 import * as S from './styles';
 
 const ReviewCollectionPageContents = () => {
-  const { param: reviewRequestCode } = useSearchParamAndQuery({ paramKey: ROUTE_PARAM.reviewRequestCode });
-  if (!reviewRequestCode) console.error('reviewRequestCode를 읽지 못했어요');
+  const { reviewRequestCode } = useReviewRequestCodeParam();
 
   const { revieweeName, projectName, totalReviewCount } = useContext(ReviewInfoDataContext);
 

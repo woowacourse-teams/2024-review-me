@@ -4,9 +4,9 @@ import useSearchParamAndQuery from './useSearchParamAndQuery';
 
 const useRequestCodeParam = () => {
   const { param } = useSearchParamAndQuery({ paramKey: ROUTE_PARAM.reviewRequestCode });
-  if (!param) console.error('리뷰 요청 코드를 찾을 수 없어요.');
+  if (!param) throw new Error('유효하지 않은 리뷰 요청 코드예요');
 
-  return { reviewRequestCode: param ?? '' };
+  return { reviewRequestCode: param };
 };
 
 export default useRequestCodeParam;

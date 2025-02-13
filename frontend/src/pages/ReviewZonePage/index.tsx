@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 import ReviewZoneIcon from '@/assets/reviewZone.svg';
 import { Button, ImgWithSkeleton } from '@/components';
 import { ROUTE } from '@/constants';
-import { useGetReviewGroupData, useSearchParamAndQuery, useModals } from '@/hooks';
+import { useGetReviewGroupData, useModals, useReviewRequestCodeParam } from '@/hooks';
 import { reviewRequestCodeAtom } from '@/recoil';
 import { calculateParticle } from '@/utils';
 
@@ -27,11 +27,7 @@ const ReviewZonePage = () => {
 
   const navigate = useNavigate();
 
-  const { param: reviewRequestCode } = useSearchParamAndQuery({
-    paramKey: 'reviewRequestCode',
-  });
-
-  if (!reviewRequestCode) throw new Error('유효하지 않은 리뷰 요청 코드예요');
+  const { reviewRequestCode } = useReviewRequestCodeParam();
 
   useEffect(() => {
     if (!storedReviewRequestCode && reviewRequestCode) {
