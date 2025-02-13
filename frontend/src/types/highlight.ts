@@ -25,6 +25,7 @@ export interface ReviewAnswerResponseData {
  * 하이라이트 변경 시, 서버에 보내는 하이라이트 정보 타입
  */
 export interface HighlightPostPayload {
+  reviewGroupId: number;
   questionId: number;
   highlights: {
     answerId: number;

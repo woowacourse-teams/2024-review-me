@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { postHighlight } from '@/apis/highlight';
 import { LOCAL_STORAGE_KEY, REVIEW_QUERY_KEY, SESSION_STORAGE_KEY } from '@/constants';
+import { useReviewRequestCodeParam } from '@/hooks';
 import { EditorAnswerMap } from '@/types';
 
 export interface UseMutateHighlightProps {
@@ -17,6 +18,7 @@ const useMutateHighlight = ({
   updateEditorAnswerMap,
   resetHighlightMenu,
 }: UseMutateHighlightProps) => {
+  const { reviewRequestCode } = useReviewRequestCodeParam();
   const queryClient = useQueryClient();
   /**
    * 형광펜 API 성공 후, 현재 질문에 대한 쿼리 캐시 무효화해서, 변경된 형광펜 데이터 불러오도록 함
@@ -33,7 +35,8 @@ const useMutateHighlight = ({
   };
 
   const mutation = useMutation({
-    mutationFn: (newEditorAnswerMap: EditorAnswerMap) => postHighlight(newEditorAnswerMap, questionId),
+    mutationFn: (newEditorAnswerMap: EditorAnswerMap) =>
+      postHighlight({ editorAnswerMap: newEditorAnswerMap, questionId, reviewRequestCode }),
     onMutate: () => {
       if (mutation.isPending) return;
     },
