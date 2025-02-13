@@ -1,13 +1,13 @@
 package reviewme.auth.controller.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import reviewme.global.exception.BadRequestException;
+import reviewme.global.exception.UnauthorizedException;
 
 @Slf4j
-public class GuestReviewGroupSessionNotFoundException extends BadRequestException {
+public class GuestReviewGroupSessionNotFoundException extends UnauthorizedException {
 
     public GuestReviewGroupSessionNotFoundException() {
-        super("비회원 리뷰 그룹 세션이 존재하지 않아요.");
+        super("인증되지 않은 접근이에요.");
         log.info("Guest ReviewGroup session does not exist.");
     }
 }
