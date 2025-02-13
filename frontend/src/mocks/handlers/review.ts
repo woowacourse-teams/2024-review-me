@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw';
+import { DefaultBodyType, http, HttpResponse, StrictRequest } from 'msw';
 
 import endPoint, {
   DETAILED_REVIEW_API_PARAMS,
@@ -9,15 +9,15 @@ import endPoint, {
   REVIEW_WRITING_API_URL,
   VERSION2,
 } from '@/apis/endpoints';
-
 import {
+  VALID_REVIEW_REQUEST_CODE,
   DETAILED_REVIEW_MOCK_DATA,
   DETAILED_PAGE_MOCK_API_SETTING_VALUES,
   REVIEW_QUESTION_DATA,
   REVIEW_LIST,
   MOCK_REVIEW_INFO_DATA,
-  VALID_REVIEW_REQUEST_CODE,
-} from '../mockData';
+} from '@/mocks/mockData';
+
 import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
 
 import { authorizeWithCookie } from './cookies';
@@ -64,35 +64,52 @@ const getDataToWriteReview = () =>
   });
 
 // TODO: 추후 getReviewList API에서 리뷰 정보(이름, 개수...)를 내려주지 않는 경우 핸들러도 수정 필요
-const getReviewList = (lastReviewId: number | null, size: number) => {
-  return http.get(endPoint.gettingReviewList(lastReviewId, size), ({ request, cookies }) => {
-    const handleAPI = () => {
-      const url = new URL(request.url);
+const getMemberReceivedReviewList = (lastReviewId: number | null, size: number) => {
+  const memberUrl = endPoint.gettingReceivedReviewList({
+    lastReviewId,
+    size,
+    reviewRequestCode: VALID_REVIEW_REQUEST_CODE.member,
+  });
 
-      const lastReviewIdParam = url.searchParams.get('lastReviewId');
-      const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
+  return http.get(memberUrl, ({ request, cookies }) => {
+    return authorizeWithCookie(cookies, () => handleReviewListAPI(request, size));
+  });
+};
 
-      const isFirstPage = lastReviewId === 0;
-      const startIndex = isFirstPage
-        ? PAGE.firstPageStartIndex
-        : REVIEW_LIST.reviews.findIndex((review) => review.reviewId === lastReviewId) + 1;
+const getNonMemberReceivedReviewList = (lastReviewId: number | null, size: number) => {
+  const nonMemberUrl = endPoint.gettingReceivedReviewList({
+    lastReviewId,
+    size,
+    reviewRequestCode: VALID_REVIEW_REQUEST_CODE.nonMember,
+  });
 
-      const endIndex = startIndex + size;
+  return http.get(nonMemberUrl, ({ request, cookies }) => {
+    return authorizeWithCookie(cookies, () => handleReviewListAPI(request, size));
+  });
+};
 
-      const paginatedReviews = REVIEW_LIST.reviews.slice(startIndex, endIndex);
+// 공통 API 처리 함수
+const handleReviewListAPI = (request: StrictRequest<DefaultBodyType>, size: number) => {
+  const url = new URL(request.url);
 
-      const isLastPage = endIndex >= REVIEW_LIST.reviews.length;
+  const lastReviewIdParam = url.searchParams.get('lastReviewId');
+  const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
 
-      return HttpResponse.json({
-        revieweeName: REVIEW_LIST.revieweeName,
-        projectName: REVIEW_LIST.projectName,
-        lastReviewId: paginatedReviews.length > 0 ? paginatedReviews[paginatedReviews.length - 1].reviewId : 0,
-        isLastPage: isLastPage,
-        reviews: paginatedReviews,
-      });
-    };
+  const isFirstPage = lastReviewId === 0;
+  const startIndex = isFirstPage
+    ? PAGE.firstPageStartIndex
+    : REVIEW_LIST.reviews.findIndex((review) => review.reviewId === lastReviewId) + 1;
 
-    return authorizeWithCookie(cookies, handleAPI);
+  const endIndex = startIndex + size;
+  const paginatedReviews = REVIEW_LIST.reviews.slice(startIndex, endIndex);
+  const isLastPage = endIndex >= REVIEW_LIST.reviews.length;
+
+  return HttpResponse.json({
+    revieweeName: REVIEW_LIST.revieweeName,
+    projectName: REVIEW_LIST.projectName,
+    lastReviewId: paginatedReviews.length > 0 ? paginatedReviews[paginatedReviews.length - 1].reviewId : 0,
+    isLastPage: isLastPage,
+    reviews: paginatedReviews,
   });
 };
 
@@ -123,7 +140,8 @@ const getGroupedReviews = () => {
 
 const reviewHandler = [
   getDetailedReview(),
-  getReviewList(null, 10),
+  getNonMemberReceivedReviewList(null, 10),
+  getMemberReceivedReviewList(null, 10),
   getDataToWriteReview(),
   getSectionList(),
   getGroupedReviews(),

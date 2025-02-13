@@ -55,25 +55,33 @@ export const REVIEW_GROUP_API_PARAMS = {
 };
 
 export const REVIEW_WRITING_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_WRITING_API_PARAMS.resource}`;
-export const REVIEW_LIST_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_LIST_API_PARAMS.resource}`;
+
 export const DETAILED_REVIEW_API_URL = `${serverUrl}/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}`;
 export const REVIEW_GROUP_DATA_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_GROUP_DATA_API_PARAMS.resource}`;
 export const REVIEW_GROUP_API_URL = `${serverUrl}/${VERSION2}/reviews/gather`;
 
 export const makeReviewGroupBasicApiUrl = (reviewRequestCode: string) =>
   `${serverUrl}/${VERSION2}/group/${reviewRequestCode}/reviews/gather`;
+export const makeReceivedReviewListBasicUrl = (reviewRequestCode: string) =>
+  `${serverUrl}/${VERSION2}/groups/${reviewRequestCode}/${REVIEW_LIST_API_PARAMS.resource}`;
 
+interface GetReviewListEndPointParams {
+  lastReviewId: number | null;
+  size: number;
+  reviewRequestCode: string;
+}
 const endPoint = {
   postingReview: `${serverUrl}/${VERSION2}/reviews`,
   gettingReviewInfoData: `${serverUrl}/${VERSION2}/reviews/summary`,
   gettingDetailedReview: (reviewId: number) => `${DETAILED_REVIEW_API_URL}/${reviewId}`,
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
-  gettingReviewList: (lastReviewId: number | null, size: number) => {
+  gettingReceivedReviewList: ({ lastReviewId, size, reviewRequestCode }: GetReviewListEndPointParams) => {
+    const basicUrl = makeReceivedReviewListBasicUrl(reviewRequestCode);
     if (lastReviewId) {
-      return `${REVIEW_LIST_API_URL}?lastReviewId=${lastReviewId}&size=${size}`;
+      return `${basicUrl}?lastReviewId=${lastReviewId}&size=${size}`;
     }
-    return `${REVIEW_LIST_API_URL}?size=${size}`;
+    return `${basicUrl}?size=${size}`;
   },
   postingDataForReviewRequestCode: `${serverUrl}/${VERSION2}/groups`,
   checkingPassword: `${serverUrl}/${VERSION2}/${REVIEW_PASSWORD_API_PARAMS.resource}/${REVIEW_PASSWORD_API_PARAMS.queryString.check}`,

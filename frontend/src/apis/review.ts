@@ -79,13 +79,14 @@ export const getDetailedReviewApi = async ({ reviewId }: GetDetailedReviewApi) =
   return data as DetailReviewData;
 };
 
-interface GetReviewListApi {
+interface GetReviewListApiProps {
+  reviewRequestCode: string;
   lastReviewId: number | null;
   size: number;
 }
 
-export const getReviewListApi = async ({ lastReviewId, size }: GetReviewListApi) => {
-  const response = await fetch(endPoint.gettingReviewList(lastReviewId, size), {
+export const getReviewListApi = async (props: GetReviewListApiProps) => {
+  const response = await fetch(endPoint.gettingReceivedReviewList(props), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
