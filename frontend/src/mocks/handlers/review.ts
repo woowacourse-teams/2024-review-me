@@ -13,10 +13,10 @@ import endPoint, {
 import {
   DETAILED_REVIEW_MOCK_DATA,
   DETAILED_PAGE_MOCK_API_SETTING_VALUES,
-  REVIEW_REQUEST_CODE,
   REVIEW_QUESTION_DATA,
   REVIEW_LIST,
   MOCK_REVIEW_INFO_DATA,
+  VALID_REVIEW_REQUEST_CODE,
 } from '../mockData';
 import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
 
@@ -57,7 +57,7 @@ const getDataToWriteReview = () =>
     const url = new URL(request.url);
     const urlRequestCode = url.searchParams.get(REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode);
 
-    if (REVIEW_REQUEST_CODE === urlRequestCode) {
+    if (VALID_REVIEW_REQUEST_CODE.nonMember === urlRequestCode) {
       return HttpResponse.json(REVIEW_QUESTION_DATA);
     }
     return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
