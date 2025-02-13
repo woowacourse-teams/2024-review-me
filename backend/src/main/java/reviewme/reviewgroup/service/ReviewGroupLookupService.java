@@ -20,8 +20,8 @@ public class ReviewGroupLookupService {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
-        return new ReviewGroupSummaryResponse(reviewGroup.getMemberId(), reviewGroup.getReviewee(),
-                reviewGroup.getProjectName());
+        return new ReviewGroupSummaryResponse(
+                reviewGroup.getMemberId(), reviewGroup.getReviewee(), reviewGroup.getProjectName());
     }
 
     public ReviewGroupPageResponse getMyReviewGroups() {
