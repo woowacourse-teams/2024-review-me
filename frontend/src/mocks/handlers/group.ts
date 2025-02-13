@@ -29,7 +29,7 @@ const postDataForReviewRequestCode = () => {
 };
 
 const postPassWordValidation = () => {
-  return http.post(endPoint.checkingPassword, async ({ request, cookies }) => {
+  return http.post(endPoint.checkingReviewRequestPassword, async ({ request, cookies }) => {
     const bodyResult = await getRequestBody(request);
     if (bodyResult instanceof Error) return HttpResponse.json({ error: bodyResult.message }, { status: 400 });
 

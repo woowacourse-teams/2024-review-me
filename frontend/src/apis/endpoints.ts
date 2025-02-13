@@ -34,13 +34,6 @@ export const REVIEW_WRITING_API_PARAMS = {
   },
 };
 
-export const REVIEW_PASSWORD_API_PARAMS = {
-  resource: 'groups',
-  queryString: {
-    check: 'check',
-  },
-};
-
 export const REVIEW_GROUP_DATA_API_PARAMS = {
   resource: 'groups',
   queryString: {
@@ -86,7 +79,7 @@ const endPoint = {
     return `${basicUrl}?size=${size}`;
   },
   postingDataForReviewRequestCode: `${serverUrl}/${VERSION2}/groups`,
-  checkingPassword: `${serverUrl}/${VERSION2}/${REVIEW_PASSWORD_API_PARAMS.resource}/${REVIEW_PASSWORD_API_PARAMS.queryString.check}`,
+  checkingReviewRequestPassword: `${serverUrl}/${VERSION2}/auth/review-group`,
   gettingReviewGroupData: (reviewRequestCode: string) =>
     `${REVIEW_GROUP_DATA_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingSectionList: `${serverUrl}/${VERSION2}/sections`,
