@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -49,6 +50,8 @@ public class ReviewGroup {
     @Embedded
     private GroupAccessCode groupAccessCode;
 
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     private ReviewGroup(@Nullable Long memberId, long templateId, String reviewee, String projectName,
                         String reviewRequestCode, String groupAccessCode) {
@@ -64,6 +67,7 @@ public class ReviewGroup {
         } else {
             this.groupAccessCode = null;
         }
+        this.createdAt = LocalDateTime.now();
     }
 
     public ReviewGroup(Long memberId, long templateId, String reviewee, String projectName, String reviewRequestCode) {
