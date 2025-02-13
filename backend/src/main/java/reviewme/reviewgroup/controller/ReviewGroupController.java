@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reviewme.security.resolver.LoginMemberSession;
-import reviewme.security.resolver.dto.LoginMember;
 import reviewme.reviewgroup.service.ReviewGroupLookupService;
 import reviewme.reviewgroup.service.ReviewGroupService;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupSummaryResponse;
+import reviewme.security.resolver.LoginMemberSession;
+import reviewme.security.resolver.dto.LoginMember;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,9 +45,14 @@ public class ReviewGroupController {
 
     @GetMapping("/v2/groups")
     public ResponseEntity<ReviewGroupPageResponse> getMyReviewGroups(
-            @LoginMemberSession LoginMember loginMember
+            @RequestParam(required = false) Long lastReviewGroupId,
+            @RequestParam(required = false) Integer size
+            // @LoginMemberSession LoginMember loginMember
     ) {
-        ReviewGroupPageResponse response = reviewGroupLookupService.getMyReviewGroups();
+        // TODO : 머지 전, 리졸버 PR 머지되면 리베이스 후 삭제 예정
+        long memberId = 1L;
+        ReviewGroupPageResponse response = reviewGroupLookupService.getMyReviewGroups(lastReviewGroupId, size,
+                memberId);
         return ResponseEntity.ok(response);
     }
 }
