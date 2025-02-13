@@ -3,8 +3,8 @@ import { http, HttpResponse } from 'msw';
 import endPoint, {
   DETAILED_REVIEW_API_PARAMS,
   DETAILED_REVIEW_API_URL,
+  makeReviewGroupBasicApiUrl,
   REVIEW_GROUP_API_PARAMS,
-  REVIEW_GROUP_API_URL,
   REVIEW_WRITING_API_PARAMS,
   REVIEW_WRITING_API_URL,
   VERSION2,
@@ -107,7 +107,11 @@ const getSectionList = () =>
   });
 
 const getGroupedReviews = () => {
-  return http.get(new RegExp(`^${REVIEW_GROUP_API_URL}`), ({ request, cookies }) => {
+  const targetUrl = new RegExp(
+    `^${makeReviewGroupBasicApiUrl(VALID_REVIEW_REQUEST_CODE.nonMember)}|^${makeReviewGroupBasicApiUrl(VALID_REVIEW_REQUEST_CODE.member)}`,
+  );
+
+  return http.get(targetUrl, ({ request, cookies }) => {
     const url = new URL(request.url);
     const sectionId = url.searchParams.get(REVIEW_GROUP_API_PARAMS.queryString.sectionId);
     const { length } = GROUPED_REVIEWS_MOCK_DATA;

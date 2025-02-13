@@ -60,6 +60,9 @@ export const DETAILED_REVIEW_API_URL = `${serverUrl}/${VERSION2}/${DETAILED_REVI
 export const REVIEW_GROUP_DATA_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_GROUP_DATA_API_PARAMS.resource}`;
 export const REVIEW_GROUP_API_URL = `${serverUrl}/${VERSION2}/reviews/gather`;
 
+export const makeReviewGroupBasicApiUrl = (reviewRequestCode: string) =>
+  `${serverUrl}/${VERSION2}/group/${reviewRequestCode}/reviews/gather`;
+
 const endPoint = {
   postingReview: `${serverUrl}/${VERSION2}/reviews`,
   gettingReviewInfoData: `${serverUrl}/${VERSION2}/reviews/summary`,
@@ -77,8 +80,8 @@ const endPoint = {
   gettingReviewGroupData: (reviewRequestCode: string) =>
     `${REVIEW_GROUP_DATA_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingSectionList: `${serverUrl}/${VERSION2}/sections`,
-  gettingGroupedReviews: (sectionId: number) =>
-    `${REVIEW_GROUP_API_URL}?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
+  gettingGroupedReviews: (reviewRequestCode: string, sectionId: number) =>
+    `${makeReviewGroupBasicApiUrl(reviewRequestCode)}?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
   postingHighlight: `${serverUrl}/${VERSION2}/highlight`,
 };
 

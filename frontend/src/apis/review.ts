@@ -119,11 +119,12 @@ export const getSectionList = async () => {
 };
 
 interface GetGroupedReviewsProps {
+  reviewRequestCode: string;
   sectionId: number;
 }
 
-export const getGroupedReviews = async ({ sectionId }: GetGroupedReviewsProps) => {
-  const response = await fetch(endPoint.gettingGroupedReviews(sectionId), {
+export const getGroupedReviews = async ({ reviewRequestCode, sectionId }: GetGroupedReviewsProps) => {
+  const response = await fetch(endPoint.gettingGroupedReviews(reviewRequestCode, sectionId), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
