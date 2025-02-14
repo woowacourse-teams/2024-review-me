@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { useGetDetailedReview, useReviewId } from '@/hooks';
 import { substituteString } from '@/utils';
 
@@ -13,59 +11,40 @@ interface DetailedReviewProps {
 }
 
 const DetailedReview = ({ selectedReviewId, $layoutStyle }: DetailedReviewProps) => {
-  const reviewId = useReviewId(selectedReviewId);
+  const { data } = useGetDetailedReview({ reviewId: useReviewId(selectedReviewId) });
 
-  const { data: detailedReview } = useGetDetailedReview({
-    reviewId: reviewId,
-  });
-
-  const parsedDetailedReview = useMemo(() => {
-    return {
-      ...detailedReview,
-      sections: detailedReview.sections.map((section) => {
-        const newHeader = substituteString({
-          content: section.header,
-          variables: { revieweeName: detailedReview.revieweeName, projectName: detailedReview.projectName },
-        });
-
-        const newQuestions = section.questions.map((question) => {
-          const newContent = substituteString({
-            content: question.content,
-            variables: { revieweeName: detailedReview.revieweeName, projectName: detailedReview.projectName },
-          });
-
-          return {
-            ...question,
-            content: newContent,
-          };
-        });
-
-        return {
-          ...section,
-          header: newHeader,
-          questions: newQuestions,
-        };
+  const transformedSections = data.sections.map(({ header, questions, ...rest }) => ({
+    ...rest,
+    header: substituteString({
+      content: header,
+      variables: { revieweeName: data.revieweeName, projectName: data.projectName },
+    }),
+    questions: questions.map(({ content, ...qRest }) => ({
+      ...qRest,
+      content: substituteString({
+        content,
+        variables: { revieweeName: data.revieweeName, projectName: data.projectName },
       }),
-    };
-  }, [detailedReview]);
+    })),
+  }));
 
   return (
     <S.DetailedReview $layoutStyle={$layoutStyle}>
       <ReviewDescription
-        projectName={parsedDetailedReview.projectName}
-        date={new Date(parsedDetailedReview.createdAt)}
-        revieweeName={parsedDetailedReview.revieweeName}
+        projectName={data.projectName}
+        date={new Date(data.createdAt)}
+        revieweeName={data.revieweeName}
       />
       <S.Separator />
       <S.DetailedReviewContainer>
-        {parsedDetailedReview.sections.map((section) =>
-          section.questions.map((question) => (
-            <S.ReviewContentContainer key={question.questionId}>
+        {transformedSections.flatMap(({ questions }) =>
+          questions.map(({ questionId, content, questionType, answer, optionGroup }) => (
+            <S.ReviewContentContainer key={questionId}>
               <QuestionAnswerSection
-                question={question.content}
-                questionType={question.questionType}
-                answer={question.answer}
-                options={question.optionGroup?.options}
+                question={content}
+                questionType={questionType}
+                answer={answer}
+                options={optionGroup?.options}
               />
             </S.ReviewContentContainer>
           )),
