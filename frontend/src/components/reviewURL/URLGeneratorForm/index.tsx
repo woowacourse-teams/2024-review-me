@@ -62,7 +62,7 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
   };
 
   return (
-    <S.FormContainer>
+    <>
       <S.URLGeneratorForm>
         <S.Title>함께한 팀원으로부터 리뷰를 받아보세요!</S.Title>
         <S.Fieldset>
@@ -103,7 +103,7 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
       {isOpen(MODAL_KEYS.confirm) && (
         <ReviewZoneURLModal reviewZoneURL={reviewZoneURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
       )}
-    </S.FormContainer>
+    </>
   );
 };
 

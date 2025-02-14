@@ -2,11 +2,11 @@ import GithubWhiteLogoIcon from '@/assets/githubWhiteLogo.svg';
 import { LoginButton } from '@/components/login';
 import { LoginButtonStyleProps } from '@/components/login/LoginButton';
 
-interface GithubLoginButtonProps extends LoginButtonStyleProps {
+interface GitHubLoginButtonProps extends LoginButtonStyleProps {
   handleClick: () => void;
 }
 
-const GithubLoginButton = ({ handleClick, $logoImgStyle, $buttonStyle }: GithubLoginButtonProps) => {
+const GitHubLoginButton = ({ handleClick, $logoImgStyle, $buttonStyle }: GitHubLoginButtonProps) => {
   return (
     <LoginButton
       platform="GitHub"
@@ -18,4 +18,4 @@ const GithubLoginButton = ({ handleClick, $logoImgStyle, $buttonStyle }: GithubL
   );
 };
 
-export default GithubLoginButton;
+export default GitHubLoginButton;

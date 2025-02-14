@@ -1,7 +1,7 @@
 import { useTheme } from '@emotion/react';
 import { useState } from 'react';
 
-import { ContentModal, GithubLoginButton } from '@/components';
+import { ContentModal, GitHubLoginButton } from '@/components';
 
 import * as S from './styles';
 
@@ -37,7 +37,7 @@ const LoginRequestModal = ({ titleType, closeModal }: LoginRequestModalProps) =>
     >
       <S.LoginRequestModal>
         <S.LoginRequestLabel>로그인 후 간편하게 받은 리뷰를 확인하세요!</S.LoginRequestLabel>
-        <GithubLoginButton
+        <GitHubLoginButton
           handleClick={handleClickLoginButton}
           $logoImgStyle={{ height: '3rem' }}
           $buttonStyle={{ fontSize: theme.fontSize.small, height: '4rem', width: '100%' }}

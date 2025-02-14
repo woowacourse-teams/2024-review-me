@@ -67,23 +67,3 @@ export const URLGeneratorForm = styled.form`
     }
   }
 `;
-
-export const FormContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  width: 40%;
-  padding: 0px 9rem;
-
-  ${media.medium} {
-    width: 45%;
-    padding: 0 9rem;
-  }
-
-  ${media.small} {
-    width: 100%;
-    margin: 5rem 0 4rem 0;
-  }
-`;
