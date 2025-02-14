@@ -13,7 +13,8 @@ const RevieweeInfo = ({ revieweeName }: RevieweeInfo) => {
         <img src={RevieweeIcon} alt="" />
         <span>리뷰이</span>
       </S.Guide>
-      | <S.RevieweeName>{revieweeName}</S.RevieweeName>
+      <S.Separator>|</S.Separator>
+      <S.RevieweeName>{revieweeName}</S.RevieweeName>
     </S.RevieweeInfo>
   );
 };

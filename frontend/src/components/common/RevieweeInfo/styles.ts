@@ -22,4 +22,9 @@ export const Guide = styled.span`
   }
 `;
 
+export const Separator = styled.span`
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  margin: 0 0.2rem;
+`;
+
 export const RevieweeName = styled.span``;
