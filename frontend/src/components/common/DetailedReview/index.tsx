@@ -19,8 +19,8 @@ const DetailedReview = ({ selectedReviewId, $layoutStyle }: DetailedReviewProps)
       content: header,
       variables: { revieweeName: data.revieweeName, projectName: data.projectName },
     }),
-    questions: questions.map(({ content, ...qRest }) => ({
-      ...qRest,
+    questions: questions.map(({ content, ...rest }) => ({
+      ...rest,
       content: substituteString({
         content,
         variables: { revieweeName: data.revieweeName, projectName: data.projectName },
