@@ -46,13 +46,11 @@ public class ReviewGroupController {
     @GetMapping("/v2/groups")
     public ResponseEntity<ReviewGroupPageResponse> getMyReviewGroups(
             @RequestParam(required = false) Long lastReviewGroupId,
-            @RequestParam(required = false) Integer size
-            // @LoginMemberSession LoginMember loginMember
+            @RequestParam(required = false) Integer size,
+            @LoginMemberSession LoginMember loginMember
     ) {
-        // TODO : 머지 전, 리졸버 PR 머지되면 리베이스 후 삭제 예정
-        long memberId = 1L;
-        ReviewGroupPageResponse response = reviewGroupLookupService.getMyReviewGroups(lastReviewGroupId, size,
-                memberId);
+        ReviewGroupPageResponse response = reviewGroupLookupService.getMyReviewGroups(
+                lastReviewGroupId, size, loginMember.id());
         return ResponseEntity.ok(response);
     }
 }
