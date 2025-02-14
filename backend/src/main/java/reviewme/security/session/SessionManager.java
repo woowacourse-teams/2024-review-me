@@ -1,4 +1,4 @@
-package reviewme.global.session;
+package reviewme.security.session;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

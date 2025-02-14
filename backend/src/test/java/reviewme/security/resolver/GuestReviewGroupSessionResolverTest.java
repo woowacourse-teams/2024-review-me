@@ -1,4 +1,4 @@
-package reviewme.auth.controller;
+package reviewme.security.resolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -14,16 +14,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.context.request.NativeWebRequest;
-import reviewme.auth.controller.dto.LoginMember;
-import reviewme.auth.controller.exception.LoginMemberSessionNotFoundException;
-import reviewme.auth.domain.GitHubMember;
-import reviewme.global.session.SessionManager;
+import reviewme.security.resolver.dto.GuestReviewGroup;
+import reviewme.security.resolver.exception.GuestReviewGroupSessionNotFoundException;
+import reviewme.security.session.SessionManager;
 
 @ExtendWith(MockitoExtension.class)
-class LoginMemberSessionResolverTest {
+class GuestReviewGroupSessionResolverTest {
 
     @InjectMocks
-    private LoginMemberSessionResolver loginMemberSessionResolver;
+    private GuestReviewGroupSessionResolver guestReviewGroupSessionResolver;
 
     @Mock
     private MethodParameter methodParameter;
@@ -40,26 +39,25 @@ class LoginMemberSessionResolverTest {
     @Mock
     private SessionManager sessionManager;
 
-
     @Test
-    void 세션을_통해_로그인_회원을_반환한다() {
+    void 세션을_통해_비회원_리뷰_그룹_코드를_반환한다() {
         // given
-        GitHubMember gitHubMember = new GitHubMember(1L, "name", "url");
+        String reviewRequestCode = "reviewRequestCode";
 
         given(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).willReturn(httpServletRequest);
         given(httpServletRequest.getSession()).willReturn(httpSession);
-        given(sessionManager.getGitHubMember(httpSession)).willReturn(gitHubMember);
+        given(sessionManager.getReviewRequestCode(httpSession)).willReturn(reviewRequestCode);
 
-        LoginMemberSession annotation = mock(LoginMemberSession.class);
+        GuestReviewGroupSession annotation = mock(GuestReviewGroupSession.class);
         given(annotation.required()).willReturn(false);
-        given(methodParameter.getParameterAnnotation(LoginMemberSession.class)).willReturn(annotation);
+        given(methodParameter.getParameterAnnotation(GuestReviewGroupSession.class)).willReturn(annotation);
 
         // when
-        LoginMember actual = (LoginMember) loginMemberSessionResolver.resolveArgument(
+        GuestReviewGroup actual = (GuestReviewGroup) guestReviewGroupSessionResolver.resolveArgument(
                 methodParameter, null, nativeWebRequest, null);
 
         // then
-        assertThat(actual.id()).isEqualTo(gitHubMember.getMemberId());
+        assertThat(actual.reviewRequestCode()).isEqualTo(reviewRequestCode);
     }
 
     @Test
@@ -68,12 +66,12 @@ class LoginMemberSessionResolverTest {
         given(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).willReturn(httpServletRequest);
         given(httpServletRequest.getSession()).willReturn(null);
 
-        LoginMemberSession annotation = mock(LoginMemberSession.class);
+        GuestReviewGroupSession annotation = mock(GuestReviewGroupSession.class);
         given(annotation.required()).willReturn(false);
-        given(methodParameter.getParameterAnnotation(LoginMemberSession.class)).willReturn(annotation);
+        given(methodParameter.getParameterAnnotation(GuestReviewGroupSession.class)).willReturn(annotation);
 
         // when
-        LoginMember actual = (LoginMember) loginMemberSessionResolver.resolveArgument(
+        GuestReviewGroup actual = (GuestReviewGroup) guestReviewGroupSessionResolver.resolveArgument(
                 methodParameter, null, nativeWebRequest, null);
 
         // then
@@ -85,14 +83,14 @@ class LoginMemberSessionResolverTest {
         // given
         given(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).willReturn(httpServletRequest);
         given(httpServletRequest.getSession()).willReturn(httpSession);
-        given(sessionManager.getGitHubMember(httpSession)).willReturn(null);
+        given(sessionManager.getReviewRequestCode(httpSession)).willReturn(null);
 
-        LoginMemberSession annotation = mock(LoginMemberSession.class);
+        GuestReviewGroupSession annotation = mock(GuestReviewGroupSession.class);
         given(annotation.required()).willReturn(false);
-        given(methodParameter.getParameterAnnotation(LoginMemberSession.class)).willReturn(annotation);
+        given(methodParameter.getParameterAnnotation(GuestReviewGroupSession.class)).willReturn(annotation);
 
         // when
-        LoginMember actual = (LoginMember) loginMemberSessionResolver.resolveArgument(
+        GuestReviewGroup actual = (GuestReviewGroup) guestReviewGroupSessionResolver.resolveArgument(
                 methodParameter, null, nativeWebRequest, null);
 
         // then
@@ -105,14 +103,14 @@ class LoginMemberSessionResolverTest {
         given(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).willReturn(httpServletRequest);
         given(httpServletRequest.getSession()).willReturn(null);
 
-        LoginMemberSession annotation = mock(LoginMemberSession.class);
+        GuestReviewGroupSession annotation = mock(GuestReviewGroupSession.class);
         given(annotation.required()).willReturn(true);
-        given(methodParameter.getParameterAnnotation(LoginMemberSession.class)).willReturn(annotation);
+        given(methodParameter.getParameterAnnotation(GuestReviewGroupSession.class)).willReturn(annotation);
 
         // when, then
-        assertThatThrownBy(() -> loginMemberSessionResolver.resolveArgument(
+        assertThatThrownBy(() -> guestReviewGroupSessionResolver.resolveArgument(
                 methodParameter, null, nativeWebRequest, null))
-                .isInstanceOf(LoginMemberSessionNotFoundException.class);
+                .isInstanceOf(GuestReviewGroupSessionNotFoundException.class);
     }
 
     @Test
@@ -120,15 +118,15 @@ class LoginMemberSessionResolverTest {
         // given
         given(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).willReturn(httpServletRequest);
         given(httpServletRequest.getSession()).willReturn(httpSession);
-        given(sessionManager.getGitHubMember(httpSession)).willReturn(null);
+        given(sessionManager.getReviewRequestCode(httpSession)).willReturn(null);
 
-        LoginMemberSession annotation = mock(LoginMemberSession.class);
+        GuestReviewGroupSession annotation = mock(GuestReviewGroupSession.class);
         given(annotation.required()).willReturn(true);
-        given(methodParameter.getParameterAnnotation(LoginMemberSession.class)).willReturn(annotation);
+        given(methodParameter.getParameterAnnotation(GuestReviewGroupSession.class)).willReturn(annotation);
 
         // when, then
-        assertThatThrownBy(() -> loginMemberSessionResolver.resolveArgument(
+        assertThatThrownBy(() -> guestReviewGroupSessionResolver.resolveArgument(
                 methodParameter, null, nativeWebRequest, null))
-                .isInstanceOf(LoginMemberSessionNotFoundException.class);
+                .isInstanceOf(GuestReviewGroupSessionNotFoundException.class);
     }
 }

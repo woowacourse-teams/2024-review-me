@@ -1,4 +1,4 @@
-package reviewme.auth.controller.dto;
+package reviewme.security.resolver.dto;
 
 public record LoginMember(
 

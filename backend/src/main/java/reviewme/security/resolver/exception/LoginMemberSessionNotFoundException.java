@@ -1,4 +1,4 @@
-package reviewme.auth.controller.exception;
+package reviewme.security.resolver.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import reviewme.global.exception.UnauthorizedException;

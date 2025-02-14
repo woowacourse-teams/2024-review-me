@@ -1,4 +1,4 @@
-package reviewme.auth.controller;
+package reviewme.security.resolver;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -8,9 +8,9 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import reviewme.auth.controller.dto.GuestReviewGroup;
-import reviewme.auth.controller.exception.GuestReviewGroupSessionNotFoundException;
-import reviewme.global.session.SessionManager;
+import reviewme.security.resolver.dto.GuestReviewGroup;
+import reviewme.security.resolver.exception.GuestReviewGroupSessionNotFoundException;
+import reviewme.security.session.SessionManager;
 
 @RequiredArgsConstructor
 public class GuestReviewGroupSessionResolver implements HandlerMethodArgumentResolver {

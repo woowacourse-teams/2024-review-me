@@ -6,10 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import reviewme.auth.controller.GuestReviewGroupSession;
-import reviewme.auth.controller.LoginMemberSession;
-import reviewme.auth.controller.dto.GuestReviewGroup;
-import reviewme.auth.controller.dto.LoginMember;
+import reviewme.security.resolver.GuestReviewGroupSession;
+import reviewme.security.resolver.LoginMemberSession;
+import reviewme.security.resolver.dto.GuestReviewGroup;
+import reviewme.security.resolver.dto.LoginMember;
 import reviewme.highlight.service.HighlightService;
 import reviewme.highlight.service.dto.HighlightsRequest;
 

@@ -1,4 +1,4 @@
-package reviewme.auth.controller;
+package reviewme.security.resolver;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -8,9 +8,9 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import reviewme.auth.controller.dto.LoginMember;
-import reviewme.auth.controller.exception.LoginMemberSessionNotFoundException;
-import reviewme.global.session.SessionManager;
+import reviewme.security.resolver.dto.LoginMember;
+import reviewme.security.resolver.exception.LoginMemberSessionNotFoundException;
+import reviewme.security.session.SessionManager;
 
 @RequiredArgsConstructor
 public class LoginMemberSessionResolver implements HandlerMethodArgumentResolver {
