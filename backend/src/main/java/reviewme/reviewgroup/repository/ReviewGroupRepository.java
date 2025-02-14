@@ -20,7 +20,7 @@ public interface ReviewGroupRepository extends JpaRepository<ReviewGroup, Long> 
              FROM ReviewGroup rg
              LEFT JOIN Review r ON rg.id = r.reviewGroupId
              WHERE rg.memberId = :memberId
-             AND (:lastReviewGroupId IS NULL OR r.id < :lastReviewGroupId)
+             AND (:lastReviewGroupId IS NULL OR rg.id < :lastReviewGroupId)
              GROUP BY rg.id
              ORDER BY rg.createdAt DESC, rg.id DESC
              LIMIT :limit
