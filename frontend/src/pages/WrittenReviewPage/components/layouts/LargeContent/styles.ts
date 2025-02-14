@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import media from '@/utils/media';
 
-export const PageContainer = styled.div`
+export const LargeContentContainer = styled.div`
   display: flex;
   gap: 6rem;
   justify-content: center;
