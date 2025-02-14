@@ -140,7 +140,7 @@ export const getGroupedReviews = async ({ sectionId }: GetGroupedReviewsProps) =
   return data as GroupedReviews;
 };
 
-export const getWrittenReviewList = async ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
+export const getWrittenReviewListApi = async ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
   const response = await fetch(endPoint.gettingWrittenReviewList(lastReviewId, size), {
     method: 'GET',
     headers: {
