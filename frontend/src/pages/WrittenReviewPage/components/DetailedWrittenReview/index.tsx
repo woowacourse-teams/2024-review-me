@@ -14,6 +14,14 @@ export interface DetailedWrittenReviewProps {
   selectedReviewId: number | null;
 }
 
+const detailedReviewLayoutStyle = {
+  width: '100%',
+  height: '100%',
+  marginTop: '0',
+  padding: '3rem 1.5rem',
+  border: 'none',
+};
+
 const ResponsiveUtils = () => {
   return (
     <>
@@ -43,14 +51,6 @@ const DetailedWrittenReview = ({ $isDisplayable, selectedReviewId }: DetailedWri
       </S.DetailedWrittenReview>
     </PageContentLayout>
   );
-};
-
-const detailedReviewLayoutStyle = {
-  width: '100%',
-  height: '100%',
-  marginTop: '0',
-  padding: '3rem 1.5rem',
-  border: 'none',
 };
 
 export default DetailedWrittenReview;
