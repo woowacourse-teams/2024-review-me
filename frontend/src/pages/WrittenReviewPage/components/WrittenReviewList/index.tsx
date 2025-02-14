@@ -4,13 +4,14 @@ import { useNavigate } from 'react-router';
 import { ReviewPreview, TopButton } from '@/components';
 import { useInfiniteScroll } from '@/hooks';
 
-import { useGetWrittenReviewList } from '../../hooks';
+import { useDeviceBreakpoints, useGetWrittenReviewList } from '../../hooks';
 import { PageContentLayout } from '../layouts';
 
 import * as S from './styles';
 
 const WrittenReviewList = () => {
   const navigate = useNavigate();
+  const { deviceType } = useDeviceBreakpoints();
   const { reviewList, isLastPage, fetchNextPage, isSuccess, isFetchingNextPage } = useGetWrittenReviewList();
 
   const containerRef = useRef<HTMLUListElement | null>(null);
@@ -44,11 +45,11 @@ const WrittenReviewList = () => {
               handleClick={handleReviewItemClick}
             />
           ))}
-
           {!isFetchingNextPage && !isLastPage && (
             <div ref={lastReviewElementRef} style={{ minWidth: '0.1rem', minHeight: '0.1rem' }} />
           )}
-          <TopButton containerRef={containerRef} />
+
+          {!deviceType.isDesktop && <TopButton containerRef={containerRef} />}
         </S.WrittenReviewList>
       )}
     </PageContentLayout>
