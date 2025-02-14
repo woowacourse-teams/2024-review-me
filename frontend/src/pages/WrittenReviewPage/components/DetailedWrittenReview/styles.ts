@@ -7,7 +7,10 @@ import { DetailedWrittenReviewProps } from '.';
 export interface StyleProps extends Pick<DetailedWrittenReviewProps, '$isDisplayable'> {}
 
 export const DetailedWrittenReview = styled.div<StyleProps>`
-  display: block;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
   max-width: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxWidth};
   min-width: 55rem;
 
@@ -15,11 +18,16 @@ export const DetailedWrittenReview = styled.div<StyleProps>`
     ${({ $isDisplayable }) =>
       $isDisplayable
         ? `
-        display: block;
+        display: flex;
       `
         : `
         display: none;
       `}
+  }
+
+  ${media.small} {
+    min-width: 0;
+    margin: 0 1.5rem;
   }
 `;
 
@@ -30,7 +38,7 @@ export const Outline = styled.div`
 
   width: 100%;
   min-width: ${({ theme }) => theme.writtenReviewLayoutSize.largeMinWidth};
-  max-width: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxWidth};
+
   height: 100%;
   min-height: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxHeight};
   margin-bottom: 2rem;
@@ -38,13 +46,7 @@ export const Outline = styled.div`
   border: 0.2rem solid ${({ theme }) => theme.colors.lightGray};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
-  ${media.medium} {
-    min-width: 65vw;
-    max-width: 65vw;
-  }
-
   ${media.small} {
-    min-width: 75vw;
-    max-width: 75vw;
+    min-width: 0;
   }
 `;

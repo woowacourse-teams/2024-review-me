@@ -11,11 +11,15 @@ export const DetailedReview = styled.div<{ $layoutStyle?: React.CSSProperties }>
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
   ${media.medium} {
-    width: 80%;
+    width: 85%;
   }
 
   ${media.small} {
     width: 92%;
+  }
+
+  ${media.xSmall} {
+    padding: 2rem 1.5rem;
   }
 
   ${({ $layoutStyle }) => $layoutStyle && { ...$layoutStyle }};
