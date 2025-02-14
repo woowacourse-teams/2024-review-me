@@ -178,7 +178,7 @@ class ReviewGroupApiTest extends ApiTest {
                         new ReviewGroupPageElementResponse(2L, "아루", "리뷰미", "ABCD1234", LocalDateTime.of(2024, 1, 5, 0, 0), 2)
                 )
         );
-        BDDMockito.given(reviewGroupLookupService.getMyReviewGroups(nullable(Long.class), nullable(Integer.class), anyLong()))
+        BDDMockito.given(reviewGroupLookupService.getReviewGroupsByMember(nullable(Long.class), nullable(Integer.class), anyLong()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {

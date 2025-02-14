@@ -83,7 +83,7 @@ class ReviewGroupLookupServiceTest {
         int size = 2;
 
         // when
-        ReviewGroupPageResponse response = reviewGroupLookupService.getMyReviewGroups(lastReviewGroupId, size,
+        ReviewGroupPageResponse response = reviewGroupLookupService.getReviewGroupsByMember(lastReviewGroupId, size,
                 memberId);
 
         // then

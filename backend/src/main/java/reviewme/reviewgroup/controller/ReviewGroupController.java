@@ -49,7 +49,7 @@ public class ReviewGroupController {
             @RequestParam(required = false) Integer size,
             @LoginMemberSession LoginMember loginMember
     ) {
-        ReviewGroupPageResponse response = reviewGroupLookupService.getMyReviewGroups(
+        ReviewGroupPageResponse response = reviewGroupLookupService.getReviewGroupsByMember(
                 lastReviewGroupId, size, loginMember.id());
         return ResponseEntity.ok(response);
     }

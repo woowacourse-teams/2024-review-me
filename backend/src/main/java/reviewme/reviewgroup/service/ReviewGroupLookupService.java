@@ -29,8 +29,8 @@ public class ReviewGroupLookupService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewGroupPageResponse getMyReviewGroups(@Nullable Long lastReviewGroupId, @Nullable Integer size,
-                                                     long memberId) {
+    public ReviewGroupPageResponse getReviewGroupsByMember(@Nullable Long lastReviewGroupId, @Nullable Integer size,
+                                                           long memberId) {
         PageSize pageSize = new PageSize(size);
         List<ReviewGroupPageElementResponse> elements = reviewGroupRepository.findByMemberIdWithLimit(
                 memberId, lastReviewGroupId, pageSize.getSize() + 1);
