@@ -3,7 +3,7 @@ package reviewme.highlight.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,8 +80,8 @@ class HighlightRepositoryTest {
     @Test
     void 그룹_아이디와_질문_아이디로_하이라이트를_삭제한다() {
         // given
-        ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹());
-        ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup1 = reviewGroupRepository.save(비회원_리뷰_그룹());
+        ReviewGroup reviewGroup2 = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         List<Answer> answers1 = List.of(
                 new TextAnswer(1L, "A1"),

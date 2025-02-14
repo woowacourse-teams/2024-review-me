@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.QuestionFixture.선택형_질문;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.List;
@@ -41,7 +41,7 @@ class ReviewMapperTest {
     @Test
     void 서술형_답변을_매핑한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         Question question = 서술형_필수_질문();
         Section section = 항상_보이는_섹션(List.of(question));
@@ -66,7 +66,7 @@ class ReviewMapperTest {
     @Test
     void 선택형_답변을_매핑한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
         Question question = 선택형_질문(true, 2, 1);
         Section section = 항상_보이는_섹션(List.of(question));
         templateRepository.save(new Template(List.of(section)));
@@ -90,7 +90,7 @@ class ReviewMapperTest {
     @Test
     void 필수가_아닌_서술형_질문에_답변이_없으면_매핑하지_않는다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
         Question question = 서술형_옵션_질문();
         Section section = 항상_보이는_섹션(List.of(question));
         templateRepository.save(new Template(List.of(section)));
@@ -112,7 +112,7 @@ class ReviewMapperTest {
     @Test
     void 필수가_아닌_선택형_질문에_답변이_없으면_매핑하지_않는다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
         Question question = 선택형_질문(false, 2, 1);
         Section section = 항상_보이는_섹션(List.of(question));
         templateRepository.save(new Template(List.of(section)));

@@ -7,7 +7,7 @@ import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.조건부로_보이는_섹션;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
@@ -45,7 +45,7 @@ class ReviewValidatorTest {
     @Test
     void 템플릿에_있는_질문에_대한_답과_필수_질문에_모두_응답하는_경우_예외가_발생하지_않는다() {
         // 리뷰 그룹 저장
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         // 필수가 아닌 서술형 질문 저장
         Question notRequiredTextQuestion = 서술형_옵션_질문();
@@ -98,7 +98,7 @@ class ReviewValidatorTest {
     @Test
     void 제공된_템플릿에_없는_질문에_대한_답변이_있을_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         // 재공된 템플릿
         Question question1 = 서술형_필수_질문();
@@ -121,7 +121,7 @@ class ReviewValidatorTest {
     @Test
     void 필수_질문에_답변하지_않은_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         Question requiredQuestion = 서술형_필수_질문();
         Question optionalQuestion = 서술형_옵션_질문();

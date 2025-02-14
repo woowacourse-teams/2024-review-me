@@ -8,7 +8,7 @@ import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.List;
@@ -64,7 +64,7 @@ class ReviewDetailLookupServiceTest {
     @Test
     void 사용자가_작성한_리뷰를_확인한다() {
         // given - 리뷰 그룹 저장
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         // given - 질문 저장
         OptionItem optionItem1 = 선택지();
@@ -101,7 +101,7 @@ class ReviewDetailLookupServiceTest {
         @Test
         void 섹션에_필수가_아닌_질문만_있다면_섹션_자체를_반환하지_않는다() {
             // given - 리뷰 그룹 저장
-            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
             // given - 질문, 세션, 템플릿 저장
             Question question = 서술형_옵션_질문(1);
@@ -125,7 +125,7 @@ class ReviewDetailLookupServiceTest {
         @Test
         void 섹션의_다른_질문에_응답했다면_답하지_않은_질문만_반환하지_않는다() {
             // given - 리뷰 그룹 저장
-            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
             // given - 질문, 세션, 템플릿 저장
             Question question1 = 서술형_옵션_질문(1);

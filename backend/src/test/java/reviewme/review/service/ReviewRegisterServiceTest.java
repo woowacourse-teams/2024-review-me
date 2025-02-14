@@ -6,7 +6,7 @@ import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
 import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.조건부로_보이는_섹션;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
@@ -48,7 +48,7 @@ class ReviewRegisterServiceTest {
     @Test
     void 요청한_내용으로_리뷰를_등록한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         OptionItem requiredOptionItem1 = 선택지();
         OptionItem requiredOptionItem2 = 선택지();
