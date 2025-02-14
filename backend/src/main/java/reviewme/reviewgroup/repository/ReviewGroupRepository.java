@@ -1,6 +1,5 @@
 package reviewme.reviewgroup.repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,8 +12,6 @@ import reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse;
 public interface ReviewGroupRepository extends JpaRepository<ReviewGroup, Long> {
 
     Optional<ReviewGroup> findByReviewRequestCode(String reviewRequestCode);
-
-    Optional<LocalDateTime> findCreatedAtById(Long reviewGroupId);
 
     @Query("""
              SELECT new reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse(
