@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse;
@@ -24,19 +23,12 @@ public interface ReviewGroupRepository extends JpaRepository<ReviewGroup, Long> 
              FROM ReviewGroup rg
              LEFT JOIN Review r ON rg.id = r.reviewGroupId
              WHERE rg.memberId = :memberId
-             AND (
-                    (:lastReviewGroupId IS NULL AND :lastCreatedAt IS NULL)
-                    OR (rg.createdAt < :lastCreatedAt)
-                    OR (rg.createdAt = :lastCreatedAt AND rg.id < :lastReviewGroupId)
-                  )
+             AND (:lastReviewGroupId IS NULL OR r.id < :lastReviewGroupId)
              GROUP BY rg.id
              ORDER BY rg.createdAt DESC, rg.id DESC
              LIMIT :limit
             """)
-    List<ReviewGroupPageElementResponse> findByMemberIdWithLimit(long memberId,
-                                                                 @Nullable Long lastReviewGroupId,
-                                                                 @Nullable LocalDateTime lastCreatedAt,
-                                                                 int limit);
+    List<ReviewGroupPageElementResponse> findByMemberIdWithLimit(long memberId, Long lastReviewGroupId, int limit);
 
     boolean existsByReviewRequestCode(String reviewRequestCode);
 }

@@ -1,8 +1,6 @@
 package reviewme.reviewgroup.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -33,14 +31,9 @@ public class ReviewGroupLookupService {
     @Transactional(readOnly = true)
     public ReviewGroupPageResponse getMyReviewGroups(@Nullable Long lastReviewGroupId, @Nullable Integer size,
                                                      long memberId) {
-        // TODO : 프론트와 협의해서 lastReviewGroupId와 lastCreatedAt을 함께 받아올 수 있다면 더 좋다.
-        LocalDateTime lastCreatedAt = Optional.ofNullable(lastReviewGroupId)
-                .flatMap(reviewGroupRepository::findCreatedAtById)
-                .orElse(null);
-
         PageSize pageSize = new PageSize(size);
         List<ReviewGroupPageElementResponse> elements = reviewGroupRepository.findByMemberIdWithLimit(
-                memberId, lastReviewGroupId, lastCreatedAt, pageSize.getSize() + 1);
+                memberId, lastReviewGroupId, pageSize.getSize() + 1);
 
         boolean isLastPage = elements.size() <= pageSize.getSize();
         if (!isLastPage) {
