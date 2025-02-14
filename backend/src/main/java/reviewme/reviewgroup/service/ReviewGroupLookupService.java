@@ -37,7 +37,7 @@ public class ReviewGroupLookupService {
 
         boolean isLastPage = elements.size() <= pageSize.getSize();
         if (!isLastPage) {
-            elements.subList(0, elements.size());
+            elements = elements.subList(0, pageSize.getSize());
         }
 
         long newLastReviewGroupId = (!elements.isEmpty()) ? elements.get(elements.size() - 1).reviewGroupId() : 0;
