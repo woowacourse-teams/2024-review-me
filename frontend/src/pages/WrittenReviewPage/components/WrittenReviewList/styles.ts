@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import media from '@/utils/media';
 
 export const WrittenReviewList = styled.ul`
-  scrollbar-gutter: stable both-edges;
+  scrollbar-gutter: stable;
 
   overflow-x: auto;
   overflow-y: auto;
