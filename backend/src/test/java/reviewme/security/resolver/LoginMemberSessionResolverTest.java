@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.context.request.NativeWebRequest;
 import reviewme.security.resolver.dto.LoginMember;
-import reviewme.security.resolver.exception.LoginMemberSessionNotFoundException;
+import reviewme.security.resolver.exception.LoginMemberSessionNotExistsException;
 import reviewme.auth.domain.GitHubMember;
 import reviewme.security.session.SessionManager;
 
@@ -112,7 +112,7 @@ class LoginMemberSessionResolverTest {
         // when, then
         assertThatThrownBy(() -> loginMemberSessionResolver.resolveArgument(
                 methodParameter, null, nativeWebRequest, null))
-                .isInstanceOf(LoginMemberSessionNotFoundException.class);
+                .isInstanceOf(LoginMemberSessionNotExistsException.class);
     }
 
     @Test
@@ -129,6 +129,6 @@ class LoginMemberSessionResolverTest {
         // when, then
         assertThatThrownBy(() -> loginMemberSessionResolver.resolveArgument(
                 methodParameter, null, nativeWebRequest, null))
-                .isInstanceOf(LoginMemberSessionNotFoundException.class);
+                .isInstanceOf(LoginMemberSessionNotExistsException.class);
     }
 }

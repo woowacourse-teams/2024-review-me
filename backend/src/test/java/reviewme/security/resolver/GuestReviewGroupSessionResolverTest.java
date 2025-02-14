@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.context.request.NativeWebRequest;
 import reviewme.security.resolver.dto.GuestReviewGroup;
-import reviewme.security.resolver.exception.GuestReviewGroupSessionNotFoundException;
+import reviewme.security.resolver.exception.GuestReviewGroupSessionNotExistsException;
 import reviewme.security.session.SessionManager;
 
 @ExtendWith(MockitoExtension.class)
@@ -110,7 +110,7 @@ class GuestReviewGroupSessionResolverTest {
         // when, then
         assertThatThrownBy(() -> guestReviewGroupSessionResolver.resolveArgument(
                 methodParameter, null, nativeWebRequest, null))
-                .isInstanceOf(GuestReviewGroupSessionNotFoundException.class);
+                .isInstanceOf(GuestReviewGroupSessionNotExistsException.class);
     }
 
     @Test
@@ -127,6 +127,6 @@ class GuestReviewGroupSessionResolverTest {
         // when, then
         assertThatThrownBy(() -> guestReviewGroupSessionResolver.resolveArgument(
                 methodParameter, null, nativeWebRequest, null))
-                .isInstanceOf(GuestReviewGroupSessionNotFoundException.class);
+                .isInstanceOf(GuestReviewGroupSessionNotExistsException.class);
     }
 }

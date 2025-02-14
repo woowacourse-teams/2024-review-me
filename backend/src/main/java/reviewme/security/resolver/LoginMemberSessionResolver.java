@@ -9,7 +9,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import reviewme.security.resolver.dto.LoginMember;
-import reviewme.security.resolver.exception.LoginMemberSessionNotFoundException;
+import reviewme.security.resolver.exception.LoginMemberSessionNotExistsException;
 import reviewme.security.session.SessionManager;
 
 @RequiredArgsConstructor
@@ -34,7 +34,7 @@ public class LoginMemberSessionResolver implements HandlerMethodArgumentResolver
 
         LoginMemberSession parameterAnnotation = parameter.getParameterAnnotation(LoginMemberSession.class);
         if (parameterAnnotation.required() && loginMember == null) {
-            throw new LoginMemberSessionNotFoundException();
+            throw new LoginMemberSessionNotExistsException();
         }
 
         return loginMember;

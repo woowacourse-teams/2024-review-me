@@ -9,7 +9,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import reviewme.security.resolver.dto.GuestReviewGroup;
-import reviewme.security.resolver.exception.GuestReviewGroupSessionNotFoundException;
+import reviewme.security.resolver.exception.GuestReviewGroupSessionNotExistsException;
 import reviewme.security.session.SessionManager;
 
 @RequiredArgsConstructor
@@ -34,7 +34,7 @@ public class GuestReviewGroupSessionResolver implements HandlerMethodArgumentRes
 
         GuestReviewGroupSession parameterAnnotation = parameter.getParameterAnnotation(GuestReviewGroupSession.class);
         if (parameterAnnotation.required() && guestReviewGroup == null) {
-            throw new GuestReviewGroupSessionNotFoundException();
+            throw new GuestReviewGroupSessionNotExistsException();
         }
 
         return guestReviewGroup;
