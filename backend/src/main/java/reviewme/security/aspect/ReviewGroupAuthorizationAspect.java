@@ -1,7 +1,7 @@
-package reviewme.global.authorization;
+package reviewme.security.aspect;
 
-import static reviewme.global.authorization.ResourceAuthorizationUtils.getCurrentSession;
-import static reviewme.global.authorization.ResourceAuthorizationUtils.getTarget;
+import static reviewme.security.aspect.ResourceAuthorizationUtils.getCurrentSession;
+import static reviewme.security.aspect.ResourceAuthorizationUtils.getTarget;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -10,11 +10,11 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import reviewme.auth.domain.GitHubMember;
-import reviewme.global.authorization.exception.ForbiddenReviewGroupAccessException;
-import reviewme.global.session.SessionManager;
+import reviewme.security.aspect.exception.ForbiddenReviewGroupAccessException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.security.session.SessionManager;
 
 @Aspect
 @Component

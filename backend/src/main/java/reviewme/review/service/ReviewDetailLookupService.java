@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.domain.Review;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
-import reviewme.review.service.exception.ReviewNotFoundByIdAndGroupException;
+import reviewme.review.service.exception.ReviewNotFoundException;
 import reviewme.review.service.mapper.ReviewDetailMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundException;

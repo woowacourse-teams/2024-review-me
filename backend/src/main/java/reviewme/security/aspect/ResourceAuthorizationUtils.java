@@ -1,4 +1,4 @@
-package reviewme.global.authorization;
+package reviewme.security.aspect;
 
 import jakarta.servlet.http.HttpSession;
 import java.util.Objects;
@@ -11,7 +11,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import reviewme.global.authorization.exception.SpELEvaluationFailedException;
+import reviewme.security.aspect.exception.SpELEvaluationFailedException;
 
 public class ResourceAuthorizationUtils {
 

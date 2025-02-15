@@ -1,4 +1,4 @@
-package reviewme.global.authorization.exception;
+package reviewme.security.aspect.exception;
 
 import lombok.extern.slf4j.Slf4j;
 

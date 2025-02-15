@@ -25,7 +25,6 @@ import reviewme.review.service.exception.ReviewNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.security.aspect.exception.ForbiddenReviewAccessException;
-import reviewme.security.aspect.exception.ReviewGroupNotExistsBySessionReviewRequestCodeException;
 import reviewme.security.session.SessionManager;
 import reviewme.support.ServiceTest;
 

@@ -14,13 +14,13 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import reviewme.auth.domain.GitHubMember;
-import reviewme.global.authorization.exception.ForbiddenReviewGroupAccessException;
-import reviewme.global.session.SessionManager;
+import reviewme.security.aspect.exception.ForbiddenReviewGroupAccessException;
 import reviewme.member.domain.Member;
 import reviewme.member.repository.MemberRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.security.session.SessionManager;
 import reviewme.support.ServiceTest;
 
 @ServiceTest

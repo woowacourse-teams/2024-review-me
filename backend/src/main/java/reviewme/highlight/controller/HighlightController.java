@@ -6,11 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import reviewme.global.authorization.RequireReviewGroupAccess;
-import reviewme.security.resolver.GuestReviewGroupSession;
-import reviewme.security.resolver.LoginMemberSession;
-import reviewme.security.resolver.dto.GuestReviewGroup;
-import reviewme.security.resolver.dto.LoginMember;
+import reviewme.security.aspect.RequireReviewGroupAccess;
 import reviewme.highlight.service.HighlightService;
 import reviewme.highlight.service.dto.HighlightsRequest;
 

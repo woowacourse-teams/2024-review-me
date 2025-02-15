@@ -1,4 +1,4 @@
-package reviewme.global.authorization;
+package reviewme.security.aspect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RequireReviewAccess {
+public @interface RequireReviewGroupAccess {
 
-    String target() default "#reviewId";
+    String target() default "#reviewGroupId";
 }
