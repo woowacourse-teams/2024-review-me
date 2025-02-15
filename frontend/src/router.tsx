@@ -12,6 +12,7 @@ const ReviewCollectionPage = lazy(() => import('@/pages/ReviewCollectionPage'));
 const LoadingPage = lazy(() => import('@/pages/LoadingPage'));
 const ReviewLinkPage = lazy(() => import('@/pages/ReviewLinkPage'));
 const WrittenReviewPage = lazy(() => import('@/pages/WrittenReviewPage'));
+const OAuthCallbackPage = lazy(() => import('@/pages/OAuthCallbackPage'));
 
 import App from './App';
 import { ErrorSuspenseContainer } from './components';
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       { path: `${ROUTE.reviewCollection}/:${ROUTE_PARAM.reviewRequestCode}`, element: <ReviewCollectionPage /> },
       { path: `${ROUTE.reviewLinks}`, element: <ReviewLinkPage /> },
       { path: `${ROUTE.writtenReview}`, element: <WrittenReviewPage /> },
+      {
+        path: `${ROUTE.oAuthCallback}`,
+        element: <OAuthCallbackPage />,
+      },
     ],
   },
 ]);

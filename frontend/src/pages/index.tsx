@@ -9,3 +9,4 @@ export { default as ReviewZonePage } from './ReviewZonePage';
 export { default as ReviewCollectionPage } from './ReviewCollectionPage';
 export { default as ReviewLinkPage } from './ReviewLinkPage';
 export { default as WrittenReviewPage } from './WrittenReviewPage';
+export { default as OAuthCallbackPage } from './OAuthCallbackPage';

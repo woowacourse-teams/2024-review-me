@@ -10,4 +10,5 @@ export const ROUTE = {
   reviewCollection: makeRoutePath('review-collection'),
   reviewLinks: makeRoutePath('review-links', true),
   writtenReview: makeRoutePath('written-review', true),
+  oAuthCallback: '/callback',
 };
