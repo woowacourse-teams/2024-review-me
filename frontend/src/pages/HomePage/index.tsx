@@ -2,8 +2,7 @@ import { useState } from 'react';
 
 import { LoginToggleButton, ErrorSuspenseContainer, URLGeneratorForm } from '@/components';
 
-import { ReviewMeOverview } from './components';
-import OAuthLoginForm from './components/OAuthLoginForm';
+import { OAuthLoginForm, ReviewMeOverview } from './components';
 import * as S from './styles';
 
 const HomePage = () => {
