@@ -17,8 +17,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import reviewme.auth.domain.GitHubMember;
-import reviewme.global.authorization.exception.UnauthorizedReviewAccessException;
-import reviewme.global.session.SessionManager;
 import reviewme.member.domain.Member;
 import reviewme.member.repository.MemberRepository;
 import reviewme.review.domain.Review;
@@ -26,7 +24,9 @@ import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.exception.ReviewNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
-import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.security.aspect.exception.ForbiddenReviewAccessException;
+import reviewme.security.aspect.exception.ReviewGroupNotExistsBySessionReviewRequestCodeException;
+import reviewme.security.session.SessionManager;
 import reviewme.support.ServiceTest;
 
 @ServiceTest
@@ -119,7 +119,7 @@ class ReviewAuthorizationAspectTest {
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(1L))
-                    .isInstanceOf(UnauthorizedReviewAccessException.class);
+                    .isInstanceOf(ForbiddenReviewAccessException.class);
         }
 
         @Test
@@ -130,7 +130,7 @@ class ReviewAuthorizationAspectTest {
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
-                    .isInstanceOf(UnauthorizedReviewAccessException.class);
+                    .isInstanceOf(ForbiddenReviewAccessException.class);
         }
     }
 
@@ -147,7 +147,7 @@ class ReviewAuthorizationAspectTest {
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
-                    .isInstanceOf(UnauthorizedReviewAccessException.class);
+                    .isInstanceOf(ForbiddenReviewAccessException.class);
         }
 
         @Test
@@ -163,7 +163,7 @@ class ReviewAuthorizationAspectTest {
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
-                    .isInstanceOf(UnauthorizedReviewAccessException.class);
+                    .isInstanceOf(ForbiddenReviewAccessException.class);
         }
     }
 
@@ -181,7 +181,7 @@ class ReviewAuthorizationAspectTest {
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
-                    .isInstanceOf(UnauthorizedReviewAccessException.class);
+                    .isInstanceOf(ForbiddenReviewAccessException.class);
         }
 
         @Test
@@ -194,7 +194,7 @@ class ReviewAuthorizationAspectTest {
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
-                    .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
+                    .isInstanceOf(ReviewGroupNotExistsBySessionReviewRequestCodeException.class);
         }
     }
 }
