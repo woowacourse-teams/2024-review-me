@@ -20,10 +20,10 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "external_id", nullable = false, unique = true)
+    private String externalId;
 
-    public Member(String email) {
-        this.email = email;
+    public Member(String externalId) {
+        this.externalId = externalId;
     }
 }

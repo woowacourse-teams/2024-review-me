@@ -26,13 +26,13 @@ public class AuthService {
     @Transactional
     public GitHubMember authWithGithub(String code) {
         GitHubUserInfoResponse userInfo = githubOAuthClient.getUserInfo(code);
-        Member member = getOrSaveMember(userInfo.gitHubEmail());
+        Member member = getOrSaveMember(userInfo.gitHubId());
         return gitHubMemberService.createGitHubMember(member.getId(), userInfo.gitHubNickname());
     }
 
-    private Member getOrSaveMember(String email) {
-        return memberRepository.findByEmail(email)
-                .orElseGet(() -> memberRepository.save(new Member(email)));
+    private Member getOrSaveMember(String externalId) {
+        return memberRepository.findByExternalId(externalId)
+                .orElseGet(() -> memberRepository.save(new Member(externalId)));
     }
 
     @Transactional(readOnly = true)
