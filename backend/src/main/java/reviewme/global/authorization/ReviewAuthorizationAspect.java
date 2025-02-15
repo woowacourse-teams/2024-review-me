@@ -4,7 +4,6 @@ import static reviewme.global.authorization.ResourceAuthorizationUtils.getCurren
 import static reviewme.global.authorization.ResourceAuthorizationUtils.getTarget;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -29,7 +28,6 @@ public class ReviewAuthorizationAspect {
     private final ReviewRepository reviewRepository;
     private final ReviewGroupRepository reviewGroupRepository;
 
-    @Transactional
     @Around("@annotation(requireReviewAccess)")
     public Object checkReviewAccess(ProceedingJoinPoint joinPoint,
                                     RequireReviewAccess requireReviewAccess) throws Throwable {
