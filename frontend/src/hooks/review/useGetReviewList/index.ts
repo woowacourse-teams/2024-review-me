@@ -1,20 +1,19 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
 import { getReviewListApi } from '@/apis/review';
-import { REVIEW_QUERY_KEY, ROUTE_PARAM } from '@/constants';
-import useSearchParamAndQuery from '@/hooks/useSearchParamAndQuery';
+import { REVIEW_QUERY_KEY } from '@/constants';
 
-const useGetReviewList = () => {
-  const { param } = useSearchParamAndQuery({ paramKey: ROUTE_PARAM.reviewRequestCode });
-  if (!param) console.error('reviewRequestCode를 읽지 못했어요');
-
+interface UseGetReviewListProps {
+  reviewRequestCode: string;
+}
+const useGetReviewList = ({ reviewRequestCode }: UseGetReviewListProps) => {
   const result = useSuspenseInfiniteQuery({
     queryKey: [REVIEW_QUERY_KEY.reviews],
     queryFn: ({ pageParam }) =>
       getReviewListApi({
         lastReviewId: pageParam === 0 ? null : pageParam, // 첫 api 요청 시, null 값 보내기
         size: 10,
-        reviewRequestCode: param ?? '',
+        reviewRequestCode,
       }),
 
     initialPageParam: 0,

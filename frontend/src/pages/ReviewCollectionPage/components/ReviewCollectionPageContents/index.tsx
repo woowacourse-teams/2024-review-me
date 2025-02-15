@@ -28,7 +28,7 @@ const ReviewCollectionPageContents = () => {
   const [selectedSection, setSelectedSection] = useState<DropdownItem>(dropdownSectionList[0]);
 
   const { data: groupedReviews } = useGetGroupedReviews({
-    reviewRequestCode: reviewRequestCode ?? '',
+    reviewRequestCode: reviewRequestCode,
     sectionId: selectedSection.value as number,
   });
 
