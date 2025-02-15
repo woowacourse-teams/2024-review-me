@@ -73,11 +73,11 @@ const endPoint = {
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingReceivedReviewList: ({ lastReviewId, size, reviewRequestCode }: GetReviewListEndPointParams) => {
-    const basicUrl = makeReceivedReviewListBasicUrl(reviewRequestCode) + '?' + `reviewRequestCode=${reviewRequestCode}`;
+    const basicUrl = makeReceivedReviewListBasicUrl(reviewRequestCode);
     if (lastReviewId) {
-      return `${basicUrl}&lastReviewId=${lastReviewId}&size=${size}`;
+      return `${basicUrl}?lastReviewId=${lastReviewId}&size=${size}`;
     }
-    return `${basicUrl}&size=${size}`;
+    return `${basicUrl}?size=${size}`;
   },
   postingDataForReviewRequestCode: `${serverUrl}/${VERSION2}/groups`,
   checkingReviewRequestPassword: `${serverUrl}/${VERSION2}/auth/review-group`,
