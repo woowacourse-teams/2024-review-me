@@ -11,7 +11,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import reviewme.auth.domain.GitHubMember;
 import reviewme.global.authorization.exception.ReviewGroupNotExistsBySessionReviewRequestCodeException;
-import reviewme.global.authorization.exception.UnauthorizedReviewAccessException;
+import reviewme.global.authorization.exception.ForbiddenReviewAccessException;
 import reviewme.global.session.SessionManager;
 import reviewme.review.domain.Review;
 import reviewme.review.repository.ReviewRepository;
@@ -33,20 +33,20 @@ public class ReviewAuthorizationAspect {
                                     RequireReviewAccess requireReviewAccess) throws Throwable {
         HttpSession session = getCurrentSession();
         if (session == null) {
-            throw new UnauthorizedReviewAccessException();
+            throw new ForbiddenReviewAccessException();
         }
 
         long reviewId = getTarget(joinPoint, requireReviewAccess.target(), Long.class);
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewNotFoundException(reviewId));
-        if (!(isMemberAuthorized(review, session) || isGuestAuthorized(review, session))) {
-            throw new UnauthorizedReviewAccessException();
+        if (!(canMemberAccess(review, session) || canGuestAccess(review, session))) {
+            throw new ForbiddenReviewAccessException();
         }
 
         return joinPoint.proceed();
     }
 
-    private boolean isMemberAuthorized(Review review, HttpSession session) {
+    private boolean canMemberAccess(Review review, HttpSession session) {
         GitHubMember gitHubMember = sessionManager.getGitHubMember(session);
         if (gitHubMember == null) {
             return false;
@@ -60,7 +60,7 @@ public class ReviewAuthorizationAspect {
         return isReviewGroupCreator || isReviewAuthor;
     }
 
-    private boolean isGuestAuthorized(Review review, HttpSession session) {
+    private boolean canGuestAccess(Review review, HttpSession session) {
         String reviewRequestCode = sessionManager.getReviewRequestCode(session);
         if (reviewRequestCode == null) {
             return false;

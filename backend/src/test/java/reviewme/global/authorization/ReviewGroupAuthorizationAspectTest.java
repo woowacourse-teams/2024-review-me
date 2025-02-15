@@ -14,7 +14,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import reviewme.auth.domain.GitHubMember;
-import reviewme.global.authorization.exception.UnauthorizedReviewGroupAccessException;
+import reviewme.global.authorization.exception.ForbiddenReviewGroupAccessException;
 import reviewme.global.session.SessionManager;
 import reviewme.member.domain.Member;
 import reviewme.member.repository.MemberRepository;
@@ -94,7 +94,7 @@ class ReviewGroupAuthorizationAspectTest {
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewGroupMethod(1L))
-                    .isInstanceOf(UnauthorizedReviewGroupAccessException.class);
+                    .isInstanceOf(ForbiddenReviewGroupAccessException.class);
         }
 
         @Test
@@ -104,7 +104,7 @@ class ReviewGroupAuthorizationAspectTest {
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewGroupMethod(reviewGroup.getId()))
-                    .isInstanceOf(UnauthorizedReviewGroupAccessException.class);
+                    .isInstanceOf(ForbiddenReviewGroupAccessException.class);
         }
     }
 
@@ -120,7 +120,7 @@ class ReviewGroupAuthorizationAspectTest {
 
         // when & then
         assertThatCode(() -> aopTestClass.testReviewGroupMethod(membersReviewGroup.getId()))
-                .isInstanceOf(UnauthorizedReviewGroupAccessException.class);
+                .isInstanceOf(ForbiddenReviewGroupAccessException.class);
     }
 
     @Test
@@ -133,6 +133,6 @@ class ReviewGroupAuthorizationAspectTest {
 
         // when & then
         assertThatCode(() -> aopTestClass.testReviewGroupMethod(group.getId()))
-                .isInstanceOf(UnauthorizedReviewGroupAccessException.class);
+                .isInstanceOf(ForbiddenReviewGroupAccessException.class);
     }
 }
