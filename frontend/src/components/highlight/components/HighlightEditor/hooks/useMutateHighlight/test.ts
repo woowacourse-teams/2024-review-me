@@ -33,7 +33,6 @@ describe('하이라이트 요청 테스트', () => {
       const data = transformHighlightData({
         editorAnswerMap: EDITOR_ANSWER_MAP,
         questionId: QUESTION_ID,
-        reviewRequestCode: props.reviewRequestCode,
       });
       expect(isValidPayload(data)).toBeTruthy();
 

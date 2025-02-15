@@ -7,17 +7,14 @@ import endPoint from './endpoints';
 interface TransformHighlightParams {
   editorAnswerMap: EditorAnswerMap;
   questionId: number;
-  reviewRequestCode: string;
 }
 
 export const transformHighlightData = ({
   editorAnswerMap,
   questionId,
-  reviewRequestCode,
 }: TransformHighlightParams): HighlightPostPayload => {
   // NOTE: 하이라이트가 있는 답변만 서버에 보내줌 (줄에 하이라이트가 없으면 빈배열)
   return {
-    reviewGroupId: Number(reviewRequestCode),
     questionId,
     highlights: [...editorAnswerMap.values()]
       .filter((answer) => answer.lineList.some((line) => line.highlightList.length > 0))
@@ -37,13 +34,17 @@ export const isValidPayload = (payload: HighlightPostPayload) => {
   return payload.highlights.every((highlight) => highlight.lines.every((line) => line.ranges.length > 0));
 };
 
-export const postHighlight = async (params: TransformHighlightParams) => {
-  const postingData = transformHighlightData(params);
+export interface PostHighlightParams {
+  dataParams: TransformHighlightParams;
+  reviewRequestCode: string;
+}
+export const postHighlight = async ({ dataParams, reviewRequestCode }: PostHighlightParams) => {
+  const postingData = transformHighlightData(dataParams);
 
   if (!isValidPayload(postingData)) return console.error('유효하지 않은 형광펜 데이터입니다');
 
   try {
-    const response = await fetch(endPoint.postingHighlight, {
+    const response = await fetch(endPoint.postingHighlight(reviewRequestCode), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -51,7 +52,6 @@ export const postHighlight = async (params: TransformHighlightParams) => {
       credentials: 'include',
       body: JSON.stringify(postingData),
     });
-
     if (!response.ok) {
       throw new Error(ERROR_BOUNDARY_IGNORE_ERROR + createApiErrorMessage(response.status));
     }

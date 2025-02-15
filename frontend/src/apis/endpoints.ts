@@ -86,7 +86,7 @@ const endPoint = {
   gettingSectionList: `${serverUrl}/${VERSION2}/sections`,
   gettingGroupedReviews: (reviewRequestCode: string, sectionId: number) =>
     `${makeReviewGroupBasicApiUrl(reviewRequestCode)}?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
-  postingHighlight: `${serverUrl}/${VERSION2}/highlight`,
+  postingHighlight: (reviewRequestCode: string) => `${serverUrl}/${VERSION2}/${reviewRequestCode}/highlight`,
 };
 
 export default endPoint;
