@@ -37,7 +37,8 @@ public class ReviewAuthorizationAspect {
         }
 
         long reviewId = getTarget(joinPoint, requireReviewAccess.target(), Long.class);
-        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException(reviewId));
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ReviewNotFoundException(reviewId));
         if (!(isMemberAuthorized(review, session) || isGuestAuthorized(review, session))) {
             throw new UnauthorizedReviewAccessException();
         }
@@ -51,10 +52,9 @@ public class ReviewAuthorizationAspect {
             return false;
         }
 
-        boolean isReviewGroupCreator = reviewGroupRepository.findAllByMemberId(gitHubMember.getMemberId())
-                .stream()
-                .map(ReviewGroup::getId)
-                .anyMatch(id -> id == review.getReviewGroupId());
+        boolean isReviewGroupCreator = reviewGroupRepository.existsByIdAndMemberId(
+                review.getReviewGroupId(), gitHubMember.getMemberId()
+        );
         boolean isReviewAuthor = review.getMemberId() != null && review.getMemberId() == gitHubMember.getMemberId();
 
         return isReviewGroupCreator || isReviewAuthor;
