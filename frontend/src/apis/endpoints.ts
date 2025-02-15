@@ -51,14 +51,15 @@ export const REVIEW_WRITING_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_WRITING
 
 export const DETAILED_REVIEW_API_URL = `${serverUrl}/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}`;
 export const REVIEW_GROUP_DATA_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_GROUP_DATA_API_PARAMS.resource}`;
-export const REVIEW_GROUP_API_URL = `${serverUrl}/${VERSION2}/reviews/gather`;
+const REVIEW_GROUPS_BASIC_API_URL = `${serverUrl}/${VERSION2}/groups`;
 
+// NOTE: 추후에 reviewRequestCode가 아닌 reviewGroupId로 요청하는 방식으로 변경될 예정
 export const makeReviewGroupBasicApiUrl = (reviewRequestCode: string) =>
-  `${serverUrl}/${VERSION2}/group/${reviewRequestCode}/reviews/gather`;
+  `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/reviews/gather`;
 export const makeReceivedReviewListBasicUrl = (reviewRequestCode: string) =>
-  `${serverUrl}/${VERSION2}/groups/${reviewRequestCode}/${REVIEW_LIST_API_PARAMS.resource}`;
+  `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/${REVIEW_RECEIVED_LIST_API_PARAMS.resource}`;
 export const makeReviewSummaryInfoBasicUrl = (reviewRequestCode: string) =>
-  `${serverUrl}/${VERSION2}/group/${reviewRequestCode}/reviews/summary`;
+  `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/reviews/summary`;
 
 interface GetReviewListEndPointParams {
   lastReviewId: number | null;
