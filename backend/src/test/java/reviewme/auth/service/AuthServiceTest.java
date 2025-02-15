@@ -47,8 +47,8 @@ class AuthServiceTest {
 
         private final String authCode = "authCode";
         private final String gitHubUserName = "sancho";
-        private final String gitHubEmail = "sancho@review-me.com";
-        private final GitHubUserInfoResponse userInfo = new GitHubUserInfoResponse(gitHubUserName, gitHubEmail);
+        private final String gitHubId = "12341234";
+        private final GitHubUserInfoResponse userInfo = new GitHubUserInfoResponse(gitHubUserName, gitHubId);
 
         @BeforeEach
         void setUp() {
@@ -62,14 +62,14 @@ class AuthServiceTest {
 
             // then
             verify(memberRepository, times(1)).save(
-                    argThat(member -> member.getEmail().equals(gitHubEmail))
+                    argThat(member -> member.getExternalId().equals(gitHubId))
             );
         }
 
         @Test
         void 가입된_회원이면_재가입하지_않는다() {
             // given
-            memberRepository.save(new Member(gitHubEmail));
+            memberRepository.save(new Member(gitHubId));
             clearInvocations(memberRepository);
 
             // when
