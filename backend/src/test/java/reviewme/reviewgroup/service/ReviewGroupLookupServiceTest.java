@@ -83,8 +83,8 @@ class ReviewGroupLookupServiceTest {
         int size = 2;
 
         // when
-        ReviewGroupPageResponse response = reviewGroupLookupService.getReviewGroupsByMember(lastReviewGroupId, size,
-                memberId);
+        ReviewGroupPageResponse response = reviewGroupLookupService.getReviewGroupsByMember(
+                lastReviewGroupId, size, memberId);
 
         // then
         assertAll(
