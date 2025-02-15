@@ -224,7 +224,6 @@ class ReviewApiTest extends ApiTest {
         };
 
         ParameterDescriptor[] queryParameter = {
-                parameterWithName("reviewRequestCode").description("리뷰 요청 코드"),
                 parameterWithName("lastReviewId").description("페이지의 마지막 리뷰 ID - 기본으로 최신순 첫번째 페이지 응답"),
                 parameterWithName("size").description("페이지의 크기 - 기본으로 10개씩 응답")
         };
@@ -256,7 +255,6 @@ class ReviewApiTest extends ApiTest {
         givenWithSpec().log().all()
                 .pathParam("reviewGroupId", "1")
                 .cookie("JSESSIONID", "ASVNE1VAKDNV4")
-                .queryParam("reviewRequestCode", "hello!!")
                 .queryParam("lastReviewId", "2")
                 .queryParam("size", "5")
                 .when().get("/v2/groups/{reviewGroupId}/reviews/received")
