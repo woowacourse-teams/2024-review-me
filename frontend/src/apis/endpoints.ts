@@ -54,11 +54,19 @@ export const REVIEW_GROUP_API_PARAMS = {
   },
 };
 
+export const OAUTH_LOGIN_API_PARAMS = {
+  resource: 'auth/github',
+  queryString: {
+    code: 'code',
+  },
+};
+
 export const REVIEW_WRITING_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_WRITING_API_PARAMS.resource}`;
 export const REVIEW_LIST_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_LIST_API_PARAMS.resource}`;
 export const DETAILED_REVIEW_API_URL = `${serverUrl}/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}`;
 export const REVIEW_GROUP_DATA_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_GROUP_DATA_API_PARAMS.resource}`;
 export const REVIEW_GROUP_API_URL = `${serverUrl}/${VERSION2}/reviews/gather`;
+export const OAUTH_API_URL = `${serverUrl}/${VERSION2}/${OAUTH_LOGIN_API_PARAMS.resource}`;
 
 const endPoint = {
   postingReview: `${serverUrl}/${VERSION2}/reviews`,
@@ -80,6 +88,8 @@ const endPoint = {
   gettingGroupedReviews: (sectionId: number) =>
     `${REVIEW_GROUP_API_URL}?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
   postingHighlight: `${serverUrl}/${VERSION2}/highlight`,
+  postingOAuthLogin: (gitHubAuthCode: string) =>
+    `${OAUTH_API_URL}?${OAUTH_LOGIN_API_PARAMS.queryString.code}=${gitHubAuthCode}`,
 };
 
 export default endPoint;
