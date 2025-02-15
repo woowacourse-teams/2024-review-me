@@ -11,9 +11,9 @@ const postOAuthLogin = () => {
     const gitHubAuthCode = url.searchParams.get(OAUTH_LOGIN_API_PARAMS.queryString.code);
 
     if (gitHubAuthCode) {
-      return HttpResponse.json({
+      return new HttpResponse(null, {
         status: 204,
-        headers: { 'Set-Cookie': `${MOCK_LOGIN_TOKEN_NAME}: 2024-review-me` },
+        headers: { 'Set-cookie': `${MOCK_LOGIN_TOKEN_NAME}=2024-review-me` },
       });
     }
 
