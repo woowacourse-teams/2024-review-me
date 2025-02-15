@@ -2,7 +2,7 @@ package reviewme.global.authorization;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static reviewme.fixture.MemberFixture.회원;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 import static reviewme.fixture.ReviewGroupFixture.회원_지정_리뷰_그룹;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +68,7 @@ class ReviewGroupAuthorizationAspectTest {
         @Test
         void 비회원은_자신이_만든_리뷰_그룹에_접근할_수_있다() {
             // given
-            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
             sessionManager.saveReviewRequestCode(session, reviewGroup.getReviewRequestCode());
 
             // when & then
@@ -100,7 +100,7 @@ class ReviewGroupAuthorizationAspectTest {
         @Test
         void 세션에_저장된_정보가_없으면_Unauthorized_예외가_발생한다() {
             // given
-            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewGroupMethod(reviewGroup.getId()))
@@ -126,10 +126,10 @@ class ReviewGroupAuthorizationAspectTest {
     @Test
     void 리뷰_요청_코드가_다른_리뷰_그룹에_접근하면_Unauthorized_예외가_발생한다() {
         // given
-        ReviewGroup other = reviewGroupRepository.save(리뷰_그룹("3333", "4444"));
+        ReviewGroup other = reviewGroupRepository.save(비회원_리뷰_그룹("3333", "4444"));
         sessionManager.saveReviewRequestCode(session, other.getReviewRequestCode());
 
-        ReviewGroup group = reviewGroupRepository.save(리뷰_그룹("1111", "2222"));
+        ReviewGroup group = reviewGroupRepository.save(비회원_리뷰_그룹("1111", "2222"));
 
         // when & then
         assertThatCode(() -> aopTestClass.testReviewGroupMethod(group.getId()))

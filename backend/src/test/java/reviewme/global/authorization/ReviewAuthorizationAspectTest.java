@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static reviewme.fixture.MemberFixture.회원;
 import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
 import static reviewme.fixture.ReviewFixture.회원_작성_리뷰;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 import static reviewme.fixture.ReviewGroupFixture.회원_지정_리뷰_그룹;
 
 import java.util.List;
@@ -92,7 +92,7 @@ class ReviewAuthorizationAspectTest {
         @Test
         void 비회원은_자신이_만든_리뷰_그룹에_작성된_리뷰에_접근할_수_있다() {
             // given
-            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
             Review review = reviewRepository.save(비회원_작성_리뷰(1L, 1L, List.of()));
             sessionManager.saveReviewRequestCode(session, reviewGroup.getReviewRequestCode());
 
@@ -173,10 +173,10 @@ class ReviewAuthorizationAspectTest {
         @Test
         void 리뷰_요청_코드가_다른_리뷰에_접근하면_Unauthorized_예외가_발생한다() {
             // given
-            ReviewGroup othersReviewGroup = reviewGroupRepository.save(리뷰_그룹("abcd", "efgh"));
+            ReviewGroup othersReviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹("abcd", "efgh"));
             Review review = reviewRepository.save(비회원_작성_리뷰(1L, othersReviewGroup.getId(), List.of()));
 
-            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹("1234", "5678"));
+            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹("1234", "5678"));
             sessionManager.saveReviewRequestCode(session, reviewGroup.getReviewRequestCode());
 
             // when & then
@@ -187,7 +187,7 @@ class ReviewAuthorizationAspectTest {
         @Test
         void 일치하는_리뷰가_없는_리뷰_요청_코드로_접근하면_NotFound_예외가_발생한다() {
             // given
-            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
             Review review = reviewRepository.save(비회원_작성_리뷰(1L, reviewGroup.getId(), List.of()));
 
             sessionManager.saveReviewRequestCode(session, "invalid");
