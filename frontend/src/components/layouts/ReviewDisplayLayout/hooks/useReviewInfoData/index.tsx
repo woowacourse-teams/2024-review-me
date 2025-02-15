@@ -2,11 +2,12 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { getReviewSummaryInfoDataApi } from '@/apis/review';
 import { REVIEW_QUERY_KEY } from '@/constants';
-import { useReviewRequestCodeParam } from '@/hooks';
 import { ReviewInfoData } from '@/types';
 
-const useReviewInfoData = () => {
-  const { reviewRequestCode } = useReviewRequestCodeParam();
+interface UseReviewInfoDataProps {
+  reviewRequestCode: string;
+}
+const useReviewInfoData = ({ reviewRequestCode }: UseReviewInfoDataProps) => {
   const fetchReviewInfoData = async () => {
     return await getReviewSummaryInfoDataApi(reviewRequestCode);
   };

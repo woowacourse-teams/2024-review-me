@@ -6,6 +6,7 @@ import { useReviewRequestCodeParam } from '@/hooks';
 import { EditorAnswerMap } from '@/types';
 
 export interface UseMutateHighlightProps {
+  reviewRequestCode: string;
   questionId: number;
   updateEditorAnswerMap: (editorAnswerMap: EditorAnswerMap) => void;
   resetHighlightMenu: () => void;
@@ -13,12 +14,12 @@ export interface UseMutateHighlightProps {
 }
 
 const useMutateHighlight = ({
+  reviewRequestCode,
   questionId,
   handleErrorModal,
   updateEditorAnswerMap,
   resetHighlightMenu,
 }: UseMutateHighlightProps) => {
-  const { reviewRequestCode } = useReviewRequestCodeParam();
   const queryClient = useQueryClient();
   /**
    * 형광펜 API 성공 후, 현재 질문에 대한 쿼리 캐시 무효화해서, 변경된 형광펜 데이터 불러오도록 함
