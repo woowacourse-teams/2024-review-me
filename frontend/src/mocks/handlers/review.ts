@@ -4,7 +4,6 @@ import endPoint, {
   DETAILED_REVIEW_API_PARAMS,
   DETAILED_REVIEW_API_URL,
   makeReviewGroupBasicApiUrl,
-  makeReviewSummaryInfoBasicUrl,
   REVIEW_GROUP_API_PARAMS,
   REVIEW_WRITING_API_PARAMS,
   REVIEW_WRITING_API_URL,
@@ -28,9 +27,9 @@ export const PAGE = {
   firstPageStartIndex: 0,
 };
 
-const getReviewInfoData = () => {
-  const noMemberUrl = makeReviewSummaryInfoBasicUrl(VALID_REVIEW_REQUEST_CODE.nonMember);
-  const memberUrl = makeReviewSummaryInfoBasicUrl(VALID_REVIEW_REQUEST_CODE.member);
+const getReviewSummaryInfoData = () => {
+  const noMemberUrl = endPoint.gettingReviewSummaryInfoData(VALID_REVIEW_REQUEST_CODE.nonMember);
+  const memberUrl = endPoint.gettingReviewSummaryInfoData(VALID_REVIEW_REQUEST_CODE.member);
   const targetUrl = new RegExp(`^(${noMemberUrl}|${memberUrl})`);
 
   return http.get(targetUrl, ({ cookies }) => {
@@ -130,9 +129,9 @@ const getSectionList = () =>
   });
 
 const getGroupedReviews = () => {
-  const targetUrl = new RegExp(
-    `^${makeReviewGroupBasicApiUrl(VALID_REVIEW_REQUEST_CODE.nonMember)}|^${makeReviewGroupBasicApiUrl(VALID_REVIEW_REQUEST_CODE.member)}`,
-  );
+  const noMemberUrl = makeReviewGroupBasicApiUrl(VALID_REVIEW_REQUEST_CODE.nonMember);
+  const memberUrl = makeReviewGroupBasicApiUrl(VALID_REVIEW_REQUEST_CODE.member);
+  const targetUrl = new RegExp(`^${noMemberUrl}|^${memberUrl}`);
 
   return http.get(targetUrl, ({ request, cookies }) => {
     const url = new URL(request.url);
@@ -151,7 +150,7 @@ const reviewHandler = [
   getDataToWriteReview(),
   getSectionList(),
   getGroupedReviews(),
-  getReviewInfoData(),
+  getReviewSummaryInfoData(),
   postReview(),
 ];
 
