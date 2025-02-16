@@ -35,7 +35,6 @@ export const REVIEW_WRITING_API_PARAMS = {
 };
 
 export const REVIEW_GROUP_DATA_API_PARAMS = {
-  resource: 'groups',
   queryString: {
     reviewRequestCode: 'reviewRequestCode',
   },
@@ -48,11 +47,8 @@ export const REVIEW_GROUP_API_PARAMS = {
 };
 
 export const REVIEW_WRITING_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_WRITING_API_PARAMS.resource}`;
-
 export const DETAILED_REVIEW_API_URL = `${serverUrl}/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}`;
-//NOTE: reviewGroupId가 어느 정도 정해지면 그 때  REVIEW_GROUP_DATA_API_URL과 REVIEW_GROUPS_BASIC_API_URL 이 부분 수정
-export const REVIEW_GROUP_DATA_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_GROUP_DATA_API_PARAMS.resource}`;
-const REVIEW_GROUPS_BASIC_API_URL = `${serverUrl}/${VERSION2}/groups`;
+export const REVIEW_GROUPS_BASIC_API_URL = `${serverUrl}/${VERSION2}/groups`;
 
 // NOTE: 추후에 reviewRequestCode가 아닌 reviewGroupId로 요청하는 방식으로 변경될 예정
 export const makeReviewGroupBasicApiUrl = (reviewRequestCode: string) =>
@@ -83,7 +79,7 @@ const endPoint = {
   postingDataForReviewRequestCode: REVIEW_GROUPS_BASIC_API_URL,
   checkingReviewRequestPassword: `${serverUrl}/${VERSION2}/auth/review-group`,
   gettingReviewGroupData: (reviewRequestCode: string) =>
-    `${REVIEW_GROUP_DATA_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
+    `${REVIEW_GROUPS_BASIC_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingSectionList: `${serverUrl}/${VERSION2}/sections`,
   gettingGroupedReviews: (reviewRequestCode: string, sectionId: number) =>
     `${makeReviewGroupBasicApiUrl(reviewRequestCode)}?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
