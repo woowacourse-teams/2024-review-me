@@ -11,8 +11,8 @@ import reviewme.review.service.dto.response.list.ReceivedReviewPageElementRespon
 import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.mapper.ReviewListMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.util.PageSize;
 
 @Service
@@ -24,10 +24,10 @@ public class ReviewListLookupService {
     private final ReviewGroupRepository reviewGroupRepository;
 
     @Transactional(readOnly = true)
-    public ReceivedReviewPageResponse getReceivedReviews(long reviewGroupId,
+    public ReceivedReviewPageResponse getReceivedReviews(String reviewRequestCode,
                                                          @Nullable Long lastReviewId, @Nullable Integer size) {
-        ReviewGroup reviewGroup = reviewGroupRepository.findById(reviewGroupId)
-                .orElseThrow(() -> new ReviewGroupNotFoundException(reviewGroupId));
+        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
         PageSize pageSize = new PageSize(size);
         List<ReceivedReviewPageElementResponse> reviewListResponse
                 = reviewListMapper.mapToReviewList(reviewGroup, lastReviewId, pageSize.getSize());

@@ -47,14 +47,14 @@ public class ReviewController {
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
-    @GetMapping("/v2/groups/{reviewGroupId}/reviews/received")
-    @RequireReviewGroupAccess(target = "#reviewGroupId")
+    @GetMapping("/v2/groups/{reviewRequestCode}/reviews/received")
+    @RequireReviewGroupAccess(target = "#reviewRequestCode")
     public ResponseEntity<ReceivedReviewPageResponse> findReceivedReviews(
-            @PathVariable long reviewGroupId,
+            @PathVariable String reviewRequestCode,
             @RequestParam(required = false) Long lastReviewId,
             @RequestParam(required = false) Integer size
     ) {
-        ReceivedReviewPageResponse response = reviewListLookupService.getReceivedReviews(reviewGroupId, lastReviewId, size);
+        ReceivedReviewPageResponse response = reviewListLookupService.getReceivedReviews(reviewRequestCode, lastReviewId, size);
         return ResponseEntity.ok(response);
     }
 
