@@ -1,12 +1,4 @@
-import {
-  DefaultBodyType,
-  http,
-  HttpResponse,
-  HttpResponseResolver,
-  JsonBodyType,
-  PathParams,
-  StrictRequest,
-} from 'msw';
+import { DefaultBodyType, http, HttpResponse, StrictRequest } from 'msw';
 
 import endPoint, {
   DETAILED_REVIEW_API_PARAMS,
