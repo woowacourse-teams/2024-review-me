@@ -4,10 +4,10 @@ import endPoint, { REVIEW_GROUP_DATA_API_PARAMS, REVIEW_GROUP_DATA_API_URL } fro
 import { API_ERROR_MESSAGE, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
 import { getRequestBody } from '@/utils/mockingUtils';
 
-import { REVIEW_LINKS } from '../mockData';
+import { reviewLinks } from '../mockData';
 import {
   MOCK_AUTH_TOKEN_NAME,
-  REVIEW_GROUP_DATA,
+  reviewGroupData,
   VALID_REVIEW_REQUEST_CODE,
   VALIDATED_PASSWORD,
 } from '../mockData/group';
@@ -23,14 +23,14 @@ const postDataForReviewRequestCode = () => {
 
     const newReviewLink = {
       revieweeName: '쑤쑤',
-      projectName: '리뷰미2',
+      projectName: '리뷰미',
       createdAt: '2025-05-10',
       reviewRequestCode: memberReviewRequestCode,
       reviewCount: 30,
     };
 
     // 새로 생성된 리뷰 링크를 목 데이터에 추가
-    REVIEW_LINKS.reviewGroups.push(newReviewLink);
+    reviewLinks.reviewGroups.push(newReviewLink);
 
     return HttpResponse.json(
       {
@@ -92,11 +92,11 @@ const getReviewGroupData = () => {
 
       // 비회원일 경우, revieweeId를 null로 변경
       if (reviewRequestCode === nonMemberReviewRequestCode) {
-        REVIEW_GROUP_DATA.revieweeId = null;
-        return HttpResponse.json(REVIEW_GROUP_DATA);
+        reviewGroupData.revieweeId = null;
+        return HttpResponse.json(reviewGroupData);
       }
 
-      return HttpResponse.json(REVIEW_GROUP_DATA);
+      return HttpResponse.json(reviewGroupData);
     }
 
     return HttpResponse.json({ error: '잘못된 리뷰 그룹 데이터 요청' }, { status: 404 });

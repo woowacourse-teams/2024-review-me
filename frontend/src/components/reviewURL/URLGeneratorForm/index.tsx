@@ -20,9 +20,9 @@ const TOAST_INFORM = {
 };
 interface URLGeneratorFormProps {
   isMember?: boolean;
-  handleNewReviewLink?: () => void;
+  refetchReviewLinks?: () => void;
 }
-const URLGeneratorForm = ({ isMember = false, handleNewReviewLink }: URLGeneratorFormProps) => {
+const URLGeneratorForm = ({ isMember = false, refetchReviewLinks }: URLGeneratorFormProps) => {
   const { revieweeName, projectName, password, isFormValid, resetForm, urlGeneratorStateUpdater } =
     useURLGeneratorState({ isMember });
 
@@ -49,7 +49,7 @@ const URLGeneratorForm = ({ isMember = false, handleNewReviewLink }: URLGenerato
     const completeReviewZoneURL = getCompleteReviewZoneURL(data.reviewRequestCode);
     setReviewZoneURL(completeReviewZoneURL);
 
-    handleNewReviewLink?.();
+    refetchReviewLinks?.();
 
     resetForm();
 

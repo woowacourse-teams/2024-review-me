@@ -17,7 +17,7 @@ import {
   REVIEW_QUESTION_DATA,
   REVIEW_LIST,
   MOCK_REVIEW_INFO_DATA,
-  REVIEW_LINKS,
+  reviewLinks,
 } from '../mockData';
 import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
 
@@ -120,7 +120,7 @@ const getGroupedReviews = () => {
 
 const getReviewLinks = () =>
   http.get(endPoint.gettingReviewLinks, ({ cookies }) => {
-    return authorizeWithCookie(cookies, () => HttpResponse.json(REVIEW_LINKS));
+    return authorizeWithCookie(cookies, () => HttpResponse.json(reviewLinks));
   });
 
 const reviewHandler = [

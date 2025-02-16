@@ -15,18 +15,16 @@ const ReviewLinkDashboard = () => {
   const navigate = useNavigate();
 
   // 새로운 리뷰 링크가 생성된 후, 최신 데이터를 다시 불러오기 위해 refetch() 실행
-  const handleNewReviewLink = () => {
-    refetch();
-  };
+  const refetchReviewLinks = () => refetch();
 
-  const handleReivewLinkItemClick = (reviewRequestCode: string) => {
+  const handleReviewLinkItemClick = (reviewRequestCode: string) => {
     navigate(`/${ROUTE.reviewList}/${reviewRequestCode}`);
   };
 
   return (
     <S.ReviewLinkDashboardContainer>
       <S.FormSection>
-        <URLGeneratorForm isMember={true} handleNewReviewLink={handleNewReviewLink} />
+        <URLGeneratorForm isMember={true} refetchReviewLinks={refetchReviewLinks} />
       </S.FormSection>
       <S.Separator />
       <S.LinkSection>
@@ -47,7 +45,7 @@ const ReviewLinkDashboard = () => {
                 createdAt={reviewGroup.createdAt}
                 reviewRequestCode={reviewGroup.reviewRequestCode}
                 reviewCount={reviewGroup.reviewCount}
-                handleClick={() => handleReivewLinkItemClick(reviewGroup.reviewRequestCode)}
+                handleClick={() => handleReviewLinkItemClick(reviewGroup.reviewRequestCode)}
               />
             ))
           )}
