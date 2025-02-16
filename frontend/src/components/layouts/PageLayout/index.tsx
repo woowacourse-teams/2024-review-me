@@ -22,7 +22,7 @@ const PageLayout = ({ children, isNeedBreadCrumb = true }: EssentialPropsWithChi
   const { userProfile, isUserLoggedIn } = useGetUserProfile();
 
   const breadcrumbPathList = useBreadcrumbPaths();
-  const isShowBreadCrumb = isNeedBreadCrumb && breadcrumbPathList.length > 1;
+  const isShowBreadCrumb = !isUserLoggedIn && isNeedBreadCrumb && breadcrumbPathList.length > 1;
   const isShowNavigationTab = isUserLoggedIn && pathname !== ROUTE.home && !pathname.includes(ROUTE.reviewZone);
 
   return (

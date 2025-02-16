@@ -13,7 +13,7 @@ const HomePage = () => {
 
   const renderForm = () => {
     if (isUserLoggedIn && userProfile) {
-      return <UserLoggedInForm nickname={userProfile.nickname} />;
+      return <UserLoggedInForm />;
     }
 
     return (
