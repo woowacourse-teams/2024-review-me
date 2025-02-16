@@ -25,7 +25,6 @@ import reviewme.review.service.exception.ReviewNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.security.aspect.exception.ForbiddenReviewAccessException;
-import reviewme.security.aspect.exception.ReviewGroupNotExistsBySessionReviewRequestCodeException;
 import reviewme.security.session.SessionManager;
 import reviewme.support.ServiceTest;
 
@@ -167,34 +166,17 @@ class ReviewAuthorizationAspectTest {
         }
     }
 
-    @Nested
-    class 비회원이_리뷰에_접근할_수_없으면_예외가_발생한다 {
+    @Test
+    void 비회원이_리뷰에_접근할_수_없으면_예외가_발생한다() {
+        // given
+        ReviewGroup othersReviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹("abcd", "efgh"));
+        Review review = reviewRepository.save(비회원_작성_리뷰(1L, othersReviewGroup.getId(), List.of()));
 
-        @Test
-        void 리뷰_요청_코드가_다른_리뷰에_접근하면_Unauthorized_예외가_발생한다() {
-            // given
-            ReviewGroup othersReviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹("abcd", "efgh"));
-            Review review = reviewRepository.save(비회원_작성_리뷰(1L, othersReviewGroup.getId(), List.of()));
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹("1234", "5678"));
+        sessionManager.saveReviewRequestCode(session, reviewGroup.getReviewRequestCode());
 
-            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹("1234", "5678"));
-            sessionManager.saveReviewRequestCode(session, reviewGroup.getReviewRequestCode());
-
-            // when & then
-            assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
-                    .isInstanceOf(ForbiddenReviewAccessException.class);
-        }
-
-        @Test
-        void 일치하는_리뷰가_없는_리뷰_요청_코드로_접근하면_NotFound_예외가_발생한다() {
-            // given
-            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
-            Review review = reviewRepository.save(비회원_작성_리뷰(1L, reviewGroup.getId(), List.of()));
-
-            sessionManager.saveReviewRequestCode(session, "invalid");
-
-            // when & then
-            assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
-                    .isInstanceOf(ReviewGroupNotExistsBySessionReviewRequestCodeException.class);
-        }
+        // when & then
+        assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
+                .isInstanceOf(ForbiddenReviewAccessException.class);
     }
 }
