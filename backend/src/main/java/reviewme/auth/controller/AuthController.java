@@ -1,9 +1,12 @@
 package reviewme.auth.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.auth.domain.GitHubMember;
 import reviewme.auth.service.AuthService;
-import reviewme.security.session.SessionManager;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
+import reviewme.security.session.SessionManager;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,15 +40,30 @@ public class AuthController {
             @Valid @RequestBody CheckValidAccessRequest request,
             HttpSession session
     ) {
-        String reviewRequestCode  = authService.authWithReviewGroup(request);
+        String reviewRequestCode = authService.authWithReviewGroup(request);
         sessionManager.saveReviewRequestCode(session, reviewRequestCode);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/v2/auth/logout")
     public ResponseEntity<Void> logout(
-            HttpServletRequest httpRequest
+            HttpServletRequest httpRequest,
+            HttpServletResponse response
     ) {
-        return ResponseEntity.noContent().build();
+        HttpSession session = httpRequest.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        ResponseCookie cookie = ResponseCookie.from("JSESSIONID", "")
+                .path("/")
+                .maxAge(0)
+                .secure(true)
+                .httpOnly(true)
+                .build();
+
+        return ResponseEntity.noContent()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .build();
     }
 }
