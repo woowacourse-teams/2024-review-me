@@ -14,12 +14,12 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import reviewme.auth.domain.GitHubMember;
-import reviewme.security.aspect.exception.ForbiddenReviewGroupAccessException;
 import reviewme.member.domain.Member;
 import reviewme.member.repository.MemberRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.security.aspect.exception.ForbiddenReviewGroupAccessException;
 import reviewme.security.session.SessionManager;
 import reviewme.support.ServiceTest;
 
@@ -61,7 +61,7 @@ class ReviewGroupAuthorizationAspectTest {
             sessionManager.saveGitHubMember(session, gitHubMember);
 
             // when & then
-            assertThatCode(() -> aopTestClass.testReviewGroupMethod(reviewGroup.getId()))
+            assertThatCode(() -> aopTestClass.testReviewGroupMethod(reviewGroup.getReviewRequestCode()))
                     .doesNotThrowAnyException();
         }
 
@@ -72,7 +72,7 @@ class ReviewGroupAuthorizationAspectTest {
             sessionManager.saveReviewRequestCode(session, reviewGroup.getReviewRequestCode());
 
             // when & then
-            assertThatCode(() -> aopTestClass.testReviewGroupMethod(reviewGroup.getId()))
+            assertThatCode(() -> aopTestClass.testReviewGroupMethod(reviewGroup.getReviewRequestCode()))
                     .doesNotThrowAnyException();
         }
     }
@@ -80,8 +80,8 @@ class ReviewGroupAuthorizationAspectTest {
     @Test
     void 존재하지_않는_리뷰_그룹에_접근하면_NotFound_예외가_발생한다() {
         // when & then
-        assertThatCode(() -> aopTestClass.testReviewGroupMethod(100L))
-                .isInstanceOf(ReviewGroupNotFoundException.class);
+        assertThatCode(() -> aopTestClass.testReviewGroupMethod("notExistsReviewRequestCode"))
+                .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
     }
 
     @Nested
@@ -93,7 +93,7 @@ class ReviewGroupAuthorizationAspectTest {
             request.setSession(null);
 
             // when & then
-            assertThatCode(() -> aopTestClass.testReviewGroupMethod(1L))
+            assertThatCode(() -> aopTestClass.testReviewGroupMethod("1234"))
                     .isInstanceOf(ForbiddenReviewGroupAccessException.class);
         }
 
@@ -103,7 +103,7 @@ class ReviewGroupAuthorizationAspectTest {
             ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
             // when & then
-            assertThatCode(() -> aopTestClass.testReviewGroupMethod(reviewGroup.getId()))
+            assertThatCode(() -> aopTestClass.testReviewGroupMethod(reviewGroup.getReviewRequestCode()))
                     .isInstanceOf(ForbiddenReviewGroupAccessException.class);
         }
     }
@@ -119,7 +119,7 @@ class ReviewGroupAuthorizationAspectTest {
         sessionManager.saveGitHubMember(session, gitHubMember);
 
         // when & then
-        assertThatCode(() -> aopTestClass.testReviewGroupMethod(membersReviewGroup.getId()))
+        assertThatCode(() -> aopTestClass.testReviewGroupMethod(membersReviewGroup.getReviewRequestCode()))
                 .isInstanceOf(ForbiddenReviewGroupAccessException.class);
     }
 
@@ -132,7 +132,7 @@ class ReviewGroupAuthorizationAspectTest {
         ReviewGroup group = reviewGroupRepository.save(비회원_리뷰_그룹("1111", "2222"));
 
         // when & then
-        assertThatCode(() -> aopTestClass.testReviewGroupMethod(group.getId()))
+        assertThatCode(() -> aopTestClass.testReviewGroupMethod(group.getReviewRequestCode()))
                 .isInstanceOf(ForbiddenReviewGroupAccessException.class);
     }
 }
