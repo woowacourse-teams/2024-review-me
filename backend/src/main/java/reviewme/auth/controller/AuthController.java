@@ -12,6 +12,7 @@ import reviewme.auth.domain.GitHubMember;
 import reviewme.auth.service.AuthService;
 import reviewme.auth.service.dto.GitHubOAuthResponse;
 import reviewme.auth.service.dto.GithubCodeRequest;
+import reviewme.auth.service.dto.GithubOAuthRequest;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.security.session.SessionManager;
 
@@ -25,6 +26,7 @@ public class AuthController {
     @PostMapping("/v2/auth/github")
     public ResponseEntity<GitHubOAuthResponse> authWithGithub(
             @RequestBody GithubCodeRequest request,
+            @RequestBody GithubOAuthRequest request,
             HttpSession session
     ) {
         GitHubMember gitHubMember = authService.authWithGithub(request);
