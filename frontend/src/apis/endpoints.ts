@@ -79,7 +79,7 @@ const endPoint = {
     }
     return `${basicUrl}?size=${size}`;
   },
-  postingDataForReviewRequestCode: `${serverUrl}/${VERSION2}/groups`,
+  postingDataForReviewRequestCode: REVIEW_GROUPS_BASIC_API_URL,
   checkingReviewRequestPassword: `${serverUrl}/${VERSION2}/auth/review-group`,
   gettingReviewGroupData: (reviewRequestCode: string) =>
     `${REVIEW_GROUP_DATA_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
