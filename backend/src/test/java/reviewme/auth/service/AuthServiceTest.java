@@ -19,7 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import reviewme.auth.infrastructure.GitHubOAuthClient;
 import reviewme.auth.infrastructure.dto.response.GitHubUserInfoResponse;
-import reviewme.auth.service.dto.GithubOAuthRequest;
+import reviewme.auth.service.dto.GitHubOAuthRequest;
 import reviewme.auth.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.member.domain.Member;
 import reviewme.member.repository.MemberRepository;
@@ -59,8 +59,8 @@ class AuthServiceTest {
         @Test
         void 가입하지_않은_회원이면_가입시킨다() {
             // when
-            GithubOAuthRequest request = new GithubOAuthRequest(authCode);
-            authService.authWithGithub(request);
+            GitHubOAuthRequest request = new GitHubOAuthRequest(authCode);
+            authService.authWithGitHub(request);
 
             // then
             verify(memberRepository, times(1)).save(
@@ -73,10 +73,10 @@ class AuthServiceTest {
             // given
             memberRepository.save(new Member(gitHubEmail));
             clearInvocations(memberRepository);
-            GithubOAuthRequest request = new GithubOAuthRequest(authCode);
+            GitHubOAuthRequest request = new GitHubOAuthRequest(authCode);
 
             // when
-            authService.authWithGithub(request);
+            authService.authWithGitHub(request);
 
             // then
             verify(memberRepository, never()).save(any());
