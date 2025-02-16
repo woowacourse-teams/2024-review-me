@@ -17,6 +17,7 @@ import {
   REVIEW_QUESTION_DATA,
   REVIEW_LIST,
   MOCK_REVIEW_INFO_DATA,
+  MOCK_AUTH_TOKEN_NAME,
 } from '../mockData';
 import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
 
@@ -29,7 +30,7 @@ export const PAGE = {
 
 const getReviewInfoData = () =>
   http.get(endPoint.gettingReviewInfoData, ({ cookies }) => {
-    return authorizeWithCookie(cookies, () => HttpResponse.json(MOCK_REVIEW_INFO_DATA));
+    return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, () => HttpResponse.json(MOCK_REVIEW_INFO_DATA));
   });
 
 const getDetailedReview = () =>
@@ -48,7 +49,7 @@ const getDetailedReview = () =>
       return HttpResponse.json({ error: '잘못된 상세리뷰 요청' }, { status: 404 });
     };
 
-    return authorizeWithCookie(cookies, handleAPI);
+    return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, handleAPI);
   });
 
 const getDataToWriteReview = () =>
@@ -92,7 +93,7 @@ const getReviewList = (lastReviewId: number | null, size: number) => {
       });
     };
 
-    return authorizeWithCookie(cookies, handleAPI);
+    return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, handleAPI);
   });
 };
 
@@ -103,7 +104,7 @@ const postReview = () =>
 
 const getSectionList = () =>
   http.get(endPoint.gettingSectionList, ({ cookies }) => {
-    return authorizeWithCookie(cookies, () => HttpResponse.json(GROUPED_SECTION_MOCK_DATA));
+    return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, () => HttpResponse.json(GROUPED_SECTION_MOCK_DATA));
   });
 
 const getGroupedReviews = () => {
@@ -113,7 +114,9 @@ const getGroupedReviews = () => {
     const { length } = GROUPED_REVIEWS_MOCK_DATA;
     const index = (Number(sectionId) + length) % length;
 
-    return authorizeWithCookie(cookies, () => HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]));
+    return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, () =>
+      HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]),
+    );
   });
 };
 
