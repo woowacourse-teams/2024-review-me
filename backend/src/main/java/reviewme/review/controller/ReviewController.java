@@ -76,14 +76,14 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/groups/{reviewGroupId}/reviews/gather")
-    @RequireReviewGroupAccess(target = "#reviewGroupId")
+    @GetMapping("/v2/groups/{reviewRequestCode}/reviews/gather")
+    @RequireReviewGroupAccess(target = "#reviewRequestCode")
     public ResponseEntity<ReviewsGatheredBySectionResponse> getReceivedReviewsBySectionId(
-            @PathVariable long reviewGroupId,
+            @PathVariable String reviewRequestCode,
             @RequestParam("sectionId") long sectionId
     ) {
         ReviewsGatheredBySectionResponse response =
-                reviewGatheredLookupService.getReceivedReviewsBySectionId(reviewGroupId, sectionId);
+                reviewGatheredLookupService.getReceivedReviewsBySectionId(reviewRequestCode, sectionId);
         return ResponseEntity.ok(response);
     }
 

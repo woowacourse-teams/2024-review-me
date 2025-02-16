@@ -7,7 +7,6 @@ import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.QuestionFixture.선택형_질문;
 import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
 import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
-import static reviewme.fixture.ReviewGroupFixture.템플릿_지정_비회원_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.List;
@@ -80,7 +79,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup.getId(), section1.getId()
+                    reviewGroup.getReviewRequestCode(), section1.getId()
             );
 
             // then
@@ -111,7 +110,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup.getId(), section1.getId()
+                    reviewGroup.getReviewRequestCode(), section1.getId()
             );
 
             // then
@@ -137,7 +136,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup.getId(), section1.getId()
+                    reviewGroup.getReviewRequestCode(), section1.getId()
             );
 
             // then
@@ -158,7 +157,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup.getId(), section1.getId()
+                    reviewGroup.getReviewRequestCode(), section1.getId()
             );
 
             // then
@@ -193,7 +192,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup.getId(), section1.getId()
+                    reviewGroup.getReviewRequestCode(), section1.getId()
             );
 
             // then
@@ -222,7 +221,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup.getId(), section1.getId()
+                    reviewGroup.getReviewRequestCode(), section1.getId()
             );
 
             // then
@@ -253,7 +252,7 @@ class ReviewGatheredLookupServiceTest {
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewGroup.getId(), section1.getId()
+                reviewGroup.getReviewRequestCode(), section1.getId()
         );
 
         // then
@@ -282,8 +281,8 @@ class ReviewGatheredLookupServiceTest {
         Section section1 = 항상_보이는_섹션(List.of(question1));
         Template template = templateRepository.save(new Template(List.of(section1)));
 
-        ReviewGroup reviewGroupBE = 템플릿_지정_비회원_리뷰_그룹(template.getId());
-        ReviewGroup reviewGroupFE = 템플릿_지정_비회원_리뷰_그룹(template.getId());
+        ReviewGroup reviewGroupBE = 비회원_리뷰_그룹("rereco1", "gacco1");
+        ReviewGroup reviewGroupFE = 비회원_리뷰_그룹("rereco2", "gacco2");
         reviewGroupRepository.saveAll(List.of(reviewGroupFE, reviewGroupBE));
 
         // given - 리뷰 답변 저장
@@ -294,7 +293,7 @@ class ReviewGatheredLookupServiceTest {
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewGroupBE.getId(), section1.getId());
+                reviewGroupBE.getReviewRequestCode(), section1.getId());
 
         // then
         assertThat(actual.reviews()).hasSize(1);
@@ -312,7 +311,7 @@ class ReviewGatheredLookupServiceTest {
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewGroup.getId(), section1.getId()
+                reviewGroup.getReviewRequestCode(), section1.getId()
         );
 
         // then
