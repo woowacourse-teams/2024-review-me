@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequireReviewGroupAccess {
 
-    String target() default "#reviewGroupId";
+    String target() default "#reviewRequestCode";
 }
