@@ -28,9 +28,9 @@ export const PAGE = {
 };
 
 const getReviewSummaryInfoData = () => {
-  const noMemberUrl = endPoint.gettingReviewSummaryInfoData(VALID_REVIEW_REQUEST_CODE.nonMember);
+  const nonMemberUrl = endPoint.gettingReviewSummaryInfoData(VALID_REVIEW_REQUEST_CODE.nonMember);
   const memberUrl = endPoint.gettingReviewSummaryInfoData(VALID_REVIEW_REQUEST_CODE.member);
-  const targetUrl = new RegExp(`^(${noMemberUrl}|${memberUrl})`);
+  const targetUrl = new RegExp(`^(${nonMemberUrl}|${memberUrl})`);
 
   return http.get(targetUrl, ({ cookies }) => {
     return authorizeWithCookie(cookies, () => HttpResponse.json(MOCK_REVIEW_INFO_DATA));
@@ -129,9 +129,9 @@ const getSectionList = () =>
   });
 
 const getGroupedReviews = () => {
-  const noMemberUrl = makeReviewGroupBasicApiUrl(VALID_REVIEW_REQUEST_CODE.nonMember);
+  const nonMemberUrl = makeReviewGroupBasicApiUrl(VALID_REVIEW_REQUEST_CODE.nonMember);
   const memberUrl = makeReviewGroupBasicApiUrl(VALID_REVIEW_REQUEST_CODE.member);
-  const targetUrl = new RegExp(`^${noMemberUrl}|^${memberUrl}`);
+  const targetUrl = new RegExp(`^${nonMemberUrl}|^${memberUrl}`);
 
   return http.get(targetUrl, ({ request, cookies }) => {
     const url = new URL(request.url);
