@@ -13,15 +13,27 @@ import {
 
 // NOTE: reviewRequestCode 생성 정상 응답
 const postDataForReviewRequestCode = () => {
-  return http.post(endPoint.postingDataForReviewRequestCode, async ({ request }) => {
+  return http.post(endPoint.postingDataForReviewRequestCode, async ({ request, cookies }) => {
     // request body의 존재 검증
     const bodyResult = await getRequestBody(request);
 
     if (bodyResult instanceof Error) return HttpResponse.json({ error: bodyResult.message }, { status: 400 });
-    const { nonMember: nonMemberReviewRequestCode, member: memberReviewRequestCode } = VALID_REVIEW_REQUEST_CODE;
+
+    const isNonMember = 'groupAccessCode' in bodyResult;
+    const reviewRequestCode = isNonMember ? VALID_REVIEW_REQUEST_CODE.nonMember : VALID_REVIEW_REQUEST_CODE.member;
+
+    // 회원용일 경우, credentials과 쿠키 검증
+    if (!isNonMember) {
+      const isError = request.credentials !== 'include' || !cookies[MOCK_AUTH_TOKEN_NAME];
+
+      if (isError) {
+        return HttpResponse.json({ error: '인증 관련 쿠키를 가져올 수 없습니다' }, { status: 401 });
+      }
+    }
+
     return HttpResponse.json(
       {
-        reviewRequestCode: 'groupAccessCode' in bodyResult ? nonMemberReviewRequestCode : memberReviewRequestCode,
+        reviewRequestCode,
       },
       { status: 200 },
     );
