@@ -50,6 +50,7 @@ export const REVIEW_GROUP_API_PARAMS = {
 export const REVIEW_WRITING_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_WRITING_API_PARAMS.resource}`;
 
 export const DETAILED_REVIEW_API_URL = `${serverUrl}/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}`;
+//NOTE: reviewGroupId가 어느 정도 정해지면 그 때  REVIEW_GROUP_DATA_API_URL과 REVIEW_GROUPS_BASIC_API_URL 이 부분 수정
 export const REVIEW_GROUP_DATA_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_GROUP_DATA_API_PARAMS.resource}`;
 const REVIEW_GROUPS_BASIC_API_URL = `${serverUrl}/${VERSION2}/groups`;
 
