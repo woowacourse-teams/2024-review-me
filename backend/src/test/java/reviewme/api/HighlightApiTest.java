@@ -66,7 +66,7 @@ class HighlightApiTest extends ApiTest {
                 .cookie("JSESSIONID", "AVEBNKLCL13TNVZ")
                 .pathParam("reviewRequestCode", "rereco")
                 .body(request)
-                .when().post("/v2/groups/{reviewRequestCode}/highlight")
+                .when().post("/v2/groups/{reviewRequestCode}/highlights")
                 .then().log().all()
                 .apply(handler)
                 .status(HttpStatus.OK);
