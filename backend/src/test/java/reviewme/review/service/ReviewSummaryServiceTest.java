@@ -43,8 +43,8 @@ class ReviewSummaryServiceTest {
         Section section = 항상_보이는_섹션(List.of(question));
         Template template = templateRepository.save(new Template(List.of(section)));
 
-        ReviewGroup reviewGroup1 = reviewGroupRepository.save(비회원_리뷰_그룹());
-        ReviewGroup reviewGroup2 = reviewGroupRepository.save(비회원_리뷰_그룹());
+        ReviewGroup reviewGroup1 = reviewGroupRepository.save(비회원_리뷰_그룹("1234", "4321"));
+        ReviewGroup reviewGroup2 = reviewGroupRepository.save(비회원_리뷰_그룹("abcd", "dcba"));
 
         List<Review> reviews = List.of(
                 비회원_작성_리뷰(template.getId(), reviewGroup1.getId(), List.of()),
@@ -55,7 +55,7 @@ class ReviewSummaryServiceTest {
         reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup2.getId(), List.of()));
 
         // when
-        ReceivedReviewsSummaryResponse actual = reviewSummaryService.getReviewSummary(reviewGroup1.getId());
+        ReceivedReviewsSummaryResponse actual = reviewSummaryService.getReviewSummary(reviewGroup1.getReviewRequestCode());
 
         // then
         assertAll(
