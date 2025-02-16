@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
+import { useToastContext } from '@/components/toast/ToastProvider';
 import { ROUTE } from '@/constants';
 import { useSearchParamAndQuery } from '@/hooks';
 import { useOAuthLogin } from '@/hooks/oAuth';
@@ -13,16 +14,20 @@ const OAuthCallbackPage = () => {
   const navigate = useNavigate();
   const mutation = useOAuthLogin();
 
+  const { showToast } = useToastContext();
+
   useEffect(() => {
     if (gitHubAuthCode) {
       mutation.mutate(
         { gitHubAuthCode },
         {
           onSuccess: () => {
-            return navigate(`/${ROUTE.reviewLinks}`, { replace: true });
+            navigate(`/${ROUTE.reviewLinks}`, { replace: true });
+            return showToast({ type: 'success', message: '환영합니다! 첫 리뷰를 받아보세요!' });
           },
           onError: () => {
-            return navigate(ROUTE.home, { replace: true });
+            navigate(ROUTE.home, { replace: true });
+            return showToast({ type: 'error', message: '로그인에 실패했어요. 다시 시도해주세요!' });
           },
         },
       );

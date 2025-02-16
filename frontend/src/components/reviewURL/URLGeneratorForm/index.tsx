@@ -1,7 +1,7 @@
 import { useId, useState } from 'react';
 
-import AlertIcon from '@/assets/alertTriangle.svg';
-import { ErrorSuspenseContainer, ReviewZoneURLModal, Toast } from '@/components';
+import { ErrorSuspenseContainer, ReviewZoneURLModal } from '@/components';
+import { useToastContext } from '@/components/toast/ToastProvider';
 import { ROUTE } from '@/constants/route';
 import { useModals } from '@/hooks';
 
@@ -13,11 +13,6 @@ const MODAL_KEYS = {
   confirm: 'CONFIRM',
 };
 
-const TOAST_INFORM = {
-  icon: { src: AlertIcon, alt: '' },
-  message: '리뷰 링크 생성에 실패했어요. 다시 시도해 보세요.',
-  duration: 1000 * 3,
-};
 interface URLGeneratorFormProps {
   isMember?: boolean;
 }
@@ -27,10 +22,9 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
 
   const [reviewZoneURL, setReviewZoneURL] = useState('');
 
-  const [isOpenToast, setIsOpenToast] = useState(false);
-  const { isOpen, openModal, closeModal } = useModals();
+  const { showToast, hideToast } = useToastContext();
 
-  const handleOpenToast = (isOpen: boolean) => setIsOpenToast(isOpen);
+  const { isOpen, openModal, closeModal } = useModals();
 
   const useInputId = useId();
 
@@ -50,14 +44,12 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
 
     resetForm();
 
-    handleOpenToast(false);
+    hideToast();
     openModal(MODAL_KEYS.confirm);
   };
 
   const handleAPIError = (error: Error) => {
-    console.error(error.message);
-
-    handleOpenToast(true);
+    showToast({ type: 'confirm', message: '리뷰 링크 생성에 실패했어요. 다시 시도해 보세요.' });
     closeModal(MODAL_KEYS.confirm);
   };
 
@@ -91,15 +83,6 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
           />
         </ErrorSuspenseContainer>
       </S.URLGeneratorForm>
-      {isOpenToast && (
-        <Toast
-          icon={TOAST_INFORM.icon}
-          message={TOAST_INFORM.message}
-          handleOpenModal={handleOpenToast}
-          duration={TOAST_INFORM.duration}
-          position="bottom"
-        />
-      )}
       {isOpen(MODAL_KEYS.confirm) && (
         <ReviewZoneURLModal reviewZoneURL={reviewZoneURL} closeModal={() => closeModal(MODAL_KEYS.confirm)} />
       )}

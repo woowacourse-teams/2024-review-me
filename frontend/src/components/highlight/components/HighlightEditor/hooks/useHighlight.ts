@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { useToastContext } from '@/components/toast/ToastProvider';
 import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_EVENT_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
 import { EditorAnswerMap, EditorLine, HighlightResponseData, ReviewAnswerResponseData } from '@/types';
 import {
@@ -19,8 +20,6 @@ interface UseHighlightProps extends UseLongPressHighlightPositionReturn {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
   isEditable: boolean;
-  handleErrorModal: (isError: boolean) => void;
-  handleModalMessage: (message: string) => void;
   resetHighlightMenuPosition: () => void;
 }
 interface RemovalTarget {
@@ -67,13 +66,13 @@ const useHighlight = ({
   isEditable,
   updateHighlightMenuPositionByLongPress,
   resetHighlightMenuPosition,
-  handleErrorModal,
-  handleModalMessage,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
 
   // span 클릭 시, 제공되는 형광펜 삭제 기능 타겟
   const [longPressRemovalTarget, setLongPressRemovalTarget] = useState<RemovalTarget | null>(null);
+
+  const { showToast } = useToastContext();
 
   const resetLongPressRemovalTarget = () => setLongPressRemovalTarget(null);
 
@@ -91,7 +90,6 @@ const useHighlight = ({
     questionId,
     updateEditorAnswerMap,
     resetHighlightMenu,
-    handleErrorModal,
   });
 
   const addHighlightByDrag = (selectionInfo: SelectionInfo) => {
@@ -105,7 +103,7 @@ const useHighlight = ({
 
     mutateHighlight(newEditorAnswerMap, {
       onError: () => {
-        handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.addFailure);
+        showToast({ type: 'error', message: HIGHLIGHT_ERROR_MESSAGES.addFailure });
       },
     });
   };
@@ -259,7 +257,7 @@ const useHighlight = ({
 
     mutateHighlight(newEditorAnswerMap, {
       onError: () => {
-        handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.deleteFailure);
+        showToast({ type: 'error', message: HIGHLIGHT_ERROR_MESSAGES.deleteFailure });
       },
     });
   };
@@ -466,7 +464,7 @@ const useHighlight = ({
 
     mutateHighlight(newEditorAnswerMap, {
       onError: () => {
-        handleModalMessage(HIGHLIGHT_ERROR_MESSAGES.deleteFailure);
+        showToast({ type: 'error', message: HIGHLIGHT_ERROR_MESSAGES.deleteFailure });
       },
     });
   };
