@@ -3,7 +3,7 @@ import { DefaultBodyType, http, HttpResponse, StrictRequest } from 'msw';
 import endPoint, {
   DETAILED_REVIEW_API_PARAMS,
   DETAILED_REVIEW_API_URL,
-  makeReviewGroupBasicApiUrl,
+  makeGrouppedReviewsBasicUrl,
   REVIEW_GROUP_API_PARAMS,
   REVIEW_WRITING_API_PARAMS,
   REVIEW_WRITING_API_URL,
@@ -129,8 +129,8 @@ const getSectionList = () =>
   });
 
 const getGroupedReviews = () => {
-  const nonMemberUrl = makeReviewGroupBasicApiUrl(VALID_REVIEW_REQUEST_CODE.nonMember);
-  const memberUrl = makeReviewGroupBasicApiUrl(VALID_REVIEW_REQUEST_CODE.member);
+  const nonMemberUrl = makeGrouppedReviewsBasicUrl(VALID_REVIEW_REQUEST_CODE.nonMember);
+  const memberUrl = makeGrouppedReviewsBasicUrl(VALID_REVIEW_REQUEST_CODE.member);
   const targetUrl = new RegExp(`^${nonMemberUrl}|^${memberUrl}`);
 
   return http.get(targetUrl, ({ request, cookies }) => {
