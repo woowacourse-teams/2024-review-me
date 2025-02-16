@@ -31,6 +31,19 @@ const getUserProfile = () =>
     return authorizeWithCookie(cookies, memberOnly, handleAPI);
   });
 
-const oAuthHandler = [postOAuthLogin(), getUserProfile()];
+const postOAuthLogout = () =>
+  http.post(endPoint.postingOAuthLogout, ({ cookies }) => {
+    const handleAPI = () => {
+      // 로그아웃 성공 시 쿠키 삭제
+      return HttpResponse.json(null, {
+        status: 204,
+        headers: { 'Set-cookie': `${MOCK_LOGIN_TOKEN_NAME}=;` },
+      });
+    };
+
+    return authorizeWithCookie(cookies, memberOnly, handleAPI);
+  });
+
+const oAuthHandler = [postOAuthLogin(), getUserProfile(), postOAuthLogout()];
 
 export default oAuthHandler;

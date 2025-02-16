@@ -40,3 +40,19 @@ export const getUserProfileApi = async () => {
     return null;
   }
 };
+
+export const postOAuthLogoutApi = async () => {
+  const response = await fetch(endPoint.postingOAuthLogout, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error(createApiErrorMessage(response.status));
+  }
+
+  return {};
+};

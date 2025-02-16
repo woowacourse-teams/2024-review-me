@@ -95,6 +95,7 @@ const endPoint = {
   gettingUserProfile: `${serverUrl}/${VERSION2}/members/profile`,
   postingOAuthLogin: (gitHubAuthCode: string) =>
     `${OAUTH_API_URL}?${OAUTH_LOGIN_API_PARAMS.queryString.code}=${gitHubAuthCode}`,
+  postingOAuthLogout: `${serverUrl}/${VERSION2}/auth/logout`,
 };
 
 export default endPoint;

@@ -6,6 +6,7 @@ import MenuIcon from '@/assets/menu.svg';
 import OpenedBookIcon from '@/assets/openedBook.svg';
 import UserIcon from '@/assets/user.svg';
 import { ROUTE } from '@/constants';
+import { useOAuthLogout } from '@/hooks/oAuth';
 import { ProfileTabElement, SocialType } from '@/types/profile';
 
 interface UseProfileTabElementsProps {
@@ -15,6 +16,7 @@ interface UseProfileTabElementsProps {
 
 const useProfileTabElements = ({ profileId, socialType }: UseProfileTabElementsProps) => {
   const navigate = useNavigate();
+  const mutation = useOAuthLogout();
 
   const handleReviewLinkControl = () => {
     navigate(ROUTE.reviewLinks);
@@ -25,8 +27,7 @@ const useProfileTabElements = ({ profileId, socialType }: UseProfileTabElementsP
   };
 
   const handleLogout = () => {
-    // 로그아웃 로직
-    console.log('로그아웃 클릭');
+    return mutation.mutate();
   };
 
   const profileTabElements: ProfileTabElement[] = [
