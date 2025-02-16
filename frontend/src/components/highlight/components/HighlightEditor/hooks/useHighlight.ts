@@ -17,6 +17,7 @@ import { UseLongPressHighlightPositionReturn } from './useLongPressHighlightPosi
 import useMutateHighlight from './useMutateHighlight';
 
 interface UseHighlightProps extends UseLongPressHighlightPositionReturn {
+  reviewRequestCode: string;
   questionId: number;
   answerList: ReviewAnswerResponseData[];
   isEditable: boolean;
@@ -61,6 +62,7 @@ const makeInitialEditorAnswerMap = (answerList: ReviewAnswerResponseData[]) => {
 };
 
 const useHighlight = ({
+  reviewRequestCode,
   questionId,
   answerList,
   isEditable,
@@ -87,6 +89,7 @@ const useHighlight = ({
   };
 
   const { mutate: mutateHighlight } = useMutateHighlight({
+    reviewRequestCode,
     questionId,
     updateEditorAnswerMap,
     resetHighlightMenu,

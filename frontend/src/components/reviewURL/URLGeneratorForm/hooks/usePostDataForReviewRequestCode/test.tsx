@@ -3,6 +3,7 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import { VALID_REVIEW_REQUEST_CODE } from '@/mocks/mockData/group';
 import QueryClientWrapper from '@/queryTestSetup/QueryClientWrapper';
 import { DataForReviewRequestCode } from '@/types';
+import { testWithAuthCookie } from '@/utils';
 
 import usePostDataForReviewRequestCode from '.';
 
@@ -51,6 +52,8 @@ describe('usePostDataForReviewRequestCode', () => {
       projectName: 'review-me',
     };
 
-    await testReviewRequestCode(dataForReviewRequestCode, VALID_REVIEW_REQUEST_CODE.member);
+    await testWithAuthCookie(
+      async () => await testReviewRequestCode(dataForReviewRequestCode, VALID_REVIEW_REQUEST_CODE.member),
+    );
   });
 });

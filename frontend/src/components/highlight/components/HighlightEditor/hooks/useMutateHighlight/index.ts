@@ -1,16 +1,22 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { postHighlight } from '@/apis/highlight';
+import { postHighlight, PostHighlightParams } from '@/apis/highlight';
 import { LOCAL_STORAGE_KEY, REVIEW_QUERY_KEY, SESSION_STORAGE_KEY } from '@/constants';
 import { EditorAnswerMap } from '@/types';
 
 export interface UseMutateHighlightProps {
+  reviewRequestCode: string;
   questionId: number;
   updateEditorAnswerMap: (editorAnswerMap: EditorAnswerMap) => void;
   resetHighlightMenu: () => void;
 }
 
-const useMutateHighlight = ({ questionId, updateEditorAnswerMap, resetHighlightMenu }: UseMutateHighlightProps) => {
+const useMutateHighlight = ({
+  reviewRequestCode,
+  questionId,
+  updateEditorAnswerMap,
+  resetHighlightMenu,
+}: UseMutateHighlightProps) => {
   const queryClient = useQueryClient();
 
   /**
@@ -28,7 +34,14 @@ const useMutateHighlight = ({ questionId, updateEditorAnswerMap, resetHighlightM
   };
 
   const mutation = useMutation({
-    mutationFn: (newEditorAnswerMap: EditorAnswerMap) => postHighlight(newEditorAnswerMap, questionId),
+    mutationFn: (newEditorAnswerMap: EditorAnswerMap) => {
+      const params: PostHighlightParams = {
+        dataParams: { editorAnswerMap: newEditorAnswerMap, questionId },
+        reviewRequestCode,
+      };
+
+      return postHighlight(params);
+    },
     onMutate: () => {
       if (mutation.isPending) return;
     },

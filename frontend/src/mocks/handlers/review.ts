@@ -1,24 +1,24 @@
-import { http, HttpResponse } from 'msw';
+import { DefaultBodyType, http, HttpResponse, StrictRequest } from 'msw';
 
 import endPoint, {
   DETAILED_REVIEW_API_PARAMS,
   DETAILED_REVIEW_API_URL,
   REVIEW_GROUP_API_PARAMS,
-  REVIEW_GROUP_API_URL,
   REVIEW_WRITING_API_PARAMS,
   REVIEW_WRITING_API_URL,
   VERSION2,
 } from '@/apis/endpoints';
-
 import {
+  VALID_REVIEW_REQUEST_CODE,
   DETAILED_REVIEW_MOCK_DATA,
   DETAILED_PAGE_MOCK_API_SETTING_VALUES,
-  REVIEW_REQUEST_CODE,
   REVIEW_QUESTION_DATA,
   REVIEW_LIST,
   MOCK_REVIEW_INFO_DATA,
   MOCK_AUTH_TOKEN_NAME,
-} from '../mockData';
+  MOCK_LOGIN_TOKEN_NAME,
+} from '@/mocks/mockData';
+
 import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
 
 import { authorizeWithCookie } from './cookies';
@@ -28,10 +28,15 @@ export const PAGE = {
   firstPageStartIndex: 0,
 };
 
-const getReviewInfoData = () =>
-  http.get(endPoint.gettingReviewInfoData, ({ cookies }) => {
+const getReviewSummaryInfoData = () => {
+  const nonMemberUrl = endPoint.gettingReviewSummaryInfoData(VALID_REVIEW_REQUEST_CODE.nonMember);
+  const memberUrl = endPoint.gettingReviewSummaryInfoData(VALID_REVIEW_REQUEST_CODE.member);
+  const targetUrl = new RegExp(`^(${nonMemberUrl}|${memberUrl})`);
+
+  return http.get(targetUrl, ({ cookies }) => {
     return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, () => HttpResponse.json(MOCK_REVIEW_INFO_DATA));
   });
+};
 
 const getDetailedReview = () =>
   http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), ({ request, cookies }) => {
@@ -58,42 +63,59 @@ const getDataToWriteReview = () =>
     const url = new URL(request.url);
     const urlRequestCode = url.searchParams.get(REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode);
 
-    if (REVIEW_REQUEST_CODE === urlRequestCode) {
+    if (VALID_REVIEW_REQUEST_CODE.nonMember === urlRequestCode) {
       return HttpResponse.json(REVIEW_QUESTION_DATA);
     }
     return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
   });
 
 // TODO: 추후 getReviewList API에서 리뷰 정보(이름, 개수...)를 내려주지 않는 경우 핸들러도 수정 필요
-const getReviewList = (lastReviewId: number | null, size: number) => {
-  return http.get(endPoint.gettingReviewList(lastReviewId, size), ({ request, cookies }) => {
-    const handleAPI = () => {
-      const url = new URL(request.url);
+const getMemberReceivedReviewList = (lastReviewId: number | null, size: number) => {
+  const memberUrl = endPoint.gettingReceivedReviewList({
+    lastReviewId,
+    size,
+    reviewRequestCode: VALID_REVIEW_REQUEST_CODE.member,
+  });
 
-      const lastReviewIdParam = url.searchParams.get('lastReviewId');
-      const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
+  return http.get(memberUrl, ({ request, cookies }) => {
+    return authorizeWithCookie(cookies, MOCK_LOGIN_TOKEN_NAME, () => handleReviewListAPI(request, size));
+  });
+};
 
-      const isFirstPage = lastReviewId === 0;
-      const startIndex = isFirstPage
-        ? PAGE.firstPageStartIndex
-        : REVIEW_LIST.reviews.findIndex((review) => review.reviewId === lastReviewId) + 1;
+const getNonMemberReceivedReviewList = (lastReviewId: number | null, size: number) => {
+  const nonMemberUrl = endPoint.gettingReceivedReviewList({
+    lastReviewId,
+    size,
+    reviewRequestCode: VALID_REVIEW_REQUEST_CODE.nonMember,
+  });
 
-      const endIndex = startIndex + size;
+  return http.get(nonMemberUrl, ({ request, cookies }) => {
+    return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, () => handleReviewListAPI(request, size));
+  });
+};
 
-      const paginatedReviews = REVIEW_LIST.reviews.slice(startIndex, endIndex);
+// 공통 API 처리 함수
+const handleReviewListAPI = (request: StrictRequest<DefaultBodyType>, size: number) => {
+  const url = new URL(request.url);
 
-      const isLastPage = endIndex >= REVIEW_LIST.reviews.length;
+  const lastReviewIdParam = url.searchParams.get('lastReviewId');
+  const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
 
-      return HttpResponse.json({
-        revieweeName: REVIEW_LIST.revieweeName,
-        projectName: REVIEW_LIST.projectName,
-        lastReviewId: paginatedReviews.length > 0 ? paginatedReviews[paginatedReviews.length - 1].reviewId : 0,
-        isLastPage: isLastPage,
-        reviews: paginatedReviews,
-      });
-    };
+  const isFirstPage = lastReviewId === 0;
+  const startIndex = isFirstPage
+    ? PAGE.firstPageStartIndex
+    : REVIEW_LIST.reviews.findIndex((review) => review.reviewId === lastReviewId) + 1;
 
-    return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, handleAPI);
+  const endIndex = startIndex + size;
+  const paginatedReviews = REVIEW_LIST.reviews.slice(startIndex, endIndex);
+  const isLastPage = endIndex >= REVIEW_LIST.reviews.length;
+
+  return HttpResponse.json({
+    revieweeName: REVIEW_LIST.revieweeName,
+    projectName: REVIEW_LIST.projectName,
+    lastReviewId: paginatedReviews.length > 0 ? paginatedReviews[paginatedReviews.length - 1].reviewId : 0,
+    isLastPage: isLastPage,
+    reviews: paginatedReviews,
   });
 };
 
@@ -107,26 +129,38 @@ const getSectionList = () =>
     return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, () => HttpResponse.json(GROUPED_SECTION_MOCK_DATA));
   });
 
-const getGroupedReviews = () => {
-  return http.get(new RegExp(`^${REVIEW_GROUP_API_URL}`), ({ request, cookies }) => {
-    const url = new URL(request.url);
-    const sectionId = url.searchParams.get(REVIEW_GROUP_API_PARAMS.queryString.sectionId);
-    const { length } = GROUPED_REVIEWS_MOCK_DATA;
-    const index = (Number(sectionId) + length) % length;
+interface HandleGroupedReviewAPIParams {
+  request: StrictRequest<DefaultBodyType>;
+  cookies: Record<string, string>;
+}
 
-    return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, () =>
-      HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]),
-    );
+const handleGroupedReviewsAPI = ({ request, cookies }: HandleGroupedReviewAPIParams) => {
+  const url = new URL(request.url);
+  const sectionId = url.searchParams.get(REVIEW_GROUP_API_PARAMS.queryString.sectionId);
+  const { length } = GROUPED_REVIEWS_MOCK_DATA;
+  const index = (Number(sectionId) + length) % length;
+
+  return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, () => HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]));
+};
+
+const getGroupedReviews = (reviewRequestCode: string) => {
+  const SECTION_ID = 1;
+  const reviewUrl = endPoint.gettingGroupedReviews(reviewRequestCode, SECTION_ID);
+
+  return http.get(reviewUrl, ({ request, cookies }) => {
+    return handleGroupedReviewsAPI({ request, cookies });
   });
 };
 
 const reviewHandler = [
   getDetailedReview(),
-  getReviewList(null, 10),
+  getNonMemberReceivedReviewList(null, 10),
+  getMemberReceivedReviewList(null, 10),
   getDataToWriteReview(),
   getSectionList(),
-  getGroupedReviews(),
-  getReviewInfoData(),
+  getGroupedReviews(VALID_REVIEW_REQUEST_CODE.member),
+  getGroupedReviews(VALID_REVIEW_REQUEST_CODE.nonMember),
+  getReviewSummaryInfoData(),
   postReview(),
 ];
 

@@ -7,7 +7,7 @@ import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
 import { REVIEW_EMPTY } from '@/constants';
 import { ROUTE } from '@/constants/route';
-import { useGetReviewList, useSearchParamAndQuery } from '@/hooks';
+import { useGetReviewList, useReviewRequestCodeParam } from '@/hooks';
 
 import { useInfiniteScroll } from '../../hooks';
 
@@ -15,13 +15,11 @@ import * as S from './styles';
 
 const ReviewListPageContents = () => {
   const navigate = useNavigate();
+  const { reviewRequestCode } = useReviewRequestCodeParam();
 
-  const { data, fetchNextPage, isLoading, isSuccess } = useGetReviewList();
+  const { data, fetchNextPage, isLoading, isSuccess } = useGetReviewList({ reviewRequestCode });
+
   const { totalReviewCount } = useContext(ReviewInfoDataContext);
-
-  const { param: reviewRequestCode } = useSearchParamAndQuery({
-    paramKey: 'reviewRequestCode',
-  });
 
   const handleReviewClick = (id: number) => {
     navigate(`/${ROUTE.detailedReview}/${reviewRequestCode}/${id}`);
