@@ -1,4 +1,4 @@
-package reviewme.global.authorization;
+package reviewme.security.aspect;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static reviewme.fixture.MemberFixture.회원;

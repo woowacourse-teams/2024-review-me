@@ -1,8 +1,6 @@
-package reviewme.global.authorization;
+package reviewme.security.aspect;
 
 import org.springframework.stereotype.Component;
-import reviewme.security.aspect.RequireReviewAccess;
-import reviewme.security.aspect.RequireReviewGroupAccess;
 
 @Component
 class AopTestClass {
