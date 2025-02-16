@@ -28,13 +28,17 @@ export const PAGE = {
   firstPageStartIndex: 0,
 };
 
+export const nonMemberOnly = [MOCK_AUTH_TOKEN_NAME];
+export const memberOnly = [MOCK_LOGIN_TOKEN_NAME];
+export const both = [MOCK_AUTH_TOKEN_NAME, MOCK_LOGIN_TOKEN_NAME];
+
 const getReviewSummaryInfoData = () => {
   const nonMemberUrl = endPoint.gettingReviewSummaryInfoData(VALID_REVIEW_REQUEST_CODE.nonMember);
   const memberUrl = endPoint.gettingReviewSummaryInfoData(VALID_REVIEW_REQUEST_CODE.member);
   const targetUrl = new RegExp(`^(${nonMemberUrl}|${memberUrl})`);
 
   return http.get(targetUrl, ({ cookies }) => {
-    return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, () => HttpResponse.json(MOCK_REVIEW_INFO_DATA));
+    return authorizeWithCookie(cookies, both, () => HttpResponse.json(MOCK_REVIEW_INFO_DATA));
   });
 };
 
@@ -54,7 +58,7 @@ const getDetailedReview = () =>
       return HttpResponse.json({ error: '잘못된 상세리뷰 요청' }, { status: 404 });
     };
 
-    return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, handleAPI);
+    return authorizeWithCookie(cookies, both, handleAPI);
   });
 
 const getDataToWriteReview = () =>
@@ -78,7 +82,7 @@ const getMemberReceivedReviewList = (lastReviewId: number | null, size: number) 
   });
 
   return http.get(memberUrl, ({ request, cookies }) => {
-    return authorizeWithCookie(cookies, MOCK_LOGIN_TOKEN_NAME, () => handleReviewListAPI(request, size));
+    return authorizeWithCookie(cookies, memberOnly, () => handleReviewListAPI(request, size));
   });
 };
 
@@ -90,7 +94,7 @@ const getNonMemberReceivedReviewList = (lastReviewId: number | null, size: numbe
   });
 
   return http.get(nonMemberUrl, ({ request, cookies }) => {
-    return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, () => handleReviewListAPI(request, size));
+    return authorizeWithCookie(cookies, nonMemberOnly, () => handleReviewListAPI(request, size));
   });
 };
 
@@ -126,7 +130,7 @@ const postReview = () =>
 
 const getSectionList = () =>
   http.get(endPoint.gettingSectionList, ({ cookies }) => {
-    return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, () => HttpResponse.json(GROUPED_SECTION_MOCK_DATA));
+    return authorizeWithCookie(cookies, both, () => HttpResponse.json(GROUPED_SECTION_MOCK_DATA));
   });
 
 interface HandleGroupedReviewAPIParams {
@@ -140,7 +144,7 @@ const handleGroupedReviewsAPI = ({ request, cookies }: HandleGroupedReviewAPIPar
   const { length } = GROUPED_REVIEWS_MOCK_DATA;
   const index = (Number(sectionId) + length) % length;
 
-  return authorizeWithCookie(cookies, MOCK_AUTH_TOKEN_NAME, () => HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]));
+  return authorizeWithCookie(cookies, both, () => HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]));
 };
 
 const getGroupedReviews = (reviewRequestCode: string) => {
@@ -162,6 +166,6 @@ const reviewHandler = [
   getGroupedReviews(VALID_REVIEW_REQUEST_CODE.nonMember),
   getReviewSummaryInfoData(),
   postReview(),
-];
+]; // 그 로그인쪽 핸들러도 수정해야 할 거 같아요!
 
 export default reviewHandler;

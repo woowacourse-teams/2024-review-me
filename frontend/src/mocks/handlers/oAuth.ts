@@ -5,6 +5,7 @@ import endPoint, { OAUTH_API_URL, OAUTH_LOGIN_API_PARAMS } from '@/apis/endpoint
 import { MOCK_LOGIN_TOKEN_NAME, MOCK_USER_PROFILE } from '../mockData';
 
 import { authorizeWithCookie } from './cookies';
+import { memberOnly } from './review';
 
 const postOAuthLogin = () =>
   http.post(new RegExp(`^${OAUTH_API_URL}`), async ({ request }) => {
@@ -27,7 +28,7 @@ const getUserProfile = () =>
       return HttpResponse.json(MOCK_USER_PROFILE, { status: 200 });
     };
 
-    return authorizeWithCookie(cookies, MOCK_LOGIN_TOKEN_NAME, handleAPI);
+    return authorizeWithCookie(cookies, memberOnly, handleAPI);
   });
 
 const oAuthHandler = [postOAuthLogin(), getUserProfile()];
