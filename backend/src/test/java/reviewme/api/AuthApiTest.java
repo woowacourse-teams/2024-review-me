@@ -1,5 +1,6 @@
 package reviewme.api;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
@@ -13,15 +14,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
-import reviewme.auth.domain.GitHubMember;
-import reviewme.auth.service.dto.GithubCodeRequest;
+import reviewme.member.service.dto.ProfileResponse;
 
 public class AuthApiTest extends ApiTest {
 
     @Test
     void 깃허브로_인증한다() {
-        GitHubMember gitHubMember = new GitHubMember(1, "깃허브닉네임", "프로필사진");
-        given(authService.authWithGithub(new GithubCodeRequest("1234567890"))).willReturn(gitHubMember);
+        given(memberService.getProfile(any()))
+                .willReturn(new ProfileResponse(1L, "nickname", "profileImageUrl"));
 
         String request = """
                 {

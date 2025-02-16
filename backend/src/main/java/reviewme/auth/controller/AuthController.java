@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.auth.domain.GitHubMember;
 import reviewme.auth.service.AuthService;
-import reviewme.auth.service.dto.GitHubOAuthResponse;
-import reviewme.auth.service.dto.GithubCodeRequest;
 import reviewme.auth.service.dto.GithubOAuthRequest;
+import reviewme.member.service.MemberService;
+import reviewme.member.service.dto.ProfileResponse;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.security.session.SessionManager;
 
@@ -22,16 +22,16 @@ public class AuthController {
 
     private final SessionManager sessionManager;
     private final AuthService authService;
+    private final MemberService memberService;
 
     @PostMapping("/v2/auth/github")
-    public ResponseEntity<GitHubOAuthResponse> authWithGithub(
-            @RequestBody GithubCodeRequest request,
+    public ResponseEntity<ProfileResponse> authWithGithub(
             @RequestBody GithubOAuthRequest request,
             HttpSession session
     ) {
         GitHubMember gitHubMember = authService.authWithGithub(request);
         sessionManager.saveGitHubMember(session, gitHubMember);
-        GitHubOAuthResponse response = new GitHubOAuthResponse(gitHubMember);
+        ProfileResponse response = memberService.getProfile(gitHubMember);
         return ResponseEntity.ok(response);
     }
 
