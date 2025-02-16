@@ -1,9 +1,16 @@
-import { DefaultBodyType, http, HttpResponse, StrictRequest } from 'msw';
+import {
+  DefaultBodyType,
+  http,
+  HttpResponse,
+  HttpResponseResolver,
+  JsonBodyType,
+  PathParams,
+  StrictRequest,
+} from 'msw';
 
 import endPoint, {
   DETAILED_REVIEW_API_PARAMS,
   DETAILED_REVIEW_API_URL,
-  makeGrouppedReviewsBasicUrl,
   REVIEW_GROUP_API_PARAMS,
   REVIEW_WRITING_API_PARAMS,
   REVIEW_WRITING_API_URL,
@@ -128,18 +135,25 @@ const getSectionList = () =>
     return authorizeWithCookie(cookies, () => HttpResponse.json(GROUPED_SECTION_MOCK_DATA));
   });
 
-const getGroupedReviews = () => {
-  const nonMemberUrl = makeGrouppedReviewsBasicUrl(VALID_REVIEW_REQUEST_CODE.nonMember);
-  const memberUrl = makeGrouppedReviewsBasicUrl(VALID_REVIEW_REQUEST_CODE.member);
-  const targetUrl = new RegExp(`^${nonMemberUrl}|^${memberUrl}`);
+interface HandleGroupedReviewAPIParams {
+  request: StrictRequest<DefaultBodyType>;
+  cookies: Record<string, string>;
+}
+const handleGroupedReviewsAPI = ({ request, cookies }: HandleGroupedReviewAPIParams) => {
+  const url = new URL(request.url);
+  const sectionId = url.searchParams.get(REVIEW_GROUP_API_PARAMS.queryString.sectionId);
+  const { length } = GROUPED_REVIEWS_MOCK_DATA;
+  const index = (Number(sectionId) + length) % length;
 
-  return http.get(targetUrl, ({ request, cookies }) => {
-    const url = new URL(request.url);
-    const sectionId = url.searchParams.get(REVIEW_GROUP_API_PARAMS.queryString.sectionId);
-    const { length } = GROUPED_REVIEWS_MOCK_DATA;
-    const index = (Number(sectionId) + length) % length;
+  return authorizeWithCookie(cookies, () => HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]));
+};
 
-    return authorizeWithCookie(cookies, () => HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]));
+const getGroupedReviews = (reviewRequestCode: string) => {
+  const SECTION_ID = 1;
+  const reviewUrl = endPoint.gettingGroupedReviews(reviewRequestCode, SECTION_ID);
+
+  return http.get(reviewUrl, ({ request, cookies }) => {
+    return handleGroupedReviewsAPI({ request, cookies });
   });
 };
 
@@ -149,7 +163,8 @@ const reviewHandler = [
   getMemberReceivedReviewList(null, 10),
   getDataToWriteReview(),
   getSectionList(),
-  getGroupedReviews(),
+  getGroupedReviews(VALID_REVIEW_REQUEST_CODE.member),
+  getGroupedReviews(VALID_REVIEW_REQUEST_CODE.nonMember),
   getReviewSummaryInfoData(),
   postReview(),
 ];

@@ -50,27 +50,28 @@ export const REVIEW_WRITING_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_WRITING
 export const DETAILED_REVIEW_API_URL = `${serverUrl}/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}`;
 export const REVIEW_GROUPS_BASIC_API_URL = `${serverUrl}/${VERSION2}/groups`;
 
-// NOTE: 추후에 reviewRequestCode가 아닌 reviewGroupId로 요청하는 방식으로 변경될 예정
-export const makeGrouppedReviewsBasicUrl = (reviewRequestCode: string) =>
-  `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/reviews/gather`;
-export const makeReceivedReviewListBasicUrl = (reviewRequestCode: string) =>
-  `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/${REVIEW_RECEIVED_LIST_API_PARAMS.resource}`;
-export const makeReviewSummaryInfoBasicUrl = (reviewRequestCode: string) =>
-  `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/reviews/summary`;
-
 interface GetReviewListEndPointParams {
   lastReviewId: number | null;
   size: number;
   reviewRequestCode: string;
 }
+
+/*
+NOTE: reviewGroupId로 변경될 endpoint
+섹션 별 받은 리뷰 모아보기 GET /groups/{id}/reviews/gather
+받은 리뷰 목록 조회 GET /groups/{id}/reviews/received
+받은 리뷰 요약 조회 GET  /groups/{id}/reviews/summary
+하이라이트 수정 POST /highlight :: request 에 reviewGroupId 포함되어야 함
+*/
 const endPoint = {
   postingReview: `${serverUrl}/${VERSION2}/reviews`,
-  gettingReviewSummaryInfoData: (reviewRequestCode: string) => makeReviewSummaryInfoBasicUrl(reviewRequestCode),
+  gettingReviewSummaryInfoData: (reviewRequestCode: string) =>
+    `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/reviews/summary`,
   gettingDetailedReview: (reviewId: number) => `${DETAILED_REVIEW_API_URL}/${reviewId}`,
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingReceivedReviewList: ({ lastReviewId, size, reviewRequestCode }: GetReviewListEndPointParams) => {
-    const basicUrl = makeReceivedReviewListBasicUrl(reviewRequestCode);
+    const basicUrl = `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/${REVIEW_RECEIVED_LIST_API_PARAMS.resource}`;
     if (lastReviewId) {
       return `${basicUrl}?lastReviewId=${lastReviewId}&size=${size}`;
     }
@@ -82,7 +83,7 @@ const endPoint = {
     `${REVIEW_GROUPS_BASIC_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingSectionList: `${serverUrl}/${VERSION2}/sections`,
   gettingGroupedReviews: (reviewRequestCode: string, sectionId: number) =>
-    `${makeGrouppedReviewsBasicUrl(reviewRequestCode)}?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
+    `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/reviews/gather?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
   postingHighlight: (reviewRequestCode: string) => `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/highlights`,
 };
 
