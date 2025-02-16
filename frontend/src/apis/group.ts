@@ -10,21 +10,25 @@ export const postDataForReviewRequestCodeApi = async ({
 }: DataForReviewRequestCode) => {
   const requestData = groupAccessCode ? { ...commonRequestData, groupAccessCode } : commonRequestData;
 
-  const response = await fetch(endPoint.postingDataForReviewRequestCode, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    // TODO : 회원 리뷰 링크 API 문서 나오면 비밀번호 관련해 변경해야함
-    body: JSON.stringify(requestData),
-  });
+  try {
+    const response = await fetch(endPoint.postingDataForReviewRequestCode, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // TODO : 회원 리뷰 링크 API 문서 나오면 비밀번호 관련해 변경해야함
+      body: JSON.stringify(requestData),
+    });
 
-  if (!response.ok) {
-    throw new Error(`${createApiErrorMessage(response.status)} ${ERROR_BOUNDARY_IGNORE_ERROR}`);
+    if (!response.ok) {
+      throw new Error(`${createApiErrorMessage(response.status)} ${ERROR_BOUNDARY_IGNORE_ERROR}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`${ERROR_BOUNDARY_IGNORE_ERROR} - 리뷰 링크 생성 API 실패`);
   }
-
-  const data = await response.json();
-  return data;
 };
 
 //리뷰 비밀번호
