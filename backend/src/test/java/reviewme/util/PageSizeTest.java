@@ -1,4 +1,4 @@
-package reviewme.review.service;
+package reviewme.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -5,19 +5,17 @@ import { ReviewEmptySection, ReviewPreview } from '@/components';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
 import { REVIEW_EMPTY } from '@/constants';
 import { ROUTE } from '@/constants/route';
-import { useGetReviewList, useSearchParamAndQuery, useInfiniteScroll } from '@/hooks';
+import { useGetReviewList, useInfiniteScroll, useReviewRequestCodeParam } from '@/hooks';
 
 import * as S from './styles';
 
 const ReviewListPageContents = () => {
   const navigate = useNavigate();
-
-  const { isLastPage, reviewList, fetchNextPage, isFetchingNextPage, isSuccess } = useGetReviewList();
-  const { totalReviewCount } = useContext(ReviewInfoDataContext);
-
-  const { param: reviewRequestCode } = useSearchParamAndQuery({
-    paramKey: 'reviewRequestCode',
+  const { reviewRequestCode } = useReviewRequestCodeParam();
+  const { isLastPage, reviewList, fetchNextPage, isFetchingNextPage, isSuccess } = useGetReviewList({
+    reviewRequestCode,
   });
+  const { totalReviewCount } = useContext(ReviewInfoDataContext);
 
   const handleReviewClick = useCallback(
     (id: number) => {

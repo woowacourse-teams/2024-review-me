@@ -6,3 +6,9 @@ export interface ReviewGroupData {
   revieweeName: string;
   projectName: string;
 }
+
+export interface DataForReviewRequestCode {
+  revieweeName: string;
+  projectName: string;
+  groupAccessCode?: string;
+}

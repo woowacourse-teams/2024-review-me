@@ -1,4 +1,4 @@
-package reviewme.review.service;
+package reviewme.util;
 
 import lombok.Getter;
 
@@ -10,7 +10,7 @@ public class PageSize {
 
     private final int size;
 
-    PageSize(Integer size) {
+    public PageSize(Integer size) {
         if (size == null || size < 1 || size > MAX_SIZE) {
             this.size = DEFAULT_SIZE;
             return;

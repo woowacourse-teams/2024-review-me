@@ -2,7 +2,8 @@ package reviewme.highlight.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import reviewme.highlight.domain.Highlight;
 import reviewme.highlight.domain.HighlightRange;
 import reviewme.review.domain.Answer;
-import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.reviewgroup.domain.ReviewGroup;
@@ -80,8 +80,8 @@ class HighlightRepositoryTest {
     @Test
     void 그룹_아이디와_질문_아이디로_하이라이트를_삭제한다() {
         // given
-        ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹());
-        ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup1 = reviewGroupRepository.save(비회원_리뷰_그룹());
+        ReviewGroup reviewGroup2 = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         List<Answer> answers1 = List.of(
                 new TextAnswer(1L, "A1"),
@@ -93,8 +93,8 @@ class HighlightRepositoryTest {
                 new TextAnswer(2L, "B2"),
                 new TextAnswer(3L, "B3")
         );
-        reviewRepository.save(new Review(1L, reviewGroup1.getId(), answers1));
-        reviewRepository.save(new Review(2L, reviewGroup2.getId(), answers2));
+        reviewRepository.save(비회원_작성_리뷰(1L, reviewGroup1.getId(), answers1));
+        reviewRepository.save(비회원_작성_리뷰(2L, reviewGroup2.getId(), answers2));
 
         List<Long> answerIds = new ArrayList<>();
         answerIds.addAll(answers1.stream().map(Answer::getId).toList());

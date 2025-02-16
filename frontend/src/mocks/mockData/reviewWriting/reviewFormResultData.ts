@@ -1,9 +1,9 @@
 import { ReviewWritingFormResult } from '@/types';
 
-import { REVIEW_REQUEST_CODE } from './reviewQuestionData';
+import { VALID_REVIEW_REQUEST_CODE } from '../group';
 
 export const REVIEW_FORM_RESULT_DATA: ReviewWritingFormResult = {
-  reviewRequestCode: REVIEW_REQUEST_CODE,
+  reviewRequestCode: VALID_REVIEW_REQUEST_CODE.nonMember,
   answers: [
     { questionId: 1, selectedOptionIds: [1], text: null },
     { questionId: 2, selectedOptionIds: [6], text: null },

@@ -2,6 +2,7 @@ package reviewme.review.controller;
 
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reviewme.security.resolver.GuestReviewGroupSession;
+import reviewme.security.resolver.LoginMemberSession;
+import reviewme.security.resolver.dto.GuestReviewGroup;
+import reviewme.security.resolver.dto.LoginMember;
 import reviewme.review.service.ReviewDetailLookupService;
 import reviewme.review.service.ReviewGatheredLookupService;
 import reviewme.review.service.ReviewListLookupService;
@@ -18,11 +23,9 @@ import reviewme.review.service.ReviewSummaryService;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
+import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
-import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
-import reviewme.reviewgroup.controller.ReviewGroupSession;
-import reviewme.reviewgroup.domain.ReviewGroup;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,57 +38,80 @@ public class ReviewController {
     private final ReviewGatheredLookupService reviewGatheredLookupService;
 
     @PostMapping("/v2/reviews")
-    public ResponseEntity<Void> createReview(@Valid @RequestBody ReviewRegisterRequest request) {
-        // 회원 세션 추후 추가해야 함
-        long savedReviewId = reviewRegisterService.registerReview(request);
+    public ResponseEntity<Void> createReview(
+            @Valid @RequestBody ReviewRegisterRequest request,
+            @LoginMemberSession(required = false) LoginMember loginMember
+    ) {
+        Long memberId = Optional.ofNullable(loginMember).map(LoginMember::id).orElse(null);
+        long savedReviewId = reviewRegisterService.registerReview(request, memberId);
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
-    @GetMapping("/v2/reviews/received")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/received")
     public ResponseEntity<ReceivedReviewPageResponse> findReceivedReviews(
+            @PathVariable long reviewGroupId,
             @RequestParam(required = false) Long lastReviewId,
             @RequestParam(required = false) Integer size,
-            @ReviewGroupSession ReviewGroup reviewGroup
+            @LoginMemberSession(required = false) LoginMember loginMember,
+            @GuestReviewGroupSession(required = false) GuestReviewGroup guestReviewGroup
     ) {
-        ReceivedReviewPageResponse response = reviewListLookupService.getReceivedReviews(lastReviewId, size, reviewGroup);
+        /*
+        TODO : aop 인증 로직 필요 (존재하는 세션에 대해 reviewGroupId와 일치 여부 확인)
+        */
+        ReceivedReviewPageResponse response = reviewListLookupService.getReceivedReviews(reviewGroupId, lastReviewId,
+                size);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/v2/reviews/{id}")
     public ResponseEntity<ReviewDetailResponse> findReceivedReviewDetail(
             @PathVariable long id,
-            @ReviewGroupSession ReviewGroup reviewGroup
+            @LoginMemberSession(required = false) LoginMember loginMember,
+            @GuestReviewGroupSession(required = false) GuestReviewGroup guestReviewGroup
     ) {
-        ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail(id, reviewGroup);
+        /*
+        TODO : aop 인증 로직 필요 (존재하는 세션에 대해 reviewId와 일치 여부 확인)
+        */
+        ReviewDetailResponse response = reviewDetailLookupService.getReviewDetail(id);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/reviews/summary")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/summary")
     public ResponseEntity<ReceivedReviewsSummaryResponse> findReceivedReviewOverview(
-            @ReviewGroupSession ReviewGroup reviewGroup
+            @PathVariable long reviewGroupId,
+            @LoginMemberSession(required = false) LoginMember loginMember,
+            @GuestReviewGroupSession(required = false) GuestReviewGroup guestReviewGroup
     ) {
-        ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewGroup);
+        /*
+        TODO : aop 인증 로직 필요 (존재하는 세션에 대해 reviewGroupId와 일치 여부 확인)
+        */
+        ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewGroupId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/reviews/gather")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/gather")
     public ResponseEntity<ReviewsGatheredBySectionResponse> getReceivedReviewsBySectionId(
+            @PathVariable long reviewGroupId,
             @RequestParam("sectionId") long sectionId,
-            @ReviewGroupSession ReviewGroup reviewGroup
+            @LoginMemberSession(required = false) LoginMember loginMember,
+            @GuestReviewGroupSession(required = false) GuestReviewGroup guestReviewGroup
     ) {
+        /*
+        TODO : aop 인증 로직 필요 (존재하는 세션에 대해 reviewGroupId와 일치 여부 확인)
+        */
         ReviewsGatheredBySectionResponse response =
-                reviewGatheredLookupService.getReceivedReviewsBySectionId(reviewGroup, sectionId);
+                reviewGatheredLookupService.getReceivedReviewsBySectionId(reviewGroupId, sectionId);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/v2/reviews/authored")
     public ResponseEntity<AuthoredReviewsResponse> findAuthoredReviews(
             @RequestParam(required = false) Long lastReviewId,
-            @RequestParam(required = false) Integer size
-//            @MemberSession Member member
-            // TODO: 세션을 활용한 권한 체계에 따른 추가 조치 필요
+            @RequestParam(required = false) Integer size,
+            @LoginMemberSession LoginMember loginMember
     ) {
-        AuthoredReviewsResponse response = reviewListLookupService.getAuthoredReviews(lastReviewId, size);
+        AuthoredReviewsResponse response = reviewListLookupService.getAuthoredReviews(lastReviewId, size,
+                loginMember.id());
         return ResponseEntity.ok(response);
     }
 }

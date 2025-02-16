@@ -2,10 +2,11 @@ package reviewme.api;
 
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
-import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -13,7 +14,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
@@ -21,17 +22,18 @@ import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
+import reviewme.auth.domain.GitHubMember;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse;
 import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
-import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupSummaryResponse;
 
 class ReviewGroupApiTest extends ApiTest {
 
     @Test
     void 비회원용_리뷰_그룹을_생성한다() {
-        BDDMockito.given(reviewGroupService.createReviewGroup(any(ReviewGroupCreationRequest.class)))
+        BDDMockito.given(reviewGroupService.createReviewGroup(any(ReviewGroupCreationRequest.class), nullable(Long.class)))
                 .willReturn(new ReviewGroupCreationResponse("ABCD1234"));
 
         String request = """
@@ -68,7 +70,7 @@ class ReviewGroupApiTest extends ApiTest {
 
     @Test
     void 회원용_리뷰_그룹을_생성한다() {
-        BDDMockito.given(reviewGroupService.createReviewGroup(any(ReviewGroupCreationRequest.class)))
+        BDDMockito.given(reviewGroupService.createReviewGroup(any(ReviewGroupCreationRequest.class), nullable(Long.class)))
                 .willReturn(new ReviewGroupCreationResponse("ABCD1234"));
 
         CookieDescriptor[] cookieDescriptors = {
@@ -110,7 +112,7 @@ class ReviewGroupApiTest extends ApiTest {
     @Test
     void 리뷰_요청_코드로_회원이_만든_리뷰_그룹_정보를_반환한다() {
         BDDMockito.given(reviewGroupLookupService.getReviewGroupSummary(anyString()))
-                .willReturn(new ReviewGroupResponse(1L,"아루", "리뷰미"));
+                .willReturn(new ReviewGroupSummaryResponse(1L,"아루", "리뷰미"));
 
         ParameterDescriptor[] parameterDescriptors = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드")
@@ -139,7 +141,7 @@ class ReviewGroupApiTest extends ApiTest {
     @Test
     void 리뷰_요청_코드로_비회원이_만든_리뷰_그룹_정보를_반환한다() {
         BDDMockito.given(reviewGroupLookupService.getReviewGroupSummary(anyString()))
-                .willReturn(new ReviewGroupResponse(null, "아루", "리뷰미"));
+                .willReturn(new ReviewGroupSummaryResponse(null, "아루", "리뷰미"));
 
         ParameterDescriptor[] parameterDescriptors = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드")
@@ -166,47 +168,17 @@ class ReviewGroupApiTest extends ApiTest {
     }
 
     @Test
-    void 리뷰_그룹_코드와_액세스_코드로_일치_여부를_판단한다() {
-        String request = """
-                {
-                    "reviewRequestCode": "ABCD1234",
-                    "groupAccessCode": "00001234"
-                }
-                """;
-
-        FieldDescriptor[] requestFieldDescriptors = {
-                fieldWithPath("reviewRequestCode").description("리뷰 요청 코드"),
-                fieldWithPath("groupAccessCode").description("그룹 접근 코드 (비밀번호)")
-        };
-
-        CookieDescriptor[] cookieDescriptors = {
-                cookieWithName("JSESSIONID").description("세션 ID")
-        };
-
-        RestDocumentationResultHandler handler = document(
-                "review-group-check-access",
-                requestFields(requestFieldDescriptors),
-                responseCookies(cookieDescriptors)
-        );
-
-        givenWithSpec().log().all()
-                .body(request)
-                .when().post("/v2/groups/check")
-                .then().log().all()
-                .apply(handler)
-                .cookie("JSESSIONID")
-                .statusCode(204);
-    }
-
-    @Test
     void 회원이_생성한_프로젝트_목록을_반환한다() {
+        BDDMockito.given(sessionManager.getGitHubMember(any()))
+                .willReturn(new GitHubMember(1L, "githubName", "githubURL"));
+
         ReviewGroupPageResponse response = new ReviewGroupPageResponse(2L, true,
                 List.of(
-                        new ReviewGroupPageElementResponse("이동훈", "우테코", LocalDate.of(2024, 1, 30), "WOOTECO1", 1),
-                        new ReviewGroupPageElementResponse("아루", "리뷰미", LocalDate.of(2024, 1, 5), "ABCD1234", 2)
+                        new ReviewGroupPageElementResponse(1L, "이동훈", "우테코", "WOOTECO1", LocalDateTime.of(2024, 1, 30, 0, 0), 1),
+                        new ReviewGroupPageElementResponse(2L, "아루", "리뷰미", "ABCD1234", LocalDateTime.of(2024, 1, 5, 0, 0), 2)
                 )
         );
-        BDDMockito.given(reviewGroupLookupService.getMyReviewGroups())
+        BDDMockito.given(reviewGroupLookupService.getReviewGroupsByMember(nullable(Long.class), nullable(Integer.class), anyLong()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
@@ -217,10 +189,11 @@ class ReviewGroupApiTest extends ApiTest {
                 fieldWithPath("lastReviewGroupId").description("해당 페이지의 마지막 리뷰 그룹 ID"),
                 fieldWithPath("isLastPage").description("마지막 페이지 여부"),
                 fieldWithPath("reviewGroups[]").description("리뷰 그룹 목록 (생성일 기준 내림차순 정렬)"),
+                fieldWithPath("reviewGroups[].reviewGroupId").description("리뷰 그룹 ID"),
                 fieldWithPath("reviewGroups[].revieweeName").description("리뷰이 이름"),
                 fieldWithPath("reviewGroups[].projectName").description("프로젝트 이름"),
-                fieldWithPath("reviewGroups[].createdAt").description("생성일"),
                 fieldWithPath("reviewGroups[].reviewRequestCode").description("리뷰 요청 코드"),
+                fieldWithPath("reviewGroups[].createdAt").description("생성일"),
                 fieldWithPath("reviewGroups[].reviewCount").description("작성된 리뷰 수")
         };
 

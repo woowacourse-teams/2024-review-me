@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.선택형_질문;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.List;
@@ -12,7 +13,6 @@ import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredByQuestionResponse;
@@ -53,7 +53,7 @@ class ReviewGatherMapperTest {
                 question2.getId(),
                 optionItems.stream().map(OptionItem::getId).toList() // check all options
         );
-        reviewRepository.save(new Review(template.getId(), 1L, List.of(textAnswer1, checkboxAnswer1)));
+        reviewRepository.save(비회원_작성_리뷰(template.getId(), 1L, List.of(textAnswer1, checkboxAnswer1)));
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewGatherMapper.mapToReviewsGatheredBySection(Map.of(

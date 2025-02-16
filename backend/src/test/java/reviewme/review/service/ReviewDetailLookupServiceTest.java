@@ -7,7 +7,8 @@ import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
 import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
-import reviewme.review.service.exception.ReviewNotFoundByIdAndGroupException;
+import reviewme.review.service.exception.ReviewNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
 import reviewme.support.ServiceTest;
@@ -51,27 +52,19 @@ class ReviewDetailLookupServiceTest {
     private TemplateRepository templateRepository;
 
     @Test
-    void 리뷰_그룹에_해당하지_않는_리뷰를_조회할_경우_예외가_발생한다() {
+    void 등록되지_않은_리뷰를_조회할_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup1 = reviewGroupRepository.save(리뷰_그룹());
-        ReviewGroup reviewGroup2 = reviewGroupRepository.save(리뷰_그룹());
-
-        Review review1 = reviewRepository.save(new Review(0, reviewGroup1.getId(), List.of()));
-        Review review2 = reviewRepository.save(new Review(0, reviewGroup2.getId(), List.of()));
+        long wrongReviewId = 1L;
 
         // when, then
-        assertAll(
-                () -> assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(review2.getId(), reviewGroup1))
-                        .isInstanceOf(ReviewNotFoundByIdAndGroupException.class),
-                () -> assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(review1.getId(), reviewGroup2))
-                        .isInstanceOf(ReviewNotFoundByIdAndGroupException.class)
-        );
+        assertThatThrownBy(() -> reviewDetailLookupService.getReviewDetail(wrongReviewId))
+                .isInstanceOf(ReviewNotFoundException.class);
     }
 
     @Test
     void 사용자가_작성한_리뷰를_확인한다() {
         // given - 리뷰 그룹 저장
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         // given - 질문 저장
         OptionItem optionItem1 = 선택지();
@@ -91,11 +84,11 @@ class ReviewDetailLookupServiceTest {
                 new CheckboxAnswer(question1.getId(), List.of(optionItem1.getId(), optionItem2.getId()))
         );
         Review review = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), answers)
+                비회원_작성_리뷰(template.getId(), reviewGroup.getId(), answers)
         );
 
         // when
-        ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId(), reviewGroup);
+        ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId());
 
         // then
         assertThat(reviewDetail.sections()).hasSize(2);
@@ -108,7 +101,7 @@ class ReviewDetailLookupServiceTest {
         @Test
         void 섹션에_필수가_아닌_질문만_있다면_섹션_자체를_반환하지_않는다() {
             // given - 리뷰 그룹 저장
-            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
             // given - 질문, 세션, 템플릿 저장
             Question question = 서술형_옵션_질문(1);
@@ -117,11 +110,11 @@ class ReviewDetailLookupServiceTest {
 
             // given - 아무것도 응답하지 않은 리뷰 답변 저장
             Review review = reviewRepository.save(
-                    new Review(template.getId(), reviewGroup.getId(), null)
+                    비회원_작성_리뷰(template.getId(), reviewGroup.getId(), null)
             );
 
             // when
-            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId(), reviewGroup);
+            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId());
 
             // then
             assertThat(reviewDetail.sections())
@@ -132,7 +125,7 @@ class ReviewDetailLookupServiceTest {
         @Test
         void 섹션의_다른_질문에_응답했다면_답하지_않은_질문만_반환하지_않는다() {
             // given - 리뷰 그룹 저장
-            ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
             // given - 질문, 세션, 템플릿 저장
             Question question1 = 서술형_옵션_질문(1);
@@ -143,11 +136,11 @@ class ReviewDetailLookupServiceTest {
             // given - 질문 하나에만 응답한 리뷰 답변 저장
             TextAnswer textAnswer = new TextAnswer(question1.getId(), "답변".repeat(20));
             Review review = reviewRepository.save(
-                    new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer))
+                    비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(textAnswer))
             );
 
             // when
-            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId(), reviewGroup);
+            ReviewDetailResponse reviewDetail = reviewDetailLookupService.getReviewDetail(review.getId());
 
             // then
             assertAll(

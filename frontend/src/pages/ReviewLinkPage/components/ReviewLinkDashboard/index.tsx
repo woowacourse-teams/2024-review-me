@@ -8,7 +8,7 @@ const ReviewLinkDashboard = () => {
   return (
     <S.ReviewLinkDashboardContainer>
       <S.FormSection>
-        <URLGeneratorForm />
+        <URLGeneratorForm isMember={true} />
       </S.FormSection>
       <S.Separator />
       <S.LinkSection>

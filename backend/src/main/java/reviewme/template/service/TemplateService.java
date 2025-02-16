@@ -16,6 +16,7 @@ import reviewme.template.service.exception.TemplateNotFoundByReviewGroupExceptio
 public class TemplateService {
 
     private final ReviewGroupService reviewGroupService;
+    private final DefaultTemplateService defaultTemplateService;
     private final TemplateRepository templateRepository;
 
     @Transactional(readOnly = true)
@@ -29,11 +30,8 @@ public class TemplateService {
     }
 
     @Transactional(readOnly = true)
-    public SectionNamesResponse getSectionNames(ReviewGroup reviewGroup) {
-        Template template = templateRepository.findById(reviewGroup.getTemplateId())
-                .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(
-                        reviewGroup.getId(), reviewGroup.getTemplateId())
-                );
+    public SectionNamesResponse getSectionNames() {
+        Template template = defaultTemplateService.getDefaultTemplate();
         return SectionNamesResponse.from(template);
     }
 }

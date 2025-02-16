@@ -1,6 +1,6 @@
-import { DataForReviewRequestCode } from '@/apis/group';
 import { Button, BlinkLoader } from '@/components';
 import { HOM_EVENT_NAME } from '@/constants';
+import { DataForReviewRequestCode } from '@/types';
 import { debounce, trackEventInAmplitude } from '@/utils';
 
 import usePostDataForReviewRequestCode, {

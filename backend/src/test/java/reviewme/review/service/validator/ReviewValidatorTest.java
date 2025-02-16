@@ -6,7 +6,8 @@ import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
 import static reviewme.fixture.OptionItemFixture.선택지;
 import static reviewme.fixture.QuestionFixture.서술형_옵션_질문;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.조건부로_보이는_섹션;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
@@ -44,7 +45,7 @@ class ReviewValidatorTest {
     @Test
     void 템플릿에_있는_질문에_대한_답과_필수_질문에_모두_응답하는_경우_예외가_발생하지_않는다() {
         // 리뷰 그룹 저장
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         // 필수가 아닌 서술형 질문 저장
         Question notRequiredTextQuestion = 서술형_옵션_질문();
@@ -85,7 +86,7 @@ class ReviewValidatorTest {
                 List.of(conditionalOptionItem.getId()));
 
         // 리뷰 생성
-        Review review = new Review(template.getId(), reviewGroup.getId(),
+        Review review = 비회원_작성_리뷰(template.getId(), reviewGroup.getId(),
                 List.of(notRequiredTextAnswer, conditionalTextAnswer1,
                         alwaysRequiredCheckAnswer, conditionalCheckAnswer1));
 
@@ -97,7 +98,7 @@ class ReviewValidatorTest {
     @Test
     void 제공된_템플릿에_없는_질문에_대한_답변이_있을_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         // 재공된 템플릿
         Question question1 = 서술형_필수_질문();
@@ -110,7 +111,7 @@ class ReviewValidatorTest {
         templateRepository.save(new Template(List.of(section2)));
 
         TextAnswer textAnswer = new TextAnswer(question2.getId(), "답변".repeat(20));
-        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(textAnswer));
+        Review review = 비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(textAnswer));
 
         // when, then
         assertThatThrownBy(() -> reviewValidator.validate(review))
@@ -120,7 +121,7 @@ class ReviewValidatorTest {
     @Test
     void 필수_질문에_답변하지_않은_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         Question requiredQuestion = 서술형_필수_질문();
         Question optionalQuestion = 서술형_옵션_질문();
@@ -128,7 +129,7 @@ class ReviewValidatorTest {
         Template template = templateRepository.save(new Template(List.of(section)));
 
         TextAnswer optionalTextAnswer = new TextAnswer(optionalQuestion.getId(), "답변".repeat(20));
-        Review review = new Review(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer));
+        Review review = 비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(optionalTextAnswer));
 
         // when, then
         assertThatThrownBy(() -> reviewValidator.validate(review))

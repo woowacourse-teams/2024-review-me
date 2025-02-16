@@ -12,11 +12,6 @@ import {
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
-export interface GetInfiniteReviewListApiParams {
-  lastReviewId: number | null;
-  size: number;
-}
-
 export const getDataToWriteReviewApi = async (reviewRequestCode: string) => {
   const response = await fetch(endPoint.gettingDataToWriteReview(reviewRequestCode), {
     method: 'GET',
@@ -47,8 +42,8 @@ export const postReviewApi = async (formResult: ReviewWritingFormResult) => {
 };
 
 // 받은 리뷰들에 대한 정보(프로젝트 이름, 리뷰이, 받은 리뷰 개수)
-export const getReviewInfoDataApi = async () => {
-  const response = await fetch(endPoint.gettingReviewInfoData, {
+export const getReviewSummaryInfoDataApi = async (reviewRequestCode: string) => {
+  const response = await fetch(endPoint.gettingReviewSummaryInfoData(reviewRequestCode), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -85,8 +80,14 @@ export const getDetailedReviewApi = async ({ reviewId }: GetDetailedReviewApiPar
   return data as DetailReviewData;
 };
 
-export const getReviewListApi = async ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
-  const response = await fetch(endPoint.gettingReviewList(lastReviewId, size), {
+interface GetReceivedReviewListApiParams {
+  reviewRequestCode: string;
+  lastReviewId: number | null;
+  size: number;
+}
+
+export const getReceivedReviewListApi = async (props: GetReceivedReviewListApiParams) => {
+  const response = await fetch(endPoint.gettingReceivedReviewList(props), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -120,11 +121,12 @@ export const getSectionList = async () => {
 };
 
 interface GetGroupedReviewsProps {
+  reviewRequestCode: string;
   sectionId: number;
 }
 
-export const getGroupedReviews = async ({ sectionId }: GetGroupedReviewsProps) => {
-  const response = await fetch(endPoint.gettingGroupedReviews(sectionId), {
+export const getGroupedReviews = async ({ reviewRequestCode, sectionId }: GetGroupedReviewsProps) => {
+  const response = await fetch(endPoint.gettingGroupedReviews(reviewRequestCode, sectionId), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -140,7 +142,12 @@ export const getGroupedReviews = async ({ sectionId }: GetGroupedReviewsProps) =
   return data as GroupedReviews;
 };
 
-export const getWrittenReviewListApi = async ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
+export interface GetWrittenReviewListApiParams {
+  lastReviewId: number | null;
+  size: number;
+}
+
+export const getWrittenReviewListApi = async ({ lastReviewId, size }: GetWrittenReviewListApiParams) => {
   const response = await fetch(endPoint.gettingWrittenReviewList(lastReviewId, size), {
     method: 'GET',
     headers: {

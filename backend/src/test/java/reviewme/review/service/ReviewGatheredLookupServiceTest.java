@@ -5,8 +5,9 @@ import static org.assertj.core.api.Assertions.tuple;
 import static reviewme.fixture.OptionGroupFixture.선택지_그룹;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.QuestionFixture.선택형_질문;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
-import static reviewme.fixture.ReviewGroupFixture.템플릿_지정_리뷰_그룹;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.템플릿_지정_비회원_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.List;
@@ -16,7 +17,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import reviewme.review.domain.CheckboxAnswer;
-import reviewme.review.domain.Review;
 import reviewme.review.domain.TextAnswer;
 import reviewme.review.repository.ReviewRepository;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredByQuestionResponse;
@@ -55,7 +55,7 @@ class ReviewGatheredLookupServiceTest {
 
     @BeforeEach
     void saveReviewGroup() {
-        reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
     }
 
     @Nested
@@ -75,12 +75,12 @@ class ReviewGatheredLookupServiceTest {
             TextAnswer answerAR2 = new TextAnswer(question2.getId(), "아루가 작성한 서술형 답변2");
             TextAnswer answerTD1 = new TextAnswer(question1.getId(), "테드가 작성한 서술형 답변1");
             TextAnswer answerTD2 = new TextAnswer(question2.getId(), "테드가 작성한 서술형 답변2");
-            reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answerAR1, answerAR2)));
-            reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answerTD1, answerTD2)));
+            reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answerAR1, answerAR2)));
+            reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answerTD1, answerTD2)));
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup, section1.getId()
+                    reviewGroup.getId(), section1.getId()
             );
 
             // then
@@ -106,12 +106,12 @@ class ReviewGatheredLookupServiceTest {
             TextAnswer answerAR2 = new TextAnswer(question2.getId(), "아루가 작성한 서술형 답변2");
             TextAnswer answerTD1 = new TextAnswer(question1.getId(), "테드가 작성한 서술형 답변1");
             TextAnswer answerTD2 = new TextAnswer(question2.getId(), "테드가 작성한 서술형 답변2");
-            reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answerAR1, answerAR2)));
-            reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answerTD1, answerTD2)));
+            reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answerAR1, answerAR2)));
+            reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answerTD1, answerTD2)));
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup, section1.getId()
+                    reviewGroup.getId(), section1.getId()
             );
 
             // then
@@ -132,12 +132,12 @@ class ReviewGatheredLookupServiceTest {
             TextAnswer answerSC1 = new TextAnswer(question1.getId(), "산초가 작성한 서술형 답변1");
             TextAnswer answerSC2 = new TextAnswer(question2.getId(), "산초가 작성한 서술형 답변2");
             TextAnswer answerAR = new TextAnswer(question1.getId(), "아루가 작성한 서술형 답변");
-            reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answerSC1, answerSC2)));
-            reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answerAR)));
+            reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answerSC1, answerSC2)));
+            reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answerAR)));
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup, section1.getId()
+                    reviewGroup.getId(), section1.getId()
             );
 
             // then
@@ -158,7 +158,7 @@ class ReviewGatheredLookupServiceTest {
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup, section1.getId()
+                    reviewGroup.getId(), section1.getId()
             );
 
             // then
@@ -188,12 +188,12 @@ class ReviewGatheredLookupServiceTest {
             CheckboxAnswer answer2 = new CheckboxAnswer(
                     question1.getId(), List.of(optionItem1.getId(), optionItem2.getId())
             );
-            reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer1)));
-            reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer2)));
+            reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answer1)));
+            reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answer2)));
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup, section1.getId()
+                    reviewGroup.getId(), section1.getId()
             );
 
             // then
@@ -217,12 +217,12 @@ class ReviewGatheredLookupServiceTest {
             // given - 리뷰 답변 저장
             CheckboxAnswer answer1 = new CheckboxAnswer(question1.getId(), List.of(optionItem1.getId()));
             CheckboxAnswer answer2 = new CheckboxAnswer(question1.getId(), List.of(optionItem1.getId()));
-            reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer1)));
-            reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer2)));
+            reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answer1)));
+            reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answer2)));
 
             // when
             ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                    reviewGroup, section1.getId()
+                    reviewGroup.getId(), section1.getId()
             );
 
             // then
@@ -249,11 +249,11 @@ class ReviewGatheredLookupServiceTest {
                 question2.getId(),
                 optionItems.stream().map(OptionItem::getId).toList() // check all options
         );
-        reviewRepository.save(new Review(template.getId(), reviewGroup.getId(), List.of(answer1, answer2)));
+        reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(answer1, answer2)));
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewGroup, section1.getId()
+                reviewGroup.getId(), section1.getId()
         );
 
         // then
@@ -282,19 +282,19 @@ class ReviewGatheredLookupServiceTest {
         Section section1 = 항상_보이는_섹션(List.of(question1));
         Template template = templateRepository.save(new Template(List.of(section1)));
 
-        ReviewGroup reviewGroupBE = 템플릿_지정_리뷰_그룹(template.getId());
-        ReviewGroup reviewGroupFE = 템플릿_지정_리뷰_그룹(template.getId());
+        ReviewGroup reviewGroupBE = 템플릿_지정_비회원_리뷰_그룹(template.getId());
+        ReviewGroup reviewGroupFE = 템플릿_지정_비회원_리뷰_그룹(template.getId());
         reviewGroupRepository.saveAll(List.of(reviewGroupFE, reviewGroupBE));
 
         // given - 리뷰 답변 저장
         TextAnswer answerFE = new TextAnswer(question1.getId(), "프론트엔드가 작성한 서술형 답변");
         TextAnswer answerBE = new TextAnswer(question1.getId(), "백엔드가 작성한 서술형 답변");
-        reviewRepository.save(new Review(template.getId(), reviewGroupFE.getId(), List.of(answerFE)));
-        reviewRepository.save(new Review(template.getId(), reviewGroupBE.getId(), List.of(answerBE)));
+        reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroupFE.getId(), List.of(answerFE)));
+        reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroupBE.getId(), List.of(answerBE)));
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewGroupBE, section1.getId());
+                reviewGroupBE.getId(), section1.getId());
 
         // then
         assertThat(actual.reviews()).hasSize(1);
@@ -312,7 +312,7 @@ class ReviewGatheredLookupServiceTest {
 
         // when
         ReviewsGatheredBySectionResponse actual = reviewLookupService.getReceivedReviewsBySectionId(
-                reviewGroup, section1.getId()
+                reviewGroup.getId(), section1.getId()
         );
 
         // then

@@ -1,12 +1,14 @@
 package reviewme.reviewgroup.service.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record ReviewGroupPageElementResponse(
+
+        long reviewGroupId,
         String revieweeName,
         String projectName,
-        LocalDate createdAt,
         String reviewRequestCode,
-        int reviewCount
+        LocalDateTime createdAt,
+        long reviewCount
 ) {
 }

@@ -2,7 +2,8 @@ package reviewme.review.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.time.LocalDate;
@@ -38,12 +39,12 @@ class ReviewRepositoryTest {
         Question question = 서술형_필수_질문();
         Section section = 항상_보이는_섹션(List.of(question));
         Template template = templateRepository.save(new Template(List.of(section)));
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         Review review1 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null));
+                비회원_작성_리뷰(template.getId(), reviewGroup.getId(), null));
         Review review2 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null));
+                비회원_작성_리뷰(template.getId(), reviewGroup.getId(), null));
 
         // when
         List<Review> actual = reviewRepository.findAllByGroupId(reviewGroup.getId());
@@ -58,14 +59,14 @@ class ReviewRepositoryTest {
         Question question = 서술형_필수_질문();
         Section section = 항상_보이는_섹션(List.of(question));
         Template template = templateRepository.save(new Template(List.of(section)));
-        private final ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        private final ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         private final Review review1 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null));
+                비회원_작성_리뷰(template.getId(), reviewGroup.getId(), null));
         private final Review review2 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null));
+                비회원_작성_리뷰(template.getId(), reviewGroup.getId(), null));
         private final Review review3 = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null));
+                비회원_작성_리뷰(template.getId(), reviewGroup.getId(), null));
 
         @Test
         void 페이징_크기보다_적은_수의_리뷰가_등록되었으면_그_크기만큼의_리뷰만_반환한다() {
@@ -153,12 +154,12 @@ class ReviewRepositoryTest {
         Section section = 항상_보이는_섹션(List.of(question));
         Template template = templateRepository.save(new Template(List.of(section)));
 
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         Review firstReview = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null));
+                비회원_작성_리뷰(template.getId(), reviewGroup.getId(), null));
         Review secondReview = reviewRepository.save(
-                new Review(template.getId(), reviewGroup.getId(), null));
+                비회원_작성_리뷰(template.getId(), reviewGroup.getId(), null));
 
         @Test
         void 주어진_리뷰가_가장_오래된_경우() {
