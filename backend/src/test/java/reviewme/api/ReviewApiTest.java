@@ -3,6 +3,7 @@ package reviewme.api;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
@@ -212,7 +213,7 @@ class ReviewApiTest extends ApiTest {
         );
         ReceivedReviewPageResponse response = new ReceivedReviewPageResponse(
                 "아루3", "리뷰미", 1L, true, receivedReviews);
-        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyLong(), anyLong(), anyInt()))
+        BDDMockito.given(reviewListLookupService.getReceivedReviews(anyString(), anyLong(), anyInt()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
@@ -265,7 +266,7 @@ class ReviewApiTest extends ApiTest {
 
     @Test
     void 자신이_받은_리뷰의_요약를_조회한다() {
-        BDDMockito.given(reviewSummaryService.getReviewSummary(anyLong()))
+        BDDMockito.given(reviewSummaryService.getReviewSummary(anyString()))
                 .willReturn(new ReceivedReviewsSummaryResponse("리뷰미", "산초", 5));
 
         CookieDescriptor[] cookieDescriptors = {
@@ -316,7 +317,7 @@ class ReviewApiTest extends ApiTest {
                                 new VoteResponse("짜장", 3),
                                 new VoteResponse("짬뽕", 5))))
         );
-        BDDMockito.given(reviewGatheredLookupService.getReceivedReviewsBySectionId(anyLong(), anyLong()))
+        BDDMockito.given(reviewGatheredLookupService.getReceivedReviewsBySectionId(anyString(), anyLong()))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
