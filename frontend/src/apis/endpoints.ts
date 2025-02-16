@@ -50,7 +50,7 @@ export const REVIEW_WRITING_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_WRITING
 export const DETAILED_REVIEW_API_URL = `${serverUrl}/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}`;
 export const REVIEW_GROUPS_BASIC_API_URL = `${serverUrl}/${VERSION2}/groups`;
 
-interface GetReviewListEndPointParams {
+interface GetReviewListEndpointParams {
   lastReviewId: number | null;
   size: number;
   reviewRequestCode: string;
@@ -70,7 +70,7 @@ const endPoint = {
   gettingDetailedReview: (reviewId: number) => `${DETAILED_REVIEW_API_URL}/${reviewId}`,
   gettingDataToWriteReview: (reviewRequestCode: string) =>
     `${REVIEW_WRITING_API_URL}/${REVIEW_WRITING_API_PARAMS.queryString.write}?${REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
-  gettingReceivedReviewList: ({ lastReviewId, size, reviewRequestCode }: GetReviewListEndPointParams) => {
+  gettingReceivedReviewList: ({ lastReviewId, size, reviewRequestCode }: GetReviewListEndpointParams) => {
     const basicUrl = `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/${REVIEW_RECEIVED_LIST_API_PARAMS.resource}`;
     if (lastReviewId) {
       return `${basicUrl}?lastReviewId=${lastReviewId}&size=${size}`;
