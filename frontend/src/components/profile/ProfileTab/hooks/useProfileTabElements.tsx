@@ -5,6 +5,7 @@ import LogoutIcon from '@/assets/logout.svg';
 import MenuIcon from '@/assets/menu.svg';
 import OpenedBookIcon from '@/assets/openedBook.svg';
 import UserIcon from '@/assets/user.svg';
+import { ROUTE } from '@/constants';
 import { ProfileTabElement, SocialType } from '@/types/profile';
 
 interface UseProfileTabElementsProps {
@@ -16,13 +17,11 @@ const useProfileTabElements = ({ profileId, socialType }: UseProfileTabElementsP
   const navigate = useNavigate();
 
   const handleReviewLinkControl = () => {
-    // 리뷰 링크 관리 페이지로 이동
-    console.log('리뷰 링크 관리 클릭');
+    navigate(ROUTE.reviewLinks);
   };
 
   const handleCheckWrittenReviews = () => {
-    // 작성한 리뷰 확인 페이지로 이동
-    console.log('작성한 리뷰 확인 클릭');
+    navigate(ROUTE.writtenReview);
   };
 
   const handleLogout = () => {
