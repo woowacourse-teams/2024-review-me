@@ -30,6 +30,4 @@ public interface ReviewGroupRepository extends JpaRepository<ReviewGroup, Long> 
     boolean existsByReviewRequestCode(String reviewRequestCode);
 
     boolean existsByIdAndMemberId(long id, long memberId);
-
-    List<ReviewGroup> findAllByMemberId(long memberId);
 }
