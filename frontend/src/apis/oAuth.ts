@@ -1,3 +1,5 @@
+import { UserProfile } from '@/types/profile';
+
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
@@ -18,4 +20,23 @@ export const postOAuthLoginApi = async ({ gitHubAuthCode }: GetOAuthLoginApiProp
   }
 
   return {};
+};
+
+export const getUserProfileApi = async () => {
+  try {
+    const response = await fetch(endPoint.gettingUserProfile, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    return data as UserProfile;
+  } catch (error) {
+    return null;
+  }
 };

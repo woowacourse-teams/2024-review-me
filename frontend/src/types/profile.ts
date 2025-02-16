@@ -17,3 +17,9 @@ export interface ProfileTabElement {
   content?: ProfileTabElementContent; // divider 제외 지정
   handleClick?: () => void; // action일 때 지정
 }
+
+export interface UserProfile {
+  memberId: number;
+  nickname: string;
+  profileImageUrl: string;
+}

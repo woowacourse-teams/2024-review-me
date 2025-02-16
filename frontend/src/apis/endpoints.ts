@@ -88,6 +88,7 @@ const endPoint = {
   gettingGroupedReviews: (sectionId: number) =>
     `${REVIEW_GROUP_API_URL}?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
   postingHighlight: `${serverUrl}/${VERSION2}/highlight`,
+  gettingUserProfile: `${serverUrl}/${VERSION2}/members/profile`,
   postingOAuthLogin: (gitHubAuthCode: string) =>
     `${OAUTH_API_URL}?${OAUTH_LOGIN_API_PARAMS.queryString.code}=${gitHubAuthCode}`,
 };

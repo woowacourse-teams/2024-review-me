@@ -1,8 +1,10 @@
 import { http, HttpResponse } from 'msw';
 
-import { OAUTH_API_URL, OAUTH_LOGIN_API_PARAMS } from '@/apis/endpoints';
+import endPoint, { OAUTH_API_URL, OAUTH_LOGIN_API_PARAMS } from '@/apis/endpoints';
 
-import { MOCK_LOGIN_TOKEN_NAME } from '../mockData';
+import { MOCK_LOGIN_TOKEN_NAME, MOCK_USER_PROFILE } from '../mockData';
+
+import { authorizeWithCookie } from './cookies';
 
 const postOAuthLogin = () =>
   http.post(new RegExp(`^${OAUTH_API_URL}`), async ({ request }) => {
@@ -19,6 +21,15 @@ const postOAuthLogin = () =>
     return HttpResponse.json({ error: '깃허브 인증에 실패했어요' }, { status: 401 });
   });
 
-const oAuthHandler = [postOAuthLogin()];
+const getUserProfile = () =>
+  http.get(endPoint.gettingUserProfile, ({ cookies }) => {
+    const handleAPI = () => {
+      return HttpResponse.json(MOCK_USER_PROFILE, { status: 200 });
+    };
+
+    return authorizeWithCookie(cookies, MOCK_LOGIN_TOKEN_NAME, handleAPI);
+  });
+
+const oAuthHandler = [postOAuthLogin(), getUserProfile()];
 
 export default oAuthHandler;
