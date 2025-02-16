@@ -1,20 +1,19 @@
-import { useLocation } from 'react-router';
-
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import ProfileInfo from '@/components/profile/ProfileInfo';
-import { ROUTE } from '@/constants';
-import { useGetUserProfile } from '@/hooks/oAuth';
+import { UserProfile } from '@/types/profile';
 
 import Logo from './components/Logo';
 import * as S from './styles';
 
-const Topbar = () => {
-  const { pathname } = useLocation();
-  const { userProfile, isUserLoggedIn } = useGetUserProfile();
-  const $hasNavigationTab = [ROUTE.reviewLinks, ROUTE.writtenReview].includes(pathname);
+interface TopbarProps {
+  isUserLoggedIn: boolean;
+  $hideBorderBottom: boolean;
+  userProfile: UserProfile | null;
+}
 
+const Topbar = ({ isUserLoggedIn, $hideBorderBottom, userProfile }: TopbarProps) => {
   return (
-    <S.Layout $hasNavigationTab={$hasNavigationTab}>
+    <S.Layout $hideBorderBottom={$hideBorderBottom}>
       <S.Container>
         <UndraggableWrapper>
           <Logo />
