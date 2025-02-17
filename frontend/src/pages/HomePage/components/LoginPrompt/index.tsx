@@ -1,10 +1,10 @@
 import { GitHubLoginButton } from '@/components';
 
-import { FormLayout } from '../layouts';
+import { ContentLayout } from '../layouts';
 
-const OAuthLoginForm = () => {
+const LoginPrompt = () => {
   return (
-    <FormLayout
+    <ContentLayout
       title="함께한 팀원으로부터 리뷰를 받아보세요!"
       subTitleList={[
         '로그인을 하면 리뷰 링크를 직접 관리하지 않아도 돼요.',
@@ -12,8 +12,8 @@ const OAuthLoginForm = () => {
       ]}
     >
       <GitHubLoginButton action="none" />
-    </FormLayout>
+    </ContentLayout>
   );
 };
 
-export default OAuthLoginForm;
+export default LoginPrompt;

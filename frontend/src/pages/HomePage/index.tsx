@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { LoginToggleButton, ErrorSuspenseContainer, URLGeneratorForm } from '@/components';
 import { useGetUserProfile } from '@/hooks/oAuth';
 
-import { OAuthLoginForm, ReviewMeOverview } from './components';
-import UserLoggedInForm from './components/UserLoggedInForm';
+import { LoginPrompt, ReviewLinkPrompt, ReviewMeOverview } from './components';
 import * as S from './styles';
 
 const HomePage = () => {
@@ -13,12 +12,12 @@ const HomePage = () => {
 
   const renderForm = () => {
     if (isUserLoggedIn && userProfile) {
-      return <UserLoggedInForm />;
+      return <ReviewLinkPrompt />;
     }
 
     return (
       <>
-        {showLoginForm ? <OAuthLoginForm /> : <URLGeneratorForm />}
+        {showLoginForm ? <LoginPrompt /> : <URLGeneratorForm />}
         <LoginToggleButton goToLogin={!showLoginForm} handleClick={() => setshowLoginForm(!showLoginForm)} />
       </>
     );

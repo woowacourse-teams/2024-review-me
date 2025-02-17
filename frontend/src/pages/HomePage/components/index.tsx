@@ -1,4 +1,4 @@
 export { default as ReviewMeOverview } from './ReviewMeOverview';
 export { default as InfinityCarousel } from './InfinityCarousel';
-export { default as OAuthLoginForm } from './OAuthLoginForm';
-export { default as UserLoggedInForm } from './UserLoggedInForm';
+export { default as LoginPrompt } from './LoginPrompt';
+export { default as ReviewLinkPrompt } from './ReviewLinkPrompt';
