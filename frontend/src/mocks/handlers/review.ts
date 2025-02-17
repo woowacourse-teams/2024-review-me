@@ -8,6 +8,7 @@ import endPoint, {
   REVIEW_WRITING_API_URL,
   VERSION2,
 } from '@/apis/endpoints';
+import { DEFAULT_SIZE_PER_PAGE } from '@/constants';
 import {
   VALID_REVIEW_REQUEST_CODE,
   DETAILED_REVIEW_MOCK_DATA,
@@ -20,8 +21,10 @@ import {
 } from '@/mocks/mockData';
 
 import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
+import { WRITTEN_REVIEW_LIST } from '../mockData/writtenReviewList';
 
 import { authorizeWithCookie } from './cookies';
+import { paginateDataList } from './pagination';
 
 export const PAGE = {
   firstPageNumber: 1,
@@ -31,6 +34,11 @@ export const PAGE = {
 export const nonMemberOnly = [MOCK_AUTH_TOKEN_NAME];
 export const memberOnly = [MOCK_LOGIN_TOKEN_NAME];
 export const both = [MOCK_AUTH_TOKEN_NAME, MOCK_LOGIN_TOKEN_NAME];
+
+interface GetInfiniteReviewListApiParams {
+  lastReviewId: number | null;
+  size: number;
+}
 
 const getReviewSummaryInfoData = () => {
   const nonMemberUrl = endPoint.gettingReviewSummaryInfoData(VALID_REVIEW_REQUEST_CODE.nonMember);
@@ -74,7 +82,7 @@ const getDataToWriteReview = () =>
   });
 
 // TODO: 추후 getReviewList API에서 리뷰 정보(이름, 개수...)를 내려주지 않는 경우 핸들러도 수정 필요
-const getMemberReceivedReviewList = (lastReviewId: number | null, size: number) => {
+const getMemberReceivedReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
   const memberUrl = endPoint.gettingReceivedReviewList({
     lastReviewId,
     size,
@@ -86,7 +94,7 @@ const getMemberReceivedReviewList = (lastReviewId: number | null, size: number) 
   });
 };
 
-const getNonMemberReceivedReviewList = (lastReviewId: number | null, size: number) => {
+const getNonMemberReceivedReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
   const nonMemberUrl = endPoint.gettingReceivedReviewList({
     lastReviewId,
     size,
@@ -105,21 +113,19 @@ const handleReviewListAPI = (request: StrictRequest<DefaultBodyType>, size: numb
   const lastReviewIdParam = url.searchParams.get('lastReviewId');
   const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
 
-  const isFirstPage = lastReviewId === 0;
-  const startIndex = isFirstPage
-    ? PAGE.firstPageStartIndex
-    : REVIEW_LIST.reviews.findIndex((review) => review.reviewId === lastReviewId) + 1;
-
-  const endIndex = startIndex + size;
-  const paginatedReviews = REVIEW_LIST.reviews.slice(startIndex, endIndex);
-  const isLastPage = endIndex >= REVIEW_LIST.reviews.length;
+  const { isLastPage, paginatedDataList, lastDataId } = paginateDataList({
+    dataList: WRITTEN_REVIEW_LIST.reviews,
+    dataId: 'reviewId',
+    lastDataId: lastReviewId,
+    size: size,
+  });
 
   return HttpResponse.json({
     revieweeName: REVIEW_LIST.revieweeName,
     projectName: REVIEW_LIST.projectName,
-    lastReviewId: paginatedReviews.length > 0 ? paginatedReviews[paginatedReviews.length - 1].reviewId : 0,
+    lastReviewId: lastDataId,
     isLastPage: isLastPage,
-    reviews: paginatedReviews,
+    reviews: paginatedDataList,
   });
 };
 
@@ -156,16 +162,43 @@ const getGroupedReviews = (reviewRequestCode: string) => {
   });
 };
 
+const getWrittenReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
+  return http.get(endPoint.gettingWrittenReviewList(lastReviewId, size), ({ request, cookies }) => {
+    const handleAPI = () => {
+      const url = new URL(request.url);
+      const lastReviewIdParam = url.searchParams.get('lastReviewId');
+      const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
+
+      const { isLastPage, paginatedDataList, lastDataId } = paginateDataList({
+        dataList: WRITTEN_REVIEW_LIST.reviews,
+        dataId: 'reviewId',
+        lastDataId: lastReviewId,
+      });
+
+      return HttpResponse.json({
+        revieweeName: REVIEW_LIST.revieweeName,
+        projectName: REVIEW_LIST.projectName,
+        lastReviewId: lastDataId,
+        isLastPage: isLastPage,
+        reviews: paginatedDataList,
+      });
+    };
+
+    return authorizeWithCookie(cookies, memberOnly, () => handleAPI());
+  });
+};
+
 const reviewHandler = [
   getDetailedReview(),
-  getNonMemberReceivedReviewList(null, 10),
-  getMemberReceivedReviewList(null, 10),
+  getNonMemberReceivedReviewList({ lastReviewId: null, size: DEFAULT_SIZE_PER_PAGE }),
+  getMemberReceivedReviewList({ lastReviewId: null, size: DEFAULT_SIZE_PER_PAGE }),
   getDataToWriteReview(),
   getSectionList(),
   getGroupedReviews(VALID_REVIEW_REQUEST_CODE.member),
   getGroupedReviews(VALID_REVIEW_REQUEST_CODE.nonMember),
   getReviewSummaryInfoData(),
   postReview(),
-]; // 그 로그인쪽 핸들러도 수정해야 할 거 같아요!
+  getWrittenReviewList({ lastReviewId: null, size: DEFAULT_SIZE_PER_PAGE }),
+];
 
 export default reviewHandler;

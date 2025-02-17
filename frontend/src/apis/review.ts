@@ -6,6 +6,7 @@ import {
   GroupedSection,
   GroupedReviews,
   ReviewInfoData,
+  WrittenReviewList,
 } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
@@ -58,11 +59,11 @@ export const getReviewSummaryInfoDataApi = async (reviewRequestCode: string) => 
   return data as ReviewInfoData;
 };
 
-interface GetDetailedReviewApi {
+interface GetDetailedReviewApiParams {
   reviewId: number;
 }
 // 상세 리뷰
-export const getDetailedReviewApi = async ({ reviewId }: GetDetailedReviewApi) => {
+export const getDetailedReviewApi = async ({ reviewId }: GetDetailedReviewApiParams) => {
   const response = await fetch(endPoint.gettingDetailedReview(reviewId), {
     method: 'GET',
     headers: {
@@ -139,4 +140,26 @@ export const getGroupedReviews = async ({ reviewRequestCode, sectionId }: GetGro
 
   const data = await response.json();
   return data as GroupedReviews;
+};
+
+export interface GetWrittenReviewListApiParams {
+  lastReviewId: number | null;
+  size: number;
+}
+
+export const getWrittenReviewListApi = async ({ lastReviewId, size }: GetWrittenReviewListApiParams) => {
+  const response = await fetch(endPoint.gettingWrittenReviewList(lastReviewId, size), {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error(createApiErrorMessage(response.status));
+  }
+
+  const data = await response.json();
+  return data as WrittenReviewList;
 };

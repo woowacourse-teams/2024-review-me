@@ -1,6 +1,7 @@
 package reviewme.review.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.review.domain.Review;
@@ -18,7 +19,7 @@ public class ReviewRegisterService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public long registerReview(ReviewRegisterRequest request, Long memberId) {
+    public long registerReview(ReviewRegisterRequest request, @Nullable Long memberId) {
         Review review = reviewMapper.mapToReview(request, memberId);
         reviewValidator.validate(review);
         Review registeredReview = reviewRepository.save(review);

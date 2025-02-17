@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 import reviewme.review.domain.exception.QuestionNotAnsweredException;
 
 @Entity
-@Table(name = "new_checkbox_answer")
+@Table(name = "checkbox_answer")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
 @Getter

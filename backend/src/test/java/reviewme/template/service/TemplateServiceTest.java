@@ -3,8 +3,8 @@ package reviewme.template.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
-import static reviewme.fixture.ReviewGroupFixture.템플릿_지정_리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.템플릿_지정_비회원_리뷰_그룹;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class TemplateServiceTest {
     @Test
     void 리뷰이에게_작성될_리뷰_양식_생성_시_저장된_템플릿이_없을_경우_예외가_발생한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
         String reviewRequestCode = reviewGroup.getReviewRequestCode();
 
         // when, then
@@ -53,7 +53,7 @@ class TemplateServiceTest {
         Section section1 = new Section(VisibleType.ALWAYS, List.of(question1), null, "섹션1", "헤더", 1);
         Section section2 = new Section(VisibleType.ALWAYS, List.of(question2), null, "섹션2", "헤더", 2);
         Template template = templateRepository.save(new Template(List.of(section1, section2)));
-        ReviewGroup reviewGroup = reviewGroupRepository.save(템플릿_지정_리뷰_그룹(template.getId()));
+        ReviewGroup reviewGroup = reviewGroupRepository.save(템플릿_지정_비회원_리뷰_그룹(template.getId()));
 
         // when
         SectionNamesResponse actual = templateService.getSectionNames();

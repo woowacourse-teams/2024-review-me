@@ -3,7 +3,7 @@ package reviewme.review.service.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class ReviewListMapperTest {
     @Test
     void 리뷰_그룹에_있는_리뷰를_반환한다() {
         // given - 리뷰 그룹
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         // given - 리뷰 답변 저장
         TextAnswer textAnswer = new TextAnswer(1L, "텍스트형 응답");

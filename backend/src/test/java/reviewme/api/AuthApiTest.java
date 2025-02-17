@@ -80,7 +80,7 @@ public class AuthApiTest extends ApiTest {
 
         givenWithSpec().log().all()
                 .body(request)
-                .when().post("/v2/auth/review-group")
+                .when().post("/v2/auth/group")
                 .then().log().all()
                 .apply(handler)
                 .cookie("JSESSIONID")

@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import reviewme.auth.controller.AuthController;
 import reviewme.auth.service.AuthService;
-import reviewme.global.session.SessionManager;
+import reviewme.security.session.SessionManager;
 import reviewme.highlight.controller.HighlightController;
 import reviewme.highlight.service.HighlightService;
 import reviewme.member.controller.MemberController;
@@ -40,7 +40,6 @@ import reviewme.review.service.ReviewListLookupService;
 import reviewme.review.service.ReviewRegisterService;
 import reviewme.review.service.ReviewSummaryService;
 import reviewme.reviewgroup.controller.ReviewGroupController;
-import reviewme.reviewgroup.controller.ReviewGroupSessionResolver;
 import reviewme.reviewgroup.service.ReviewGroupLookupService;
 import reviewme.reviewgroup.service.ReviewGroupService;
 import reviewme.template.controller.SectionController;
@@ -96,9 +95,6 @@ public abstract class ApiTest {
 
     @MockBean
     protected SessionManager sessionManager;
-
-    @MockBean
-    private ReviewGroupSessionResolver reviewGroupSessionResolver;
 
     Filter sessionCookieFilter = (request, response, chain) -> {
         chain.doFilter(request, response);

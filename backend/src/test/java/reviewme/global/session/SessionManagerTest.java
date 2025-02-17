@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import reviewme.auth.domain.GitHubMember;
+import reviewme.security.session.SessionManager;
 import reviewme.support.ServiceTest;
 
 @ServiceTest

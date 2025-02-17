@@ -46,6 +46,14 @@ export const REVIEW_GROUP_API_PARAMS = {
   },
 };
 
+export const WRITTEN_REVIEW_PARAMS = {
+  resource: 'reviews/authored',
+  queryString: {
+    lastReviewId: 'lastReviewId',
+    size: 'size',
+  },
+};
+
 export const OAUTH_LOGIN_API_PARAMS = {
   resource: 'auth/github',
   queryString: {
@@ -56,6 +64,7 @@ export const OAUTH_LOGIN_API_PARAMS = {
 export const REVIEW_WRITING_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_WRITING_API_PARAMS.resource}`;
 export const DETAILED_REVIEW_API_URL = `${serverUrl}/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}`;
 export const REVIEW_GROUPS_BASIC_API_URL = `${serverUrl}/${VERSION2}/groups`;
+export const WRITTEN_REVIEW_LIST_API_URL = `${serverUrl}/${VERSION2}/${WRITTEN_REVIEW_PARAMS.resource}`;
 export const OAUTH_API_URL = `${serverUrl}/${VERSION2}/${OAUTH_LOGIN_API_PARAMS.resource}`;
 
 interface GetReviewListEndpointParams {
@@ -96,6 +105,12 @@ const endPoint = {
   postingOAuthLogin: (gitHubAuthCode: string) =>
     `${OAUTH_API_URL}?${OAUTH_LOGIN_API_PARAMS.queryString.code}=${gitHubAuthCode}`,
   postingOAuthLogout: `${serverUrl}/${VERSION2}/auth/logout`,
+  gettingWrittenReviewList: (lastReviewId: number | null, size: number) => {
+    const basicUrl = `${WRITTEN_REVIEW_LIST_API_URL}?${WRITTEN_REVIEW_PARAMS.queryString.size}=${size}`;
+
+    if (!lastReviewId) return basicUrl;
+    return basicUrl + '&' + `${WRITTEN_REVIEW_PARAMS.queryString.lastReviewId}=${lastReviewId}`;
+  },
 };
 
 export default endPoint;

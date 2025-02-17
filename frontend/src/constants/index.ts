@@ -7,4 +7,5 @@ export * from './highlight';
 export * from './storageKey';
 export * from './amplitudeEventName';
 export * from './route';
+export * from './infinityScroll';
 export * from './oAuth';

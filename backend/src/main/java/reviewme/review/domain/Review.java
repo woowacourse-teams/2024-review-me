@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 @Entity
-@Table(name = "new_review")
+@Table(name = "review")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter

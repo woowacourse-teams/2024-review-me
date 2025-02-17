@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.auth.domain.GitHubMember;
 import reviewme.auth.service.AuthService;
-import reviewme.global.session.SessionManager;
+import reviewme.security.session.SessionManager;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 
 @RestController
@@ -32,7 +32,7 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/v2/auth/review-group")
+    @PostMapping("/v2/auth/group")
     public ResponseEntity<Void> authWithReviewGroup(
             @Valid @RequestBody CheckValidAccessRequest request,
             HttpSession session

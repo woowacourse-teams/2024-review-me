@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.List;
@@ -50,7 +50,7 @@ class HighlightMapperTest {
         Question question = 서술형_필수_질문();
         Section section = 항상_보이는_섹션(List.of(question));
         Template template = templateRepository.save(new Template(List.of(section)));
-        long reviewGroupId = reviewGroupRepository.save(리뷰_그룹()).getId();
+        long reviewGroupId = reviewGroupRepository.save(비회원_리뷰_그룹()).getId();
 
         TextAnswer textAnswer1 = new TextAnswer(question.getId(), "text answer1");
         TextAnswer textAnswer2 = new TextAnswer(question.getId(), "text answer2");
