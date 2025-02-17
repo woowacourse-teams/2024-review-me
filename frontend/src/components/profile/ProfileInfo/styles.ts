@@ -16,7 +16,6 @@ export const ProfileContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
-  padding: 0 1rem;
 `;
 
 export const ProfileImageWrapper = styled.div`
@@ -28,12 +27,11 @@ export const ProfileImageWrapper = styled.div`
   width: 2.8rem;
   height: 2.8rem;
 
-  background-color: ${({ theme }) => theme.colors.gray};
+  border: 0.1rem solid ${({ theme }) => theme.colors.disabledText};
   border-radius: 50%;
 
-  ${media.small} {
-    width: 2.6rem;
-    height: 2.6rem;
+  img {
+    object-fit: cover;
   }
 `;
 

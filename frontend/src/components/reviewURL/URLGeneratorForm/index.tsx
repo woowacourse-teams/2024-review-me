@@ -16,6 +16,7 @@ const MODAL_KEYS = {
 interface URLGeneratorFormProps {
   isMember?: boolean;
 }
+
 const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
   const { revieweeName, projectName, password, isFormValid, resetForm, urlGeneratorStateUpdater } =
     useURLGeneratorState({ isMember });
