@@ -3,4 +3,5 @@ dist
 
 yarn-error.log
 .env
+.env.production
 .env.sentry-build-plugin
