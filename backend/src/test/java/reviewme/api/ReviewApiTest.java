@@ -14,7 +14,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
@@ -31,12 +31,12 @@ import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionRes
 import reviewme.review.service.dto.response.gathered.SimpleQuestionResponse;
 import reviewme.review.service.dto.response.gathered.TextResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
+import reviewme.review.service.dto.response.list.AuthoredReviewElementResponse;
+import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
+import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
 import reviewme.review.service.dto.response.list.SelectedCategoryOptionResponse;
-import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
-import reviewme.review.service.dto.response.list.AuthoredReviewElementResponse;
-import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.template.domain.QuestionType;
 
@@ -205,9 +205,9 @@ class ReviewApiTest extends ApiTest {
     @Test
     void 자신이_받은_리뷰_목록을_조회한다() {
         List<ReceivedReviewPageElementResponse> receivedReviews = List.of(
-                new ReceivedReviewPageElementResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
+                new ReceivedReviewPageElementResponse(1L, LocalDateTime.of(2024, 8, 1, 0, 0), "(리뷰 미리보기 1)",
                         List.of(new SelectedCategoryOptionResponse(1L, "카테고리 1"))),
-                new ReceivedReviewPageElementResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
+                new ReceivedReviewPageElementResponse(2L, LocalDateTime.of(2024, 8, 2, 0, 0), "(리뷰 미리보기 2)",
                         List.of(new SelectedCategoryOptionResponse(2L, "카테고리 2")))
         );
         ReceivedReviewPageResponse response = new ReceivedReviewPageResponse(
@@ -372,13 +372,14 @@ class ReviewApiTest extends ApiTest {
                 .willReturn(new GitHubMember(1L, "githubName", "githubURL"));
 
         List<AuthoredReviewElementResponse> authoredReviews = List.of(
-                new AuthoredReviewElementResponse(1L, "테드1", "리뷰미", LocalDate.of(2024, 8, 2), "(리뷰 미리보기 1)",
+                new AuthoredReviewElementResponse(1L, "테드1", "리뷰미", LocalDateTime.of(2024, 8, 2, 0, 0), "(리뷰 미리보기 1)",
                         List.of(new SelectedCategoryOptionResponse(1L, "카테고리 1"))),
-                new AuthoredReviewElementResponse(2L, "테드2", "리뷰미", LocalDate.of(2024, 8, 1), "(리뷰 미리보기 2)",
+                new AuthoredReviewElementResponse(2L, "테드2", "리뷰미", LocalDateTime.of(2024, 8, 1, 0, 0), "(리뷰 미리보기 2)",
                         List.of(new SelectedCategoryOptionResponse(2L, "카테고리 2")))
         );
         AuthoredReviewsResponse response = new AuthoredReviewsResponse(1L, true, authoredReviews);
-        BDDMockito.given(reviewListLookupService.getAuthoredReviews(nullable(Long.class), nullable(Integer.class), anyLong()))
+        BDDMockito.given(reviewListLookupService.getAuthoredReviews(anyLong(),
+                        nullable(Long.class), nullable(Integer.class)))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
