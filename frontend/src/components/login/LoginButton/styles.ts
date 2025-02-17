@@ -6,6 +6,10 @@ export const ButtonLabelContainer = styled.div`
   display: flex;
   gap: 0.8rem;
   align-items: center;
+
+  span {
+    white-space: nowrap;
+  }
 `;
 
 export const LogoImg = styled.img<Pick<LoginButtonStyleProps, '$logoImgStyle'>>`

@@ -3,13 +3,22 @@ import { LoginButton } from '@/components/login';
 import { LoginButtonStyleProps } from '@/components/login/LoginButton';
 import { GITHUB_AUTHORIZATION_URL } from '@/constants';
 
+// 로그인 시 동작
+export type ActionOnLogin = 'none' | 'reviewWrite' | 'reviewCheck';
+export type StateType = {
+  prevUrl: string;
+  action: ActionOnLogin;
+};
+
 interface GitHubLoginButtonProps extends LoginButtonStyleProps {
-  // handleClick: () => void;
+  action: ActionOnLogin;
 }
 
-const GitHubLoginButton = ({ $logoImgStyle, $buttonStyle }: GitHubLoginButtonProps) => {
+const GitHubLoginButton = ({ action, $logoImgStyle, $buttonStyle }: GitHubLoginButtonProps) => {
+  const currentUrl = location.pathname;
+  const state = JSON.stringify({ prevUrl: currentUrl, action: action });
   const redirectToGitHub = () => {
-    window.location.href = GITHUB_AUTHORIZATION_URL;
+    window.location.href = `${GITHUB_AUTHORIZATION_URL}&state=${encodeURIComponent(state)}`;
   };
 
   return (

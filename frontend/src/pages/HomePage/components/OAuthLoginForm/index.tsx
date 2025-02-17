@@ -17,4 +17,3 @@ const OAuthLoginForm = () => {
 };
 
 export default OAuthLoginForm;
-// 옙
