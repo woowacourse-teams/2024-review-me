@@ -1,6 +1,5 @@
 package reviewme.review.repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,20 +33,4 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByMemberIdWithLimit(long memberId, Long lastReviewId, int limit);
 
     int countByReviewGroupId(long reviewGroupId);
-
-    @Query("""
-            SELECT COUNT(r.id) > 0 FROM Review r
-            WHERE r.reviewGroupId = :reviewGroupId
-            AND r.id < :reviewId
-            AND r.createdAt <= :createdDate
-            """)
-    boolean existsOlderReviewInGroup(long reviewGroupId, long reviewId, LocalDateTime createdDate);
-
-    @Query("""
-            SELECT COUNT(r.id) > 0 FROM Review r
-            WHERE r.memberId = :memberId
-            AND r.id < :reviewId
-            AND r.createdAt <= :createdDate
-            """)
-    boolean existsOlderReviewInMember(long memberId, long reviewId, LocalDateTime createdDate);
 }
