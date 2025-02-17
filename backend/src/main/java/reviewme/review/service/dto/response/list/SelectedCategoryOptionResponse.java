@@ -1,6 +1,7 @@
 package reviewme.review.service.dto.response.list;
 
-public record ReviewCategoryResponse(
+public record SelectedCategoryOptionResponse(
+
         long optionId,
         String content
 ) {

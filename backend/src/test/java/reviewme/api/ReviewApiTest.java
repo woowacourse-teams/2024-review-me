@@ -33,7 +33,7 @@ import reviewme.review.service.dto.response.gathered.TextResponse;
 import reviewme.review.service.dto.response.gathered.VoteResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
-import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
+import reviewme.review.service.dto.response.list.SelectedCategoryOptionResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
 import reviewme.review.service.dto.response.list.AuthoredReviewElementResponse;
 import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
@@ -206,9 +206,9 @@ class ReviewApiTest extends ApiTest {
     void 자신이_받은_리뷰_목록을_조회한다() {
         List<ReceivedReviewPageElementResponse> receivedReviews = List.of(
                 new ReceivedReviewPageElementResponse(1L, LocalDate.of(2024, 8, 1), "(리뷰 미리보기 1)",
-                        List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
+                        List.of(new SelectedCategoryOptionResponse(1L, "카테고리 1"))),
                 new ReceivedReviewPageElementResponse(2L, LocalDate.of(2024, 8, 2), "(리뷰 미리보기 2)",
-                        List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
+                        List.of(new SelectedCategoryOptionResponse(2L, "카테고리 2")))
         );
         ReceivedReviewPageResponse response = new ReceivedReviewPageResponse(
                 "아루3", "리뷰미", 1L, true, receivedReviews);
@@ -239,9 +239,9 @@ class ReviewApiTest extends ApiTest {
                 fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
                 fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
 
-                fieldWithPath("reviews[].categories[]").description("카테고리 목록"),
-                fieldWithPath("reviews[].categories[].optionId").description("카테고리 ID"),
-                fieldWithPath("reviews[].categories[].content").description("카테고리 내용")
+                fieldWithPath("reviews[].categoryOptions[]").description("선택된 카테고리 목록"),
+                fieldWithPath("reviews[].categoryOptions[].optionId").description("카테고리 ID"),
+                fieldWithPath("reviews[].categoryOptions[].content").description("카테고리 내용")
         };
 
         RestDocumentationResultHandler handler = document(
@@ -373,11 +373,11 @@ class ReviewApiTest extends ApiTest {
 
         List<AuthoredReviewElementResponse> authoredReviews = List.of(
                 new AuthoredReviewElementResponse(1L, "테드1", "리뷰미", LocalDate.of(2024, 8, 2), "(리뷰 미리보기 1)",
-                        List.of(new ReviewCategoryResponse(1L, "카테고리 1"))),
+                        List.of(new SelectedCategoryOptionResponse(1L, "카테고리 1"))),
                 new AuthoredReviewElementResponse(2L, "테드2", "리뷰미", LocalDate.of(2024, 8, 1), "(리뷰 미리보기 2)",
-                        List.of(new ReviewCategoryResponse(2L, "카테고리 2")))
+                        List.of(new SelectedCategoryOptionResponse(2L, "카테고리 2")))
         );
-        AuthoredReviewsResponse response = new AuthoredReviewsResponse(authoredReviews, 1L, true);
+        AuthoredReviewsResponse response = new AuthoredReviewsResponse(1L, true, authoredReviews);
         BDDMockito.given(reviewListLookupService.getAuthoredReviews(nullable(Long.class), nullable(Integer.class), anyLong()))
                 .willReturn(response);
 
@@ -396,14 +396,14 @@ class ReviewApiTest extends ApiTest {
 
                 fieldWithPath("reviews[]").description("리뷰 목록 (생성일 기준 내림차순 정렬)"),
                 fieldWithPath("reviews[].reviewId").description("리뷰 ID"),
-                fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
-                fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
                 fieldWithPath("reviews[].revieweeName").description("리뷰이 이름"),
                 fieldWithPath("reviews[].projectName").description("프로젝트명"),
+                fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
+                fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
 
-                fieldWithPath("reviews[].categories[]").description("카테고리 목록"),
-                fieldWithPath("reviews[].categories[].optionId").description("카테고리 ID"),
-                fieldWithPath("reviews[].categories[].content").description("카테고리 내용")
+                fieldWithPath("reviews[].categoryOptions[]").description("선택된 카테고리 목록"),
+                fieldWithPath("reviews[].categoryOptions[].optionId").description("카테고리 ID"),
+                fieldWithPath("reviews[].categoryOptions[].content").description("카테고리 내용")
         };
 
         RestDocumentationResultHandler handler = document(
