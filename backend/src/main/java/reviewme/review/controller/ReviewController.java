@@ -94,7 +94,7 @@ public class ReviewController {
             @LoginMemberSession LoginMember loginMember
     ) {
         AuthoredReviewsResponse response = reviewListLookupService.getAuthoredReviews(
-                lastReviewId, size, loginMember.id());
+                loginMember.id(), lastReviewId, size);
         return ResponseEntity.ok(response);
     }
 }
