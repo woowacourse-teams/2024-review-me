@@ -98,7 +98,7 @@ class ReviewGroupRepositoryTest {
                     memberId, null, limit);
 
             // then
-            assertThat(response).hasSize(4);
+            assertThat(response).hasSize(numberOfReviewGroup);
         }
 
         @Test
@@ -138,7 +138,5 @@ class ReviewGroupRepositoryTest {
             // then
             assertThat(response).extracting(ReviewGroupPageElementResponse::reviewCount).containsOnly((long) reviewCount);
         }
-
     }
-
 }
