@@ -1,27 +1,57 @@
-import ReviewListItem from '@/components/ReviewListItem';
+import { useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router';
 
+import { ReviewPreview, TopButton } from '@/components';
+import { useInfiniteScroll } from '@/hooks';
+
+import { useDeviceBreakpoints, useGetWrittenReviewList } from '../../hooks';
 import { PageContentLayout } from '../layouts';
 
 import * as S from './styles';
 
-interface WrittenReviewListProps {
-  handleClick: (reviewId: number) => void;
-}
+const WrittenReviewList = () => {
+  const navigate = useNavigate();
+  const { deviceType } = useDeviceBreakpoints();
+  const { reviewList, isLastPage, fetchNextPage, isSuccess, isFetchingNextPage } = useGetWrittenReviewList();
 
-const WrittenReviewList = ({ handleClick }: WrittenReviewListProps) => {
-  // 리뷰 리스트 받아오기
-  const reviewIdList = [5, 1, 2, 3, 4];
+  const containerRef = useRef<HTMLUListElement | null>(null);
+
+  const lastReviewElementRef = useInfiniteScroll({
+    fetchNextPage,
+    isFetchingNextPage,
+    isLastPage,
+  });
+
+  const handleReviewItemClick = useCallback((reviewId: number) => {
+    const params = new URLSearchParams();
+    params.set('reviewId', reviewId.toString());
+
+    navigate(`${location.pathname}?${params.toString()}`);
+  }, []);
 
   return (
     <PageContentLayout title="작성한 리뷰 목록">
-      <S.WrittenReviewList>
-        {/** 추후 이벤트 위임 형식으로 변경 가능 */}
+      {isSuccess && (
+        <S.WrittenReviewList ref={containerRef}>
+          {reviewList.map((review) => (
+            <ReviewPreview
+              id={review.reviewId}
+              key={review.reviewId}
+              createdAt={review.createdAt}
+              contentPreview={review.contentPreview}
+              categories={review.categories}
+              projectName={review.projectName}
+              revieweeName={review.revieweeName}
+              handleClick={handleReviewItemClick}
+            />
+          ))}
+          {!isFetchingNextPage && !isLastPage && (
+            <div ref={lastReviewElementRef} style={{ minWidth: '0.1rem', minHeight: '0.1rem' }} />
+          )}
 
-        {/** TODO: 작성한 리뷰 없을 때의 컴포넌트 추가*/}
-        {reviewIdList.map((reviewId) => (
-          <ReviewListItem key={reviewId} handleClick={() => handleClick(reviewId)} />
-        ))}
-      </S.WrittenReviewList>
+          {!deviceType.isDesktop && <TopButton containerRef={containerRef} />}
+        </S.WrittenReviewList>
+      )}
     </PageContentLayout>
   );
 };

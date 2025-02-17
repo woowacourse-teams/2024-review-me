@@ -1,25 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, RefObject } from 'react';
 
 const TOP_BUTTON_DISPLAY_THRESHOLD = 500;
 
-const useTopButton = () => {
+const useTopButton = (containerRef?: RefObject<HTMLElement>) => {
   const [showTopButton, setShowTopButton] = useState(false);
 
-  const handleShowTopButton = () => {
-    if (window.scrollY > TOP_BUTTON_DISPLAY_THRESHOLD) {
-      setShowTopButton(true);
-    } else {
-      setShowTopButton(false);
-    }
-  };
-
   useEffect(() => {
-    window.addEventListener('scroll', handleShowTopButton);
+    const handleShowTopButton = () => {
+      const containerElement = containerRef?.current;
+      const currentScrollTop = containerElement ? containerElement.scrollTop : window.scrollY;
+      setShowTopButton(currentScrollTop > TOP_BUTTON_DISPLAY_THRESHOLD);
+    };
+
+    const containerElement = containerRef?.current || window;
+    containerElement.addEventListener('scroll', handleShowTopButton);
 
     return () => {
-      window.removeEventListener('scroll', handleShowTopButton);
+      containerElement.removeEventListener('scroll', handleShowTopButton);
     };
-  }, []);
+  }, [containerRef?.current]);
 
   return { showTopButton };
 };

@@ -1,6 +1,6 @@
-import { http, HttpResponse } from 'msw';
+import { DefaultBodyType, http, HttpResponse, StrictRequest } from 'msw';
 
-import endPoint, { REVIEW_GROUP_DATA_API_PARAMS, REVIEW_GROUP_DATA_API_URL } from '@/apis/endpoints';
+import endPoint, { REVIEW_GROUP_DATA_API_PARAMS } from '@/apis/endpoints';
 import { API_ERROR_MESSAGE, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
 import { getRequestBody } from '@/utils/mockingUtils';
 
@@ -13,15 +13,27 @@ import {
 
 // NOTE: reviewRequestCode 생성 정상 응답
 const postDataForReviewRequestCode = () => {
-  return http.post(endPoint.postingDataForReviewRequestCode, async ({ request }) => {
+  return http.post(endPoint.postingDataForReviewRequestCode, async ({ request, cookies }) => {
     // request body의 존재 검증
     const bodyResult = await getRequestBody(request);
 
     if (bodyResult instanceof Error) return HttpResponse.json({ error: bodyResult.message }, { status: 400 });
-    const { nonMember: nonMemberReviewRequestCode, member: memberReviewRequestCode } = VALID_REVIEW_REQUEST_CODE;
+
+    const isNonMember = 'groupAccessCode' in bodyResult;
+    const reviewRequestCode = isNonMember ? VALID_REVIEW_REQUEST_CODE.nonMember : VALID_REVIEW_REQUEST_CODE.member;
+
+    // 회원용일 경우, credentials과 쿠키 검증
+    if (!isNonMember) {
+      const isError = request.credentials !== 'include' || !cookies[MOCK_AUTH_TOKEN_NAME];
+
+      if (isError) {
+        return HttpResponse.json({ error: '인증 관련 쿠키를 가져올 수 없습니다' }, { status: 401 });
+      }
+    }
+
     return HttpResponse.json(
       {
-        reviewRequestCode: 'groupAccessCode' in bodyResult ? nonMemberReviewRequestCode : memberReviewRequestCode,
+        reviewRequestCode,
       },
       { status: 200 },
     );
@@ -29,7 +41,7 @@ const postDataForReviewRequestCode = () => {
 };
 
 const postPassWordValidation = () => {
-  return http.post(endPoint.checkingPassword, async ({ request, cookies }) => {
+  return http.post(endPoint.checkingReviewRequestPassword, async ({ request, cookies }) => {
     const bodyResult = await getRequestBody(request);
     if (bodyResult instanceof Error) return HttpResponse.json({ error: bodyResult.message }, { status: 400 });
 
@@ -59,28 +71,54 @@ const postPassWordValidation = () => {
   });
 };
 
+const handleReviewGroupDataRequest = (request: StrictRequest<DefaultBodyType>) => {
+  const url = new URL(request.url);
+  const params = new URLSearchParams(url.search);
+  const { queryString } = REVIEW_GROUP_DATA_API_PARAMS;
+
+  // 리뷰 그룹 정보에 대한 요청인지 확인
+  if (!params.has(queryString.reviewRequestCode)) {
+    return HttpResponse.json({ error: '리뷰 요청 코드가 없습니다.' }, { status: 400 });
+  }
+
+  // 요청 URL에서 reviewRequestCode 추출
+  const reviewRequestCode = params.get(queryString.reviewRequestCode);
+
+  // 유효한 리뷰 요청 코드인지 확인
+  if (reviewRequestCode) {
+    return HttpResponse.json(REVIEW_GROUP_DATA, { status: 200 });
+  }
+
+  return HttpResponse.json({ error: '잘못된 리뷰 그룹 데이터 요청' }, { status: 404 });
+};
+
 /**
  * 리뷰 연결 페이지에서 리뷰이 이름, 프로젝트 이름을 가져오는 목 핸들러
  */
 // 예시 출력
-const getReviewGroupData = () => {
-  return http.get(new RegExp(`^${REVIEW_GROUP_DATA_API_URL}?`), async ({ request }) => {
-    const url = new URL(request.url);
-    const params = new URLSearchParams(url.search);
-    const { queryString } = REVIEW_GROUP_DATA_API_PARAMS;
-    // 리뷰 그룹 정보에 대한 요청인지 확인
-    if (!params.has(queryString.reviewRequestCode)) return;
+const getNonMemberReviewGroupData = () => {
+  const { nonMember } = VALID_REVIEW_REQUEST_CODE;
+  const nonMemberUrl = endPoint.gettingReviewGroupData(nonMember);
 
-    //요청 url에서 reviewRequestCode 추출
-    const reviewRequestCode = params.get(queryString.reviewRequestCode);
-
-    if (reviewRequestCode) {
-      return HttpResponse.json(REVIEW_GROUP_DATA);
-    }
-
-    return HttpResponse.json({ error: '잘못된 리뷰 그룹 데이터 요청' }, { status: 404 });
+  return http.get(nonMemberUrl, async ({ request }) => {
+    return handleReviewGroupDataRequest(request);
   });
 };
-const groupHandler = [postDataForReviewRequestCode(), getReviewGroupData(), postPassWordValidation()];
+
+const getMemberReviewGroupData = () => {
+  const { member } = VALID_REVIEW_REQUEST_CODE;
+  const memberUrl = endPoint.gettingReviewGroupData(member);
+
+  return http.get(memberUrl, async ({ request }) => {
+    return handleReviewGroupDataRequest(request);
+  });
+};
+
+const groupHandler = [
+  postDataForReviewRequestCode(),
+  getNonMemberReviewGroupData(),
+  getMemberReviewGroupData(),
+  postPassWordValidation(),
+];
 
 export default groupHandler;

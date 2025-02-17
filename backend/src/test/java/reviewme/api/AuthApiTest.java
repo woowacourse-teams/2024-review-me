@@ -1,38 +1,56 @@
 package reviewme.api;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
-import org.springframework.restdocs.request.ParameterDescriptor;
+import reviewme.member.service.dto.ProfileResponse;
 
 public class AuthApiTest extends ApiTest {
 
     @Test
     void 깃허브로_인증한다() {
-        ParameterDescriptor[] parameterDescriptors = {
-                parameterWithName("code").description("깃허브 임시 인증 코드")
+        given(memberService.getProfile(any()))
+                .willReturn(new ProfileResponse(1L, "nickname", "profileImageUrl"));
+
+        String request = """
+                {
+                    "code": "1234567890"
+                }
+                """;
+
+        FieldDescriptor[] requestFieldDescriptors = {
+                fieldWithPath("code").description("깃허브 임시 인증 코드")
+        };
+
+        FieldDescriptor[] responseFieldDescriptors = {
+                fieldWithPath("memberId").description("회원 ID"),
+                fieldWithPath("nickname").description("깃허브 닉네임"),
+                fieldWithPath("profileImageUrl").description("깃허브 프로필 URL")
         };
 
         RestDocumentationResultHandler handler = document(
                 "github-auth",
-                queryParameters(parameterDescriptors)
+                requestFields(requestFieldDescriptors),
+                responseFields(responseFieldDescriptors)
         );
 
         givenWithSpec().log().all()
-                .when().get("/v2/auth/github?code=github_auth_code")
+                .body(request)
+                .when().post("/v2/auth/github")
                 .then().log().all()
                 .apply(handler)
-                .statusCode(204);
+                .statusCode(200);
     }
 
     @Test

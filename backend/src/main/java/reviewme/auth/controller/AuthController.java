@@ -5,15 +5,16 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.auth.domain.GitHubMember;
 import reviewme.auth.service.AuthService;
-import reviewme.security.session.SessionManager;
+import reviewme.auth.service.dto.GitHubOAuthRequest;
+import reviewme.member.service.MemberService;
+import reviewme.member.service.dto.ProfileResponse;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
+import reviewme.security.session.SessionManager;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,15 +22,17 @@ public class AuthController {
 
     private final SessionManager sessionManager;
     private final AuthService authService;
+    private final MemberService memberService;
 
-    @GetMapping("/v2/auth/github")
-    public ResponseEntity<Void> authWithGithub(
-            @RequestParam String code,
+    @PostMapping("/v2/auth/github")
+    public ResponseEntity<ProfileResponse> authWithGitHub(
+            @RequestBody GitHubOAuthRequest request,
             HttpSession session
     ) {
-        GitHubMember gitHubMember = authService.authWithGithub(code);
+        GitHubMember gitHubMember = authService.authWithGitHub(request);
         sessionManager.saveGitHubMember(session, gitHubMember);
-        return ResponseEntity.noContent().build();
+        ProfileResponse response = memberService.getProfile(gitHubMember);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/v2/auth/group")
