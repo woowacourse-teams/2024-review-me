@@ -10,14 +10,19 @@ export const postDataForReviewRequestCodeApi = async ({
 }: DataForReviewRequestCode) => {
   const requestData = groupAccessCode ? { ...commonRequestData, groupAccessCode } : commonRequestData;
 
-  const response = await fetch(endPoint.postingDataForReviewRequestCode, {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    // TODO : 회원 리뷰 링크 API 문서 나오면 비밀번호 관련해 변경해야함
     body: JSON.stringify(requestData),
-  });
+  };
+
+  if (!groupAccessCode) {
+    fetchOptions.credentials = 'include';
+  }
+
+  const response = await fetch(endPoint.postingDataForReviewRequestCode, fetchOptions);
 
   if (!response.ok) {
     throw new Error(`${createApiErrorMessage(response.status)} ${ERROR_BOUNDARY_IGNORE_ERROR}`);
@@ -39,7 +44,7 @@ export const postPasswordValidationApi = async ({
   groupAccessCode,
   reviewRequestCode,
 }: GetPasswordValidationApiParams): Promise<PasswordResponse> => {
-  const response = await fetch(endPoint.checkingPassword, {
+  const response = await fetch(endPoint.checkingReviewRequestPassword, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -2,15 +2,12 @@ import { useState, useLayoutEffect } from 'react';
 
 import { breakpoint } from '@/styles/theme';
 import { Breakpoints } from '@/types/media';
-import { debounce } from '@/utils';
 
 interface CurrentDevice {
   isMobile: boolean;
   isTablet: boolean;
   isDesktop: boolean;
 }
-
-const DEBOUNCE_TIME = 100;
 
 /**
   현재 미디어 쿼리 상태와 디바이스 종류(boolean)를 리턴하는 훅 
@@ -25,7 +22,7 @@ const useDeviceBreakpoints = () => {
     isDesktop: breakpointType === 'large',
   });
 
-  const handleResize = debounce(() => {
+  const handleResize = () => {
     const currentWidth = window.innerWidth;
 
     // 마지막 breakpoint만 특정 범위 사이의 width 값이 아닌, 해당 기준 이상인 값이므로 따로 처리
@@ -35,7 +32,7 @@ const useDeviceBreakpoints = () => {
     const finalBreakpoint = inRangeBreakpoint || upperBoundBreakpoint;
 
     setBreakPointType((finalBreakpoint[0] as Breakpoints) ?? null);
-  }, DEBOUNCE_TIME);
+  };
 
   useLayoutEffect(() => {
     handleResize();

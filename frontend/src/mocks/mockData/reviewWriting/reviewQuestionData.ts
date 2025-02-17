@@ -1,7 +1,5 @@
 import { ReviewWritingCardSection, ReviewWritingFormData } from '@/types';
 
-export const REVIEW_REQUEST_CODE = 'ABCD1234';
-
 export const FEEDBACK_SECTION: ReviewWritingCardSection = {
   sectionId: 7,
   sectionName: '단점 피드백',

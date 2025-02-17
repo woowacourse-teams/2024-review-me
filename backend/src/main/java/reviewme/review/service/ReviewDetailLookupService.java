@@ -25,7 +25,6 @@ public class ReviewDetailLookupService {
     public ReviewDetailResponse getReviewDetail(long reviewId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewNotFoundException(reviewId));
-
         ReviewGroup reviewGroup = reviewGroupRepository.findById(review.getReviewGroupId())
                 .orElseThrow(() -> new ReviewGroupNotFoundException(review.getReviewGroupId()));
 

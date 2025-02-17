@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 
 import { EDITOR_ANSWER_CLASS_NAME, EDITOR_LINE_CLASS_NAME } from '@/constants';
+import useRequestCodeParam from '@/hooks/useReviewRequestCodeParam';
 import { ReviewAnswerResponseData } from '@/types';
 
 import EditorLineBlock from '../EditorLineBlock';
@@ -21,7 +22,7 @@ export interface HighlightEditorProps {
 
 const HighlightEditor = ({ questionId, answerList, handleErrorModal, handleModalMessage }: HighlightEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
-
+  const { reviewRequestCode } = useRequestCodeParam();
   const { isEditable, handleEditToggleButton } = useEditableState();
 
   const { highlightArea, checkHighlight } = useCheckHighlight();
@@ -45,6 +46,7 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal, handleModal
     removeHighlightByLongPress,
     resetLongPressRemovalTarget,
   } = useHighlight({
+    reviewRequestCode,
     questionId,
     answerList,
     isEditable,

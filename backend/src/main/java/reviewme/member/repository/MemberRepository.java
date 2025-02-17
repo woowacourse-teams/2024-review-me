@@ -6,5 +6,5 @@ import reviewme.member.domain.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    Optional<Member> findByEmail(String email);
+    Optional<Member> findByExternalId(String externalId);
 }
