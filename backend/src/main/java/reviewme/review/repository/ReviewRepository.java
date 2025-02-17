@@ -26,7 +26,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("""
             SELECT r FROM Review r
             WHERE r.memberId = :memberId
-            AND (:lastReviewId IS NULL OR r.id < :lastReviewRd)
+            AND (:lastReviewId IS NULL OR r.id < :lastReviewId)
             ORDER BY r.createdAt DESC, r.id DESC
             LIMIT :limit
             """)
