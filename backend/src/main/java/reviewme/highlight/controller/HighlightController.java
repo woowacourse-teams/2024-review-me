@@ -24,10 +24,6 @@ public class HighlightController {
             @PathVariable String reviewRequestCode,
             @Valid @RequestBody HighlightsRequest request
     ) {
-        /*
-        TODO : aop 인증 로직 필요 (존재하는 세션에 대해 reviewGroupId와 일치 여부 확인)
-        */
-
         // TODO : reviewRequestCode를 위한 임시 사용, 이후 삭제 예정.
         ReviewGroup reviewGroup = reviewGroupService.getReviewGroupByReviewRequestCode(reviewRequestCode);
 
