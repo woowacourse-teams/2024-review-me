@@ -1,7 +1,6 @@
 package reviewme.auth.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,8 +46,7 @@ public class AuthController {
 
     @PostMapping("/v2/auth/logout")
     public ResponseEntity<Void> logout(
-            HttpServletRequest httpRequest,
-            HttpServletResponse response
+            HttpServletRequest httpRequest
     ) {
         HttpSession session = httpRequest.getSession(false);
         if (session != null) {
