@@ -1,4 +1,4 @@
-import { URLGeneratorForm, ReviewPreview } from '@/components';
+import { URLGeneratorForm } from '@/components';
 
 import ReviewLinkLayout from '../layouts/ReviewLinkLayout';
 
@@ -17,7 +17,7 @@ const ReviewLinkDashboard = () => {
           subTitle="클릭하면 해당 프로젝트의 리뷰 목록으로 이동해요"
         >
           {/* TODO: 생성한 리뷰 링크가 없을 경우, 돋보기 컴포넌트 추가 */}
-          <ReviewPreview
+          {/* <ReviewPreview
             createdAt="2024-01-15"
             contentPreview="임시용"
             categories={[
@@ -25,7 +25,8 @@ const ReviewLinkDashboard = () => {
               { optionId: 1, content: '🗣️ 커뮤니케이션 능력' },
             ]}
             handleClick={() => {}}
-          />
+          /> */}
+          <></>
         </ReviewLinkLayout>
       </S.LinkSection>
     </S.ReviewLinkDashboardContainer>

@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
+import { LoadingBar } from '@/components';
 import { StateType } from '@/components/login/GitHubLoginButton';
 import { useToastContext } from '@/components/toast/ToastProvider';
 import { ROUTE } from '@/constants';
 import { useSearchParamAndQuery } from '@/hooks';
 import { useOAuthLogin } from '@/hooks/oAuth';
-
-import LoadingBar from '../LoadingPage/components/LoadingBar';
 
 const OAuthCallbackPage = () => {
   const { queryString: gitHubAuthCode } = useSearchParamAndQuery({
