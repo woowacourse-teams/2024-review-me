@@ -1,9 +1,8 @@
 import { useId, useState } from 'react';
 
 import { ErrorSuspenseContainer, ReviewZoneURLModal } from '@/components';
-import { useToastContext } from '@/components/toast/ToastProvider';
 import { ROUTE } from '@/constants/route';
-import { useModals } from '@/hooks';
+import { useModals, useToastContext } from '@/hooks';
 
 import { PasswordField, ReviewGroupDataField, URLGeneratorButton } from './components';
 import useURLGeneratorState from './hooks/useURLGeneratorState';

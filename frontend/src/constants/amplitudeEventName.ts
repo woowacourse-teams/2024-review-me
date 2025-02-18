@@ -26,6 +26,7 @@ export const PAGE_VISITED_EVENT_NAME: { [key in Exclude<PageName, undefined>]: s
   reviewWritingComplete: '[page] 리뷰 작성 완료 페이지',
   reviewLinks: '[page] 회원 전용 - 리뷰 링크 관리 페이지',
   writtenReview: '[page] 회원 전용 - 작성한 리뷰 확인 페이지',
+  oAuthCallback: '[page] 깃허브 인증 페이지',
 };
 
 export const REVIEW_WRITING_EVENT_NAME = {

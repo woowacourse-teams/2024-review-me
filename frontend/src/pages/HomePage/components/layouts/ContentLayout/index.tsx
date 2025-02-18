@@ -2,12 +2,12 @@ import { EssentialPropsWithChildren } from '@/types';
 
 import * as S from './styles';
 
-interface FormLayoutProps {
+interface ContentLayoutProps {
   title: string;
   subTitleList: string[];
 }
 
-const FormLayout = ({ title, subTitleList, children }: EssentialPropsWithChildren<FormLayoutProps>) => {
+const ContentLayout = ({ title, subTitleList, children }: EssentialPropsWithChildren<ContentLayoutProps>) => {
   return (
     <S.LoginForm>
       <S.Title>{title}</S.Title>
@@ -21,4 +21,4 @@ const FormLayout = ({ title, subTitleList, children }: EssentialPropsWithChildre
   );
 };
 
-export default FormLayout;
+export default ContentLayout;

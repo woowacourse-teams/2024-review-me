@@ -2,10 +2,9 @@ import { http, HttpResponse } from 'msw';
 
 import endPoint, { OAUTH_API_URL, OAUTH_LOGIN_API_PARAMS } from '@/apis/endpoints';
 
-import { MOCK_LOGIN_TOKEN_NAME, MOCK_USER_PROFILE } from '../mockData';
+import { memberOnlyCookie, MOCK_LOGIN_TOKEN_NAME, MOCK_USER_PROFILE } from '../mockData';
 
 import { authorizeWithCookie } from './cookies';
-import { memberOnly } from './review';
 
 const postOAuthLogin = () =>
   http.post(new RegExp(`^${OAUTH_API_URL}`), async ({ request }) => {
@@ -28,7 +27,11 @@ const getUserProfile = () =>
       return HttpResponse.json(MOCK_USER_PROFILE, { status: 200 });
     };
 
-    return authorizeWithCookie(cookies, memberOnly, handleAPI);
+    return authorizeWithCookie({
+      cookies,
+      validateCookieNames: memberOnlyCookie,
+      callback: handleAPI,
+    });
   });
 
 const postOAuthLogout = () =>
@@ -37,11 +40,15 @@ const postOAuthLogout = () =>
       // 로그아웃 성공 시 쿠키 삭제
       return new HttpResponse(null, {
         status: 204,
-        headers: { 'Set-cookie': `${MOCK_LOGIN_TOKEN_NAME}=;` },
+        headers: { 'Set-cookie': `${MOCK_LOGIN_TOKEN_NAME}=; Max-Age=0;` },
       });
     };
 
-    return authorizeWithCookie<HttpResponse>(cookies, memberOnly, handleAPI);
+    return authorizeWithCookie<HttpResponse>({
+      cookies,
+      validateCookieNames: memberOnlyCookie,
+      callback: handleAPI,
+    });
   });
 
 const oAuthHandler = [postOAuthLogin(), getUserProfile(), postOAuthLogout()];

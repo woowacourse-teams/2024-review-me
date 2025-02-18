@@ -5,7 +5,7 @@ import { GITHUB_AUTHORIZATION_URL } from '@/constants';
 
 // 로그인 시 동작
 export type ActionOnLogin = 'none' | 'reviewWrite' | 'reviewCheck';
-export type StateType = {
+export type LoginActionContextType = {
   prevUrl: string;
   action: ActionOnLogin;
 };
