@@ -10,6 +10,6 @@ public record AuthoredReviewElementResponse(
         String projectName,
         LocalDateTime createdAt,
         String contentPreview,
-        List<SelectedCategoryOptionResponse> categories
+        List<SelectedCategoryOptionResponse> categoryOptions
 ) {
 }

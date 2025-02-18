@@ -8,6 +8,6 @@ public record ReceivedReviewPageElementResponse(
         long reviewId,
         LocalDateTime createdAt,
         String contentPreview,
-        List<SelectedCategoryOptionResponse> categories
+        List<SelectedCategoryOptionResponse> categoryOptions
 ) {
 }
