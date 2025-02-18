@@ -180,4 +180,3 @@ export const getWrittenReviewListApi = async ({ lastReviewId, size }: GetWritten
   const data = await response.json();
   return data as WrittenReviewList;
 };
-};

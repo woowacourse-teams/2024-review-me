@@ -89,7 +89,7 @@ const endPoint = {
   postingDataForReviewRequestCode: REVIEW_GROUPS_BASIC_API_URL,
   checkingReviewRequestPassword: `${serverUrl}/${VERSION2}/auth/review-group`,
   gettingReviewGroupData: (reviewRequestCode: string) =>
-    `${REVIEW_GROUPS_BASIC_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
+    `${REVIEW_GROUPS_BASIC_API_URL}/summary?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingSectionList: `${serverUrl}/${VERSION2}/sections`,
   gettingWrittenReviewList: (lastReviewId: number | null, size: number) => {
     const basicUrl = `${WRITTEN_REVIEW_LIST_API_URL}?${WRITTEN_REVIEW_PARAMS.queryString.size}=${size}`;
@@ -101,7 +101,6 @@ const endPoint = {
     `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/reviews/gather?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
   postingHighlight: (reviewRequestCode: string) => `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/highlights`,
   gettingReviewLinks: REVIEW_GROUPS_BASIC_API_URL,
-
 };
 
 export default endPoint;
