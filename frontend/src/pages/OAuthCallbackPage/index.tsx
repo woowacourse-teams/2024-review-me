@@ -35,8 +35,6 @@ const OAuthCallbackPage = () => {
     const redirectUrl =
       prevUrl && prevUrl.includes('review-zone') ? `${prevUrl}?login_action=${action}` : `/${ROUTE.reviewLinks}`;
 
-    console.log(redirectUrl);
-
     mutation.mutate(
       { gitHubAuthCode },
       {
