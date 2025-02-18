@@ -7,6 +7,7 @@ import { getRequestBody } from '@/utils/mockingUtils';
 import {
   MOCK_AUTH_TOKEN_NAME,
   REVIEW_GROUP_DATA,
+  REVIEW_GROUP_DATA_NONMEMBER,
   VALID_REVIEW_REQUEST_CODE,
   VALIDATED_PASSWORD,
 } from '../mockData/group';
@@ -85,8 +86,11 @@ const handleReviewGroupDataRequest = (request: StrictRequest<DefaultBodyType>) =
   const reviewRequestCode = params.get(queryString.reviewRequestCode);
 
   // 유효한 리뷰 요청 코드인지 확인
-  if (reviewRequestCode) {
+  if (reviewRequestCode === VALID_REVIEW_REQUEST_CODE.member) {
     return HttpResponse.json(REVIEW_GROUP_DATA, { status: 200 });
+  }
+  if (reviewRequestCode === VALID_REVIEW_REQUEST_CODE.nonMember) {
+    return HttpResponse.json(REVIEW_GROUP_DATA_NONMEMBER, { status: 200 });
   }
 
   return HttpResponse.json({ error: '잘못된 리뷰 그룹 데이터 요청' }, { status: 404 });

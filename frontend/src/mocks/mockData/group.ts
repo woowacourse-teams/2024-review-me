@@ -18,6 +18,12 @@ export const REVIEW_GROUP_DATA: ReviewGroupData = {
   projectName: '2024-review-me',
 };
 
+export const REVIEW_GROUP_DATA_NONMEMBER: ReviewGroupData = {
+  revieweeId: null,
+  revieweeName: '손님',
+  projectName: '2024-review-me',
+};
+
 /**리뷰 연결 페이지에서 유효한 reviewRequestCode */
 export const VALID_REVIEW_REQUEST_CODE = {
   nonMember: `ABCD1234`,
