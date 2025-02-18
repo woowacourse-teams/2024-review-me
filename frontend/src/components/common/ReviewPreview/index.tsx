@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ReviewDate, ReviewKeyword, RevieweeInfo, UndraggableWrapper } from '@/components';
-import { Category } from '@/types';
+import { CategoryOption } from '@/types';
 
 import * as S from './styles';
 
@@ -10,7 +10,7 @@ interface ReviewPreviewProps {
   createdAt: string;
   projectName?: string;
   contentPreview: string;
-  categories: Category[];
+  categoryOptions: CategoryOption[];
   handleClick: (reviewId: number) => void;
   revieweeName?: string;
 }
@@ -20,7 +20,7 @@ const ReviewPreview = ({
   projectName,
   createdAt,
   contentPreview,
-  categories,
+  categoryOptions,
   handleClick,
   revieweeName,
 }: ReviewPreviewProps) => {
@@ -40,7 +40,7 @@ const ReviewPreview = ({
 
         <S.Footer>
           <S.ReviewKeywordList>
-            {categories.map(({ optionId, content }) => (
+            {categoryOptions.map(({ optionId, content }) => (
               <ReviewKeyword key={optionId} content={content} />
             ))}
           </S.ReviewKeywordList>

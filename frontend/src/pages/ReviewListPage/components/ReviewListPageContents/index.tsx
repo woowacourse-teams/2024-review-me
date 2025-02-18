@@ -46,7 +46,7 @@ const ReviewListPageContents = () => {
               key={review.reviewId}
               createdAt={review.createdAt}
               contentPreview={review.contentPreview}
-              categories={review.categories}
+              categoryOptions={review.categoryOptions}
               handleClick={handleReviewClick}
             />
           ))}

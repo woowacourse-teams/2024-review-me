@@ -84,10 +84,10 @@ export interface ReviewInfo {
   reviewId: number;
   createdAt: string;
   contentPreview: string;
-  categories: Category[];
+  categoryOptions: CategoryOption[];
 }
 
-export interface Category {
+export interface CategoryOption {
   optionId: number;
   content: string;
 }
