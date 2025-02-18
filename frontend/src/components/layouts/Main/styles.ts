@@ -11,7 +11,7 @@ const calculateMinHeight = ({ $isShowBreadCrumb, $isShowNavigationTab, ...theme 
   const breadCrumbHeight = $isShowBreadCrumb ? theme.componentHeight.breadCrumb : '0rem';
   const navigationTabHeight = $isShowNavigationTab ? theme.componentHeight.navigationTab : '0rem';
 
-  return `calc(100vh - ${topbarHeight} - ${footerHeight} - ${breadCrumbHeight}) - ${navigationTabHeight}`;
+  return `calc(100vh - ${topbarHeight} - ${footerHeight} - ${breadCrumbHeight} - ${navigationTabHeight})`;
 };
 
 export const MainContainer = styled.div<MainContainerProps>`
