@@ -239,9 +239,9 @@ class ReviewApiTest extends ApiTest {
                 fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
                 fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
 
-                fieldWithPath("reviews[].categoryOptions[]").description("선택된 카테고리 목록"),
-                fieldWithPath("reviews[].categoryOptions[].optionId").description("카테고리 ID"),
-                fieldWithPath("reviews[].categoryOptions[].content").description("카테고리 내용")
+                fieldWithPath("reviews[].categories[]").description("선택된 카테고리 목록"),
+                fieldWithPath("reviews[].categories[].optionId").description("카테고리 ID"),
+                fieldWithPath("reviews[].categories[].content").description("카테고리 내용")
         };
 
         RestDocumentationResultHandler handler = document(
@@ -402,9 +402,9 @@ class ReviewApiTest extends ApiTest {
                 fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
                 fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
 
-                fieldWithPath("reviews[].categoryOptions[]").description("선택된 카테고리 목록"),
-                fieldWithPath("reviews[].categoryOptions[].optionId").description("카테고리 ID"),
-                fieldWithPath("reviews[].categoryOptions[].content").description("카테고리 내용")
+                fieldWithPath("reviews[].categories[]").description("선택된 카테고리 목록"),
+                fieldWithPath("reviews[].categories[].optionId").description("카테고리 ID"),
+                fieldWithPath("reviews[].categories[].content").description("카테고리 내용")
         };
 
         RestDocumentationResultHandler handler = document(
