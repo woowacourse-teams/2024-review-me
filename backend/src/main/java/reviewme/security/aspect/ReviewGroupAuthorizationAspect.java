@@ -10,10 +10,10 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import reviewme.auth.domain.GitHubMember;
-import reviewme.security.aspect.exception.ForbiddenReviewGroupAccessException;
 import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundException;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.security.aspect.exception.ForbiddenReviewGroupAccessException;
 import reviewme.security.session.SessionManager;
 
 @Aspect
@@ -32,9 +32,9 @@ public class ReviewGroupAuthorizationAspect {
             throw new ForbiddenReviewGroupAccessException();
         }
 
-        long reviewGroupId = getTarget(joinPoint, requireReviewGroupAccess.target(), Long.class);
-        ReviewGroup reviewGroup = reviewGroupRepository.findById(reviewGroupId)
-                .orElseThrow(() -> new ReviewGroupNotFoundException(reviewGroupId));
+        String reviewRequestCode = getTarget(joinPoint, requireReviewGroupAccess.target(), String.class);
+        ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
+                .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
         if (!(canMemberAccess(reviewGroup, session) || canGuestAccess(reviewGroup, session))) {
             throw new ForbiddenReviewGroupAccessException();
         }

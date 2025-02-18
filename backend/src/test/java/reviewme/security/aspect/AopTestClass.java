@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 class AopTestClass {
 
     @RequireReviewGroupAccess
-    public void testReviewGroupMethod(long reviewGroupId) {
+    public void testReviewGroupMethod(String reviewRequestCode) {
     }
 
     @RequireReviewAccess

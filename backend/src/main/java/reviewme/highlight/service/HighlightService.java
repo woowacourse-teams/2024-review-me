@@ -24,9 +24,9 @@ public class HighlightService {
     private final AnswerValidator answerValidator;
 
     @Transactional
-    public void editHighlight(HighlightsRequest highlightsRequest) {
-        ReviewGroup reviewGroup = reviewGroupRepository.findById(highlightsRequest.reviewGroupId())
-                .orElseThrow(() -> new ReviewGroupNotFoundException(highlightsRequest.reviewGroupId()));
+    public void highlightByReviewGroup(long reviewGroupId, HighlightsRequest highlightsRequest) {
+        ReviewGroup reviewGroup = reviewGroupRepository.findById(reviewGroupId)
+                .orElseThrow(() -> new ReviewGroupNotFoundException(reviewGroupId));
         List<Long> requestedAnswerIds = highlightsRequest.getUniqueAnswerIds();
         answerValidator.validateQuestionContainsAnswers(highlightsRequest.questionId(), requestedAnswerIds);
         answerValidator.validateReviewGroupContainsAnswers(reviewGroup, requestedAnswerIds);

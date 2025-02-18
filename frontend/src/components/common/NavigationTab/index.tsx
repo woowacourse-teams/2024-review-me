@@ -1,24 +1,33 @@
-import useNavigationTabs from '@/hooks/useNavigationTabs';
+import { useLocation } from 'react-router';
 
 import NavItem from './NavItem';
 import * as S from './styles';
+export interface Tab {
+  label: '리뷰 링크 관리' | '작성한 리뷰 확인';
+  activePathList: string[];
+  handleTabClick: () => void;
+}
 
-const NavigationTab = () => {
-  const { currentTabIndex, tabList } = useNavigationTabs();
+interface NavigationTabProps {
+  tabList: Tab[];
+}
+
+const NavigationTab = ({ tabList }: NavigationTabProps) => {
+  const { pathname } = useLocation();
+
+  const isActiveTab = (activePaths: string[]) => activePaths.some((activePath) => pathname.includes(activePath));
 
   return (
     <S.NavContainer>
       <S.NavList>
-        {tabList.map((tab, index) => {
-          return (
-            <NavItem
-              key={tab.label}
-              label={tab.label}
-              $isSelected={currentTabIndex === index}
-              onClick={tab.handleTabClick}
-            />
-          );
-        })}
+        {tabList.map((tab) => (
+          <NavItem
+            key={tab.label}
+            label={tab.label}
+            $isActiveTab={isActiveTab(tab.activePathList)}
+            onClick={tab.handleTabClick}
+          />
+        ))}
       </S.NavList>
     </S.NavContainer>
   );

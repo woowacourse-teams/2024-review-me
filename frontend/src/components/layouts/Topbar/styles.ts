@@ -19,9 +19,10 @@ export const Container = styled.div`
   display: flex;
   gap: 2rem;
   align-items: center;
+  justify-content: space-between;
+
   width: 100%;
   height: 100%;
-  justify-content: space-between;
 `;
 
 export const UserProfile = styled.img`

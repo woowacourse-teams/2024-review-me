@@ -111,6 +111,7 @@ const endPoint = {
     if (!lastReviewId) return basicUrl;
     return basicUrl + '&' + `${WRITTEN_REVIEW_PARAMS.queryString.lastReviewId}=${lastReviewId}`;
   },
+  gettingReviewLinks: REVIEW_GROUPS_BASIC_API_URL,
 };
 
 export default endPoint;

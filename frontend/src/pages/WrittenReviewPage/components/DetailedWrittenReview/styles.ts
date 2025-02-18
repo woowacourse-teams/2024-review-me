@@ -8,11 +8,11 @@ export interface StyleProps extends Pick<DetailedWrittenReviewProps, '$isDisplay
 
 export const DetailedWrittenReview = styled.div<StyleProps>`
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  justify-content: center;
 
-  max-width: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxWidth};
   min-width: 55rem;
+  max-width: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxWidth};
 
   ${media.medium} {
     ${({ $isDisplayable }) =>
@@ -38,7 +38,6 @@ export const Outline = styled.div`
 
   width: 100%;
   min-width: ${({ theme }) => theme.writtenReviewLayoutSize.largeMinWidth};
-
   height: 100%;
   min-height: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxHeight};
   margin-bottom: 2rem;

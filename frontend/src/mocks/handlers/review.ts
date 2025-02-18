@@ -22,6 +22,7 @@ import {
 } from '@/mocks/mockData';
 
 import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
+import { reviewLinks } from '../mockData/reviewLinks';
 import { WRITTEN_REVIEW_LIST } from '../mockData/writtenReviewList';
 
 import { authorizeWithCookie } from './cookies';
@@ -213,6 +214,15 @@ const getWrittenReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiPa
   });
 };
 
+const getReviewLinks = () =>
+  http.get(endPoint.gettingReviewLinks, ({ cookies }) => {
+    return authorizeWithCookie({
+      cookies,
+      validateCookieNames: memberOnlyCookie,
+      callback: () => HttpResponse.json(reviewLinks),
+    });
+  });
+
 const reviewHandler = [
   getDetailedReview(),
   getNonMemberReceivedReviewList({ lastReviewId: null, size: DEFAULT_SIZE_PER_PAGE }),
@@ -223,6 +233,7 @@ const reviewHandler = [
   getGroupedReviews(VALID_REVIEW_REQUEST_CODE.nonMember),
   getReviewSummaryInfoData(),
   postReview(),
+  getReviewLinks(),
   getWrittenReviewList({ lastReviewId: null, size: DEFAULT_SIZE_PER_PAGE }),
 ];
 
