@@ -68,7 +68,7 @@ class ReviewRepositoryTest {
             Long lastReviewId = null;
 
             // when
-            List<Review> reviews = reviewRepository.findByReviewGroupIdWithLimit(reviewGroup.getId(), lastReviewId, 10);
+            List<Review> reviews = reviewRepository.findAllByReviewGroupIdWithLimit(reviewGroup.getId(), lastReviewId, 10);
 
             // then
             assertThat(reviews).extracting(Review::getId)
@@ -87,7 +87,7 @@ class ReviewRepositoryTest {
             long lastReviewId = review3.getId();
 
             // when
-            List<Review> reviews = reviewRepository.findByReviewGroupIdWithLimit(reviewGroup.getId(), lastReviewId, 10);
+            List<Review> reviews = reviewRepository.findAllByReviewGroupIdWithLimit(reviewGroup.getId(), lastReviewId, 10);
 
             // then
             assertThat(reviews).extracting(Review::getId)
@@ -105,7 +105,7 @@ class ReviewRepositoryTest {
             long lastReviewId = review1.getId();
 
             // when
-            List<Review> reviews = reviewRepository.findByReviewGroupIdWithLimit(reviewGroup.getId(), lastReviewId, 10);
+            List<Review> reviews = reviewRepository.findAllByReviewGroupIdWithLimit(reviewGroup.getId(), lastReviewId, 10);
 
             // then
             assertThat(reviews).isEmpty();
@@ -123,7 +123,7 @@ class ReviewRepositoryTest {
             }
 
             // when
-            List<Review> reviews = reviewRepository.findByReviewGroupIdWithLimit(reviewGroup.getId(), null, limit);
+            List<Review> reviews = reviewRepository.findAllByReviewGroupIdWithLimit(reviewGroup.getId(), null, limit);
 
             // then
             assertThat(reviews).hasSize(numberOfReview);
@@ -141,7 +141,7 @@ class ReviewRepositoryTest {
             }
 
             // when
-            List<Review> reviews = reviewRepository.findByReviewGroupIdWithLimit(reviewGroup.getId(), null, limit);
+            List<Review> reviews = reviewRepository.findAllByReviewGroupIdWithLimit(reviewGroup.getId(), null, limit);
 
             // then
             assertThat(reviews).hasSize(limit);
@@ -164,7 +164,7 @@ class ReviewRepositoryTest {
             Long lastReviewId = null;
 
             // when
-            List<Review> reviews = reviewRepository.findByMemberIdWithLimit(memberId, lastReviewId, 10);
+            List<Review> reviews = reviewRepository.findAllByMemberIdWithLimit(memberId, lastReviewId, 10);
 
             // then
             assertThat(reviews).extracting(Review::getId)
@@ -184,7 +184,7 @@ class ReviewRepositoryTest {
             long lastReviewId = review3.getId();
 
             // when
-            List<Review> reviews = reviewRepository.findByMemberIdWithLimit(memberId, lastReviewId, 10);
+            List<Review> reviews = reviewRepository.findAllByMemberIdWithLimit(memberId, lastReviewId, 10);
 
             // then
             assertThat(reviews).extracting(Review::getId)
@@ -192,7 +192,7 @@ class ReviewRepositoryTest {
         }
 
         @Test
-        void lastReviewId_보다_이후에_등록된_리뷰가_없으면_빈_리스트를_반환한다() {
+        void lastReviewId_보다_이전에_등록된_리뷰가_없으면_빈_리스트를_반환한다() {
             // given
             long memberId = 1L;
             ReviewGroup reviewGroup = reviewGroupRepository.save(회원_리뷰_그룹());
@@ -203,7 +203,7 @@ class ReviewRepositoryTest {
             long lastReviewId = review1.getId();
 
             // when
-            List<Review> reviews = reviewRepository.findByMemberIdWithLimit(memberId, lastReviewId, 10);
+            List<Review> reviews = reviewRepository.findAllByMemberIdWithLimit(memberId, lastReviewId, 10);
 
             // then
             assertThat(reviews).isEmpty();
@@ -222,7 +222,7 @@ class ReviewRepositoryTest {
             }
 
             // when
-            List<Review> reviews = reviewRepository.findByMemberIdWithLimit(memberId, null, limit);
+            List<Review> reviews = reviewRepository.findAllByMemberIdWithLimit(memberId, null, limit);
 
             // then
             assertThat(reviews).hasSize(numberOfReview);
@@ -241,7 +241,7 @@ class ReviewRepositoryTest {
             }
 
             // when
-            List<Review> reviews = reviewRepository.findByMemberIdWithLimit(memberId, null, limit);
+            List<Review> reviews = reviewRepository.findAllByMemberIdWithLimit(memberId, null, limit);
 
             // then
             assertThat(reviews).hasSize(limit);

@@ -32,7 +32,7 @@ public class ReviewGroupLookupService {
     public ReviewGroupPageResponse getReviewGroupsByMember(@Nullable Long lastReviewGroupId, @Nullable Integer size,
                                                            long memberId) {
         PageSize pageSize = new PageSize(size);
-        List<ReviewGroupPageElementResponse> elements = reviewGroupRepository.findByMemberIdWithLimit(
+        List<ReviewGroupPageElementResponse> elements = reviewGroupRepository.findAllByMemberIdWithLimit(
                 memberId, lastReviewGroupId, pageSize.getSize() + 1);
 
         boolean isLastPage = elements.size() <= pageSize.getSize();

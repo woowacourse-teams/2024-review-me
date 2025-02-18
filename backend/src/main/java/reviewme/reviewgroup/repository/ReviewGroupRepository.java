@@ -32,7 +32,7 @@ public interface ReviewGroupRepository extends JpaRepository<ReviewGroup, Long> 
              ORDER BY rg.createdAt DESC, rg.id DESC
              LIMIT :limit
             """)
-    List<ReviewGroupPageElementResponse> findByMemberIdWithLimit(long memberId, Long lastReviewGroupId, int limit);
+    List<ReviewGroupPageElementResponse> findAllByMemberIdWithLimit(long memberId, Long lastReviewGroupId, int limit);
 
     boolean existsByReviewRequestCode(String reviewRequestCode);
 

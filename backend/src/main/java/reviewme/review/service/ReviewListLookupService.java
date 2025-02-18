@@ -36,7 +36,7 @@ public class ReviewListLookupService {
                 .orElseThrow(() -> new ReviewGroupNotFoundException(reviewGroupId));
 
         PageSize pageSize = new PageSize(size);
-        List<Review> reviews = reviewRepository.findByReviewGroupIdWithLimit(
+        List<Review> reviews = reviewRepository.findAllByReviewGroupIdWithLimit(
                 reviewGroup.getId(), lastReviewId, pageSize.getSize() + 1);
 
         boolean isLastPage = reviews.size() <= pageSize.getSize();
@@ -55,7 +55,7 @@ public class ReviewListLookupService {
                                                       @Nullable Long lastReviewId,
                                                       @Nullable Integer size) {
         PageSize pageSize = new PageSize(size);
-        List<Review> reviews = reviewRepository.findByMemberIdWithLimit(
+        List<Review> reviews = reviewRepository.findAllByMemberIdWithLimit(
                 loginMemberId, lastReviewId, pageSize.getSize() + 1);
 
         boolean isLastPage = reviews.size() <= pageSize.getSize();

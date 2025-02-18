@@ -21,7 +21,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             ORDER BY r.createdAt DESC, r.id DESC
             LIMIT :limit
             """)
-    List<Review> findByReviewGroupIdWithLimit(long reviewGroupId, Long lastReviewId, int limit);
+    List<Review> findAllByReviewGroupIdWithLimit(long reviewGroupId, Long lastReviewId, int limit);
 
     @Query("""
             SELECT r FROM Review r
@@ -30,7 +30,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             ORDER BY r.createdAt DESC, r.id DESC
             LIMIT :limit
             """)
-    List<Review> findByMemberIdWithLimit(long memberId, Long lastReviewId, int limit);
+    List<Review> findAllByMemberIdWithLimit(long memberId, Long lastReviewId, int limit);
 
     int countByReviewGroupId(long reviewGroupId);
 }
