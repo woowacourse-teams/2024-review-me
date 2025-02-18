@@ -14,9 +14,9 @@ const MODAL_KEYS = {
 
 interface URLGeneratorFormProps {
   isMember?: boolean;
+  refetchReviewLinks?: () => void;
 }
-
-const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
+const URLGeneratorForm = ({ isMember = false, refetchReviewLinks }: URLGeneratorFormProps) => {
   const { revieweeName, projectName, password, isFormValid, resetForm, urlGeneratorStateUpdater } =
     useURLGeneratorState({ isMember });
 
@@ -41,6 +41,8 @@ const URLGeneratorForm = ({ isMember = false }: URLGeneratorFormProps) => {
   const handleAPISuccess = (data: any) => {
     const completeReviewZoneURL = getCompleteReviewZoneURL(data.reviewRequestCode);
     setReviewZoneURL(completeReviewZoneURL);
+
+    refetchReviewLinks?.();
 
     resetForm();
 

@@ -49,8 +49,6 @@ export const CardList = styled.ul`
   max-height: calc(100vh - 34rem);
   overflow-y: auto;
 
-  padding-right: 2rem;
-
   ${media.small} {
     max-height: none;
     padding-right: 0;

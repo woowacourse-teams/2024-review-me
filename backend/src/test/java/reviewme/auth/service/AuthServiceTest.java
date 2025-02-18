@@ -19,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import reviewme.auth.infrastructure.GitHubOAuthClient;
 import reviewme.auth.infrastructure.dto.response.GitHubUserInfoResponse;
+import reviewme.auth.service.dto.GitHubOAuthRequest;
 import reviewme.auth.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.member.domain.Member;
 import reviewme.member.repository.MemberRepository;
@@ -47,8 +48,8 @@ class AuthServiceTest {
 
         private final String authCode = "authCode";
         private final String gitHubUserName = "sancho";
-        private final String gitHubEmail = "sancho@review-me.com";
-        private final GitHubUserInfoResponse userInfo = new GitHubUserInfoResponse(gitHubUserName, gitHubEmail);
+        private final String gitHubId = "12341234";
+        private final GitHubUserInfoResponse userInfo = new GitHubUserInfoResponse(gitHubUserName, gitHubId);
 
         @BeforeEach
         void setUp() {
@@ -58,22 +59,24 @@ class AuthServiceTest {
         @Test
         void 가입하지_않은_회원이면_가입시킨다() {
             // when
-            authService.authWithGithub(authCode);
+            GitHubOAuthRequest request = new GitHubOAuthRequest(authCode);
+            authService.authWithGitHub(request);
 
             // then
             verify(memberRepository, times(1)).save(
-                    argThat(member -> member.getEmail().equals(gitHubEmail))
+                    argThat(member -> member.getExternalId().equals(gitHubId))
             );
         }
 
         @Test
         void 가입된_회원이면_재가입하지_않는다() {
             // given
-            memberRepository.save(new Member(gitHubEmail));
+            memberRepository.save(new Member(gitHubId));
             clearInvocations(memberRepository);
+            GitHubOAuthRequest request = new GitHubOAuthRequest(authCode);
 
             // when
-            authService.authWithGithub(authCode);
+            authService.authWithGitHub(request);
 
             // then
             verify(memberRepository, never()).save(any());

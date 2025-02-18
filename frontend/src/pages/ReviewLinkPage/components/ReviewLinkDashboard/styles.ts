@@ -46,7 +46,7 @@ export const FormSection = styled.section`
 `;
 
 export const Separator = styled.div`
-  width: 0.1rem;
+  width: 0.3rem;
 
   background-color: ${({ theme }) => theme.colors.lightGray};
 

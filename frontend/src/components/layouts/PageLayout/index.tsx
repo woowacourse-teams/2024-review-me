@@ -5,6 +5,7 @@ import NavigationTab from '@/components/common/NavigationTab';
 import { ROUTE } from '@/constants';
 import { useGetUserProfile } from '@/hooks/oAuth';
 import useBreadcrumbPaths from '@/hooks/useBreadcrumbPaths';
+import useNavigationTabs from '@/hooks/useNavigationTabs';
 import { EssentialPropsWithChildren } from '@/types';
 
 import Footer from '../Footer';
@@ -22,6 +23,7 @@ const PageLayout = ({ children, isNeedBreadCrumb = true }: EssentialPropsWithChi
   const { userProfile, isUserLoggedIn } = useGetUserProfile();
 
   const breadcrumbPathList = useBreadcrumbPaths();
+  const navigationTabList = useNavigationTabs();
   const isShowBreadCrumb = !isUserLoggedIn && isNeedBreadCrumb && breadcrumbPathList.length > 1;
   const isShowNavigationTab = isUserLoggedIn && pathname !== ROUTE.home && !pathname.includes(ROUTE.reviewZone);
 
@@ -34,7 +36,7 @@ const PageLayout = ({ children, isNeedBreadCrumb = true }: EssentialPropsWithChi
           userProfile={userProfile ? userProfile : null}
         />
         {isShowBreadCrumb && <Breadcrumb pathList={breadcrumbPathList} />}
-        {isShowNavigationTab && <NavigationTab />}
+        {isShowNavigationTab && <NavigationTab tabList={navigationTabList} />}
         <Main isShowBreadCrumb={isShowBreadCrumb}>{children}</Main>
         <Footer />
       </S.Wrapper>

@@ -35,6 +35,7 @@ export const componentHeight = {
   footer: '6rem',
   topbar: '7rem',
   breadCrumb: '4.3rem',
+  navigationTab: '4rem',
 };
 
 export const breakpoint = {

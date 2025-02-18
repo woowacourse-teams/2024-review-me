@@ -44,7 +44,7 @@ public class ReviewGroup {
     @Column(name = "project_name", nullable = false)
     private String projectName;
 
-    @Column(name = "review_request_code", nullable = false)
+    @Column(name = "review_request_code", nullable = false, unique = true)
     private String reviewRequestCode;
 
     @Embedded

@@ -1,11 +1,20 @@
 import styled from '@emotion/styled';
 
-export const EmptyContent = styled.div<{ $iconMessageGap?: string }>`
+export const EmptyContent = styled.div<{ $iconMessageGap?: string; $isBorder?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${(props) => props.$iconMessageGap ?? '3.2rem'};
   align-items: center;
+
+  ${({ theme, $isBorder }) =>
+    $isBorder &&
+    `
+    border: 0.2rem solid ${theme.colors.lightGray};
+    border-radius: 1rem;
+    padding: 4rem 0;
+  `}
 `;
+
 interface ImgProps {
   $height?: string;
   $width?: string;

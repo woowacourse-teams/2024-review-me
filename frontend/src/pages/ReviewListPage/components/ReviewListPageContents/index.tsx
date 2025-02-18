@@ -1,6 +1,9 @@
 import { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router';
 
+import { EmptyContent } from '@/components';
+import ReviewCard from '@/components/common/ReviewCard';
+import UndraggableWrapper from '@/components/common/UndraggableWrapper';
 import { ReviewEmptySection, ReviewPreview } from '@/components';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
 import { REVIEW_EMPTY } from '@/constants';
@@ -35,7 +38,9 @@ const ReviewListPageContents = () => {
   return (
     <>
       {totalReviewCount === 0 ? (
-        <ReviewEmptySection content={REVIEW_EMPTY.noReviewInTotal} />
+        <EmptyContent iconWidth="17rem" messageFontSize="2rem" iconMessageGap="2.6rem" isBorder={true}>
+          {REVIEW_EMPTY.noReviewInTotal}
+        </EmptyContent>
       ) : (
         <S.ReviewSection>
           {reviewList.map((review) => (
