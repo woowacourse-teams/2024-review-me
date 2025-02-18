@@ -38,7 +38,7 @@ import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageElementResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
-import reviewme.review.service.dto.response.list.ReviewCategoryResponse;
+import reviewme.review.service.dto.response.list.SelectedCategoryOptionResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.template.domain.QuestionType;
@@ -247,9 +247,9 @@ class ReviewApiTest extends ApiTest {
                 fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
                 fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
 
-                fieldWithPath("reviews[].categories[]").description("선택된 카테고리 목록"),
-                fieldWithPath("reviews[].categories[].optionId").description("카테고리 ID"),
-                fieldWithPath("reviews[].categories[].content").description("카테고리 내용")
+                fieldWithPath("reviews[].categoryOptions[]").description("선택된 카테고리 목록"),
+                fieldWithPath("reviews[].categoryOptions[].optionId").description("카테고리 ID"),
+                fieldWithPath("reviews[].categoryOptions[].content").description("카테고리 내용")
         };
 
         RestDocumentationResultHandler handler = document(
@@ -393,8 +393,8 @@ class ReviewApiTest extends ApiTest {
                         List.of(new SelectedCategoryOptionResponse(2L, "카테고리 2")))
         );
       
-        AuthoredReviewsResponse response = new AuthoredReviewsResponse(authoredReviews, 1L, true);
-        given(reviewListLookupService.getAuthoredReviews(nullable(Long.class), nullable(Integer.class), anyLong()))
+        AuthoredReviewsResponse response = new AuthoredReviewsResponse(1L, true, authoredReviews);
+        given(reviewListLookupService.getAuthoredReviews(anyLong(), nullable(Long.class), nullable(Integer.class)))
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {
@@ -417,9 +417,9 @@ class ReviewApiTest extends ApiTest {
                 fieldWithPath("reviews[].createdAt").description("리뷰 작성 날짜"),
                 fieldWithPath("reviews[].contentPreview").description("리뷰 미리보기"),
 
-                fieldWithPath("reviews[].categories[]").description("선택된 카테고리 목록"),
-                fieldWithPath("reviews[].categories[].optionId").description("카테고리 ID"),
-                fieldWithPath("reviews[].categories[].content").description("카테고리 내용")
+                fieldWithPath("reviews[].categoryOptions[]").description("선택된 카테고리 목록"),
+                fieldWithPath("reviews[].categoryOptions[].optionId").description("카테고리 ID"),
+                fieldWithPath("reviews[].categoryOptions[].content").description("카테고리 내용")
         };
 
         RestDocumentationResultHandler handler = document(
