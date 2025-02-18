@@ -12,7 +12,7 @@ export const PageContentLayout = styled.article`
 export const Title = styled.h2`
   align-self: flex-start;
 
-  margin-top: 4.7rem;
+  margin-top: 1.5rem;
   margin-bottom: 2.4rem;
 
   font-size: 1.8rem;
