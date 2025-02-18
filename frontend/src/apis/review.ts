@@ -155,7 +155,6 @@ export const getReviewLinksApi = async () => {
   if (!response.ok) throw new Error(createApiErrorMessage(response.status));
 
   const data = await response.json();
-
   return data as ReviewLinks;
 };
 

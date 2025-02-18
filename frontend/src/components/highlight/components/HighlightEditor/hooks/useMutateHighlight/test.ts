@@ -45,6 +45,6 @@ describe('하이라이트 요청 테스트', () => {
       });
     };
 
-    await testWithAuthCookie(testHighlightAPI);
+    await testWithAuthCookie({ authState: 'both', callback: testHighlightAPI });
   });
 });

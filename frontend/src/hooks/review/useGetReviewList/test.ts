@@ -20,6 +20,6 @@ describe('리뷰 목록 페이지 API 연동 테스트', () => {
         expect(result.current.isSuccess).toBe(true);
       });
     };
-    await testWithAuthCookie(testReviewListAPI);
+    await testWithAuthCookie({ authState: 'both', callback: testReviewListAPI });
   });
 });
