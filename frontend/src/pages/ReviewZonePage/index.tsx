@@ -4,7 +4,6 @@ import { useRecoilState } from 'recoil';
 
 import ReviewZoneIcon from '@/assets/reviewZone.svg';
 import { ImgWithSkeleton, LoginRequestModal } from '@/components';
-import { LoginActionContextType } from '@/components/login/GitHubLoginButton';
 import { ROUTE } from '@/constants';
 import { useGetReviewGroupData, useSearchParamAndQuery, useModals, useToastContext } from '@/hooks';
 import { useGetUserProfile } from '@/hooks/oAuth';
@@ -82,7 +81,7 @@ const ReviewZonePage = () => {
     if (!isUserLoggedIn) return openModal(MODAL_KEYS.checkOnLogin);
     // 리뷰어가 링크 주인이면 목록 페이지로 이동
     if (userProfile?.memberId === reviewGroupData.revieweeId) {
-      return navigate(`${ROUTE.reviewList}/${reviewRequestCode}`);
+      return navigate(`/${ROUTE.reviewList}/${reviewRequestCode}`);
     }
     return showToast({ type: 'error', message: '접근 권한이 없습니다.', durationMS: 3000, position: 'bottom' });
   };
