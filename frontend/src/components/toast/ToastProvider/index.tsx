@@ -8,7 +8,7 @@ interface ToastStateProps extends ToastProps {
   isOpen: boolean;
 }
 
-const defaultToastState: ToastStateProps = {
+const DEFAULT_TOAST_STATE: ToastStateProps = {
   type: 'success',
   message: '',
   durationMS: 5000,
@@ -24,7 +24,7 @@ interface ToastContextType {
 export const ToastContext = createContext<ToastContextType | null>(null);
 
 const ToastProvider = ({ children }: EssentialPropsWithChildren) => {
-  const [toast, setToast] = useState<ToastStateProps>(defaultToastState);
+  const [toast, setToast] = useState<ToastStateProps>(DEFAULT_TOAST_STATE);
 
   const showToast = ({ type = 'success', message, durationMS = 5000, position = 'bottom' }: ToastProps) => {
     setToast({ type, message, durationMS, position, isOpen: true });

@@ -2,10 +2,9 @@ import { http, HttpResponse } from 'msw';
 
 import endPoint from '@/apis/endpoints';
 
-import { VALID_REVIEW_REQUEST_CODE } from '../mockData';
+import { bothCookie, VALID_REVIEW_REQUEST_CODE } from '../mockData';
 
 import { authorizeWithCookie } from './cookies';
-import { both } from './review';
 
 const postMockHighlight = () => {
   const nonMemberUrl = endPoint.postingHighlight(VALID_REVIEW_REQUEST_CODE.nonMember);
@@ -13,7 +12,7 @@ const postMockHighlight = () => {
   const targetUrl = new RegExp(`^(${nonMemberUrl}|${memberUrl})`);
 
   return http.post(targetUrl, ({ cookies }) => {
-    return authorizeWithCookie(cookies, both, () => HttpResponse.json({ status: 200 }));
+    return authorizeWithCookie(cookies, bothCookie, () => HttpResponse.json({ status: 200 }));
   });
 };
 
