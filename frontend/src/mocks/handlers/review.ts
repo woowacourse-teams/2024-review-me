@@ -43,7 +43,11 @@ const getReviewSummaryInfoData = () => {
   const targetUrl = new RegExp(`^(${nonMemberUrl}|${memberUrl})`);
 
   return http.get(targetUrl, ({ cookies }) => {
-    return authorizeWithCookie(cookies, bothCookie, () => HttpResponse.json(MOCK_REVIEW_INFO_DATA));
+    return authorizeWithCookie({
+      cookies,
+      validateCookieNames: bothCookie,
+      callback: () => HttpResponse.json(MOCK_REVIEW_INFO_DATA),
+    });
   });
 };
 
@@ -63,7 +67,11 @@ const getDetailedReview = () =>
       return HttpResponse.json({ error: '잘못된 상세리뷰 요청' }, { status: 404 });
     };
 
-    return authorizeWithCookie(cookies, bothCookie, handleAPI);
+    return authorizeWithCookie({
+      cookies,
+      validateCookieNames: bothCookie,
+      callback: handleAPI,
+    });
   });
 
 const getDataToWriteReview = () =>
@@ -87,7 +95,11 @@ const getMemberReceivedReviewList = ({ lastReviewId, size }: GetInfiniteReviewLi
   });
 
   return http.get(memberUrl, ({ request, cookies }) => {
-    return authorizeWithCookie(cookies, memberOnlyCookie, () => handleReviewListAPI(request, size));
+    return authorizeWithCookie({
+      cookies,
+      validateCookieNames: memberOnlyCookie,
+      callback: () => handleReviewListAPI(request, size),
+    });
   });
 };
 
@@ -99,7 +111,11 @@ const getNonMemberReceivedReviewList = ({ lastReviewId, size }: GetInfiniteRevie
   });
 
   return http.get(nonMemberUrl, ({ request, cookies }) => {
-    return authorizeWithCookie(cookies, nonMemberOnlyCookie, () => handleReviewListAPI(request, size));
+    return authorizeWithCookie({
+      cookies,
+      validateCookieNames: nonMemberOnlyCookie,
+      callback: () => handleReviewListAPI(request, size),
+    });
   });
 };
 
@@ -133,7 +149,11 @@ const postReview = () =>
 
 const getSectionList = () =>
   http.get(endPoint.gettingSectionList, ({ cookies }) => {
-    return authorizeWithCookie(cookies, bothCookie, () => HttpResponse.json(GROUPED_SECTION_MOCK_DATA));
+    return authorizeWithCookie({
+      cookies,
+      validateCookieNames: bothCookie,
+      callback: () => HttpResponse.json(GROUPED_SECTION_MOCK_DATA),
+    });
   });
 
 interface HandleGroupedReviewAPIParams {
@@ -147,7 +167,11 @@ const handleGroupedReviewsAPI = ({ request, cookies }: HandleGroupedReviewAPIPar
   const { length } = GROUPED_REVIEWS_MOCK_DATA;
   const index = (Number(sectionId) + length) % length;
 
-  return authorizeWithCookie(cookies, bothCookie, () => HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]));
+  return authorizeWithCookie({
+    cookies,
+    validateCookieNames: bothCookie,
+    callback: () => HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]),
+  });
 };
 
 const getGroupedReviews = (reviewRequestCode: string) => {
@@ -181,7 +205,11 @@ const getWrittenReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiPa
       });
     };
 
-    return authorizeWithCookie(cookies, memberOnlyCookie, () => handleAPI());
+    return authorizeWithCookie({
+      cookies,
+      validateCookieNames: memberOnlyCookie,
+      callback: handleAPI,
+    });
   });
 };
 
