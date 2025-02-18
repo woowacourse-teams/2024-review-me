@@ -1,15 +1,34 @@
-import { ErrorSuspenseContainer, AuthAndServerErrorFallback, TopButton, DetailedReview } from '@/components';
+import {
+  ErrorSuspenseContainer,
+  AuthAndServerErrorFallback,
+  TopButton,
+  DetailedReview,
+  BackButton,
+} from '@/components';
+import { ROUTE } from '@/constants';
+import { useSearchParamAndQuery } from '@/hooks';
+import { useGetUserProfile } from '@/hooks/oAuth';
+
+import * as S from './styles';
+
+const detailedReviewLayoutStyle = {
+  width: '100%',
+  margin: '2rem 0',
+};
 
 const DetailedReviewPage = () => {
-  // TODO: 임시로 true 설정 (로그인 기능 추가하면서 여기도 수정해야 한다.)
-  const isUserLoggedIn = true;
   const { param: reviewRequestCode } = useSearchParamAndQuery({
     paramKey: 'reviewRequestCode',
   });
 
+  const { isUserLoggedIn } = useGetUserProfile();
+
   return (
     <ErrorSuspenseContainer errorFallback={AuthAndServerErrorFallback}>
-      <DetailedReview />
+      <S.PageWithBackButton>
+        {isUserLoggedIn && <BackButton prevPath={`/${ROUTE.reviewList}/${reviewRequestCode}`} />}
+        <DetailedReview $layoutStyle={detailedReviewLayoutStyle} />
+      </S.PageWithBackButton>
       <TopButton />
     </ErrorSuspenseContainer>
   );

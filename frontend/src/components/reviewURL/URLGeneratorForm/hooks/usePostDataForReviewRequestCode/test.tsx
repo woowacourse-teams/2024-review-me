@@ -52,8 +52,9 @@ describe('usePostDataForReviewRequestCode', () => {
       projectName: 'review-me',
     };
 
-    await testWithAuthCookie(
-      async () => await testReviewRequestCode(dataForReviewRequestCode, VALID_REVIEW_REQUEST_CODE.member),
-    );
+    await testWithAuthCookie({
+      authState: 'both',
+      callback: async () => await testReviewRequestCode(dataForReviewRequestCode, VALID_REVIEW_REQUEST_CODE.member),
+    });
   });
 });

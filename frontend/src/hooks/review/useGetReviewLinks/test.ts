@@ -19,6 +19,6 @@ describe('회원이 생성한 리뷰 그룹 목록 조회 테스트', () => {
       expect(result.current.data).toBeDefined();
     };
 
-    await testWithAuthCookie(testReviewLinksAPI);
+    await testWithAuthCookie({ authState: 'member', callback: testReviewLinksAPI });
   });
 });

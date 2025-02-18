@@ -39,7 +39,7 @@ const WrittenReviewList = () => {
               key={review.reviewId}
               createdAt={review.createdAt}
               contentPreview={review.contentPreview}
-              categories={review.categories}
+              categoryOptions={review.categoryOptions}
               projectName={review.projectName}
               revieweeName={review.revieweeName}
               handleClick={handleReviewItemClick}

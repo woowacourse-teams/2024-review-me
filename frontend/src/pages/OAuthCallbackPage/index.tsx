@@ -2,11 +2,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-import { LoadingBar } from '@/components';
 import { LoginActionContextType } from '@/components/login/GitHubLoginButton';
 import { OAUTH_QUERY_KEY, ROUTE } from '@/constants';
 import { useSearchParamAndQuery, useToastContext } from '@/hooks';
 import { useOAuthLogin } from '@/hooks/oAuth';
+
+import LoadingPage from '../LoadingPage';
 
 const OAuthCallbackPage = () => {
   const { queryString: gitHubAuthCode } = useSearchParamAndQuery({
@@ -53,7 +54,7 @@ const OAuthCallbackPage = () => {
     );
   }, []);
 
-  return <LoadingBar />;
+  return <LoadingPage />;
 };
 
 export default OAuthCallbackPage;

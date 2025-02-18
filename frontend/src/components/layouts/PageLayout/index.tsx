@@ -19,14 +19,13 @@ interface PageLayoutProps {
 }
 
 const PageLayout = ({ children, isNeedBreadCrumb = true }: EssentialPropsWithChildren<PageLayoutProps>) => {
-  const { userProfile, isUserLoggedIn } = useGetUserProfile();
-
   const { pathname } = useLocation();
+  const { userProfile, isUserLoggedIn } = useGetUserProfile();
 
   const breadcrumbPathList = useBreadcrumbPaths();
   const navigationTabList = useNavigationTabs();
   const isShowBreadCrumb = !isUserLoggedIn && isNeedBreadCrumb && breadcrumbPathList.length > 1;
-  const isShowNavigationTab = isUserLoggedIn && pathname !== '/' && !pathname.includes(ROUTE.reviewZone);
+  const isShowNavigationTab = isUserLoggedIn && pathname !== ROUTE.home && !pathname.includes(ROUTE.reviewZone);
 
   return (
     <S.Layout>

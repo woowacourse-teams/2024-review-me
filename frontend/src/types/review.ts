@@ -84,10 +84,10 @@ export interface ReviewInfo {
   reviewId: number;
   createdAt: string;
   contentPreview: string;
-  categories: Category[];
+  categoryOptions: CategoryOption[];
 }
 
-export interface Category {
+export interface CategoryOption {
   optionId: number;
   content: string;
 }
@@ -222,6 +222,7 @@ export interface ReviewLinks {
   lastReviewGroupId: number;
   isLastPage: boolean;
   reviewGroups: ReviewGroup[];
+}
 
 export interface WrittenReviewInfo extends ReviewInfo {
   revieweeName: string;
@@ -232,5 +233,4 @@ export interface WrittenReviewList {
   lastReviewId: number | null;
   isLastPage: boolean;
   reviews: WrittenReviewInfo[];
-
 }

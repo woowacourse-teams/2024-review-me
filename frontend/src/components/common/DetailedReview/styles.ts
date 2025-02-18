@@ -10,16 +10,8 @@ export const DetailedReview = styled.div<{ $layoutStyle?: React.CSSProperties }>
   border: 0.2rem solid ${({ theme }) => theme.colors.disabled};
   border-radius: ${({ theme }) => theme.borderRadius.basic};
 
-  ${media.medium} {
-    width: 85%;
-  }
-
   ${media.small} {
-    width: 92%;
-  }
-
-  ${media.xSmall} {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.8rem;
   }
 
   ${({ $layoutStyle }) => $layoutStyle && { ...$layoutStyle }};
@@ -40,6 +32,6 @@ export const DetailedReviewContainer = styled.div`
 
 export const ReviewContentContainer = styled.div`
   ${media.xSmall} {
-    padding: 0 2rem;
+    padding: 0 1rem;
   }
 `;

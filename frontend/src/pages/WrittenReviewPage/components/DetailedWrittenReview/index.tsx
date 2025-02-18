@@ -8,7 +8,6 @@ import { NoSelectedReviewGuide } from '../index';
 import { PageContentLayout } from '../layouts';
 
 import * as S from './styles';
-
 export interface DetailedWrittenReviewProps {
   $isDisplayable: boolean;
   selectedReviewId: number | null;
@@ -18,7 +17,6 @@ const detailedReviewLayoutStyle = {
   width: '100%',
   height: '100%',
   marginTop: '0',
-  padding: '3rem 1.5rem',
   border: 'none',
 };
 

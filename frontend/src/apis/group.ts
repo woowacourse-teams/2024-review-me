@@ -32,7 +32,7 @@ export const postDataForReviewRequestCodeApi = async ({
     const data = await response.json();
     return data;
   } catch (error) {
-    throw new Error(`${ERROR_BOUNDARY_IGNORE_ERROR} - 리뷰 링크 생성 API 실패`);
+    throw new Error(`${ERROR_BOUNDARY_IGNORE_ERROR} - 리뷰 링크 생성 API 요청 실패`);
   }
 };
 

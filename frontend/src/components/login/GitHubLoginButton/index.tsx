@@ -3,7 +3,7 @@ import { LoginButton } from '@/components/login';
 import { LoginButtonStyleProps } from '@/components/login/LoginButton';
 import { GITHUB_AUTHORIZATION_URL } from '@/constants';
 
-// 로그인 시 동작
+// 로그인 시 동작.
 export type ActionOnLogin = 'none' | 'reviewWrite' | 'reviewCheck';
 export type LoginActionContextType = {
   prevUrl: string;

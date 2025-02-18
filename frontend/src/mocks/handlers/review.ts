@@ -17,12 +17,12 @@ import {
   REVIEW_LIST,
   MOCK_REVIEW_INFO_DATA,
   bothCookie,
-  memberOnlyCookie,
   nonMemberOnlyCookie,
+  reviewLinks,
+  memberOnlyCookie,
 } from '@/mocks/mockData';
 
 import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
-import { reviewLinks } from '../mockData/reviewLinks';
 import { WRITTEN_REVIEW_LIST } from '../mockData/writtenReviewList';
 
 import { authorizeWithCookie } from './cookies';
