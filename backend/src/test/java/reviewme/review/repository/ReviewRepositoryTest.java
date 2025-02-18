@@ -76,7 +76,7 @@ class ReviewRepositoryTest {
         }
 
         @Test
-        void lastReviewId가_주어질_경우_해당ID_이후의_가장_최근의_리뷰부터_반환한다() {
+        void lastReviewId가_주어질_경우_해당ID_이전의_가장_최근의_리뷰부터_반환한다() {
             // given
             ReviewGroup reviewGroup = reviewGroupRepository.save(회원_리뷰_그룹());
             Review review1 = reviewRepository.save(비회원_작성_리뷰(1L, reviewGroup.getId(), List.of()));
@@ -95,7 +95,7 @@ class ReviewRepositoryTest {
         }
 
         @Test
-        void lastReviewId_보다_이후에_등록된_리뷰가_없으면_빈_리스트를_반환한다() {
+        void lastReviewId_보다_이전에_등록된_리뷰가_없으면_빈_리스트를_반환한다() {
             // given
             ReviewGroup reviewGroup = reviewGroupRepository.save(회원_리뷰_그룹());
             Review review1 = reviewRepository.save(비회원_작성_리뷰(1L, reviewGroup.getId(), List.of()));
@@ -172,7 +172,7 @@ class ReviewRepositoryTest {
         }
 
         @Test
-        void lastReviewId가_주어질_경우_해당ID_이후의_가장_최근의_리뷰부터_반환한다() {
+        void lastReviewId가_주어질_경우_해당ID_이전의_가장_최근의_리뷰부터_반환한다() {
             // given
             long memberId = 1L;
             ReviewGroup reviewGroup = reviewGroupRepository.save(회원_리뷰_그룹());
