@@ -23,8 +23,7 @@ const OAuthCallbackPage = () => {
   const { prevUrl, action } = parsedState;
 
   // 연결 페이지에서 로그인 하는 경우 이전 동작을 담아 리다이렉트
-  const redirectUrl =
-    prevUrl && prevUrl.includes('review-zone') ? `${prevUrl}?login_action=${action}` : `/${ROUTE.reviewLinks}`;
+  const redirectUrl = prevUrl && prevUrl.includes('review-zone') ? `${prevUrl}` : `/${ROUTE.reviewLinks}`;
 
   const { showToast } = useToastContext();
 
