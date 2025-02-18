@@ -1,10 +1,7 @@
 import { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router';
 
-import { EmptyContent } from '@/components';
-import ReviewCard from '@/components/common/ReviewCard';
-import UndraggableWrapper from '@/components/common/UndraggableWrapper';
-import { ReviewEmptySection, ReviewPreview } from '@/components';
+import { EmptyContent, ReviewPreview } from '@/components';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
 import { REVIEW_EMPTY } from '@/constants';
 import { ROUTE } from '@/constants/route';

@@ -5,7 +5,12 @@ import { API_ERROR_MESSAGE, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants'
 import { getRequestBody } from '@/utils/mockingUtils';
 
 import { reviewLinks } from '../mockData';
-import { MOCK_AUTH_TOKEN_NAME, VALID_REVIEW_REQUEST_CODE, VALIDATED_PASSWORD } from '../mockData/group';
+import {
+  MOCK_AUTH_TOKEN_NAME,
+  VALID_REVIEW_REQUEST_CODE,
+  VALIDATED_PASSWORD,
+  MOCK_LOGIN_TOKEN_NAME,
+} from '../mockData/group';
 
 // NOTE: reviewRequestCode 생성 정상 응답
 const postDataForReviewRequestCode = () => {
@@ -16,6 +21,7 @@ const postDataForReviewRequestCode = () => {
     if (bodyResult instanceof Error) return HttpResponse.json({ error: bodyResult.message }, { status: 400 });
 
     const isNonMember = 'groupAccessCode' in bodyResult;
+
     const reviewRequestCode = isNonMember ? VALID_REVIEW_REQUEST_CODE.nonMember : VALID_REVIEW_REQUEST_CODE.member;
 
     const { member: memberReviewRequestCode } = VALID_REVIEW_REQUEST_CODE;
@@ -33,7 +39,7 @@ const postDataForReviewRequestCode = () => {
 
     // 회원용일 경우, credentials과 쿠키 검증
     if (!isNonMember) {
-      const isError = request.credentials !== 'include' || !cookies[MOCK_AUTH_TOKEN_NAME];
+      const isError = request.credentials !== 'include' || !cookies[MOCK_LOGIN_TOKEN_NAME];
 
       if (isError) {
         return HttpResponse.json({ error: '인증 관련 쿠키를 가져올 수 없습니다' }, { status: 401 });

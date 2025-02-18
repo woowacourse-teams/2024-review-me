@@ -213,7 +213,7 @@ const getWrittenReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiPa
     });
   });
 };
-// 이거영
+
 const getReviewLinks = () =>
   http.get(endPoint.gettingReviewLinks, ({ cookies }) => {
     return authorizeWithCookie({
