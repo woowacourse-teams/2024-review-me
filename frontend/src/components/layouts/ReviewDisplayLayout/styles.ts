@@ -5,6 +5,10 @@ export const ReviewDisplayLayoutContainer = styled.div`
   flex-direction: column;
   width: 90%;
   min-height: inherit;
+
+  gap: 2rem;
+
+  margin: 2rem;
 `;
 
 export const Container = styled.div`
@@ -15,6 +19,7 @@ export const Container = styled.div`
   @media screen and (max-width: 530px) {
     flex-direction: column;
     align-items: flex-start;
-    margin-bottom: 2.5rem;
+
+    margin-bottom: 2rem;
   }
 `;

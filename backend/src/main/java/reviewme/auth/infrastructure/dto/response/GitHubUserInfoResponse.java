@@ -8,7 +8,7 @@ public record GitHubUserInfoResponse(
         @JsonProperty("login")
         String gitHubNickname,
 
-        @JsonProperty("email")
-        String gitHubEmail
+        @JsonProperty("id")
+        String gitHubId
 ) {
 }

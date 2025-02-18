@@ -67,7 +67,6 @@ class HighlightMapperTest {
         HighlightRequest highlightRequest1 = new HighlightRequest(textAnswer1.getId(), List.of(lineRequest1));
         HighlightRequest highlightRequest2 = new HighlightRequest(textAnswer2.getId(), List.of(lineRequest2));
         HighlightsRequest highlightsRequest = new HighlightsRequest(
-                reviewGroupId,
                 question.getId(),
                 List.of(highlightRequest1, highlightRequest2)
         );
@@ -88,7 +87,7 @@ class HighlightMapperTest {
     @Test
     void 하이라이트_할_내용이_없는_요청이_오면_매핑_결과_빈_리스트를_반환한다() {
         // given
-        HighlightsRequest highlightsRequest = new HighlightsRequest(1L, 1L, List.of());
+        HighlightsRequest highlightsRequest = new HighlightsRequest(1L, List.of());
 
         // when
         List<Highlight> highlights = highlightMapper.mapToHighlights(highlightsRequest);

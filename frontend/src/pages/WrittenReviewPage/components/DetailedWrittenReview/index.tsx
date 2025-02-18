@@ -1,3 +1,9 @@
+import { Suspense } from 'react';
+
+import { DetailedReview, BackButton, TopButton, LoadingBar } from '@/components';
+import { ROUTE } from '@/constants';
+
+import { useDeviceBreakpoints } from '../../hooks';
 import { NoSelectedReviewGuide } from '../index';
 import { PageContentLayout } from '../layouts';
 
@@ -8,13 +14,40 @@ export interface DetailedWrittenReviewProps {
   selectedReviewId: number | null;
 }
 
+const detailedReviewLayoutStyle = {
+  width: '100%',
+  height: '100%',
+  marginTop: '0',
+  padding: '3rem 1.5rem',
+  border: 'none',
+};
+
+const ResponsiveUtils = () => {
+  return (
+    <>
+      <BackButton prevPath={`/${ROUTE.writtenReview}`} wrapperStyle={{ marginBottom: '2rem' }} />
+      <TopButton />
+    </>
+  );
+};
+
 const DetailedWrittenReview = ({ $isDisplayable, selectedReviewId }: DetailedWrittenReviewProps) => {
-  // 추후 이곳에서 직접 상세 리뷰 데이터 호출
+  const { deviceType } = useDeviceBreakpoints();
 
   return (
-    <PageContentLayout title="작성한 리뷰 상세보기">
+    <PageContentLayout title={deviceType.isDesktop ? '작성한 리뷰 상세보기' : ''}>
       <S.DetailedWrittenReview $isDisplayable={$isDisplayable}>
-        <S.Outline>{selectedReviewId ? <div>{selectedReviewId} 선택함 </div> : <NoSelectedReviewGuide />}</S.Outline>
+        {!deviceType.isDesktop && <ResponsiveUtils />}
+
+        <S.Outline>
+          <Suspense fallback={<LoadingBar />}>
+            {selectedReviewId ? (
+              <DetailedReview selectedReviewId={selectedReviewId} $layoutStyle={detailedReviewLayoutStyle} />
+            ) : (
+              <NoSelectedReviewGuide />
+            )}
+          </Suspense>
+        </S.Outline>
       </S.DetailedWrittenReview>
     </PageContentLayout>
   );

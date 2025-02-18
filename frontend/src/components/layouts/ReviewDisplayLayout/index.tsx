@@ -1,4 +1,6 @@
 import { TopButton, OptionSwitch } from '@/components/common';
+import BackButton from '@/components/common/BackButton';
+import { ROUTE } from '@/constants';
 import { EssentialPropsWithChildren } from '@/types';
 
 import ReviewInfoSection from './components/ReviewInfoSection';
@@ -13,9 +15,13 @@ interface ReviewDisplayLayoutProps extends EssentialPropsWithChildren {
 const ReviewDisplayLayout = ({ isReviewList, children }: ReviewDisplayLayoutProps) => {
   const reviewDisplayLayoutOptions = useReviewDisplayLayoutOptions();
 
+  // TODO: 임시로 true 설정 (로그인 기능 추가하면서 여기도 수정해야 한다.)
+  const isUserLoggedIn = true;
+
   return (
     <ReviewInfoDataProvider>
       <S.ReviewDisplayLayoutContainer>
+        {isUserLoggedIn && <BackButton prevPath={`/${ROUTE.reviewLinks}`} />}
         <S.Container>
           <ReviewInfoSection isReviewList={isReviewList} />
           <OptionSwitch options={reviewDisplayLayoutOptions} />

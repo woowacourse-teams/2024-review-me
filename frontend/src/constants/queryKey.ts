@@ -7,6 +7,8 @@ export const REVIEW_QUERY_KEY = {
   groupedReviews: 'groupedReviews',
   reviewInfoData: 'reviewInfoData',
   highlight: 'highlight',
+  reviewLinks: 'reviewLinks',
+  writtenReviewList: 'writtenReviewList',
 };
 
 export const GROUP_QUERY_KEY = {

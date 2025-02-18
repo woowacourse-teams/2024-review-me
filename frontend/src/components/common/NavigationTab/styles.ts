@@ -6,9 +6,9 @@ export const NavContainer = styled.nav`
   position: relative;
   display: flex;
   width: calc(100vw - ${({ theme }) => theme.scrollbarWidth.basic});
-  height: 4rem;
+  height: ${({ theme }) => theme.componentHeight.navigationTab};
 
-  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.lightGray};
+  border-bottom: 0.2rem solid ${({ theme }) => theme.colors.lightGray};
 
   ${media.small} {
     width: calc(100vw - ${({ theme }) => theme.scrollbarWidth.small});

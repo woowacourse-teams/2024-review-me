@@ -4,12 +4,8 @@ import endPoint, { REVIEW_GROUP_DATA_API_PARAMS } from '@/apis/endpoints';
 import { API_ERROR_MESSAGE, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
 import { getRequestBody } from '@/utils/mockingUtils';
 
-import {
-  MOCK_AUTH_TOKEN_NAME,
-  REVIEW_GROUP_DATA,
-  VALID_REVIEW_REQUEST_CODE,
-  VALIDATED_PASSWORD,
-} from '../mockData/group';
+import { reviewLinks } from '../mockData';
+import { MOCK_AUTH_TOKEN_NAME, VALID_REVIEW_REQUEST_CODE, VALIDATED_PASSWORD } from '../mockData/group';
 
 // NOTE: reviewRequestCode 생성 정상 응답
 const postDataForReviewRequestCode = () => {
@@ -21,6 +17,19 @@ const postDataForReviewRequestCode = () => {
 
     const isNonMember = 'groupAccessCode' in bodyResult;
     const reviewRequestCode = isNonMember ? VALID_REVIEW_REQUEST_CODE.nonMember : VALID_REVIEW_REQUEST_CODE.member;
+
+    const { member: memberReviewRequestCode } = VALID_REVIEW_REQUEST_CODE;
+
+    const newReviewLink = {
+      revieweeName: '쑤쑤',
+      projectName: '리뷰미',
+      createdAt: '2025-05-10',
+      reviewRequestCode: memberReviewRequestCode,
+      reviewCount: 30,
+    };
+
+    // 새로 생성된 리뷰 링크를 목 데이터에 추가
+    reviewLinks.reviewGroups.push(newReviewLink);
 
     // 회원용일 경우, credentials과 쿠키 검증
     if (!isNonMember) {
@@ -85,8 +94,13 @@ const handleReviewGroupDataRequest = (request: StrictRequest<DefaultBodyType>) =
   const reviewRequestCode = params.get(queryString.reviewRequestCode);
 
   // 유효한 리뷰 요청 코드인지 확인
-  if (reviewRequestCode) {
-    return HttpResponse.json(REVIEW_GROUP_DATA, { status: 200 });
+  if (reviewRequestCode === VALID_REVIEW_REQUEST_CODE.nonMember) {
+    const REVIEW_GROUP_NONMEMBER_DATA = {
+      revieweeId: null,
+      revieweeName: '바다',
+      projectName: '2024-review-me',
+    };
+    return HttpResponse.json(REVIEW_GROUP_NONMEMBER_DATA, { status: 200 });
   }
 
   return HttpResponse.json({ error: '잘못된 리뷰 그룹 데이터 요청' }, { status: 404 });

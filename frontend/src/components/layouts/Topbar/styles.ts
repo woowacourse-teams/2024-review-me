@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const Layout = styled.section<{ $hasNavigationTab: boolean }>`
+export const Layout = styled.section<{ $hideBorder: boolean }>`
   z-index: ${({ theme }) => theme.zIndex.topbar};
 
   display: flex;
@@ -11,8 +11,7 @@ export const Layout = styled.section<{ $hasNavigationTab: boolean }>`
   height: ${({ theme }) => theme.componentHeight.topbar};
   padding: 2rem 2.5rem;
 
-  border-bottom: ${({ theme, $hasNavigationTab }) =>
-    $hasNavigationTab ? `0.1rem solid ${theme.colors.lightGray}` : 'none'};
+  border-bottom: ${({ theme, $hideBorder }) => ($hideBorder ? 'none' : `0.1rem solid ${theme.colors.lightGray}`)};
 `;
 
 export const Container = styled.div`

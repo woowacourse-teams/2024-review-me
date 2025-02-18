@@ -1,4 +1,5 @@
-import LoadingBar from './components/LoadingBar';
+import { LoadingBar } from '@/components';
+
 import * as S from './styles';
 
 const LoadingPage = () => {

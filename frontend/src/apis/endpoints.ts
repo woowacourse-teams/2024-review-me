@@ -46,9 +46,18 @@ export const REVIEW_GROUP_API_PARAMS = {
   },
 };
 
+export const WRITTEN_REVIEW_PARAMS = {
+  resource: 'reviews/authored',
+  queryString: {
+    lastReviewId: 'lastReviewId',
+    size: 'size',
+  },
+};
+
 export const REVIEW_WRITING_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_WRITING_API_PARAMS.resource}`;
 export const DETAILED_REVIEW_API_URL = `${serverUrl}/${VERSION2}/${DETAILED_REVIEW_API_PARAMS.resource}`;
 export const REVIEW_GROUPS_BASIC_API_URL = `${serverUrl}/${VERSION2}/groups`;
+export const WRITTEN_REVIEW_LIST_API_URL = `${serverUrl}/${VERSION2}/${WRITTEN_REVIEW_PARAMS.resource}`;
 
 interface GetReviewListEndpointParams {
   lastReviewId: number | null;
@@ -80,11 +89,18 @@ const endPoint = {
   postingDataForReviewRequestCode: REVIEW_GROUPS_BASIC_API_URL,
   checkingReviewRequestPassword: `${serverUrl}/${VERSION2}/auth/review-group`,
   gettingReviewGroupData: (reviewRequestCode: string) =>
-    `${REVIEW_GROUPS_BASIC_API_URL}?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
+    `${REVIEW_GROUPS_BASIC_API_URL}/summary?${REVIEW_GROUP_DATA_API_PARAMS.queryString.reviewRequestCode}=${reviewRequestCode}`,
   gettingSectionList: `${serverUrl}/${VERSION2}/sections`,
+  gettingWrittenReviewList: (lastReviewId: number | null, size: number) => {
+    const basicUrl = `${WRITTEN_REVIEW_LIST_API_URL}?${WRITTEN_REVIEW_PARAMS.queryString.size}=${size}`;
+
+    if (!lastReviewId) return basicUrl;
+    return basicUrl + '&' + `${WRITTEN_REVIEW_PARAMS.queryString.lastReviewId}=${lastReviewId}`;
+  },
   gettingGroupedReviews: (reviewRequestCode: string, sectionId: number) =>
     `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/reviews/gather?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
   postingHighlight: (reviewRequestCode: string) => `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/highlights`,
+  gettingReviewLinks: REVIEW_GROUPS_BASIC_API_URL,
 };
 
 export default endPoint;

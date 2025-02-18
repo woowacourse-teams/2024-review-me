@@ -3,7 +3,9 @@ import styled from '@emotion/styled';
 import media from '@/utils/media';
 
 export const WrittenReviewList = styled.ul`
-  overflow-x: hidden;
+  scrollbar-gutter: stable;
+
+  overflow-x: auto;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -27,6 +29,6 @@ export const WrittenReviewList = styled.ul`
   }
 
   & > li {
-    margin-right: 0.5rem;
+    margin-right: 0.9rem;
   }
 `;

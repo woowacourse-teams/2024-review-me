@@ -2,13 +2,13 @@ import * as S from './styles';
 
 interface NavItemProps {
   label: string;
-  $isSelected: boolean;
+  $isActiveTab: boolean;
   onClick: () => void;
 }
 
-const NavItem = ({ label, $isSelected, onClick }: NavItemProps) => {
+const NavItem = ({ label, $isActiveTab, onClick }: NavItemProps) => {
   return (
-    <S.NavItem $isSelected={$isSelected}>
+    <S.NavItem $isActiveTab={$isActiveTab}>
       <button onClick={onClick}>{label}</button>
     </S.NavItem>
   );
