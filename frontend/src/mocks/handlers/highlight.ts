@@ -12,7 +12,11 @@ const postMockHighlight = () => {
   const targetUrl = new RegExp(`^(${nonMemberUrl}|${memberUrl})`);
 
   return http.post(targetUrl, ({ cookies }) => {
-    return authorizeWithCookie(cookies, bothCookie, () => HttpResponse.json({ status: 200 }));
+    return authorizeWithCookie({
+      cookies,
+      validateCookieNames: bothCookie,
+      callback: () => HttpResponse.json({ status: 200 }),
+    });
   });
 };
 
