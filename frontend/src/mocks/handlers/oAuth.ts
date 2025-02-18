@@ -40,7 +40,9 @@ const postOAuthLogout = () =>
       // 로그아웃 성공 시 쿠키 삭제
       return new HttpResponse(null, {
         status: 204,
-        headers: { 'Set-cookie': `${MOCK_LOGIN_TOKEN_NAME}=; Max-Age=0;` },
+        headers: {
+          'Set-Cookie': `${MOCK_LOGIN_TOKEN_NAME}=; Max-Age=0; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT;`,
+        },
       });
     };
 

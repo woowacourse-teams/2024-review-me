@@ -2,11 +2,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-import { LoadingBar } from '@/components';
 import { LoginActionContextType } from '@/components/login/GitHubLoginButton';
 import { OAUTH_QUERY_KEY, ROUTE } from '@/constants';
 import { useSearchParamAndQuery, useToastContext } from '@/hooks';
 import { useOAuthLogin } from '@/hooks/oAuth';
+
+import LoadingPage from '../LoadingPage';
 
 const OAuthCallbackPage = () => {
   const { queryString: gitHubAuthCode } = useSearchParamAndQuery({
@@ -18,22 +19,22 @@ const OAuthCallbackPage = () => {
 
   const queryClient = useQueryClient();
 
-  // 쿼리 파라미터로 전달된 state 파싱
-  const params = new URLSearchParams(location.search);
-  const stateParam = params.get('state');
-  const parsedState: LoginActionContextType = JSON.parse(decodeURIComponent(stateParam!));
-  const { prevUrl, action } = parsedState;
-
-  // 연결 페이지에서 로그인 하는 경우 이전 동작을 담아 리다이렉트
-  const redirectUrl =
-    prevUrl && prevUrl.includes('review-zone') ? `${prevUrl}?login_action=${action}` : `/${ROUTE.reviewLinks}`;
-
   const mutation = useOAuthLogin();
 
   useEffect(() => {
-    if (!gitHubAuthCode) {
-      return;
-    }
+    if (!gitHubAuthCode) return;
+
+    // 쿼리 파라미터로 전달된 state 파싱
+    const params = new URLSearchParams(location.search);
+    const stateParam = params.get('state');
+    if (!stateParam) return;
+
+    const parsedState: LoginActionContextType = JSON.parse(decodeURIComponent(stateParam));
+    const { prevUrl, action } = parsedState;
+
+    // 연결 페이지에서 로그인 하는 경우 이전 동작을 담아 리다이렉트
+    const redirectUrl =
+      prevUrl && prevUrl.includes('review-zone') ? `${prevUrl}?login_action=${action}` : `/${ROUTE.reviewLinks}`;
 
     mutation.mutate(
       { gitHubAuthCode },
@@ -53,7 +54,7 @@ const OAuthCallbackPage = () => {
     );
   }, []);
 
-  return <LoadingBar />;
+  return <LoadingPage />;
 };
 
 export default OAuthCallbackPage;
