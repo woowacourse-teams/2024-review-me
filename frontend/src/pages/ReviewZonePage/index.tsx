@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 
 import ReviewZoneIcon from '@/assets/reviewZone.svg';
 import { ImgWithSkeleton, LoginRequestModal } from '@/components';
-import { StateType } from '@/components/login/GitHubLoginButton';
+import { LoginActionContextType } from '@/components/login/GitHubLoginButton';
 import { ROUTE } from '@/constants';
 import { useGetReviewGroupData, useSearchParamAndQuery, useModals, useToastContext } from '@/hooks';
 import { useGetUserProfile } from '@/hooks/oAuth';
@@ -48,22 +48,23 @@ const ReviewZonePage = () => {
   }, []);
 
   useEffect(() => {
-    if (!isUserLoggedIn) return;
-
     // 쿼리 파라미터로 전달된 state 파싱
     const params = new URLSearchParams(location.search);
-    const stateParam = params.get('state');
-    if (!stateParam) return;
+    const loginActionParam = params.get('login_action');
+    if (!loginActionParam) return;
 
-    const parsedState: StateType = JSON.parse(decodeURIComponent(stateParam));
+    // 로그인 상태가 아닌 경우 쿼리 파라미터 제거
+    if (!isUserLoggedIn) {
+      params.delete('login_action');
+      window.history.replaceState(null, '', `${location.pathname}`);
+      return;
+    }
 
-    if (parsedState.action === 'reviewWrite') return handleReviewWrite();
-    if (parsedState.action === 'reviewCheck') return handleReviewCheck();
+    if (loginActionParam === 'reviewWrite') return handleReviewWrite();
+    if (loginActionParam === 'reviewCheck') return handleReviewCheck();
   }, []);
 
   const { data: reviewGroupData, isGroupLoggedIn } = useGetReviewGroupData({ reviewRequestCode });
-  console.log('userlogin:', isUserLoggedIn, 'grouplogin:', isGroupLoggedIn);
-  console.log(userProfile, reviewGroupData);
 
   const handleReviewWrite = () => {
     if (isUserLoggedIn) return navigate(`/${ROUTE.reviewWriting}/${reviewRequestCode}`);
@@ -83,7 +84,7 @@ const ReviewZonePage = () => {
     if (userProfile?.memberId === reviewGroupData.revieweeId) {
       return navigate(`${ROUTE.reviewList}/${reviewRequestCode}`);
     }
-    return showToast({ type: 'error', message: '접근 권한이 없습니다.', duration: 3000, position: 'bottom' });
+    return showToast({ type: 'error', message: '접근 권한이 없습니다.', durationMS: 3000, position: 'bottom' });
   };
 
   return (
