@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { ContentModal, GitHubLoginButton } from '@/components';
 
-import { ActionOnLogin } from '../GitHubLoginButton';
+import { ActionOnLogin } from '../GitHubLoginButtonA';
 
 import * as S from './styles';
 
