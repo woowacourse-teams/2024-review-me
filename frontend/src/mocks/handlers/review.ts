@@ -213,42 +213,6 @@ const getWrittenReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiPa
   });
 };
 
-// 원본
-// const getWrittenReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
-//   // lastReviewId와 size를 인자로 전달
-//   const url = endPoint.gettingWrittenReviewList(lastReviewId, size);
-
-//   return http.get(url, ({ request, cookies }) => {
-//     const handleAPI = () => {
-//       const url = new URL(request.url);
-//       const lastReviewIdParam = url.searchParams.get('lastReviewId'); // 쿼리 매개변수에서 lastReviewId 추출
-//       const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
-
-//       // size는 이미 인자로 전달했으므로 여기서 사용
-//       const { isLastPage, paginatedDataList, lastDataId } = paginateDataList({
-//         dataList: WRITTEN_REVIEW_LIST.reviews,
-//         dataId: 'reviewId',
-//         lastDataId: lastReviewId,
-//         size, // size를 그대로 사용
-//       });
-
-//       return HttpResponse.json({
-//         revieweeName: REVIEW_LIST.revieweeName,
-//         projectName: REVIEW_LIST.projectName,
-//         lastReviewId: lastDataId,
-//         isLastPage: isLastPage,
-//         reviews: paginatedDataList,
-//       });
-//     };
-
-//     return authorizeWithCookie({
-//       cookies,
-//       validateCookieNames: memberOnlyCookie,
-//       callback: handleAPI,
-//     });
-//   });
-// };
-
 const reviewHandler = [
   getDetailedReview(),
   getNonMemberReceivedReviewList({ lastReviewId: null, size: DEFAULT_SIZE_PER_PAGE }),

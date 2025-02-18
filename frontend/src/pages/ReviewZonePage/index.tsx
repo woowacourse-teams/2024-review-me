@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
 
 import ReviewZoneIcon from '@/assets/reviewZone.svg';
-import { LoginRequestModal, Button, ImgWithSkeleton } from '@/components';
+import { Button, ImgWithSkeleton } from '@/components';
 import { ROUTE } from '@/constants';
 import { useGetReviewGroupData, useModals, useReviewRequestCodeParam } from '@/hooks';
 import { reviewRequestCodeAtom } from '@/recoil';
@@ -74,14 +74,6 @@ const ReviewZonePage = () => {
       {isOpen(MODAL_KEYS.content) && (
         <PasswordModal reviewRequestCode={reviewRequestCode} closeModal={() => closeModal(MODAL_KEYS.content)} />
       )}
-      {/** 테스트용 - 연결 페이지 작업 시 알맞는 action 전달*/}
-      {/* {isOpen(MODAL_KEYS.login) && (
-        <LoginRequestModal
-          action="reviewCheck"
-          titleType="loginIntent"
-          closeModal={() => closeModal(MODAL_KEYS.login)}
-        />
-      )} */}
     </S.ReviewZonePage>
   );
 };
