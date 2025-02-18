@@ -4,16 +4,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.auth.domain.GitHubMember;
 import reviewme.auth.service.AuthService;
-import reviewme.global.session.SessionManager;
+import reviewme.auth.service.dto.GitHubOAuthRequest;
+import reviewme.member.service.MemberService;
+import reviewme.member.service.dto.ProfileResponse;
 import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
+import reviewme.security.session.SessionManager;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,23 +24,25 @@ public class AuthController {
 
     private final SessionManager sessionManager;
     private final AuthService authService;
+    private final MemberService memberService;
 
-    @GetMapping("/v2/auth/github")
-    public ResponseEntity<Void> authWithGithub(
-            @RequestParam String code,
+    @PostMapping("/v2/auth/github")
+    public ResponseEntity<ProfileResponse> authWithGitHub(
+            @RequestBody GitHubOAuthRequest request,
             HttpSession session
     ) {
-        GitHubMember gitHubMember = authService.authWithGithub(code);
+        GitHubMember gitHubMember = authService.authWithGitHub(request);
         sessionManager.saveGitHubMember(session, gitHubMember);
-        return ResponseEntity.noContent().build();
+        ProfileResponse response = memberService.getProfile(gitHubMember);
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/v2/auth/review-group")
+    @PostMapping("/v2/auth/group")
     public ResponseEntity<Void> authWithReviewGroup(
             @Valid @RequestBody CheckValidAccessRequest request,
             HttpSession session
     ) {
-        String reviewRequestCode  = authService.authWithReviewGroup(request);
+        String reviewRequestCode = authService.authWithReviewGroup(request);
         sessionManager.saveReviewRequestCode(session, reviewRequestCode);
         return ResponseEntity.noContent().build();
     }
@@ -46,6 +51,20 @@ public class AuthController {
     public ResponseEntity<Void> logout(
             HttpServletRequest httpRequest
     ) {
-        return ResponseEntity.noContent().build();
+        HttpSession session = httpRequest.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        ResponseCookie cookie = ResponseCookie.from("JSESSIONID", "")
+                .path("/")
+                .maxAge(0)
+                .secure(true)
+                .httpOnly(true)
+                .build();
+
+        return ResponseEntity.noContent()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .build();
     }
 }

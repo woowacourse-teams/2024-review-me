@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ class AnswerValidatorTest {
     @Test
     void 답변이_질문에_속하는지_검증한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
         Question question1 = 서술형_필수_질문();
         Question question2 = 서술형_필수_질문();
         Section section = 항상_보이는_섹션(List.of(question1, question2));
@@ -72,7 +72,7 @@ class AnswerValidatorTest {
     @Test
     void 답변이_리뷰그룹에_속하는지_검증한다() {
         // given
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
         Question question1 = 서술형_필수_질문();
         Question question2 = 서술형_필수_질문();
         Section section = 항상_보이는_섹션(List.of(question1, question2));

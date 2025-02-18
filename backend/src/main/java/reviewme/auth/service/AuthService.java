@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reviewme.auth.domain.GitHubMember;
 import reviewme.auth.infrastructure.GitHubOAuthClient;
 import reviewme.auth.infrastructure.dto.response.GitHubUserInfoResponse;
+import reviewme.auth.service.dto.GitHubOAuthRequest;
 import reviewme.auth.service.exception.ReviewGroupUnauthorizedException;
 import reviewme.member.domain.Member;
 import reviewme.member.repository.MemberRepository;
@@ -24,15 +25,15 @@ public class AuthService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public GitHubMember authWithGithub(String code) {
-        GitHubUserInfoResponse userInfo = githubOAuthClient.getUserInfo(code);
-        Member member = getOrSaveMember(userInfo.gitHubEmail());
+    public GitHubMember authWithGitHub(GitHubOAuthRequest request) {
+        GitHubUserInfoResponse userInfo = githubOAuthClient.getUserInfo(request.code());
+        Member member = getOrSaveMember(userInfo.gitHubId());
         return gitHubMemberService.createGitHubMember(member.getId(), userInfo.gitHubNickname());
     }
 
-    private Member getOrSaveMember(String email) {
-        return memberRepository.findByEmail(email)
-                .orElseGet(() -> memberRepository.save(new Member(email)));
+    private Member getOrSaveMember(String externalId) {
+        return memberRepository.findByExternalId(externalId)
+                .orElseGet(() -> memberRepository.save(new Member(externalId)));
     }
 
     @Transactional(readOnly = true)

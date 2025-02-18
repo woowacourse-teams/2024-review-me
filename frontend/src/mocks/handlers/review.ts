@@ -1,37 +1,49 @@
-import { http, HttpResponse } from 'msw';
+import { DefaultBodyType, http, HttpResponse, StrictRequest } from 'msw';
 
 import endPoint, {
   DETAILED_REVIEW_API_PARAMS,
   DETAILED_REVIEW_API_URL,
   REVIEW_GROUP_API_PARAMS,
-  REVIEW_GROUP_API_URL,
   REVIEW_WRITING_API_PARAMS,
   REVIEW_WRITING_API_URL,
   VERSION2,
 } from '@/apis/endpoints';
-
+import { DEFAULT_SIZE_PER_PAGE } from '@/constants';
 import {
+  VALID_REVIEW_REQUEST_CODE,
   DETAILED_REVIEW_MOCK_DATA,
   DETAILED_PAGE_MOCK_API_SETTING_VALUES,
-  REVIEW_REQUEST_CODE,
   REVIEW_QUESTION_DATA,
   REVIEW_LIST,
   MOCK_REVIEW_INFO_DATA,
   reviewLinks,
-} from '../mockData';
+} from '@/mocks/mockData';
+
 import { GROUPED_REVIEWS_MOCK_DATA, GROUPED_SECTION_MOCK_DATA } from '../mockData/reviewCollection';
+import { WRITTEN_REVIEW_LIST } from '../mockData/writtenReviewList';
 
 import { authorizeWithCookie } from './cookies';
+import { paginateDataList } from './pagination';
 
 export const PAGE = {
   firstPageNumber: 1,
   firstPageStartIndex: 0,
 };
 
-const getReviewInfoData = () =>
-  http.get(endPoint.gettingReviewInfoData, ({ cookies }) => {
+interface GetInfiniteReviewListApiParams {
+  lastReviewId: number | null;
+  size: number;
+}
+
+const getReviewSummaryInfoData = () => {
+  const nonMemberUrl = endPoint.gettingReviewSummaryInfoData(VALID_REVIEW_REQUEST_CODE.nonMember);
+  const memberUrl = endPoint.gettingReviewSummaryInfoData(VALID_REVIEW_REQUEST_CODE.member);
+  const targetUrl = new RegExp(`^(${nonMemberUrl}|${memberUrl})`);
+
+  return http.get(targetUrl, ({ cookies }) => {
     return authorizeWithCookie(cookies, () => HttpResponse.json(MOCK_REVIEW_INFO_DATA));
   });
+};
 
 const getDetailedReview = () =>
   http.get(new RegExp(`^${DETAILED_REVIEW_API_URL}/\\d+$`), ({ request, cookies }) => {
@@ -49,7 +61,9 @@ const getDetailedReview = () =>
       return HttpResponse.json({ error: '잘못된 상세리뷰 요청' }, { status: 404 });
     };
 
-    return authorizeWithCookie(cookies, handleAPI);
+    // NOTE: 임시로 모킹 핸들러에서 쿠키 검증 제거(로그인 관련 페이지 한정)
+    return handleAPI();
+    //return authorizeWithCookie(cookies, handleAPI);
   });
 
 const getDataToWriteReview = () =>
@@ -58,42 +72,57 @@ const getDataToWriteReview = () =>
     const url = new URL(request.url);
     const urlRequestCode = url.searchParams.get(REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode);
 
-    if (REVIEW_REQUEST_CODE === urlRequestCode) {
+    if (VALID_REVIEW_REQUEST_CODE.nonMember === urlRequestCode) {
       return HttpResponse.json(REVIEW_QUESTION_DATA);
     }
     return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
   });
 
 // TODO: 추후 getReviewList API에서 리뷰 정보(이름, 개수...)를 내려주지 않는 경우 핸들러도 수정 필요
-const getReviewList = (lastReviewId: number | null, size: number) => {
-  return http.get(endPoint.gettingReviewList(lastReviewId, size), ({ request, cookies }) => {
-    const handleAPI = () => {
-      const url = new URL(request.url);
+const getMemberReceivedReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
+  const memberUrl = endPoint.gettingReceivedReviewList({
+    lastReviewId,
+    size,
+    reviewRequestCode: VALID_REVIEW_REQUEST_CODE.member,
+  });
 
-      const lastReviewIdParam = url.searchParams.get('lastReviewId');
-      const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
+  return http.get(memberUrl, ({ request, cookies }) => {
+    return authorizeWithCookie(cookies, () => handleReviewListAPI(request, size));
+  });
+};
 
-      const isFirstPage = lastReviewId === 0;
-      const startIndex = isFirstPage
-        ? PAGE.firstPageStartIndex
-        : REVIEW_LIST.reviews.findIndex((review) => review.reviewId === lastReviewId) + 1;
+const getNonMemberReceivedReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
+  const nonMemberUrl = endPoint.gettingReceivedReviewList({
+    lastReviewId,
+    size,
+    reviewRequestCode: VALID_REVIEW_REQUEST_CODE.nonMember,
+  });
 
-      const endIndex = startIndex + size;
+  return http.get(nonMemberUrl, ({ request, cookies }) => {
+    return authorizeWithCookie(cookies, () => handleReviewListAPI(request, size));
+  });
+};
 
-      const paginatedReviews = REVIEW_LIST.reviews.slice(startIndex, endIndex);
+// 회원-비회원 공통 receivedReviewList API 로직 처리 함수
+const handleReviewListAPI = (request: StrictRequest<DefaultBodyType>, size: number) => {
+  const url = new URL(request.url);
 
-      const isLastPage = endIndex >= REVIEW_LIST.reviews.length;
+  const lastReviewIdParam = url.searchParams.get('lastReviewId');
+  const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
 
-      return HttpResponse.json({
-        revieweeName: REVIEW_LIST.revieweeName,
-        projectName: REVIEW_LIST.projectName,
-        lastReviewId: paginatedReviews.length > 0 ? paginatedReviews[paginatedReviews.length - 1].reviewId : 0,
-        isLastPage: isLastPage,
-        reviews: paginatedReviews,
-      });
-    };
+  const { isLastPage, paginatedDataList, lastDataId } = paginateDataList({
+    dataList: WRITTEN_REVIEW_LIST.reviews,
+    dataId: 'reviewId',
+    lastDataId: lastReviewId,
+    size: size,
+  });
 
-    return authorizeWithCookie(cookies, handleAPI);
+  return HttpResponse.json({
+    revieweeName: REVIEW_LIST.revieweeName,
+    projectName: REVIEW_LIST.projectName,
+    lastReviewId: lastDataId,
+    isLastPage: isLastPage,
+    reviews: paginatedDataList,
   });
 };
 
@@ -107,14 +136,53 @@ const getSectionList = () =>
     return authorizeWithCookie(cookies, () => HttpResponse.json(GROUPED_SECTION_MOCK_DATA));
   });
 
-const getGroupedReviews = () => {
-  return http.get(new RegExp(`^${REVIEW_GROUP_API_URL}`), ({ request, cookies }) => {
-    const url = new URL(request.url);
-    const sectionId = url.searchParams.get(REVIEW_GROUP_API_PARAMS.queryString.sectionId);
-    const { length } = GROUPED_REVIEWS_MOCK_DATA;
-    const index = (Number(sectionId) + length) % length;
+interface HandleGroupedReviewAPIParams {
+  request: StrictRequest<DefaultBodyType>;
+  cookies: Record<string, string>;
+}
+const handleGroupedReviewsAPI = ({ request, cookies }: HandleGroupedReviewAPIParams) => {
+  const url = new URL(request.url);
+  const sectionId = url.searchParams.get(REVIEW_GROUP_API_PARAMS.queryString.sectionId);
+  const { length } = GROUPED_REVIEWS_MOCK_DATA;
+  const index = (Number(sectionId) + length) % length;
 
-    return authorizeWithCookie(cookies, () => HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]));
+  return authorizeWithCookie(cookies, () => HttpResponse.json(GROUPED_REVIEWS_MOCK_DATA[index]));
+};
+
+const getGroupedReviews = (reviewRequestCode: string) => {
+  const SECTION_ID = 1;
+  const reviewUrl = endPoint.gettingGroupedReviews(reviewRequestCode, SECTION_ID);
+
+  return http.get(reviewUrl, ({ request, cookies }) => {
+    return handleGroupedReviewsAPI({ request, cookies });
+  });
+};
+
+const getWrittenReviewList = ({ lastReviewId, size }: GetInfiniteReviewListApiParams) => {
+  return http.get(endPoint.gettingWrittenReviewList(lastReviewId, size), ({ request, cookies }) => {
+    const handleAPI = () => {
+      const url = new URL(request.url);
+      const lastReviewIdParam = url.searchParams.get('lastReviewId');
+      const lastReviewId = lastReviewIdParam === 'null' ? 0 : Number(lastReviewIdParam);
+
+      const { isLastPage, paginatedDataList, lastDataId } = paginateDataList({
+        dataList: WRITTEN_REVIEW_LIST.reviews,
+        dataId: 'reviewId',
+        lastDataId: lastReviewId,
+      });
+
+      return HttpResponse.json({
+        revieweeName: REVIEW_LIST.revieweeName,
+        projectName: REVIEW_LIST.projectName,
+        lastReviewId: lastDataId,
+        isLastPage: isLastPage,
+        reviews: paginatedDataList,
+      });
+    };
+
+    // NOTE: 로그인 도입 안정화 전까지 회원 전용 쿠키값 검증 보류
+    return handleAPI();
+    //return authorizeWithCookie(cookies, handleAPI);
   });
 };
 
@@ -125,13 +193,16 @@ const getReviewLinks = () =>
 
 const reviewHandler = [
   getDetailedReview(),
-  getReviewList(null, 10),
+  getNonMemberReceivedReviewList({ lastReviewId: null, size: DEFAULT_SIZE_PER_PAGE }),
+  getMemberReceivedReviewList({ lastReviewId: null, size: DEFAULT_SIZE_PER_PAGE }),
   getDataToWriteReview(),
   getSectionList(),
-  getGroupedReviews(),
-  getReviewInfoData(),
+  getGroupedReviews(VALID_REVIEW_REQUEST_CODE.member),
+  getGroupedReviews(VALID_REVIEW_REQUEST_CODE.nonMember),
+  getReviewSummaryInfoData(),
   postReview(),
   getReviewLinks(),
+  getWrittenReviewList({ lastReviewId: null, size: DEFAULT_SIZE_PER_PAGE }),
 ];
 
 export default reviewHandler;

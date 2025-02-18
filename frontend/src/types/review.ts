@@ -222,4 +222,15 @@ export interface ReviewLinks {
   lastReviewGroupId: number;
   isLastPage: boolean;
   reviewGroups: ReviewGroup[];
+
+export interface WrittenReviewInfo extends ReviewInfo {
+  revieweeName: string;
+  projectName: string;
+}
+
+export interface WrittenReviewList {
+  lastReviewId: number | null;
+  isLastPage: boolean;
+  reviews: WrittenReviewInfo[];
+
 }

@@ -4,6 +4,7 @@ import { Accordion, Dropdown, EmptyContent, HighlightEditorContainer } from '@/c
 import { DropdownItem } from '@/components/common/Dropdown';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
 import { REVIEW_EMPTY, SESSION_STORAGE_KEY } from '@/constants';
+import { useReviewRequestCodeParam } from '@/hooks';
 import { GroupedReview } from '@/types';
 import { substituteString } from '@/utils';
 
@@ -14,16 +15,21 @@ import DoughnutChart from '../DoughnutChart';
 import * as S from './styles';
 
 const ReviewCollectionPageContents = () => {
+  const { reviewRequestCode } = useReviewRequestCodeParam();
+
   const { revieweeName, projectName, totalReviewCount } = useContext(ReviewInfoDataContext);
 
   const { data: reviewSectionList } = useGetSectionList();
-
   const dropdownSectionList = reviewSectionList.sections.map((section) => {
     return { text: section.name, value: section.id };
   });
 
   const [selectedSection, setSelectedSection] = useState<DropdownItem>(dropdownSectionList[0]);
-  const { data: groupedReviews } = useGetGroupedReviews({ sectionId: selectedSection.value as number });
+
+  const { data: groupedReviews } = useGetGroupedReviews({
+    reviewRequestCode: reviewRequestCode,
+    sectionId: selectedSection.value as number,
+  });
 
   groupedReviews.reviews.forEach((review) => {
     review.votes?.sort((voteA, voteB) => voteB.count - voteA.count);

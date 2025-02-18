@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static reviewme.fixture.QuestionFixture.서술형_필수_질문;
 import static reviewme.fixture.ReviewFixture.비회원_작성_리뷰;
-import static reviewme.fixture.ReviewGroupFixture.리뷰_그룹;
+import static reviewme.fixture.ReviewGroupFixture.비회원_리뷰_그룹;
 import static reviewme.fixture.SectionFixture.항상_보이는_섹션;
 
 import java.util.List;
@@ -51,7 +51,7 @@ class HighlightServiceTest {
         Question question = 서술형_필수_질문();
         Section section = 항상_보이는_섹션(List.of(question));
         Template template = templateRepository.save(new Template(List.of(section)));
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         TextAnswer textAnswer1 = new TextAnswer(question.getId(), "text answer1");
         TextAnswer textAnswer2 = new TextAnswer(question.getId(), "text answer2");
@@ -61,12 +61,10 @@ class HighlightServiceTest {
         HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(1, 1);
         HighlightedLineRequest lineRequest = new HighlightedLineRequest(0, List.of(indexRangeRequest));
         HighlightRequest highlightRequest1 = new HighlightRequest(textAnswer2.getId(), List.of(lineRequest));
-        HighlightsRequest highlightsRequest = new HighlightsRequest(
-                reviewGroup.getId(), question.getId(), List.of(highlightRequest1
-        ));
+        HighlightsRequest highlightsRequest = new HighlightsRequest(question.getId(), List.of(highlightRequest1));
 
         // when
-        highlightService.editHighlight(highlightsRequest);
+        highlightService.highlightByReviewGroup(reviewGroup.getId(), highlightsRequest);
 
         // then
         assertAll(() -> assertThat(highlightRepository.existsById(highlight.getId())).isFalse());
@@ -78,7 +76,7 @@ class HighlightServiceTest {
         Question question = 서술형_필수_질문();
         Section section = 항상_보이는_섹션(List.of(question));
         Template template = templateRepository.save(new Template(List.of(section)));
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         TextAnswer textAnswer = new TextAnswer(question.getId(), "text answer1");
         reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(textAnswer)));
@@ -89,12 +87,10 @@ class HighlightServiceTest {
         HighlightIndexRangeRequest indexRangeRequest = new HighlightIndexRangeRequest(startIndex, endIndex);
         HighlightedLineRequest lineRequest = new HighlightedLineRequest(0, List.of(indexRangeRequest));
         HighlightRequest highlightRequest = new HighlightRequest(textAnswer.getId(), List.of(lineRequest));
-        HighlightsRequest highlightsRequest = new HighlightsRequest(
-                reviewGroup.getId(), question.getId(), List.of(highlightRequest)
-        );
+        HighlightsRequest highlightsRequest = new HighlightsRequest(question.getId(), List.of(highlightRequest));
 
         // when
-        highlightService.editHighlight(highlightsRequest);
+        highlightService.highlightByReviewGroup(reviewGroup.getId(), highlightsRequest);
 
         // then
         List<Highlight> highlights = highlightRepository.findAllByAnswerIdsOrderedAsc(List.of(textAnswer.getId()));
@@ -111,16 +107,16 @@ class HighlightServiceTest {
         Question question = 서술형_필수_질문();
         Section section = 항상_보이는_섹션(List.of(question));
         Template template = templateRepository.save(new Template(List.of(section)));
-        ReviewGroup reviewGroup = reviewGroupRepository.save(리뷰_그룹());
+        ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
         TextAnswer textAnswer = new TextAnswer(question.getId(), "text answer1");
         reviewRepository.save(비회원_작성_리뷰(template.getId(), reviewGroup.getId(), List.of(textAnswer)));
         Highlight highlight = highlightRepository.save(new Highlight(textAnswer.getId(), 1, new HighlightRange(1, 1)));
 
-        HighlightsRequest highlightsRequest = new HighlightsRequest(reviewGroup.getId(), question.getId(), List.of());
+        HighlightsRequest highlightsRequest = new HighlightsRequest(question.getId(), List.of());
 
         // when
-        highlightService.editHighlight(highlightsRequest);
+        highlightService.highlightByReviewGroup(reviewGroup.getId(), highlightsRequest);
 
         // then
         assertAll(() -> assertThat(highlightRepository.existsById(highlight.getId())).isFalse());
