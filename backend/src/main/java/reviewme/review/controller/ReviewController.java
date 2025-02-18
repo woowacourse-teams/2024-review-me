@@ -50,7 +50,7 @@ public class ReviewController {
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
-    @GetMapping("/v2/groups/{reviewRequestCode}/reviews/received")
+    @GetMapping("/v2/groups/{reviewRequestCode}/reviews/received") // todo: groupId를 받도록 수정 필요 issue #1101
     @RequireReviewGroupAccess(target = "#reviewRequestCode")
     public ResponseEntity<ReceivedReviewPageResponse> findReceivedReviews(
             @PathVariable String reviewRequestCode,
@@ -72,7 +72,7 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/groups/{reviewRequestCode}/reviews/summary")
+    @GetMapping("/v2/groups/{reviewRequestCode}/reviews/summary") // todo: groupId를 받도록 수정 필요 issue #1101
     @RequireReviewGroupAccess(target = "#reviewRequestCode")
     public ResponseEntity<ReceivedReviewsSummaryResponse> findReceivedReviewOverview(
             @PathVariable String reviewRequestCode
@@ -82,7 +82,7 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/groups/{reviewRequestCode}/reviews/gather")
+    @GetMapping("/v2/groups/{reviewRequestCode}/reviews/gather") // todo: groupId를 받도록 수정 필요 issue #1101
     @RequireReviewGroupAccess(target = "#reviewRequestCode")
     public ResponseEntity<ReviewsGatheredBySectionResponse> getReceivedReviewsBySectionId(
             @PathVariable String reviewRequestCode,
