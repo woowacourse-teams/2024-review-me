@@ -18,21 +18,24 @@ const OAuthCallbackPage = () => {
 
   const queryClient = useQueryClient();
 
-  // 쿼리 파라미터로 전달된 state 파싱
-  const params = new URLSearchParams(location.search);
-  const stateParam = params.get('state');
-  const parsedState: LoginActionContextType = JSON.parse(decodeURIComponent(stateParam!));
-  const { prevUrl, action } = parsedState;
-
-  // 연결 페이지에서 로그인 하는 경우 이전 동작을 담아 리다이렉트
-  const redirectUrl = prevUrl && prevUrl.includes('review-zone') ? `${prevUrl}` : `/${ROUTE.reviewLinks}`;
-
   const mutation = useOAuthLogin();
 
   useEffect(() => {
-    if (!gitHubAuthCode) {
-      return;
-    }
+    if (!gitHubAuthCode) return;
+
+    // 쿼리 파라미터로 전달된 state 파싱
+    const params = new URLSearchParams(location.search);
+    const stateParam = params.get('state');
+    if (!stateParam) return;
+
+    const parsedState: LoginActionContextType = JSON.parse(decodeURIComponent(stateParam));
+    const { prevUrl, action } = parsedState;
+
+    // 연결 페이지에서 로그인 하는 경우 이전 동작을 담아 리다이렉트
+    const redirectUrl =
+      prevUrl && prevUrl.includes('review-zone') ? `${prevUrl}?login_action=${action}` : `/${ROUTE.reviewLinks}`;
+
+    console.log(redirectUrl);
 
     mutation.mutate(
       { gitHubAuthCode },
