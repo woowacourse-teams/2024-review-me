@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import { LoadingBar } from '@/components';
-import { LoginActionContextType } from '@/components/login/GitHubLoginButtonA';
+import { LoginActionContextType } from '@/components/login/GitHubLoginButton';
 import { OAUTH_QUERY_KEY, ROUTE } from '@/constants';
 import { useSearchParamAndQuery, useToastContext } from '@/hooks';
 import { useOAuthLogin } from '@/hooks/oAuth';

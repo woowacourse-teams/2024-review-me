@@ -34,7 +34,7 @@ export const postDataForReviewRequestCodeApi = async ({
   } catch (error) {
     throw new Error(`${ERROR_BOUNDARY_IGNORE_ERROR} - 리뷰 링크 생성 API 요청 실패`);
   }
-}; // 폴더명만 바꾸는 건 push 못하지 않아요??
+};
 
 //리뷰 비밀번호
 export interface GetPasswordValidationApiParams {
