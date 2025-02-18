@@ -6,8 +6,8 @@ import media from '@/utils/media';
 import { ToastPositionType } from '.';
 
 interface ToastModalProps {
-  duration: number;
-  position: ToastPositionType;
+  $animationDurationMS: number;
+  $position: ToastPositionType;
 }
 
 // position: top - 위에서 아래로 내려오는 애니메이션
@@ -58,24 +58,24 @@ const fadeOutDown = keyframes`
   }
 `;
 
-const getToastPositionStyles = (position: ToastPositionType, duration: number) => {
+const getToastPositionStyles = ($position: ToastPositionType, $animationDurationMS: number) => {
   return css`
-    ${position === 'top' &&
+    ${$position === 'top' &&
     css`
       top: 5%;
       animation:
         ${fadeInDown} 0.5s ease-out forwards,
         ${fadeOutUp} 0.5s ease-out forwards;
-      animation-delay: 0s, ${duration - 0.5}s;
+      animation-delay: 0s, ${$animationDurationMS - 0.5}s;
     `}
 
-    ${position === 'bottom' &&
+    ${$position === 'bottom' &&
     css`
       bottom: 5%;
       animation:
         ${fadeInUp} 0.5s ease-out forwards,
         ${fadeOutDown} 0.5s ease-out forwards;
-      animation-delay: 0s, ${duration - 0.5}s;
+      animation-delay: 0s, ${$animationDurationMS - 0.5}s;
     `}
   `;
 };
@@ -92,7 +92,7 @@ export const ToastContainer = styled.div<ToastModalProps>`
 
   position: fixed;
 
-  ${({ position, duration }) => getToastPositionStyles(position, duration)}
+  ${({ $position, $animationDurationMS }) => getToastPositionStyles($position, $animationDurationMS)}
   left: 50%;
   transform: translateX(-50%);
 

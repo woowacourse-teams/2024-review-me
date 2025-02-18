@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { useToastContext } from '@/components/toast/ToastProvider';
 import { EDITOR_ANSWER_CLASS_NAME, HIGHLIGHT_EVENT_NAME, HIGHLIGHT_SPAN_CLASS_NAME } from '@/constants';
+import { useToastContext } from '@/hooks';
 import { EditorAnswerMap, EditorLine, HighlightResponseData, ReviewAnswerResponseData } from '@/types';
 import {
   getEndLineOffset,

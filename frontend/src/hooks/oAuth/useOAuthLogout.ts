@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { postOAuthLogoutApi } from '@/apis/oAuth';
-import { useToastContext } from '@/components/toast/ToastProvider';
 import { OAUTH_QUERY_KEY } from '@/constants';
+
+import useToastContext from '../useToastContext';
 
 const useOAuthLogout = () => {
   const queryClient = useQueryClient();

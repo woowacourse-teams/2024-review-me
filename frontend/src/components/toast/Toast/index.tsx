@@ -11,22 +11,21 @@ export type ToastPositionType = 'top' | 'bottom';
 export interface ToastProps {
   type?: ToastType;
   message: string;
-  duration?: number;
+  durationMS?: number;
   position?: ToastPositionType;
 }
 
-const getToastIcon = (type: ToastType) => {
-  if (type === 'success') return CheckedCircleIcon;
-  if (type === 'error') return WarningIcon;
-  if (type === 'confirm') return AlertIcon;
-  return null;
+const toastIconMap: Record<ToastType, string> = {
+  success: CheckedCircleIcon,
+  error: WarningIcon,
+  confirm: AlertIcon,
 };
 
-const Toast = ({ type = 'success', message, duration = 5, position = 'bottom' }: ToastProps) => {
+const Toast = ({ type = 'success', message, durationMS = 5000, position = 'bottom' }: ToastProps) => {
   return (
     <Portal disableScroll={false}>
-      <S.ToastContainer duration={duration * 100000} position={position}>
-        <S.ToastIcon src={getToastIcon(type!)} alt={type} />
+      <S.ToastContainer $animationDurationMS={durationMS} $position={position}>
+        <S.ToastIcon src={toastIconMap[type]} alt={type} />
         <S.ToastMessage>{message}</S.ToastMessage>
       </S.ToastContainer>
     </Portal>

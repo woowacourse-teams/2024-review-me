@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
 
 import { EssentialPropsWithChildren } from '@/types';
 
@@ -11,33 +11,25 @@ interface ToastStateProps extends ToastProps {
 const defaultToastState: ToastStateProps = {
   type: 'success',
   message: '',
-  duration: 5,
+  durationMS: 5000,
   position: 'bottom',
   isOpen: false,
 };
 
 interface ToastContextType {
-  showToast: ({ type, message, duration, position }: ToastProps) => void;
+  showToast: ({ type, message, durationMS, position }: ToastProps) => void;
   hideToast: () => void;
 }
 
 export const ToastContext = createContext<ToastContextType | null>(null);
 
-export const useToastContext = () => {
-  const value = useContext(ToastContext);
-
-  if (!value) throw new Error('컨텍스트가 존재하지 않아요.');
-
-  return value;
-};
-
 const ToastProvider = ({ children }: EssentialPropsWithChildren) => {
   const [toast, setToast] = useState<ToastStateProps>(defaultToastState);
 
-  const showToast = ({ type = 'success', message, duration = 5, position = 'bottom' }: ToastProps) => {
-    setToast({ type, message, duration, position, isOpen: true });
+  const showToast = ({ type = 'success', message, durationMS = 5000, position = 'bottom' }: ToastProps) => {
+    setToast({ type, message, durationMS, position, isOpen: true });
 
-    const timer = setTimeout(hideToast, duration * 1000);
+    const timer = setTimeout(hideToast, durationMS);
     return () => clearTimeout(timer);
   };
 
@@ -49,7 +41,7 @@ const ToastProvider = ({ children }: EssentialPropsWithChildren) => {
     <ToastContext.Provider value={{ showToast, hideToast }}>
       {children}
       {toast.isOpen && (
-        <Toast type={toast.type} message={toast.message} duration={toast.duration} position={toast.position} />
+        <Toast type={toast.type} message={toast.message} durationMS={toast.durationMS} position={toast.position} />
       )}
     </ToastContext.Provider>
   );
