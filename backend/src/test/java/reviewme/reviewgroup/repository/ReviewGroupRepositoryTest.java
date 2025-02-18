@@ -36,7 +36,7 @@ class ReviewGroupRepositoryTest {
             ReviewGroup reviewGroup3 = reviewGroupRepository.save(회원_지정_리뷰_그룹(memberId));
 
             // when
-            List<ReviewGroupPageElementResponse> response = reviewGroupRepository.findByMemberIdWithLimit(
+            List<ReviewGroupPageElementResponse> response = reviewGroupRepository.findAllByMemberIdWithLimit(
                     memberId, null, 10);
 
             // then
@@ -56,7 +56,7 @@ class ReviewGroupRepositoryTest {
             long lastReviewGroupId = reviewGroup3.getId();
 
             // when
-            List<ReviewGroupPageElementResponse> response = reviewGroupRepository.findByMemberIdWithLimit(
+            List<ReviewGroupPageElementResponse> response = reviewGroupRepository.findAllByMemberIdWithLimit(
                     memberId, lastReviewGroupId, 10);
 
             // then
@@ -75,7 +75,7 @@ class ReviewGroupRepositoryTest {
             long lastReviewGroupId = reviewGroup1.getId();
 
             // when
-            List<ReviewGroupPageElementResponse> response = reviewGroupRepository.findByMemberIdWithLimit(
+            List<ReviewGroupPageElementResponse> response = reviewGroupRepository.findAllByMemberIdWithLimit(
                     memberId, lastReviewGroupId, 10);
 
             // then
@@ -94,11 +94,11 @@ class ReviewGroupRepositoryTest {
             }
 
             // when
-            List<ReviewGroupPageElementResponse> response = reviewGroupRepository.findByMemberIdWithLimit(
+            List<ReviewGroupPageElementResponse> response = reviewGroupRepository.findAllByMemberIdWithLimit(
                     memberId, null, limit);
 
             // then
-            assertThat(response).hasSize(4);
+            assertThat(response).hasSize(numberOfReviewGroup);
         }
 
         @Test
@@ -113,7 +113,7 @@ class ReviewGroupRepositoryTest {
             }
 
             // when
-            List<ReviewGroupPageElementResponse> response = reviewGroupRepository.findByMemberIdWithLimit(
+            List<ReviewGroupPageElementResponse> response = reviewGroupRepository.findAllByMemberIdWithLimit(
                     memberId, null, limit);
 
             // then
@@ -132,13 +132,11 @@ class ReviewGroupRepositoryTest {
             }
 
             // when
-            List<ReviewGroupPageElementResponse> response = reviewGroupRepository.findByMemberIdWithLimit(
+            List<ReviewGroupPageElementResponse> response = reviewGroupRepository.findAllByMemberIdWithLimit(
                     memberId, null, 10);
 
             // then
             assertThat(response).extracting(ReviewGroupPageElementResponse::reviewCount).containsOnly((long) reviewCount);
         }
-
     }
-
 }

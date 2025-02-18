@@ -100,8 +100,8 @@ public class ReviewController {
             @RequestParam(required = false) Integer size,
             @LoginMemberSession LoginMember loginMember
     ) {
-        AuthoredReviewsResponse response = reviewListLookupService.getAuthoredReviews(lastReviewId, size,
-                loginMember.id());
+        AuthoredReviewsResponse response = reviewListLookupService.getAuthoredReviews(
+                loginMember.id(), lastReviewId, size);
         return ResponseEntity.ok(response);
     }
 }

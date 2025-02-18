@@ -2,6 +2,7 @@ package reviewme.reviewgroup.repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,12 @@ import reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse;
 public interface ReviewGroupRepository extends JpaRepository<ReviewGroup, Long> {
 
     Optional<ReviewGroup> findByReviewRequestCode(String reviewRequestCode);
+
+    @Query("""
+            SELECT rg FROM ReviewGroup rg
+            WHERE rg.id IN :reviewGroupIds
+            """)
+    List<ReviewGroup> findAllByIds(Set<Long> reviewGroupIds);
 
     @Query("""
              SELECT new reviewme.reviewgroup.service.dto.ReviewGroupPageElementResponse(
@@ -25,7 +32,7 @@ public interface ReviewGroupRepository extends JpaRepository<ReviewGroup, Long> 
              ORDER BY rg.createdAt DESC, rg.id DESC
              LIMIT :limit
             """)
-    List<ReviewGroupPageElementResponse> findByMemberIdWithLimit(long memberId, Long lastReviewGroupId, int limit);
+    List<ReviewGroupPageElementResponse> findAllByMemberIdWithLimit(long memberId, Long lastReviewGroupId, int limit);
 
     boolean existsByReviewRequestCode(String reviewRequestCode);
 
