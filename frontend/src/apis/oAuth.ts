@@ -8,7 +8,7 @@ interface GetOAuthLoginApiProps {
 }
 
 export const postOAuthLoginApi = async ({ gitHubAuthCode }: GetOAuthLoginApiProps) => {
-  const response = await fetch(endPoint.postingOAuthLogin(gitHubAuthCode), {
+  const response = await fetch(endPoint.postingOAuthLogin, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
