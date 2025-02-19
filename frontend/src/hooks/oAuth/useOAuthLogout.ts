@@ -29,7 +29,7 @@ const useOAuthLogout = () => {
       redirectOnSuccess();
     },
     onError: () => {
-      showToast({ type: 'error', message: '로그아웃 실패! 다시 시도해주세요!', position: 'top' });
+      showToast({ type: 'error', message: '로그아웃에 실패했어요. 다시 시도해주세요!', position: 'top' });
     },
   });
 

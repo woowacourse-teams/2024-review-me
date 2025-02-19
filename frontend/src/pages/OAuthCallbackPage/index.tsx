@@ -48,7 +48,7 @@ const OAuthCallbackPage = () => {
         },
         onError: () => {
           navigate(prevUrl, { replace: true });
-          showToast({ type: 'error', message: '로그인 실패! 다시 시도해주세요!', position: 'top' });
+          showToast({ type: 'error', message: '로그인에 실패했어요. 다시 시도해주세요!', position: 'top' });
         },
       },
     );
