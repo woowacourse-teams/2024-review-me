@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { AlertModal, CopyTextButton, Checkbox } from '@/components';
+import { useGetUserProfile } from '@/hooks/oAuth';
 
 import * as S from './styles';
 interface ReviewZoneURLModalProps {
@@ -10,6 +11,7 @@ interface ReviewZoneURLModalProps {
 
 const ReviewZoneURLModal = ({ reviewZoneURL, closeModal }: ReviewZoneURLModalProps) => {
   const [isChecked, setIsChecked] = useState(false);
+  const { isUserLoggedIn } = useGetUserProfile();
 
   const handleCheckboxClick = () => {
     setIsChecked(!isChecked);
@@ -67,9 +69,11 @@ const ReviewZoneURLModal = ({ reviewZoneURL, closeModal }: ReviewZoneURLModalPro
               height: '2.7rem',
             }}
           />
-          <S.CheckMessage>링크를 저장해두었어요!</S.CheckMessage>
+          <S.CheckMessage>
+            {isUserLoggedIn ? '링크는 프로젝트 목록에서 확인할 수 있어요!' : '링크를 저장해두었어요!'}
+          </S.CheckMessage>
         </S.CheckContainer>
-        <S.WarningMessage>* 창이 닫히면 링크를 다시 확인할 수 없어요!</S.WarningMessage>
+        {!isUserLoggedIn && <S.WarningMessage>* 창이 닫히면 링크를 다시 확인할 수 없어요!</S.WarningMessage>}
       </S.ReviewZoneURLModal>
     </AlertModal>
   );
