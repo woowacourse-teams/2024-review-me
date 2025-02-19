@@ -13,6 +13,7 @@ export const postOAuthLoginApi = async ({ gitHubAuthCode }: GetOAuthLoginApiProp
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
     body: JSON.stringify({ code: gitHubAuthCode }),
   });
 
