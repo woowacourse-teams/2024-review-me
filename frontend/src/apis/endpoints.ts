@@ -56,9 +56,6 @@ export const WRITTEN_REVIEW_PARAMS = {
 
 export const OAUTH_LOGIN_API_PARAMS = {
   resource: 'auth/github',
-  queryString: {
-    code: 'code',
-  },
 };
 
 export const REVIEW_WRITING_API_URL = `${serverUrl}/${VERSION2}/${REVIEW_WRITING_API_PARAMS.resource}`;
@@ -102,8 +99,7 @@ const endPoint = {
     `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/reviews/gather?${REVIEW_GROUP_API_PARAMS.queryString.sectionId}=${sectionId}`,
   postingHighlight: (reviewRequestCode: string) => `${REVIEW_GROUPS_BASIC_API_URL}/${reviewRequestCode}/highlights`,
   gettingUserProfile: `${serverUrl}/${VERSION2}/members/profile`,
-  postingOAuthLogin: (gitHubAuthCode: string) =>
-    `${OAUTH_API_URL}?${OAUTH_LOGIN_API_PARAMS.queryString.code}=${gitHubAuthCode}`,
+  postingOAuthLogin: `${OAUTH_API_URL}`,
   postingOAuthLogout: `${serverUrl}/${VERSION2}/auth/logout`,
   gettingWrittenReviewList: (lastReviewId: number | null, size: number) => {
     const basicUrl = `${WRITTEN_REVIEW_LIST_API_URL}?${WRITTEN_REVIEW_PARAMS.queryString.size}=${size}`;
