@@ -32,6 +32,7 @@ export const postReviewApi = async (formResult: ReviewWritingFormResult) => {
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
     body: JSON.stringify(formResult),
   });
 
