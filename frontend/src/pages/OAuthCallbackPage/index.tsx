@@ -1,8 +1,9 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import { LoginActionContextType } from '@/components/login/GitHubLoginButton';
-import { ROUTE } from '@/constants';
+import { OAUTH_QUERY_KEY, ROUTE } from '@/constants';
 import { useSearchParamAndQuery, useToastContext } from '@/hooks';
 import { useOAuthLogin } from '@/hooks/oAuth';
 
@@ -15,6 +16,8 @@ const OAuthCallbackPage = () => {
 
   const navigate = useNavigate();
   const { showToast } = useToastContext();
+
+  const queryClient = useQueryClient();
 
   const mutation = useOAuthLogin();
 
@@ -39,6 +42,9 @@ const OAuthCallbackPage = () => {
         onSuccess: () => {
           navigate(redirectUrl, { replace: true });
           showToast({ type: 'success', message: '로그인 성공! 환영해요!', position: 'top' });
+
+          // 로그인 성공 시 프로필 정보를 받아오도록 함
+          queryClient.invalidateQueries({ queryKey: [OAUTH_QUERY_KEY.userProfile] });
         },
         onError: () => {
           navigate(prevUrl, { replace: true });
