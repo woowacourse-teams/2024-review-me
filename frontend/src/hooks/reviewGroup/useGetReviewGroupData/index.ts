@@ -25,7 +25,7 @@ const useGetReviewGroupData = ({ reviewRequestCode }: UseGetReviewGroupDataProps
 
   return {
     ...result,
-    isGroupLoggedIn: !!result.data.revieweeId,
+    isMemberLink: !!result.data.revieweeId,
   };
 };
 

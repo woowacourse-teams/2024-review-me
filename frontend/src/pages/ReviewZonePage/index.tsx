@@ -64,7 +64,7 @@ const ReviewZonePage = () => {
     if (loginActionParam === 'reviewCheck') return handleReviewCheck();
   }, []);
 
-  const { data: reviewGroupData, isGroupLoggedIn } = useGetReviewGroupData({ reviewRequestCode });
+  const { data: reviewGroupData, isMemberLink } = useGetReviewGroupData({ reviewRequestCode });
 
   const PROJECT_NAME_GUIDE = `${reviewGroupData.projectName}${calculateParticle({ target: reviewGroupData.projectName, particles: { withFinalConsonant: '을', withoutFinalConsonant: '를' } })} 함께한`;
   const REVIEWEE_NAME_GUIDE = `${reviewGroupData.revieweeName}의 리뷰 공간이에요`;
@@ -80,7 +80,7 @@ const ReviewZonePage = () => {
 
   const handleReviewCheck = () => {
     // 비회원이 만든 그룹이면 비밀번호 입력
-    if (!isGroupLoggedIn) return openModal(MODAL_KEYS.content);
+    if (!isMemberLink) return openModal(MODAL_KEYS.content);
     // 리뷰어가 로그인 안 했으면 로그인 모달 띄우기
     if (!isUserLoggedIn) return openModal(MODAL_KEYS.checkOnLogin);
     // 리뷰어가 링크 주인이면 목록 페이지로 이동
@@ -107,7 +107,7 @@ const ReviewZonePage = () => {
       <ReviewButtons>
         <ReviewButtons.Write handleClick={handleReviewWrite} />
         {!isUserLoggedIn && <ReviewButtons.WriteGuest handleClick={handleReviewWriteGuest} />}
-        <ReviewButtons.Check isGroupLoggedIn={isGroupLoggedIn} handleClick={handleReviewCheck} />
+        <ReviewButtons.Check isGroupLoggedIn={isMemberLink} handleClick={handleReviewCheck} />
       </ReviewButtons>
       {isOpen(MODAL_KEYS.content) && (
         <PasswordModal reviewRequestCode={reviewRequestCode} closeModal={() => closeModal(MODAL_KEYS.content)} />
