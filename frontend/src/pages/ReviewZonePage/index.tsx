@@ -11,7 +11,7 @@ import { reviewRequestCodeAtom } from '@/recoil';
 import { calculateParticle } from '@/utils';
 
 import PasswordModal from './components/PasswordModal';
-import ReviewButtons from './components/ReviewButtons';
+import ReviewButton from './components/ReviewButton';
 import * as S from './styles';
 
 const MODAL_KEYS = {
@@ -104,11 +104,11 @@ const ReviewZonePage = () => {
         <S.ReviewGuide>{PROJECT_NAME_GUIDE}</S.ReviewGuide>
         <S.ReviewGuide>{REVIEWEE_NAME_GUIDE}</S.ReviewGuide>
       </S.ReviewGuideContainer>
-      <ReviewButtons>
-        <ReviewButtons.Write handleClick={handleReviewWrite} />
-        {!isUserLoggedIn && <ReviewButtons.WriteGuest handleClick={handleReviewWriteGuest} />}
-        <ReviewButtons.Check isGroupLoggedIn={isMemberLink} handleClick={handleReviewCheck} />
-      </ReviewButtons>
+      <ReviewButton>
+        <ReviewButton.Write handleClick={handleReviewWrite} />
+        {!isUserLoggedIn && <ReviewButton.WriteGuest handleClick={handleReviewWriteGuest} />}
+        <ReviewButton.Check isGroupLoggedIn={isMemberLink} handleClick={handleReviewCheck} />
+      </ReviewButton>
       {isOpen(MODAL_KEYS.content) && (
         <PasswordModal reviewRequestCode={reviewRequestCode} closeModal={() => closeModal(MODAL_KEYS.content)} />
       )}

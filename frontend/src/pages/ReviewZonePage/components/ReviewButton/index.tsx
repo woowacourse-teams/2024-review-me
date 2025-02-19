@@ -23,7 +23,7 @@ interface ReviewCheckButtonProps {
  * 3. 리뷰어 비로그인 + 리뷰 링크 로그인 = 쓰기 버튼(회원용, 비회원용), 확인 버튼(회원용)
  * 4. 리뷰어 비로그인 + 리뷰 링크 비로그인 = 쓰기 버튼(회원용, 비회원용), 확인 버튼(비회원용)
  */
-const ReviewButtons = ({ children }: EssentialPropsWithChildren) => {
+const ReviewButton = ({ children }: EssentialPropsWithChildren) => {
   return <S.ButtonContainer>{children}</S.ButtonContainer>;
 };
 
@@ -64,8 +64,8 @@ const Check = ({ handleClick, isGroupLoggedIn }: ReviewCheckButtonProps) => {
   );
 };
 
-ReviewButtons.Write = Write;
-ReviewButtons.WriteGuest = WriteGuest;
-ReviewButtons.Check = Check;
+ReviewButton.Write = Write;
+ReviewButton.WriteGuest = WriteGuest;
+ReviewButton.Check = Check;
 
-export default ReviewButtons;
+export default ReviewButton;
