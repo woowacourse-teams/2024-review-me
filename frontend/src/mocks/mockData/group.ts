@@ -14,13 +14,13 @@ export const bothCookie = [MOCK_AUTH_TOKEN_NAME, MOCK_LOGIN_TOKEN_NAME];
  */
 
 // 변수명이 카멜 케이스인 이유는 회원/비회원에 따라 revieweeId가 달라지기 때문에 reviewRequestCode보고 판단해서 회원이면 number, 비회원이면 null로 설정
-export const REVIEW_GROUP_DATA: ReviewGroupData = {
+export const MEMBER_REVIEW_GROUP_DATA: ReviewGroupData = {
   revieweeId: 2024,
   revieweeName: '바다',
   projectName: '2024-review-me',
 };
 
-export const REVIEW_GROUP_DATA_NONMEMBER: ReviewGroupData = {
+export const NONMEMBER_REVIEW_GROUP_DATA: ReviewGroupData = {
   revieweeId: null,
   revieweeName: '손님',
   projectName: '2024-review-me',
