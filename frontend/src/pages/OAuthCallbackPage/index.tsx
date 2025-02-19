@@ -41,14 +41,14 @@ const OAuthCallbackPage = () => {
       {
         onSuccess: () => {
           navigate(redirectUrl, { replace: true });
-          showToast({ type: 'success', message: '환영합니다! 첫 리뷰를 받아보세요!', position: 'top' });
+          showToast({ type: 'success', message: '로그인 성공! 환영해요!', position: 'top' });
 
           // 로그인 성공 시 프로필 정보를 받아오도록 함
           queryClient.invalidateQueries({ queryKey: [OAUTH_QUERY_KEY.userProfile] });
         },
         onError: () => {
           navigate(prevUrl, { replace: true });
-          showToast({ type: 'error', message: '로그인에 실패했어요. 다시 시도해주세요!', position: 'top' });
+          showToast({ type: 'error', message: '로그인 실패! 다시 시도해주세요!', position: 'top' });
         },
       },
     );
