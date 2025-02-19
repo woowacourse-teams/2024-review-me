@@ -10,18 +10,17 @@ import { authorizeWithCookie } from './cookies';
 const postOAuthLogin = () =>
   http.post(endPoint.postingOAuthLogin, async ({ request }) => {
     const bodyResult = await getRequestBody(request);
+    const isValidBody = 'code' in bodyResult;
 
-    // 요청 body가 없거나, code가 포함되지 않는 경우 에러
-    if (bodyResult instanceof Error || !bodyResult.code)
-      return HttpResponse.json({ error: bodyResult.message }, { status: 400 });
+    // body가 없거나, code가 전달되지 않는 경우 에러
+    if (bodyResult instanceof Error || !isValidBody)
+      return HttpResponse.json({ error: '깃허브 인증에 실패했어요' }, { status: 400 });
 
     // 로그인 성공 시 세션 쿠키 생성
     return HttpResponse.json(MOCK_USER_PROFILE, {
       status: 200,
       headers: { 'Set-cookie': `${MOCK_LOGIN_TOKEN_NAME}=2024-review-me` },
     });
-
-    return HttpResponse.json({ error: '깃허브 인증에 실패했어요' }, { status: 401 });
   });
 
 const getUserProfile = () =>
