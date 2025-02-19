@@ -80,8 +80,9 @@ const getDataToWriteReview = () =>
     //요청 url에서 reviewId, memberId 추출
     const url = new URL(request.url);
     const urlRequestCode = url.searchParams.get(REVIEW_WRITING_API_PARAMS.queryString.reviewRequestCode);
+    const isValidReviewRequestCode = Object.values(VALID_REVIEW_REQUEST_CODE).some((value) => value === urlRequestCode);
 
-    if (VALID_REVIEW_REQUEST_CODE.nonMember === urlRequestCode) {
+    if (isValidReviewRequestCode) {
       return HttpResponse.json(REVIEW_QUESTION_DATA);
     }
     return HttpResponse.json({ error: '잘못된 리뷰 작성 데이터 요청' }, { status: 404 });
