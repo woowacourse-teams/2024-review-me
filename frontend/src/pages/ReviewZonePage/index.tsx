@@ -84,7 +84,12 @@ const ReviewZonePage = () => {
     if (userProfile?.memberId === reviewGroupData.revieweeId) {
       return navigate(`/${ROUTE.reviewList}/${reviewRequestCode}`);
     }
-    return showToast({ type: 'error', message: '접근 권한이 없습니다.', durationMS: 3000, position: 'bottom' });
+    return showToast({
+      type: 'error',
+      message: '리뷰는 본인만 확인할 수 있어요',
+      durationMS: 3000,
+      position: 'bottom',
+    });
   };
 
   return (
