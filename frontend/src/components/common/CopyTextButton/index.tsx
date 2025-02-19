@@ -8,7 +8,9 @@ interface CopyTextButtonProps {
 }
 
 const CopyTextButton = ({ targetText, alt }: CopyTextButtonProps) => {
-  const handleCopyTextButtonClick = async () => {
+  const handleCopyTextButtonClick = async (event: React.MouseEvent) => {
+    event.stopPropagation();
+
     try {
       await navigator.clipboard.writeText(targetText);
       alert('텍스트가 클립보드에 복사되었어요');
