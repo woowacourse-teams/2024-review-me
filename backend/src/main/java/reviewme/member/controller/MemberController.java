@@ -1,5 +1,6 @@
 package reviewme.member.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,9 @@ public class MemberController {
 
     @GetMapping("/v2/members/profile")
     public ResponseEntity<ProfileResponse> getProfile(
-            HttpSession session
+            HttpServletRequest request
     ) {
+        HttpSession session = request.getSession(false);
         GitHubMember gitHubMember = sessionManager.getGitHubMember(session);
         ProfileResponse response = memberService.getProfile(gitHubMember);
         return ResponseEntity.ok(response);

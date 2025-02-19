@@ -29,9 +29,10 @@ public class AuthController {
     @PostMapping("/v2/auth/github")
     public ResponseEntity<ProfileResponse> authWithGitHub(
             @RequestBody GitHubOAuthRequest request,
-            HttpSession session
+            HttpServletRequest httpRequest
     ) {
         GitHubMember gitHubMember = authService.authWithGitHub(request);
+        HttpSession session = httpRequest.getSession(true);
         sessionManager.saveGitHubMember(session, gitHubMember);
         ProfileResponse response = memberService.getProfile(gitHubMember);
         return ResponseEntity.ok(response);
@@ -40,9 +41,10 @@ public class AuthController {
     @PostMapping("/v2/auth/group")
     public ResponseEntity<Void> authWithReviewGroup(
             @Valid @RequestBody CheckValidAccessRequest request,
-            HttpSession session
+            HttpServletRequest httpRequest
     ) {
         String reviewRequestCode = authService.authWithReviewGroup(request);
+        HttpSession session = httpRequest.getSession(true);
         sessionManager.saveReviewRequestCode(session, reviewRequestCode);
         return ResponseEntity.noContent().build();
     }
