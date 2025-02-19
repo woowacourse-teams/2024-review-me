@@ -27,6 +27,23 @@ export const FormSection = styled.section`
 
   ${media.small} {
     width: 100%;
+
     margin: 5rem 0 4rem 0;
+  }
+
+  ${media.xSmall} {
+    h2 {
+      font-size: 2rem;
+    }
+
+    p {
+      font-size: 1.4rem;
+    }
+  }
+
+  @media screen and (max-width: 380px) {
+    h2 {
+      font-size: 1.8rem;
+    }
   }
 `;

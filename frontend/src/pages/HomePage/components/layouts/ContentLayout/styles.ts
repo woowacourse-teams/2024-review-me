@@ -17,6 +17,10 @@ export const Title = styled.h2`
     font-size: 2rem;
   }
 
+  ${media.small} {
+    font-size: 2.5rem;
+  }
+
   ${media.xSmall} {
     font-size: 1.8rem;
   }

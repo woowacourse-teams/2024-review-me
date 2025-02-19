@@ -23,6 +23,20 @@ export const ReviewLinkDashboardContainer = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+
+    margin-top: 4rem;
+  }
+
+  ${media.xSmall} {
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
+  @media screen and (max-width: 370px) {
+    h2 {
+      font-size: 1.6rem;
+    }
   }
 `;
 
@@ -40,7 +54,7 @@ export const FormSection = styled.section`
   }
 
   ${media.small} {
-    width: 100%;
+    width: 85%;
     padding: 0;
   }
 `;
