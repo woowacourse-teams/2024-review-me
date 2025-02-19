@@ -66,6 +66,9 @@ const ReviewZonePage = () => {
 
   const { data: reviewGroupData, isGroupLoggedIn } = useGetReviewGroupData({ reviewRequestCode });
 
+  const PROJECT_NAME_GUIDE = `${reviewGroupData.projectName}${calculateParticle({ target: reviewGroupData.projectName, particles: { withFinalConsonant: '을', withoutFinalConsonant: '를' } })} 함께한`;
+  const REVIEWEE_NAME_GUIDE = `${reviewGroupData.revieweeName}의 리뷰 공간이에요`;
+
   const handleReviewWrite = () => {
     if (isUserLoggedIn) return navigate(`/${ROUTE.reviewWriting}/${reviewRequestCode}`);
     openModal(MODAL_KEYS.writeOnLogin);
@@ -98,8 +101,8 @@ const ReviewZonePage = () => {
         <S.ReviewZoneMainImg src={ReviewZoneIcon} alt="" $height={IMG_HEIGHT} />
       </ImgWithSkeleton>
       <S.ReviewGuideContainer>
-        <S.ReviewGuide>{`${reviewGroupData.projectName}${calculateParticle({ target: reviewGroupData.projectName, particles: { withFinalConsonant: '을', withoutFinalConsonant: '를' } })} 함께한`}</S.ReviewGuide>
-        <S.ReviewGuide>{`${reviewGroupData.revieweeName}의 리뷰 공간이에요`}</S.ReviewGuide>
+        <S.ReviewGuide>{PROJECT_NAME_GUIDE}</S.ReviewGuide>
+        <S.ReviewGuide>{REVIEWEE_NAME_GUIDE}</S.ReviewGuide>
       </S.ReviewGuideContainer>
       <ReviewButtons>
         <ReviewButtons.Write handleClick={handleReviewWrite} />
