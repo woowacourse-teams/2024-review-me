@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ForbiddenException.class)
-    public ProblemDetail handleForbiddenException(UnauthorizedException ex) {
+    public ProblemDetail handleForbiddenException(ForbiddenException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getErrorMessage());
     }
 
