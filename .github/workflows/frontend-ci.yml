@@ -78,5 +78,5 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           AMPLITUDE_KEY: ${{ secrets.AMPLITUDE_KEY }}
           REACT_APP_GITHUB_CLIENT_ID: ${{ secrets.REACT_APP_GITHUB_CLIENT_ID }}
-          REACT_APP_REDIRECT_URI: ${{ secrets.AMPLITUDE_KEY }}
+          REACT_APP_REDIRECT_URI: ${{ secrets.REACT_APP_REDIRECT_URI }}
         working-directory: frontend
