@@ -24,6 +24,7 @@ const BUTTON_SIZE = {
   width: '30rem',
   height: '8.5rem',
 };
+
 const IMG_HEIGHT = '15rem';
 
 const ReviewZonePage = () => {

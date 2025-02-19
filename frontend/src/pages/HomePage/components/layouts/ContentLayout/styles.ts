@@ -5,7 +5,6 @@ import media from '@/utils/media';
 export const LoginForm = styled.div`
   display: flex;
   flex-direction: column;
-
   gap: 2rem;
 `;
 
@@ -15,6 +14,10 @@ export const Title = styled.h2`
 
   ${media.medium} {
     font-size: 2rem;
+  }
+
+  ${media.small} {
+    font-size: 2.5rem;
   }
 
   ${media.xSmall} {

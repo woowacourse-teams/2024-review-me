@@ -15,7 +15,9 @@ export const postOAuthLoginApi = async ({ gitHubAuthCode }: GetOAuthLoginApiProp
     },
   });
 
-  if (!response.ok) throw new Error(createApiErrorMessage(response.status));
+  if (!response.ok) {
+    throw new Error(createApiErrorMessage(response.status));
+  }
 
   return {};
 };
@@ -48,7 +50,9 @@ export const postOAuthLogoutApi = async () => {
     credentials: 'include',
   });
 
-  if (!response.ok) throw new Error(createApiErrorMessage(response.status));
+  if (!response.ok) {
+    throw new Error(createApiErrorMessage(response.status));
+  }
 
   return {};
 };

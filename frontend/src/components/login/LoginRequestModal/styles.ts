@@ -12,9 +12,3 @@ export const LoginRequestLabel = styled.p`
   font-size: 1.4rem;
   white-space: nowrap;
 `;
-
-// export const ErrorMessage = styled.p`
-//   margin-top: 0.6rem;
-//   font-size: 1.2rem;
-//   color: ${({ theme }) => theme.colors.red};
-// `;

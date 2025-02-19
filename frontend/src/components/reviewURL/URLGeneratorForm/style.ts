@@ -9,11 +9,12 @@ export const Title = styled.h2`
 
   ${media.medium} {
     font-size: 2rem;
+    margin-bottom: 5rem;
   }
 
-  ${media.xSmall} {
+  ${media.small} {
+    font-size: 2.2rem;
     margin-bottom: 4rem;
-    font-size: 1.8rem;
   }
 
   ${media.xxSmall} {
@@ -65,24 +66,5 @@ export const URLGeneratorForm = styled.form`
     & > button {
       font-size: 1.3rem;
     }
-  }
-`;
-
-export const FormContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  width: 40%;
-
-  ${media.medium} {
-    width: 45%;
-    padding: 0 9rem;
-  }
-
-  ${media.small} {
-    width: 100%;
-    margin: 5rem 0 4rem 0;
   }
 `;

@@ -15,10 +15,9 @@ export const HomePage = styled.div`
 export const FormSection = styled.section`
   display: flex;
   flex-direction: column;
+  gap: 3rem;
   align-items: center;
   justify-content: center;
-
-  gap: 3rem;
 
   width: 40%;
   padding: 0px 9rem;
@@ -28,5 +27,21 @@ export const FormSection = styled.section`
   ${media.small} {
     width: 100%;
     margin: 5rem 0 4rem 0;
+  }
+
+  ${media.xSmall} {
+    h2 {
+      font-size: 2rem;
+    }
+
+    p {
+      font-size: 1.4rem;
+    }
+  }
+
+  @media screen and (max-width: 380px) {
+    h2 {
+      font-size: 1.8rem;
+    }
   }
 `;

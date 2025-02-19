@@ -4,14 +4,14 @@ on:
     branches:
       - develop
     paths:
-      - "frontend/**"
+      - 'frontend/**'
   workflow_dispatch:
 permissions:
   contents: read
   pages: write
   id-token: write
 concurrency:
-  group: "ci-group"
+  group: 'ci-group'
   cancel-in-progress: false # 기존 작업 계속 수행
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "yarn"
+          cache: 'yarn'
           cache-dependency-path: ./frontend/yarn.lock
 
       - name: Create .env file
@@ -32,6 +32,8 @@ jobs:
           echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" > ./frontend/.env
           echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> ./frontend/.env
           echo "AMPLITUDE_KEY=${{ secrets.AMPLITUDE_KEY }}" >> ./frontend/.env
+          echo "REACT_APP_GITHUB_CLIENT_ID"=${{ secrets.REACT_APP_GITHUB_CLIENT_ID }}" >> ./frontend/.env
+          echo "REACT_APP_REDIRECT_URI"=${{ secrets.REACT_APP_REDIRECT_URI }}" >> ./frontend/.env
 
       - name: Set environment file permissions
         run: chmod 644 ./frontend/.env
@@ -51,6 +53,14 @@ jobs:
             echo "Error: AMPLITUDE_KEY is not set"
             exit 1
           fi
+          if [ -z "${{ secrets.REACT_APP_GITHUB_CLIENT_ID }}" ]; then
+            echo "Error: REACT_APP_GITHUB_CLIENT_ID is not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.REACT_APP_REDIRECT_URI }}" ]; then
+            echo "Error: REACT_APP_REDIRECT_URI is not set"
+            exit 1
+          fi
         shell: bash
 
       - name: Install dependencies
@@ -67,4 +77,6 @@ jobs:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           AMPLITUDE_KEY: ${{ secrets.AMPLITUDE_KEY }}
+          REACT_APP_GITHUB_CLIENT_ID: ${{ secrets.REACT_APP_GITHUB_CLIENT_ID }}
+          REACT_APP_REDIRECT_URI: ${{ secrets.REACT_APP_REDIRECT_URI }}
         working-directory: frontend
