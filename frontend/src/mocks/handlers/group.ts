@@ -10,6 +10,8 @@ import {
   VALID_REVIEW_REQUEST_CODE,
   VALIDATED_PASSWORD,
   MOCK_LOGIN_TOKEN_NAME,
+  MEMBER_REVIEW_GROUP_DATA,
+  NONMEMBER_REVIEW_GROUP_DATA,
 } from '../mockData/group';
 
 // NOTE: reviewRequestCode 생성 정상 응답
@@ -101,12 +103,11 @@ const handleReviewGroupDataRequest = (request: StrictRequest<DefaultBodyType>) =
 
   // 유효한 리뷰 요청 코드인지 확인
   if (reviewRequestCode === VALID_REVIEW_REQUEST_CODE.nonMember) {
-    const REVIEW_GROUP_NONMEMBER_DATA = {
-      revieweeId: null,
-      revieweeName: '바다',
-      projectName: '2024-review-me',
-    };
-    return HttpResponse.json(REVIEW_GROUP_NONMEMBER_DATA, { status: 200 });
+    return HttpResponse.json(NONMEMBER_REVIEW_GROUP_DATA, { status: 200 });
+  }
+
+  if (reviewRequestCode === VALID_REVIEW_REQUEST_CODE.member) {
+    return HttpResponse.json(MEMBER_REVIEW_GROUP_DATA, { status: 200 });
   }
 
   return HttpResponse.json({ error: '잘못된 리뷰 그룹 데이터 요청' }, { status: 404 });
