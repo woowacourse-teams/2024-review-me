@@ -1,9 +1,9 @@
 package reviewme.security.aspect;
 
-import static reviewme.security.aspect.ResourceAuthorizationUtils.getCurrentSession;
+import static reviewme.security.aspect.ResourceAuthorizationUtils.getCurrentRequest;
 import static reviewme.security.aspect.ResourceAuthorizationUtils.getTarget;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -29,23 +29,20 @@ public class ReviewAuthorizationAspect {
     @Around("@annotation(requireReviewAccess)")
     public Object checkReviewAccess(ProceedingJoinPoint joinPoint,
                                     RequireReviewAccess requireReviewAccess) throws Throwable {
-        HttpSession session = getCurrentSession();
-        if (session == null) {
-            throw new ForbiddenReviewAccessException();
-        }
-
         long reviewId = getTarget(joinPoint, requireReviewAccess.target(), Long.class);
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewNotFoundException(reviewId));
-        if (!(canMemberAccess(review, session) || canGuestAccess(review, session))) {
+
+        HttpServletRequest request = getCurrentRequest();
+        if (!(canMemberAccess(review, request) || canGuestAccess(review, request))) {
             throw new ForbiddenReviewAccessException();
         }
 
         return joinPoint.proceed();
     }
 
-    private boolean canMemberAccess(Review review, HttpSession session) {
-        GitHubMember gitHubMember = sessionManager.getGitHubMember(session);
+    private boolean canMemberAccess(Review review, HttpServletRequest request) {
+        GitHubMember gitHubMember = sessionManager.getGitHubMember(request);
         if (gitHubMember == null) {
             return false;
         }
@@ -58,8 +55,8 @@ public class ReviewAuthorizationAspect {
         return isReviewGroupCreator || isReviewAuthor;
     }
 
-    private boolean canGuestAccess(Review review, HttpSession session) {
-        String reviewRequestCode = sessionManager.getReviewRequestCode(session);
+    private boolean canGuestAccess(Review review, HttpServletRequest request) {
+        String reviewRequestCode = sessionManager.getReviewRequestCode(request);
         if (reviewRequestCode == null) {
             return false;
         }

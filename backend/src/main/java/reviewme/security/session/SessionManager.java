@@ -19,7 +19,8 @@ public class SessionManager {
         session.setAttribute(GITHUB_MEMBER_KEY, gitHubMember);
     }
 
-    public @Nullable GitHubMember getGitHubMember(HttpSession session) {
+    public @Nullable GitHubMember getGitHubMember(HttpServletRequest httpRequest) {
+        HttpSession session = httpRequest.getSession(false);
         if (session == null) {
             return null;
         }
@@ -31,7 +32,8 @@ public class SessionManager {
         session.setAttribute(REVIEW_REQUEST_CODE_KEY, reviewRequestCode);
     }
 
-    public @Nullable String getReviewRequestCode(HttpSession session) {
+    public @Nullable String getReviewRequestCode(HttpServletRequest httpRequest) {
+        HttpSession session = httpRequest.getSession(false);
         if (session == null) {
             return null;
         }

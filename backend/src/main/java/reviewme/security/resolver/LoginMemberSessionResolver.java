@@ -27,7 +27,6 @@ public class LoginMemberSessionResolver implements HandlerMethodArgumentResolver
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         LoginMember loginMember = Optional.ofNullable(webRequest.getNativeRequest(HttpServletRequest.class))
-                .map(httpServletRequest -> httpServletRequest.getSession(false))
                 .map(sessionManager::getGitHubMember)
                 .map(gitHubMember -> new LoginMember(gitHubMember.getMemberId()))
                 .orElse(null);

@@ -1,9 +1,9 @@
 package reviewme.security.aspect;
 
-import static reviewme.security.aspect.ResourceAuthorizationUtils.getCurrentSession;
+import static reviewme.security.aspect.ResourceAuthorizationUtils.getCurrentRequest;
 import static reviewme.security.aspect.ResourceAuthorizationUtils.getTarget;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -27,28 +27,25 @@ public class ReviewGroupAuthorizationAspect {
     @Around("@annotation(requireReviewGroupAccess)")
     public Object checkReviewGroupAccess(ProceedingJoinPoint joinPoint,
                                          RequireReviewGroupAccess requireReviewGroupAccess) throws Throwable {
-        HttpSession session = getCurrentSession();
-        if (session == null) {
-            throw new ForbiddenReviewGroupAccessException();
-        }
-
         String reviewRequestCode = getTarget(joinPoint, requireReviewGroupAccess.target(), String.class);
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(reviewRequestCode)
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
-        if (!(canMemberAccess(reviewGroup, session) || canGuestAccess(reviewGroup, session))) {
+
+        HttpServletRequest request = getCurrentRequest();
+        if (!(canMemberAccess(reviewGroup, request) || canGuestAccess(reviewGroup, request))) {
             throw new ForbiddenReviewGroupAccessException();
         }
 
         return joinPoint.proceed();
     }
 
-    private boolean canMemberAccess(ReviewGroup reviewGroup, HttpSession session) {
-        GitHubMember gitHubMember = sessionManager.getGitHubMember(session);
+    private boolean canMemberAccess(ReviewGroup reviewGroup, HttpServletRequest request) {
+        GitHubMember gitHubMember = sessionManager.getGitHubMember(request);
         return gitHubMember != null && reviewGroup.getMemberId() == gitHubMember.getMemberId();
     }
 
-    private boolean canGuestAccess(ReviewGroup reviewGroup, HttpSession session) {
-        String reviewRequestCode = sessionManager.getReviewRequestCode(session);
+    private boolean canGuestAccess(ReviewGroup reviewGroup, HttpServletRequest request) {
+        String reviewRequestCode = sessionManager.getReviewRequestCode(request);
         return reviewGroup.getReviewRequestCode().equals(reviewRequestCode);
     }
 }
