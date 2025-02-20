@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router';
 import { URLGeneratorForm, EmptyContent } from '@/components';
 import { REVIEW_EMPTY, ROUTE } from '@/constants';
 import { useGetReviewLinks } from '@/hooks';
-import { useGetUserProfile } from '@/hooks/oAuth';
 
 import ReviewLinkLayout from '../layouts/ReviewLinkLayout';
 import ReviewLinkItem from '../ReviewLinkItem';
@@ -11,12 +10,7 @@ import ReviewLinkItem from '../ReviewLinkItem';
 import * as S from './styles';
 
 const ReviewLinkDashboard = () => {
-  const { userProfile, isUserLoggedIn } = useGetUserProfile();
-  const memberIdProp = isUserLoggedIn && userProfile ? userProfile.memberId : undefined;
-
-  const { data: reviewLinks, refetch } = useGetReviewLinks({
-    memberId: memberIdProp,
-  });
+  const { data: reviewLinks, refetch } = useGetReviewLinks();
 
   const navigate = useNavigate();
 

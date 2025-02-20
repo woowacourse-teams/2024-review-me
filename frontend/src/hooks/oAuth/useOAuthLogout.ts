@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router';
 
 import { postOAuthLogoutApi } from '@/apis/oAuth';
-import { OAUTH_QUERY_KEY, ROUTE } from '@/constants';
+import { OAUTH_QUERY_KEY, REVIEW_QUERY_KEY, ROUTE } from '@/constants';
 
 import useToastContext from '../useToastContext';
 
@@ -25,6 +25,8 @@ const useOAuthLogout = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [OAUTH_QUERY_KEY.userProfile] });
+      queryClient.invalidateQueries({ queryKey: [REVIEW_QUERY_KEY.reviewLinks] });
+      queryClient.invalidateQueries({ queryKey: [REVIEW_QUERY_KEY.writtenReviewList] });
       showToast({ type: 'success', message: '로그아웃 완료!', position: 'top' });
       redirectOnSuccess();
     },
