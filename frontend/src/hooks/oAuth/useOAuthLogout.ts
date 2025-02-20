@@ -25,8 +25,8 @@ const useOAuthLogout = () => {
 
     onSuccess: () => {
       showToast({ type: 'success', message: '로그아웃 완료!', position: 'top' });
-      redirectOnSuccess();
       queryClient.clear();
+      redirectOnSuccess();
     },
     onError: () => {
       showToast({ type: 'error', message: '로그아웃에 실패했어요. 다시 시도해주세요!', position: 'top' });
