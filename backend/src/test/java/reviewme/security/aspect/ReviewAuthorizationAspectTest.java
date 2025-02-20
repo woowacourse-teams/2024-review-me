@@ -65,6 +65,7 @@ class ReviewAuthorizationAspectTest {
             // given
             Member member = memberRepository.save(회원());
             Review review = reviewRepository.save(회원_작성_리뷰(member.getId(), 1L, 1L, List.of()));
+
             GitHubMember gitHubMember = new GitHubMember(member.getId(), "name", "avatarUrl");
             sessionManager.saveGitHubMember(request, gitHubMember);
 
@@ -78,7 +79,7 @@ class ReviewAuthorizationAspectTest {
             // given
             Member member = memberRepository.save(회원());
             ReviewGroup reviewGroup = reviewGroupRepository.save(회원_지정_리뷰_그룹(member.getId()));
-            Review review = reviewRepository.save(비회원_작성_리뷰(1L, 1L, List.of()));
+            Review review = reviewRepository.save(비회원_작성_리뷰(1L, reviewGroup.getId(), List.of()));
 
             GitHubMember gitHubMember = new GitHubMember(member.getId(), "name", "avatarUrl");
             sessionManager.saveGitHubMember(request, gitHubMember);
@@ -92,7 +93,7 @@ class ReviewAuthorizationAspectTest {
         void 비회원은_자신이_만든_리뷰_그룹에_작성된_리뷰에_접근할_수_있다() {
             // given
             ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
-            Review review = reviewRepository.save(비회원_작성_리뷰(1L, 1L, List.of()));
+            Review review = reviewRepository.save(비회원_작성_리뷰(1L, reviewGroup.getId(), List.of()));
             sessionManager.saveReviewRequestCode(request, reviewGroup.getReviewRequestCode());
 
             // when & then
@@ -115,17 +116,17 @@ class ReviewAuthorizationAspectTest {
         void 세션이_존재하지_않으면_Unauthorized_예외가_발생한다() {
             // given
             request.setSession(null);
+            Review review = reviewRepository.save(비회원_작성_리뷰(1L, 1L, List.of()));
 
             // when & then
-            assertThatCode(() -> aopTestClass.testReviewMethod(1L))
+            assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
                     .isInstanceOf(ForbiddenReviewAccessException.class);
         }
 
         @Test
         void 세션에_저장된_정보가_없으면_Unauthorized_예외가_발생한다() {
             // given
-            Member member = memberRepository.save(회원());
-            Review review = reviewRepository.save(회원_작성_리뷰(member.getId(), 1L, 1L, List.of()));
+            Review review = reviewRepository.save(비회원_작성_리뷰(1L, 1L, List.of()));
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))

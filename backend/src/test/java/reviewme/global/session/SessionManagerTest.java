@@ -35,16 +35,17 @@ class SessionManagerTest {
 
         // when
         sessionManager.saveGitHubMember(request, gitHubMember);
-        GitHubMember savedGitHubMember = sessionManager.getGitHubMember(session);
+        GitHubMember savedGitHubMember = sessionManager.getGitHubMember(request);
 
         // then
         assertThat(savedGitHubMember).isEqualTo(gitHubMember);
     }
 
     @Test
-    void 세션이_null_이면_깃허브_멤버를_조회할_때_null_을_반환한다() {
+    void 세션이_없으면_깃허브_멤버를_조회할_때_null_을_반환한다() {
         // when
-        GitHubMember gitHubMember = sessionManager.getGitHubMember(null);
+        request = new MockHttpServletRequest();
+        GitHubMember gitHubMember = sessionManager.getGitHubMember(request);
 
         // then
         assertThat(gitHubMember).isNull();
@@ -57,16 +58,17 @@ class SessionManagerTest {
 
         // when
         sessionManager.saveReviewRequestCode(request, reviewRequestCode);
-        String savedReviewGroup = sessionManager.getReviewRequestCode(session);
+        String savedReviewGroup = sessionManager.getReviewRequestCode(request);
 
         // then
         assertThat(savedReviewGroup).isEqualTo(reviewRequestCode);
     }
 
     @Test
-    void 세션이_null_이면_리뷰_그룹을_조회할_때_null_을_반환한다() {
+    void 세션이_없으면_리뷰_그룹을_조회할_때_null_을_반환한다() {
         // when
-        String reviewGroup = sessionManager.getReviewRequestCode(null);
+        request = new MockHttpServletRequest();
+        String reviewGroup = sessionManager.getReviewRequestCode(request);
 
         // then
         assertThat(reviewGroup).isNull();

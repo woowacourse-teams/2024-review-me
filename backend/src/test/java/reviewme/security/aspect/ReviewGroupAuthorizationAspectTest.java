@@ -91,9 +91,10 @@ class ReviewGroupAuthorizationAspectTest {
         void 세션이_없으면_Unauthorized_예외가_발생한다() {
             // given
             request.setSession(null);
+            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
 
             // when & then
-            assertThatCode(() -> aopTestClass.testReviewGroupMethod("1234"))
+            assertThatCode(() -> aopTestClass.testReviewGroupMethod(reviewGroup.getReviewRequestCode()))
                     .isInstanceOf(ForbiddenReviewGroupAccessException.class);
         }
 

@@ -2,7 +2,6 @@ package reviewme.security.resolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -46,8 +45,7 @@ class GuestReviewGroupSessionResolverTest {
         String reviewRequestCode = "reviewRequestCode";
 
         given(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).willReturn(httpServletRequest);
-        given(httpServletRequest.getSession(anyBoolean())).willReturn(httpSession);
-        given(sessionManager.getReviewRequestCode(httpSession)).willReturn(reviewRequestCode);
+        given(sessionManager.getReviewRequestCode(httpServletRequest)).willReturn(reviewRequestCode);
 
         GuestReviewGroupSession annotation = mock(GuestReviewGroupSession.class);
         given(annotation.required()).willReturn(false);
@@ -65,7 +63,6 @@ class GuestReviewGroupSessionResolverTest {
     void 어노테이션의_속성이_flase일때_세션이_없다면_null을_반환한다() {
         // given
         given(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).willReturn(httpServletRequest);
-        given(httpServletRequest.getSession(anyBoolean())).willReturn(null);
 
         GuestReviewGroupSession annotation = mock(GuestReviewGroupSession.class);
         given(annotation.required()).willReturn(false);
@@ -83,8 +80,7 @@ class GuestReviewGroupSessionResolverTest {
     void 어노테이션의_속성이_false일때_세션에_저장된_데이터가_없다면_null을_반환한다() {
         // given
         given(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).willReturn(httpServletRequest);
-        given(httpServletRequest.getSession(anyBoolean())).willReturn(httpSession);
-        given(sessionManager.getReviewRequestCode(httpSession)).willReturn(null);
+        given(sessionManager.getReviewRequestCode(httpServletRequest)).willReturn(null);
 
         GuestReviewGroupSession annotation = mock(GuestReviewGroupSession.class);
         given(annotation.required()).willReturn(false);
@@ -102,7 +98,6 @@ class GuestReviewGroupSessionResolverTest {
     void 어노테이션의_속성이_true일때_세션이_없다면_예외가_발생한다() {
         // given
         given(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).willReturn(httpServletRequest);
-        given(httpServletRequest.getSession(anyBoolean())).willReturn(null);
 
         GuestReviewGroupSession annotation = mock(GuestReviewGroupSession.class);
         given(annotation.required()).willReturn(true);
@@ -118,8 +113,7 @@ class GuestReviewGroupSessionResolverTest {
     void 어노테이션의_속성이_true일때_세션에_저장된_데이터가_없다면_예외가_발생한다() {
         // given
         given(nativeWebRequest.getNativeRequest(HttpServletRequest.class)).willReturn(httpServletRequest);
-        given(httpServletRequest.getSession(anyBoolean())).willReturn(httpSession);
-        given(sessionManager.getReviewRequestCode(httpSession)).willReturn(null);
+        given(sessionManager.getReviewRequestCode(httpServletRequest)).willReturn(null);
 
         GuestReviewGroupSession annotation = mock(GuestReviewGroupSession.class);
         given(annotation.required()).willReturn(true);

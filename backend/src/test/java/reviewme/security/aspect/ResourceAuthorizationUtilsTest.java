@@ -5,14 +5,13 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import reviewme.security.aspect.exception.SpELEvaluationFailedException;
@@ -116,19 +115,16 @@ class ResourceAuthorizationUtilsTest {
     }
 
     @Test
-    void 현재_세션을_반환한다() {
+    void 현재_요청을_반환한다() {
         // given
         MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("리뷰미", "파이팅");
-        request.setSession(session);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
         // when
-        HttpSession actualSession = ResourceAuthorizationUtils.getCurrentSession();
+        HttpServletRequest actualRequest = ResourceAuthorizationUtils.getCurrentRequest();
 
         // then
-        assertThat(actualSession.getAttribute("리뷰미")).isEqualTo("파이팅");
+        assertThat(actualRequest).isEqualTo(request);
     }
 
     private static class TestRequest {
