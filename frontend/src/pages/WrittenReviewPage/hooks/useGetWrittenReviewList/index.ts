@@ -7,8 +7,15 @@ import { useGetUserProfile } from '@/hooks/oAuth';
 const useGetWrittenReviewList = () => {
   const { userProfile, isUserLoggedIn } = useGetUserProfile();
 
+  const makeQueryKey = () => {
+    if (isUserLoggedIn && userProfile) {
+      return [REVIEW_QUERY_KEY.writtenReviewList, userProfile.memberId];
+    }
+    return [REVIEW_QUERY_KEY.writtenReviewList];
+  };
+
   const { data, ...rest } = useSuspenseInfiniteQuery({
-    queryKey: [REVIEW_QUERY_KEY.writtenReviewList, isUserLoggedIn && userProfile && userProfile.memberId],
+    queryKey: makeQueryKey(),
     queryFn: ({ pageParam }) =>
       getWrittenReviewListApi({
         lastReviewId: pageParam === 0 ? null : pageParam, // 첫 요청일 때 null으로 보냄

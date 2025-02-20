@@ -7,8 +7,15 @@ import { useGetUserProfile } from '@/hooks/oAuth';
 const useGetReviewLinks = () => {
   const { userProfile, isUserLoggedIn } = useGetUserProfile();
 
+  const makeQueryKey = () => {
+    if (isUserLoggedIn && userProfile) {
+      return [REVIEW_QUERY_KEY.reviewLinks, userProfile.memberId];
+    }
+    return [REVIEW_QUERY_KEY.reviewLinks];
+  };
+
   const result = useSuspenseQuery({
-    queryKey: [REVIEW_QUERY_KEY.reviewLinks, isUserLoggedIn && userProfile && userProfile.memberId],
+    queryKey: makeQueryKey(),
     queryFn: () => getReviewLinksApi(),
     staleTime: 60 * 60 * 1000,
   });
