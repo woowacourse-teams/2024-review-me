@@ -2,20 +2,14 @@ import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
 import { getWrittenReviewListApi } from '@/apis/review';
 import { DEFAULT_SIZE_PER_PAGE, REVIEW_QUERY_KEY } from '@/constants';
-import { useGetUserProfile } from '@/hooks/oAuth';
 
-const useGetWrittenReviewList = () => {
-  const { userProfile, isUserLoggedIn } = useGetUserProfile();
+interface UseGetWrittenReviewListProps {
+  memberId?: number;
+}
 
-  const makeQueryKey = () => {
-    if (isUserLoggedIn && userProfile) {
-      return [REVIEW_QUERY_KEY.writtenReviewList, userProfile.memberId];
-    }
-    return [REVIEW_QUERY_KEY.writtenReviewList];
-  };
-
+const useGetWrittenReviewList = ({ memberId }: UseGetWrittenReviewListProps) => {
   const { data, ...rest } = useSuspenseInfiniteQuery({
-    queryKey: makeQueryKey(),
+    queryKey: [REVIEW_QUERY_KEY.writtenReviewList, memberId],
     queryFn: ({ pageParam }) =>
       getWrittenReviewListApi({
         lastReviewId: pageParam === 0 ? null : pageParam, // 첫 요청일 때 null으로 보냄
