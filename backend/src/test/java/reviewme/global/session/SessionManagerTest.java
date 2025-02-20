@@ -42,6 +42,15 @@ class SessionManagerTest {
     }
 
     @Test
+    void 세션이_null_이면_깃허브_멤버를_조회할_때_null_을_반환한다() {
+        // when
+        GitHubMember gitHubMember = sessionManager.getGitHubMember(null);
+
+        // then
+        assertThat(gitHubMember).isNull();
+    }
+
+    @Test
     void 세션에_리뷰_그룹을_저장하고_조회한다() {
         // given
         String reviewRequestCode = "reviewRequestCode";
@@ -52,5 +61,14 @@ class SessionManagerTest {
 
         // then
         assertThat(savedReviewGroup).isEqualTo(reviewRequestCode);
+    }
+
+    @Test
+    void 세션이_null_이면_리뷰_그룹을_조회할_때_null_을_반환한다() {
+        // when
+        String reviewGroup = sessionManager.getReviewRequestCode(null);
+
+        // then
+        assertThat(reviewGroup).isNull();
     }
 }

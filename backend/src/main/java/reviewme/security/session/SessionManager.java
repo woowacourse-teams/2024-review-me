@@ -1,12 +1,11 @@
 package reviewme.security.session;
 
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reviewme.auth.domain.GitHubMember;
-import reviewme.security.resolver.exception.GuestReviewGroupSessionNotExistsException;
-import reviewme.security.resolver.exception.LoginMemberSessionNotExistsException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,9 +19,9 @@ public class SessionManager {
         session.setAttribute(GITHUB_MEMBER_KEY, gitHubMember);
     }
 
-    public GitHubMember getGitHubMember(HttpSession session) {
+    public @Nullable GitHubMember getGitHubMember(HttpSession session) {
         if (session == null) {
-            throw new LoginMemberSessionNotExistsException();
+            return null;
         }
         return (GitHubMember) session.getAttribute(GITHUB_MEMBER_KEY);
     }
@@ -32,9 +31,9 @@ public class SessionManager {
         session.setAttribute(REVIEW_REQUEST_CODE_KEY, reviewRequestCode);
     }
 
-    public String getReviewRequestCode(HttpSession session) {
+    public @Nullable String getReviewRequestCode(HttpSession session) {
         if (session == null) {
-            throw new GuestReviewGroupSessionNotExistsException();
+            return null;
         }
         return (String) session.getAttribute(REVIEW_REQUEST_CODE_KEY);
     }
