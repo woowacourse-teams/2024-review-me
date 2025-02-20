@@ -66,7 +66,7 @@ const getToastPositionStyles = ($position: ToastPositionType, $animationDuration
       animation:
         ${fadeInDown} 0.5s ease-out forwards,
         ${fadeOutUp} 0.5s ease-out forwards;
-      animation-delay: 0s, ${$animationDurationMS - 0.5}s;
+      animation-delay: 0s, ${$animationDurationMS / 1000 - 0.5}s;
     `}
 
     ${$position === 'bottom' &&
@@ -75,7 +75,7 @@ const getToastPositionStyles = ($position: ToastPositionType, $animationDuration
       animation:
         ${fadeInUp} 0.5s ease-out forwards,
         ${fadeOutDown} 0.5s ease-out forwards;
-      animation-delay: 0s, ${$animationDurationMS - 0.5}s;
+      animation-delay: 0s, ${$animationDurationMS / 1000 - 0.5}s;
     `}
   `;
 };
