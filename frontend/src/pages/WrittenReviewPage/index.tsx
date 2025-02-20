@@ -1,10 +1,10 @@
-import { ErrorSuspenseContainer, AuthAndServerErrorFallback } from '@/components';
+import { ErrorSuspenseContainer } from '@/components';
 
 import PageContent from './components/PageContent';
 
 const WrittenReviewPage = () => {
   return (
-    <ErrorSuspenseContainer errorFallback={AuthAndServerErrorFallback}>
+    <ErrorSuspenseContainer>
       <PageContent />
     </ErrorSuspenseContainer>
   );
