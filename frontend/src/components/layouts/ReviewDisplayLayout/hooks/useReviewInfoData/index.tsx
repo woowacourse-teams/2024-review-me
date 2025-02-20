@@ -15,7 +15,6 @@ const useReviewInfoData = ({ reviewRequestCode }: UseReviewInfoDataProps) => {
   const { data } = useSuspenseQuery<ReviewInfoData>({
     queryKey: [REVIEW_QUERY_KEY.reviewInfoData],
     queryFn: () => fetchReviewInfoData(),
-    staleTime: 60 * 60 * 1000,
   });
 
   return data;

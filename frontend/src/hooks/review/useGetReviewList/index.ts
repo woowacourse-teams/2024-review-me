@@ -18,8 +18,6 @@ const useGetReviewList = ({ reviewRequestCode }: UseGetReviewListProps) => {
 
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.lastReviewId,
-
-    staleTime: 1 * 60 * 1000,
   });
 
   const isLastPage = data.pages[data.pages.length - 1].isLastPage;
