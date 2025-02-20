@@ -41,7 +41,7 @@ public class ReviewGroupAuthorizationAspect {
 
     private boolean canMemberAccess(ReviewGroup reviewGroup, HttpServletRequest request) {
         GitHubMember gitHubMember = sessionManager.getGitHubMember(request);
-        return gitHubMember != null && reviewGroup.getMemberId() == gitHubMember.getMemberId();
+        return gitHubMember != null && reviewGroup.isMadeByMember(gitHubMember.getMemberId());
     }
 
     private boolean canGuestAccess(ReviewGroup reviewGroup, HttpServletRequest request) {

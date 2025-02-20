@@ -100,4 +100,8 @@ public class ReviewGroup {
     public String getGroupAccessCode() {
         return groupAccessCode != null ? groupAccessCode.getCode() : null;
     }
+
+    public boolean isMadeByMember(long memberId) {
+        return this.memberId != null && this.memberId == memberId;
+    }
 }

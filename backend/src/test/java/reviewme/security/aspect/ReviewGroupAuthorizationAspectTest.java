@@ -53,7 +53,7 @@ class ReviewGroupAuthorizationAspectTest {
     class 성공적으로_리뷰_그룹에_접근할_수_있다 {
 
         @Test
-        void 회원은_자신이_만든_리뷰_그룹에_접근할_수_있다() {
+        void 로그인한_회원은_자신이_만든_리뷰_그룹에_접근할_수_있다() {
             // given
             Member member = memberRepository.save(회원());
             ReviewGroup reviewGroup = reviewGroupRepository.save(회원_지정_리뷰_그룹(member.getId()));
@@ -66,10 +66,25 @@ class ReviewGroupAuthorizationAspectTest {
         }
 
         @Test
-        void 비회원은_자신이_만든_리뷰_그룹에_접근할_수_있다() {
+        void 리뷰_그룹을_인증한_비회원은_자신이_만든_리뷰_그룹에_접근할_수_있다() {
             // given
             ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
             sessionManager.saveReviewRequestCode(request, reviewGroup.getReviewRequestCode());
+
+            // when & then
+            assertThatCode(() -> aopTestClass.testReviewGroupMethod(reviewGroup.getReviewRequestCode()))
+                    .doesNotThrowAnyException();
+        }
+
+        @Test
+        void 로그인한_상태에서_리뷰_그룹을_인증한_회원은_리뷰_그룹에_접근할_수_있다() {
+            // given
+            ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
+            sessionManager.saveReviewRequestCode(request, reviewGroup.getReviewRequestCode());
+
+            Member member = memberRepository.save(회원());
+            GitHubMember gitHubMember = new GitHubMember(member.getId(), "name", "avatarUrl");
+            sessionManager.saveGitHubMember(request, gitHubMember);
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewGroupMethod(reviewGroup.getReviewRequestCode()))
