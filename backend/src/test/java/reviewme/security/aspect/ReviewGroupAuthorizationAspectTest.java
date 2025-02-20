@@ -49,11 +49,18 @@ class ReviewGroupAuthorizationAspectTest {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
     }
 
+    @Test
+    void 존재하지_않는_리뷰_그룹에_접근하면_NotFound_예외가_발생한다() {
+        // when & then
+        assertThatCode(() -> aopTestClass.testReviewGroupMethod("notExistsReviewRequestCode"))
+                .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
+    }
+
     @Nested
     class 성공적으로_리뷰_그룹에_접근할_수_있다 {
 
         @Test
-        void 로그인한_회원은_자신이_만든_리뷰_그룹에_접근할_수_있다() {
+        void 회원은_자신이_만든_리뷰_그룹에_접근할_수_있다() {
             // given
             Member member = memberRepository.save(회원());
             ReviewGroup reviewGroup = reviewGroupRepository.save(회원_지정_리뷰_그룹(member.getId()));
@@ -66,7 +73,7 @@ class ReviewGroupAuthorizationAspectTest {
         }
 
         @Test
-        void 리뷰_그룹을_인증한_비회원은_자신이_만든_리뷰_그룹에_접근할_수_있다() {
+        void 리뷰_그룹을_인증한_비회원은_리뷰_그룹에_접근할_수_있다() {
             // given
             ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
             sessionManager.saveReviewRequestCode(request, reviewGroup.getReviewRequestCode());
@@ -77,7 +84,7 @@ class ReviewGroupAuthorizationAspectTest {
         }
 
         @Test
-        void 로그인한_상태에서_리뷰_그룹을_인증한_회원은_리뷰_그룹에_접근할_수_있다() {
+        void 리뷰_그룹을_인증한_회원은_리뷰_그룹에_접근할_수_있다() {
             // given
             ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
             sessionManager.saveReviewRequestCode(request, reviewGroup.getReviewRequestCode());
@@ -92,15 +99,8 @@ class ReviewGroupAuthorizationAspectTest {
         }
     }
 
-    @Test
-    void 존재하지_않는_리뷰_그룹에_접근하면_NotFound_예외가_발생한다() {
-        // when & then
-        assertThatCode(() -> aopTestClass.testReviewGroupMethod("notExistsReviewRequestCode"))
-                .isInstanceOf(ReviewGroupNotFoundByReviewRequestCodeException.class);
-    }
-
     @Nested
-    class 유효하지_않은_세션으로_접근하면_예외가_발생한다 {
+    class 세션에_저장된_정보가_없으면_Unauthorized_예외가_발생한다 {
 
         @Test
         void 세션이_없으면_Unauthorized_예외가_발생한다() {
