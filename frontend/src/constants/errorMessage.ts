@@ -5,7 +5,7 @@ interface ApiErrorMessage {
 
 export const API_ERROR_MESSAGE: ApiErrorMessage = {
   400: '잘못된 요청이에요',
-  401: '인증 권한이 없어요.',
+  401: '인증 권한이 없어요',
   403: '접근 권한이 없어요',
   404: '요청하신 내용을 찾을 수 없어요',
   422: '올바르지 않은 데이터 형식이에요',
