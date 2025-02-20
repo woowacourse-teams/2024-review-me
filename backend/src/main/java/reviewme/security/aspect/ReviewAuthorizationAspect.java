@@ -50,9 +50,7 @@ public class ReviewAuthorizationAspect {
         boolean isReviewGroupCreator = reviewGroupRepository.existsByIdAndMemberId(
                 review.getReviewGroupId(), gitHubMember.getMemberId()
         );
-        boolean isReviewAuthor = review.getMemberId() != null && review.getMemberId() == gitHubMember.getMemberId();
-
-        return isReviewGroupCreator || isReviewAuthor;
+        return isReviewGroupCreator || review.isMadeByMember(gitHubMember.getMemberId());
     }
 
     private boolean canGuestAccess(Review review, HttpServletRequest request) {

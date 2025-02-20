@@ -77,4 +77,8 @@ public class Review {
     public LocalDate getCreatedDate() {
         return createdAt.toLocalDate();
     }
+
+    public boolean isMadeByMember(long memberId) {
+        return this.memberId != null && this.memberId == memberId;
+    }
 }
