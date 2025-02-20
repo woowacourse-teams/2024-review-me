@@ -28,7 +28,9 @@ const useMutateHighlight = ({
     if (sectionId) {
       queryClient.invalidateQueries({
         predicate: (query) =>
-          query.queryKey[0] === REVIEW_QUERY_KEY.groupedReviews && query.queryKey[1] === Number(sectionId),
+          query.queryKey[0] === REVIEW_QUERY_KEY.groupedReviews &&
+          query.queryKey[1] === Number(sectionId) &&
+          query.queryKey[2] === reviewRequestCode,
       });
     }
   };
