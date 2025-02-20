@@ -23,7 +23,7 @@ const ReviewLinkItem = ({
 
   return (
     <S.Layout onClick={handleClick}>
-      <ReviewDate date={date} dateTitle="작성일" />
+      <ReviewDate date={date} dateTitle="생성일" />
       <S.ContentContainer>
         <S.ProjectDetails>
           <S.ProjectName>{projectName}</S.ProjectName>
