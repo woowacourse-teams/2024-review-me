@@ -25,12 +25,7 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
 
   const { highlightArea, checkHighlight } = useCheckHighlight();
 
-  const {
-    menuPosition,
-    updateHighlightMenuPositionByDrag,
-    updateHighlightMenuPositionByLongPress,
-    resetHighlightMenuPosition,
-  } = useHighlightMenuPosition({
+  const { menuPosition, updateHighlightMenuPositionByDrag, resetHighlightMenuPosition } = useHighlightMenuPosition({
     editorRef,
     isEditable,
   });
@@ -49,7 +44,6 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     answerList,
     isEditable,
     resetHighlightMenuPosition,
-    updateHighlightMenuPositionByLongPress,
   });
 
   const { startPressTimer, clearPressTimer } = useLongPress({ handleLongPress: handleLongPressLine });

@@ -13,10 +13,9 @@ import {
   trackEventInAmplitude,
 } from '@/utils';
 
-import { UseLongPressHighlightPositionReturn } from './useLongPressHighlightPosition';
 import useMutateHighlight from './useMutateHighlight';
 
-interface UseHighlightProps extends UseLongPressHighlightPositionReturn {
+interface UseHighlightProps {
   reviewRequestCode: string;
   questionId: number;
   answerList: ReviewAnswerResponseData[];
@@ -66,7 +65,6 @@ const useHighlight = ({
   questionId,
   answerList,
   isEditable,
-  updateHighlightMenuPositionByLongPress,
   resetHighlightMenuPosition,
 }: UseHighlightProps) => {
   const [editorAnswerMap, setEditorAnswerMap] = useState<EditorAnswerMap>(makeInitialEditorAnswerMap(answerList));
@@ -426,7 +424,6 @@ const useHighlight = ({
     const targetAnswer = editorAnswerMap.get(Number(id));
     if (!targetAnswer) return;
 
-    const rect = target.getClientRects()[0];
     if (!target.classList.contains(HIGHLIGHT_SPAN_CLASS_NAME)) return;
     const lineIndex = target.parentElement?.getAttribute('data-index');
     const start = target.getAttribute('data-highlight-start');
@@ -440,8 +437,6 @@ const useHighlight = ({
       lineIndex: Number(lineIndex),
       highlightIndex: Number(highlightIndex),
     });
-
-    updateHighlightMenuPositionByLongPress(rect);
   };
 
   const removeHighlightByLongPress = async () => {
