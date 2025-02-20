@@ -100,7 +100,7 @@ class ReviewGroupAuthorizationAspectTest {
     }
 
     @Nested
-    class 세션에_저장된_정보가_없으면_Unauthorized_예외가_발생한다 {
+    class 유효하지_않은_세션으로_접근하면_예외가_발생한다 {
 
         @Test
         void 세션이_없으면_Unauthorized_예외가_발생한다() {
