@@ -54,15 +54,22 @@ const ReviewCollectionPageContents = () => {
       );
     }
 
-    if (review.answers?.length === 0) {
-      <EmptyContent iconWidth="18rem" messageFontSize="1.8rem" iconMessageGap="2.6rem">
-        {REVIEW_EMPTY.noReviewInQuestion}
-      </EmptyContent>;
+    if (review.question.type === 'TEXT') {
+      const hasNoTextAnswer = !review.answers || review.answers.length === 0;
+
+      return hasNoTextAnswer ? (
+        <EmptyContent iconWidth="18rem" messageFontSize="1.8rem" iconMessageGap="2.6rem">
+          {REVIEW_EMPTY.noReviewInQuestion}
+        </EmptyContent>
+      ) : (
+        <HighlightEditorContainer questionId={review.question.id} answerList={review.answers!} />
+      );
     }
 
-    return <HighlightEditorContainer questionId={review.question.id} answerList={review.answers!} />;
+    return null;
   };
 
+  // 받은 리뷰가 아무것도 없는 경우
   if (totalReviewCount === 0) {
     return (
       <EmptyContent iconWidth="17rem" messageFontSize="2rem" iconMessageGap="2.6rem" isBorder={true}>
