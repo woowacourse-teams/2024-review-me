@@ -17,7 +17,7 @@ const useGetGroupedReviews = ({ reviewRequestCode, sectionId }: UseGetGroupedRev
   };
 
   const result = useSuspenseQuery<GroupedReviews>({
-    queryKey: [REVIEW_QUERY_KEY.groupedReviews, sectionId],
+    queryKey: [REVIEW_QUERY_KEY.groupedReviews, sectionId, reviewRequestCode],
     queryFn: () => fetchGroupedReviews(),
     staleTime: 1 * 60 * 1000,
   });
