@@ -32,8 +32,7 @@ public class AuthController {
             HttpServletRequest httpRequest
     ) {
         GitHubMember gitHubMember = authService.authWithGitHub(request);
-        HttpSession session = httpRequest.getSession(true);
-        sessionManager.saveGitHubMember(session, gitHubMember);
+        sessionManager.saveGitHubMember(httpRequest, gitHubMember);
         ProfileResponse response = memberService.getProfile(gitHubMember);
         return ResponseEntity.ok(response);
     }
@@ -44,8 +43,7 @@ public class AuthController {
             HttpServletRequest httpRequest
     ) {
         String reviewRequestCode = authService.authWithReviewGroup(request);
-        HttpSession session = httpRequest.getSession(true);
-        sessionManager.saveReviewRequestCode(session, reviewRequestCode);
+        sessionManager.saveReviewRequestCode(httpRequest, reviewRequestCode);
         return ResponseEntity.noContent().build();
     }
 

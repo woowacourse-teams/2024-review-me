@@ -66,7 +66,7 @@ class ReviewAuthorizationAspectTest {
             Member member = memberRepository.save(회원());
             Review review = reviewRepository.save(회원_작성_리뷰(member.getId(), 1L, 1L, List.of()));
             GitHubMember gitHubMember = new GitHubMember(member.getId(), "name", "avatarUrl");
-            sessionManager.saveGitHubMember(session, gitHubMember);
+            sessionManager.saveGitHubMember(request, gitHubMember);
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
@@ -81,7 +81,7 @@ class ReviewAuthorizationAspectTest {
             Review review = reviewRepository.save(비회원_작성_리뷰(1L, 1L, List.of()));
 
             GitHubMember gitHubMember = new GitHubMember(member.getId(), "name", "avatarUrl");
-            sessionManager.saveGitHubMember(session, gitHubMember);
+            sessionManager.saveGitHubMember(request, gitHubMember);
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
@@ -93,7 +93,7 @@ class ReviewAuthorizationAspectTest {
             // given
             ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹());
             Review review = reviewRepository.save(비회원_작성_리뷰(1L, 1L, List.of()));
-            sessionManager.saveReviewRequestCode(session, reviewGroup.getReviewRequestCode());
+            sessionManager.saveReviewRequestCode(request, reviewGroup.getReviewRequestCode());
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
@@ -142,7 +142,7 @@ class ReviewAuthorizationAspectTest {
             Review review = reviewRepository.save(비회원_작성_리뷰(1L, 1L, List.of()));
 
             GitHubMember gitHubMember = new GitHubMember(1L, "name", "avatarUrl");
-            sessionManager.saveGitHubMember(session, gitHubMember);
+            sessionManager.saveGitHubMember(request, gitHubMember);
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
@@ -158,7 +158,7 @@ class ReviewAuthorizationAspectTest {
 
             Member member = memberRepository.save(회원("email321@test.com"));
             GitHubMember gitHubMember = new GitHubMember(member.getId(), "name", "avatarUrl");
-            sessionManager.saveGitHubMember(session, gitHubMember);
+            sessionManager.saveGitHubMember(request, gitHubMember);
 
             // when & then
             assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))
@@ -173,7 +173,7 @@ class ReviewAuthorizationAspectTest {
         Review review = reviewRepository.save(비회원_작성_리뷰(1L, othersReviewGroup.getId(), List.of()));
 
         ReviewGroup reviewGroup = reviewGroupRepository.save(비회원_리뷰_그룹("1234", "5678"));
-        sessionManager.saveReviewRequestCode(session, reviewGroup.getReviewRequestCode());
+        sessionManager.saveReviewRequestCode(request, reviewGroup.getReviewRequestCode());
 
         // when & then
         assertThatCode(() -> aopTestClass.testReviewMethod(review.getId()))

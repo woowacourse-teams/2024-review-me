@@ -3,10 +3,10 @@ package reviewme.global.session;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import reviewme.auth.domain.GitHubMember;
 import reviewme.security.session.SessionManager;
@@ -18,11 +18,14 @@ class SessionManagerTest {
     @Autowired
     private SessionManager sessionManager;
 
-    private HttpSession session;
+    private MockHttpServletRequest request;
+    private MockHttpSession session;
 
     @BeforeEach
     void setUp() {
+        request = new MockHttpServletRequest();
         session = new MockHttpSession();
+        request.setSession(session);
     }
 
     @Test
@@ -31,7 +34,7 @@ class SessionManagerTest {
         GitHubMember gitHubMember = mock(GitHubMember.class);
 
         // when
-        sessionManager.saveGitHubMember(session, gitHubMember);
+        sessionManager.saveGitHubMember(request, gitHubMember);
         GitHubMember savedGitHubMember = sessionManager.getGitHubMember(session);
 
         // then
@@ -44,7 +47,7 @@ class SessionManagerTest {
         String reviewRequestCode = "reviewRequestCode";
 
         // when
-        sessionManager.saveReviewRequestCode(session, reviewRequestCode);
+        sessionManager.saveReviewRequestCode(request, reviewRequestCode);
         String savedReviewGroup = sessionManager.getReviewRequestCode(session);
 
         // then
