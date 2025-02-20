@@ -19,13 +19,13 @@ export const WrittenReviewList = styled.ul`
   max-height: ${({ theme }) => theme.writtenReviewLayoutSize.largeMaxHeight};
 
   ${media.medium} {
-    min-width: 65vw;
-    max-width: 65vw;
+    min-width: 70vw;
+    max-width: 70vw;
   }
 
   ${media.small} {
-    min-width: 75vw;
-    max-width: 75vw;
+    min-width: 85vw;
+    max-width: 85vw;
   }
 
   & > li {
