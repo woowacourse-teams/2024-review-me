@@ -17,6 +17,17 @@ const useOAuthLogout = () => {
     return navigate(ROUTE.home, { replace: true });
   };
 
+  const removeAllQueriesExceptUserProfile = () => {
+    const queries = queryClient.getQueryCache().getAll();
+
+    queries.forEach((query) => {
+      if (!query.queryKey[0]) return;
+      if (query.queryKey[0] !== OAUTH_QUERY_KEY.userProfile) {
+        queryClient.removeQueries(query.queryKey[0]);
+      }
+    });
+  };
+
   const mutation = useMutation({
     mutationKey: [OAUTH_QUERY_KEY.gitHubLogout],
     mutationFn: async () => {
@@ -25,7 +36,8 @@ const useOAuthLogout = () => {
 
     onSuccess: () => {
       showToast({ type: 'success', message: '로그아웃 완료!', position: 'top' });
-      queryClient.invalidateQueries();
+      queryClient.invalidateQueries({ queryKey: [OAUTH_QUERY_KEY.userProfile] });
+      removeAllQueriesExceptUserProfile();
       redirectOnSuccess();
     },
     onError: () => {
