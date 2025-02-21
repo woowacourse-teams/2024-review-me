@@ -25,7 +25,7 @@ const useOAuthLogout = () => {
 
     onSuccess: () => {
       showToast({ type: 'success', message: '로그아웃 완료!', position: 'top' });
-      queryClient.clear();
+      queryClient.invalidateQueries();
       redirectOnSuccess();
     },
     onError: () => {
