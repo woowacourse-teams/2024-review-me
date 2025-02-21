@@ -1,6 +1,5 @@
 import EraserIcon from '@/assets/eraser.svg';
 import HighlighterIcon from '@/assets/highlighter.svg';
-import TrashIcon from '@/assets/trash.svg';
 
 import * as S from './style';
 
@@ -32,10 +31,6 @@ interface LongPressHighlightRemoveButtonProps {
   removeHighlightByLongPress: () => void;
 }
 
-const LongPressHighlightRemoveButton = ({ removeHighlightByLongPress }: LongPressHighlightRemoveButtonProps) => {
-  return (
-    <S.Button onClick={removeHighlightByLongPress} aria-label="하이라이트 삭제 버튼">
-      <S.ButtonIcon src={TrashIcon} alt="" />
     </S.Button>
   );
 };
@@ -43,7 +38,6 @@ const LongPressHighlightRemoveButton = ({ removeHighlightByLongPress }: LongPres
 const HighlightButton = {
   dragHighlightAdd: DragHighlightAddButton,
   dragHighlightRemove: DragHighlightRemoveButton,
-  longPressHighlightRemove: LongPressHighlightRemoveButton,
 };
 
 export default HighlightButton;
