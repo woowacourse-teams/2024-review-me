@@ -14,7 +14,7 @@ import reviewme.review.domain.Answer;
 import reviewme.review.domain.Review;
 import reviewme.review.service.dto.request.ReviewAnswerRequest;
 import reviewme.review.service.dto.request.ReviewRegisterRequest;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.review.service.exception.SubmittedQuestionNotFoundException;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.repository.ReviewGroupRepository;
@@ -31,7 +31,7 @@ public class ReviewMapper {
     private final QuestionRepository questionRepository;
     private final TemplateRepository templateRepository;
 
-    public Review mapToReview(ReviewRegisterRequest request) {
+    public Review mapToReview(ReviewRegisterRequest request, Long memberId) {
         ReviewGroup reviewGroup = reviewGroupRepository.findByReviewRequestCode(request.reviewRequestCode())
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(request.reviewRequestCode()));
         Template template = templateRepository.findById(reviewGroup.getTemplateId())
@@ -40,7 +40,7 @@ public class ReviewMapper {
                 ));
 
         List<Answer> answers = getAnswersByQuestionType(request);
-        return new Review(template.getId(), reviewGroup.getId(), answers);
+        return new Review(memberId, template.getId(), reviewGroup.getId(), answers);
     }
 
     private List<Answer> getAnswersByQuestionType(ReviewRegisterRequest request) {

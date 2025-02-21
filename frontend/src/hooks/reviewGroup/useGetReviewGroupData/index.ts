@@ -23,7 +23,10 @@ const useGetReviewGroupData = ({ reviewRequestCode }: UseGetReviewGroupDataProps
     staleTime: 60 * 60 * 1000,
   });
 
-  return result;
+  return {
+    ...result,
+    isMemberLink: !!result.data.revieweeId,
+  };
 };
 
 export default useGetReviewGroupData;

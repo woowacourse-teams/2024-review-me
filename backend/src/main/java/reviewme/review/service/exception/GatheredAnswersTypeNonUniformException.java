@@ -7,7 +7,7 @@ import reviewme.global.exception.DataInconsistencyException;
 public class GatheredAnswersTypeNonUniformException extends DataInconsistencyException {
 
     public GatheredAnswersTypeNonUniformException(Throwable cause) {
-        super("서버 내부 오류가 발생했습니다.");
+        super("서버 내부 오류가 발생했어요.");
         log.error("The types of answers to questions are not uniform.", cause);
     }
 }

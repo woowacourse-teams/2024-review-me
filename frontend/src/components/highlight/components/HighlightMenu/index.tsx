@@ -12,21 +12,18 @@ import * as S from './style';
 interface HighlightMenuProps {
   position: Position;
   highlightArea: HighlightArea;
-  isOpenLongPressRemove: boolean;
   addHighlightByDrag: (selectionInfo: SelectionInfo) => void;
   removeHighlightByDrag: (selectionInfo: SelectionInfo) => void;
-  removeHighlightByLongPress: () => void;
 }
 
 const HighlightMenu = ({
   position,
   highlightArea,
-  isOpenLongPressRemove,
+
   addHighlightByDrag,
   removeHighlightByDrag,
-  removeHighlightByLongPress,
 }: HighlightMenuProps) => {
-  const menuStyleWidth = HIGHLIGHT_MENU_WIDTH[isOpenLongPressRemove ? 'longPress' : highlightArea];
+  const menuStyleWidth = HIGHLIGHT_MENU_WIDTH[highlightArea];
   const selectionInfoRef = useRef<SelectionInfo | undefined>(undefined);
 
   const menuRef = useRef<HTMLDivElement>(null);
@@ -50,16 +47,9 @@ const HighlightMenu = ({
 
   return (
     <S.Menu ref={menuRef} className={HIGHLIGHT_MENU_CLASS_NAME} $position={position} $width={menuStyleWidth}>
-      {isOpenLongPressRemove && (
-        <HighlightButton.longPressHighlightRemove removeHighlightByLongPress={removeHighlightByLongPress} />
-      )}
-      {!isOpenLongPressRemove && (
-        <>
-          {highlightArea !== 'full' && <HighlightButton.dragHighlightAdd addHighlightByDrag={handleAddHighlight} />}
-          {highlightArea !== 'none' && (
-            <HighlightButton.dragHighlightRemove removeHighlightByDrag={handleRemoveHighlight} />
-          )}
-        </>
+      {highlightArea !== 'full' && <HighlightButton.dragHighlightAdd addHighlightByDrag={handleAddHighlight} />}
+      {highlightArea !== 'none' && (
+        <HighlightButton.dragHighlightRemove removeHighlightByDrag={handleRemoveHighlight} />
       )}
     </S.Menu>
   );

@@ -1,4 +1,7 @@
 import { TopButton, OptionSwitch } from '@/components/common';
+import BackButton from '@/components/common/BackButton';
+import { ROUTE } from '@/constants';
+import { useGetUserProfile } from '@/hooks/oAuth';
 import { EssentialPropsWithChildren } from '@/types';
 
 import ReviewInfoSection from './components/ReviewInfoSection';
@@ -12,10 +15,12 @@ interface ReviewDisplayLayoutProps extends EssentialPropsWithChildren {
 
 const ReviewDisplayLayout = ({ isReviewList, children }: ReviewDisplayLayoutProps) => {
   const reviewDisplayLayoutOptions = useReviewDisplayLayoutOptions();
+  const { isUserLoggedIn } = useGetUserProfile();
 
   return (
     <ReviewInfoDataProvider>
       <S.ReviewDisplayLayoutContainer>
+        {isUserLoggedIn && <BackButton prevPath={`/${ROUTE.reviewLinks}`} />}
         <S.Container>
           <ReviewInfoSection isReviewList={isReviewList} />
           <OptionSwitch options={reviewDisplayLayoutOptions} />

@@ -7,6 +7,17 @@ env:
   APPLICATION_DIRECTORY: /home/ubuntu/review-me
 
 jobs:
+  check-branch:
+    name: Check branch name
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch name
+        if: ${{ github.ref_name != 'release' && !startsWith(github.ref_name, 'hotfix/') }}
+        run: |
+          echo "This workflow can only run on 'release' branch or branches starting with 'hotfix/'"
+          echo "Current branch: ${{ github.ref_name }}"
+          exit 1
+
   build:
     name: Build Dockerfile and push to DockerHub
     runs-on: ubuntu-latest

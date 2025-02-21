@@ -1,5 +1,6 @@
 package reviewme.api;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -7,15 +8,25 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
+import reviewme.reviewgroup.domain.ReviewGroup;
 
 class HighlightApiTest extends ApiTest {
 
     @Test
     void 존재하는_답변에_하이라이트를_생성한다() {
+        // TODO : api 경로에 reviewRequestCode를 groupId로 변경할 경우 아래의 모킹 코드를 삭제해야 한다.
+        ReviewGroup mockReviewGroup = Mockito.mock(ReviewGroup.class);
+        BDDMockito.given(mockReviewGroup.getId()).willReturn(1L);
+
+        BDDMockito.given(reviewGroupService.getReviewGroupByReviewRequestCode(anyString()))
+                .willReturn(mockReviewGroup);
+
         String request = """
                  {
                      "questionId": 1,
@@ -53,8 +64,9 @@ class HighlightApiTest extends ApiTest {
 
         givenWithSpec().log().all()
                 .cookie("JSESSIONID", "AVEBNKLCL13TNVZ")
+                .pathParam("reviewRequestCode", "rereco")
                 .body(request)
-                .when().post("/v2/highlight")
+                .when().post("/v2/groups/{reviewRequestCode}/highlights")
                 .then().log().all()
                 .apply(handler)
                 .status(HttpStatus.OK);

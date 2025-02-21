@@ -2,7 +2,10 @@ import { useRef, useState, useEffect } from 'react';
 
 import nextArrowIcon from '@/assets/nextArrow.svg';
 import prevArrowIcon from '@/assets/prevArrow.svg';
+import { ImgWithSkeleton } from '@/components';
 import { breakpoints } from '@/styles/theme';
+
+import useSlideImgSize from '../../hooks/useSlideImgSize';
 
 import * as S from './styles';
 
@@ -37,6 +40,7 @@ const InfinityCarousel = ({ slideList }: InfinityCarouselProps) => {
   const [deltaX, setDeltaX] = useState(0); // 현재 드래그 중인 위치와 시작 위치 사이의 차이
 
   const slideRef = useRef<HTMLDivElement>(null);
+  const { imgSize } = useSlideImgSize({ slideRef });
 
   const slideLength = slideList.length;
   // 첫 슬라이드와 마지막 슬라이드의 복제본을 각각 맨 뒤, 맨 처음에 추가
@@ -151,7 +155,9 @@ const InfinityCarousel = ({ slideList }: InfinityCarouselProps) => {
         {clonedSlideList.map((slide, index) => (
           <S.SlideItem key={index}>
             <S.SlideContent>
-              <img src={slide.imageSrc} alt={slide.alt} />
+              <ImgWithSkeleton imgHeight={imgSize.height} imgWidth={imgSize.width}>
+                <S.SlideContentImg src={slide.imageSrc} alt={slide.alt} />
+              </ImgWithSkeleton>
             </S.SlideContent>
           </S.SlideItem>
         ))}

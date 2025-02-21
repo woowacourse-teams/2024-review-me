@@ -5,19 +5,33 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.reviewgroup.domain.ReviewGroup;
 import reviewme.reviewgroup.service.ReviewGroupService;
+import reviewme.template.domain.Template;
+import reviewme.template.repository.TemplateRepository;
+import reviewme.template.service.dto.response.SectionNamesResponse;
 import reviewme.template.service.dto.response.TemplateResponse;
-import reviewme.template.service.mapper.TemplateMapper;
+import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
 
 @Service
 @RequiredArgsConstructor
 public class TemplateService {
 
     private final ReviewGroupService reviewGroupService;
-    private final TemplateMapper templateMapper;
+    private final DefaultTemplateService defaultTemplateService;
+    private final TemplateRepository templateRepository;
 
     @Transactional(readOnly = true)
     public TemplateResponse generateReviewForm(String reviewRequestCode) {
         ReviewGroup reviewGroup = reviewGroupService.getReviewGroupByReviewRequestCode(reviewRequestCode);
-        return templateMapper.mapToTemplateResponse(reviewGroup);
+        Template template = templateRepository.findById(reviewGroup.getTemplateId())
+                .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(
+                        reviewGroup.getId(), reviewGroup.getTemplateId())
+                );
+        return TemplateResponse.of(reviewGroup, template);
+    }
+
+    @Transactional(readOnly = true)
+    public SectionNamesResponse getSectionNames() {
+        Template template = defaultTemplateService.getDefaultTemplate();
+        return SectionNamesResponse.from(template);
     }
 }

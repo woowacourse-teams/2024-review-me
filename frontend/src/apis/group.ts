@@ -1,30 +1,39 @@
-import { INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
-import { PasswordResponse, ReviewGroupData } from '@/types';
+import { ERROR_BOUNDARY_IGNORE_ERROR, INVALID_REVIEW_PASSWORD_MESSAGE } from '@/constants';
+import { DataForReviewRequestCode, PasswordResponse, ReviewGroupData } from '@/types';
 
 import createApiErrorMessage from './apiErrorMessageCreator';
 import endPoint from './endpoints';
 
-export interface DataForReviewRequestCode {
-  revieweeName: string;
-  projectName: string;
-  groupAccessCode: string;
-}
+export const postDataForReviewRequestCodeApi = async ({
+  groupAccessCode,
+  ...commonRequestData
+}: DataForReviewRequestCode) => {
+  const requestData = groupAccessCode ? { ...commonRequestData, groupAccessCode } : commonRequestData;
 
-export const postDataForReviewRequestCodeApi = async (dataForReviewRequestCode: DataForReviewRequestCode) => {
-  const response = await fetch(endPoint.postingDataForReviewRequestCode, {
+  const fetchOptions: RequestInit = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(dataForReviewRequestCode),
-  });
+    body: JSON.stringify(requestData),
+  };
 
-  if (!response.ok) {
-    throw new Error(createApiErrorMessage(response.status));
+  if (!groupAccessCode) {
+    fetchOptions.credentials = 'include';
   }
 
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(endPoint.postingDataForReviewRequestCode, fetchOptions);
+
+    if (!response.ok) {
+      throw new Error(`${createApiErrorMessage(response.status)} ${ERROR_BOUNDARY_IGNORE_ERROR}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`${ERROR_BOUNDARY_IGNORE_ERROR} - 리뷰 링크 생성 API 요청 실패`);
+  }
 };
 
 //리뷰 비밀번호
@@ -39,7 +48,7 @@ export const postPasswordValidationApi = async ({
   groupAccessCode,
   reviewRequestCode,
 }: GetPasswordValidationApiParams): Promise<PasswordResponse> => {
-  const response = await fetch(endPoint.checkingPassword, {
+  const response = await fetch(endPoint.checkingReviewRequestPassword, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

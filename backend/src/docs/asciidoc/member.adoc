@@ -1,0 +1,3 @@
+==== 내 프로필 정보
+
+operation::my-profile[snippets="curl-request,request-cookies,http-response,response-fields"]

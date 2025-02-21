@@ -1,5 +1,6 @@
 package reviewme.reviewgroup.domain;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -7,12 +8,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import reviewme.review.domain.exception.InvalidProjectNameLengthException;
-import reviewme.review.domain.exception.InvalidRevieweeNameLengthException;
+import reviewme.reviewgroup.domain.exception.InvalidProjectNameLengthException;
+import reviewme.reviewgroup.domain.exception.InvalidRevieweeNameLengthException;
 
 @Entity
 @Table(name = "review_group")
@@ -30,30 +32,51 @@ public class ReviewGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "member_id", nullable = true)
+    private Long memberId;
+
+    @Column(name = "template_id", nullable = false)
+    private long templateId;
+
     @Column(name = "reviewee", nullable = false)
     private String reviewee;
 
     @Column(name = "project_name", nullable = false)
     private String projectName;
 
-    @Column(name = "review_request_code", nullable = false)
+    @Column(name = "review_request_code", nullable = false, unique = true)
     private String reviewRequestCode;
 
     @Embedded
     private GroupAccessCode groupAccessCode;
 
-    @Column(name = "template_id", nullable = false)
-    private long templateId;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
-    public ReviewGroup(String reviewee, String projectName, String reviewRequestCode, String groupAccessCode,
-                       long templateId) {
+    private ReviewGroup(@Nullable Long memberId, long templateId, String reviewee, String projectName,
+                        String reviewRequestCode, String groupAccessCode) {
         validateRevieweeLength(reviewee);
         validateProjectNameLength(projectName);
+        this.memberId = memberId;
+        this.templateId = templateId;
         this.reviewee = reviewee;
         this.projectName = projectName;
         this.reviewRequestCode = reviewRequestCode;
-        this.groupAccessCode = new GroupAccessCode(groupAccessCode);
-        this.templateId = templateId;
+        if (groupAccessCode != null) {
+            this.groupAccessCode = new GroupAccessCode(groupAccessCode);
+        } else {
+            this.groupAccessCode = null;
+        }
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public ReviewGroup(Long memberId, long templateId, String reviewee, String projectName, String reviewRequestCode) {
+        this(memberId, templateId, reviewee, projectName, reviewRequestCode, null);
+    }
+
+    public ReviewGroup(long templateId, String reviewee, String projectName, String reviewRequestCode,
+                       String groupAccessCode) {
+        this(null, templateId, reviewee, projectName, reviewRequestCode, groupAccessCode);
     }
 
     private void validateRevieweeLength(String reviewee) {
@@ -71,10 +94,14 @@ public class ReviewGroup {
     }
 
     public boolean matchesGroupAccessCode(String code) {
-        return groupAccessCode.matches(code);
+        return groupAccessCode != null && groupAccessCode.matches(code);
     }
 
     public String getGroupAccessCode() {
-        return groupAccessCode.getCode();
+        return groupAccessCode != null ? groupAccessCode.getCode() : null;
+    }
+
+    public boolean isMadeByMember(long memberId) {
+        return this.memberId != null && this.memberId == memberId;
     }
 }

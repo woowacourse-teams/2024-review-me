@@ -21,6 +21,6 @@ describe('리뷰 상세페이지 데이터 요청 테스트', () => {
       expect(result.current.data).toBeDefined();
     };
 
-    await testWithAuthCookie(testReviewDetailAPI);
+    await testWithAuthCookie({ authState: 'both', callback: testReviewDetailAPI });
   });
 });

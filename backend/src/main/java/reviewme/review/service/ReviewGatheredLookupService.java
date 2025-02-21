@@ -9,15 +9,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reviewme.highlight.domain.Highlight;
 import reviewme.highlight.repository.HighlightRepository;
-import reviewme.template.domain.Question;
-import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.Answer;
 import reviewme.review.repository.AnswerRepository;
 import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionResponse;
 import reviewme.review.service.exception.SectionNotFoundInTemplateException;
 import reviewme.review.service.mapper.ReviewGatherMapper;
 import reviewme.reviewgroup.domain.ReviewGroup;
+import reviewme.reviewgroup.domain.exception.ReviewGroupNotFoundException;
+import reviewme.reviewgroup.repository.ReviewGroupRepository;
+import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
+import reviewme.template.repository.QuestionRepository;
 import reviewme.template.repository.SectionRepository;
 
 @Service
@@ -32,9 +34,12 @@ public class ReviewGatheredLookupService {
     private final HighlightRepository highlightRepository;
 
     private final ReviewGatherMapper reviewGatherMapper;
+    private final ReviewGroupRepository reviewGroupRepository;
 
     @Transactional(readOnly = true)
-    public ReviewsGatheredBySectionResponse getReceivedReviewsBySectionId(ReviewGroup reviewGroup, long sectionId) {
+    public ReviewsGatheredBySectionResponse getReceivedReviewsBySectionId(long reviewGroupId, long sectionId) {
+        ReviewGroup reviewGroup = reviewGroupRepository.findById(reviewGroupId)
+                .orElseThrow(() -> new ReviewGroupNotFoundException(reviewGroupId));
         Section section = getSectionOrThrow(sectionId, reviewGroup);
         Map<Question, List<Answer>> questionAnswers = getQuestionAnswers(section, reviewGroup);
 

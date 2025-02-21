@@ -2,6 +2,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { act } from 'react';
 
 import { isValidPayload, transformHighlightData } from '@/apis/highlight';
+import { VALID_REVIEW_REQUEST_CODE } from '@/mocks/mockData';
 import QueryClientWrapper from '@/queryTestSetup/QueryClientWrapper';
 import { EditorAnswer, EditorAnswerMap } from '@/types';
 import { testWithAuthCookie } from '@/utils';
@@ -21,14 +22,17 @@ describe('하이라이트 요청 테스트', () => {
     const QUESTION_ID = 1;
 
     const props: UseMutateHighlightProps = {
+      reviewRequestCode: VALID_REVIEW_REQUEST_CODE.nonMember,
       questionId: QUESTION_ID,
       updateEditorAnswerMap: () => {},
       resetHighlightMenu: () => {},
-      handleErrorModal: () => {},
     };
 
     const testHighlightAPI = async () => {
-      const data = transformHighlightData(EDITOR_ANSWER_MAP, QUESTION_ID);
+      const data = transformHighlightData({
+        editorAnswerMap: EDITOR_ANSWER_MAP,
+        questionId: QUESTION_ID,
+      });
       expect(isValidPayload(data)).toBeTruthy();
 
       const { result } = renderHook(() => useMutateHighlight(props), {
@@ -41,6 +45,6 @@ describe('하이라이트 요청 테스트', () => {
       });
     };
 
-    await testWithAuthCookie(testHighlightAPI);
+    await testWithAuthCookie({ authState: 'both', callback: testHighlightAPI });
   });
 });

@@ -3,16 +3,9 @@ package reviewme.review.service.mapper;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import reviewme.template.domain.OptionGroup;
-import reviewme.template.domain.OptionItem;
-import reviewme.template.domain.Question;
-import reviewme.template.repository.OptionGroupRepository;
-import reviewme.template.repository.OptionItemRepository;
-import reviewme.template.repository.QuestionRepository;
 import reviewme.review.domain.CheckboxAnswer;
 import reviewme.review.domain.CheckboxAnswerSelectedOption;
 import reviewme.review.domain.Review;
@@ -23,32 +16,40 @@ import reviewme.review.service.dto.response.detail.QuestionAnswerResponse;
 import reviewme.review.service.dto.response.detail.ReviewDetailResponse;
 import reviewme.review.service.dto.response.detail.SectionAnswerResponse;
 import reviewme.reviewgroup.domain.ReviewGroup;
+import reviewme.template.domain.OptionGroup;
+import reviewme.template.domain.SelectionRange;
+import reviewme.template.domain.OptionItem;
+import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
-import reviewme.template.repository.SectionRepository;
+import reviewme.template.domain.Template;
+import reviewme.template.repository.TemplateRepository;
+import reviewme.template.service.exception.TemplateNotFoundByReviewGroupException;
 
 @Component
 @RequiredArgsConstructor
 public class ReviewDetailMapper {
 
-    private final SectionRepository sectionRepository;
-    private final QuestionRepository questionRepository;
-    private final OptionGroupRepository optionGroupRepository;
-    private final OptionItemRepository optionItemRepository;
+    private final TemplateRepository templateRepository;
 
+    /*
+        TODO:
+         조회 전용 로직을 만드는 게 좋겠다, Template + 리뷰 정보를 한 번에 내려줘야 한다.
+         Template에서 정보를 가져오는 건 쉽다 (연관관계 있음), 리뷰 관련 정보를 가져와서 어떻게 섞을지 고민하자.
+    */
     public ReviewDetailResponse mapToReviewDetailResponse(Review review, ReviewGroup reviewGroup) {
-        long templateId = review.getTemplateId();
+        Template template = templateRepository.findById(reviewGroup.getTemplateId())
+                .orElseThrow(() -> new TemplateNotFoundByReviewGroupException(reviewGroup.getId(),
+                        reviewGroup.getTemplateId()));
 
-        List<Section> sections = sectionRepository.findAllByTemplateId(templateId);
-        List<Question> questions = questionRepository.findAllByTemplatedId(templateId);
-        List<Long> questionIds = questions.stream()
-                .map(Question::getId)
+        List<Section> sections = template.getSections();
+        List<Question> questions = sections.stream()
+                .flatMap(section -> section.getQuestions().stream())
                 .toList();
-        Map<Long, OptionGroup> optionGroupsByQuestion = optionGroupRepository.findAllByQuestionIds(questionIds)
-                .stream()
-                .collect(Collectors.toMap(OptionGroup::getQuestionId, Function.identity()));
-        Map<Long, List<OptionItem>> optionItemsByOptionGroup = optionItemRepository.findAllByQuestionIds(questionIds)
-                .stream()
-                .collect(Collectors.groupingBy(OptionItem::getOptionGroupId));
+        Map<Long, OptionGroup> optionGroupsByQuestion = questions.stream()
+                .filter(Question::isCheckbox)
+                .collect(Collectors.toMap(Question::getId, Question::getOptionGroup));
+        Map<Long, List<OptionItem>> optionItemsByOptionGroup = optionGroupsByQuestion.values().stream()
+                .collect(Collectors.toMap(OptionGroup::getId, OptionGroup::getOptionItems));
 
         List<SectionAnswerResponse> sectionResponses = sections.stream()
                 .map(section -> mapToSectionResponse(review, section, questions,
@@ -57,7 +58,7 @@ public class ReviewDetailMapper {
                 .toList();
 
         return new ReviewDetailResponse(
-                templateId,
+                template.getId(),
                 reviewGroup.getReviewee(),
                 reviewGroup.getProjectName(),
                 review.getCreatedDate(),
@@ -70,7 +71,7 @@ public class ReviewDetailMapper {
                                                        Map<Long, OptionGroup> optionGroupsByQuestion,
                                                        Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
         List<QuestionAnswerResponse> questionResponses = questions.stream()
-                .filter(question -> section.containsQuestionId(question.getId()))
+                .filter(section::contains)
                 .filter(question -> review.hasAnsweredQuestion(question.getId()))
                 .map(question -> mapToQuestionResponse(
                         review, question, optionGroupsByQuestion, optionItemsByOptionGroup)
@@ -86,7 +87,7 @@ public class ReviewDetailMapper {
     private QuestionAnswerResponse mapToQuestionResponse(Review review, Question question,
                                                          Map<Long, OptionGroup> optionGroupsByQuestion,
                                                          Map<Long, List<OptionItem>> optionItemsByOptionGroup) {
-        if (question.isSelectable()) {
+        if (question.isCheckbox()) {
             return mapToCheckboxQuestionResponse(review, question, optionGroupsByQuestion, optionItemsByOptionGroup);
         } else {
             return mapToTextQuestionResponse(review, question);
@@ -109,11 +110,12 @@ public class ReviewDetailMapper {
                 .filter(optionItem -> selectedOptionIds.contains(optionItem.getId()))
                 .map(optionItem -> new OptionItemAnswerResponse(optionItem.getId(), optionItem.getContent(), true))
                 .toList();
+        SelectionRange selectionRange = optionGroup.getSelectionRange();
 
         OptionGroupAnswerResponse optionGroupAnswerResponse = new OptionGroupAnswerResponse(
                 optionGroup.getId(),
-                optionGroup.getMinSelectionCount(),
-                optionGroup.getMaxSelectionCount(),
+                selectionRange.getMinSelectionCount(),
+                selectionRange.getMaxSelectionCount(),
                 optionItemResponse
         );
 

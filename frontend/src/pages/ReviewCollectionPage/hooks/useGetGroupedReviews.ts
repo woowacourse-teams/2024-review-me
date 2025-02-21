@@ -5,18 +5,19 @@ import { REVIEW_QUERY_KEY, SESSION_STORAGE_KEY } from '@/constants';
 import { GroupedReviews } from '@/types';
 
 interface UseGetGroupedReviewsProps {
+  reviewRequestCode: string;
   sectionId: number;
 }
 
-const useGetGroupedReviews = ({ sectionId }: UseGetGroupedReviewsProps) => {
+const useGetGroupedReviews = ({ reviewRequestCode, sectionId }: UseGetGroupedReviewsProps) => {
   const fetchGroupedReviews = async () => {
-    const result = await getGroupedReviews({ sectionId });
+    const result = await getGroupedReviews({ reviewRequestCode, sectionId });
     sessionStorage.setItem(SESSION_STORAGE_KEY.currentReviewCollectionSectionId, sectionId.toString());
     return result;
   };
 
   const result = useSuspenseQuery<GroupedReviews>({
-    queryKey: [REVIEW_QUERY_KEY.groupedReviews, sectionId],
+    queryKey: [REVIEW_QUERY_KEY.groupedReviews, sectionId, reviewRequestCode],
     queryFn: () => fetchGroupedReviews(),
     staleTime: 1 * 60 * 1000,
   });

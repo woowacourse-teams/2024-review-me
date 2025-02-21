@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { Accordion, Dropdown, HighlightEditorContainer } from '@/components';
+import { Accordion, Dropdown, EmptyContent, HighlightEditorContainer } from '@/components';
 import { DropdownItem } from '@/components/common/Dropdown';
-import ReviewEmptySection from '@/components/common/ReviewEmptySection';
 import { ReviewInfoDataContext } from '@/components/layouts/ReviewDisplayLayout/ReviewInfoDataProvider';
 import { REVIEW_EMPTY, SESSION_STORAGE_KEY } from '@/constants';
+import { useReviewRequestCodeParam } from '@/hooks';
 import { GroupedReview } from '@/types';
 import { substituteString } from '@/utils';
 
@@ -15,16 +15,21 @@ import DoughnutChart from '../DoughnutChart';
 import * as S from './styles';
 
 const ReviewCollectionPageContents = () => {
+  const { reviewRequestCode } = useReviewRequestCodeParam();
+
   const { revieweeName, projectName, totalReviewCount } = useContext(ReviewInfoDataContext);
 
   const { data: reviewSectionList } = useGetSectionList();
-
   const dropdownSectionList = reviewSectionList.sections.map((section) => {
     return { text: section.name, value: section.id };
   });
 
   const [selectedSection, setSelectedSection] = useState<DropdownItem>(dropdownSectionList[0]);
-  const { data: groupedReviews } = useGetGroupedReviews({ sectionId: selectedSection.value as number });
+
+  const { data: groupedReviews } = useGetGroupedReviews({
+    reviewRequestCode: reviewRequestCode,
+    sectionId: selectedSection.value as number,
+  });
 
   groupedReviews.reviews.forEach((review) => {
     review.votes?.sort((voteA, voteB) => voteB.count - voteA.count);
@@ -41,21 +46,36 @@ const ReviewCollectionPageContents = () => {
       const hasNoCheckboxAnswer = review.votes?.every((vote) => vote.count === 0);
 
       return hasNoCheckboxAnswer ? (
-        <ReviewEmptySection content={REVIEW_EMPTY.noReviewInQuestion} />
+        <EmptyContent iconWidth="18rem" messageFontSize="1.8rem" iconMessageGap="2.6rem">
+          {REVIEW_EMPTY.noReviewInQuestion}
+        </EmptyContent>
       ) : (
         <DoughnutChart reviewVotes={review.votes!} />
       );
     }
 
-    if (review.answers?.length === 0) {
-      return <ReviewEmptySection content={REVIEW_EMPTY.noReviewInQuestion} />;
+    if (review.question.type === 'TEXT') {
+      const hasNoTextAnswer = !review.answers || review.answers.length === 0;
+
+      return hasNoTextAnswer ? (
+        <EmptyContent iconWidth="18rem" messageFontSize="1.8rem" iconMessageGap="2.6rem">
+          {REVIEW_EMPTY.noReviewInQuestion}
+        </EmptyContent>
+      ) : (
+        <HighlightEditorContainer questionId={review.question.id} answerList={review.answers!} />
+      );
     }
 
-    return <HighlightEditorContainer questionId={review.question.id} answerList={review.answers!} />;
+    return null;
   };
 
+  // 받은 리뷰가 아무것도 없는 경우
   if (totalReviewCount === 0) {
-    return <ReviewEmptySection content={REVIEW_EMPTY.noReviewInTotal} />;
+    return (
+      <EmptyContent iconWidth="17rem" messageFontSize="2rem" iconMessageGap="2.6rem" isBorder={true}>
+        {REVIEW_EMPTY.noReviewInTotal}
+      </EmptyContent>
+    );
   }
 
   return (

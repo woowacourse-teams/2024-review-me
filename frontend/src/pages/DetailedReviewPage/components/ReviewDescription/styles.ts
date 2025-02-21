@@ -9,13 +9,11 @@ export const Description = styled.section`
 
   width: 100%;
   margin: 0;
-  padding: 1rem 3rem;
 
-  background-color: ${({ theme }) => theme.colors.lightPurple};
   border-radius: ${({ theme }) => theme.borderRadius.basic} ${({ theme }) => theme.borderRadius.basic} 0 0;
 
   ${media.xSmall} {
-    padding: 1rem 1.2rem;
+    padding: 0 1rem;
   }
 `;
 
@@ -29,9 +27,7 @@ export const ProjectInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
   width: 100%;
-  margin: 0 1rem;
 `;
 
 export const ProjectName = styled.p`
@@ -52,6 +48,8 @@ export const RevieweeNameAndDateContainer = styled.div`
 
   ${media.small} {
     flex-direction: column;
+
+    gap: 1rem;
   }
 
   ${media.xSmall} {

@@ -29,14 +29,14 @@ class TemplateFixture {
                         1,
                         true,
                         "프로젝트 기간 동안, 아루의 강점이 드러났던 순간을 선택해주세요.",
-                        QuestionType.CHECKBOX.name(),
+                        QuestionType.CHECKBOX,
                         new OptionGroupResponse(1, 1, 2, firstSectionOptions),
                         false,
                         null
                 )
         );
         SectionResponse firstSection = new SectionResponse(
-                1, "카테고리 선택", VisibleType.ALWAYS.name(), null, "아루와 함께 한 기억을 떠올려볼게요.", firstSectionQuestions
+                1, "카테고리 선택", VisibleType.ALWAYS, null, "아루와 함께 한 기억을 떠올려볼게요.", firstSectionQuestions
         );
 
         // Section 2
@@ -50,7 +50,7 @@ class TemplateFixture {
                         2,
                         true,
                         "커뮤니케이션, 협업 능력에서 어떤 부분이 인상 깊었는지 선택해주세요.",
-                        QuestionType.CHECKBOX.name(),
+                        QuestionType.CHECKBOX,
                         new OptionGroupResponse(2, 1, 3, secondSectionOptions),
                         false,
                         null
@@ -59,14 +59,14 @@ class TemplateFixture {
                         3,
                         true,
                         "위에서 선택한 사항에 대해 조금 더 자세히 설명해주세요.",
-                        QuestionType.TEXT.name(),
+                        QuestionType.TEXT,
                         null,
                         true,
                         "상황을 자세하게 기록할수록 아루에게 도움이 돼요. 아루 덕분에 팀이 원활한 소통을 이뤘거나, 함께 일하면서 배울 점이 있었는지 떠올려 보세요."
                 )
         );
         SectionResponse secondSection = new SectionResponse(
-                2, "커뮤니케이션 능력", VisibleType.ALWAYS.name(), 1L, "아루의 커뮤니케이션, 협업 능력을 평가해주세요.", secondSectionQuestions
+                2, "커뮤니케이션 능력", VisibleType.ALWAYS, 1L, "아루의 커뮤니케이션, 협업 능력을 평가해주세요.", secondSectionQuestions
         );
 
         return new TemplateResponse(1, "아루", "리뷰미", List.of(firstSection, secondSection));

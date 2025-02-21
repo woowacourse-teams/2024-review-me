@@ -26,6 +26,17 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/no-unknown-property': ['error', { ignore: ['css'] }],
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: 'interface',
+        format: ['PascalCase'],
+      },
+      {
+        selector: 'typeAlias',
+        format: ['PascalCase'],
+      },
+    ],
     'import/order': [
       'error',
       {
