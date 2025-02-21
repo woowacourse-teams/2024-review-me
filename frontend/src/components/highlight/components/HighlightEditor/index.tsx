@@ -9,7 +9,7 @@ import EditSwitchButton from '../EditSwitchButton';
 import HighlightMenu from '../HighlightMenu';
 import Tooltip from '../Tooltip';
 
-import { useHighlight, useCheckHighlight, useLongPress, useEditableState, useHighlightEventListener } from './hooks';
+import { useHighlight, useCheckHighlight, useEditableState, useHighlightEventListener } from './hooks';
 import useHighlightMenuPosition from './hooks/useHighlightMenuPosition';
 import * as S from './style';
 
@@ -30,29 +30,17 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
     isEditable,
   });
 
-  const {
-    editorAnswerMap,
-    longPressRemovalTarget,
-    addHighlightByDrag,
-    removeHighlightByDrag,
-    handleLongPressLine,
-    removeHighlightByLongPress,
-    resetLongPressRemovalTarget,
-  } = useHighlight({
+  const { editorAnswerMap, addHighlightByDrag, removeHighlightByDrag } = useHighlight({
     reviewRequestCode,
     questionId,
     answerList,
-    isEditable,
     resetHighlightMenuPosition,
   });
-
-  const { startPressTimer, clearPressTimer } = useLongPress({ handleLongPress: handleLongPressLine });
 
   useHighlightEventListener({
     isEditable,
     updateHighlightMenuPositionByDrag,
     resetHighlightMenuPosition,
-    resetLongPressRemovalTarget,
     checkHighlight,
   });
 
@@ -69,10 +57,6 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
             className={EDITOR_ANSWER_CLASS_NAME}
             key={answerId}
             data-answer={`${answerId}-${answerIndex}`}
-            onMouseDown={startPressTimer}
-            onMouseUp={clearPressTimer}
-            onMouseMove={clearPressTimer}
-            onTouchMove={handleLongPressLine}
           >
             {lineList.map((line, index) => (
               <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
@@ -84,10 +68,8 @@ const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
         <HighlightMenu
           position={menuPosition}
           highlightArea={highlightArea}
-          isOpenLongPressRemove={!!longPressRemovalTarget}
           addHighlightByDrag={addHighlightByDrag}
           removeHighlightByDrag={removeHighlightByDrag}
-          removeHighlightByLongPress={removeHighlightByLongPress}
         />
       )}
     </S.HighlightEditor>
