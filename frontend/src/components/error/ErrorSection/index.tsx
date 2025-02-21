@@ -3,7 +3,7 @@ import PrimaryHomeIcon from '@/assets/primaryHome.svg';
 import PrimaryReloadIcon from '@/assets/primaryReload.svg';
 import WhiteHomeIcon from '@/assets/whiteHome.svg';
 import WhiteReloadIcon from '@/assets/whiteReload.svg';
-import { Button } from '@/components';
+import { Button, ImgWithSkeleton } from '@/components';
 import { API_ERROR_MESSAGE, ROUTE_ERROR_MESSAGE } from '@/constants';
 import { ButtonStyleType } from '@/types/styles';
 
@@ -57,7 +57,9 @@ const ErrorSection = ({ errorMessage, handleReload, handleGoOtherPage, errorType
   return (
     <S.Layout>
       <S.ErrorLogoWrapper>
-        <img src={AlertTriangleIcon} alt="에러 로고" />
+        <ImgWithSkeleton imgHeight="inherit" imgWidth="inherit">
+          <img src={AlertTriangleIcon} alt="에러 로고" />
+        </ImgWithSkeleton>
       </S.ErrorLogoWrapper>
       <S.ErrorMessage>{errorMessage}</S.ErrorMessage>
       <S.Container>
