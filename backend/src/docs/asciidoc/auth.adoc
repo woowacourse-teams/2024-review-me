@@ -1,0 +1,11 @@
+==== 깃허브로 로그인/회원가입
+
+operation::github-auth[snippets="curl-request,request-fields,http-response"]
+
+==== 로그아웃
+
+operation::logout[snippets="curl-request,request-cookies,http-response"]
+
+==== 리뷰 요청 코드, 확인 코드 일치 여부
+
+operation::review-group-check-access[snippets="curl-request,request-fields,http-response,response-cookies"]

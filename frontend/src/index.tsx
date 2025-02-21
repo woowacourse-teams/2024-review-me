@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
+import { ToastProvider } from './components';
 import router from './router';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
@@ -36,7 +37,9 @@ startMockWorker().then(() => {
         <ThemeProvider theme={theme}>
           <Global styles={(theme) => globalStyles(theme)} />
           <RecoilRoot>
-            <RouterProvider router={router} />
+            <ToastProvider>
+              <RouterProvider router={router} />
+            </ToastProvider>
           </RecoilRoot>
         </ThemeProvider>
       </QueryClientProvider>

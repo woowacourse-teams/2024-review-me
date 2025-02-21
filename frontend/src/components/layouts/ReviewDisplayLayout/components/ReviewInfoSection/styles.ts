@@ -6,7 +6,6 @@ export const ReviewInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  margin: 2rem 0 3rem 0;
 
   ${media.small} {
     margin-bottom: 1rem;

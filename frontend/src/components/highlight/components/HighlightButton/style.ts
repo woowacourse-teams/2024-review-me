@@ -16,7 +16,12 @@ export const Button = styled.button`
     background-color: ${({ theme }) => theme.colors.lightPurple};
   }
 `;
-export const ButtonIcon = styled.img`
-  width: 1.6rem;
-  height: 1.6rem;
+
+interface ButtonIconProps {
+  $width: string;
+  $height: string;
+}
+export const ButtonIcon = styled.img<ButtonIconProps>`
+  width: ${(props) => props.$width};
+  height: ${(props) => props.$height};
 `;

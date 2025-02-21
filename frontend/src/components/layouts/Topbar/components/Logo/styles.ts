@@ -3,17 +3,11 @@ import styled from '@emotion/styled';
 import media from '@/utils/media';
 
 export const Logo = styled.div`
-  line-height: 8rem;
   text-align: center;
 
   span {
-    font-size: 3rem;
+    font-size: 2.8rem;
     font-weight: ${({ theme }) => theme.fontWeight.bolder};
-    letter-spacing: 0.7rem;
-
-    ${media.small} {
-      font-size: 2.8rem;
-    }
 
     ${media.xSmall} {
       font-size: 2.6rem;

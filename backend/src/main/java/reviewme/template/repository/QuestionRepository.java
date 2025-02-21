@@ -12,37 +12,26 @@ import reviewme.template.domain.Question;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("""
-            SELECT q.id FROM Question q
-            JOIN SectionQuestion sq
-            ON q.id = sq.questionId
-            JOIN TemplateSection ts
-            ON sq.sectionId = ts.sectionId
-            WHERE ts.templateId = :templateId
+            SELECT q.id FROM Template t
+            JOIN t.sections s
+            JOIN s.questions q
+            WHERE t.id = :templateId
             """)
     Set<Long> findAllQuestionIdByTemplateId(long templateId);
 
     @Query("""
-            SELECT q FROM Question q
-            JOIN SectionQuestion sq
-            ON q.id = sq.questionId
-            JOIN TemplateSection ts
-            ON sq.sectionId = ts.sectionId
-            WHERE ts.templateId = :templateId
-            """)
-    List<Question> findAllByTemplatedId(long templateId);
-
-    @Query("""
-            SELECT q FROM Question q
-            JOIN SectionQuestion sq ON q.id = sq.questionId
-            WHERE sq.sectionId = :sectionId
+            SELECT q FROM Section s
+            Join s.questions q
+            WHERE s.id = :sectionId
             ORDER BY q.position
             """)
     List<Question> findAllBySectionIdOrderByPosition(long sectionId);
 
     @Query("""
-            SELECT o FROM OptionItem o
-            JOIN OptionGroup og ON o.optionGroupId = og.id
-            WHERE og.questionId = :questionId
+            SELECT o FROM Question q
+            JOIN q.optionGroup og
+            JOIN og.optionItems o
+            WHERE q.id = :questionId
             ORDER BY o.position
             """)
     List<OptionItem> findAllOptionItemsByIdOrderByPosition(long questionId);

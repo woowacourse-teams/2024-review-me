@@ -27,19 +27,16 @@ public class OptionItem {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "option_group_id", nullable = false)
-    private long optionGroupId;
-
     @Column(name = "position", nullable = false)
     private int position;
 
+    // TODO: 카테고리/키워드 여부는 도메인 로직이 아니라 서비스단에 있는 것이 자연스럽다고 생각함
     @Column(name = "option_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private OptionType optionType;
 
-    public OptionItem(String content, long optionGroupId, int position, OptionType optionType) {
+    public OptionItem(String content, int position, OptionType optionType) {
         this.content = content;
-        this.optionGroupId = optionGroupId;
         this.position = position;
         this.optionType = optionType;
     }

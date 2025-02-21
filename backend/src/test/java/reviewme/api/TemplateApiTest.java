@@ -1,6 +1,5 @@
 package reviewme.api;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
@@ -17,7 +16,7 @@ import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
-import reviewme.review.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
+import reviewme.reviewgroup.service.exception.ReviewGroupNotFoundByReviewRequestCodeException;
 import reviewme.template.service.dto.response.SectionNameResponse;
 import reviewme.template.service.dto.response.SectionNamesResponse;
 
@@ -104,7 +103,7 @@ class TemplateApiTest extends ApiTest {
                 new SectionNameResponse(1, "섹션1 이름"),
                 new SectionNameResponse(2, "섹션2 이름")
         ));
-        BDDMockito.given(sectionService.getSectionNames(any()))
+        BDDMockito.given(templateService.getSectionNames())
                 .willReturn(response);
 
         CookieDescriptor[] cookieDescriptors = {

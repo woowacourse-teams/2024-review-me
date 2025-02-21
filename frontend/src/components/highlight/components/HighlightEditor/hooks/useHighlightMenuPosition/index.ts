@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Position } from '@/types';
 
 import useDragHighlightPosition from '../useDragHighlightPosition';
-import useLongPressHighlightPosition from '../useLongPressHighlightPosition';
 
 interface UseHighlightMenuPositionProps {
   isEditable: boolean;
@@ -25,16 +24,9 @@ const useHighlightMenuPosition = ({ isEditable, editorRef }: UseHighlightMenuPos
     updateHighlightMenuPosition,
   });
 
-  const { updateHighlightMenuPositionByLongPress } = useLongPressHighlightPosition({
-    isEditable,
-    editorRef,
-    updateHighlightMenuPosition,
-  });
-
   return {
     menuPosition,
     updateHighlightMenuPositionByDrag,
-    updateHighlightMenuPositionByLongPress,
     resetHighlightMenuPosition,
   };
 };

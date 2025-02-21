@@ -15,7 +15,6 @@ import reviewme.review.service.exception.MissingRequiredQuestionException;
 import reviewme.review.service.exception.SubmittedQuestionAndProvidedQuestionMismatchException;
 import reviewme.template.domain.Question;
 import reviewme.template.domain.Section;
-import reviewme.template.domain.SectionQuestion;
 import reviewme.template.repository.QuestionRepository;
 import reviewme.template.repository.SectionRepository;
 
@@ -75,8 +74,8 @@ public class ReviewValidator {
 
         return sections.stream()
                 .filter(section -> section.isVisibleBySelectedOptionIds(selectedOptionIds))
-                .flatMap(section -> section.getQuestionIds().stream())
-                .map(SectionQuestion::getQuestionId)
+                .flatMap(section -> section.getQuestions().stream())
+                .map(Question::getId)
                 .collect(Collectors.toSet());
     }
 }

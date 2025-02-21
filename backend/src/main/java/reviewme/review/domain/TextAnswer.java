@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import reviewme.review.domain.exception.QuestionNotAnsweredException;
 
 @Entity
-@Table(name = "new_text_answer")
+@Table(name = "text_answer")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
 @Getter

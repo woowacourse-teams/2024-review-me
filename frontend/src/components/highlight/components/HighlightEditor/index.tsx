@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 
 import { EDITOR_ANSWER_CLASS_NAME, EDITOR_LINE_CLASS_NAME } from '@/constants';
+import useRequestCodeParam from '@/hooks/useReviewRequestCodeParam';
 import { ReviewAnswerResponseData } from '@/types';
 
 import EditorLineBlock from '../EditorLineBlock';
@@ -8,59 +9,38 @@ import EditSwitchButton from '../EditSwitchButton';
 import HighlightMenu from '../HighlightMenu';
 import Tooltip from '../Tooltip';
 
-import { useHighlight, useCheckHighlight, useLongPress, useEditableState, useHighlightEventListener } from './hooks';
+import { useHighlight, useCheckHighlight, useEditableState, useHighlightEventListener } from './hooks';
 import useHighlightMenuPosition from './hooks/useHighlightMenuPosition';
 import * as S from './style';
 
 export interface HighlightEditorProps {
   questionId: number;
   answerList: ReviewAnswerResponseData[];
-  handleErrorModal: (isError: boolean) => void;
-  handleModalMessage: (message: string) => void;
 }
 
-const HighlightEditor = ({ questionId, answerList, handleErrorModal, handleModalMessage }: HighlightEditorProps) => {
+const HighlightEditor = ({ questionId, answerList }: HighlightEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
-
+  const { reviewRequestCode } = useRequestCodeParam();
   const { isEditable, handleEditToggleButton } = useEditableState();
 
   const { highlightArea, checkHighlight } = useCheckHighlight();
 
-  const {
-    menuPosition,
-    updateHighlightMenuPositionByDrag,
-    updateHighlightMenuPositionByLongPress,
-    resetHighlightMenuPosition,
-  } = useHighlightMenuPosition({
+  const { menuPosition, updateHighlightMenuPositionByDrag, resetHighlightMenuPosition } = useHighlightMenuPosition({
     editorRef,
     isEditable,
   });
 
-  const {
-    editorAnswerMap,
-    longPressRemovalTarget,
-    addHighlightByDrag,
-    removeHighlightByDrag,
-    handleLongPressLine,
-    removeHighlightByLongPress,
-    resetLongPressRemovalTarget,
-  } = useHighlight({
+  const { editorAnswerMap, addHighlightByDrag, removeHighlightByDrag } = useHighlight({
+    reviewRequestCode,
     questionId,
     answerList,
-    isEditable,
     resetHighlightMenuPosition,
-    updateHighlightMenuPositionByLongPress,
-    handleErrorModal,
-    handleModalMessage,
   });
-
-  const { startPressTimer, clearPressTimer } = useLongPress({ handleLongPress: handleLongPressLine });
 
   useHighlightEventListener({
     isEditable,
     updateHighlightMenuPositionByDrag,
     resetHighlightMenuPosition,
-    resetLongPressRemovalTarget,
     checkHighlight,
   });
 
@@ -77,10 +57,6 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal, handleModal
             className={EDITOR_ANSWER_CLASS_NAME}
             key={answerId}
             data-answer={`${answerId}-${answerIndex}`}
-            onMouseDown={startPressTimer}
-            onMouseUp={clearPressTimer}
-            onMouseMove={clearPressTimer}
-            onTouchMove={handleLongPressLine}
           >
             {lineList.map((line, index) => (
               <EditorLineBlock key={`${EDITOR_LINE_CLASS_NAME}-${index}`} line={line} lineIndex={index} />
@@ -92,10 +68,8 @@ const HighlightEditor = ({ questionId, answerList, handleErrorModal, handleModal
         <HighlightMenu
           position={menuPosition}
           highlightArea={highlightArea}
-          isOpenLongPressRemove={!!longPressRemovalTarget}
           addHighlightByDrag={addHighlightByDrag}
           removeHighlightByDrag={removeHighlightByDrag}
-          removeHighlightByLongPress={removeHighlightByLongPress}
         />
       )}
     </S.HighlightEditor>

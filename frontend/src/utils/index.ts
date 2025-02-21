@@ -12,3 +12,5 @@ export * from './media';
 export * from './highlight/index';
 export * from './testUtils';
 export * from './analytics';
+export * from './validateInput';
+export * from './path';

@@ -4,7 +4,7 @@ import PrimaryReloadIcon from '@/assets/primaryReload.svg';
 import WhiteHomeIcon from '@/assets/whiteHome.svg';
 import WhiteReloadIcon from '@/assets/whiteReload.svg';
 import { Button } from '@/components';
-import { ROUTE_ERROR_MESSAGE } from '@/constants';
+import { API_ERROR_MESSAGE, ROUTE_ERROR_MESSAGE } from '@/constants';
 import { ButtonStyleType } from '@/types/styles';
 
 import * as S from './styles';
@@ -27,7 +27,8 @@ export interface ErrorSectionButton {
 }
 
 const ErrorSection = ({ errorMessage, handleReload, handleGoOtherPage, errorType = 'notFound' }: ErrorSectionProps) => {
-  const isGoHomeButtonFirst = errorMessage === ROUTE_ERROR_MESSAGE;
+  const homeFirstErrorMessages = [API_ERROR_MESSAGE[401], API_ERROR_MESSAGE[403], ROUTE_ERROR_MESSAGE];
+  const isGoHomeButtonFirst = homeFirstErrorMessages.some((message) => message === errorMessage);
   // errorMessage에 따른 커스텀
   const buttonList: ErrorSectionButton[] = [];
 

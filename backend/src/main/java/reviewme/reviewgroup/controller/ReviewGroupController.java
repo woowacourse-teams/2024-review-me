@@ -1,8 +1,7 @@
 package reviewme.reviewgroup.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reviewme.reviewgroup.service.ReviewGroupLookupService;
 import reviewme.reviewgroup.service.ReviewGroupService;
-import reviewme.reviewgroup.service.dto.CheckValidAccessRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationRequest;
 import reviewme.reviewgroup.service.dto.ReviewGroupCreationResponse;
-import reviewme.reviewgroup.service.dto.ReviewGroupResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupPageResponse;
+import reviewme.reviewgroup.service.dto.ReviewGroupSummaryResponse;
+import reviewme.security.resolver.LoginMemberSession;
+import reviewme.security.resolver.dto.LoginMember;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,28 +25,32 @@ public class ReviewGroupController {
     private final ReviewGroupService reviewGroupService;
     private final ReviewGroupLookupService reviewGroupLookupService;
 
-    @GetMapping("/v2/groups")
-    public ResponseEntity<ReviewGroupResponse> getReviewGroupSummary(@RequestParam String reviewRequestCode) {
-        ReviewGroupResponse response = reviewGroupLookupService.getReviewGroupSummary(reviewRequestCode);
+    @GetMapping("/v2/groups/summary")
+    public ResponseEntity<ReviewGroupSummaryResponse> getReviewGroupSummary(
+            @RequestParam String reviewRequestCode
+    ) {
+        ReviewGroupSummaryResponse response = reviewGroupLookupService.getReviewGroupSummary(reviewRequestCode);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/v2/groups")
     public ResponseEntity<ReviewGroupCreationResponse> createReviewGroup(
-            @Valid @RequestBody ReviewGroupCreationRequest request
+            @Valid @RequestBody ReviewGroupCreationRequest request,
+            @LoginMemberSession(required = false) LoginMember loginMember
     ) {
-        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request);
+        Long memberId = Optional.ofNullable(loginMember).map(LoginMember::id).orElse(null);
+        ReviewGroupCreationResponse response = reviewGroupService.createReviewGroup(request, memberId);
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/v2/groups/check")
-    public ResponseEntity<Void> checkGroupAccessCode(
-            @Valid @RequestBody CheckValidAccessRequest request,
-            HttpServletRequest httpRequest
+    @GetMapping("/v2/groups")
+    public ResponseEntity<ReviewGroupPageResponse> getMyReviewGroups(
+            @RequestParam(required = false) Long lastReviewGroupId,
+            @RequestParam(required = false) Integer size,
+            @LoginMemberSession LoginMember loginMember
     ) {
-        reviewGroupService.checkGroupAccessCode(request);
-        HttpSession session = httpRequest.getSession();
-        session.setAttribute("reviewRequestCode", request.reviewRequestCode());
-        return ResponseEntity.noContent().build();
+        ReviewGroupPageResponse response = reviewGroupLookupService.getReviewGroupsByMember(
+                lastReviewGroupId, size, loginMember.id());
+        return ResponseEntity.ok(response);
     }
 }
