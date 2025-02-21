@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 
 import PrimaryHomeIcon from '@/assets/primaryHome.svg';
 import SmileIcon from '@/assets/smile.svg';
-import { Button, ErrorSection } from '@/components';
+import { Button, ErrorSection, ImgWithSkeleton } from '@/components';
 
 import * as S from './styles';
 
@@ -35,7 +35,11 @@ const ReviewWritingCompletePage = () => {
     <S.Layout>
       <S.Container>
         <S.ReviewComplete>
-          <img src={SmileIcon} alt="작성 완료 스마일 이미지" />
+          <S.ImgWrapper>
+            <ImgWithSkeleton imgWidth="100%" imgHeight="100%">
+              <img src={SmileIcon} alt="작성 완료 스마일 이미지" />
+            </ImgWithSkeleton>
+          </S.ImgWrapper>
           <S.Title>리뷰 작성 완료!</S.Title>
         </S.ReviewComplete>
         <Button styleType="secondary" type="button" onClick={handleClickHomeButton}>

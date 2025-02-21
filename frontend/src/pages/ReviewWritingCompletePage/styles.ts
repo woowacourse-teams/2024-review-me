@@ -28,12 +28,20 @@ export const ReviewComplete = styled.div`
   justify-content: center;
 
   width: 100%;
+`;
+
+export const ImgWrapper = styled.div`
+  width: 4rem;
+  height: 4rem;
+
+  ${media.xSmall} {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
 
   img {
-    ${media.xSmall} {
-      width: 2.8rem;
-      height: 2.8rem;
-    }
+    width: 100%;
+    height: 100%;
   }
 `;
 
