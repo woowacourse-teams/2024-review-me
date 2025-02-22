@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router';
 
 import { postOAuthLogoutApi } from '@/apis/oAuth';
-import { OAUTH_QUERY_KEY, ROUTE } from '@/constants';
+import { OAUTH_QUERY_KEY, REVIEW_QUERY_KEY, ROUTE } from '@/constants';
 
 import useToastContext from '../useToastContext';
 
@@ -19,10 +19,14 @@ const useOAuthLogout = () => {
 
   const removeAllQueriesExceptUserProfile = () => {
     const queries = queryClient.getQueryCache().getAll();
+    const savedQueryKeys = [OAUTH_QUERY_KEY.userProfile, REVIEW_QUERY_KEY.writingReviewInfo];
 
     queries.forEach((query) => {
       if (!query.queryKey[0]) return;
-      if (query.queryKey[0] !== OAUTH_QUERY_KEY.userProfile) {
+
+      const isSaved = savedQueryKeys.some((key) => key === query.queryKey[0]);
+
+      if (!isSaved) {
         queryClient.removeQueries(query.queryKey[0]);
       }
     });
