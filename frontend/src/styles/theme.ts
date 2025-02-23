@@ -28,7 +28,7 @@ export const contentModalSize = {
 export const writtenReviewLayoutSize = {
   largeMinWidth: '45rem',
   largeMaxHeight: '90rem',
-  largeMaxWidth: '90rem',
+  largeMaxWidth: '45rem',
 };
 
 export const componentHeight = {
