@@ -3,8 +3,8 @@ import { useLocation } from 'react-router';
 import NavItem from './NavItem';
 import * as S from './styles';
 export interface Tab {
-  label: '리뷰 링크 관리' | '작성한 리뷰 확인';
-  activePathList: string[];
+  label: string;
+  activePath: string;
   handleTabClick: () => void;
 }
 
@@ -15,8 +15,6 @@ interface NavigationTabProps {
 const NavigationTab = ({ tabList }: NavigationTabProps) => {
   const { pathname } = useLocation();
 
-  const isActiveTab = (activePaths: string[]) => activePaths.some((activePath) => pathname.includes(activePath));
-
   return (
     <S.NavContainer>
       <S.NavList>
@@ -24,7 +22,7 @@ const NavigationTab = ({ tabList }: NavigationTabProps) => {
           <NavItem
             key={tab.label}
             label={tab.label}
-            $isActiveTab={isActiveTab(tab.activePathList)}
+            $isActiveTab={pathname.includes(tab.activePath)}
             onClick={tab.handleTabClick}
           />
         ))}
