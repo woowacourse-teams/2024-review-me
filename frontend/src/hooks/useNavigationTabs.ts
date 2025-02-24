@@ -9,14 +9,12 @@ const useNavigationTabs = () => {
   const navigationTabList: Tab[] = [
     {
       label: '리뷰 링크 관리',
-      // "리뷰 링크 관리" 탭이 활성화 되어야 하는 페이지 목록
-      activePathList: [ROUTE.reviewLinks, ROUTE.reviewList, ROUTE.reviewCollection, ROUTE.detailedReview],
+      activePath: ROUTE.reviewLinks,
       handleTabClick: () => navigate(ROUTE.reviewLinks),
     },
     {
       label: '작성한 리뷰 확인',
-      // "작성한 리뷰 확인" 탭이 활성화 되어야 하는 페이지 목록
-      activePathList: [ROUTE.writtenReview, ROUTE.reviewWriting, ROUTE.reviewWritingComplete],
+      activePath: ROUTE.writtenReview,
       handleTabClick: () => navigate(ROUTE.writtenReview),
     },
   ];

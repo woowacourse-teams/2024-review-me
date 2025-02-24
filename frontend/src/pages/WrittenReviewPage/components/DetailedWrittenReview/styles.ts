@@ -26,6 +26,7 @@ export const DetailedWrittenReview = styled.div<StyleProps>`
   }
 
   ${media.small} {
+    max-width: 90vw;
     min-width: 0;
     margin: 0 1.5rem;
   }
@@ -47,5 +48,6 @@ export const Outline = styled.div`
 
   ${media.small} {
     min-width: 0;
+    max-width: 90vw;
   }
 `;

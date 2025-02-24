@@ -22,19 +22,22 @@ export const Layout = styled.div`
 `;
 
 export const ErrorLogoWrapper = styled.div`
-  & > img {
-    width: 15rem;
-    height: 15rem;
+  width: 15rem;
+  height: 15rem;
 
-    ${media.xSmall} {
-      width: 11rem;
-      height: 11rem;
-    }
+  ${media.xSmall} {
+    width: 11rem;
+    height: 11rem;
+  }
 
-    ${media.xxSmall} {
-      width: 8rem;
-      height: 8rem;
-    }
+  ${media.xxSmall} {
+    width: 8rem;
+    height: 8rem;
+  }
+
+  img {
+    width: inherit;
+    height: inherit;
   }
 `;
 

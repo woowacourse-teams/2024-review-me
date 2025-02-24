@@ -1,5 +1,6 @@
 import DownArrowIcon from '@/assets/downArrow.svg';
 import UndraggableWrapper from '@/components/common/UndraggableWrapper';
+import { ImgWithSkeleton } from '@/components/skeleton';
 import { SocialType } from '@/types/profile';
 
 import ProfileTab from '../ProfileTab';
@@ -21,7 +22,11 @@ const ProfileInfo = ({ profileImageSrc, profileId, socialType }: ProfileInfoProp
       <UndraggableWrapper>
         <S.ProfileContainer onClick={handleContainerClick}>
           <S.ProfileImageWrapper>
-            {profileImageSrc && <img src={profileImageSrc} alt="프로필 사진" />}
+            {profileImageSrc && (
+              <ImgWithSkeleton imgHeight="inherit" imgWidth="inherit">
+                <img src={profileImageSrc} alt="프로필 사진" />
+              </ImgWithSkeleton>
+            )}
           </S.ProfileImageWrapper>
           <S.ProfileId>{profileId}</S.ProfileId>
           <S.ArrowIcon src={DownArrowIcon} $isOpened={isOpened} alt="" />
