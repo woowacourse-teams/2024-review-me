@@ -112,7 +112,7 @@ class ReviewGroupApiTest extends ApiTest {
     @Test
     void 리뷰_요청_코드로_회원이_만든_리뷰_그룹_정보를_반환한다() {
         BDDMockito.given(reviewGroupLookupService.getReviewGroupSummary(anyString()))
-                .willReturn(new ReviewGroupSummaryResponse(1L,"아루", "리뷰미"));
+                .willReturn(new ReviewGroupSummaryResponse(1L, 1L, "아루", "리뷰미"));
 
         ParameterDescriptor[] parameterDescriptors = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드")
@@ -120,6 +120,7 @@ class ReviewGroupApiTest extends ApiTest {
 
         FieldDescriptor[] responseFieldDescriptors = {
                 fieldWithPath("revieweeId").description("리뷰이 ID"),
+                fieldWithPath("reviewGroupId").description("리뷰 그룹 ID"),
                 fieldWithPath("revieweeName").description("리뷰이 이름"),
                 fieldWithPath("projectName").description("프로젝트 이름")
         };
@@ -141,7 +142,7 @@ class ReviewGroupApiTest extends ApiTest {
     @Test
     void 리뷰_요청_코드로_비회원이_만든_리뷰_그룹_정보를_반환한다() {
         BDDMockito.given(reviewGroupLookupService.getReviewGroupSummary(anyString()))
-                .willReturn(new ReviewGroupSummaryResponse(null, "아루", "리뷰미"));
+                .willReturn(new ReviewGroupSummaryResponse(null, 1L, "아루", "리뷰미"));
 
         ParameterDescriptor[] parameterDescriptors = {
                 parameterWithName("reviewRequestCode").description("리뷰 요청 코드")
@@ -149,6 +150,7 @@ class ReviewGroupApiTest extends ApiTest {
 
         FieldDescriptor[] responseFieldDescriptors = {
                 fieldWithPath("revieweeId").description("리뷰이 ID"),
+                fieldWithPath("reviewGroupId").description("리뷰 그룹 ID"),
                 fieldWithPath("revieweeName").description("리뷰이 이름"),
                 fieldWithPath("projectName").description("프로젝트 이름")
         };

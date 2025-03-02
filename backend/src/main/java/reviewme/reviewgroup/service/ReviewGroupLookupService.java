@@ -25,7 +25,7 @@ public class ReviewGroupLookupService {
                 .orElseThrow(() -> new ReviewGroupNotFoundByReviewRequestCodeException(reviewRequestCode));
 
         return new ReviewGroupSummaryResponse(
-                reviewGroup.getMemberId(), reviewGroup.getReviewee(), reviewGroup.getProjectName());
+                reviewGroup.getMemberId(), reviewGroup.getId(), reviewGroup.getReviewee(), reviewGroup.getProjectName());
     }
 
     @Transactional(readOnly = true)
