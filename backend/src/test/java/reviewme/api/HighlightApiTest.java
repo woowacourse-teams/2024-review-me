@@ -6,6 +6,8 @@ import static org.springframework.restdocs.cookies.CookieDocumentation.requestCo
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.cookies.CookieDescriptor;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
+import org.springframework.restdocs.request.ParameterDescriptor;
 import reviewme.reviewgroup.domain.ReviewGroup;
 
 class HighlightApiTest extends ApiTest {
@@ -47,6 +50,10 @@ class HighlightApiTest extends ApiTest {
                 cookieWithName("JSESSIONID").description("세션 ID")
         };
 
+        ParameterDescriptor[] requestPathDescriptors = {
+                parameterWithName("reviewGroupId").description("리뷰 그룹 ID")
+        };
+
         FieldDescriptor[] requestFields = {
                 fieldWithPath("questionId").description("질문 ID"),
                 fieldWithPath("highlights").description("하이라이트 목록"),
@@ -58,15 +65,16 @@ class HighlightApiTest extends ApiTest {
 
         RestDocumentationResultHandler handler = document(
                 "highlight-answer",
-                requestFields(requestFields),
-                requestCookies(cookieDescriptors)
+                requestCookies(cookieDescriptors),
+                pathParameters(requestPathDescriptors),
+                requestFields(requestFields)
         );
 
         givenWithSpec().log().all()
                 .cookie("JSESSIONID", "AVEBNKLCL13TNVZ")
-                .pathParam("reviewRequestCode", "rereco")
+                .pathParam("reviewGroupId", 1)
                 .body(request)
-                .when().post("/v2/groups/{reviewRequestCode}/highlights")
+                .when().post("/v2/groups/{reviewGroupId}/highlights")
                 .then().log().all()
                 .apply(handler)
                 .status(HttpStatus.OK);
