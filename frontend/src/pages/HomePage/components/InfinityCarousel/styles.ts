@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import media from '@/utils/media';
@@ -52,42 +53,40 @@ export const SlideContentImg = styled.img`
   width: 100%;
 `;
 
-export const PrevButton = styled.button`
-  cursor: pointer;
-
+const baseButtonStyles = css`
   position: absolute;
-  z-index: 1;
   top: 50%;
-  left: 1rem;
   transform: translateY(-50%);
+  z-index: 1;
+
+  width: 3rem;
+  height: 3rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+  border-radius: 50%;
 
   font-size: 2rem;
 
-  background: none;
-  border: none;
+  cursor: pointer;
 
   ${media.xSmall} {
     display: none;
   }
 `;
 
+export const PrevButton = styled.button`
+  ${baseButtonStyles}
+  left: 1rem;
+`;
+
 export const NextButton = styled.button`
-  cursor: pointer;
-
-  position: absolute;
-  z-index: 1;
-  top: 50%;
+  ${baseButtonStyles}
   right: 1rem;
-  transform: translateY(-50%);
-
-  font-size: 2rem;
-
-  background: none;
-  border: none;
-
-  ${media.xSmall} {
-    display: none;
-  }
 `;
 
 export const IndicatorWrapper = styled.div`
