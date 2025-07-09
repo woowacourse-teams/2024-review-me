@@ -14,7 +14,9 @@ module.exports = {
   ignorePatterns: [
     'dist',
     '.eslintrc.cjs',
-    'webpack.config.js',
+    'webpack.common.js',
+    'webpack.dev.js',
+    'webpack.prod.js',
     'jest.config.js',
     'jest.polyfills.js',
     'jest.setup.js',
