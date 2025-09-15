@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
+import { STORED_DATA_NAME } from '@/constants';
+import { useSearchParamAndQuery } from '@/hooks';
 import { answerValidationMapAtom, cardSectionListSelector } from '@/recoil';
 
 interface UseStepListProps {
@@ -64,7 +66,38 @@ const useStepList = ({ currentCardIndex }: UseStepListProps) => {
     });
   };
 
+  // 복원 및 저장 로직
+  const { param: reviewRequestCode } = useSearchParamAndQuery({
+    paramKey: 'reviewRequestCode',
+  });
+
+  const storeVisitedCardIdList = useCallback(() => {
+    if (visitedCardIdList.length === 0) return;
+
+    localStorage.setItem(
+      `${STORED_DATA_NAME.visitedCardIdList}_${reviewRequestCode}`,
+      JSON.stringify(visitedCardIdList),
+    );
+  }, [reviewRequestCode, visitedCardIdList]);
+
+  // 복원
   useEffect(() => {
+    if (cardSectionList.length === 0 || !reviewRequestCode) return;
+
+    const storedVisitedCardIdList = localStorage.getItem(`${STORED_DATA_NAME.visitedCardIdList}_${reviewRequestCode}`);
+    const parsedVisitedCardIdList = storedVisitedCardIdList ? JSON.parse(storedVisitedCardIdList) : [];
+
+    setVisitedCardIdList(parsedVisitedCardIdList);
+  }, [reviewRequestCode, cardSectionList]);
+
+  // 로컬 스토리지와의 동기화를 위한 useEffect
+  useEffect(() => {
+    storeVisitedCardIdList();
+  }, [visitedCardIdList]);
+
+  useEffect(() => {
+    if (cardSectionList.length === 0 || visitedCardIdList.length === 0) return;
+
     updateVisitedCardIdList();
   }, [cardSectionList, currentCardIndex]);
 

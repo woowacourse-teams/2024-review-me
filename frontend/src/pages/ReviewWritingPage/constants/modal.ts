@@ -3,4 +3,5 @@ export const CARD_FORM_MODAL_KEY = {
   navigateConfirm: 'NAVIGATE_CONFIRM',
   recheck: 'RECHECK',
   submitError: 'SUBMIT_ERROR',
+  restoreConfirm: 'RESTORE_CONFIRM',
 };

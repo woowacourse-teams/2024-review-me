@@ -15,6 +15,10 @@ const useOptionSelection = () => {
     checked: boolean;
   }
 
+  const initSelectedOptionList = (newSelectedOptionList: number[]) => {
+    setSelectedOptionList(newSelectedOptionList);
+  };
+
   /**
    * checkbox의 change 이벤트에 따라 새로운 selectedOptionList를 반환하는 함수
    */
@@ -37,6 +41,7 @@ const useOptionSelection = () => {
     selectedOptionList,
     isSelectedCheckbox,
     updateSelectedOptionList,
+    initSelectedOptionList,
   };
 };
 

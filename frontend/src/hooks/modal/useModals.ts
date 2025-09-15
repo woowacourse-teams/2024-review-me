@@ -1,11 +1,13 @@
 import { useState } from 'react';
 
-interface Modals {
-  [key: string]: boolean;
+export type Modals = Record<string, boolean>;
+
+interface UseModalsProps {
+  initialStates?: Modals;
 }
 
-const useModals = () => {
-  const [modals, setModals] = useState<Modals>({});
+const useModals = ({ initialStates }: UseModalsProps = {}) => {
+  const [modals, setModals] = useState<Modals>(initialStates ?? {});
 
   const openModal = (key: string) => {
     setModals((prev) => ({
@@ -21,7 +23,7 @@ const useModals = () => {
     }));
   };
 
-  const isOpen = (key: string) => modals[key];
+  const isOpen = (key: string) => !!modals[key];
 
   return { isOpen, openModal, closeModal };
 };

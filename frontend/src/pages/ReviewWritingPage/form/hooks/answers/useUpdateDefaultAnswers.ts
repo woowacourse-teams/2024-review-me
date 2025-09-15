@@ -12,9 +12,11 @@ const DEFAULT_VALUE = {
  * cardSectionListSelector(=리뷰 작성 페이지에서 리뷰이가 작성해야하는 질문지)가 변경되었을때, 이에 맞추어서 답변(answerMap)과 답변들의 유효성 여부(answerValidationMap)을 변경하는 훅
  */
 const useUpdateDefaultAnswers = () => {
-  const cardSectionList = useRecoilValue(cardSectionListSelector);
   // NOTE : answerMap - 질문에 대한 답변들 , number : questionId
   const [answerMap, setAnswerMap] = useRecoilState(answerMapAtom);
+
+  // 서버에서 받아온 질문지
+  const cardSectionList = useRecoilValue(cardSectionListSelector);
   // NOTE : answerValidationMap  -질문의 단볍들의 유효성 여부 ,number: questionId
   const [answerValidationMap, setAnswerValidationMap] = useRecoilState(answerValidationMapAtom);
   /* NOTE: 질문 변경 시, answerMap 변경 케이스 정리
@@ -101,10 +103,14 @@ const useUpdateDefaultAnswers = () => {
   };
 
   useEffect(() => {
-    const { newAnswerMap, newAnswerValidationMap } = makeNewAnswerAndValidationMaps();
-    setAnswerMap(newAnswerMap);
-    setAnswerValidationMap(newAnswerValidationMap);
-  }, [cardSectionList]);
+    // answerMap이 비어 있을 때만 작성 페이지 초기화 작업 수행
+    // : 작성한 내용이 아예 없는 상황에서 새로고침할 때, 기존 답변을 저장한 로컬 스토리지가 초기화되는 것을 막기 위함
+    if (answerMap?.size === 0) {
+      const { newAnswerMap, newAnswerValidationMap } = makeNewAnswerAndValidationMaps();
+      setAnswerMap(newAnswerMap);
+      setAnswerValidationMap(newAnswerValidationMap);
+    }
+  }, [cardSectionList, setAnswerMap, setAnswerValidationMap]);
 };
 
 export default useUpdateDefaultAnswers;

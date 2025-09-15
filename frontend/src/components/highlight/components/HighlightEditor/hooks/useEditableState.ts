@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import { HIGHLIGHT_EVENT_NAME, LOCAL_STORAGE_KEY } from '@/constants';
 import { trackEventInAmplitude } from '@/utils';

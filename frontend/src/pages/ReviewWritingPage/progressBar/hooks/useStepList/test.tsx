@@ -1,4 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot, RecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { REVIEW_QUESTION_DATA, STRENGTH_SECTION_LIST } from '@/mocks/mockData';
@@ -23,13 +24,15 @@ interface RenderUseStepListHookProps {
 
 const renderUseStepListHook = ({ currentCardIndex }: RenderUseStepListHookProps) => {
   const wrapper = ({ children }: EssentialPropsWithChildren) => (
-    <RecoilRoot
-      initializeState={({ set }: InitializeStateParams) => {
-        set(reviewWritingFormSectionListAtom, REVIEW_QUESTION_DATA.sections);
-      }}
-    >
-      {children}
-    </RecoilRoot>
+    <BrowserRouter>
+      <RecoilRoot
+        initializeState={({ set }: InitializeStateParams) => {
+          set(reviewWritingFormSectionListAtom, REVIEW_QUESTION_DATA.sections);
+        }}
+      >
+        {children}
+      </RecoilRoot>
+    </BrowserRouter>
   );
 
   return renderHook(

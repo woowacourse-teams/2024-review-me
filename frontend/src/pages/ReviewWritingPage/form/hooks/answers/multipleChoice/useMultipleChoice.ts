@@ -1,4 +1,8 @@
-import { ReviewWritingCardQuestion } from '@/types';
+import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+
+import { answerMapAtom } from '@/recoil';
+import { ReviewWritingAnswer, ReviewWritingCardQuestion } from '@/types';
 
 import useAboveSelectionLimit from './useAboveSelectionLimit';
 import useCheckTailQuestionAnswer from './useCheckTailQuestionAnswer';
@@ -16,7 +20,9 @@ interface UseMultipleChoiceProps {
 const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps) => {
   const { isAnsweredTailQuestion } = useCheckTailQuestionAnswer({ question });
 
-  const { selectedOptionList, isSelectedCheckbox, updateSelectedOptionList } = useOptionSelection();
+  const { selectedOptionList, isSelectedCheckbox, updateSelectedOptionList, initSelectedOptionList } =
+    useOptionSelection();
+  const answerMap = useRecoilValue(answerMapAtom);
 
   const { updateAnswerState } = useUpdateMultipleChoiceAnswer({ question });
 
@@ -33,6 +39,30 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
       updateAnswerState,
     },
   );
+
+  interface FindSelectedOptionIdsParams {
+    answerMap: Map<number, ReviewWritingAnswer> | null;
+    questionId: number;
+  }
+
+  // 로컬 스토리지에 저장했던 답변으로부터, questionId를 통해 해당 질문의 selectedOptionIds를 찾는 함수
+  const findSelectedOptionIds = ({ answerMap, questionId }: FindSelectedOptionIdsParams) => {
+    if (!answerMap) return null;
+
+    const selectedItem = answerMap.get(questionId);
+    return selectedItem ? selectedItem.selectedOptionIds : null;
+  };
+
+  // 저장된 객관식 답변이 있다면 복원
+  useEffect(() => {
+    if (!answerMap || answerMap.size === 0) return;
+    if (selectedOptionList.length > 0) return;
+
+    const questionId = question.questionId;
+    const selectedOptionIds = findSelectedOptionIds({ answerMap, questionId });
+
+    if (selectedOptionIds) initSelectedOptionList([...selectedOptionIds]);
+  }, [answerMap, question]);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.currentTarget;
@@ -88,4 +118,5 @@ const useMultipleChoice = ({ question, handleModalOpen }: UseMultipleChoiceProps
     unCheckCategoryOptionId,
   };
 };
+
 export default useMultipleChoice;
