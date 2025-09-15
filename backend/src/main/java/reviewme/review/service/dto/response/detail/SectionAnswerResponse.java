@@ -5,6 +5,6 @@ import java.util.List;
 public record SectionAnswerResponse(
         long sectionId,
         String header,
-        List<QuestionAnswerResponse> questions
+        List<QuestionAnswerResponse> reviews
 ) {
 }
