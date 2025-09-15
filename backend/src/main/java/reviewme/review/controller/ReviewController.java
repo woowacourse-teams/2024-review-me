@@ -22,8 +22,6 @@ import reviewme.review.service.dto.response.gathered.ReviewsGatheredBySectionRes
 import reviewme.review.service.dto.response.list.AuthoredReviewsResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewPageResponse;
 import reviewme.review.service.dto.response.list.ReceivedReviewsSummaryResponse;
-import reviewme.reviewgroup.domain.ReviewGroup;
-import reviewme.reviewgroup.service.ReviewGroupService;
 import reviewme.security.aspect.RequireReviewAccess;
 import reviewme.security.aspect.RequireReviewGroupAccess;
 import reviewme.security.resolver.LoginMemberSession;
@@ -38,7 +36,6 @@ public class ReviewController {
     private final ReviewDetailLookupService reviewDetailLookupService;
     private final ReviewSummaryService reviewSummaryService;
     private final ReviewGatheredLookupService reviewGatheredLookupService;
-    private final ReviewGroupService reviewGroupService;
 
     @PostMapping("/v2/reviews")
     public ResponseEntity<Void> createReview(
@@ -50,16 +47,15 @@ public class ReviewController {
         return ResponseEntity.created(URI.create("/reviews/" + savedReviewId)).build();
     }
 
-    @GetMapping("/v2/groups/{reviewRequestCode}/reviews/received") // todo: groupId를 받도록 수정 필요 issue #1101
-    @RequireReviewGroupAccess(target = "#reviewRequestCode")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/received")
+    @RequireReviewGroupAccess(target = "#reviewGorupId")
     public ResponseEntity<ReceivedReviewPageResponse> findReceivedReviews(
-            @PathVariable String reviewRequestCode,
+            @PathVariable long reviewGroupId,
             @RequestParam(required = false) Long lastReviewId,
             @RequestParam(required = false) Integer size
     ) {
-        ReviewGroup reviewGroup = reviewGroupService.getReviewGroupByReviewRequestCode(reviewRequestCode);
         ReceivedReviewPageResponse response
-                = reviewListLookupService.getReceivedReviews(reviewGroup.getId(), lastReviewId, size);
+                = reviewListLookupService.getReceivedReviews(reviewGroupId, lastReviewId, size);
         return ResponseEntity.ok(response);
     }
 
@@ -72,25 +68,23 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/groups/{reviewRequestCode}/reviews/summary") // todo: groupId를 받도록 수정 필요 issue #1101
-    @RequireReviewGroupAccess(target = "#reviewRequestCode")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/summary")
+    @RequireReviewGroupAccess(target = "#reviewGroupId")
     public ResponseEntity<ReceivedReviewsSummaryResponse> findReceivedReviewOverview(
-            @PathVariable String reviewRequestCode
+            @PathVariable long reviewGroupId
     ) {
-        ReviewGroup reviewGroup = reviewGroupService.getReviewGroupByReviewRequestCode(reviewRequestCode);
-        ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewGroup.getId());
+        ReceivedReviewsSummaryResponse response = reviewSummaryService.getReviewSummary(reviewGroupId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/v2/groups/{reviewRequestCode}/reviews/gather") // todo: groupId를 받도록 수정 필요 issue #1101
-    @RequireReviewGroupAccess(target = "#reviewRequestCode")
+    @GetMapping("/v2/groups/{reviewGroupId}/reviews/gather")
+    @RequireReviewGroupAccess(target = "#reviewGroupId")
     public ResponseEntity<ReviewsGatheredBySectionResponse> getReceivedReviewsBySectionId(
-            @PathVariable String reviewRequestCode,
+            @PathVariable long reviewGroupId,
             @RequestParam("sectionId") long sectionId
     ) {
-        ReviewGroup reviewGroup = reviewGroupService.getReviewGroupByReviewRequestCode(reviewRequestCode);
         ReviewsGatheredBySectionResponse response =
-                reviewGatheredLookupService.getReceivedReviewsBySectionId(reviewGroup.getId(), sectionId);
+                reviewGatheredLookupService.getReceivedReviewsBySectionId(reviewGroupId, sectionId);
         return ResponseEntity.ok(response);
     }
 
